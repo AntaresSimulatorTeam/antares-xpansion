@@ -6,12 +6,13 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
 
-BendersPluginFactory::BendersPluginFactory(const std::filesystem::path& input_root,const std::filesystem::path& output_root)
+BendersPluginFactory::BendersPluginFactory(const SimulationOptions& options) : options_(options)  
 
 {
-    library_path_ = input_root / "libmylib/lib/libmylib.so";
-    input_root_ = input_root;
-    output_root_ = output_root; 
+
+    input_root_ = options_.INPUTROOT;
+    output_root_ = options_.OUTPUTROOT; 
+    library_path_ = input_root_ / "libmylib/lib/libmylib.so";
 }
 
 BendersPlugin* BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map, bool micro_iter)
@@ -32,8 +33,7 @@ BendersPlugin* BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_ma
             }
         }
 
-        Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(input_root_,
-                                                                                   output_root_,
+        Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(options_,
                                                                                    coupling_map);
         plugin_jl_micro_iters->SetSubProblemIDs(subs_ids, sub_pos);
 

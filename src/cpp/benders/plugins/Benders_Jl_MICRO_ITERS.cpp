@@ -9,9 +9,9 @@
 
 #include "iostream"
 
-Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root,
-                                               const std::filesystem::path& output_root,
+Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
                                                const CouplingMap& coupling_map)
+                                               : options_(options)
 {
     coupling_map_ = coupling_map;
 
@@ -19,8 +19,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
                                                       subproblem_constraint_map_,
                                                       constraints_coupling_map_);
 
-    input_root_ = input_root;
-    output_root_ = output_root ; 
+    input_root_ = options_.INPUTROOT ;
     warm_start_ = true ; 
 
     std::filesystem::path mirco_iterations_options_path = input_root_
@@ -56,7 +55,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
         std::cerr << "failed to open micro iteration options file " << std::endl;
     }
 
-    std::filesystem::path constraints_csv_path = input_root / "constraints_dictionary.csv";
+    std::filesystem::path constraints_csv_path = input_root_ / "constraints_dictionary.csv";
     std::ifstream constraints_csv_stream(constraints_csv_path.c_str());
 
     if (constraints_csv_stream.is_open())
@@ -81,7 +80,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
 
     // std::cout<<"size of constraints_csv_map_ "<<constraints_csv_map_.size()<<std::endl ;
 
-    std::filesystem::path investment_dictionary_path = input_root / "investment_dictionary.csv";
+    std::filesystem::path investment_dictionary_path = input_root_ / "investment_dictionary.csv";
     std::ifstream investment_dict_path(investment_dictionary_path.c_str());
 
     if (investment_dict_path.is_open())
@@ -98,7 +97,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
     }
     assert(investment_dict_path.is_open());
 
-    variables_dictionary_path_ = input_root / "variables_dictionary.csv";
+    variables_dictionary_path_ = input_root_ / "variables_dictionary.csv";
     std::ifstream variables_dict(variables_dictionary_path_.c_str());
 
     if (variables_dict.is_open())
@@ -142,7 +141,8 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
     }
     assert(handle_);
 
-    micro_iterations_logger = std::make_shared<MicroIterationsLog>(output_root_,subproblem_constraint_map_) ; 
+    if (options_.LOG_LEVEL)
+        micro_iterations_logger_ = std::make_shared<MicroIterationsLog>(options_,subproblem_constraint_map_,constraints_csv_map_,warm_start_) ; 
 }
 
 Benders_Jl_MICRO_ITERS::~Benders_Jl_MICRO_ITERS()
@@ -184,7 +184,8 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
 void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 {
     // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersEnd"<<std::endl ;
-    // micro_iterations_logger->Dump() ; 
+    if (options_.LOG_LEVEL)
+        micro_iterations_logger_->Dump() ; 
 
 }
 
@@ -221,26 +222,38 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
     const char* jl_log_msg = compute_factors(master_benders_input,num_iter);
     auto t2 = std::chrono::high_resolution_clock::now() ; 
     auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
-    micro_iterations_logger->AddMasterIterationLog(benders_invested_master_result, num_iter, std::to_string(elapsed_microseconds)) ; 
+    if (options_.LOG_LEVEL)
+        micro_iterations_logger_->AddMasterIterationLog(num_iter, std::to_string(elapsed_microseconds)) ; 
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
 {
     // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMasterIterationEnd"<<std::endl ;
-    micro_iterations_logger->RefreshLogger() ; 
     if (!warm_start_)
     {
+        std::cout<<"warm start in master iteration end "<<std::endl; 
+        std::map<std::string,std::string> removing_rows_per_sub_time  ; 
+        
         for (auto [sub_name,added_constraints_vec] : added_constraints_per_sub_) 
-        {   
+        {       
+            auto t1 = std::chrono::high_resolution_clock::now() ; 
             std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
             auto constraint_reader =  constraints_map_[constraint_reader_name] ; 
- 
+            
             for (auto& added_key : added_constraints_vec )
             {
                 constraint_reader->delete_added_rows(constraints_csv_map_[added_key]) ; 
             }
+            auto t2 = std::chrono::high_resolution_clock::now() ; 
+            auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;
+            removing_rows_per_sub_time[sub_name] = std::to_string(elapsed_microseconds) ; 
         }
+        if (options_.LOG_LEVEL)
+            micro_iterations_logger_->UpdateLastMasterIteration(std::move(removing_rows_per_sub_time)) ; 
+        
     }
+    if (options_.LOG_LEVEL)
+        micro_iterations_logger_->RefreshLogger() ; 
 
 }
 
@@ -298,8 +311,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     auto t2 = std::chrono::high_resolution_clock::now() ;  
 
     auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
-
-    micro_iterations_logger->AddMicroIterionLog(sub_name,solving_time,std::to_string(elapsed_microseconds),constraints_keys_vec) ; 
+    
+    if (options_.LOG_LEVEL)
+        micro_iterations_logger_->AddMicroIterionLog(sub_name,solving_time,std::to_string(elapsed_microseconds),constraints_keys_vec) ; 
 
     added_rows = constraints_to_add_vec.size();
 }

@@ -11,6 +11,8 @@
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/logger/MicroIterationsLog.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+
 
 
 
@@ -63,8 +65,7 @@ using jl_set_data_path_FUNC = void (*)(const char*);
 class Benders_Jl_MICRO_ITERS: public BendersPlugin
 {
 public:
-    Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root,
-                           const std::filesystem::path& output_root,
+    Benders_Jl_MICRO_ITERS(const SimulationOptions& options, 
                            const CouplingMap& coupling_map);
     virtual ~Benders_Jl_MICRO_ITERS();
     virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
@@ -89,8 +90,8 @@ private:
     bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
     void delete_added_rows() ; 
     void* handle_;
+    const SimulationOptions& options_ ; 
     std::filesystem::path input_root_;
-    std::filesystem::path output_root_ ; 
     std::filesystem::path variables_dictionary_path_;
     SubProblemIds sub_pb_ids_;
     std::map<std::string, std::string> binary_variables_ids_map_;
@@ -105,6 +106,6 @@ private:
     SubProblemConstraintMap subproblem_constraint_map_;
     ConstraintsReaderPtrMap constraints_map_;
     Logger _logger;
-    std::shared_ptr<MicroIterationsLog> micro_iterations_logger ; 
+    std::shared_ptr<MicroIterationsLog> micro_iterations_logger_; 
     bool warm_start_; 
 };
