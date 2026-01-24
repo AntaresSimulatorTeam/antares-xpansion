@@ -184,7 +184,6 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
 
 void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 {
-    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersEnd"<<std::endl ;
     if (options_.LOG_LEVEL >= 2)
         micro_iterations_logger_->Dump() ; 
 

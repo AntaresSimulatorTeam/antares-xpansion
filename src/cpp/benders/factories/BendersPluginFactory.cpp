@@ -13,6 +13,7 @@ BendersPluginFactory::BendersPluginFactory(const SimulationOptions& options) : o
 
 std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map, bool micro_iter)
 {
+    std::cout<<"creating plugin ..... "<<std::endl ; 
     if (micro_iter)
     {
         int n_subs = coupling_map.size();

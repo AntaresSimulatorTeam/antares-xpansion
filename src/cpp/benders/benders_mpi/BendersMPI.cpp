@@ -411,7 +411,7 @@ void BendersMpi::Run()
          * process*/
         step_1_solve_master();
 
-        if (benders_plugin_)
+        if (benders_plugin_ && Rank() == rank_0)
         {
             benders_plugin_->OnBendersMasterIterationStart(_data.x_out,_data.it);
         }
@@ -436,12 +436,12 @@ void BendersMpi::Run()
         {
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
+            if (benders_plugin_)
+                benders_plugin_->OnBendersMasterIterationEnd();
+        
         }
 
-        if (benders_plugin_)
-        {
-            benders_plugin_->OnBendersMasterIterationEnd();
-        }
+
     }
     if (_world.rank() == rank_0)
     {
