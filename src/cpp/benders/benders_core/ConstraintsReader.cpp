@@ -25,7 +25,9 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
     solver_IO_.configure(solver_name, ProblemsFormat::MPS_FILE);
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
-    int n_rows = solver_->get_nrows();
+    int n_rows = solver_->get_nrows() ; 
+    initial_sub_size = subproblem_worker->get_problem_row_num() ; 
+    std::cout<<"initial subproblem size "<<initial_sub_size<<std::endl ; 
 }
 
 std::shared_ptr<SubproblemWorker> ConstraintsReader::get_subproblem_worker()
@@ -118,13 +120,20 @@ void ConstraintsReader::add_rows(std::string& row_name)
 }
 
 
-void ConstraintsReader::delete_added_rows(std::vector<std::string>& added_rows)
+
+
+int ConstraintsReader::size_of_subproblem() 
 {
-    for (auto& added_row : added_rows) 
-    {
-        subproblem_worker_->delete_row(added_row) ; 
-    }
-} 
+    return subproblem_worker_->get_problem_row_num() ; 
+}
+
+void ConstraintsReader::delete_added_rows() 
+{
+    std::cout<<"enetered in delete_added_rows (no inputs)"<<std::endl ; 
+    subproblem_worker_->delete_rows(initial_sub_size) ;
+}
+
+
 
 
 

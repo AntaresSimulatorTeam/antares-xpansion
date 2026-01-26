@@ -53,7 +53,8 @@ public:
     void add_rows(std::string&);
     std::vector<double> get_sub_solution();
     int get_variable_index_in_solution(std::string variable_id);
-    void delete_added_rows(std::vector<std::string>&) ; 
+    int size_of_subproblem() ; 
+    void delete_added_rows() ; 
     
     private:
     
@@ -68,6 +69,7 @@ public:
     std::shared_ptr<SolverAbstract> solver_;
     std::shared_ptr<BendersProblemFromFile> benders_problem_provider_;
     std::shared_ptr<SubproblemWorker> subproblem_worker_;
+    int initial_sub_size ; 
     SolverIO solver_IO_;
 };
 

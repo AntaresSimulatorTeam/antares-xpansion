@@ -201,6 +201,10 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
   std::map<std::string, double>& master_out,
     int& num_iter)
 {
+    for (auto& [sub,constraint_reader] : constraints_map_ ) 
+    {
+        std::cout<<"sub "<<sub<<"   "<<constraint_reader->size_of_subproblem()<<std::endl ; 
+    }
     for (auto& [sub, _]: added_constraints_per_sub_)
     {
         added_constraints_per_sub_[sub] = std::vector<std::string>();
@@ -242,11 +246,8 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
             auto t1 = std::chrono::high_resolution_clock::now() ; 
             std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
             auto constraint_reader =  constraints_map_[constraint_reader_name] ; 
-            
-            for (auto& added_key : added_constraints_vec )
-            {
-                constraint_reader->delete_added_rows(constraints_csv_map_[added_key]) ; 
-            }
+            constraint_reader->delete_added_rows() ; 
+
             auto t2 = std::chrono::high_resolution_clock::now() ; 
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;
             removing_rows_per_sub_time[sub_name] = std::to_string(elapsed_microseconds) ; 
@@ -262,7 +263,6 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
 
 void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
 {
-
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows, std::string solving_time)
