@@ -40,9 +40,9 @@ int ConstraintsReader::get_row_index(const std::string& name)
     return row_pos;
 }
 
-constraintRow ConstraintsReader::get_row(const std::string& name)
+SolverRepresentedRows ConstraintsReader::get_row(const std::string& name)
 {
-    constraintRow result;
+    SolverRepresentedRows result;
     result.range_p = {};
     result.row_names = {name};
     int constraint_pos = get_row_index(name);
@@ -100,7 +100,7 @@ int ConstraintsReader::get_variable_index_in_solution(std::string variable_name)
     return variable_index;
 }
 
-void ConstraintsReader::add_rows_to_subproblems(constraintRow& new_row)
+void ConstraintsReader::add_rows_to_subproblems(SolverRepresentedRows& new_row)
 {
     subproblem_worker_->AddRows(new_row.qrtype_p,
                                 new_row.rhs,

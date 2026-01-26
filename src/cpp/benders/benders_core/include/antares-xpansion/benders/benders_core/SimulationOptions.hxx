@@ -20,7 +20,7 @@ BENDERS_OPTIONS_MACRO(SEPARATION_PARAM, double, 0.5, asDouble())
 BENDERS_OPTIONS_MACRO(MASTER_FORMULATION, std::string, "integer", asString())
 
 // Integer between 0 and +inf
-BENDERS_OPTIONS_MACRO(AGGREGATION, int, 0, asInt())
+BENDERS_OPTIONS_MACRO(NB_CUTS_PER_ITER, int, 0, asInt())
 
 // MICRO ITERATIONS activated or not
 BENDERS_OPTIONS_MACRO(MICRO_ITERATIONS, bool, false, asBool())

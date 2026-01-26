@@ -11,7 +11,7 @@
 /*
     The structure contains the necesary vector to fetch for a row of an mps file
 */
-struct constraintRow
+struct SolverRepresentedRows
 {
     std::vector<int> mstart;
     std::vector<int> mclind;
@@ -57,9 +57,9 @@ public:
     
     private:
     
-    void add_rows_to_subproblems(constraintRow&);
+    void add_rows_to_subproblems(SolverRepresentedRows&);
     int get_row_index(const std::string& name);
-    constraintRow get_row(const std::string& name);
+    SolverRepresentedRows get_row(const std::string& name);
     std::shared_ptr<SubproblemWorker> get_subproblem_worker();
     void get_variables_values_in_csv(std::filesystem::path variables_values_csv);
 
