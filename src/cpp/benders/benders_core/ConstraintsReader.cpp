@@ -129,7 +129,6 @@ int ConstraintsReader::size_of_subproblem()
 
 void ConstraintsReader::delete_added_rows() 
 {
-    std::cout<<"enetered in delete_added_rows (no inputs)"<<std::endl ; 
     subproblem_worker_->delete_rows(initial_sub_size) ;
 }
 

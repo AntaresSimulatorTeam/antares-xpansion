@@ -163,17 +163,16 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
 {
     _logger = logger;
 
-    BuildConstraintsReaderMap(subproblem_map, options, solver_log_manager);
-
-
+    
+    
     if (handle_)
     {
         int size_subs = sub_pb_ids_.n_subproblems;
-        for (int i = 0; i < size_subs; i++)
-        {
-            std::string sub_key(sub_pb_ids_.subProblems_ids[i]);
-            added_constraints_per_sub_[sub_key] = std::vector<std::string>();
-        }
+        // for (int i = 0; i < size_subs; i++)
+        // {
+            
+        // }
+        BuildConstraintsReaderMap(subproblem_map, options, solver_log_manager);
 
         //reading inputs on julia side
         jl_load_variables_FUNC jl_load_variables = (jl_load_variables_FUNC)
@@ -184,8 +183,8 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
 
 void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 {
-    if (options_.LOG_LEVEL >= 2)
-        micro_iterations_logger_->Dump() ; 
+    // if (options_.LOG_LEVEL >= 2)
+    //     micro_iterations_logger_->Dump() ; 
 
     if (handle_)
     {
@@ -200,11 +199,8 @@ void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
   std::map<std::string, double>& master_out,
     int& num_iter)
-{
-    for (auto& [sub,constraint_reader] : constraints_map_ ) 
-    {
-        std::cout<<"sub "<<sub<<"   "<<constraint_reader->size_of_subproblem()<<std::endl ; 
-    }
+{   
+    
     for (auto& [sub, _]: added_constraints_per_sub_)
     {
         added_constraints_per_sub_[sub] = std::vector<std::string>();
@@ -241,6 +237,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
     {
         std::map<std::string,std::string> removing_rows_per_sub_time  ; 
         
+
         for (auto [sub_name,added_constraints_vec] : added_constraints_per_sub_) 
         {       
             auto t1 = std::chrono::high_resolution_clock::now() ; 
@@ -319,6 +316,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
 
 void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
 {
+
     sub_ids_storage_.clear();
     sub_ids_storage_.reserve(n_subs);
     for (int i = 0; i < n_subs; i++)
@@ -375,6 +373,7 @@ void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& 
 {
     for (auto& [sub, sub_worker]: subproblem_map)
     {
+        added_constraints_per_sub_[sub] = std::vector<std::string>();
         std::string constraints_file_name = subproblem_constraint_map_[sub];
         auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
                                      / constraints_file_name;

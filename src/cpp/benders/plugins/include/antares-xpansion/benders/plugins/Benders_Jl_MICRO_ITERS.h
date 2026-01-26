@@ -242,6 +242,8 @@ private:
             - sub_name : subproblem name 
     */
     bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
+
+    // BuildSubProblemConstaintMap()
     void* handle_;
     const SimulationOptions& options_ ; 
     std::filesystem::path input_root_;

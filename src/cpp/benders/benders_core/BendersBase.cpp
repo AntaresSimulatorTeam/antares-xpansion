@@ -392,6 +392,8 @@ void BendersBase::get_master_value()
     }
 
     _data.timer_master = timer_master.elapsed();
+
+
 }
 
 void BendersBase::DeactivateIntegrityConstraints() const

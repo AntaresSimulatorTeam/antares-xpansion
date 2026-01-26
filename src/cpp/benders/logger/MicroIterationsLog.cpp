@@ -87,14 +87,25 @@ void MicroIterationsLog::Dump()
             
             for (auto& [sub_name, micro_iters_vec] : micro_iterations_per_master_iter_per_sub)
             {  
+                size_t start = sub_name.find_last_of('/') + 1;
+                size_t end = sub_name.find(".mps");
+                std::string result = sub_name.substr(start, end - start); 
                 micro_iterations_log_stream<<sub_name<<"\n" ;               
                 for (size_t j=0; j<micro_iters_vec.size(); j++) 
                 {
                     int added_constraints(0) ; 
+                    // std::string file_name = "added_contraints_master_iter_" + std::to_string(i)+"_micro_iter_" + std::to_string(j) + "_" +result + ".txt" ; 
+                    // std::filesystem::path added_constraints_path = std::filesystem::path(options_.OUTPUTROOT)   /  "addeded_constraints" /file_name ; 
+                    // std::ofstream added_constraints_stream(added_constraints_path.c_str())  ; 
                     for (auto& added_constraints_key : micro_iters_vec[j].added_constraints_keys) 
                     {
                         added_constraints += constraints_per_line_[added_constraints_key].size() ; 
+                        // for (auto& added_constraint : constraints_per_line_[added_constraints_key]) 
+                        // {
+                        //     added_constraints_stream<<added_constraint<<"\n" ; 
+                        // }
                     }
+                    // added_constraints_stream.close() ; 
 
                     int num_micro_iter = j + 1 ;
                     micro_iterations_log_stream<<num_micro_iter<<"      "<<micro_iters_vec[j].solving_time

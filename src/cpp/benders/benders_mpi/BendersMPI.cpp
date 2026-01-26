@@ -150,6 +150,7 @@ void BendersMpi::solve_master_and_create_trace()
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
+
     _logger->log_master_solving_duration(_data.timer_master);
 
     ComputeXCut();
@@ -411,9 +412,12 @@ void BendersMpi::Run()
          * process*/
         step_1_solve_master();
 
-        if (benders_plugin_ && Rank() == rank_0)
+        broadcast(_world,_data.x_out,rank_0) ; 
+
+        if (benders_plugin_ )
         {
             benders_plugin_->OnBendersMasterIterationStart(_data.x_out,_data.it);
+            
         }
 
         /*Gather cut from each subproblem in master thread and add them to Master
@@ -436,10 +440,11 @@ void BendersMpi::Run()
         {
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
-            if (benders_plugin_)
-                benders_plugin_->OnBendersMasterIterationEnd();
+
         
         }
+        if (benders_plugin_)
+                benders_plugin_->OnBendersMasterIterationEnd();
 
 
     }
