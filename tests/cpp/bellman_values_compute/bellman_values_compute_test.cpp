@@ -265,7 +265,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
-    auto problems = pbg.updateProblems(grid, reservoir_management);
+    auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
                                    problems,
@@ -305,7 +305,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
-    auto problems = pbg.updateProblems(grid, reservoir_management);
+    auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
                                    problems,
@@ -346,7 +346,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
-    auto problems = pbg.updateProblems(grid, reservoir_management);
+    auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
                                    problems,
@@ -413,7 +413,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             }
 
             logger->display_message("Updating problems...");
-            auto problems = pbg.updateProblems(grid, reservoir_management);
+            auto problems = pbg.updateProblems(grid, gridElement.area);
             logger->display_message("Updated.");
 
             auto evaluator = GridEvaluator(logger,
@@ -498,7 +498,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             }
 
             logger->display_message("Updating problems...");
-            auto problems = pbg.updateProblems(grid, reservoir_management);
+            auto problems = pbg.updateProblems(grid, gridElement.area);
             logger->display_message("Updated.");
 
             auto evaluator = GridEvaluator(logger,
@@ -584,7 +584,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             }
 
             logger->display_message("Updating problems...");
-            auto problems = pbg.updateProblems(grid, reservoir_management);
+            auto problems = pbg.updateProblems(grid, gridElement.area);
             logger->display_message("Updated.");
 
             auto evaluator = GridEvaluator(logger,

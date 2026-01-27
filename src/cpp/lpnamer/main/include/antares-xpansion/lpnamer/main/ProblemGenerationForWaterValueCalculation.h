@@ -45,7 +45,6 @@ public:
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition,
-      const ReservoirManagement& reservoirManagement,
       const std::string& areaName = "");
     void initializeOptimalTrajectories(std::shared_ptr<GridCollection> gridCollection) const;
     static WaterValueComputationMode getComputationModeFromGrid(
@@ -79,12 +78,10 @@ private:
     cleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
                                         const std::filesystem::path& log_file_path,
                                         const GridDefinition& gridDefinition,
-                                        const ReservoirManagement& reservoirManagement,
                                         const std::string& areaName);
 
     void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                                             const GridDefinition& gridDefinition,
-                                            const ReservoirManagement& reservoirManagement,
                                             const std::string& areaName,
                                             std::string& pbName,
                                             Antares::Solver::WeeklyProblemId pbId);

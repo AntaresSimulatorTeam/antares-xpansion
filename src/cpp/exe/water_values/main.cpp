@@ -276,16 +276,11 @@ int main(int argc, char** argv)
                                                         pcr.getCvar());
                 // this is also where we will update penalties if they need to be
 
-                if (reservoirManagement.reservoir.area != gridElement.area)
-                {
-                    reservoirManagement.setReservoir(
-                      gridCollection->reservoirs.at(gridElement.area));
-                }
                 auto startProblemUpdate = std::chrono::system_clock::now();
                 logger->display_message(
                   "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
 
-                auto problems = pbg.updateProblems(grid, reservoirManagement, gridElement.area);
+                auto problems = pbg.updateProblems(grid, gridElement.area);
 
                 auto endProblemUpdate = std::chrono::system_clock::now();
                 logger->display_message(
@@ -336,8 +331,6 @@ int main(int argc, char** argv)
                            logger,
                            antaresFormat);
                 logger->display_message("Saved water values to file");
-
-                gridCollection->reservoirs.at(gridElement.area) = reservoirManagement.reservoir;
 
                 if (pbg.getComputationMode()
                     == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::

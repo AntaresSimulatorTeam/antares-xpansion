@@ -132,10 +132,8 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 /// @param gridDefinition
 /// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-ProblemGenerationForWaterValueCalculation::updateProblems(
-  const GridDefinition& gridDefinition,
-  const ReservoirManagement& reservoirManagement,
-  const std::string& areaName)
+ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& gridDefinition,
+                                                          const std::string& areaName)
 {
     using namespace std::string_literals;
 
@@ -144,12 +142,21 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
     CreateDirectories(directories.simulation_dir);
 
     logger->display_message("Updating problems");
-    logger->display_message("Reservoir area: '" + reservoirManagement.reservoir.area + "'");
+    // logger->display_message("Reservoir area: '" + reservoirManagement.reservoir.area + "'");
     logger->display_message("areaName: " + areaName);
+    // check added instead of passing the entire reservoirManagement, in a multistock context
+    if (areaName == ""
+          && (this->computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
+        || this->computationMode == WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY)
+    {
+        throw std::invalid_argument(
+          "The areaName for the current reservoir must be provided in the "
+          "context of a multistock computation.");
+    }
+
     auto modifiedProblems = cleanProblemsForBellmanCalculations(directories.simulation_dir,
                                                                 log_file_path,
                                                                 gridDefinition,
-                                                                reservoirManagement,
                                                                 areaName);
 
     return modifiedProblems;
@@ -165,7 +172,6 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
   const std::filesystem::path& xpansion_output_dir,
   const std::filesystem::path& log_file_path,
   const GridDefinition& gridDefinition,
-  const ReservoirManagement& reservoirManagement,
   const std::string& areaName)
 {
     logger->display_message("Cleaning problems for Bellman calculations");
@@ -188,12 +194,7 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
               std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                    + std::to_string(pbId.week) + "--optim-nb-1";
               //   logger->display_message("Modifying problem: " + pbName);
-              cleanProblemForBellmanCalculations(problem,
-                                                 gridDefinition,
-                                                 reservoirManagement,
-                                                 areaName,
-                                                 pbName,
-                                                 pbId);
+              cleanProblemForBellmanCalculations(problem, gridDefinition, areaName, pbName, pbId);
               //   logger->display_message("Problem: " + pbName + " modified");
               modifiedProblems[pbId] = problem;
 
@@ -246,7 +247,6 @@ inline std::string trimTrailingSpaces(const std::string& str)
 void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculations(
   std::shared_ptr<Problem> problem,
   const GridDefinition& gridDefinition,
-  const ReservoirManagement& reservoirManagement,
   const std::string& areaName,
   std::string& pbName,
   Antares::Solver::WeeklyProblemId pbID)
@@ -278,66 +278,34 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
     for (const auto& gridElement: gridDefinition.gridElements)
     {
         logger->display_message("gridElement: " + gridElement.area);
-        logger->display_message("reservoir area: " + reservoirManagement.reservoir.area);
 
-        if (gridElement.problemName == "all" || gridElement.problemName == pbName)
+        if ((gridElement.problemName == "all" || gridElement.problemName == pbName)
+            && ((this->computationMode
+                 == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+                   MULTIVARIATE) // for multivariate: all gridElements must be cleaned
+                || areaName
+                     == gridElement.area)) // for multistock: only the current area must be cleaned
         {
-            // default multivariate case: cleaning all gridElements
-            if (this->computationMode
-                == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
-                  MULTIVARIATE)
-            {
-                logger->display_message("cleanReservoirConstraints in multivariate mode");
-                logger->display_message("reservoir: " + reservoirManagement.reservoir.area);
-                cleanReservoirConstraints(problem,
-                                          reservoirManagement.reservoir,
-                                          pbID,
-                                          affectedColsAndRows);
-            }
-            // targetting a specific stock in a multistock use case (with or without trajectory)
-            else if (areaName == gridElement.area)
-            {
-                logger->display_message("cleanReservoirConstraints in multistock mode");
-                cleanReservoirConstraints(problem,
-                                          gridDefinition.reservoirs.at(gridElement.area),
-                                          pbID,
-                                          affectedColsAndRows);
-            }
+            cleanReservoirConstraints(problem,
+                                      gridDefinition.reservoirs.at(gridElement.area),
+                                      pbID,
+                                      affectedColsAndRows);
         }
     }
 
-    // other gridElements in a multistock context must be updated with their optimal
-    // trajectories
+    // other gridElements/reservoirs in a multistock context must be updated with their optimal
+    // trajectories, for this specific flag
     if (gridDefinition.gridElements.size() == 1
-        && this->computationMode
-             != ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::MULTIVARIATE)
+        && this->computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY
+        && (gridDefinition.gridElements[0].problemName == "all"
+            || gridDefinition.gridElements[0].problemName == pbName))
     {
         for (auto& reservoir: gridDefinition.reservoirs)
         {
             if (reservoir.second.area != areaName)
             {
-                if (gridDefinition.gridElements[0].problemName == "all"
-                    || gridDefinition.gridElements[0].problemName == pbName)
-                {
-                    // if SEQUENTIAL_IGNORE_TRAJECTORY: no update of the optimal trajectory
-                    if (computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
-                    {
-                        // logger->display_message(
-                        //   "Other gridElement in a multistock context updated with its trajectory:
-                        //   "
-                        //   + reservoir.second.area);
-                        cleanReservoirConstraints(problem,
-                                                  reservoir.second,
-                                                  pbID,
-                                                  affectedColsAndRows);
-                        updateReservoirWithOptimalTrajectory(problem, reservoir.second, pbID);
-                    }
-                    else
-                    {
-                        logger->display_message("No update of the optimal trajectory for area: "
-                                                + reservoir.second.area);
-                    }
-                }
+                cleanReservoirConstraints(problem, reservoir.second, pbID, affectedColsAndRows);
+                updateReservoirWithOptimalTrajectory(problem, reservoir.second, pbID);
             }
         }
     }

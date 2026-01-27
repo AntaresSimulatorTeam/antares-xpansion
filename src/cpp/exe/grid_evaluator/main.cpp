@@ -176,7 +176,7 @@ int main(int argc, char** argv)
             auto startProblemUpdate = std::chrono::system_clock::now();
             logger->display_message(
               "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
-            auto problems = pbg.updateProblems(grid, reservoirManagement);
+            auto problems = pbg.updateProblems(grid);
 
             auto endProblemUpdate = std::chrono::system_clock::now();
             logger->display_message("Updated problems (end time: " + formatTime(endProblemUpdate)
