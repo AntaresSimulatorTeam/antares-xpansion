@@ -120,7 +120,7 @@ class TrajectoryInvestmentDriver:
             benders_exe=self.config.get_executable_path(self.config.BENDERS),
             frontal_exe=self.config.get_executable_path(self.config.MERGE_MPS),
             outer_loop_exe=self.config.get_executable_path(self.config.OUTER_LOOP),
-            mpi_exe=self.config.get_executable_path(Path(self.config.MPIEXEC).name),
+            mpi_exe=self.config.get_executable_path(Path(self.config.MPIEXEC).name) if os.name == "nt" else Path(),
             input_root=self.config.input_root,
             root_study=root_study,
             json_output_file=benders_json_output,
@@ -131,11 +131,13 @@ class TrajectoryInvestmentDriver:
             structure_file=self.config.MERGED_STRUCTURE,
             solver=solver,
             problems_format=problems_format,
+            cache_problems=self.config.cache_problems,
             method=self.config.method,
             n_mpi=self.config.n_mpi,
             oversubscribe=self.config.oversubsribe,
             allow_run_as_root=self.config.allow_run_as_root,
             master_formulation=self.input_translation_driver.get_master_formulation(),
+            user_input_file=self.config.input_file,
         )
 
         self.resolution_driver = TrajectoryResolutionDriver(res_data)

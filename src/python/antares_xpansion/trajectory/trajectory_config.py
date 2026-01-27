@@ -16,6 +16,7 @@ class TrajectoryInputParameters:
     # Solver and problems format
     problems_format: str
     solver: str
+    cache_problems: bool
     # Relevant for resolution only
     method: str
     n_mpi: int
@@ -91,7 +92,19 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         print(
             f"Executable {exe_name} should be found in dir : {Path(self.install_dir).resolve().__str__()}"
         )
-        return (Path(self.install_dir) / exe_name).resolve()
+        assert hasattr(self, "install_dir"), "install_dir attribute is missing"
+        install_path = Path(self.install_dir).resolve()
+        print(f"Looking for executable '{exe_name}' in: {install_path}")
+        candidate = install_path / exe_name
+        # Direct match
+        if candidate.is_file():
+            return candidate
+        # On Windows, try adding .exe suffix automatically
+        if os.name == "nt":
+            candidate_exe = candidate.with_suffix(".exe")
+            if candidate_exe.is_file():
+                return candidate_exe
+        raise FileNotFoundError(f"Executable '{exe_name}' not found in {install_path}")
 
     def _get_input_parameters(self):
         self.step = self.input_parameters.step
@@ -102,6 +115,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         # Problems format and solver
         self.problems_format = self.input_parameters.problems_format
         self.solver = self.input_parameters.solver
+        self.cache_problems = self.input_parameters.cache_problems
         # Resolution args
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi

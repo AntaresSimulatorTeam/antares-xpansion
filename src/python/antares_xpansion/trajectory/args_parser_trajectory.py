@@ -33,6 +33,10 @@ class TrajectoryLauncherOptionsKeys:
     def solver_key():
         return "solver"
 
+    @staticmethod
+    def cache_problems_key():
+        return "cache_problems"
+
 
 class TrajectoryLauncherOptionsDefaultValues:
     @staticmethod
@@ -119,6 +123,13 @@ class TrajectoryArgsParser:
             choices=["Xpress", "Cbc", "Coin"],
             help="Name of the solver used to perform problem merging and resolution - does not apply to problem generation.",
             default=TrajectoryLauncherOptionsDefaultValues.solver_default(),
+        )
+        self.parser.add_argument(
+            "--cache_problems",
+            dest=TrajectoryLauncherOptionsKeys.cache_problems_key(),
+            default=False,
+            action="store_true",
+            help="Cache problems on disk during benders",
         )
 
         # Args for the resolution
@@ -212,6 +223,7 @@ class TrajectoryArgsParser:
             install_dir=params.installDir,
             problems_format=params.problems_format,
             solver=params.solver,
+            cache_problems=params.cache_problems,
             method=params.method,
             n_mpi=params.n_mpi,
             oversubscribe=params.oversubscribe,

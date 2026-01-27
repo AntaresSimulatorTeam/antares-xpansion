@@ -1,5 +1,43 @@
 Antares-Xpansion changelog
 =================
+v1.7.1 (12/2025)
+------------------------------------------------
+
+### Features
+
+* Support `cache_problems` option for trajectory (#1117)
+* Use correctly updated `generaldata.ini` for each trajectory study (#1119)
+* Proper Benders cleanup after trajectory (#1120)
+* Update performance graph in docs (#1134)
+* Update Antares to v9.3.3 (#1148)
+
+
+### Bug fixes
+
+* Fix Windows exe path (#1132)
+* Fix a bug in case master only variables are added before coupling variables in master problem (#1136)
+* Explicit error for candidate discrepancy (#1133)
+
+v1.7.0 (11/2025)
+------------------------------------------------
+
+### Bug fixes
+
+* fix: Missing Xpress loading log in benders (#1116)
+* Properly handle large candidate names in structure file (#1111)
+
+### CI
+
+* Bump actions/checkout from 5 to 6 (#1118)
+* Bump actions/download-artifact from 5 to 6 (#1108)
+* Bump actions/upload-artifact from 4 to 5 (#1109)
+
+### In development features
+
+* Trajectory
+    * Restore Ram between iteration of lpnamer (#1110)
+    * feat: Export all structure files in trajectory (#1112)
+    * Feat!: Improve trajectory CLI API [ANT-4102] (#1113)
 
 v1.6.1 (11/2025)
 ------------------------------------------------
