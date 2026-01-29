@@ -27,7 +27,6 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
     int n_rows = solver_->get_nrows() ; 
     initial_sub_size = subproblem_worker->get_problem_row_num() ; 
-    std::cout<<"initial subproblem size "<<initial_sub_size<<std::endl ; 
 }
 
 std::shared_ptr<SubproblemWorker> ConstraintsReader::get_subproblem_worker()

@@ -1,4 +1,4 @@
-//This header file will contain all the necessary objects to handle micro iterations workflow loggin
+//This header file will contain all the necessary objects to handle micro iterations workflow logging
 
 #pragma once
 
@@ -8,6 +8,9 @@
 #include <map>
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
 
 
 /*
@@ -35,6 +38,14 @@ struct MicroIterationLog
     std::string solving_time; 
     std::string adding_rows_time ; 
     std::vector<std::string> added_constraints_keys;  
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & solving_time;
+        ar & adding_rows_time;
+        ar & added_constraints_keys;
+    }
 } ; 
 
 /*
@@ -50,15 +61,18 @@ class MicroIterationsLog
     public : 
 
         /*
+
             Constructor
             @input : 
                 - options : configuration of the study 
                 - sub_constraints_map : mapping sub to constraints
                 - constraints_per_line : mapping constraint keys to the list of constraints to add 
                 - warm_start : handle warm_start mechanism 
+                - world : the mpi communicator
+                - log_level : log level necessary to determine if we dump the added keys at each micro iteration if >= 3
 
         */
-        MicroIterationsLog(const SimulationOptions& options, std::map<std::string,std::string>& sub_constraints_map, std::map<std::string,std::vector<std::string>>& constraints_per_line, bool warm_start) ; 
+        MicroIterationsLog(const SimulationOptions& options, std::map<std::string,std::string>& sub_constraints_map, std::map<std::string,std::vector<std::string>>& constraints_per_line, bool warm_start,mpi::communicator* world,int log_level ) ; 
 
         /*
             Called in the benders master iteration start callback. 
@@ -100,15 +114,23 @@ class MicroIterationsLog
         /*
             Called in benders end callback. 
             It will write all logged data in micro_iterations.log
+            @inputs : 
+                - rank :  the id of the process from which we call the callback
+   
         */
-        void Dump() ; 
+        void Dump(int rank) ; 
+
+
     private : 
+        
         const SimulationOptions& options_; 
+        mpi::communicator* _world ; 
+        std::vector<std::string> vec_micro_iter_ ; 
         bool warm_start_ ; 
         std::map<std::string,std::vector<std::string>>& constraints_per_line_ ; 
         std::vector<MasterIterationLog> master_iterations_logs_ ; 
         std::vector<MicroIterationsPerSub> micro_iterations_per_benders_iter ; 
         std::map<std::string,std::string> sub_constraints_map_ ; 
         MicroIterationsPerSub micro_iter_per_sub_per_benders_iter_ ; 
-
+        int log_level_ ; 
 } ; 

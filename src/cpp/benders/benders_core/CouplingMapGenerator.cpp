@@ -67,9 +67,12 @@ void CouplingMapGenerator::BuildSubProblemConstaintMap(
 
         std::string subproblem_num = subProblemName.substr(underscore_pos + 1,
                                                            dot_pos - underscore_pos - 1);
+
+        std::string extension = subProblemName.substr(dot_pos + 1);
+
         if (subproblem_num != "master")
         {
-            std::string constraint_str = "constraints/constraints_" + subproblem_num + ".mps";
+            std::string constraint_str = "constraints/constraints_" + subproblem_num + "." + extension;
             subproblem_constraint_map[subProblemName] = constraint_str;
             constraints_coupling_map[constraint_str] = variable_map;
         }

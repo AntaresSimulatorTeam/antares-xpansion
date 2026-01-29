@@ -33,9 +33,10 @@ public:
       /*
       This method will be called on the end of the benders method 
       @inputs : 
-      
+        - rank : the id of the process from which we call the callback
+       
     */
-    virtual void OnBendersEnd() = 0;
+    virtual void OnBendersEnd(int rank) = 0;
 
     /*
       This method will be called at the start of the master iteration after solving the master

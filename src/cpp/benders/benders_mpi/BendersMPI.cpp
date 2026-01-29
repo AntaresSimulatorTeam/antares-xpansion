@@ -408,15 +408,15 @@ void BendersMpi::Run()
         ResetSimplexIterationsBounds();
 
 
+
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
         step_1_solve_master();
 
-        broadcast(_world,_data.x_out,rank_0) ; 
 
         if (benders_plugin_ )
         {
-            benders_plugin_->OnBendersMasterIterationStart(_data.x_out,_data.it);
+            benders_plugin_->OnBendersMasterIterationStart(_data.x_cut,_data.it);
             
         }
 
@@ -498,7 +498,8 @@ void BendersMpi::launch()
 
     if (benders_plugin_)
     {
-        benders_plugin_->OnBendersEnd();
+        int rank_proc = Rank() ; 
+        benders_plugin_->OnBendersEnd(rank_proc);
     }
 
     post_run_actions();

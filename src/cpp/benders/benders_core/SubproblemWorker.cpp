@@ -24,7 +24,6 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     Worker(variable_map, std::move(logger), cut_coefficient_tolerance)
 {
     init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
-
     int mps_ncols(_solver->get_ncols());
     DblVector obj_func_coeffs(mps_ncols);
     IntVector sequence(mps_ncols);

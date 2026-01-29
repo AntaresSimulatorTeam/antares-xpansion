@@ -18,6 +18,7 @@ loaded into Benders_Jl_MICRO_ITERS class.
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/logger/MicroIterationsLog.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
 
 
@@ -41,7 +42,7 @@ struct SubProblemIds
         - is_invested : 0 if not invest, 1 if invested
 
 */
-struct CandidateLineMasterIterationResult
+struct CandidateLineInvestmentStatus
 {
     const char* candidate_line_id;
     int is_invested;
@@ -50,12 +51,12 @@ struct CandidateLineMasterIterationResult
 /*
     This structure is an array of the list above
     @members : 
-        - candidates_res : a pointer to an array of CandidateLineMasterIterationResult 
+        - candidates_res : a pointer to an array of CandidateLineInvestmentStatus 
         - size : number of candidate lines 
 */
-struct MasterBendersInput
+struct CandidateLineInvestmentStatusList
 {
-    CandidateLineMasterIterationResult* candidates_res;
+    CandidateLineInvestmentStatus* candidates_res;
     int size;
 };
 
@@ -90,7 +91,7 @@ struct FlowNList
         - constraints : a pointer to an array of c-style strings of keys of constraints to add to the subproblem 
         - size : number of constraints to add 
 */
-struct ConstraintsToAdd
+struct ViolatedFlowConstraints
 {
     const char** constraints;
     int size;
@@ -136,7 +137,7 @@ using jl_load_variables_FUNC = void (*)(SubProblemIds);
     It takes as an input an object of type MasterBendersInput that contains the result 
     of solving the master problem 
 */
-using jl_compute_factors_for_microiterations_FUNC = const char* (*)(MasterBendersInput, int);
+using jl_compute_factors_for_microiterations_FUNC = const char* (*)(CandidateLineInvestmentStatusList, int);
 
 /*
     This type will be used for the Julia function jl_return_constraints_for_micro_iteration.
@@ -145,7 +146,7 @@ using jl_compute_factors_for_microiterations_FUNC = const char* (*)(MasterBender
         - a c-style string : the id of the subproblem 
         - FlowNList object : the list of flows we need to compute violated constraints
 */
-using jl_return_constraints_for_micro_iteration_FUNC = ConstraintsToAdd (*)(const char*, FlowNList);
+using jl_return_constraints_for_micro_iteration_FUNC = ViolatedFlowConstraints (*)(const char*, FlowNList);
 
 
 /*
@@ -163,12 +164,13 @@ public:
             - coupling_map : coupling map (master and sub to variables)
     */
     Benders_Jl_MICRO_ITERS(const SimulationOptions& options, 
-                           const CouplingMap& coupling_map);
+                           const CouplingMap& coupling_map,
+                            mpi::communicator* world);
 
     /*
         Default destrucor
     */
-    virtual ~Benders_Jl_MICRO_ITERS();
+    virtual ~Benders_Jl_MICRO_ITERS()=default;
 
     /*
         Implementation of benders start call back
@@ -176,14 +178,15 @@ public:
     virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                 const Logger& logger,
                                 const BendersBaseOptions& options,
-                                const SolverLogManager& solver_log_manager);
+                                const SolverLogManager& solver_log_manager
+                                );
     
     
     /*
         Implementation of benders end call back
     */                           
-    virtual void OnBendersEnd();
-
+    virtual void OnBendersEnd(int rank);
+ 
     /*
         Implementation of master iteration start call back  
     */
@@ -220,7 +223,7 @@ private:
             - constraints_to_add : list of the constraints key returned by the Julia code
             - sub_name : name of the subproblem
     */
-    std::vector<std::string> get_constraints_to_add(ConstraintsToAdd& constraints_to_add, std::string sub_name);
+    std::vector<std::string> get_constraints_to_add(ViolatedFlowConstraints& constraints_to_add, std::string sub_name);
     
 
     /*
@@ -244,6 +247,12 @@ private:
     bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
 
     // BuildSubProblemConstaintMap()
+    void read_micro_iteration_config_file() ; 
+    void read_constraints_dict() ; 
+    void read_investment_dictionnary() ; 
+    void read_variables_dictionnary() ; 
+
+    mpi::communicator* _world ; 
     void* handle_;
     const SimulationOptions& options_ ; 
     std::filesystem::path input_root_;

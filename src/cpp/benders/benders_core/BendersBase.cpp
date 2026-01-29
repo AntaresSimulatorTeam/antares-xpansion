@@ -606,19 +606,23 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::string& name,
                                   const std::shared_ptr<SubproblemWorker>& worker)
 {
+    std::cout<<"name "<<name<<std::endl; 
     Timer subproblem_timer;
+
     worker->fix_to(_data.x_cut);
     if (benders_plugin_)
     {
         benders_plugin_->OnBendersMicroIterationStart();
     }
-
     if (_options.MICRO_ITERATIONS)
     {
         bool added_rows = true;
         int num_micro_iter(0);
         while (added_rows)
         {
+            int num_master_iter = _data.it - 1 ; 
+            size_t start = name.find_last_of('/') + 1;
+            size_t end = name.find(".");
             auto t1 = std::chrono::high_resolution_clock::now() ; 
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
@@ -632,6 +636,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                 benders_plugin_->OnBendersMicroIterationEnd(name, added_rows,std::to_string(elapsed_microseconds));
             }
             num_micro_iter++;
+
         }
     }
     else

@@ -9,7 +9,7 @@
 
 
 /*
-    The structure contains the necesary vector to fetch for a row of an mps file
+    The structure contains the necessary vector to fetch for a row of an mps file
 */
 struct SolverRepresentedRows
 {
@@ -38,7 +38,7 @@ public:
             - solver_name : solver name 
             - solver_log_manager : solver log manager 
             - logger : benders logger 
-            - log_levl : logging level 
+            - log_level : logging level 
             - subproblem_worker : worker associated to the subproblem
     */
     ConstraintsReader(const std::filesystem::path constraint_file_path,
