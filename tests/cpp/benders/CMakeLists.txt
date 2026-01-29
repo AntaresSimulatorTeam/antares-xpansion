@@ -7,6 +7,9 @@ target_sources(benders_sequential_test
         WorkerMasterTest.cpp
         SubproblemWorkerTest.cpp
         MergeMasterTest.cpp
+        CutsManagementTest.cpp
+        CriterionComputationTest.cpp
+        BendersProblemFromFileTest.cpp
 )
 
 target_link_libraries(benders_sequential_test
