@@ -10,6 +10,7 @@ target_sources(benders_sequential_test
         CutsManagementTest.cpp
         CriterionComputationTest.cpp
         BendersProblemFromFileTest.cpp
+        CommonFunctionsTest.cpp
 )
 
 target_link_libraries(benders_sequential_test
