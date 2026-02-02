@@ -157,6 +157,25 @@ void ProblemGeneration::generate_antares_problems(const std::filesystem::path& s
 #endif
 }
 
+void ProblemGeneration::loadProblemsFromAntares(const std::filesystem::path& study_dir,
+                                               const std::filesystem::path& simulation_dir,
+                                               ProblemGenerationLog::ProblemGenerationLogger* logger)
+{
+    Antares::Solver::SingleProblemGetter spg(study_dir);
+    if (spg.areWeeksIndependent())
+    {
+        (*logger)(LogUtils::LOGLEVEL::INFO)
+            << "Weeks are independent, using optimized problem generation" << std::endl;
+        generate_antares_problems(study_dir, simulation_dir);
+    }
+    else
+    {
+        (*logger)(LogUtils::LOGLEVEL::INFO)
+            << "Weeks are dependent, performing full Antares simulation" << std::endl;
+        performAntaresSimulation(study_dir);
+    }
+}
+
 std::filesystem::path ProblemGeneration::updateProblems()
 {
     using namespace std::string_literals;
@@ -174,7 +193,7 @@ std::filesystem::path ProblemGeneration::updateProblems()
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        generate_antares_problems(directories_.study_dir, directories_.simulation_dir);
+        loadProblemsFromAntares(directories_.study_dir, directories_.simulation_dir, logger.get());
     }
 
     auto master_formulation = options_.MasterFormulation();
