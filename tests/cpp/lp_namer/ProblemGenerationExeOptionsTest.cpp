@@ -49,7 +49,7 @@ public:
     }
 
 private:
-    void performAntaresSimulation(const std::filesystem::path&,
+    void generate_antares_problems(const std::filesystem::path&,
                                   const std::filesystem::path&) override
     {
     }

@@ -3,10 +3,12 @@
 #include <antares-xpansion/lpnamer/problem_modifier/StructureGeneration.h>
 #include <execution>
 #include <iostream>
-#include <tbb/tbb.h>
+#include <tbb/tbb.h> //Do not remove
 #include <utility>
 
 #include <antares/api/singleProblemGetter.h>
+#include <antares/api/solver.h>
+#include "antares/file-tree-study-loader/FileTreeStudyLoader.h"
 
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -53,7 +55,76 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options):
     mode_ = configuration_manager_.Mode();
 }
 
-void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir,
+namespace
+{
+bool islower(std::string_view str)
+{
+    return std::ranges::all_of(str, [](char c) { return std::islower(c); });
+}
+
+std::string solverXpansionToSimulator(const SolverConfig& in)
+{
+    // in could be Cbc or CBC depending on whether it is defined or not in the
+    // settings file
+    // Use lowerCase in any case to be robust to these subtleties
+    assert(islower(in.Name()));
+    if (in.Name() == "xpress")
+    {
+        return "xpress";
+    }
+    if (in.Name() == "cbc" || in.Name() == "coin")
+    {
+        return "coin";
+    }
+    throw std::invalid_argument("Invalid solver");
+}
+}
+
+void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir)
+{
+    Antares::Solver::Optimization::OptimizationOptions optOptions;
+
+    auto solver_name = solverXpansionToSimulator(solver_config_);
+    optOptions.firstOptimOptions.solverName = solver_name;
+    optOptions.firstOptimOptions.solverUsesBasis = true;
+    optOptions.firstOptimOptions.solverExportsBasis = true;
+    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
+
+    optOptions.secondOptimOptions.solverName = solver_name;
+    optOptions.secondOptimOptions.solverUsesBasis = true;
+    optOptions.secondOptimOptions.solverExportsBasis = false;
+
+    if (solver_name == SolverConfig("xpress"))
+    {
+        optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
+        optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
+    }
+    auto results = Antares::API::PerformSimulation(options_.StudyPath(), study_dir, optOptions);
+
+    /**
+     * Antares simulator allocate a lot of memory
+     * Even if there is no memory leak not all freed memory become available.
+     * Allocator or OS may cache some memory to reuse it
+     * With malloc_trim(0) we free all memory that is not used anymore to be reclaimed by the
+     *program It is nescasssry to avoid allocating Xpansion memory on top of the unavailable memory
+     *from simulator
+     **/
+#ifndef _WIN32
+    malloc_trim(0);
+#endif
+
+    // Handle errors
+    if (results.error)
+    {
+        throw LogUtils::XpansionError<std::runtime_error>("Antares simulation failed:\n\t"
+                                                            + results.error->reason,
+                                                          LOGLOCATION);
+    }
+
+    lps_ = std::move(results.antares_problems);
+}
+
+void ProblemGeneration::generate_antares_problems(const std::filesystem::path& study_dir,
                                                  const std::filesystem::path& output_dir)
 {
     Antares::Solver::SingleProblemGetter spg(study_dir);
@@ -103,7 +174,7 @@ std::filesystem::path ProblemGeneration::updateProblems()
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        performAntaresSimulation(directories_.study_dir, directories_.simulation_dir);
+        generate_antares_problems(directories_.study_dir, directories_.simulation_dir);
     }
 
     auto master_formulation = options_.MasterFormulation();
