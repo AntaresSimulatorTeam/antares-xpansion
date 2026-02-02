@@ -57,7 +57,8 @@ void updateMapColumn(const std::vector<ActiveLink>& links,
 {
     auto it = std::find_if(links.begin(),
                            links.end(),
-                           [&link_origin, &link_destination](const ActiveLink& link) {
+                           [&link_origin, &link_destination](const ActiveLink& link)
+                           {
                                return link.linkor() == link_origin
                                       && link.linkex() == link_destination;
                            });

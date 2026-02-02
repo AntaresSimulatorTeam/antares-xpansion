@@ -17,7 +17,9 @@ private:
 
 protected:
     explicit OptionsParser(const std::string& exe_name):
-        exe_name_(exe_name) {};
+        exe_name_(exe_name)
+    {
+    }
 
 public:
     OptionsParser() = default;
@@ -36,7 +38,9 @@ public:
         explicit NullArgumentsValues(const std::string& exe_name, const std::string& log_location):
             LogUtils::XpansionError<std::runtime_error>("Error while parsing " + exe_name
                                                           + " options: null Arguments values!",
-                                                        log_location) {};
+                                                        log_location)
+        {
+        }
     };
 
     class InvalidNumberOfArgumentsPassedToParser: public LogUtils::XpansionError<std::runtime_error>
@@ -48,7 +52,9 @@ public:
             LogUtils::XpansionError<std::runtime_error>("Error while parsing " + exe_name
                                                           + ": invalid number arguments:  "
                                                           + std::to_string(argc),
-                                                        log_location) {};
+                                                        log_location)
+        {
+        }
     };
 };
 #endif // ANTARES_XPANSION_SRC_CPP_HELPERS_OPTIONSPARSER_H
