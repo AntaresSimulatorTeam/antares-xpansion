@@ -35,6 +35,7 @@ add_executable(lp_namer_tests
         ProblemConstructionTest.cpp
         ProblemGenerationExeOptionsTest.cpp
         ProblemGenerationLoggerTest.cpp
+        ProblemGenerationTest.cpp
         ProblemModifierTest.cpp
         ProblemVariablesFromProblemAdapterTest.cpp
         SettingsReaderTest.cpp

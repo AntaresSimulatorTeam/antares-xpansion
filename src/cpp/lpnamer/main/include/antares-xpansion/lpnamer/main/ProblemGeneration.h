@@ -25,7 +25,7 @@ class ProblemGeneration
 {
 public:
     explicit ProblemGeneration(ProblemGenerationOptions& options);
-    void performAntaresSimulation(const std::filesystem::path& study_dir);
+    virtual void performAntaresSimulation(const std::filesystem::path& study_dir);
     virtual ~ProblemGeneration() = default;
     std::filesystem::path updateProblems();
     const ProblemGenerationOptions& options_;
@@ -56,12 +56,12 @@ private:
     std::optional<SimulationInputMode> mode_;
     virtual void generate_antares_problems(const std::filesystem::path& study_dir,
                                           const std::filesystem::path& output_dir);
-    void loadProblemsFromAntares(const std::filesystem::path& study_dir,
-                                const std::filesystem::path& simulation_dir,
-                                ProblemGenerationLog::ProblemGenerationLogger* logger);
     SolverConfig solver_config_{"Coin"};
 
 protected:
+    void loadProblemsFromAntares(const std::filesystem::path& study_dir,
+                                const std::filesystem::path& simulation_dir,
+                                ProblemGenerationLog::ProblemGenerationLogger* logger);
     ConfigurationManager configuration_manager_;
     ConfigurationManager::ConfigDirectories directories_;
 };
