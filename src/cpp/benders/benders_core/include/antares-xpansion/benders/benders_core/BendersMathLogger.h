@@ -156,7 +156,7 @@ struct MathLoggerExternalLoopSpecific: public MathLogger
 {
     explicit MathLoggerExternalLoopSpecific(const std::filesystem::path& file_path,
                                             const std::vector<std::string>& headers,
-                                            T CriteriaCurrentIterationData::* ptr):
+                                            T CriteriaCurrentIterationData::*ptr):
         MathLogger(file_path),
         ptr_(ptr)
     {
@@ -175,7 +175,7 @@ struct MathLoggerExternalLoopSpecific: public MathLogger
 
 private:
     std::vector<std::string> headers_;
-    T CriteriaCurrentIterationData::* ptr_;
+    T CriteriaCurrentIterationData::*ptr_;
 };
 
 class MathLoggerImplementation: public MathLoggerBehaviour
@@ -222,7 +222,7 @@ public:
     template<class T>
     void add_logger(const std::filesystem::path& file_path,
                     const std::vector<std::string>& headers,
-                    T CriteriaCurrentIterationData::* t);
+                    T CriteriaCurrentIterationData::*t);
     void Print(const CurrentIterationData& data);
     virtual void PrintIterationSeparatorBegin() override;
     virtual void PrintIterationSeparatorEnd() override;
@@ -235,7 +235,7 @@ private:
 template<class T>
 void MathLoggerDriver::add_logger(const std::filesystem::path& file_path,
                                   const std::vector<std::string>& headers,
-                                  T CriteriaCurrentIterationData::* t)
+                                  T CriteriaCurrentIterationData::*t)
 {
     auto impl = std::make_shared<MathLoggerExternalLoopSpecific<T>>(file_path, headers, t);
     add_logger(std::make_shared<MathLoggerImplementation>(impl));

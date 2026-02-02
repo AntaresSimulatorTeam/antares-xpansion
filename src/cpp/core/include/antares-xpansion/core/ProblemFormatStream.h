@@ -47,6 +47,6 @@ struct fmt::formatter<ProblemsFormat>: formatter<string_view>
 {
     // parse is inherited from formatter<string_view>.
 
-    auto format(ProblemsFormat problems_format, format_context& ctx) const
-      -> format_context::iterator;
+    auto format(ProblemsFormat problems_format,
+                format_context& ctx) const -> format_context::iterator;
 };
