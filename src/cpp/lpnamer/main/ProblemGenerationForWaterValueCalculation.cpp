@@ -129,7 +129,8 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
     // logger->display_message("Reservoir area: '" + reservoirManagement.reservoir.area + "'");
     logger->display_message("areaName: " + areaName.value_or(""));
     // check added instead of passing the entire reservoirManagement, in a multistock context
-    if (areaName == std::nullopt)
+    if (areaName == std::nullopt
+        && computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
     {
         logger->display_message("The areaName for the current reservoir must be provided in the "
                                 "context of a multistock computation. First element is assumed: "
