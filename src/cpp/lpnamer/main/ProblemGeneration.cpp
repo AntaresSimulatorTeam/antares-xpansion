@@ -78,9 +78,9 @@ std::string solverXpansionToSimulator(const SolverConfig& in)
     }
     throw std::invalid_argument("Invalid solver");
 }
-}
+} // namespace
 
-void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir)
+void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& simulation_dir)
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
@@ -99,7 +99,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& st
         optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
         optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
     }
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(), study_dir, optOptions);
+    auto results = Antares::API::PerformSimulation(options_.StudyPath(), simulation_dir, optOptions);
 
     /**
      * Antares simulator allocate a lot of memory
@@ -125,7 +125,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& st
 }
 
 void ProblemGeneration::generate_antares_problems(const std::filesystem::path& study_dir,
-                                                 const std::filesystem::path& output_dir)
+                                                  const std::filesystem::path& output_dir)
 {
     Antares::Solver::SingleProblemGetter spg(study_dir);
     lps_.setConstantData(spg.getConstantData());
@@ -157,22 +157,23 @@ void ProblemGeneration::generate_antares_problems(const std::filesystem::path& s
 #endif
 }
 
-void ProblemGeneration::loadProblemsFromAntares(const std::filesystem::path& study_dir,
-                                               const std::filesystem::path& simulation_dir,
-                                               ProblemGenerationLog::ProblemGenerationLogger* logger)
+void ProblemGeneration::loadProblemsFromAntares(
+  const std::filesystem::path& study_dir,
+  const std::filesystem::path& simulation_dir,
+  ProblemGenerationLog::ProblemGenerationLogger* logger)
 {
     Antares::Solver::SingleProblemGetter spg(study_dir);
     if (spg.areWeeksIndependent())
     {
         (*logger)(LogUtils::LOGLEVEL::INFO)
-            << "Weeks are independent, using optimized problem generation" << std::endl;
+          << "Weeks are independent, using optimized problem generation" << std::endl;
         generate_antares_problems(study_dir, simulation_dir);
     }
     else
     {
         (*logger)(LogUtils::LOGLEVEL::INFO)
-            << "Weeks are dependent, performing full Antares simulation" << std::endl;
-        performAntaresSimulation(study_dir);
+          << "Weeks are dependent, performing full Antares simulation" << std::endl;
+        performAntaresSimulation(simulation_dir);
     }
 }
 

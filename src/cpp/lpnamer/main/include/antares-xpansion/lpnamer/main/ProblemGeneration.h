@@ -55,13 +55,13 @@ private:
     Antares::Solver::LpsFromAntares lps_;
     std::optional<SimulationInputMode> mode_;
     virtual void generate_antares_problems(const std::filesystem::path& study_dir,
-                                          const std::filesystem::path& output_dir);
+                                           const std::filesystem::path& output_dir);
     SolverConfig solver_config_{"Coin"};
 
 protected:
     void loadProblemsFromAntares(const std::filesystem::path& study_dir,
-                                const std::filesystem::path& simulation_dir,
-                                ProblemGenerationLog::ProblemGenerationLogger* logger);
+                                 const std::filesystem::path& simulation_dir,
+                                 ProblemGenerationLog::ProblemGenerationLogger* logger);
     ConfigurationManager configuration_manager_;
     ConfigurationManager::ConfigDirectories directories_;
 };
