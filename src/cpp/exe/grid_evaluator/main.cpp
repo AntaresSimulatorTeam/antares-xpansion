@@ -157,8 +157,7 @@ int main(int argc, char** argv)
           logger,
           solverName,
           ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
-            *gridCollection,
-            ignoreOptimalTrajectory), // not used
+            ignoreOptimalTrajectory), // not used in grid_evaluator
           startWeek,
           endWeek,
           writePbFiles,

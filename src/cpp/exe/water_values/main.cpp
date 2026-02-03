@@ -238,7 +238,6 @@ int main(int argc, char** argv)
           logger,
           solverName,
           ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
-            *gridCollection,
             ignoreOptimalTrajectory),
           startWeek,
           endWeek,
@@ -254,16 +253,8 @@ int main(int argc, char** argv)
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
 
-        // modify all reservoirs for the grid collection here with optimal trajectories
-        if (pbg.getComputationMode()
-              == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
-                SEQUENTIAL_UPDATE_TRAJECTORY
-            || pbg.getComputationMode()
-                 == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
-                   SEQUENTIAL_IGNORE_TRAJECTORY)
-        {
-            pbg.initializeOptimalTrajectories(gridCollection);
-        }
+        // initialize all reservoirs for the grid collection here with optimal trajectories
+        pbg.initializeOptimalTrajectories(gridCollection);
 
         // here: loop on all grids
         for (auto& grid: gridCollection->gridDefinitions | std::views::values)
@@ -274,8 +265,8 @@ int main(int argc, char** argv)
             grid.setReservoirs(gridCollection->reservoirs);
 
             // In the case of multistock, there should only be one reservoir per
-            // gridDefinition; in the case of multivariate, there would be more than one
-            // reservoir per gridDefinition
+            // gridDefinition; in the case of multivariate (which we cannot compute water values
+            // for, yet), there would be more than one reservoir per gridDefinition
             auto& gridElement = grid.gridElements[0];
 
             logger->display_message("### Grid element area: " + gridElement.area + " ###");

@@ -29,15 +29,15 @@ class ProblemGenerationForWaterValueCalculation
 public:
     enum class WaterValueComputationMode
     {
-        MULTIVARIATE,
-        SEQUENTIAL_UPDATE_TRAJECTORY, // multistock
-        SEQUENTIAL_IGNORE_TRAJECTORY, // like multistock but without optimal trajectories
+        SEQUENTIAL_UPDATE_TRAJECTORY, // default multistock-ready approach
+        SEQUENTIAL_IGNORE_TRAJECTORY, // without optimal trajectories
     };
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
       Logger logger,
       const std::string& solverName = "xpress",
-      const WaterValueComputationMode& computationMode = WaterValueComputationMode::MULTIVARIATE,
+      const WaterValueComputationMode& computationMode = WaterValueComputationMode::
+        SEQUENTIAL_IGNORE_TRAJECTORY,
       unsigned int startWeek = 1,
       unsigned int endWeek = 52,
       bool savePbFiles = false,
@@ -45,10 +45,9 @@ public:
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition,
-      const std::string& areaName = "");
+      const std::optional<std::string>& areaName = std::nullopt);
     void initializeOptimalTrajectories(std::shared_ptr<GridCollection> gridCollection) const;
     static WaterValueComputationMode getComputationModeFromGrid(
-      const GridCollection& grid,
       bool ignoreOptimalTrajectory = false);
 
     WaterValueComputationMode getComputationMode() const
@@ -107,6 +106,6 @@ private:
     bool writePbFiles;            /// Flag to writePbFiles to memory
     ProblemsFormat problemFormat; /// Problem format to be saved
     WaterValueComputationMode computationMode = WaterValueComputationMode::
-      MULTIVARIATE; /// Computation mode for water values
-    Logger logger;  /// Logger used
+      SEQUENTIAL_IGNORE_TRAJECTORY; /// Computation mode for water values
+    Logger logger;                  /// Logger used
 };

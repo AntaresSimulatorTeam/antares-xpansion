@@ -37,25 +37,8 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 /// falling back on sequential (default is false)
 /// @return
 ProblemGenerationForWaterValueCalculation::WaterValueComputationMode
-ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(const GridCollection& grid,
-                                                                      bool ignoreOptimalTrajectory)
+ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(bool ignoreOptimalTrajectory)
 {
-    if (grid.gridDefinitions.size() == 1)
-    {
-        // one single gridID, no matter the number of elements
-        return WaterValueComputationMode::MULTIVARIATE;
-    }
-
-    for (auto& gridDefinition: grid.gridDefinitions | std::views::values)
-    {
-        if (gridDefinition.gridElements.size() > 1)
-        {
-            // error: several gridIDs with several gridElements
-            throw std::domain_error(
-              "ERROR: grid.csv has multiple grid IDs, and multiple elements in at least one of "
-              "them. This use case is not supported.");
-        }
-    }
     if (ignoreOptimalTrajectory)
     {
         return WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY;
@@ -132,8 +115,9 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 /// @param gridDefinition
 /// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& gridDefinition,
-                                                          const std::string& areaName)
+ProblemGenerationForWaterValueCalculation::updateProblems(
+  const GridDefinition& gridDefinition,
+  const std::optional<std::string>& areaName)
 {
     using namespace std::string_literals;
 
@@ -143,21 +127,19 @@ ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& 
 
     logger->display_message("Updating problems");
     // logger->display_message("Reservoir area: '" + reservoirManagement.reservoir.area + "'");
-    logger->display_message("areaName: " + areaName);
+    logger->display_message("areaName: " + areaName.value_or(""));
     // check added instead of passing the entire reservoirManagement, in a multistock context
-    if (areaName == ""
-          && (this->computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
-        || this->computationMode == WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY)
+    if (areaName == std::nullopt)
     {
-        throw std::invalid_argument(
-          "The areaName for the current reservoir must be provided in the "
-          "context of a multistock computation.");
+        logger->display_message("The areaName for the current reservoir must be provided in the "
+                                "context of a multistock computation. First element is assumed: "
+                                + gridDefinition.gridElements[0].area);
     }
-
-    auto modifiedProblems = cleanProblemsForBellmanCalculations(directories.simulation_dir,
-                                                                log_file_path,
-                                                                gridDefinition,
-                                                                areaName);
+    auto modifiedProblems = cleanProblemsForBellmanCalculations(
+      directories.simulation_dir,
+      log_file_path,
+      gridDefinition,
+      areaName.value_or(gridDefinition.gridElements[0].area));
 
     return modifiedProblems;
 }
@@ -279,13 +261,9 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
     {
         logger->display_message("gridElement: " + gridElement.area);
 
-        if ((gridElement.problemName == "all" || gridElement.problemName == pbName)
-            && ((this->computationMode
-                 == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
-                   MULTIVARIATE) // for multivariate: all gridElements must be cleaned
-                || areaName
-                     == gridElement.area)) // for multistock: only the current area must be cleaned
+        if (gridElement.problemName == "all" || gridElement.problemName == pbName)
         {
+            // it was checked earlier that there is only one area in gridDefinition
             cleanReservoirConstraints(problem,
                                       gridDefinition.reservoirs.at(gridElement.area),
                                       pbID,
