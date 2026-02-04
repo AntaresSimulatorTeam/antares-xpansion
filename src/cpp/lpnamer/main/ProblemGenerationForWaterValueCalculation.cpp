@@ -126,15 +126,27 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
     CreateDirectories(directories.simulation_dir);
 
     logger->display_message("Updating problems");
-    // logger->display_message("Reservoir area: '" + reservoirManagement.reservoir.area + "'");
-    logger->display_message("areaName: " + areaName.value_or(""));
+    logger->display_message(
+      "for area: " + areaName.value_or(gridDefinition.gridElements[0].area + " (assumed)"));
     // check added instead of passing the entire reservoirManagement, in a multistock context
-    if (areaName == std::nullopt
-        && computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
+    if (computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
     {
-        logger->display_message("The areaName for the current reservoir must be provided in the "
-                                "context of a multistock computation. First element is assumed: "
-                                + gridDefinition.gridElements[0].area);
+        if (areaName == std::nullopt)
+        {
+            logger->display_message(
+              "The areaName for the current reservoir must be provided in the "
+              "context of a multistock computation. First element is assumed: "
+              + gridDefinition.gridElements[0].area);
+        }
+        logger->display_message("The optimal trajectories for the following reservoirs will be "
+                                "taken into account in problems:");
+        for (auto& reservoir: gridDefinition.reservoirs)
+        {
+            if (reservoir.second.area != areaName)
+            {
+                logger->display_message(reservoir.second.area);
+            }
+        }
     }
     auto modifiedProblems = cleanProblemsForBellmanCalculations(
       directories.simulation_dir,
@@ -260,8 +272,6 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
 
     for (const auto& gridElement: gridDefinition.gridElements)
     {
-        logger->display_message("gridElement: " + gridElement.area);
-
         if (gridElement.problemName == "all" || gridElement.problemName == pbName)
         {
             // it was checked earlier that there is only one area in gridDefinition
@@ -352,10 +362,6 @@ void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajec
   const Reservoir& reservoir,
   Antares::Solver::WeeklyProblemId pbID)
 {
-    // Updating constraint with optimal trajectory
-    logger->display_message("Updating constraint with optimal trajectory: week "
-                            + std::to_string(pbID.week));
-
     // logger->display_message("Optimal trajectory size: "
     //                         + std::to_string(reservoir.optimal_trajectory.size()));
     double optimalTrajectoryValue = -reservoir.optimal_trajectory[pbID.week][pbID.year - 1]

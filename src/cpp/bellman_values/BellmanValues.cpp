@@ -329,7 +329,8 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
     // for (unsigned int week = endWeek + 1; week-- > startWeek;)
     for (unsigned int week = startWeek; week <= endWeek; ++week)
     {
-        std::cout << "Computing optimal trajectory, week " << week << std::endl;
+        logger->display_message(
+          (std::stringstream() << "Computing optimal trajectory, week " << week).str());
         for (unsigned int scenario: scenarios)
         {
             // future costs now coming from previously computed Bellman values
