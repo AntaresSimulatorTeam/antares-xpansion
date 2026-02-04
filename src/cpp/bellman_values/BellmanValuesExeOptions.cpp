@@ -35,6 +35,10 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       "OPTIMIZED")("ignore-optimal-trajectory",
                    po::value<bool>(&ignoreOptimalTrajectory_)->default_value(true),
                    "Specify whether the optimal trajectory must be ignored in the case of "
-                   "multistock water values (optional, default is true)");
+                   "multistock water values (optional, default is true)")(
+      "verbosity",
+      po::value<std::string>(&verbosity_)->default_value("INFO"),
+      "Specify the desired verbosity for logging in the console or log file (optional, default is "
+      "INFO). Possible values are: NONE, TRACE, DEBUG, INFO, WARNING, ERR, FATAL");
     ;
 }

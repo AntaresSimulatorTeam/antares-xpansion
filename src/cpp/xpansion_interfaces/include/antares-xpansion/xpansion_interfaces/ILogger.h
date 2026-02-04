@@ -116,8 +116,13 @@ struct EmptyLogger: public ILoggerXpansion
     {
     }
 
-    void PrintIterationSeparatorBegin() override {};
-    void PrintIterationSeparatorEnd() override {};
+    void PrintIterationSeparatorBegin() override
+    {
+    }
+
+    void PrintIterationSeparatorEnd() override
+    {
+    }
 
     virtual ~EmptyLogger()
     {

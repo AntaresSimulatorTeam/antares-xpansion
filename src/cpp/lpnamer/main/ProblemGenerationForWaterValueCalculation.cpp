@@ -136,7 +136,9 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
             logger->display_message(
               "The areaName for the current reservoir must be provided in the "
               "context of a multistock computation. First element is assumed: "
-              + gridDefinition.gridElements[0].area);
+                + gridDefinition.gridElements[0].area,
+              LogUtils::LOGLEVEL::WARNING,
+              logger->CONTEXT);
         }
         logger->display_message("The optimal trajectories for the following reservoirs will be "
                                 "taken into account in problems:");
@@ -188,9 +190,13 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
               std::shared_ptr<Problem> problem = std::make_shared<Problem>(*(pb.second->clone()));
               std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                    + std::to_string(pbId.week) + "--optim-nb-1";
-              //   logger->display_message("Modifying problem: " + pbName);
+              logger->display_message("Modifying problem: " + pbName,
+                                      LogUtils::LOGLEVEL::DEBUG,
+                                      logger->CONTEXT);
               cleanProblemForBellmanCalculations(problem, gridDefinition, areaName, pbName, pbId);
-              //   logger->display_message("Problem: " + pbName + " modified");
+              logger->display_message("Problem: " + pbName + " modified",
+                                      LogUtils::LOGLEVEL::DEBUG,
+                                      logger->CONTEXT);
               modifiedProblems[pbId] = problem;
 
               if (writePbFiles)
@@ -362,13 +368,16 @@ void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajec
   const Reservoir& reservoir,
   Antares::Solver::WeeklyProblemId pbID)
 {
-    // logger->display_message("Optimal trajectory size: "
-    //                         + std::to_string(reservoir.optimal_trajectory.size()));
+    logger->display_message("Optimal trajectory size: "
+                              + std::to_string(reservoir.optimal_trajectory.size()),
+                            LogUtils::LOGLEVEL::DEBUG,
+                            logger->CONTEXT);
     double optimalTrajectoryValue = -reservoir.optimal_trajectory[pbID.week][pbID.year - 1]
                                     + reservoir.optimal_trajectory[pbID.week - 1][pbID.year - 1]
                                     + reservoir.inflow[pbID.week - 1][pbID.year - 1];
-    // logger->display_message("Optimal trajectory value: " +
-    // std::to_string(optimalTrajectoryValue));
+    logger->display_message("Optimal trajectory value: " + std::to_string(optimalTrajectoryValue),
+                            LogUtils::LOGLEVEL::DEBUG,
+                            logger->CONTEXT);
     problem->fix_rhs_to("HydroPower::area<" + reservoir.area + ">::week<"
                           + std::to_string(pbID.week - 1) + ">",
                         optimalTrajectoryValue);
@@ -382,8 +391,10 @@ void ProblemGenerationForWaterValueCalculation::initializeOptimalTrajectories(
         logger->display_message("Initializing optimal trajectory for reservoir " + reservoir.area);
         reservoir.initializeOptimalTrajectory(startWeek, endWeek);
         logger->display_message("Reservoir " + reservoir.area + " has been initialized with "
-                                + std::to_string(reservoir.optimal_trajectory.size()) + " by "
-                                + std::to_string(reservoir.optimal_trajectory[0].size())
-                                + " elements");
+                                  + std::to_string(reservoir.optimal_trajectory.size()) + " by "
+                                  + std::to_string(reservoir.optimal_trajectory[0].size())
+                                  + " elements",
+                                LogUtils::LOGLEVEL::DEBUG,
+                                logger->CONTEXT);
     }
 }

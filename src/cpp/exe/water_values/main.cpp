@@ -7,6 +7,7 @@
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
 #include "antares-xpansion/bellman_values/PenaltiesConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
+#include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
@@ -201,6 +202,7 @@ int main(int argc, char** argv)
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
         const bool ignoreOptimalTrajectory = optionsParser.IgnoreOptimalTrajectory();
+        const std::string verbosity = optionsParser.Verbosity();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                / "user/water_values/grid.csv");
@@ -228,11 +230,16 @@ int main(int argc, char** argv)
         std::filesystem::path logPath = directories.simulation_dir / "water_values_log.txt";
         std::ofstream{logPath}; // creates log file, since the FileLoggerFactory doesn't
         auto loggerFactory = FileAndStdoutLoggerFactory(logPath, false);
-        Logger logger = loggerFactory.get_logger();
+        Logger masterLogger = loggerFactory.get_logger();
+        std::shared_ptr<FilteredLogger> logger = std::make_shared<FilteredLogger>(
+          masterLogger,
+          LogUtils::StrToLogLevel(verbosity));
 
         auto startProblemGeneration = std::chrono::system_clock::now();
-        logger->display_message(
-          "Generating problems (starting time: " + formatTime(startProblemGeneration) + ")");
+        logger->display_message("Generating problems (starting time: "
+                                  + formatTime(startProblemGeneration) + ")",
+                                LogUtils::LOGLEVEL::INFO,
+                                logger->CONTEXT);
         ProblemGenerationForWaterValueCalculation pbg(
           directories,
           logger,
@@ -296,7 +303,9 @@ int main(int argc, char** argv)
             logger->display_message("Elapsed time for problem update: "
                                     + formatDuration(elapsed_update_seconds));
 
-            logger->display_message("Instantiating GridEvaluator");
+            logger->display_message("Instantiating GridEvaluator",
+                                    LogUtils::LOGLEVEL::DEBUG,
+                                    logger->CONTEXT);
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
@@ -304,7 +313,9 @@ int main(int argc, char** argv)
                                            directories.simulation_dir,
                                            nbThreads);
 
-            logger->display_message("Instantiating BellmanValues");
+            logger->display_message("Instantiating BellmanValues",
+                                    LogUtils::LOGLEVEL::DEBUG,
+                                    logger->CONTEXT);
             auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement, logger);
 
             logger->display_message("Computing Bellman values...");

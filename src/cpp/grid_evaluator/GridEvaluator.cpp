@@ -267,28 +267,21 @@ void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId sub
     for (const auto& subPbCombo: subPbCombos)
     {
         i++;
-        // logger->display_message(
-        //   (std::stringstream() << "Processing gridPoint " << i << "/" << size).str(),
-        //   LogUtils::LOGLEVEL::DEBUG,
-        //   GRID_EVALUATOR_LOGGER_CONTEXT);
+        logger->display_message(
+          (std::stringstream() << "Processing gridPoint " << i << "/" << size).str(),
+          LogUtils::LOGLEVEL::DEBUG,
+          GRID_EVALUATOR_LOGGER_CONTEXT);
         // Each areaCombo is a std::map<std::string, double> with full variable names
         Timer timer;
         SetConstraintsRHSValues(subPbCombo, subProblem);
         totalPbModifTimer += timer.elapsed();
-        // for (const auto& [constraintName, value]: subPbCombo)
-        // {
-        //     logger->display_message((std::stringstream() << constraintName << " " <<
-        //     value).str(),
-        //                             LogUtils::LOGLEVEL::DEBUG,
-        //                             GRID_EVALUATOR_LOGGER_CONTEXT);
-        // }
         GridPointResult res = SolveSubproblem(subProblem, subPbCombo);
 
         variationDeNiveauxDeStockResults.insert({subPbCombo, subProblemId.week, subProblemId.year},
                                                 res);
-        // logger->display_message((std::stringstream() << "Cost: " << res.cost).str(),
-        //                         LogUtils::LOGLEVEL::DEBUG,
-        //                         GRID_EVALUATOR_LOGGER_CONTEXT);
+        logger->display_message((std::stringstream() << "Cost: " << res.cost).str(),
+                                LogUtils::LOGLEVEL::DEBUG,
+                                GRID_EVALUATOR_LOGGER_CONTEXT);
     }
 }
 
@@ -304,12 +297,16 @@ GridPointResult GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem,
     if (status != 0)
     {
         logger->display_message("ERROR: status for this problem was not 0. MPS file saved to disk "
-                                "in output folder for analysis.");
+                                "in output folder for analysis.",
+                                LogUtils::LOGLEVEL::ERR,
+                                GRID_EVALUATOR_LOGGER_CONTEXT);
         std::filesystem::path problemFileName("illformed_problem_year_"
                                               + std::to_string(problem->mc_year) + "_week_"
                                               + std::to_string(problem->week) + ".mps");
         problem->write_prob_mps(studyDir / problemFileName);
-        logger->display_message("File saved at: " + studyDir.string());
+        logger->display_message("File saved at: " + studyDir.string(),
+                                LogUtils::LOGLEVEL::ERR,
+                                GRID_EVALUATOR_LOGGER_CONTEXT);
     }
 
     std::vector<double> dualValues(problem->get_ncols());
@@ -327,12 +324,11 @@ GridPointResult GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem,
     }
 
     int nbSimplexIter = problem->get_splex_num_of_ite_last();
-    // logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
-    //                                              << subproblem_data.subproblem_timer << "
-    //                                              seconds")
-    //                           .str(),
-    //                         LogUtils::LOGLEVEL::DEBUG,
-    //                         GRID_EVALUATOR_LOGGER_CONTEXT);
+    logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
+                                                 << subproblem_data.subproblem_timer << " seconds")
+                              .str(),
+                            LogUtils::LOGLEVEL::DEBUG,
+                            GRID_EVALUATOR_LOGGER_CONTEXT);
     totalSimplexIter += nbSimplexIter;
     totalSubPbTimer += subproblem_data.subproblem_timer;
 

@@ -3,6 +3,7 @@
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
+#include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/benders/logger/Master.h"
 #include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
@@ -66,7 +67,7 @@ protected:
         std_out_logger = std::make_shared<xpansion::logger::User>(std::cerr);
         auto master_logger = std::make_shared<xpansion::logger::Master>();
         master_logger->addLogger(std_out_logger);
-        logger = master_logger;
+        logger = std::make_shared<FilteredLogger>(master_logger, LogUtils::LOGLEVEL::INFO);
         original_dir = std::filesystem::current_path();
     }
 

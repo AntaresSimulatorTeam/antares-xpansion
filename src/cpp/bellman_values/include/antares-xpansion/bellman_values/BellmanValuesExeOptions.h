@@ -17,6 +17,7 @@ private:
     bool writePbFiles_;
     std::string problemFormat_;
     bool ignoreOptimalTrajectory_;
+    std::string verbosity_;
 
 public:
     BellmanValuesExeOptions();
@@ -71,5 +72,10 @@ public:
     bool IgnoreOptimalTrajectory() const
     {
         return ignoreOptimalTrajectory_;
+    }
+
+    std::string Verbosity() const
+    {
+        return verbosity_;
     }
 };

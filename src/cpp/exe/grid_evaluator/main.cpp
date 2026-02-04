@@ -6,6 +6,7 @@
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
 #include "antares-xpansion/bellman_values/PenaltiesConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
+#include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
@@ -115,6 +116,7 @@ int main(int argc, char** argv)
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
         const bool ignoreOptimalTrajectory = optionsParser.IgnoreOptimalTrajectory();
+        const std::string verbosity = optionsParser.Verbosity();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                / "user/water_values/grid.csv");
@@ -147,7 +149,10 @@ int main(int argc, char** argv)
         std::filesystem::path logPath = directories.simulation_dir / "water_values_log.txt";
         std::ofstream{logPath}; // creates log file, since the FileLoggerFactory doesn't
         auto loggerFactory = FileAndStdoutLoggerFactory(logPath, false);
-        Logger logger = loggerFactory.get_logger();
+        Logger masterLogger = loggerFactory.get_logger();
+        std::shared_ptr<FilteredLogger> logger = std::make_shared<FilteredLogger>(
+          masterLogger,
+          LogUtils::StrToLogLevel(verbosity));
 
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message(
@@ -195,6 +200,7 @@ int main(int argc, char** argv)
                          .ComputeCostsAndDuals();
             std::string fileName = "gridPointsValues_" + std::to_string(grid.gridID) + ".csv";
             saveCostsAndDuals(directories.simulation_dir / fileName, grid, res, logger);
+            logger->display_message("Saved costs and duals to file");
         }
 
         return 0;
