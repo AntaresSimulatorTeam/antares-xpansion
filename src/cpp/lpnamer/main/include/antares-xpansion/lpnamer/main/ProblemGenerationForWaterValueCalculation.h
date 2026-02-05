@@ -47,8 +47,7 @@ public:
       const GridDefinition& gridDefinition,
       const std::optional<std::string>& areaName = std::nullopt);
     void initializeOptimalTrajectories(std::shared_ptr<GridCollection> gridCollection) const;
-    static WaterValueComputationMode getComputationModeFromGrid(
-      bool ignoreOptimalTrajectory = false);
+    static WaterValueComputationMode getComputationModeFromGrid(bool useOptimalTrajectory = false);
 
     WaterValueComputationMode getComputationMode() const
     {

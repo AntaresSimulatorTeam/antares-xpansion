@@ -16,7 +16,7 @@ private:
     bool antaresFormat_;
     bool writePbFiles_;
     std::string problemFormat_;
-    bool ignoreOptimalTrajectory_;
+    bool useOptimalTrajectory_;
     std::string verbosity_;
 
 public:
@@ -69,9 +69,9 @@ public:
         return problemFormat_;
     }
 
-    bool IgnoreOptimalTrajectory() const
+    bool UseOptimalTrajectory() const
     {
-        return ignoreOptimalTrajectory_;
+        return useOptimalTrajectory_;
     }
 
     std::string Verbosity() const

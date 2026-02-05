@@ -33,17 +33,17 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 /// @brief Static function determining the computation mode for water values. Can be multivariate,
 /// multistock, sequential
 /// @param grid the GridCollection based on which the mode must be determined
-/// @param ignoreOptimalTrajectory a boolean to ignore optimal trajectories in a multistock context,
-/// falling back on sequential (default is false)
+/// @param useOptimalTrajectory a boolean that specifies whether to use optimal trajectories in a
+/// multistock context (default is false)
 /// @return
 ProblemGenerationForWaterValueCalculation::WaterValueComputationMode
-ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(bool ignoreOptimalTrajectory)
+ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(bool useOptimalTrajectory)
 {
-    if (ignoreOptimalTrajectory)
+    if (useOptimalTrajectory)
     {
-        return WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY;
+        return WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY;
     }
-    return WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY;
+    return WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY;
 }
 
 /// @brief Launch the simulation and save the problems satisfying startWeek <= week <= endweek

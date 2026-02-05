@@ -201,7 +201,7 @@ int main(int argc, char** argv)
         bool antaresFormat = optionsParser.AntaresFormat();
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
-        const bool ignoreOptimalTrajectory = optionsParser.IgnoreOptimalTrajectory();
+        const bool useOptimalTrajectory = optionsParser.UseOptimalTrajectory();
         const std::string verbosity = optionsParser.Verbosity();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
@@ -245,7 +245,7 @@ int main(int argc, char** argv)
           logger,
           solverName,
           ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
-            ignoreOptimalTrajectory),
+            useOptimalTrajectory),
           startWeek,
           endWeek,
           writePbFiles,
