@@ -12,36 +12,75 @@ void BendersByBatch::InitializeProblems()
     MatchProblemToId();
 
     BuildMasterProblem();
-    const auto& coupling_map_size = coupling_map_.size();
-    std::vector<std::string> problem_names;
-    for (const auto& [problem_name, _]: coupling_map_)
+    if (_options.CACHE_PROBLEMS)
     {
-        problem_names.emplace_back(problem_name);
-    }
-    auto batch_size = Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
-    batch_collection_.SetLogger(_logger);
-    batch_collection_.SetBatchSize(batch_size);
-    batch_collection_.SetSubProblemNames(problem_names);
-    batch_collection_.BuildBatches();
-    BroadCast(batch_collection_, rank_0);
-    // Dispatch subproblems to process
-    auto problem_count = 0;
-    for (const auto& batch: batch_collection_.BatchCollections())
-    {
-        for (const auto& problem_name: batch.sub_problem_names)
+        const auto& coupling_map_size = coupling_map_.size();
+        std::vector<std::string> problem_names;
+        // Only rank 0 builds the batch collection, then it is broadcasted to all procs
+        if (Rank() == rank_0)
         {
-            // In case there are more subproblems than process
-            if (auto process_to_feed = problem_count % WorldSize(); process_to_feed == Rank())
-            { // Assign  [problemNumber % WorldSize] to processID
-
-                const auto subProblemFilePath = GetSubproblemPath(problem_name);
-                AddSubproblem({problem_name, coupling_map_[problem_name]});
-                AddSubproblemName(problem_name);
+            for (const auto& [problem_name, _]: coupling_map_)
+            {
+                problem_names.emplace_back(problem_name);
             }
-            ++problem_count;
+            auto batch_size = Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
+            batch_collection_.SetLogger(_logger);
+            batch_collection_.SetBatchSize(batch_size);
+            batch_collection_.SetSubProblemNames(problem_names);
+            batch_collection_.BuildBatches();
+        }
+        // Make sure every process has the batch layout but only load (cache) the
+        // subproblems assigned to its rank to save memory.
+        BroadCast(batch_collection_, rank_0);
+        // Dispatch subproblems to process: only add those assigned to this rank
+        auto problem_count = 0;
+        for (auto& batch: batch_collection_.BatchCollections())
+        {
+            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
+            {
+                auto process_to_feed = problem_count % WorldSize();
+                if (process_to_feed != Rank())
+                {
+                    it = batch.sub_problem_names.erase(it);
+                } else
+                {
+                    ++it;
+                }
+                ++problem_count;
+            }
+        }
+    } else
+    {
+        const auto& coupling_map_size = coupling_map_.size();
+        std::vector<std::string> problem_names;
+        for (const auto& [problem_name, _]: coupling_map_)
+        {
+            problem_names.emplace_back(problem_name);
+        }
+        auto batch_size = Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
+        batch_collection_.SetLogger(_logger);
+        batch_collection_.SetBatchSize(batch_size);
+        batch_collection_.SetSubProblemNames(problem_names);
+        batch_collection_.BuildBatches();
+        BroadCast(batch_collection_, rank_0);
+        // Dispatch subproblems to process
+        auto problem_count = 0;
+        for (const auto& batch: batch_collection_.BatchCollections())
+        {
+            for (const auto& problem_name: batch.sub_problem_names)
+            {
+                // In case there are more subproblems than process
+                if (auto process_to_feed = problem_count % WorldSize(); process_to_feed == Rank())
+                { // Assign  [problemNumber % WorldSize] to processID
+
+                    const auto subProblemFilePath = GetSubproblemPath(problem_name);
+                    AddSubproblem({problem_name, coupling_map_[problem_name]});
+                    AddSubproblemName(problem_name);
+                }
+                ++problem_count;
+            }
         }
     }
-
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
@@ -266,11 +305,7 @@ void BendersByBatch::SolveBatches()
     }
 }
 
-/*!
- * \brief Build subproblem cut
- * Method to build subproblem cuts
- * and add them to the Master problem
- */
+/*!\n * \brief Build subproblem cut\n * Method to build subproblem cuts\n * and add them to the Master problem\n */
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
                               double* batch_contribution_in_gap,
                               std::vector<double>& external_loop_criterion_current_batch)
@@ -328,14 +363,7 @@ double BendersByBatch::ComputeBatchContributionInGap(
     return batch_contribution_in_gap;
 }
 
-/*!
- *  \brief Solve and store optimal variables of all Subproblem Problems
- *
- *  Method to solve and store optimal variables of all Subproblem Problems
- * after fixing trial values
- *
- *  \param subproblem_data_map : map storing for each subproblem its cut
- */
+/*!\n *  \brief Solve and store optimal variables of all Subproblem Problems\n *\n *  Method to solve and store optimal variables of all Subproblem Problems\n * after fixing trial values\n *\n *  \param subproblem_data_map : map storing for each subproblem its cut\n */
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                                       const std::vector<std::string>& batch_sub_problems)
 {
@@ -406,12 +434,7 @@ double BendersByBatch::Gap() const
     }
 }
 
-/*!
- *  \brief Update stopping criterion
- *
- *  Method updating the stopping criterion and reinitializing some datas
- *
- */
+/*!\n *  \brief Update stopping criterion\n *\n *  Method updating the stopping criterion and reinitializing some datas\n *\n */
 void BendersByBatch::UpdateStoppingCriterion()
 {
     if (_data.benders_time > Options().TIME_LIMIT)
@@ -435,9 +458,7 @@ void BendersByBatch::UpdateStoppingCriterion()
     }
 }
 
-/*!
- *  \brief Check if initial relaxation should stop
- */
+/*!\n *  \brief Check if initial relaxation should stop\n */
 bool BendersByBatch::ShouldRelaxationStop() const
 {
     return (_data.stopping_criterion != StoppingCriterion::empty);
