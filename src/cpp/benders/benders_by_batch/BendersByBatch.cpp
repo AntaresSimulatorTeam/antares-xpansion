@@ -41,6 +41,7 @@ void BendersByBatch::InitializeProblems()
                 auto process_to_feed = problem_count % WorldSize();
                 if (process_to_feed != Rank())
                 {
+                    auto name = *it;
                     it = batch.sub_problem_names.erase(it);
                 }
                 else
@@ -49,6 +50,7 @@ void BendersByBatch::InitializeProblems()
                 }
                 ++problem_count;
             }
+            batch.sub_problem_names.shrink_to_fit();
         }
         else
         {
@@ -370,8 +372,8 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
         std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
         PlainData::SubProblemData subproblem_data{};
         SolveSubproblem(subproblem_data, name, worker);
-        calculate_subproblem_contribution(name, subproblem_data);
-
+        auto timer = calculate_subproblem_contribution(name, subproblem_data);
+        subproblem_data.subproblem_timer += timer.elapsed();
         auto [rstatus, cstatus] = GetProblemBasis(worker);
         subproblem_data_map[name] = subproblem_data;
         SetBasisForSubproblem(name, rstatus, cstatus);
