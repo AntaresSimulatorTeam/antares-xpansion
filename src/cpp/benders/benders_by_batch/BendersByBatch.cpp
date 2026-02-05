@@ -349,11 +349,66 @@ double BendersByBatch::ComputeBatchContributionInGap(
     return batch_contribution_in_gap;
 }
 
-/*!\n *  \brief Solve and store optimal variables of all Subproblem Problems\n *\n *  Method to
- * solve and store optimal variables of all Subproblem Problems\n * after fixing trial values\n *\n
- * *  \param subproblem_data_map : map storing for each subproblem its cut\n */
-void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
-                                      const std::vector<std::string>& batch_sub_problems)
+void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
+                                           const std::vector<std::string>& batch_sub_problems)
+{
+    // Construire un vecteur (name, VariableMap) pour les sous-problèmes de ce batch
+    std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
+    nameAndVariableMap.reserve(batch_sub_problems.size());
+    for (const auto& name: batch_sub_problems)
+    {
+        const auto it = coupling_map_.find(name);
+        if (it != coupling_map_.end())
+        {
+            nameAndVariableMap.emplace_back(it->first, it->second);
+        }
+    }
+
+    for (const auto& kvp: nameAndVariableMap)
+    {
+        const auto& name = kvp.first;
+        std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+        PlainData::SubProblemData subproblem_data{};
+        SolveSubproblem(subproblem_data, name, worker);
+        calculate_subproblem_contribution(name, subproblem_data);
+
+        auto [rstatus, cstatus] = GetProblemBasis(worker);
+        subproblem_data_map[name] = subproblem_data;
+        SetBasisForSubproblem(name, rstatus, cstatus);
+        std::call_once(
+          variable_indice_once_flag,
+          [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+          *worker);
+    };
+}
+
+
+Timer BendersByBatch::calculate_subproblem_contribution(
+  std::add_const<const std::string>::type name,
+  PlainData::SubProblemData& subproblem_data)
+{
+    Timer subproblem_timer;
+
+    auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
+    // Tbb includes min max define of windows std::numeric_limits<int>::max();
+    subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost - subpb_cost_under_approx;
+    double cut_value_at_x_cut = subproblem_data.subproblem_cost;
+    for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
+    {
+        auto subgradient_at_name = subproblem_data.var_name_and_subgradient[candidate_name];
+        cut_value_at_x_cut += subgradient_at_name
+                              * (_data.x_out[candidate_name] - x_cut_candidate_value);
+    }
+
+    if (subpb_cost_under_approx < cut_value_at_x_cut)
+    {
+        misprice_ = false;
+    }
+    return subproblem_timer;
+}
+
+void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
+                                          const std::vector<std::string>& batch_sub_problems)
 {
     const auto& sub_pblm_map = GetSubProblemMap();
 
@@ -362,35 +417,30 @@ void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
         if (std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(), name)
             != batch_sub_problems.cend())
         {
-            Timer subproblem_timer;
-            PlainData::SubProblemData subproblem_data;
-            worker->fix_to(_data.x_cut);
-            worker->solve(subproblem_data.lpstatus,
-                          Options().OUTPUTROOT,
-                          Options().LAST_MASTER_MPS + MPS_SUFFIX,
-                          _writer);
-            worker->get_value(subproblem_data.subproblem_cost);                // solution phi(x,s)
-            worker->get_subgradient(subproblem_data.var_name_and_subgradient); // dual pi_s
-            auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
-            // Tbb includes min max define of windows std::numeric_limits<int>::max();
-            subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost
-                                                  - subpb_cost_under_approx;
-            double cut_value_at_x_cut = subproblem_data.subproblem_cost;
-            for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
-            {
-                auto subgradient_at_name = subproblem_data.var_name_and_subgradient[candidate_name];
-                cut_value_at_x_cut += subgradient_at_name
-                                      * (_data.x_out[candidate_name] - x_cut_candidate_value);
-            }
+            PlainData::SubProblemData subproblem_data{};
+            SolveSubproblem(subproblem_data, name, worker);
+            Timer subproblem_timer = calculate_subproblem_contribution(name, subproblem_data);
 
-            if (subpb_cost_under_approx < cut_value_at_x_cut)
-            {
-                misprice_ = false;
-            }
-            worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-            subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+            //subproblem_timer already set time, we add the remaining computation time
+            subproblem_data.subproblem_timer += subproblem_timer.elapsed();
             subproblem_data_map[name] = subproblem_data;
         }
+    }
+}
+
+/*!\n *  \brief Solve and store optimal variables of all Subproblem Problems\n *\n *  Method to
+ * solve and store optimal variables of all Subproblem Problems\n * after fixing trial values\n *\n
+ * *  \param subproblem_data_map : map storing for each subproblem its cut\n */
+void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
+                                      const std::vector<std::string>& batch_sub_problems)
+{
+    if (Options().CACHE_PROBLEMS)
+    {
+        GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);
+    }
+    else
+    {
+        GetSubproblemCutFast(subproblem_data_map, batch_sub_problems);
     }
 }
 
