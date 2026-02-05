@@ -12,48 +12,13 @@ void BendersByBatch::InitializeProblems()
     MatchProblemToId();
 
     BuildMasterProblem();
-    if (_options.CACHE_PROBLEMS)
+
+    const auto& coupling_map_size = coupling_map_.size();
+    // Only rank 0 builds the batch collection, then it is broadcasted to all procs
+    if (Rank() == rank_0)
     {
-        const auto& coupling_map_size = coupling_map_.size();
         std::vector<std::string> problem_names;
-        // Only rank 0 builds the batch collection, then it is broadcasted to all procs
-        if (Rank() == rank_0)
-        {
-            for (const auto& [problem_name, _]: coupling_map_)
-            {
-                problem_names.emplace_back(problem_name);
-            }
-            auto batch_size = Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
-            batch_collection_.SetLogger(_logger);
-            batch_collection_.SetBatchSize(batch_size);
-            batch_collection_.SetSubProblemNames(problem_names);
-            batch_collection_.BuildBatches();
-        }
-        // Make sure every process has the batch layout but only load (cache) the
-        // subproblems assigned to its rank to save memory.
-        BroadCast(batch_collection_, rank_0);
-        // Dispatch subproblems to process: only add those assigned to this rank
-        auto problem_count = 0;
-        for (auto& batch: batch_collection_.BatchCollections())
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                } else
-                {
-                    ++it;
-                }
-                ++problem_count;
-            }
-        }
-    } else
-    {
-        const auto& coupling_map_size = coupling_map_.size();
-        std::vector<std::string> problem_names;
-        for (const auto& [problem_name, _]: coupling_map_)
+        for (const auto& problem_name: coupling_map_ | std::views::keys)
         {
             problem_names.emplace_back(problem_name);
         }
@@ -62,10 +27,30 @@ void BendersByBatch::InitializeProblems()
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
         batch_collection_.BuildBatches();
-        BroadCast(batch_collection_, rank_0);
-        // Dispatch subproblems to process
-        auto problem_count = 0;
-        for (const auto& batch: batch_collection_.BatchCollections())
+    }
+    BroadCast(batch_collection_, rank_0);
+
+    // Dispatch subproblems to process: only add those assigned to this rank
+    auto problem_count = 0;
+    for (auto& batch: batch_collection_.BatchCollections())
+    {
+        if (_options.CACHE_PROBLEMS)
+        {
+            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
+            {
+                auto process_to_feed = problem_count % WorldSize();
+                if (process_to_feed != Rank())
+                {
+                    it = batch.sub_problem_names.erase(it);
+                }
+                else
+                {
+                    ++it;
+                }
+                ++problem_count;
+            }
+        }
+        else
         {
             for (const auto& problem_name: batch.sub_problem_names)
             {
@@ -305,7 +290,8 @@ void BendersByBatch::SolveBatches()
     }
 }
 
-/*!\n * \brief Build subproblem cut\n * Method to build subproblem cuts\n * and add them to the Master problem\n */
+/*!\n * \brief Build subproblem cut\n * Method to build subproblem cuts\n * and add them to the
+ * Master problem\n */
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
                               double* batch_contribution_in_gap,
                               std::vector<double>& external_loop_criterion_current_batch)
@@ -363,7 +349,9 @@ double BendersByBatch::ComputeBatchContributionInGap(
     return batch_contribution_in_gap;
 }
 
-/*!\n *  \brief Solve and store optimal variables of all Subproblem Problems\n *\n *  Method to solve and store optimal variables of all Subproblem Problems\n * after fixing trial values\n *\n *  \param subproblem_data_map : map storing for each subproblem its cut\n */
+/*!\n *  \brief Solve and store optimal variables of all Subproblem Problems\n *\n *  Method to
+ * solve and store optimal variables of all Subproblem Problems\n * after fixing trial values\n *\n
+ * *  \param subproblem_data_map : map storing for each subproblem its cut\n */
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                                       const std::vector<std::string>& batch_sub_problems)
 {
@@ -434,7 +422,8 @@ double BendersByBatch::Gap() const
     }
 }
 
-/*!\n *  \brief Update stopping criterion\n *\n *  Method updating the stopping criterion and reinitializing some datas\n *\n */
+/*!\n *  \brief Update stopping criterion\n *\n *  Method updating the stopping criterion and
+ * reinitializing some datas\n *\n */
 void BendersByBatch::UpdateStoppingCriterion()
 {
     if (_data.benders_time > Options().TIME_LIMIT)
