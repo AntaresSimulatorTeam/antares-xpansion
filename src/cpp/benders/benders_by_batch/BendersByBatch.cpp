@@ -361,10 +361,7 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
     for (const auto& name: batch_sub_problems)
     {
         const auto it = coupling_map_.find(name);
-        if (it != coupling_map_.end())
-        {
-            nameAndVariableMap.emplace_back(it->first, it->second);
-        }
+        nameAndVariableMap.emplace_back(it->first, it->second);
     }
 
     for (const auto& kvp: nameAndVariableMap)
