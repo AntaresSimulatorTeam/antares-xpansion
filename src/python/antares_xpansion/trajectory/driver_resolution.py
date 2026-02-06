@@ -177,6 +177,9 @@ class TrajectoryResolutionDriver:
         # Irrelevant in our case, but we need to set a value.
         options_values[OptimisationKeys.slave_weight_value_key()] = 1.0
 
+        # Not bounding alpha helps with scaling and thus reduces computing time.
+        options_values[OptimisationKeys.bound_alpha_key()] = False
+
         # Master formulation
         options_values[OptimisationKeys.master_formulation_key()] = (
             self.data.master_formulation
