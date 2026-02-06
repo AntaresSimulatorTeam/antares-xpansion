@@ -570,8 +570,8 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
 }
 
 void BendersBase::SetBasisForSubproblem(const std::string& name,
-                                           const std::vector<int>& rstatus,
-                                           const std::vector<int>& cstatus)
+                                        const std::vector<int>& rstatus,
+                                        const std::vector<int>& cstatus)
 {
     basiss_[name] = std::make_pair(rstatus, cstatus);
 }
