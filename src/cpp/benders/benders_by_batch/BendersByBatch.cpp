@@ -291,8 +291,12 @@ void BendersByBatch::SolveBatches()
     }
 }
 
-/*!\n * \brief Build subproblem cut\n * Method to build subproblem cuts\n * and add them to the
- * Master problem\n */
+/*!
+ * \brief Build subproblem cut
+ *
+ * Method to build subproblem cuts
+ * and add them to the Master problem
+ */
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
                               double* batch_contribution_in_gap,
                               std::vector<double>& external_loop_criterion_current_batch)
@@ -427,9 +431,14 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
     }
 }
 
-/*!\n *  \brief Solve and store optimal variables of all Subproblem Problems\n *\n *  Method to
- * solve and store optimal variables of all Subproblem Problems\n * after fixing trial values\n *\n
- * *  \param subproblem_data_map : map storing for each subproblem its cut\n */
+/*!
+ * \brief Solve and store optimal variables of all Subproblem Problems
+ *
+ * Method to solve and store optimal variables of all Subproblem Problems
+ * after fixing trial values.
+ *
+ * \param subproblem_data_map Map storing for each subproblem its cut
+ */
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                                       const std::vector<std::string>& batch_sub_problems)
 {
@@ -463,8 +472,12 @@ double BendersByBatch::Gap() const
     }
 }
 
-/*!\n *  \brief Update stopping criterion\n *\n *  Method updating the stopping criterion and
- * reinitializing some datas\n *\n */
+/*!
+ *  \brief Update stopping criterion
+ *
+ *  Method updating the stopping criterion and
+ *  reinitializing some datas
+ */
 void BendersByBatch::UpdateStoppingCriterion()
 {
     if (_data.benders_time > Options().TIME_LIMIT)
@@ -488,7 +501,9 @@ void BendersByBatch::UpdateStoppingCriterion()
     }
 }
 
-/*!\n *  \brief Check if initial relaxation should stop\n */
+/*!
+ *  \brief Check if initial relaxation should stop
+ */
 bool BendersByBatch::ShouldRelaxationStop() const
 {
     return (_data.stopping_criterion != StoppingCriterion::empty);
