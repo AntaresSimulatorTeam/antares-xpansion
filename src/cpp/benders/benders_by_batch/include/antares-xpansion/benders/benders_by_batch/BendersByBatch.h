@@ -14,7 +14,8 @@ public:
     void Run() override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
                   double* batch_contribution_in_gap,
-                  std::vector<double>& external_loop_criterion_current_batch);
+                  std::vector<double>& external_loop_criterion_current_batch,
+                  int& local_solved);
 
     std::string BendersName() const override
     {

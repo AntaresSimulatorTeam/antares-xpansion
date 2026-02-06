@@ -113,7 +113,6 @@ void BendersByBatch::MasterLoop()
     batch_counter_ = 0;
     current_batch_id_ = 0;
     _data.number_of_subproblem_solved = 0;
-    _data.cumulative_number_of_subproblem_solved = 0;
     cumulative_subproblems_timer_per_iter_ = 0;
     first_unsolved_batch_ = 0;
     while (!_data.stop)
@@ -251,6 +250,8 @@ void BendersByBatch::SolveBatches()
 {
     batch_counter_ = 0;
     cumulative_subproblems_timer_per_iter_ = 0;
+    // total number of subproblems solved locally on this rank during this separation iteration
+    int problem_solved_by_rank = 0;
     while (batch_counter_ < number_of_batch_)
     {
         first_unsolved_batch_ = first_unsolved_batch_ % number_of_batch_;
@@ -261,19 +262,23 @@ void BendersByBatch::SolveBatches()
         const auto& batch_sub_problems = batch.sub_problem_names;
         double batch_contribution_in_gap = 0;
         std::vector<double> external_loop_criterion_current_batch = {};
+        // Count how many subproblems this rank actually solved for the batch
+        int problem_solved = 0;
         BuildCut(batch_sub_problems,
                  &batch_contribution_in_gap,
-                 external_loop_criterion_current_batch);
+                 external_loop_criterion_current_batch,
+                 problem_solved);
+        // accumulate locally for the whole separation iteration
+        problem_solved_by_rank += problem_solved;
         Reduce(_data.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
                rank_0);
+
         if (Rank() == rank_0)
         {
-            _data.number_of_subproblem_solved += batch_sub_problems.size();
-            _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
             remaining_epsilon_ -= batch_contribution_in_gap;
-            // TODO
+            // TODO: external loop contribution aggregation
             // AddVectors<double>(_data.outer_loop_current_iteration_data.outer_loop_criterion,
             //                    external_loop_criterion_current_batch);
         }
@@ -288,6 +293,20 @@ void BendersByBatch::SolveBatches()
             break;
         }
     }
+
+    // After processing all batches of this separation iteration, gather per-rank totals.
+    int global_total_solved = 0;
+    Reduce(problem_solved_by_rank, global_total_solved, std::plus<int>(), rank_0);
+    if (Rank() == rank_0)
+    {
+        // per-iteration number of subproblems solved
+        _data.number_of_subproblem_solved = global_total_solved;
+        // accumulate globally across iterations
+        _data.cumulative_number_of_subproblem_solved += global_total_solved;
+        // Immediate log to confirm the cumulative value updated correctly.
+        _logger->cumulative_number_of_sub_problem_solved(
+          _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
+    }
 }
 
 /*!
@@ -298,11 +317,13 @@ void BendersByBatch::SolveBatches()
  */
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
                               double* batch_contribution_in_gap,
-                              std::vector<double>& external_loop_criterion_current_batch)
+                              std::vector<double>& external_loop_criterion_current_batch,
+                              int& local_solved)
 {
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
     GetSubproblemCut(subproblem_data_map, batch_sub_problems);
+    local_solved = subproblem_data_map.size();
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
     std::vector<SubProblemDataMap> gathered_subproblem_map;
