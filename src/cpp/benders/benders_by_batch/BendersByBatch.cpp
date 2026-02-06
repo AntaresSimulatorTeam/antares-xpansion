@@ -356,7 +356,6 @@ double BendersByBatch::ComputeBatchContributionInGap(
 void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                            const std::vector<std::string>& batch_sub_problems)
 {
-    // Construire un vecteur (name, VariableMap) pour les sous-problèmes de ce batch
     std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
     nameAndVariableMap.reserve(batch_sub_problems.size());
     for (const auto& name: batch_sub_problems)
