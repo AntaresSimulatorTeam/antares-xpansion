@@ -303,9 +303,6 @@ void BendersByBatch::SolveBatches()
         _data.number_of_subproblem_solved = global_total_solved;
         // accumulate globally across iterations
         _data.cumulative_number_of_subproblem_solved += global_total_solved;
-        // Immediate log to confirm the cumulative value updated correctly.
-        _logger->cumulative_number_of_sub_problem_solved(
-          _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
     }
 }
 
