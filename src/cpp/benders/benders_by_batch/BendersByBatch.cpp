@@ -379,7 +379,7 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
           variable_indice_once_flag,
           [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
           *worker);
-    };
+    }
 }
 
 Timer BendersByBatch::calculate_subproblem_contribution(const std::string& name,
