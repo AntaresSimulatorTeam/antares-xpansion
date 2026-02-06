@@ -384,9 +384,8 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
     };
 }
 
-Timer BendersByBatch::calculate_subproblem_contribution(
-  std::add_const<const std::string>::type name,
-  PlainData::SubProblemData& subproblem_data)
+Timer BendersByBatch::calculate_subproblem_contribution(const std::string& name,
+                                                        PlainData::SubProblemData& subproblem_data)
 {
     Timer subproblem_timer;
 
