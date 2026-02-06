@@ -41,7 +41,6 @@ void BendersByBatch::InitializeProblems()
                 auto process_to_feed = problem_count % WorldSize();
                 if (process_to_feed != Rank())
                 {
-                    auto name = *it;
                     it = batch.sub_problem_names.erase(it);
                 }
                 else
