@@ -99,7 +99,9 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
         optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
         optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
     }
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(), simulation_dir, optOptions);
+    auto results = Antares::API::PerformSimulation(options_.StudyPath(),
+                                                   simulation_dir,
+                                                   optOptions);
 
     /**
      * Antares simulator allocate a lot of memory
