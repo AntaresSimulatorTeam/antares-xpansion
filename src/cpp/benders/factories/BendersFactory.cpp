@@ -124,10 +124,10 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         break;
     }
 
-    // std::shared_ptr<BendersPlugin> benders_plugin(
-    //   benders_plugin_factory_->CreatePlugin(coupling_map, options_.MICRO_ITERATIONS,world_));
-    // std::cout<<"benders pluging factory !!!"<<std::endl ;
-    // benders->SetPlugin(benders_plugin);
+    std::shared_ptr<BendersPlugin> benders_plugin(
+      benders_plugin_factory_->CreatePlugin(coupling_map, options_.MICRO_ITERATIONS,world_));
+    std::cout<<"benders pluging factory !!!"<<std::endl ;
+    benders->SetPlugin(benders_plugin);
 
     benders->set_input_map(coupling_map);
 
