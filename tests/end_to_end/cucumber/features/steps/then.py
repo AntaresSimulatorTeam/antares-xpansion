@@ -257,7 +257,7 @@ def check_overall_cost(context, value):
 
 
 @then("the expected investment cost is {value:g}")
-def check_overall_cost(context, value):
+def check_investment_cost(context, value):
     np.testing.assert_allclose(value, context.outputs["solution"]["investment_cost"], rtol=1e-6, atol=0)
 
 
