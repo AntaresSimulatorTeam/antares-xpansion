@@ -185,6 +185,9 @@ protected:
                                                    const std::string& name);
     std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap>& kvp) const;
+    void SetBasisForSubproblem(const std::string& name,
+                               const std::vector<int>& rstatus,
+                               const std::vector<int>& cstatus);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
