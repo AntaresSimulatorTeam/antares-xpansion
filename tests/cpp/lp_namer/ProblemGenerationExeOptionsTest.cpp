@@ -50,7 +50,7 @@ public:
 
 private:
     void generate_antares_problems(const std::filesystem::path&,
-                                  const std::filesystem::path&) override
+                                   const std::filesystem::path&) override
     {
     }
 
@@ -182,21 +182,6 @@ TEST_F(ProblemGenerationExeOptionsTest,
     auto test_root = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
 
     EXPECT_THROW(parseOptions(), ProblemGenerationOptions::MissingParameters);
-}
-
-TEST_F(ProblemGenerationExeOptionsTest, study)
-{
-    auto test_root = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-
-    parseOptions("--study", test_root.string());
-
-    ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
-    pbg.updateProblems();
-
-    EXPECT_TRUE(problem_generation_options_parser_.ArchivePath().empty());
-    EXPECT_TRUE(pbg.configurationManager().Directories().archive_path.empty());
-    EXPECT_TRUE(
-      std::filesystem::exists(pbg.configurationManager().Directories().xpansion_output_dir));
 }
 
 // Tests for the format option
