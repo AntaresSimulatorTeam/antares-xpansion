@@ -359,4 +359,11 @@ private:
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
 };
 
+
+struct Entry
+{
+    const std::string* name = nullptr;
+    int vecPos = -1;
+};
+
 using pBendersBase = std::shared_ptr<BendersBase>;

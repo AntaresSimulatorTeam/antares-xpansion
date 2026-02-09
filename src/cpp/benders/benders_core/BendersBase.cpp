@@ -742,11 +742,6 @@ std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
 {
     int n_cuts = SetAggregation(max_aggregation);
 
-    struct Entry
-    {
-        const std::string* name = nullptr;
-        int vecPos = -1;
-    };
 
     std::vector<Entry> ordered(_data.nsubproblem);
 
