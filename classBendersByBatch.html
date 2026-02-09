@@ -159,10 +159,9 @@ Inheritance diagram for BendersByBatch:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aad31473849cc7f9078dbcefc240bbf9e" id="r_aad31473849cc7f9078dbcefc240bbf9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad31473849cc7f9078dbcefc240bbf9e">Run</a> () override</td></tr>
 <tr class="separator:aad31473849cc7f9078dbcefc240bbf9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fa18d6f639840ef8be340c5cbafb7f3" id="r_a4fa18d6f639840ef8be340c5cbafb7f3"><td class="memItemLeft" align="right" valign="top"><a id="a4fa18d6f639840ef8be340c5cbafb7f3" name="a4fa18d6f639840ef8be340c5cbafb7f3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildCut</b> (const std::vector&lt; std::string &gt; &amp;batch_sub_problems, double *batch_contribution_in_gap, std::vector&lt; double &gt; &amp;external_loop_criterion_current_batch)</td></tr>
-<tr class="memdesc:a4fa18d6f639840ef8be340c5cbafb7f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build subproblem cut Method to build subproblem cuts and add them to the Master problem. <br /></td></tr>
-<tr class="separator:a4fa18d6f639840ef8be340c5cbafb7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace54013be6464114b46dddd0ab84a720" id="r_ace54013be6464114b46dddd0ab84a720"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace54013be6464114b46dddd0ab84a720">BuildCut</a> (const std::vector&lt; std::string &gt; &amp;batch_sub_problems, double *batch_contribution_in_gap, std::vector&lt; double &gt; &amp;external_loop_criterion_current_batch, int &amp;local_solved)</td></tr>
+<tr class="memdesc:ace54013be6464114b46dddd0ab84a720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build subproblem cut.  <br /></td></tr>
+<tr class="separator:ace54013be6464114b46dddd0ab84a720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a594ae928909eba0fe12d8cfb4a723453" id="r_a594ae928909eba0fe12d8cfb4a723453"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a594ae928909eba0fe12d8cfb4a723453">BendersName</a> () const override</td></tr>
 <tr class="separator:a594ae928909eba0fe12d8cfb4a723453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8383c8e81a533020ee71deb40c9e0a14" id="r_a8383c8e81a533020ee71deb40c9e0a14"><td class="memItemLeft" align="right" valign="top"><a id="a8383c8e81a533020ee71deb40c9e0a14" name="a8383c8e81a533020ee71deb40c9e0a14"></a>
@@ -430,6 +429,9 @@ std::pair&lt; std::vector&lt; int &gt;, std::vector&lt; int &gt; &gt;&#160;</td>
 <tr class="memitem:a860857ca470bee39de5a861716e9a81d inherit pro_methods_classBendersBase" id="r_a860857ca470bee39de5a861716e9a81d"><td class="memItemLeft" align="right" valign="top">
 std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>makeSubproblemWorker</b> (const std::pair&lt; std::string, VariableMap &gt; &amp;kvp) const</td></tr>
 <tr class="separator:a860857ca470bee39de5a861716e9a81d inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93f2b5f28e7ebca4d3a64aa01afa378e inherit pro_methods_classBendersBase" id="r_a93f2b5f28e7ebca4d3a64aa01afa378e"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBasisForSubproblem</b> (const std::string &amp;name, const std::vector&lt; int &gt; &amp;rstatus, const std::vector&lt; int &gt; &amp;cstatus)</td></tr>
+<tr class="separator:a93f2b5f28e7ebca4d3a64aa01afa378e inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5602268b76294f5062fe654b656a462f inherit pro_methods_classBendersBase" id="r_a5602268b76294f5062fe654b656a462f"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemCutCache</b> (SubProblemDataMap &amp;subproblem_data_map)</td></tr>
 <tr class="separator:a5602268b76294f5062fe654b656a462f inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -701,6 +703,40 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classBendersBase.html">BendersBase</a>.</p>
+
+</div>
+</div>
+<a id="ace54013be6464114b46dddd0ab84a720" name="ace54013be6464114b46dddd0ab84a720"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace54013be6464114b46dddd0ab84a720">&#9670;&#160;</a></span>BuildCut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersByBatch::BuildCut </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>batch_sub_problems</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>batch_contribution_in_gap</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>external_loop_criterion_current_batch</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;</td>          <td class="paramname"><span class="paramname"><em>local_solved</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build subproblem cut. </p>
+<p>Method to build subproblem cuts and add them to the Master problem </p>
 
 </div>
 </div>

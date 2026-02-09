@@ -209,29 +209,34 @@ $(function(){initNavTree('BatchCollection_8h_source.html',''); initResizable(tru
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> batch_collections_;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_struct" href="structBatch.html">Batch</a> GetBatchFromId(<span class="keywordtype">unsigned</span> batch_id)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> batch_collections_[batch_id];</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    std::vector&lt;Batch&gt;&amp; BatchCollections()</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> batch_collections_;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">unsigned</span> NumberOfBatch()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_struct" href="structBatch.html">Batch</a> GetBatchFromId(<span class="keywordtype">unsigned</span> batch_id)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> number_of_batch_;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> batch_collections_[batch_id];</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">friend</span> <span class="keyword">class </span>boost::serialization::access;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> Archive&gt;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">void</span> serialize(Archive&amp; ar, [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> version)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        ar &amp; sub_problem_names_;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        ar &amp; sub_problems_number_;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        ar &amp; batch_size_;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        ar &amp; batch_collections_;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        ar &amp; number_of_batch_;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>};</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">unsigned</span> NumberOfBatch()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keywordflow">return</span> number_of_batch_;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">friend</span> <span class="keyword">class </span>boost::serialization::access;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> Archive&gt;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordtype">void</span> serialize(Archive&amp; ar, [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> version)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        ar &amp; sub_problem_names_;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        ar &amp; sub_problems_number_;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        ar &amp; batch_size_;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        ar &amp; batch_collections_;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        ar &amp; number_of_batch_;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
 </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">#endif </span><span class="comment">// SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BATCHCOLLECTION_H_</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">#endif </span><span class="comment">// SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BATCHCOLLECTION_H_</span></div>
 <div class="ttc" id="aclassBatchCollection_html"><div class="ttname"><a href="classBatchCollection.html">BatchCollection</a></div><div class="ttdef"><b>Definition</b> BatchCollection.h:25</div></div>
 <div class="ttc" id="astructBatch_html"><div class="ttname"><a href="structBatch.html">Batch</a></div><div class="ttdef"><b>Definition</b> BatchCollection.h:11</div></div>
 </div><!-- fragment --></div><!-- contents -->
