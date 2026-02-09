@@ -1,10 +1,10 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
+#include <chrono>
 #include <memory>
 #include <mutex>
 #include <numeric>
 #include <utility>
-#include <chrono>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
@@ -392,8 +392,6 @@ void BendersBase::get_master_value()
     }
 
     _data.timer_master = timer_master.elapsed();
-
-
 }
 
 void BendersBase::DeactivateIntegrityConstraints() const
@@ -613,7 +611,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::string& name,
                                   const std::shared_ptr<SubproblemWorker>& worker)
 {
-    std::cout<<"name "<<name<<std::endl; 
+    std::cout << "name " << name << std::endl;
     Timer subproblem_timer;
 
     worker->fix_to(_data.x_cut);
@@ -621,38 +619,11 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     {
         benders_plugin_->OnBendersMicroIterationStart();
     }
-    if (_options.MICRO_ITERATIONS)
-    {
-        bool added_rows = true;
-        int num_micro_iter(0);
-        while (added_rows)
-        {
-            int num_master_iter = _data.it - 1 ; 
-            size_t start = name.find_last_of('/') + 1;
-            size_t end = name.find(".");
-            auto t1 = std::chrono::high_resolution_clock::now() ; 
-            worker->solve(subproblem_data.lpstatus,
-                          _options.OUTPUTROOT,
-                          _options.LAST_MASTER_MPS + MPS_SUFFIX,
-                          _writer);
-            auto t2 = std::chrono::high_resolution_clock::now() ;
-            auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
-            
-            if (benders_plugin_)
-            {
-                benders_plugin_->OnBendersMicroIterationEnd(name, added_rows,std::to_string(elapsed_microseconds));
-            }
-            num_micro_iter++;
 
-        }
-    }
-    else
-    {
-        worker->solve(subproblem_data.lpstatus,
-                      _options.OUTPUTROOT,
-                      _options.LAST_MASTER_MPS + MPS_SUFFIX,
-                      _writer);
-    }
+    worker->solve(subproblem_data.lpstatus,
+                  _options.OUTPUTROOT,
+                  _options.LAST_MASTER_MPS + MPS_SUFFIX,
+                  _writer);
 
     worker->get_value(subproblem_data.subproblem_cost);
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
@@ -660,6 +631,10 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+    if (benders_plugin_)
+    {
+        benders_plugin_->OnBendersMicroIterationEnd();
+    }
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)

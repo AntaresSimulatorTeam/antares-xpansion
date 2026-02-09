@@ -72,7 +72,8 @@ void CouplingMapGenerator::BuildSubProblemConstaintMap(
 
         if (subproblem_num != "master")
         {
-            std::string constraint_str = "constraints/constraints_" + subproblem_num + "." + extension;
+            std::string constraint_str = "constraints/constraints_" + subproblem_num + "."
+                                         + extension;
             subproblem_constraint_map[subProblemName] = constraint_str;
             constraints_coupling_map[constraint_str] = variable_map;
         }

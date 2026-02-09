@@ -401,23 +401,18 @@ void BendersMpi::Run()
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
 
-
     while (!_data.stop)
     {
         ++_data.it;
         ResetSimplexIterationsBounds();
 
-
-
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
         step_1_solve_master();
 
-
-        if (benders_plugin_ )
+        if (benders_plugin_)
         {
-            benders_plugin_->OnBendersMasterIterationStart(_data.x_cut,_data.it);
-            
+            benders_plugin_->OnBendersMasterIterationStart();
         }
 
         /*Gather cut from each subproblem in master thread and add them to Master
@@ -440,13 +435,11 @@ void BendersMpi::Run()
         {
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
-
-        
         }
         if (benders_plugin_)
-                benders_plugin_->OnBendersMasterIterationEnd();
-
-
+        {
+            benders_plugin_->OnBendersMasterIterationEnd();
+        }
     }
     if (_world.rank() == rank_0)
     {
@@ -490,7 +483,7 @@ void BendersMpi::launch()
 
     if (benders_plugin_)
     {
-        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+        benders_plugin_->OnBendersStart();
     }
 
     Run();
@@ -498,8 +491,8 @@ void BendersMpi::launch()
 
     if (benders_plugin_)
     {
-        int rank_proc = Rank() ; 
-        benders_plugin_->OnBendersEnd(rank_proc);
+        int rank_proc = Rank();
+        benders_plugin_->OnBendersEnd();
     }
 
     post_run_actions();

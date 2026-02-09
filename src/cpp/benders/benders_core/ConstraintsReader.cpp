@@ -1,8 +1,5 @@
 #include "antares-xpansion/benders/benders_core/ConstraintsReader.h"
 
-#include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
-
-
 #include <boost/tokenizer.hpp>
 
 ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file_path,
@@ -25,8 +22,8 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
     solver_IO_.configure(solver_name, ProblemsFormat::MPS_FILE);
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
-    int n_rows = solver_->get_nrows() ; 
-    initial_sub_size = subproblem_worker->get_problem_row_num() ; 
+    int n_rows = solver_->get_nrows();
+    initial_sub_size = subproblem_worker->get_problem_row_num();
 }
 
 std::shared_ptr<SubproblemWorker> ConstraintsReader::get_subproblem_worker()
@@ -47,7 +44,7 @@ SolverRepresentedRows ConstraintsReader::get_row(const std::string& name)
     result.range_p = {};
     result.row_names = {name};
     int constraint_pos = get_row_index(name);
-    
+
     int ncols = solver_->get_ncols();
     result.mstart.resize(2);
     result.mclind.resize(ncols);
@@ -85,7 +82,7 @@ SolverRepresentedRows ConstraintsReader::get_row(const std::string& name)
     }
     std::string qrtype(buffer, len);
     result.qrtype_p = {qrtype[0]};
-    
+
     return result;
 }
 
@@ -118,21 +115,12 @@ void ConstraintsReader::add_rows(std::string& row_name)
     add_rows_to_subproblems(constraint_row);
 }
 
-
-
-
-int ConstraintsReader::size_of_subproblem() 
+int ConstraintsReader::size_of_subproblem()
 {
-    return subproblem_worker_->get_problem_row_num() ; 
+    return subproblem_worker_->get_problem_row_num();
 }
 
-void ConstraintsReader::delete_added_rows() 
+void ConstraintsReader::delete_added_rows()
 {
-    subproblem_worker_->delete_rows(initial_sub_size) ;
+    subproblem_worker_->delete_rows(initial_sub_size);
 }
-
-
-
-
-
-

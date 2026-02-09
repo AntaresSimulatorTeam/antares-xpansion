@@ -109,14 +109,12 @@ std::vector<double> SubproblemWorker::get_solution() const
     return solution;
 }
 
-
-void SubproblemWorker::delete_rows(int start_pos) 
+void SubproblemWorker::delete_rows(int start_pos)
 {
-    int num_rows = _solver->get_nrows() ; 
-    num_rows-- ;
-    _solver->del_rows(start_pos,num_rows) ; 
+    int num_rows = _solver->get_nrows();
+    num_rows--;
+    _solver->del_rows(start_pos, num_rows);
 }
-
 
 int SubproblemWorker::get_variable_index(const std::string& variable_name)
 {
@@ -127,12 +125,7 @@ int SubproblemWorker::get_variable_index(const std::string& variable_name)
     return variable_index;
 }
 
-
-int  SubproblemWorker::get_problem_row_num() 
+int SubproblemWorker::get_problem_row_num()
 {
-    return _solver->get_nrows() ; 
+    return _solver->get_nrows();
 }
-
-
-
-
