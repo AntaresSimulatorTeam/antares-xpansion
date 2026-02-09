@@ -572,6 +572,13 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               _options.CUT_COEFFICIENT_TOLERANCE);
 }
 
+void BendersBase::SetBasisForSubproblem(const std::string& name,
+                                        const std::vector<int>& rstatus,
+                                        const std::vector<int>& cstatus)
+{
+    basiss_[name] = std::make_pair(rstatus, cstatus);
+}
+
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 {
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
@@ -592,7 +599,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                             auto [rstatus, cstatus] = GetProblemBasis(worker);
                             std::lock_guard guard(m);
                             subproblem_data_map[name] = subproblem_data;
-                            basiss_[name] = std::make_pair(rstatus, cstatus);
+                            SetBasisForSubproblem(name, rstatus, cstatus);
                             std::call_once(
                               variable_indice_once_flag,
                               [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
@@ -648,10 +655,10 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     }
 
     worker->get_value(subproblem_data.subproblem_cost);
-
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
 
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
 
