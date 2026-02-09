@@ -14,7 +14,8 @@ public:
     void Run() override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
                   double* batch_contribution_in_gap,
-                  std::vector<double>& external_loop_criterion_current_batch);
+                  std::vector<double>& external_loop_criterion_current_batch,
+                  int& local_solved);
 
     std::string BendersName() const override
     {
@@ -34,6 +35,12 @@ private:
     double ComputeBatchContributionInGap(
       const std::vector<SubProblemDataMap>& gathered_subproblem_map,
       const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
+    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
+                               const std::vector<std::string>& batch_sub_problems);
+    Timer calculate_subproblem_contribution(const std::string& name,
+                                            PlainData::SubProblemData& subproblem_data);
+    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
+                              const std::vector<std::string>& batch_sub_problems);
     BatchCollection batch_collection_;
     void MasterLoop();
     void SolveBatches();
