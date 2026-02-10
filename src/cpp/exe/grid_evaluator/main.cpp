@@ -4,7 +4,8 @@
 #include <ranges>
 
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
-#include "antares-xpansion/bellman_values/PenaltiesConfigReader.h"
+#include "antares-xpansion/bellman_values/DynamicProgrammingConfigReader.h"
+#include "antares-xpansion/bellman_values/SettingsConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
@@ -107,33 +108,39 @@ int main(int argc, char** argv)
         auto optionsParser = BellmanValuesExeOptions();
         optionsParser.Parse(argc, argv);
         auto studyPath = optionsParser.StudyPath();
-        auto solverName = optionsParser.SolverName();
         int nbThreads = optionsParser.NbThreads();
-        int startWeek = optionsParser.StartWeek();
-        int endWeek = optionsParser.EndWeek();
-        int nbLevels = optionsParser.NbLevels();
-        bool antaresFormat = optionsParser.AntaresFormat();
-        bool writePbFiles = optionsParser.WritePbFiles();
-        const std::string problemFormat = optionsParser.ProblemFormat();
-        const bool useOptimalTrajectory = optionsParser.UseOptimalTrajectory();
-        const std::string verbosity = optionsParser.Verbosity();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                / "user/water_values/grid.csv");
 
-        const std::filesystem::path penaltiesConfigFilePath(studyPath
-                                                            / "user/water_values/penalties.yaml");
+        const std::filesystem::path bellmanConfigFilePath(
+          studyPath / "user/water_values/dynamic_programming.yaml");
+        const std::filesystem::path settingsConfigFilePath(studyPath
+                                                           / "user/water_values/settings.yaml");
 
-        // PenaltiesConfigReader will check whether the file exists and return default values if
-        // needed
-        PenaltiesConfigReader pcr(penaltiesConfigFilePath);
+        // DynamicProgrammingConfigReader will check whether the dynamic_programming.yaml file
+        // exists and return default values if needed
+        DynamicProgrammingConfigReader dpcr(bellmanConfigFilePath);
+        int startWeek = dpcr.getStartWeek();
+        int endWeek = dpcr.getEndWeek();
+        int nbLevels = dpcr.getNbLevels();
+        bool antaresFormat = dpcr.getAntaresFormat();
+        bool useOptimalTrajectory = dpcr.getUseOptimalTrajectory();
+
+        // SettingsConfigReader will check whether the settings.yaml file exists and
+        // return default values if needed
+        SettingsConfigReader scr(settingsConfigFilePath);
+        std::string solverName = scr.getSolver();
+        bool writePbFiles = scr.getKeepMps();
+        const std::string problemFormat = scr.getProblemFormat();
+        const std::string verbosity = scr.getVerbosity();
 
         ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
-                                                pcr.getPenaltyBottomRuleCurve(),
-                                                pcr.getPenaltyUpperRuleCurve(),
-                                                pcr.getPenaltyFinalLevel(),
-                                                pcr.getForceFinalLevel(),
-                                                pcr.getFinalLevel());
+                                                dpcr.getPenaltyBottomRuleCurve(),
+                                                dpcr.getPenaltyUpperRuleCurve(),
+                                                dpcr.getPenaltyFinalLevel(),
+                                                dpcr.getForceFinalLevel(),
+                                                dpcr.getFinalLevel());
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,

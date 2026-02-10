@@ -24,7 +24,7 @@ The computation relies on an efficient implementation for solving repeated optim
    - Each "control" corresponds to the net water usage over the week: total generation minus total pumping multiplied by pumping efficiency, ignoring natural inflows.  
    - This step leverages a hot start to solve the same sub-problem multiple times efficiently, reducing computational time.
 4. **Compute Bellman values using dynamic programming.**
-   - Storage is discretized into a finite number of levels given by `nb-levels`.
+   - Storage is discretized into a finite number of levels given by `nb_levels`.
    - For each week and each storage level, the algorithm evaluates all possible controls by combining the **immediate cost** for that week and scenario (from step 3) with the **expected future cost** from subsequent weeks.  
    - The Bellman value for a given storage level and a given week is computed as the **average over all Monte Carlo scenarios of the minimum total cost** achievable, considering both current and future costs.  
    - By progressing **backward week by week**, the algorithm captures the fundamental **trade-off between using water now and saving it for later**, which is at the heart of water value calculation.
@@ -42,6 +42,7 @@ Note that steps 1 and 2 are performed only once and reused for all reservoirs.
 
 - an **Antares study**
 - a grid defined by a **grid.csv** file located at `<study_root>/user/water_values/grid.csv`
+- two secondary input files **settings.yaml** and **dynamic_programming.yaml** holding various user-set parameters related to technical settings and simulation settings respectively. These files are optional, and expected at `<study_root>/user/water_values/`
 
 ## Input file grid.csv
 
@@ -78,23 +79,45 @@ Water values can also be computed for multiple areas/reservoirs, which need to b
 
 In this case, water values will be **computed sequentially**, in the order in which areas are defined in grid.csv.
 
-By default, optimal trajectories are not computed, and default trajectories are used instead, in the form of natural inflows. It is possible to compute optimal trajectories along with water values, and to take the optimal trajectory of a reservoir into account when calculating  water values of subsequent areas, with use of the `--use-optimal-trajectory` flag (see below). In this case, given that water values are computed for all areas sequentially, in the order they are defined in grid.csv, water values for any given area will be computed by **using optimal trajectories of all previous areas**.
+By default, optimal trajectories are not computed, and default trajectories are used instead, in the form of natural inflows. It is possible to compute optimal trajectories along with water values, and to take the optimal trajectory of a reservoir into account when calculating  water values of subsequent areas, with use of the `use_optimal_trajectory` value from `settings.yaml` (see below). In this case, given that water values are computed for all areas sequentially, in the order they are defined in grid.csv, water values for any given area will be computed by **using optimal trajectories of all previous areas**.
 
 It is not currently possible to compute water values for multiple areas sharing the same grid_id, in a use case referred to as _multivariate_.
 
-### Secondary input file penalties.yaml
+### Secondary input file: dynamic_programming.yaml
 
-Here is an example of a **penalties.yaml** file, that defines parameters related to the penalties when computing water values:
+Here is an example of a **dynamic_programming.yaml** file, that defines parameters related to general simulation parameters, dynamic programming, Bellman values and penalties when computing water values:
 
 ```yaml
-# All parameters related to penalties when computing water values.
+# All parameters related to dynamic programming and penalties when computing water values.
 # Use ~ to fall back on default values (as implemented in C++ code)
 # default values are subject to change
 
-penalty_bottom_rule_curve : 0
+start_week : 1
+# starting week of the Bellman values computation
+# default: 1
+
+end_week : 10
+# end week of the Bellman values computation
+# default: 52
+
+nb_levels : 51
+# number of levels of the stock
+# default: 10
+
+antares_format : false
+# if true, the output will be in the Antares format (values will be interpolated to get 101 levels of stock)
+# default: false
+
+use_optimal_trajectory : false
+# By default, the program will use default trajectories for the reservoirs, consisting of only natural inflows.
+# If changed to `true`, optimal trajectories will be computed based on calculated Bellman values for any given area,
+# and will be used when computing water values of all subsequent areas, in the order they are defined in grid.csv.
+# default: false
+
+penalty_bottom_rule_curve : 2000
 # default: 0
 
-penalty_upper_rule_curve : 0
+penalty_upper_rule_curve : 2000
 # default: 0
 
 penalty_final_level : 2000
@@ -111,11 +134,48 @@ cvar : 0.8
 # will be restricted to [0.0 ; 1.0]
 ```
 
-This file is expected to be located at `<study_root>/user/water_values/penalties.yaml`. It is optional, however default values are hard-coded in the program.
+This file is expected to be located at `<study_root>/user/water_values/dynamic_programming.yaml`. It is optional, however default values are hard-coded in the program.
+
+### Secondary input file: settings.yaml
+
+Here is an example of a **settings.yaml** file, that defines parameters related to general, technical settings when computing water values:
+
+```yaml
+# All parameters related to general settings when computing water values.
+# Use ~ to fall back on default values (as implemented in C++ code)
+# default values are subject to change
+
+solver : xpress
+# default: xpress
+# possible values are: xpress, coin
+
+keep_mps : false
+# if true, a file (.mps or .svf, see below) for each solved problem will be written to disk (location is `<study>/output/<run>/mps_n`)
+# default: false
+
+problem_format : MPS
+# Selects the storage format of the generated mathematical problems (master + subproblems):
+# - OPTIMIZED (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and I/O time. The underlying format depends on the solver used.
+#   - XPRESS : svf format: compressed binary format.
+#   - COIN : unsupported. Falls back to MPS.
+# - MPS : write the problems in MPS format, which is a standard format for mathematical programming problems.
+# default: OPTIMIZED
+# possible values are: MPS, OPTIMIZED
+
+verbosity : INFO
+# Sets the desired level of verbosity of log messages displayed in the console. 
+# Setting the verbosity to a given level will allow messages to appear if their level is higher in the list or equal to the level specified.
+# For example setting the verbosity to `WARNING` will filter out all messages at the `TRACE`, `DEBUG` or `INFO` level,
+# and will pass along all messages at the `WARNING`, `ERR` or `FATAL` level.
+# default: INFO
+# possible values are: NONE, TRACE, DEBUG, INFO, WARNING, ERR, FATAL
+```
+
+This file is expected to be located at `<study_root>/user/water_values/settings.yaml`. It is optional, however default values are hard-coded in the program.
 
 ## Outputs
 
-The outputs are the **Bellman values**, **water values**, and **optimal trajectories** (if requested by use of the flag `--use-optimal-trajectory`, see below) for all specified weeks (see flags `--start-week` and `--end-week` below) discretized over the specified number of levels of stock (see flag `--nb-levels` below) for all areas in `grid.csv`.
+The outputs are the **Bellman values**, **water values**, and **optimal trajectories** (if requested by setting `use_optimal_trajectory` to true in `dynamic_programming.yaml`, see above) for all specified weeks (see parameters `start_week` and `end_week` above) discretized over the specified number of levels of stock (see parameters `nb_levels` above) for all areas in `grid.csv`.
 
 Outputted files consist of:
 
@@ -123,7 +183,7 @@ Outputted files consist of:
 - a comma-separated values file named `[grid_id]_[area]_water_values.csv`;
 - if requested, a comma-separated values file named `[grid_id]_[area]_optimal_trajectory.csv`.
 
-These files will be created in a timecoded folder located at `<study_root>/output/<YYYYMMDD-hhmm>eco/`. This folder will hold all output files produced by the program, including problem files in the MPS or SVF format if requested (see flags `--keepMps` and `--problem-format` below).
+These files will be created in a timecoded folder located at `<study_root>/output/<YYYYMMDD-hhmm>eco/`. This folder will hold all output files produced by the program, including problem files in the MPS or SVF format if requested (see parameters `keep_mps` and `problem_format` in `settings.yaml` above).
 
 ## Command line usage
 
@@ -150,80 +210,11 @@ Show a help message and exit.
 
 Path to the Antares study.
 
-#### `--solver {xpress, coin}`
-
-Default value: `xpress`.
-
 #### `--threads <number>`
 
 Default value: `1`.
 
 Number of threads that will be used to solve the problems from the grid.
-
-#### `--start-week <number>`
-
-Default value: `1`.
-
-Starting week of the Bellman values computation.
-
-#### `--end-week <number>`
-
-Default value: `52`.
-
-Ending week of the Bellman values computation.
-
-#### `--nb-levels <number>`
-
-Default value: `10`.
-
-Number of levels of the stock.
-
-#### `--antares-format <bool>`
-
-Default value: `false`.
-
-If true, the output will be in the Antares format (values will be interpolated to get 101 levels of stock).
-
-#### `--keepMps <bool>`
-
-Default value: `false`.
-
-If true, a file (.mps or .svf, see below) for each solved problem will be written to disk (location is `<study>/output/<run>/mps_n`).
-
-#### `--problem-format {mps, optimized}`
-
-Default value: `optimized`.
-
-Selects the storage format of the generated mathematical problems (master + subproblems):
-
-- OPTIMIZED (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and I/O time. The underlying format depends on the solver used.
-  - XPRESS : svf format: compressed binary format.
-  - COIN : unsupported. Falls back to MPS.
-- MPS : write the problems in MPS format, which is a standard format for mathematical programming problems.
-
-#### `--use-optimal-trajectory <bool>`
-
-Default value: `false`.
-
-By default, the program will use default trajectories for the reservoirs, consisting of only natural inflows. If changed to `true`, optimal trajectories will be computed based on calculated Bellman values for any given area, and will be used when computing water values of all subsequent areas, in the order they are defined in grid.csv.
-
-#### `--verbosity`
-
-Default value: `INFO`
-
-Sets the desired level of verbosity of log messages displayed in the console. Possible choices are:
-
-- `FATAL`
-- `ERR`
-- `WARNING`
-- `INFO`
-- `DEBUG`
-- `TRACE`
-- `NONE` (no log messages)
-
-Setting the verbosity to a given level will allow messages to appear if their level is higher in the list or equal to the level specified. For example setting the verbosity to `WARNING` will filter out all messages at the `TRACE`, `DEBUG` or `INFO` level, and will pass along all messages at the `WARNING`, `ERR` or `FATAL` level.
-
-This parameter is case insensitive.
 
 ## Workflow
 
