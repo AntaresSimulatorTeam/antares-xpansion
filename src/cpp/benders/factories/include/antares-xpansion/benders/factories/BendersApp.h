@@ -37,6 +37,10 @@ class BendersApp
 public:
     explicit BendersApp(const std::filesystem::path& options_file,
                         boost::mpi::communicator& world,
+                        const SOLVER &solver);
+
+    explicit BendersApp(SimulationOptions &&options,
+                        boost::mpi::communicator &world,
                         const SOLVER& solver);
     int Run();
     std::filesystem::path LogReportsName() const;

@@ -215,6 +215,10 @@ BendersApp::BendersApp(const std::filesystem::path& options_file,
 {
 }
 
+BendersApp::BendersApp(SimulationOptions &&options, boost::mpi::communicator &world,
+                       const SOLVER &solver) : pworld_(&world), solver_(solver), options_(std::move(options)) {
+}
+
 std::filesystem::path BendersApp::LogReportsName() const
 {
     return std::filesystem::path(options_.OUTPUTROOT) / "reportbenders.txt";
