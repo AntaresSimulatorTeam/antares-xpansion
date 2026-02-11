@@ -8,7 +8,6 @@
 
 #include <antares/api/singleProblemGetter.h>
 #include <antares/api/solver.h>
-#include "antares/file-tree-study-loader/FileTreeStudyLoader.h"
 
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
