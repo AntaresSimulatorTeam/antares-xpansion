@@ -81,13 +81,13 @@ std::string solverXpansionToSimulator(const SolverConfig& in)
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& simulation_dir)
 {
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
+    Solver::Optimization::OptimizationOptions optOptions;
 
     auto solver_name = solverXpansionToSimulator(solver_config_);
     optOptions.firstOptimOptions.solverName = solver_name;
     optOptions.firstOptimOptions.solverUsesBasis = true;
     optOptions.firstOptimOptions.solverExportsBasis = true;
-    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
+    optOptions.exportBehavior = Solver::Optimization::ExportBehavior::Always;
 
     optOptions.secondOptimOptions.solverName = solver_name;
     optOptions.secondOptimOptions.solverUsesBasis = true;
@@ -98,9 +98,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
         optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
         optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
     }
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(),
-                                                   simulation_dir,
-                                                   optOptions);
+    auto results = API::PerformSimulation(options_.StudyPath(), simulation_dir, optOptions);
 
     /**
      * Antares simulator allocate a lot of memory
@@ -125,10 +123,9 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
     lps_ = std::move(results.antares_problems);
 }
 
-void ProblemGeneration::generate_antares_problems(const std::filesystem::path& study_dir,
+void ProblemGeneration::generate_antares_problems(Antares::Solver::SingleProblemGetter& spg,
                                                   const std::filesystem::path& output_dir)
 {
-    Antares::Solver::SingleProblemGetter spg(study_dir);
     lps_.setConstantData(spg.getConstantData());
 
     // For now we need NTC timeseries and "structure" files (areas & link descriptions)
@@ -141,7 +138,7 @@ void ProblemGeneration::generate_antares_problems(const std::filesystem::path& s
     {
         // By convention, year indices start at 1 for indexing
         // Input week index already starts at 1 in `problem_id`, so no need to change it
-        Antares::Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
+        Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
         lps_.addWeeklyData(fixed, spg.getWeeklyData(problem_id));
     }
 
@@ -163,12 +160,12 @@ void ProblemGeneration::loadProblemsFromAntares(
   const std::filesystem::path& simulation_dir,
   ProblemGenerationLog::ProblemGenerationLogger* logger)
 {
-    Antares::Solver::SingleProblemGetter spg(study_dir);
+    Solver::SingleProblemGetter spg(study_dir);
     if (spg.areWeeksIndependent())
     {
         (*logger)(LogUtils::LOGLEVEL::INFO)
           << "Weeks are independent, using optimized problem generation" << std::endl;
-        generate_antares_problems(study_dir, simulation_dir);
+        generate_antares_problems(spg, simulation_dir);
     }
     else
     {
@@ -422,9 +419,7 @@ void ProblemGeneration::RunProblemGeneration(
 
         // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies
-        std::vector<
-          std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
-          weekly_data;
+        std::vector<std::pair<Solver::WeeklyProblemId, Solver::WeeklyDataFromAntares&>> weekly_data;
         std::ranges::for_each(lps_.weeklyProblems,
                               [&weekly_data](auto& pair)
                               { weekly_data.emplace_back(pair.first, pair.second); });
