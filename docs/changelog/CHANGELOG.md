@@ -5,7 +5,7 @@ v1.8.0 (01/2026)
 
 ### Features
 
-* Update Antares to v9.3.5
+* Update Antares to v9.3.6
 * Don't perform Antares Simulation, only generate problems (#1127)
 
 ### Bug fixes
