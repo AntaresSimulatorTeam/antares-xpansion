@@ -179,6 +179,9 @@ protected:
                                                    const std::string& name);
     std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap>& kvp) const;
+    void SetBasisForSubproblem(const std::string& name,
+                               const std::vector<int>& rstatus,
+                               const std::vector<int>& cstatus);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
@@ -340,7 +343,7 @@ private:
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
-    WorkerMasterData FillWorkerMasterData() const;
+    void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     WorkerMasterPtr _master;
