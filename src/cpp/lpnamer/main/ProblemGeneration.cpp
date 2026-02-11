@@ -72,7 +72,7 @@ std::string solverXpansionToSimulator(const SolverConfig& in)
     {
         return "xpress";
     }
-    if (in.Name() == "cbc" || in.Name() == "coin")
+    if (in.Name() == "cbc" || in.Name() == "coin" || in.Name() == "clp")
     {
         return "coin";
     }
