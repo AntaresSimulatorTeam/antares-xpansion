@@ -6,12 +6,14 @@ v1.8.0 (01/2026)
 ### Features
 
 * Update Antares to v9.3.6
-* Don't perform Antares Simulation, only generate problems (#1127)
+* Don't perform Antares Simulation, only generate problems (#1127) if weeks are not depenant
 
 ### Bug fixes
 
 * Fix Benders by batch criterion computation when aggregating cuts (#1154)
-* Fix CutTrace inadvertently overridden (#1160)
+* Fix CutTrace inadvertently overriden (#1160)
+* Fix benders by batch not handlig "large study" option
+* Bound alpha now default to false
 
 ### CI
 
