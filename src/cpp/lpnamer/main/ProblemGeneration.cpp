@@ -108,7 +108,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
      * Even if there is no memory leak not all freed memory become available.
      * Allocator or OS may cache some memory to reuse it
      * With malloc_trim(0) we free all memory that is not used anymore to be reclaimed by the
-     *program It is nescasssry to avoid allocating Xpansion memory on top of the unavailable memory
+     *program It is necessary to avoid allocating Xpansion memory on top of the unavailable memory
      *from simulator
      **/
 #ifndef _WIN32
