@@ -121,7 +121,7 @@ class PerfPlotsGenerator:
         height = 0.8 / nb_versions  # Defines space between different study data
         epsilon = 0.03  # Defines space between bars of the data for the different version of the same study
         actual_height = (1 - epsilon) * height
-        alpha_decrease_rate = 0.2  # Defines transparency difference between bars of the data for the different version of the same study
+        alpha_decrease_rate = 0.1  # Defines transparency difference between bars of the data for the different version of the same study
 
         for count, study in enumerate(self._display_names()):
             for version_cnt, xpansion_version in enumerate(self.xpansion_versions):
