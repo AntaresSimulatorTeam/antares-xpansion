@@ -80,14 +80,10 @@ int BendersApp::RunBenders()
     try
     {
         SetupLoggerAndOutputWriter(options_.get_benders_options());
-        BendersFactory factory(options_,
-                               logger_,
-                               writer_,
-                               math_log_driver_,
-                               pworld_->rank(),
-                               penv_,
-                               pworld_,
-                               benders_loggers_);
+        BendersFactory factory(
+          options_,
+          pworld_,
+          BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
         auto env = factory.PrepareForExecution(false);
         // context =
         // method =
@@ -155,14 +151,10 @@ int BendersApp::RunExternalLoop()
     try
     {
         SetupLoggerAndOutputWriter(options_.get_benders_options());
-        BendersFactory factory(options_,
-                               logger_,
-                               writer_,
-                               math_log_driver_,
-                               pworld_->rank(),
-                               penv_,
-                               pworld_,
-                               benders_loggers_);
+        BendersFactory factory(
+          options_,
+          pworld_,
+          BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
         auto env = factory.PrepareForExecution(true);
         if (!env)
         {
@@ -215,10 +207,8 @@ int BendersApp::RunExternalLoop()
 }
 
 BendersApp::BendersApp(const std::filesystem::path& options_file,
-                       mpi::environment& env,
                        mpi::communicator& world,
                        const SOLVER& solver):
-    penv_(&env),
     pworld_(&world),
     solver_(solver),
     options_(options_file)

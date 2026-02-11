@@ -64,6 +64,11 @@ public:
         return batch_collections_;
     }
 
+    std::vector<Batch>& BatchCollections()
+    {
+        return batch_collections_;
+    }
+
     Batch GetBatchFromId(unsigned batch_id) const
     {
         return batch_collections_[batch_id];

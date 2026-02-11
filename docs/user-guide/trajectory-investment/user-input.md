@@ -268,3 +268,17 @@ More generally, this type of input constraint entry translates to :
 $$
 \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value}
 $$
+
+## Input data of local study or input data from `input-trajectory.yaml` ?
+
+Each yearly study defines some input data from either `candidates.ini` and `settings.ini`. Some of this data are overriden by `input-trajectory.yaml` whereas some are reused:
+
+- **Master formulation**: The parameter of each individual study (integer or relaxed given in `settings.ini`) is overriden by the `formulation` given in the `input-trajectory.yaml` so that the same master formulation is applied at each node of the tree.
+- **Investment costs**:  In each individual study, investment costs are given in `candidates.ini`. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore **candidate costs given in `input-trajectory.yaml` override the local study ones**. The candidate costs are given in **euros** in the `candidates_types` section, for each candidate type and each case (investment, operation_maintenance and retirement).
+!!! Note
+    For each node, the list of candidates present in `candidate_to_type` must exactly match the candidates of the `candidates.ini` file of the corresponding study.
+
+- **Investment bounds**: For each candidate, three variables are used to define the capacity, namely $x_{i,n}$ (overall capacity), $dx_{i,n}^+$ and $dx_{i,n}^-$, respectively added and removed capacity for candidate $i$ at node $n$. Bounds on the overall capacity $x_{i,n}$ come from each individual `candidates.ini` file (section `max-investment` or `max-units` combined with `unit-size`), whereas bounds on $dx$ variables come from the `constraints` section in `input-trajectory.yaml`.
+- **Solver parameters**:
+    - The solver to use for resolution is given in the command line, see [Execution options](../trajectory-investment/orchestration.md#execution-options).
+    - The following solver parameters are set from the `settings.ini` of the root study: absolute gap, relative gap, relaxed gap, separation parameter, max iterations, log level, batch size and time limit, cut coefficient tolerance, master solution tolerance.

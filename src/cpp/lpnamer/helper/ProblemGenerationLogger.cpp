@@ -1,7 +1,5 @@
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
-#include "antares-xpansion/xpansion_interfaces/Clock.h"
-
 namespace ProblemGenerationLog
 {
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(const std::filesystem::path& logFilePath):

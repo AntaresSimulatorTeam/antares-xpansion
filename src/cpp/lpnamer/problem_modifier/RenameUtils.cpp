@@ -1,15 +1,15 @@
 #include "antares-xpansion/lpnamer/problem_modifier/RenameUtils.h"
 
-#include <algorithm>
 #include <charconv>
 #include <mutex>
-#include <ranges>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <unordered_map>
 #include <vector>
 
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 constexpr unsigned int HOURS_IN_A_WEEK = 168;
@@ -58,11 +58,12 @@ bool RenameUtils::try_replace_first_token(const std::string& name,
     return true;
 }
 
-std::string RenameUtils::replace_time_step_in_name(const std::string& name, unsigned int week)
+std::optional<std::string> RenameUtils::replace_time_step_in_name(const std::string& name,
+                                                                  unsigned int week)
 {
     if (week == 0)
     {
-        throw std::invalid_argument(LOGLOCATION + std::string("week must be >= 1"));
+        return std::nullopt;
     }
 
     std::string out;
@@ -79,34 +80,54 @@ std::string RenameUtils::replace_time_step_in_name(const std::string& name, unsi
         return out;
     }
 
-    throw std::runtime_error(LOGLOCATION + std::string("No [hour|day|week]<...> pattern found in ")
-                             + name);
+    return std::nullopt;
 }
 
-std::pair<const std::vector<std::string>&, const std::vector<std::string>&>
+std::optional<std::pair<const std::vector<std::string>&, const std::vector<std::string>&>>
 RenameUtils::rename_week_names(unsigned int week,
                                const std::vector<std::string>& variables,
-                               const std::vector<std::string>& constraints) const
+                               const std::vector<std::string>& constraints,
+                               ProblemGenerationLog::ProblemGenerationLogger* logger) const
 {
-    rename_week_names(week, variables, variables_names_);
-    rename_week_names(week, constraints, constraints_names_);
-    return {variables_names_.at(week), constraints_names_.at(week)};
+    if (!rename_week_names(week, variables, variables_names_, logger))
+    {
+        return std::nullopt;
+    }
+    if (!rename_week_names(week, constraints, constraints_names_, logger))
+    {
+        return std::nullopt;
+    }
+    return std::make_pair(std::ref(variables_names_.at(week)),
+                          std::ref(constraints_names_.at(week)));
 }
 
-void RenameUtils::rename_week_names(
+bool RenameUtils::rename_week_names(
   unsigned int week,
   const std::vector<std::string>& names,
-  std::unordered_map<int, std::vector<std::string>>& container_names) const
+  std::unordered_map<int, std::vector<std::string>>& container_names,
+  ProblemGenerationLog::ProblemGenerationLogger* logger) const
 {
     if (!container_names.contains(week))
     {
         std::vector<std::string> renamed_variables;
         renamed_variables.reserve(names.size());
-        std::ranges::transform(names,
-                               std::back_inserter(renamed_variables),
-                               [&week](const auto& n)
-                               { return replace_time_step_in_name(n, week); });
+        for (const auto& n: names)
+        {
+            auto renamed = replace_time_step_in_name(n, week);
+            if (!renamed)
+            {
+                if (logger)
+                {
+                    (*logger)(LogUtils::LOGLEVEL::ERR, true)
+                      << "Failed to rename variable/constraint '" << n << "' for week " << week
+                      << std::endl;
+                }
+                return false;
+            }
+            renamed_variables.push_back(*renamed);
+        }
         std::lock_guard guard(rename_mutex_);
         container_names.emplace(week, renamed_variables);
     }
+    return true;
 }
