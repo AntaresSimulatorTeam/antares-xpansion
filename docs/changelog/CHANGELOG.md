@@ -11,7 +11,7 @@ v1.8.0 (01/2026)
 ### Bug fixes
 
 * Fix Benders by batch criterion computation when aggregating cuts (#1154)
-* Fix CutTrace inadvertently overriden (#1160)
+* Fix CutTrace inadvertently overridden (#1160)
 
 ### CI
 
