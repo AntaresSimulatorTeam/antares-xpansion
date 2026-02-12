@@ -85,8 +85,8 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
     bool found_capacity = false;
     bool found_efficiency = false;
     // computing water values requires that the area uses heuristic and not water
-    bool use_water = true;      // expected: false
-    bool use_heuristic = false; // expected: true
+    std::optional<bool> use_water = std::nullopt;     // expected: false
+    std::optional<bool> use_heuristic = std::nullopt; // expected: true
 
     while (std::getline(file, line))
     {
@@ -154,11 +154,20 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
         throw std::runtime_error("Missing efficiency for area: " + area);
     }
     // computing water values requires that the area uses heuristic and not water
-    if (!use_heuristic || use_water)
+    // but only if said sections exist
+    // otherwise, a default value is used, as implemented below:
+    if (!use_heuristic.value_or(true))
+    {
+        throw std::runtime_error(
+          "Area " + area
+          + " should define [use heuristic] as "
+            "true in hydro.ini, or not define it at all, to compute water values.");
+    }
+    if (use_water.value_or(false))
     {
         throw std::runtime_error("Area " + area
-                                 + " should define [use water] as False and [use heuristic] as "
-                                   "True in hydro.ini to compute water values.");
+                                 + " should define [use water] as false in hydro.ini, or not "
+                                   "define it at all, to compute water values.");
     }
 }
 
