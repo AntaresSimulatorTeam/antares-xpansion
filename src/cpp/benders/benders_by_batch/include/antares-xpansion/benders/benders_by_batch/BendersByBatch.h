@@ -33,9 +33,6 @@ private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
                           const std::vector<std::string>& batch_sub_problems,
                           double* batch_subproblems_costs_contribution_in_gap_per_proc);
-    double ComputeBatchContributionInGap(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                const std::vector<std::string>& batch_sub_problems,
                                double* batch_subproblems_costs_contribution_in_gap_per_proc);
