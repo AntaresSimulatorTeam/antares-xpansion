@@ -55,6 +55,13 @@
           "antares": 438,
           "problem_generation": 148,
           "benders": 1041
+        },
+        {
+          "version": 1.8,
+          "batch_size": 96,
+          "antares": 79,
+          "problem_generation": 151,
+          "benders": 1084
         }
       ]
     },
@@ -113,6 +120,13 @@
           "antares": 464,
           "problem_generation": 143,
           "benders": 1095
+        },
+        {
+          "version": 1.8,
+          "batch_size": 96,
+          "antares": 79,
+          "problem_generation": 151,
+          "benders": 1030
         }
       ]
     },
@@ -171,6 +185,13 @@
           "antares": 432,
           "problem_generation": 156,
           "benders": 1129
+        },
+        {
+          "version": 1.8,
+          "batch_size": 96,
+          "antares": 105,
+          "problem_generation": 143,
+          "benders": 1171
         }
       ]
     },
@@ -229,6 +250,13 @@
           "antares": 406,
           "problem_generation": 87,
           "benders": 587
+        },
+        {
+          "version": 1.8,
+          "batch_size": 96,
+          "antares": 66,
+          "problem_generation": 132,
+          "benders": 518
         }
       ]
     }
