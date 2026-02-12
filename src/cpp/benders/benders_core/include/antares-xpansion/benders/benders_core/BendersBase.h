@@ -319,9 +319,6 @@ protected:
     // to p)
     void SetSubproblemsVariablesIndices();
 
-    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
-                                   const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-
 private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
@@ -331,7 +328,6 @@ private:
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
-    int SetAggregation(int max_aggregation) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;

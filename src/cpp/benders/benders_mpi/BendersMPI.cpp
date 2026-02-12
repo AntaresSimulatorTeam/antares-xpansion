@@ -299,13 +299,9 @@ void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathere
 
     _data.ub = 0;
 
-    if (_world.rank() == rank_0)
+    for (const auto& subproblem_data_map: gathered_subproblem_map)
     {
-        // TODO: In Benders MPI the subproblem split can be done once as it is the same at each
-        // iteration
-        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
-                                                                      _data.nsubproblem);
-        build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);
+        BuildCutFull(subproblem_data_map);
     }
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
@@ -399,7 +395,6 @@ void BendersMpi::Run()
         _data.stop = false;
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
-
     while (!_data.stop)
     {
         ++_data.it;

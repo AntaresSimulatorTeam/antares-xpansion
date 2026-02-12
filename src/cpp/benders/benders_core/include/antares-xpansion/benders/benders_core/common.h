@@ -61,8 +61,6 @@ using ActiveCutStorage = std::vector<ActiveCut>;
 using mps_coupling = std::pair<std::string, std::string>;
 using mps_coupling_list = std::list<mps_coupling>;
 
-using SubProblemNamesInCut = std::vector<std::pair<std::string, int>>;
-
 struct Predicate
 {
     bool operator()(const PointPtr& lhs, const PointPtr& rhs) const
@@ -219,7 +217,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     double CUT_COEFFICIENT_TOLERANCE = 5e-3;
 
     bool RESUME = false;
-    int AGGREGATION = 0;
+    bool AGGREGATION = false;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
     bool CACHE_PROBLEMS = false;
