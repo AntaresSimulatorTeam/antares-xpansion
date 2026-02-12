@@ -377,15 +377,17 @@ void BendersByBatch::GetSubproblemCutCache(
         std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
         PlainData::SubProblemData subproblem_data{};
         SolveSubproblem(subproblem_data, name, worker);
-        auto timer = calculate_subproblem_contribution(name, subproblem_data, batch_subproblems_costs_contribution_in_gap_per_proc);
+        auto timer = calculate_subproblem_contribution(
+          name,
+          subproblem_data,
+          batch_subproblems_costs_contribution_in_gap_per_proc);
         subproblem_data.subproblem_timer += timer.elapsed();
         auto [rstatus, cstatus] = GetProblemBasis(worker);
         subproblem_data_map[name] = subproblem_data;
         SetBasisForSubproblem(name, rstatus, cstatus);
         std::call_once(
           variable_indice_once_flag,
-          [&](const auto& worker_) {
-            SetSubproblemVariablesIndices(worker_); },
+          [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
           *worker);
     }
 }
@@ -399,10 +401,9 @@ Timer BendersByBatch::calculate_subproblem_contribution(
 
     auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
     // Tbb includes min max define of windows std::numeric_limits<int>::max();
-    *batch_subproblems_costs_contribution_in_gap_per_proc += (std::max)(subproblem_data
-                                                                            .subproblem_cost
-                                                                          - subpb_cost_under_approx,
-                                                                        0.0);
+    *batch_subproblems_costs_contribution_in_gap_per_proc += (std::max)(
+      subproblem_data.subproblem_cost - subpb_cost_under_approx,
+      0.0);
     double cut_value_at_x_cut = subproblem_data.subproblem_cost;
     for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
     {
