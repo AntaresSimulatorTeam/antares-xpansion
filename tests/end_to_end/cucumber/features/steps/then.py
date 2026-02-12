@@ -3,7 +3,6 @@ import glob
 import io
 import math
 import os
-import json
 
 import numpy as np
 import xpress as xp
@@ -251,7 +250,6 @@ def simu_success(context):
 
 @then("the expected overall cost is {value:g}")
 def check_overall_cost(context, value):
-    print(f"printing the value {value}")
     np.testing.assert_allclose(value, context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
 
 
@@ -295,7 +293,3 @@ def check_benders_solver(context, string):
     solver_in_benders = context.options_data["SOLVER_NAME"]
     print(f"Solver in benders: {solver_in_benders}\n")
     assert solver_in_benders.upper() == string.upper()
-
-
-
-
