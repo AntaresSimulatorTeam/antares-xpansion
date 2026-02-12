@@ -149,7 +149,7 @@ protected:
         options.SEPARATION_PARAM = sep_param;
         options.MASTER_FORMULATION = MasterFormulation::RELAXED;
         options.RESUME = false;
-        options.NB_CUTS_PER_ITER = false;
+        options.AGGREGATION = false;
         options.TRACE = false;
         options.BOUND_ALPHA = true;
         options.MASTER_SOLUTION_TOLERANCE = 0.1;
