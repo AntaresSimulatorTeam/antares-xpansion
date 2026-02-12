@@ -1,9 +1,9 @@
 {
     "MAX_ITERATIONS": -1,
-    "ABSOLUTE_GAP": 1e-06,
+    "ABSOLUTE_GAP": 1e-03,
     "RELATIVE_GAP": 1e-06,
     "RELAXED_GAP": 0.001,
-    "AGGREGATION": 0,
+    "AGGREGATION": 3,
     "OUTPUTROOT": ".",
     "TRACE": true,
     "SLAVE_WEIGHT": "CONSTANT",
@@ -20,7 +20,7 @@
     "MASTER_FORMULATION": "integer",
     "SOLVER_NAME": "COIN",
     "TIME_LIMIT": 1000000000000.0,
-    "LOG_LEVEL": 0,
+    "LOG_LEVEL": 2,
     "LAST_MASTER_MPS": "master_last_iteration",
     "LAST_MASTER_BASIS": "master_last_basis.bss",
     "DO_OUTER_LOOP": false
