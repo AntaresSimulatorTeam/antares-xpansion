@@ -110,9 +110,6 @@ int main(int argc, char** argv)
         auto studyPath = optionsParser.StudyPath();
         int nbThreads = optionsParser.NbThreads();
 
-        auto gridCollection = std::make_shared<GridCollection>(studyPath
-                                                               / "user/water_values/grid.csv");
-
         const std::filesystem::path bellmanConfigFilePath(
           studyPath / "user/water_values/dynamic_programming.yaml");
         const std::filesystem::path settingsConfigFilePath(studyPath
@@ -135,13 +132,6 @@ int main(int argc, char** argv)
         const std::string problemFormat = scr.getProblemFormat();
         const std::string verbosity = scr.getVerbosity();
 
-        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
-                                                dpcr.getPenaltyBottomRuleCurve(),
-                                                dpcr.getPenaltyUpperRuleCurve(),
-                                                dpcr.getPenaltyFinalLevel(),
-                                                dpcr.getForceFinalLevel(),
-                                                dpcr.getFinalLevel());
-
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
           .simulation_dir = ConfigurationManager::generateOutputName(studyPath),
@@ -160,6 +150,17 @@ int main(int argc, char** argv)
         std::shared_ptr<FilteredLogger> logger = std::make_shared<FilteredLogger>(
           masterLogger,
           LogUtils::StrToLogLevel(verbosity));
+
+        auto gridCollection = std::make_shared<GridCollection>(studyPath
+                                                                 / "user/water_values/grid.csv",
+                                                               logger);
+
+        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
+                                                dpcr.getPenaltyBottomRuleCurve(),
+                                                dpcr.getPenaltyUpperRuleCurve(),
+                                                dpcr.getPenaltyFinalLevel(),
+                                                dpcr.getForceFinalLevel(),
+                                                dpcr.getFinalLevel());
 
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message(

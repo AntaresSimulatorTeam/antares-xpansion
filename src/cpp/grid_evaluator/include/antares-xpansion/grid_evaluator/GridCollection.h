@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 /// @brief key area name, value constraint map
 using Week = int;
@@ -74,11 +76,20 @@ private:
 
 class GridCollection
 {
-    void loadReservoirManagement(const std::filesystem::path& studyPath, const std::string& area);
-
 public:
-    GridCollection(const std::filesystem::path& filePath);
+    GridCollection(const std::filesystem::path& filePath,
+                   Logger logger,
+                   const std::optional<std::filesystem::path>& generalDataFilePath = std::nullopt);
 
     std::map<int, GridDefinition> gridDefinitions;
     std::map<AreaName, Reservoir> reservoirs;
+    int mcYears;
+    std::vector<int> activeYears;
+
+private:
+    void loadReservoirManagement(const std::filesystem::path& studyPath, const std::string& area);
+    void loadGeneralDataIni(const std::filesystem::path& inputPath);
+    void checkGridValidity() const;
+
+    Logger logger;
 };

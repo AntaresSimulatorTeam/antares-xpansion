@@ -45,8 +45,15 @@ void GridDefinition::addGridElement(const std::string& pbName,
 
 /// @brief Build a GridCollection from a file
 /// @param filePath
-GridCollection::GridCollection(const std::filesystem::path& filePath)
+GridCollection::GridCollection(const std::filesystem::path& filePath,
+                               Logger logger,
+                               const std::optional<std::filesystem::path>& generalDataFilePath):
+    logger(logger)
 {
+    // first of all: Read the general data file
+    loadGeneralDataIni(generalDataFilePath.value_or(
+      filePath.parent_path().parent_path().parent_path() / "settings/generaldata.ini"));
+
     // Read the grid.csv file
     std::ifstream grid_csv(filePath);
     if (!grid_csv.is_open())
@@ -101,6 +108,19 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
     {
         gridDefinition.setReservoirs(reservoirs);
     }
+
+    checkGridValidity();
+}
+
+/// @brief Load MC Years and active Years from the generaldata file
+/// @param inputPath study path
+void GridCollection::loadGeneralDataIni(const std::filesystem::path& inputPath)
+{
+    // TODO: modify GeneralDataIniReader() to take any ILoggerXpansion-derived logger
+    // this will crash if attempting to log in the case of an error
+    auto generalDataReader = GeneralDataIniReader(inputPath, nullptr);
+    activeYears = generalDataReader.GetActiveYears();
+    mcYears = generalDataReader.GetNbYears();
 }
 
 /// @brief Load a ReservoirManagement from a study path and an area
@@ -109,7 +129,48 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
 void GridCollection::loadReservoirManagement(const std::filesystem::path& studyPath,
                                              const std::string& area)
 {
-    reservoirs.emplace(area, Reservoir(studyPath, area));
+    Reservoir reservoir(studyPath, area);
+    // this reservoir contains raw data read from files; it must be modified to take into account
+    // the number of MC years
+    if (reservoir.inflow[0].size() == 0)
+    {
+        // initialize values to 0 for all MC years
+        logger->display_message("No inflow data was read, values of zero are assumed.",
+                                LogUtils::LOGLEVEL::INFO,
+                                logger->CONTEXT);
+        reservoir.inflow.assign(Reservoir::weeks_in_year, std::vector<double>(mcYears, 0.0));
+    }
+    else if (reservoir.inflow[0].size() == 1)
+    {
+        // copy this time series to all possible MC years
+        logger->display_message(
+          "Inflow values were found for a single year; these values will be used for all MC years.",
+          LogUtils::LOGLEVEL::INFO,
+          logger->CONTEXT);
+        std::vector<double> inflowToCopy = reservoir.inflow[0];
+        reservoir.inflow.assign(Reservoir::weeks_in_year, inflowToCopy);
+    }
+    else if (reservoir.inflow[0].size() < mcYears)
+    {
+        // error
+        throw std::domain_error("ERROR: mismatch between inflow data ("
+                                + std::to_string(reservoir.inflow[0].size())
+                                + ") and number of MC years (" + std::to_string(mcYears) + ")");
+    }
+
+    reservoirs.emplace(area, reservoir);
+}
+
+void GridCollection::checkGridValidity() const
+{
+    for (auto& grid: gridDefinitions | std::views::values)
+    {
+        if (grid.gridElements.size() > 1)
+        {
+            throw std::domain_error(
+              "Water values can currently only be computed for one gridElement per gridId.");
+        }
+    }
 }
 
 /// @brief Generate Grid values for all gridElements

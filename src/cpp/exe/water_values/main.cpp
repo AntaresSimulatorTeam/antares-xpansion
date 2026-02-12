@@ -175,18 +175,6 @@ std::vector<std::vector<double>> computeWaterValues(
     return derivatives;
 }
 
-void checkForValidGrid(std::shared_ptr<GridCollection> gridCollection)
-{
-    for (auto& grid: gridCollection->gridDefinitions | std::views::values)
-    {
-        if (grid.gridElements.size() > 1)
-        {
-            throw std::domain_error(
-              "Water values can currently only be computed for one gridElement per gridId.");
-        }
-    }
-}
-
 int main(int argc, char** argv)
 {
     try
@@ -195,11 +183,6 @@ int main(int argc, char** argv)
         optionsParser.Parse(argc, argv);
         auto studyPath = optionsParser.StudyPath();
         int nbThreads = optionsParser.NbThreads();
-
-        auto gridCollection = std::make_shared<GridCollection>(studyPath
-                                                               / "user/water_values/grid.csv");
-
-        checkForValidGrid(gridCollection);
 
         const std::filesystem::path bellmanConfigFilePath(
           studyPath / "user/water_values/dynamic_programming.yaml");
@@ -241,6 +224,10 @@ int main(int argc, char** argv)
         std::shared_ptr<FilteredLogger> logger = std::make_shared<FilteredLogger>(
           masterLogger,
           LogUtils::StrToLogLevel(verbosity));
+
+        auto gridCollection = std::make_shared<GridCollection>(studyPath
+                                                                 / "user/water_values/grid.csv",
+                                                               logger);
 
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message("Generating problems (starting time: "

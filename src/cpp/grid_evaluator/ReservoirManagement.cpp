@@ -232,6 +232,8 @@ void Reservoir::loadInflow(const std::filesystem::path& dir_study)
 
     std::vector<std::vector<double>> daily_inflow;
     std::string line;
+    // during the parsing of the file, scenario builder is not used, so it is assumed that year 1
+    // goes with column 1, year 2 goes with column 2, etc.
     while (std::getline(file, line))
     {
         std::istringstream iss(line);
@@ -383,6 +385,7 @@ void Reservoir::initializeOptimalTrajectory(int startWeek, int endWeek)
     int nbWeeks = endWeek - startWeek + 2; // nb of week + 1
     // inflow holds values for all possible MCYears, which can be a
     // lot, but they are necessary at this point
+    // TODO: use active years only
     int nbMCYears = inflow[0].size();
     // initialize with initial levels
     std::vector<std::vector<double>> initTraj(nbWeeks,

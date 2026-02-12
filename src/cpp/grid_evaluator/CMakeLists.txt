@@ -20,10 +20,11 @@ target_sources(grid_evaluator_lib PRIVATE
 
 target_link_libraries(grid_evaluator_lib
         PUBLIC
-        antaresXpansion::benders_core
-        antaresXpansion::output_core
+        ${PROJECT_NAME}::benders_core
+        ${PROJECT_NAME}::output_core
         Antares::solver_api
-        antaresXpansion::lp_namer_model
+        ${PROJECT_NAME}::lp_namer_model
+        ${PROJECT_NAME}::lp_namer_input_reader
 )
 
 target_include_directories(grid_evaluator_lib

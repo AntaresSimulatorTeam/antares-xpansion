@@ -256,7 +256,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     copyDataOneNodeBase();
     auto expected_costs = getOutputCosts("result_bellman_values_no_penalties.csv");
 
-    auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv", logger);
     auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second, 0, 0, 0);
 
@@ -293,7 +293,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     copyDataOneNodeBase();
     auto expected_costs = getOutputCosts("result_bellman_values_penalties.csv");
 
-    auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv", logger);
     auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,
@@ -333,7 +333,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     copyDataOneNodeBase();
     auto expected_costs = getOutputCosts("result_bellman_values_penalties_final_level.csv");
 
-    auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv", logger);
     auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,
@@ -374,7 +374,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
     copyDataThreeNodes();
 
     auto grid_collection = std::make_shared<GridCollection>(
-      GridCollection(tmpDir / "user/water_values/grid.csv"));
+      GridCollection(tmpDir / "user/water_values/grid.csv", logger));
 
     ConfigurationManager::ConfigDirectories config_dirs{
       .study_dir = tmpDir,
@@ -456,7 +456,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
     copyDataThreeNodes();
 
     auto grid_collection = std::make_shared<GridCollection>(
-      GridCollection(tmpDir / "user/water_values/grid.csv"));
+      GridCollection(tmpDir / "user/water_values/grid.csv", logger));
 
     ConfigurationManager::ConfigDirectories config_dirs{
       .study_dir = tmpDir,
@@ -541,7 +541,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
     copyDataThreeNodes();
 
     auto grid_collection = std::make_shared<GridCollection>(
-      GridCollection(tmpDir / "user/water_values/grid.csv"));
+      GridCollection(tmpDir / "user/water_values/grid.csv", logger));
 
     ConfigurationManager::ConfigDirectories config_dirs{
       .study_dir = tmpDir,
