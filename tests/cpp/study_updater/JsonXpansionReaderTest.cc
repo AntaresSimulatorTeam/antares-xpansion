@@ -121,7 +121,7 @@ class JsonXpansionReaderTest : public ::testing::Test {
 	"options" : 
 	{
 		"ACTIVECUTS" : false,
-		"NB_CUTS_PER_ITER" : false,
+		"AGGREGATION" : false,
 		"BASIS" : true,
 		"BOUND_ALPHA" : true,
 		"CSV_NAME" : "benders_output_trace",

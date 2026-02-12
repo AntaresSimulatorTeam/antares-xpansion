@@ -1,4 +1,4 @@
-Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to the master problem at every iteration. We test that we converge to the right overall cost and with the correct solution
+Feature: AGGREGATION in options.json file sets the number cuts to add to the master problem at every iteration. We test that we converge to the right overall cost and with the correct solution
 	
 	@short @full-launch
 	Scenario: Classical Benders with 1 proc
