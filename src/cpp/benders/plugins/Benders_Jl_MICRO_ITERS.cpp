@@ -39,6 +39,24 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
     if (handle_)
     {
         init_julia_FUNC init_julia = (init_julia_FUNC)dlsym(handle_, "init_julia");
+        
+        shut_down_julia_ = (shut_down_julia_FUNC)dlsym(handle_,
+                                                                           "shutdown_julia");        
+
+        compute_factors_
+                                    = (jl_compute_factors_for_microiterations_FUNC)
+                                    dlsym(handle_, "jl_compute_factors_for_microiterations");
+        
+        jl_return_constraints_for_micro_iteration_
+                                    = (jl_return_constraints_for_micro_iteration_FUNC)
+                                    dlsym(handle_, "jl_return_constraints_for_micro_iteration");
+
+
+
+        jl_load_variables_ = (jl_load_variables_FUNC)
+                                            dlsym(handle_, "jl_load_variables");
+                        
+
         init_julia(0, NULL);
     }
     else 
@@ -181,6 +199,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
                                             const BendersBaseOptions& options,
                                             const SolverLogManager& solver_log_manager)
 {
+    std::cout<<"OnBendersStart "<<std::endl ; 
     _logger = logger;
 
     
@@ -188,16 +207,11 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
     if (handle_)
     {
         int size_subs = sub_pb_ids_.n_subproblems;
-        // for (int i = 0; i < size_subs; i++)
-        // {
-            
-        // }
+        
         BuildConstraintsReaderMap(subproblem_map, options, solver_log_manager);
 
         //reading inputs on julia side
-        jl_load_variables_FUNC jl_load_variables = (jl_load_variables_FUNC)
-          dlsym(handle_, "jl_load_variables");
-        jl_load_variables(sub_pb_ids_);
+        jl_load_variables_(sub_pb_ids_);
     }
 }
 
@@ -239,13 +253,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
       candidates_iter_res.data(),
       master_out.size()};
     
-    jl_compute_factors_for_microiterations_FUNC compute_factors
-      = (jl_compute_factors_for_microiterations_FUNC)
-        dlsym(handle_, "jl_compute_factors_for_microiterations");
-
-
     auto t1 = std::chrono::high_resolution_clock::now() ; 
-    const char* jl_log_msg = compute_factors(master_benders_input,num_iter);
+    
+    const char* jl_log_msg = compute_factors_(master_benders_input,num_iter);
     auto t2 = std::chrono::high_resolution_clock::now() ; 
     auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
     if (options_.LOG_LEVEL >= 2)
@@ -288,9 +298,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
     auto constraint_reader = constraints_map_[constraint_reader_name];
 
-    jl_return_constraints_for_micro_iteration_FUNC jl_return_constraints_for_micro_iteration
-      = (jl_return_constraints_for_micro_iteration_FUNC)
-        dlsym(handle_, "jl_return_constraints_for_micro_iteration");
+    
     auto sub_solution = constraint_reader->get_sub_solution();
     std::vector<FlowN> flows_to_follow;
     flows_to_follow.reserve(variables_to_follow_.size());
@@ -307,7 +315,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     FlowNList N_flows = FlowNList{flows_to_follow.data(), flows_to_follow.size()};
     auto t1 = std::chrono::high_resolution_clock::now() ; 
 
-    ViolatedFlowConstraints constraints_to_add = jl_return_constraints_for_micro_iteration(
+    ViolatedFlowConstraints constraints_to_add = jl_return_constraints_for_micro_iteration_(
       sub_name.c_str(),
       N_flows);
 

@@ -254,6 +254,10 @@ private:
 
     mpi::communicator* _world ; 
     void* handle_;
+    shut_down_julia_FUNC shut_down_julia_ ; 
+    jl_compute_factors_for_microiterations_FUNC compute_factors_ ; 
+    jl_return_constraints_for_micro_iteration_FUNC jl_return_constraints_for_micro_iteration_ ; 
+    jl_load_variables_FUNC jl_load_variables_ ; 
     const SimulationOptions& options_ ; 
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;

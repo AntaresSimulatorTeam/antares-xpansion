@@ -51,7 +51,7 @@ SolverRepresentedRows ConstraintsReader::get_row(const std::string& name)
     result.dmatval.resize(ncols);
 
     int nels(0);
-
+    
     solver_->get_rows(result.mstart.data(),
                       result.mclind.data(),
                       result.dmatval.data(),

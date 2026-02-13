@@ -3,8 +3,8 @@ target_sources(plugins PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/plugins/BendersPlugin.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h
         Benders_Jl_MICRO_ITERS.cpp
-
 )
+
 target_link_libraries(plugins
             PUBLIC 
             antaresXpansion::benders_core
