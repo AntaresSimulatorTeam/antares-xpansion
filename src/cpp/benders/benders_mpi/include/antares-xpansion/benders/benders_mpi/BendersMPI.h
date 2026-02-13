@@ -61,8 +61,6 @@ private:
 
     void check_if_some_proc_had_a_failure(int success);
 
-    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_ ; 
-
 protected:
     [[nodiscard]] bool shouldParallelize() const final
     {
