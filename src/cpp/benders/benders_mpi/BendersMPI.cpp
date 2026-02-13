@@ -30,6 +30,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     BuildMasterProblem();
+    SubProblemNamesInCut subs_per_proc ; 
     if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;
@@ -57,17 +58,75 @@ void BendersMpi::InitializeProblems()
             if (auto process_to_feed = current_problem_id % _world.size();
                 process_to_feed == _world.rank())
             { // Assign  [problemNumber % processCount] to processID
-
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                subs_per_proc.push_back(std::make_pair(problem.first,process_to_feed)) ; 
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
             }
             current_problem_id++;
         }
     }
+    std::vector<SubProblemNamesInCut> gathered_subs_per_proc ; 
+    mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
+    if (_world.rank() == rank_0) 
+        subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc,_data.nsubproblem) ; 
+
+    
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
+
+std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(const std::vector<SubProblemNamesInCut>& gathered_sub_per_proc, int max_aggregation)
+{
+    int n_cuts = SetAggregation(max_aggregation);
+
+    std::vector<Entry> ordered(_data.nsubproblem);
+
+    for (auto& proc_subs_vec : gathered_sub_per_proc) 
+    {
+        for (auto& sub :  proc_subs_vec) 
+        {
+            auto it = _problem_to_id.find(sub.first) ; 
+            if (it == _problem_to_id.end()) 
+            {
+                continue ; 
+            }
+            ordered[it->second] = {&sub.first, sub.second};
+        }
+    }
+
+
+    std::vector<SubProblemNamesInCut> cuts;
+    cuts.reserve(n_cuts);
+
+    SubProblemNamesInCut cut;
+    cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
+
+    for (const auto& e: ordered)
+    {
+        if (!e.name)
+        {
+            continue;
+        }
+
+        cut.emplace_back(*e.name, e.vecPos);
+        if (cut.size() == static_cast<size_t>((_data.nsubproblem + n_cuts - 1) / n_cuts))
+        {
+            cuts.emplace_back(std::move(cut));
+            cut.clear();
+            cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
+        }
+    }
+
+    if (!cut.empty())
+    {
+        cuts.emplace_back(std::move(cut));
+    }
+    return cuts;
+
+
+}
+
 
 void BendersMpi::BroadCastVariablesIndices()
 {
@@ -301,14 +360,6 @@ void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathere
 
     if (_world.rank() == rank_0)
     {
-        // TODO: In Benders MPI the subproblem split can be done once as it is the same at each
-        // iteration
-
-        if (_data.it<=1)
-            subproblem_per_cut_indices_ = split_subproblem_data_pairs(gathered_subproblem_map,
-                                                                    _data.nsubproblem);
-
-
         build_all_aggregated_cuts(subproblem_per_cut_indices_, gathered_subproblem_map);
     }
 
