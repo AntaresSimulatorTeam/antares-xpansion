@@ -409,6 +409,11 @@ void BendersMpi::Run()
          * process*/
         step_1_solve_master();
 
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMasterIterationStart(_data.x_cut, _data.it);
+        }
+
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
         if (!exception_raised_)
@@ -429,6 +434,11 @@ void BendersMpi::Run()
         {
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
+        }
+
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMasterIterationEnd();
         }
     }
     if (_world.rank() == rank_0)
@@ -471,8 +481,19 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
+    if (benders_plugin_)
+    {
+        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+    }
+
     Run();
     _world.barrier();
+
+    if (benders_plugin_)
+    {
+        int rank_proc = Rank();
+        benders_plugin_->OnBendersEnd(rank_proc);
+    }
 
     post_run_actions();
 
