@@ -630,6 +630,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     {
         benders_plugin_->OnBendersMicroIterationStart();
     }
+    
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
