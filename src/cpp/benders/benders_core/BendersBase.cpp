@@ -740,25 +740,38 @@ std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
   const std::vector<SubProblemDataMap>& gathered_subproblem_map,
   int max_aggregation) const
 {
+    struct SubProblemNameAndVecPos
+    {
+        const std::string& name;
+        size_t index{0};
+    };
+
     int n_cuts = SetAggregation(max_aggregation);
 
     auto index_view = std::views::iota(0, static_cast<int>(gathered_subproblem_map.size()));
 
-    // Vue 1 : transformer les indices en paires (name, vecPos) uniquement pour les entrées valides
     auto filtered_pairs_view = index_view
                                | std::views::transform(
-                                 [this, &gathered_subproblem_map](int vecPos)
+                                 [this, &gathered_subproblem_map](size_t index)
                                  {
-                                     return gathered_subproblem_map[vecPos]
-                                            | std::views::transform(
-                                              [vecPos](const auto& name_pair)
-                                                -> std::pair<std::string, int>
-                                              { return {name_pair.first, vecPos}; })
-                                            | std::views::filter(
-                                              [this](const auto& name_pair) {
-                                                  return _problem_to_id.find(name_pair.first)
-                                                         != _problem_to_id.end();
-                                              });
+                                     auto nameAndVecView = gathered_subproblem_map[index]
+                                                           | std::views::transform(
+                                                             [index](const auto& name_pair) {
+                                                                 return SubProblemNameAndVecPos{
+                                                                   name_pair.first,
+                                                                   index};
+                                                             });
+                                     auto filtered_nameAndVecView = nameAndVecView
+                                                                    | std::views::filter(
+                                                                      [this](const auto& name_pair)
+                                                                      {
+                                                                          return _problem_to_id
+                                                                                   .find(
+                                                                                     name_pair.name)
+                                                                                 != _problem_to_id
+                                                                                      .end();
+                                                                      });
+                                     return filtered_nameAndVecView;
                                  });
 
     auto ordered_view = filtered_pairs_view | std::views::join;
@@ -769,9 +782,9 @@ std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
     SubProblemNamesInCut cut;
     cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
 
-    for (const auto& [name, vecPos]: ordered_view)
+    for (const auto& [name, index]: ordered_view)
     {
-        cut.emplace_back(name, vecPos);
+        cut.emplace_back(name, index);
         if (cut.size() == static_cast<size_t>((_data.nsubproblem + n_cuts - 1) / n_cuts))
         {
             cuts.emplace_back(std::move(cut));
