@@ -46,6 +46,7 @@ void BendersByBatch::InitializeProblems()
                 }
                 else
                 {
+                    subs_per_proc.push_back(std::make_pair(*it,process_to_feed)) ;              
                     ++it;
                 }
                 ++problem_count;
