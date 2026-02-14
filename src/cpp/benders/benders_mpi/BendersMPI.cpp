@@ -43,6 +43,7 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
+                subs_per_proc.emplace_back(it->first,process_to_feed) ; 
                 ++it;
             }
             current_problem_id++;
@@ -66,6 +67,7 @@ void BendersMpi::InitializeProblems()
             current_problem_id++;
         }
     }
+
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc ; 
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
     if (_world.rank() == rank_0) 

@@ -16,6 +16,7 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
 
+
 /**
  * std execution policies don't share a base type so we can't just select
  *them in place in the foreach This function allow the selection of policy
