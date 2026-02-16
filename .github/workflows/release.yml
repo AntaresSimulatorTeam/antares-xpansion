@@ -12,6 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          prerelease: ${{ contains(github.ref, '-rc') }}
+        run: gh release create ${{ github.ref_name }} --prerelease=${{ contains(github.ref, '-rc') }} --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
