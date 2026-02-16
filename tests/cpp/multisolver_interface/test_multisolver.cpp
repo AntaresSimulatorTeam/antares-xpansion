@@ -62,5 +62,7 @@ INSTANTIATE_TEST_SUITE_P(Valid, CreateFixture, testing::Values("CLP", "CBC", "XP
 TEST(SolverFactory, create_invalid)
 {
     SolverFactory solver_factory;
-    EXPECT_THROW(solver_factory.create_solver("solver-does-not-exist"), InvalidSolverNameException);
+    EXPECT_THROW(
+      (void)solver_factory.create_solver("solver-does-not-exist"),
+      InvalidSolverNameException);
 }

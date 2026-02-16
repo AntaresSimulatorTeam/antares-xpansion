@@ -417,7 +417,7 @@ TEST_F(UpdateCapacitiesTest, update_one_link_no_candidate) {
 TEST_F(UpdateCapacitiesTest, update_one_link_one_candidate) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
-                          "",   "",           1, "dummy_candidate"};
+                          "",   "",           1, "dummy_candidate", 0.0, 0.0, 0.0, 0.0, "", ""};
   LinkProfile profile(logger);
   active_link.addCandidate(candidate, {profile});
   std::map<std::string, double> solution{
@@ -436,7 +436,7 @@ TEST_F(UpdateCapacitiesTest, update_one_link_one_candidate) {
 TEST_F(UpdateCapacitiesTest, update_version_720) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
-                          "",   "",           1, "dummy_candidate"};
+                          "",   "",           1, "dummy_candidate", 0.0, 0.0, 0.0, 0.0, "", ""};
   LinkProfile profile(logger);
   active_link.addCandidate(candidate, {profile});
   std::map<std::string, double> solution{
@@ -458,7 +458,7 @@ TEST_F(UpdateCapacitiesTest, update_version_720) {
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
-                          "",   "",           1, "dummy_candidate"};
+                          "",   "",           1, "dummy_candidate", 0.0, 0.0, 0.0, 0.0, "", ""};
   LinkProfile profile(logger);
   active_link.addCandidate(candidate, {profile});
   std::map<std::string, double> solution{
@@ -493,7 +493,7 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
 TEST_F(UpdateCapacitiesTest, update_version_800) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
-                          "",   "",           1, "dummy_candidate"};
+                          "",   "",           1, "dummy_candidate", 0.0, 0.0, 0.0, 0.0, "", ""};
   LinkProfile profile(logger);
   active_link.addCandidate(candidate, {profile});
   std::map<std::string, double> solution{
@@ -515,7 +515,7 @@ TEST_F(UpdateCapacitiesTest, update_version_800) {
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
-                          "",   "",           1, "dummy_candidate"};
+                          "",   "",           1, "dummy_candidate", 0.0, 0.0, 0.0, 0.0, "", ""};
   LinkProfile profile(logger);
   active_link.addCandidate(candidate, {profile});
   std::map<std::string, double> solution{
@@ -636,7 +636,7 @@ TEST_F(UpdateCapacitiesTest,
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
-                          "",   "",           1, "dummy_candidate"};
+                          "",   "",           1, "dummy_candidate", 0.0, 0.0, 0.0, 0.0, "", ""};
   LinkProfile profile(logger);
   active_link.addCandidate(candidate, {profile});
   std::map<std::string, double> solution{

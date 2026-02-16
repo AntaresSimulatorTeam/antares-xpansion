@@ -21,7 +21,7 @@ public:
 
     void Parse(unsigned int argc, const char* const* argv) override;
 
-    void checkMandatoryOptions(const std::string& log_location) const;
+    void checkMandatoryOptions(const std::string& log_location) const override;
 
     std::filesystem::path NodalLpInfoPath() const
     {

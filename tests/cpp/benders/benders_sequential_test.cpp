@@ -188,7 +188,9 @@ protected:
     void copyMasterMps(const std::string& mps_name = "mip_toy_prob.mps")
     {
         tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
-
+        std::string tmp_file_name = tmpDir.c_str();
+        std::string mps_file_name = (mps_dir / mps_name).c_str();
+        std::string currentpath = std::filesystem::current_path().c_str();
         std::filesystem::copy(mps_dir / mps_name,
                               tmpDir,
                               std::filesystem::copy_options::update_existing);

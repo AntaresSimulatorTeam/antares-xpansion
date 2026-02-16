@@ -53,8 +53,8 @@ std::mutex& instance_guard()
 } // namespace
 
 XpressManager::XpressManager(std::shared_ptr<ILoggerXpansion> logger):
-    logger_(logger),
-    loader_(logger)
+    loader_(logger),
+    logger_(logger)
 {
     std::lock_guard guard(instance_guard());
     if (loader_.XpressIsCorrectlyInstalled())
