@@ -5,7 +5,6 @@
 
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
-#include "antares-xpansion/benders/plugins/BendersPluginTST.h" 
 
 
 
