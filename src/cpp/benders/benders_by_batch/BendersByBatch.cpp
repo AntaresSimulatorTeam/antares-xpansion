@@ -8,7 +8,6 @@
 
 void BendersByBatch::InitializeProblems()
 {
-
     MatchProblemToId();
 
     BuildMasterProblem();
@@ -38,7 +37,7 @@ void BendersByBatch::InitializeProblems()
 
     for (auto& batch: batch_collection_.BatchCollections())
     {
-        subs_per_batch.push_back(SubProblemNamesInCut()) ;
+        subs_per_batch.push_back(SubProblemNamesInCut());
 
         if (_options.CACHE_PROBLEMS)
         {
@@ -51,7 +50,8 @@ void BendersByBatch::InitializeProblems()
                 }
                 else
                 {
-                    subs_per_batch[subs_per_batch.size()-1].push_back(std::make_pair(*it, process_to_feed));
+                    subs_per_batch[subs_per_batch.size() - 1].push_back(
+                      std::make_pair(*it, process_to_feed));
                     ++it;
                 }
                 ++problem_count;
@@ -67,7 +67,8 @@ void BendersByBatch::InitializeProblems()
                 { // Assign  [problemNumber % WorldSize] to processID
 
                     const auto subProblemFilePath = GetSubproblemPath(problem_name);
-                    subs_per_batch[subs_per_batch.size()-1].push_back(std::make_pair(problem_name, process_to_feed)) ;  
+                    subs_per_batch[subs_per_batch.size() - 1].push_back(
+                      std::make_pair(problem_name, process_to_feed));
 
                     AddSubproblem({problem_name, coupling_map_[problem_name]});
                     AddSubproblemName(problem_name);
@@ -77,15 +78,17 @@ void BendersByBatch::InitializeProblems()
         }
     }
 
-    std::vector<std::vector<SubProblemNamesInCut>> gathered_subs_per_batch ; 
-    mpi::gather(_world,subs_per_batch,gathered_subs_per_batch, rank_0) ; 
-    if (_world.rank() == rank_0) 
+    std::vector<std::vector<SubProblemNamesInCut>> gathered_subs_per_batch;
+    mpi::gather(_world, subs_per_batch, gathered_subs_per_batch, rank_0);
+    if (_world.rank() == rank_0)
     {
-        for (int i=1; i<gathered_subs_per_batch.size(); i++) 
+        for (int i = 1; i < gathered_subs_per_batch.size(); i++)
         {
-            for (int j=0; j<gathered_subs_per_batch[i].size(); j++) 
+            for (int j = 0; j < gathered_subs_per_batch[i].size(); j++)
             {
-                gathered_subs_per_batch[0][j].insert(gathered_subs_per_batch[0][j].end(), gathered_subs_per_batch[i][j].begin(),gathered_subs_per_batch[i][j].end()) ; 
+                gathered_subs_per_batch[0][j].insert(gathered_subs_per_batch[0][j].end(),
+                                                     gathered_subs_per_batch[i][j].begin(),
+                                                     gathered_subs_per_batch[i][j].end());
             }
         }
 
