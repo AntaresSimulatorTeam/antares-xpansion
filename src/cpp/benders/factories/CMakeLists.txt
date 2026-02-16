@@ -21,6 +21,11 @@ target_link_libraries(factories
         antaresXpansion::outer_loop_lib
 )
 
+# Link optional strategy lib only if enabled
+if(ENABLE_BENDERS_STRATEGY)
+    target_link_libraries(factories PUBLIC antaresXpansion::benders_strategy)
+endif()
+
 target_include_directories(factories
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
