@@ -113,6 +113,7 @@ void BendersSequential::set_master_x(const Point& x)
 
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_core/StandardSubproblemSolver.h"
+#include "antares-xpansion/benders/benders_core/NoOuterLoopStrategy.h"
 #include "antares-xpansion/benders/benders_sequential/SequentialCommunication.h"
 
 void BendersSequential::launch()
@@ -125,9 +126,14 @@ void BendersSequential::launch()
     try
     {
         auto comm = std::make_shared<SequentialCommunication>();
-        auto solver = std::make_shared<StandardSubproblemSolver>(std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
-        BendersAlgorithm algorithm(comm, solver, std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
-        algorithm.Run();
+        auto benders_ptr = std::shared_ptr<BendersBase>(this, [](BendersBase*) {});
+        auto solver = std::make_shared<StandardSubproblemSolver>(benders_ptr);
+        
+        auto algorithm = std::make_shared<BendersAlgorithm>(comm, solver, nullptr, benders_ptr);
+        auto no_outer_loop = std::make_shared<NoOuterLoopStrategy>([algorithm]() { algorithm->MasterLoop(); });
+        algorithm->set_outer_loop(no_outer_loop);
+
+        algorithm->Run();
         _logger->display_message(BendersName() + " solver terminated.");
     }
     catch (const std::exception& ex)

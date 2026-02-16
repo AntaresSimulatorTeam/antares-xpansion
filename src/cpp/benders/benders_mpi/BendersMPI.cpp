@@ -489,6 +489,7 @@ void BendersMpi::PreRunInitialization()
 
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_core/StandardSubproblemSolver.h"
+#include "antares-xpansion/benders/benders_core/NoOuterLoopStrategy.h"
 #include "antares-xpansion/benders/benders_mpi/MpiCommunication.h"
 
 void BendersMpi::launch()
@@ -502,9 +503,14 @@ void BendersMpi::launch()
     try
     {
         auto comm = std::make_shared<MpiCommunication>(_world);
-        auto solver = std::make_shared<StandardSubproblemSolver>(std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
-        BendersAlgorithm algorithm(comm, solver, std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
-        algorithm.Run();
+        auto benders_ptr = std::shared_ptr<BendersBase>(this, [](BendersBase*) {});
+        auto solver = std::make_shared<StandardSubproblemSolver>(benders_ptr);
+        
+        auto algorithm = std::make_shared<BendersAlgorithm>(comm, solver, nullptr, benders_ptr);
+        auto no_outer_loop = std::make_shared<NoOuterLoopStrategy>([algorithm]() { algorithm->MasterLoop(); });
+        algorithm->set_outer_loop(no_outer_loop);
+
+        algorithm->Run();
     }
     catch (const std::exception& ex)
     {

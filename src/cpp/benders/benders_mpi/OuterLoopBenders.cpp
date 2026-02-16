@@ -41,7 +41,14 @@ void OuterLoopBenders::PrintLog()
 
 void OuterLoopBenders::RunAttachedAlgo()
 {
-    benders_->launch();
+    if (algorithm_)
+    {
+        algorithm_->MasterLoop();
+    }
+    else
+    {
+        benders_->launch();
+    }
 }
 
 void OuterLoopBenders::init_data()
@@ -147,6 +154,6 @@ void OuterLoopBenders::Run()
     OuterLoop::Run();
     benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
     benders_->SaveOuterLoopSolutionInOutputFile();
-    benders_->free();
+    free();
 }
 } // namespace Outerloop

@@ -180,14 +180,14 @@ int BendersApp::RunExternalLoop()
         std::shared_ptr<Outerloop::ICutsManager>
           cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
-        Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
+        auto ext_loop = std::make_shared<Outerloop::OuterLoopBenders>(outer_loop_inputs.Criteria(),
                                              master_updater,
                                              cuts_manager,
                                              benders_,
                                              *pworld_);
         StartMessage();
-        ext_loop.Run();
-        EndMessage(ext_loop.Runtime());
+        ext_loop->Run();
+        EndMessage(ext_loop->Runtime());
     }
     catch (std::exception& e)
     {
