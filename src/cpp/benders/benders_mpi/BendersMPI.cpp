@@ -30,7 +30,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     BuildMasterProblem();
-    SubProblemNamesInCut subs_per_proc ; 
+    SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;
@@ -43,7 +43,7 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
-                subs_per_proc.emplace_back(it->first,process_to_feed) ; 
+                subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
             current_problem_id++;
@@ -60,7 +60,7 @@ void BendersMpi::InitializeProblems()
                 process_to_feed == _world.rank())
             { // Assign  [problemNumber % processCount] to processID
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
-                subs_per_proc.push_back(std::make_pair(problem.first,process_to_feed)) ; 
+                subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
             }
@@ -68,35 +68,37 @@ void BendersMpi::InitializeProblems()
         }
     }
 
-    std::vector<SubProblemNamesInCut> gathered_subs_per_proc ; 
+    std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
-    if (_world.rank() == rank_0) 
-        subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc,_data.nsubproblem) ; 
+    if (_world.rank() == rank_0)
+    {
+        subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
+    }
 
-    
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
 
-std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(const std::vector<SubProblemNamesInCut>& gathered_sub_per_proc, int max_aggregation)
+std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(
+  const std::vector<SubProblemNamesInCut>& gathered_sub_per_proc,
+  int max_aggregation)
 {
     int n_cuts = SetAggregation(max_aggregation);
 
     std::vector<Entry> ordered(_data.nsubproblem);
 
-    for (auto& proc_subs_vec : gathered_sub_per_proc) 
+    for (auto& proc_subs_vec: gathered_sub_per_proc)
     {
-        for (auto& sub :  proc_subs_vec) 
+        for (auto& sub: proc_subs_vec)
         {
-            auto it = _problem_to_id.find(sub.first) ; 
-            if (it == _problem_to_id.end()) 
+            auto it = _problem_to_id.find(sub.first);
+            if (it == _problem_to_id.end())
             {
-                continue ; 
+                continue;
             }
             ordered[it->second] = {&sub.first, sub.second};
         }
     }
-
 
     std::vector<SubProblemNamesInCut> cuts;
     cuts.reserve(n_cuts);
@@ -125,10 +127,7 @@ std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(const std::vector
         cuts.emplace_back(std::move(cut));
     }
     return cuts;
-
-
 }
-
 
 void BendersMpi::BroadCastVariablesIndices()
 {

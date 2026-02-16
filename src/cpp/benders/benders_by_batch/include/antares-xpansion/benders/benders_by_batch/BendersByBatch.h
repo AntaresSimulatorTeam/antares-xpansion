@@ -28,6 +28,7 @@ protected:
     void ComputeXCut() override;
     void UpdateStoppingCriterion() override;
     bool ShouldRelaxationStop() const override;
+
 private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
                           const std::vector<std::string>& batch_sub_problems);
@@ -40,8 +41,9 @@ private:
                                             PlainData::SubProblemData& subproblem_data);
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const std::vector<std::string>& batch_sub_problems);
-    
-    std::vector<std::vector<SubProblemNamesInCut>>  get_subs_per_cut_per_batch(const std::vector<SubProblemNamesInCut>& subs_per_batch) ;
+
+    std::vector<std::vector<SubProblemNamesInCut>> get_subs_per_cut_per_batch(
+      const std::vector<SubProblemNamesInCut>& subs_per_batch);
     BatchCollection batch_collection_;
     void MasterLoop();
     void SolveBatches();
@@ -56,11 +58,7 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
-    std::vector<std::vector<SubProblemNamesInCut>>  cuts_per_batch_list_ ; 
-
-
+    std::vector<std::vector<SubProblemNamesInCut>> cuts_per_batch_list_;
 };
-
-
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

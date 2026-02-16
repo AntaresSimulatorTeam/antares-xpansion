@@ -16,7 +16,6 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
 
-
 /**
  * std execution policies don't share a base type so we can't just select
  *them in place in the foreach This function allow the selection of policy
@@ -323,7 +322,6 @@ protected:
 
     int SetAggregation(int max_aggregation) const;
 
-    
 private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
@@ -358,7 +356,6 @@ private:
     Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
 };
-
 
 struct Entry
 {

@@ -736,7 +736,6 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
     }
 }
 
-
 int BendersBase::SetAggregation(int max_aggregation) const
 {
     if (max_aggregation < _options.NB_CUTS_PER_ITER)

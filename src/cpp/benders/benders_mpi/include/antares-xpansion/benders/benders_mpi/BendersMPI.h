@@ -47,8 +47,8 @@ private:
     void step_2_solve_subproblems_and_build_cuts();
     void step_4_update_best_solution(int rank);
 
-    std::vector<SubProblemNamesInCut> get_subs_per_cut(const std::vector<SubProblemNamesInCut>&, int );   
-
+    std::vector<SubProblemNamesInCut> get_subs_per_cut(const std::vector<SubProblemNamesInCut>&,
+                                                       int);
 
     SubProblemDataMap get_subproblem_cut_package();
 
@@ -64,7 +64,7 @@ private:
 
     void check_if_some_proc_had_a_failure(int success);
 
-    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_ ; 
+    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 
 protected:
     [[nodiscard]] bool shouldParallelize() const final
