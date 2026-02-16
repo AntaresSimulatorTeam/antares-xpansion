@@ -12,6 +12,11 @@ public:
     using BendersMpi::BendersMpi;
     ~BendersByBatch() override = default;
     void Run() override;
+    void BuildCut() override;
+    void solve_master() override;
+    void check_convergence() override;
+    Point get_master_x() const override;
+    void set_master_x(const Point& x) override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
                   double* batch_contribution_in_gap,
                   std::vector<double>& external_loop_criterion_current_batch,

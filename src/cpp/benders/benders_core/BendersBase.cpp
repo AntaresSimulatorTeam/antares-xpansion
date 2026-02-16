@@ -1283,6 +1283,16 @@ void BendersBase::ChecksResumeMode()
     }
 }
 
+void BendersBase::LoggerLogAtIterationEnd()
+{
+    _logger->log_at_iteration_end(bendersDataToLogData(_data));
+}
+
+void BendersBase::mathLoggerDriverWriteheader()
+{
+    mathLoggerDriver_->write_header();
+}
+
 void BendersBase::SaveCurrentBendersData()
 {
     LastIterationWriter last_iteration_writer(LastIterationFile());

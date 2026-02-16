@@ -34,8 +34,11 @@ auto selectPolicy(lambda f, bool shouldParallelize)
     }
 }
 
+class BendersAlgorithm;
+
 class BendersBase
 {
+    friend class BendersAlgorithm;
 public:
     virtual ~BendersBase() = default;
     BendersBase(BendersBaseOptions options,
@@ -103,14 +106,23 @@ public:
 
     bool IsStop() const { return _data.stop; }
     void set_stop(bool stop) { _data.stop = stop; }
+
+public:
+    virtual void BuildCut() = 0;
     virtual void solve_master() = 0;
     virtual void check_convergence() = 0;
     virtual Point get_master_x() const = 0;
     virtual void set_master_x(const Point& x) = 0;
     CurrentIterationData& getCurrentIterationData() { return _data; }
+    
     void init_data();
     void OpenCsvFile();
     void CloseCsvFile();
+    void SaveCurrentBendersData();
+    void update_best_ub();
+    void UpdateTrace();
+    void mathLoggerDriverWriteheader();
+    void LoggerLogAtIterationEnd();
 
     int GetBendersRunNumber() const
     {
@@ -122,7 +134,6 @@ public:
     CriteriaCurrentIterationData GetOuterLoopData() const;
 
     std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
-    virtual void init_data();
     void init_data(double external_loop_lambda,
                    double external_loop_lambda_min,
                    double external_loop_lambda_max);
@@ -131,9 +142,12 @@ public:
     void SaveCurrentOuterLoopIterationInOutputFile() const;
     void SetBilevelBestub(double bilevel_best_ub);
     void UpdateOuterLoopSolution();
+    void update_best_ub();
+    void UpdateTrace();
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
+    void mathLoggerDriverWriteheader();
     Logger _logger;
     std::shared_ptr<Output::OutputWriter> _writer;
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
@@ -163,12 +177,10 @@ protected:
       int n_cuts) const;
 
     virtual void Run() = 0;
-    void update_best_ub();
     bool ShouldBendersStop();
     bool is_initial_relaxation_requested() const;
     bool SwitchToIntegerMaster(bool is_relaxed) const;
     virtual void HandleInitialMasterRelaxation();
-    virtual void UpdateTrace();
     virtual void ComputeXCut();
     void roundXCut();
     void ComputeInvestCost();

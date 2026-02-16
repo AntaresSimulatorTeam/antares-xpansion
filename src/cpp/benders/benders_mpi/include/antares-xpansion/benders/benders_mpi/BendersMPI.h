@@ -31,9 +31,15 @@ public:
 
     const int rank_0 = 0;
 
+    void solve_master() override;
+    void check_convergence() override;
+    Point get_master_x() const override;
+    void set_master_x(const Point& x) override;
+
 protected:
     void free() override;
     void Run() override;
+    void BuildCut() override;
     void InitializeProblems() override;
     void BroadcastXCut();
     void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);

@@ -3,8 +3,11 @@
 #include <mutex>
 #include <numeric>
 
+#include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
+#include "antares-xpansion/benders/benders_core/StandardSubproblemSolver.h"
+#include "antares-xpansion/benders/benders_mpi/MpiCommunication.h"
 
 void BendersByBatch::InitializeProblems()
 {
@@ -82,6 +85,64 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox()
     SetAlpha_i(single_subpb_costs_under_approx);
 }
 
+void BendersByBatch::solve_master()
+{
+    if (Rank() == rank_0)
+    {
+        if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
+        {
+            _logger->LogAtSwitchToInteger();
+            ActivateIntegrityConstraints();
+            ResetDataPostRelaxation();
+        }
+    }
+
+    _data.ub = 0;
+    SetSubproblemCost(0);
+    remaining_epsilon_ = Gap();
+
+    if (Rank() == rank_0)
+    {
+        _logger->PrintIterationSeparatorBegin();
+
+        _logger->display_message("\tSolving master...");
+        get_master_value();
+        _logger->log_master_solving_duration(_data.timer_master);
+
+        random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
+                                      .GetCyclicBatchOrder(current_batch_id_);
+    }
+    BroadcastXOut();
+    BroadcastSingleSubpbCostsUnderApprox();
+    BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(), rank_0);
+}
+
+void BendersByBatch::check_convergence()
+{
+    if (Rank() == rank_0)
+    {
+        _data.iteration_time = -_data.benders_time;
+        _data.benders_time = GetBendersTime();
+        _data.iteration_time += _data.benders_time;
+        _data.stop = ShouldBendersStop();
+    }
+}
+
+Point BendersByBatch::get_master_x() const
+{
+    return get_x_out();
+}
+
+void BendersByBatch::set_master_x(const Point& x)
+{
+    set_x_out(x);
+}
+
+void BendersByBatch::BuildCut()
+{
+    SeparationLoop();
+}
+
 void BendersByBatch::Run()
 {
     if (init_data_)
@@ -92,7 +153,28 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
-    MasterLoop();
+
+    try
+    {
+        number_of_batch_ = batch_collection_.NumberOfBatch();
+        random_batch_permutation_.resize(number_of_batch_);
+        batch_counter_ = 0;
+        current_batch_id_ = 0;
+        _data.number_of_subproblem_solved = 0;
+        cumulative_subproblems_timer_per_iter_ = 0;
+        first_unsolved_batch_ = 0;
+
+        auto comm = std::make_shared<MpiCommunication>(_world);
+        auto solver = std::make_shared<StandardSubproblemSolver>(std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
+        BendersAlgorithm algorithm(comm, solver, std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
+        algorithm.Run();
+    }
+    catch (const std::exception& ex)
+    {
+        std::string error = "Exception raised : " + std::string(ex.what());
+        _logger->display_message(error);
+    }
+
     if (Rank() == rank_0)
     {
         compute_ub();
@@ -103,65 +185,6 @@ void BendersByBatch::Run()
         CloseCsvFile();
         EndWritingInOutputFile();
         write_basis();
-    }
-}
-
-void BendersByBatch::MasterLoop()
-{
-    number_of_batch_ = batch_collection_.NumberOfBatch();
-    random_batch_permutation_.resize(number_of_batch_);
-    batch_counter_ = 0;
-    current_batch_id_ = 0;
-    _data.number_of_subproblem_solved = 0;
-    cumulative_subproblems_timer_per_iter_ = 0;
-    first_unsolved_batch_ = 0;
-    while (!_data.stop)
-    {
-        if (Rank() == rank_0)
-        {
-            if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
-            {
-                _logger->LogAtSwitchToInteger();
-                ActivateIntegrityConstraints();
-                ResetDataPostRelaxation();
-            }
-        }
-
-        _data.ub = 0;
-        SetSubproblemCost(0);
-        remaining_epsilon_ = Gap();
-
-        if (Rank() == rank_0)
-        {
-            _logger->PrintIterationSeparatorBegin();
-
-            _logger->display_message("\tSolving master...");
-            get_master_value();
-            _logger->log_master_solving_duration(_data.timer_master);
-
-            random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
-                                          .GetCyclicBatchOrder(current_batch_id_);
-        }
-        BroadcastXOut();
-        BroadcastSingleSubpbCostsUnderApprox();
-        BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(), rank_0);
-        SeparationLoop();
-        if (Rank() == rank_0)
-        {
-            _data.iteration_time = -_data.benders_time;
-            _data.benders_time = GetBendersTime();
-            _data.iteration_time += _data.benders_time;
-            _data.stop = ShouldBendersStop();
-        }
-        BroadCast(_data.stop, rank_0);
-        BroadCast(batch_counter_, rank_0);
-        _data.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter_;
-        _logger->cumulative_number_of_sub_problem_solved(
-          _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
-        _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
-        _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
-        _logger->PrintIterationSeparatorEnd();
-        mathLoggerDriver_->Print(_data);
     }
 }
 

@@ -105,6 +105,11 @@ void BendersMpi::BuildMasterProblem()
  *
  *  \param _world : communicator variable for mpi communication
  */
+void BendersMpi::solve_master()
+{
+    step_1_solve_master();
+}
+
 void BendersMpi::step_1_solve_master()
 {
     int success = 1;
@@ -118,7 +123,26 @@ void BendersMpi::step_1_solve_master()
         write_exception_message(ex);
     }
     check_if_some_proc_had_a_failure(success);
-    BroadcastXCut();
+}
+
+void BendersMpi::check_convergence()
+{
+    step_4_update_best_solution(_world.rank());
+}
+
+Point BendersMpi::get_master_x() const
+{
+    return get_x_cut();
+}
+
+void BendersMpi::set_master_x(const Point& x)
+{
+    set_x_cut(x);
+}
+
+void BendersMpi::BuildCut()
+{
+    step_2_solve_subproblems_and_build_cuts();
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts()
@@ -463,6 +487,10 @@ void BendersMpi::PreRunInitialization()
     init_data_ = false;
 }
 
+#include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
+#include "antares-xpansion/benders/benders_core/StandardSubproblemSolver.h"
+#include "antares-xpansion/benders/benders_mpi/MpiCommunication.h"
+
 void BendersMpi::launch()
 {
     if (init_problems_)
@@ -471,7 +499,18 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
-    Run();
+    try
+    {
+        auto comm = std::make_shared<MpiCommunication>(_world);
+        auto solver = std::make_shared<StandardSubproblemSolver>(std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
+        BendersAlgorithm algorithm(comm, solver, std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
+        algorithm.Run();
+    }
+    catch (const std::exception& ex)
+    {
+        write_exception_message(ex);
+    }
+
     _world.barrier();
 
     post_run_actions();
