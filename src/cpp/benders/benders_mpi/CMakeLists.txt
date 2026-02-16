@@ -28,7 +28,7 @@ target_sources(benders_mpi_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/OuterLoopBenders.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/common_mpi.h
-
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/MpiCommunication.h
 )
 
 target_link_libraries(benders_mpi_core

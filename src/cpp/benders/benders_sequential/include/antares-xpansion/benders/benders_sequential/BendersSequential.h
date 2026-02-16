@@ -26,6 +26,11 @@ public:
         return "Sequential";
     }
 
+    void solve_master() override;
+    void check_convergence() override;
+    Point get_master_x() const override;
+    void set_master_x(const Point& x) override;
+
 protected:
     virtual void free();
     virtual void Run();

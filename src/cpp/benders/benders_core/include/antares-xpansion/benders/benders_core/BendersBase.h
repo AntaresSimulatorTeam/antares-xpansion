@@ -95,19 +95,22 @@ public:
     WorkerMasterData BestIterationWorkerMaster() const;
     void SetMasterObjectiveFunctionCoeffsToZeros() const;
     void SetMasterObjectiveFunction(const double* coeffs, int first, int last) const;
-    virtual void InitializeProblems() = 0;
-
-    void SetMaxIteration(int max_iteration)
-    {
-        _options.MAX_ITERATIONS = max_iteration;
-    }
-
     BendersBaseOptions Options() const
     {
         return _options;
     }
+    virtual void InitializeProblems() = 0;
 
-    virtual void free() = 0;
+    bool IsStop() const { return _data.stop; }
+    void set_stop(bool stop) { _data.stop = stop; }
+    virtual void solve_master() = 0;
+    virtual void check_convergence() = 0;
+    virtual Point get_master_x() const = 0;
+    virtual void set_master_x(const Point& x) = 0;
+    CurrentIterationData& getCurrentIterationData() { return _data; }
+    void init_data();
+    void OpenCsvFile();
+    void CloseCsvFile();
 
     int GetBendersRunNumber() const
     {
