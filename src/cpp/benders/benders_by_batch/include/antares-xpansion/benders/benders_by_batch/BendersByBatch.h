@@ -6,12 +6,13 @@
 
 class BendersByBatch: public BendersMpi
 {
+    friend class BatchSubproblemSolver;
     std::vector<unsigned> random_batch_permutation_;
 
 public:
     using BendersMpi::BendersMpi;
     ~BendersByBatch() override = default;
-    void Run() override;
+    void launch() override;
     void BuildCut() override;
     void solve_master() override;
     void check_convergence() override;
@@ -47,9 +48,7 @@ private:
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const std::vector<std::string>& batch_sub_problems);
     BatchCollection batch_collection_;
-    void MasterLoop();
     void SolveBatches();
-    void SeparationLoop();
     void UpdateRemainingEpsilon();
     void BroadcastXOut();
     double Gap() const;

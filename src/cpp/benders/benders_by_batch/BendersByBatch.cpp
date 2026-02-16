@@ -3,10 +3,10 @@
 #include <mutex>
 #include <numeric>
 
+#include "antares-xpansion/benders/benders_core/BatchSubproblemSolver.h"
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
-#include "antares-xpansion/benders/benders_core/StandardSubproblemSolver.h"
 #include "antares-xpansion/benders/benders_mpi/MpiCommunication.h"
 
 void BendersByBatch::InitializeProblems()
@@ -140,19 +140,18 @@ void BendersByBatch::set_master_x(const Point& x)
 
 void BendersByBatch::BuildCut()
 {
-    SeparationLoop();
+    // BuildCut is called from BatchSubproblemSolver::Solve if it's not a BendersByBatch
+    // or from BendersMpi::launch if we were to use StandardSubproblemSolver
+    // In BendersByBatch, we use BatchSubproblemSolver which calls SeparationLoop directly.
 }
 
-void BendersByBatch::Run()
+void BendersByBatch::launch()
 {
-    if (init_data_)
+    if (init_problems_)
     {
-        PreRunInitialization();
+        InitializeProblems();
     }
-    else
-    {
-        _data.stop = false;
-    }
+    _world.barrier();
 
     try
     {
@@ -165,7 +164,7 @@ void BendersByBatch::Run()
         first_unsolved_batch_ = 0;
 
         auto comm = std::make_shared<MpiCommunication>(_world);
-        auto solver = std::make_shared<StandardSubproblemSolver>(std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
+        auto solver = std::make_shared<BatchSubproblemSolver>(std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
         BendersAlgorithm algorithm(comm, solver, std::shared_ptr<BendersBase>(this, [](BendersBase*) {}));
         algorithm.Run();
     }
@@ -175,51 +174,15 @@ void BendersByBatch::Run()
         _logger->display_message(error);
     }
 
-    if (Rank() == rank_0)
+    _world.barrier();
+
+    post_run_actions();
+
+    if (free_problems_)
     {
-        compute_ub();
-        update_best_ub();
-        _logger->log_at_iteration_end(bendersDataToLogData(_data));
-        UpdateTrace();
-        SaveCurrentBendersData();
-        CloseCsvFile();
-        EndWritingInOutputFile();
-        write_basis();
+        free();
     }
-}
-
-void BendersByBatch::SeparationLoop()
-{
-    misprice_ = true;
-    first_unsolved_batch_ = 0;
-    batch_counter_ = 0;
-    while (misprice_ && batch_counter_ < number_of_batch_)
-    {
-        _data.it++;
-        ResetSimplexIterationsBounds();
-
-        _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
-        if (Rank() == rank_0)
-        {
-            ComputeXCut();
-        }
-        BroadcastXCut();
-        _logger->log_iteration_candidates(bendersDataToLogData(_data));
-        UpdateRemainingEpsilon();
-        _data.number_of_subproblem_solved = 0;
-        SolveBatches();
-
-        if (Rank() == rank_0)
-        {
-            criteria_vector_for_each_iteration_.push_back(
-              _data.criteria_current_iteration_data.criteria);
-            // TODO
-            //  UpdateOuterLoopMaxCriterionArea();
-            UpdateTrace();
-            SaveCurrentBendersData();
-        }
-        ClearCurrentIterationCutTrace();
-    }
+    _world.barrier();
 }
 
 void BendersByBatch::ComputeXCut()

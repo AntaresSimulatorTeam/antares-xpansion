@@ -32,6 +32,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/CouplingMapGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersAlgorithm.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/StandardSubproblemSolver.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BatchSubproblemSolver.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersProblemFromFile.h
@@ -58,6 +59,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ISubproblemSolver.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersAlgorithm.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/StandardSubproblemSolver.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BatchSubproblemSolver.h
 )
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)
