@@ -4,11 +4,15 @@
 #include <antares-xpansion/benders/factories/BendersFactory.h>
 #include <filesystem>
 #include <fmt/format.h>
-
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
+#include "antares-xpansion/benders/benders_core/BatchSubproblemSolver.h"
+#include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
+#include "antares-xpansion/benders/benders_core/OuterLoopStrategy.h"
+#include "antares-xpansion/benders/benders_core/StandardSubproblemSolver.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
+#include "antares-xpansion/benders/benders_mpi/MpiCommunication.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
@@ -185,6 +189,19 @@ int BendersApp::RunExternalLoop()
                                              cuts_manager,
                                              benders_,
                                              *pworld_);
+
+        // Setup orchestrator for OuterLoop
+        auto comm = std::make_shared<MpiCommunication>(*pworld_);
+        std::shared_ptr<ISubproblemSolver> solver;
+        if (method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP) {
+            solver = std::make_shared<BatchSubproblemSolver>(benders_);
+        } else {
+            solver = std::make_shared<StandardSubproblemSolver>(benders_);
+        }
+        auto outer_loop_strat = std::make_shared<OuterLoopStrategy>(ext_loop);
+        auto algorithm = std::make_shared<BendersAlgorithm>(comm, solver, outer_loop_strat, benders_);
+        ext_loop->set_algorithm(algorithm);
+
         StartMessage();
         ext_loop->Run();
         EndMessage(ext_loop->Runtime());
