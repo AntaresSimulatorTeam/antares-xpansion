@@ -142,12 +142,9 @@ public:
     void SaveCurrentOuterLoopIterationInOutputFile() const;
     void SetBilevelBestub(double bilevel_best_ub);
     void UpdateOuterLoopSolution();
-    void update_best_ub();
-    void UpdateTrace();
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
-    void mathLoggerDriverWriteheader();
     Logger _logger;
     std::shared_ptr<Output::OutputWriter> _writer;
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
@@ -244,10 +241,7 @@ protected:
     void SaveCurrentIterationInOutputFile() const;
     void SaveSolutionInOutputFile() const;
     void PrintCurrentIterationCsv();
-    void OpenCsvFile();
-    void CloseCsvFile();
     void ChecksResumeMode();
-    virtual void SaveCurrentBendersData();
     void ClearCurrentIterationCutTrace();
     virtual void EndWritingInOutputFile() const;
 
