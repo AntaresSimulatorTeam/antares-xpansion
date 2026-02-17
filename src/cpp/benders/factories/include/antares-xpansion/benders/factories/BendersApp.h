@@ -5,7 +5,7 @@
 
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
+#include "antares-xpansion/benders/strategy/IBendersCore.h"
 
 class BendersApp
 {
@@ -16,7 +16,7 @@ class BendersApp
     std::variant<Benders::Criterion::CriterionInputData,
                  Benders::Criterion::OuterLoopCriterionInputData>
       criterion_input_holder_;
-    std::shared_ptr<BendersBase> benders_ = nullptr;
+    std::shared_ptr<IBendersCore> benders_ = nullptr;
     Logger logger_ = nullptr;
     std::shared_ptr<Output::OutputWriter> writer_ = nullptr;
     std::shared_ptr<MathLoggerDriver> math_log_driver_;

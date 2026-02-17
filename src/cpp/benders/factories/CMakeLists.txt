@@ -19,12 +19,8 @@ target_link_libraries(factories
         antaresXpansion::logger_lib
         ${PROJECT_NAME}::benders_mpi_core
         antaresXpansion::outer_loop_lib
+        antaresXpansion::benders_strategy
 )
-
-# Link optional strategy lib only if enabled
-if(ENABLE_BENDERS_STRATEGY)
-    target_link_libraries(factories PUBLIC antaresXpansion::benders_strategy)
-endif()
 
 target_include_directories(factories
         PUBLIC
