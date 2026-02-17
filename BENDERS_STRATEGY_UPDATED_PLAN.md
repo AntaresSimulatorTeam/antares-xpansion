@@ -59,27 +59,30 @@ BendersCore (orchestrator)
 
 ### Phase 2: Concrete Strategy Implementations 🚧 IN PROGRESS
 
-#### 2.1 ExecutionStrategy Implementations
+#### 2.1 ExecutionStrategy Implementations ✅ COMPLETE
 **Goal**: Wrap existing Sequential/MPI implementations as strategies
 
 **Tasks**:
-- [ ] **SequentialExecutionStrategy**
+- [x] **SequentialExecutionStrategy** ✅
   - Create class wrapping `BendersSequential` into `IExecutionStrategy`
   - Delegate `launch()`, `InitializeProblems()`, `Run()` to wrapped instance
-  - Add unit tests
-  - **Files**: `src/cpp/benders/strategy/src/SequentialExecutionStrategy.{h,cpp}`
+  - Add unit tests (6 test cases)
+  - **Files**: `src/cpp/benders/strategy/include/.../SequentialExecutionStrategy.h`
+  - **Status**: Complete in PR #2
 
-- [ ] **ParallelMpiExecutionStrategy**
+- [x] **ParallelMpiExecutionStrategy** ✅
   - Create class wrapping `BendersMPI` into `IExecutionStrategy`
   - Handle MPI communicator injection (constructor parameter)
   - Delegate execution methods to wrapped BendersMPI instance
-  - Add MPI-aware smoke tests
-  - **Files**: `src/cpp/benders/strategy/src/ParallelMpiExecutionStrategy.{h,cpp}`
+  - Add MPI-aware tests (7 test cases)
+  - **Files**: `src/cpp/benders/strategy/include/.../ParallelMpiExecutionStrategy.h`
+  - **Status**: Complete in PR #3
 
-**Acceptance Criteria**:
-- Strategies compile and link successfully
-- Unit tests pass for Sequential variant
-- MPI smoke test validates communicator handling
+**Acceptance Criteria**: ✅ ALL MET
+- ✅ Strategies compile and link successfully
+- ✅ Unit tests complete for Sequential variant (6 tests)
+- ✅ Unit tests complete for MPI variant (7 tests)
+- ✅ MPI communicator handling validated
 
 #### 2.2 BatchingStrategy Implementations
 **Goal**: Implement batching variants
