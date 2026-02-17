@@ -134,14 +134,17 @@ void MicroIterationsLog::Dump(int rank)
                     int added_constraints(0);
                     if (log_level_ >= 3)
                     {
+                        std::cout<<"creating the added constraints "<<std::endl ; 
                         std::string file_name = "added_contraints_master_iter_" + std::to_string(i)
                                                 + "_micro_iter_" + std::to_string(j) + "_" + result
                                                 + ".txt";
                         std::filesystem::path added_constraints_path = std::filesystem::path(
                                                                          options_.OUTPUTROOT)
-                                                                       / "addeded_constraints"
+                                                                       / "added_constraints"
                                                                        / file_name;
                         std::ofstream added_constraints_stream(added_constraints_path.c_str());
+                        std::cout<<"added containsts path "<<added_constraints_path.c_str()<<std::endl ; 
+                        std::cout<<"added constaints key "<<micro_iters_vec[j].added_constraints_keys.size()<<std::endl ; 
                         for (auto& added_constraints_key: micro_iters_vec[j].added_constraints_keys)
                         {
                             added_constraints += constraints_per_line_[added_constraints_key]
