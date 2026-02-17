@@ -65,6 +65,35 @@ if(ENABLE_BENDERS_STRATEGY)
             antaresXpansion::benders_mpi
             antaresXpansion::factories)
         add_test(NAME ParallelMpiExecutionStrategy_test COMMAND ParallelMpiExecutionStrategy_test)
+
+        # NoBatchingStrategy unit test
+        add_executable(NoBatchingStrategy_test tests/NoBatchingStrategy_test.cpp)
+        target_include_directories(NoBatchingStrategy_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        )
+        target_link_libraries(NoBatchingStrategy_test PRIVATE 
+            GTest::GTest 
+            GTest::Main)
+        add_test(NAME NoBatchingStrategy_test COMMAND NoBatchingStrategy_test)
+
+        # ByBatchStrategy unit test
+        add_executable(ByBatchStrategy_test tests/ByBatchStrategy_test.cpp)
+        target_include_directories(ByBatchStrategy_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_by_batch/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_mpi/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        )
+        target_link_libraries(ByBatchStrategy_test PRIVATE 
+            GTest::GTest 
+            GTest::Main
+            antaresXpansion::benders_core 
+            antaresXpansion::benders_by_batch
+            antaresXpansion::benders_mpi
+            antaresXpansion::factories)
+        add_test(NAME ParallelMpiExecutionStrategy_test COMMAND ParallelMpiExecutionStrategy_test)
     else()
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
