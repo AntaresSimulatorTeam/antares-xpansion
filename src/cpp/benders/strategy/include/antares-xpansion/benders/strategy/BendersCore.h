@@ -93,91 +93,96 @@ public:
     /**
      * @brief Set input mapping
      * 
-     * Note: This is typically handled by the execution strategy's underlying
-     * implementation. For now, this is a placeholder that would need to be
-     * properly integrated with the execution strategy.
+     * Delegates to the execution strategy's underlying implementation.
      */
     void set_input_map(const CouplingMap& coupling_map) override
     {
-        // TODO: This needs to be delegated to the underlying implementation
-        // For now, this is a placeholder as the current strategy interfaces
-        // don't expose this method directly
+        if (execution_)
+        {
+            execution_->set_input_map(coupling_map);
+        }
     }
 
     /**
      * @brief Get master row index by name
      * 
-     * Note: Delegated to execution strategy's underlying implementation.
-     * Returns -1 if not available.
+     * Delegates to execution strategy.
      */
     [[nodiscard]] int MasterRowIndex(const std::string& row_name) const override
     {
-        // TODO: This needs to be delegated to the underlying implementation
-        // For now, return a safe default
-        return -1;
+        return execution_ ? execution_->MasterRowIndex(row_name) : -1;
     }
 
     /**
      * @brief Change master RHS value
      * 
-     * Note: Delegated to execution strategy's underlying implementation.
+     * Delegates to execution strategy.
      */
     void MasterChangeRhs(int id_row, double val) const override
     {
-        // TODO: This needs to be delegated to the underlying implementation
+        if (execution_)
+        {
+            execution_->MasterChangeRhs(id_row, val);
+        }
     }
 
     /**
      * @brief Get best iteration data
      * 
-     * Note: Delegated to execution strategy's underlying implementation.
+     * Delegates to execution strategy.
      */
     [[nodiscard]] LogData GetBestIterationData() const override
     {
-        // TODO: This needs to be delegated to the underlying implementation
-        return LogData{};
+        return execution_ ? execution_->GetBestIterationData() : LogData{};
     }
 
     /**
      * @brief Get all cuts from workers
      * 
-     * Note: Delegated to execution strategy's underlying implementation.
+     * Delegates to execution strategy.
      */
     [[nodiscard]] WorkerMasterDataVect AllCuts() const override
     {
-        // TODO: This needs to be delegated to the underlying implementation
-        return WorkerMasterDataVect{};
+        return execution_ ? execution_->AllCuts() : WorkerMasterDataVect{};
     }
 
     /**
      * @brief Save outer loop solution to output file
      * 
      * Delegates to outer loop strategy if available.
+     * Note: This functionality may need to be added to IOuterLoopStrategy
+     * if outer loop implementations need to expose this method.
      */
     void SaveOuterLoopSolutionInOutputFile() const override
     {
         // This is an outer loop concern, but the current interface doesn't expose it
-        // TODO: Extend IOuterLoopStrategy if needed
+        // For now, this is a no-op. Can be extended if IOuterLoopStrategy is enhanced.
     }
 
     /**
      * @brief Free allocated resources
      * 
-     * Note: Delegated to execution strategy's underlying implementation.
+     * Delegates to execution strategy.
      */
     void free() override
     {
-        // TODO: This needs to be delegated to the underlying implementation
+        if (execution_)
+        {
+            execution_->free();
+        }
     }
 
     /**
      * @brief Set whether to free problems
      * 
-     * Note: Delegated to execution strategy's underlying implementation.
+     * Delegates to execution strategy.
      */
     void DoFreeProblems(bool v) override
     {
-        // TODO: This needs to be delegated to the underlying implementation
+        if (execution_)
+        {
+            execution_->DoFreeProblems(v);
+        }
     }
 
     /**

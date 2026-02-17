@@ -204,9 +204,6 @@ auto BendersFactory::ConfigureBendersWithStrategies(const BendersBaseOptions& be
                                                     *world_,
                                                     dependencies_.math_log_driver);
     
-    // Set input map on the underlying implementation
-    mpi_benders->set_input_map(coupling_map);
-    
     execution_strategy = std::make_unique<ParallelMpiExecutionStrategy>(std::move(mpi_benders));
     
     // Build BatchingStrategy
@@ -218,7 +215,6 @@ auto BendersFactory::ConfigureBendersWithStrategies(const BendersBaseOptions& be
                                                               dependencies_.writer,
                                                               *world_,
                                                               dependencies_.math_log_driver);
-        batch_benders->set_input_map(coupling_map);
         batching_strategy = std::make_unique<ByBatchStrategy>(std::move(batch_benders));
     }
     else
@@ -252,10 +248,13 @@ auto BendersFactory::ConfigureBendersWithStrategies(const BendersBaseOptions& be
         std::move(outer_loop_strategy)
     );
     
+    // Set input map via BendersCore interface (now properly delegated)
+    benders_core->set_input_map(coupling_map);
+    
     auto criterion_input_holder = ProcessCriterionInput();
     
-    // Note: BendersCore doesn't currently expose setCriterionComputationInputs
-    // This would need to be added to IBendersCore interface if required
+    // Note: setCriterionComputationInputs not yet exposed by IBendersCore
+    // This would need to be added to the interface if required
     
     return StrategyBendersEnvironment{std::move(benders_core), criterion_input_holder, method_};
 }

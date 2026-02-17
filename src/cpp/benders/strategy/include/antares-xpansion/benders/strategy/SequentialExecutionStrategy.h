@@ -60,6 +60,57 @@ public:
         return sequential_ ? sequential_->execution_time() : 0.0;
     }
 
+    // Master problem interaction
+    void set_input_map(const CouplingMap& coupling_map) override
+    {
+        if (sequential_)
+        {
+            sequential_->set_input_map(coupling_map);
+        }
+    }
+
+    [[nodiscard]] int MasterRowIndex(const std::string& row_name) const override
+    {
+        return sequential_ ? sequential_->MasterRowIndex(row_name) : -1;
+    }
+
+    void MasterChangeRhs(int id_row, double val) const override
+    {
+        if (sequential_)
+        {
+            sequential_->MasterChangeRhs(id_row, val);
+        }
+    }
+
+    // Results and data access
+    [[nodiscard]] LogData GetBestIterationData() const override
+    {
+        return sequential_ ? sequential_->GetBestIterationData() : LogData{};
+    }
+
+    [[nodiscard]] WorkerMasterDataVect AllCuts() const override
+    {
+        return sequential_ ? sequential_->AllCuts() : WorkerMasterDataVect{};
+    }
+
+    // Resource management
+    void free() override
+    {
+        if (sequential_)
+        {
+            sequential_->free();
+        }
+    }
+
+    void DoFreeProblems(bool v) override
+    {
+        if (sequential_)
+        {
+            sequential_->DoFreeProblems(v);
+        }
+    }
+
 private:
     std::unique_ptr<BendersSequential> sequential_;
 };
+
