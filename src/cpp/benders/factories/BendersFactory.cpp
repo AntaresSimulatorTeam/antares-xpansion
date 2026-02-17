@@ -194,17 +194,29 @@ auto BendersFactory::ConfigureBendersWithStrategies(const BendersBaseOptions& be
     bool use_outer_loop = (method_ == BENDERSMETHOD::BENDERS_OUTERLOOP 
                            || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP);
     
-    // Build ExecutionStrategy - for now, always use MPI-based
-    // (Sequential can be added later as an option)
+    // Build ExecutionStrategy
+    // Use Sequential if running with single process (world size == 1), otherwise use MPI
     std::unique_ptr<IExecutionStrategy> execution_strategy;
     
-    auto mpi_benders = std::make_unique<BendersMpi>(benders_options,
-                                                    dependencies_.logger,
-                                                    dependencies_.writer,
-                                                    *world_,
-                                                    dependencies_.math_log_driver);
-    
-    execution_strategy = std::make_unique<ParallelMpiExecutionStrategy>(std::move(mpi_benders));
+    if (world_->size() == 1)
+    {
+        // Sequential execution (single process)
+        auto sequential_benders = std::make_unique<BendersSequential>(benders_options,
+                                                                      dependencies_.logger,
+                                                                      dependencies_.writer,
+                                                                      dependencies_.math_log_driver);
+        execution_strategy = std::make_unique<SequentialExecutionStrategy>(std::move(sequential_benders));
+    }
+    else
+    {
+        // MPI parallel execution (multiple processes)
+        auto mpi_benders = std::make_unique<BendersMpi>(benders_options,
+                                                        dependencies_.logger,
+                                                        dependencies_.writer,
+                                                        *world_,
+                                                        dependencies_.math_log_driver);
+        execution_strategy = std::make_unique<ParallelMpiExecutionStrategy>(std::move(mpi_benders));
+    }
     
     // Build BatchingStrategy
     std::unique_ptr<IBatchingStrategy> batching_strategy;
