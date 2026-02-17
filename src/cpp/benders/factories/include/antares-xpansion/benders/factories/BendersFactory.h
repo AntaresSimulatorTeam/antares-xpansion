@@ -7,6 +7,10 @@
 #include <optional>
 #include <variant>
 
+#ifdef ENABLE_BENDERS_STRATEGY
+#include <antares-xpansion/benders/strategy/IBendersCore.h>
+#endif
+
 struct BendersLoggerBase;
 class MathLoggerDriver;
 
@@ -36,6 +40,17 @@ public:
         BENDERSMETHOD method{BENDERSMETHOD::BENDERS};
     };
 
+#ifdef ENABLE_BENDERS_STRATEGY
+    struct StrategyBendersEnvironment
+    {
+        std::unique_ptr<IBendersCore> benders{nullptr};
+        std::variant<Benders::Criterion::CriterionInputData,
+                     Benders::Criterion::OuterLoopCriterionInputData>
+          criterion_input_data;
+        BENDERSMETHOD method{BENDERSMETHOD::BENDERS};
+    };
+#endif
+
     struct Dependencies
     {
         std::shared_ptr<ILogger> logger;
@@ -49,9 +64,25 @@ public:
                    Dependencies dependencies);
     auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;
 
+#ifdef ENABLE_BENDERS_STRATEGY
+    /**
+     * @brief Create Benders implementation using Strategy pattern
+     * @param outer_loop Whether to use outer loop optimization
+     * @return Environment with strategy-based BendersCore implementation
+     * 
+     * This method builds a BendersCore by composing ExecutionStrategy,
+     * BatchingStrategy, and OuterLoopStrategy based on configuration options.
+     */
+    auto PrepareForExecutionWithStrategies(bool outer_loop) -> std::optional<StrategyBendersEnvironment>;
+#endif
+
 private:
     auto ConfigureBenders(const BendersBaseOptions& benders_options,
                           const CouplingMap& coupling_map) -> BendersEnvironment;
+#ifdef ENABLE_BENDERS_STRATEGY
+    auto ConfigureBendersWithStrategies(const BendersBaseOptions& benders_options,
+                                       const CouplingMap& coupling_map) -> StrategyBendersEnvironment;
+#endif
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();
