@@ -44,7 +44,7 @@ if(GTEST_FOUND)
         GTest::GTest 
         GTest::Main
         antaresXpansion::benders_core 
-        antaresXpansion::benders_sequential
+        antaresXpansion::benders_sequential_core
         antaresXpansion::factories)
     add_test(NAME SequentialExecutionStrategy_test COMMAND SequentialExecutionStrategy_test)
 
@@ -61,7 +61,7 @@ if(GTEST_FOUND)
         GTest::GTest 
         GTest::Main
         antaresXpansion::benders_core 
-        antaresXpansion::benders_mpi
+        antaresXpansion::benders_mpi_core
         antaresXpansion::factories)
     add_test(NAME ParallelMpiExecutionStrategy_test COMMAND ParallelMpiExecutionStrategy_test)
 
@@ -89,8 +89,8 @@ if(GTEST_FOUND)
         GTest::GTest 
         GTest::Main
         antaresXpansion::benders_core 
-        antaresXpansion::benders_by_batch
-        antaresXpansion::benders_mpi
+        antaresXpansion::benders_by_batch_core
+        antaresXpansion::benders_mpi_core
         antaresXpansion::factories)
     add_test(NAME ByBatchStrategy_test COMMAND ByBatchStrategy_test)
 
@@ -113,7 +113,7 @@ if(GTEST_FOUND)
     target_link_libraries(OuterLoopAdapter_test PRIVATE 
         GTest::GTest 
         GTest::Main
-        antaresXpansion::outer_loop)
+        antaresXpansion::outer_loop_lib)
     add_test(NAME OuterLoopAdapter_test COMMAND OuterLoopAdapter_test)
 
     # BendersCore unit test
