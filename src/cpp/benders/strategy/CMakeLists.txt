@@ -127,6 +127,19 @@ if(ENABLE_BENDERS_STRATEGY)
             GTest::GTest 
             GTest::Main)
         add_test(NAME BendersCore_test COMMAND BendersCore_test)
+
+        # BendersFactory unit test
+        add_executable(BendersFactory_test tests/BendersFactory_test.cpp)
+        target_include_directories(BendersFactory_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
+        )
+        target_link_libraries(BendersFactory_test PRIVATE 
+            GTest::GTest 
+            GTest::Main
+            antaresXpansion::factories)
+        add_test(NAME BendersFactory_test COMMAND BendersFactory_test)
     else()
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
