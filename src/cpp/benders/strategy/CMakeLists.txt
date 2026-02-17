@@ -93,7 +93,29 @@ if(ENABLE_BENDERS_STRATEGY)
             antaresXpansion::benders_by_batch
             antaresXpansion::benders_mpi
             antaresXpansion::factories)
-        add_test(NAME ParallelMpiExecutionStrategy_test COMMAND ParallelMpiExecutionStrategy_test)
+        add_test(NAME ByBatchStrategy_test COMMAND ByBatchStrategy_test)
+
+        # NoOuterLoopStrategy unit test
+        add_executable(NoOuterLoopStrategy_test tests/NoOuterLoopStrategy_test.cpp)
+        target_include_directories(NoOuterLoopStrategy_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        )
+        target_link_libraries(NoOuterLoopStrategy_test PRIVATE 
+            GTest::GTest 
+            GTest::Main)
+        add_test(NAME NoOuterLoopStrategy_test COMMAND NoOuterLoopStrategy_test)
+
+        # OuterLoopAdapter unit test
+        add_executable(OuterLoopAdapter_test tests/OuterLoopAdapter_test.cpp)
+        target_include_directories(OuterLoopAdapter_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../outer_loop/include>
+        )
+        target_link_libraries(OuterLoopAdapter_test PRIVATE 
+            GTest::GTest 
+            GTest::Main
+            antaresXpansion::outer_loop)
+        add_test(NAME OuterLoopAdapter_test COMMAND OuterLoopAdapter_test)
     else()
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
