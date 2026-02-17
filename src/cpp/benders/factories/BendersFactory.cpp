@@ -8,6 +8,15 @@
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h>
+#include <antares-xpansion/benders/strategy/BendersCore.h>
+#include <antares-xpansion/benders/strategy/SequentialExecutionStrategy.h>
+#include <antares-xpansion/benders/strategy/ParallelMpiExecutionStrategy.h>
+#include <antares-xpansion/benders/strategy/NoBatchingStrategy.h>
+#include <antares-xpansion/benders/strategy/ByBatchStrategy.h>
+#include <antares-xpansion/benders/strategy/NoOuterLoopStrategy.h>
+#include <antares-xpansion/benders/strategy/OuterLoopAdapter.h>
+#include <antares-xpansion/benders/benders_sequential/BendersSequential.h>
+#include <antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h>
 #include <antares-xpansion/helpers/AreaParser.h>
 #include <variant>
 
@@ -96,43 +105,89 @@ std::set<std::string> BendersFactory::ReadAreaFile()
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                       const CouplingMap& coupling_map) -> BendersEnvironment
 {
-    std::unique_ptr<BendersBase> benders;
-    switch (method_)
+    // Determine which strategies to create based on method
+    bool use_batching = (method_ == BENDERSMETHOD::BENDERS_BY_BATCH 
+                         || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP);
+    bool use_outer_loop = (method_ == BENDERSMETHOD::BENDERS_OUTERLOOP 
+                           || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP);
+    
+    // Build ExecutionStrategy
+    // Use Sequential if running with single process (world size == 1), otherwise use MPI
+    std::unique_ptr<IExecutionStrategy> execution_strategy;
+    
+    if (world_->size() == 1)
     {
-    case BENDERSMETHOD::BENDERS:
-        benders = std::make_unique<BendersMpi>(benders_options,
-                                               dependencies_.logger,
-                                               dependencies_.writer,
-                                               *world_,
-                                               dependencies_.math_log_driver);
-        break;
-    case BENDERSMETHOD::BENDERS_OUTERLOOP:
-        benders = std::make_unique<Outerloop::BendersMpiOuterLoop>(benders_options,
-                                                                   dependencies_.logger,
-                                                                   dependencies_.writer,
-                                                                   *world_,
-                                                                   dependencies_.math_log_driver);
-        break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH:
-    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
-        benders = std::make_unique<BendersByBatch>(benders_options,
-                                                   dependencies_.logger,
-                                                   dependencies_.writer,
-                                                   *world_,
-                                                   dependencies_.math_log_driver);
-        break;
+        // Sequential execution (single process)
+        auto sequential_benders = std::make_unique<BendersSequential>(benders_options,
+                                                                      dependencies_.logger,
+                                                                      dependencies_.writer,
+                                                                      dependencies_.math_log_driver);
+        execution_strategy = std::make_unique<SequentialExecutionStrategy>(std::move(sequential_benders));
     }
-
-    benders->set_input_map(coupling_map);
+    else
+    {
+        // MPI parallel execution (multiple processes)
+        auto mpi_benders = std::make_unique<BendersMpi>(benders_options,
+                                                        dependencies_.logger,
+                                                        dependencies_.writer,
+                                                        *world_,
+                                                        dependencies_.math_log_driver);
+        execution_strategy = std::make_unique<ParallelMpiExecutionStrategy>(std::move(mpi_benders));
+    }
+    
+    // Build BatchingStrategy
+    std::unique_ptr<IBatchingStrategy> batching_strategy;
+    if (use_batching)
+    {
+        auto batch_benders = std::make_unique<BendersByBatch>(benders_options,
+                                                              dependencies_.logger,
+                                                              dependencies_.writer,
+                                                              *world_,
+                                                              dependencies_.math_log_driver);
+        batching_strategy = std::make_unique<ByBatchStrategy>(std::move(batch_benders));
+    }
+    else
+    {
+        batching_strategy = std::make_unique<NoBatchingStrategy>();
+    }
+    
+    // Build OuterLoopStrategy
+    std::unique_ptr<IOuterLoopStrategy> outer_loop_strategy;
+    if (use_outer_loop)
+    {
+        // For outer loop, we need to create an OuterLoop implementation
+        auto outer_loop = std::make_unique<Outerloop::OuterLoopBiLevel>(
+            benders_options,
+            dependencies_.logger,
+            dependencies_.writer,
+            *world_,
+            dependencies_.math_log_driver);
+        outer_loop_strategy = std::make_unique<OuterLoopAdapter>(std::move(outer_loop));
+    }
+    else
+    {
+        outer_loop_strategy = std::make_unique<NoOuterLoopStrategy>();
+    }
+    
+    // Compose strategies into BendersCore
+    auto benders_core = std::make_unique<BendersCore>(
+        std::move(execution_strategy),
+        std::move(batching_strategy),
+        std::move(outer_loop_strategy)
+    );
+    
+    // Set input map via BendersCore interface (now properly delegated)
+    benders_core->set_input_map(coupling_map);
+    
     auto criterion_input_holder = ProcessCriterionInput();
-    benders->setCriterionComputationInputs(
+    benders_core->setCriterionComputationInputs(
       std::visit([](auto&& the_variant)
                  { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
                  criterion_input_holder));
-    return BendersEnvironment{std::move(benders), criterion_input_holder, method_};
+    return BendersEnvironment{std::move(benders_core), criterion_input_holder, method_};
 }
 
-void BendersFactory::ConfigureSolverLog(BendersBase* benders)
+void BendersFactory::ConfigureSolverLog(IBendersCore* benders)
 {
     if (options_.LOG_LEVEL > 1)
     {

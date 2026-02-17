@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/project_build/CMakeFiles/antares-solver_project"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/project_build/CMakeFiles/antares-solver_project.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/project_build/CMakeFiles/antares-solver_project-complete.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-build.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-configure.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-download.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-install.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-mkdir.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-patch.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-test.rule"
+		},
+		{
+			"file" : "/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"antares-solver_project"
+		],
+		"name" : "antares-solver_project"
+	}
+}
