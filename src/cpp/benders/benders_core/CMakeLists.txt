@@ -70,6 +70,8 @@ add_library(antaresXpansion::benders_core ALIAS benders_core)
 target_include_directories(benders_core
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_by_batch/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_mpi/include>
 )
 
 find_package(fmt REQUIRED)

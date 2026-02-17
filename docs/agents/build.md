@@ -18,13 +18,8 @@ Common configure options:
 - BUILD_TESTING (default OFF): enable tests
 - ALLOW_RUN_AS_ROOT (default OFF): allow MPI to run as root for CentOS Docker
 
-Build:
-- Windows:
-  cmake --build _build --config Release -j8
-- CentOS:
-  cmake3 --build _build --config Release -j8
-- Ubuntu:
-  cmake --build _build --config Release -j8
+  Pour compiler utilise :
+  /home/jmarechal/miniconda3/bin/cmake --build /home/jmarechal/CLionProjects/build_xpansion_relwithdebinfo --target all -j 6
 
 Notes:
 - First vcpkg build can be long; subsequent builds are faster due to caching.

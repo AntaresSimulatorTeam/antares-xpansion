@@ -96,7 +96,7 @@ public:
         _data.it = it;
     }
 
-    Point get_x_cut() const
+    Point get_x_cut() const override
     {
         return _data.x_cut;
     }

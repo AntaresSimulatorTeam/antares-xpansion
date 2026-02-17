@@ -108,20 +108,22 @@ public:
     void set_stop(bool stop) { _data.stop = stop; }
 
 public:
-    virtual void BuildCut() = 0;
-    virtual void solve_master() = 0;
-    virtual void check_convergence() = 0;
-    virtual Point get_master_x() const = 0;
-    virtual void set_master_x(const Point& x) = 0;
+    virtual void free();
+    virtual void BuildCut() {}
+    virtual void solve_master() {}
+    virtual void check_convergence() {}
+    virtual Point get_master_x() const { return Point(); }
+    virtual void set_master_x(const Point& x) {}
+
     CurrentIterationData& getCurrentIterationData() { return _data; }
     
-    void init_data();
+    virtual void init_data();
     void OpenCsvFile();
     void CloseCsvFile();
-    void SaveCurrentBendersData();
+    virtual void SaveCurrentBendersData();
     void update_best_ub();
-    void UpdateTrace();
-    void mathLoggerDriverWriteheader();
+    virtual void UpdateTrace();
+    virtual void mathLoggerDriverWriteheader();
     void LoggerLogAtIterationEnd();
 
     int GetBendersRunNumber() const
@@ -297,7 +299,7 @@ protected:
     virtual void UpdateStoppingCriterion();
     virtual bool ShouldRelaxationStop() const;
 
-    int GetNumOfSubProblemsSolvedBeforeResume()
+    int GetNumOfSubProblemsSolvedBeforeResume() const
     {
         return cumulative_number_of_subproblem_resolved_before_resume;
     }

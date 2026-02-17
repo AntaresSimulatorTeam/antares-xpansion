@@ -1517,3 +1517,14 @@ void BendersBase::roundXCut()
         }
     }
 }
+
+void BendersBase::free()
+{
+    // Default behaviour: free master and subproblems if they exist.
+    if (!master_is_empty_)
+    {
+        free_master();
+    }
+    free_subproblems();
+}
+

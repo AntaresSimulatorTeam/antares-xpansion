@@ -33,8 +33,7 @@ public:
     }
 
     void free() {
-        benders_->free_master();
-        benders_->free_subproblems();
+        benders_->free();
     }
 
     void OuterLoopCheckFeasibility() override;
