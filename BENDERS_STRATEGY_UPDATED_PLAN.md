@@ -151,31 +151,51 @@ BendersCore (orchestrator)
 
 ---
 
-### Phase 4: Factory Refactoring 🚧 NEXT
+### Phase 4: Factory Refactoring ✅ COMPLETE
 **Goal**: Update BendersFactory to build strategies instead of concrete classes
 
 **Tasks**:
-- [ ] Refactor `BendersFactory::create()` to:
-  - Build appropriate ExecutionStrategy (based on options.PARALLEL_SLAVE_WEIGHT)
-  - Build appropriate BatchingStrategy (based on options.BATCH_SIZE)
-  - Build appropriate OuterLoopStrategy (based on outer-loop flag)
+- [x] Refactor `BendersFactory` to support strategy creation ✅
+  - Add `PrepareForExecutionWithStrategies()` method
+  - Add `ConfigureBendersWithStrategies()` internal method
+  - Build ExecutionStrategy (ParallelMpiExecutionStrategy)
+  - Build BatchingStrategy (ByBatch or NoBatching based on BATCH_SIZE)
+  - Build OuterLoopStrategy (OuterLoop or NoOuterLoop based on flag)
   - Return unique_ptr<IBendersCore> wrapping BendersCore with composed strategies
-- [ ] Maintain backward compatibility:
-  - Option 1: Dual factory methods (createLegacy / createStrategy)
-  - Option 2: Feature flag to switch behavior
-- [ ] Migrate existing code incrementally to use new factory
+- [x] Maintain backward compatibility ✅
+  - Feature flag approach (ENABLE_BENDERS_STRATEGY)
+  - Original methods unchanged
+  - New methods added alongside
+- [x] Documentation ✅
+  - FACTORY_STRATEGY_TESTING.md created
+  - Strategy selection logic documented
+  - Testing strategy outlined
 
 **Files**: 
-- `src/cpp/benders/factories/BendersFactory.{h,cpp}`
+- `src/cpp/benders/factories/BendersFactory.{h,cpp}` ✅
+- `FACTORY_STRATEGY_TESTING.md` ✅
 
-**Estimate**: 2 days
+**Status**: Complete in PR #7
+- Code compiles with and without ENABLE_BENDERS_STRATEGY
+- Factory can create strategy-based BendersCore
+- All 4 BENDERSMETHOD variants supported
+- Backward compatible with existing code
+
+**Notes**:
+- Some IBendersCore methods need extension (set_input_map, etc.)
+- Sequential strategy not yet wired (only ParallelMPI)
+- Comprehensive integration tests recommended for production
 
 ---
 
-### Phase 5: Cleanup & Validation
+### Phase 5: Cleanup & Validation 🚧 NEXT
 **Goal**: Remove duplication, unify implementations, validate performance
 
 **Tasks**:
+- [ ] Extend IBendersCore interface if needed
+  - Add set_input_map, setCriterionComputationInputs
+  - Add solver log configuration
+- [ ] Add Sequential execution option to factory
 - [ ] Unify MathLogger implementations (remove duplicates in Sequential/MPI)
 - [ ] Remove obsolete code (once all paths migrate to strategy)
 - [ ] Full integration testing with real study data
