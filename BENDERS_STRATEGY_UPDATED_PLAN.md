@@ -84,29 +84,45 @@ BendersCore (orchestrator)
 - ✅ Unit tests complete for MPI variant (7 tests)
 - ✅ MPI communicator handling validated
 
-#### 2.2 BatchingStrategy Implementations
+#### 2.2 BatchingStrategy Implementations ✅ COMPLETE
 **Goal**: Implement batching variants
 
 **Tasks**:
-- [ ] **NoBatchingStrategy** (passthrough, no batching logic)
-- [ ] **ByBatchStrategy** (wrap BendersByBatch logic)
+- [x] **NoBatchingStrategy** ✅ (passthrough, no batching logic)
+  - 5 comprehensive unit tests
+  - Header-only, minimal dependencies
+  - **Status**: Complete in PR #4
+- [x] **ByBatchStrategy** ✅ (wrap BendersByBatch logic)
+  - 6 comprehensive unit tests
+  - Wraps BendersByBatch implementation
+  - **Status**: Complete in PR #4
 
-**Files**: `src/cpp/benders/strategy/src/{NoBatchingStrategy,ByBatchStrategy}.{h,cpp}`
+**Files**: `src/cpp/benders/strategy/include/.../NoBatchingStrategy.h`, `ByBatchStrategy.h`
 
-#### 2.3 OuterLoopStrategy Implementations
+#### 2.3 OuterLoopStrategy Implementations ✅ COMPLETE
 **Goal**: Implement outer-loop variants
 
 **Tasks**:
-- [ ] **NoOuterLoopStrategy** (passthrough)
-- [ ] **OuterLoopWrapper** (wrap OuterLoopBenders logic)
+- [x] **NoOuterLoopStrategy** ✅ (passthrough)
+  - 11 comprehensive unit tests
+  - Header-only, minimal dependencies
+  - **Status**: Complete in PR #5
+- [x] **OuterLoopAdapter** ✅ (wrap OuterLoop logic)
+  - 10 comprehensive unit tests
+  - Wraps Outerloop::OuterLoop implementation
+  - **Status**: Complete in PR #5
 
-**Files**: `src/cpp/benders/strategy/src/{NoOuterLoopStrategy,OuterLoopWrapper}.{h,cpp}`
+**Files**: `src/cpp/benders/strategy/include/.../NoOuterLoopStrategy.h`, `OuterLoopAdapter.h`
 
-**Estimate**: 3-4 days
+**Phase 2 Summary**: ✅ **ALL COMPLETE**
+- Total test count: 45 tests across all strategies
+- All strategies follow consistent delegation patterns
+- Zero code review issues
+- All acceptance criteria met
 
 ---
 
-### Phase 3: BendersCore Orchestration
+### Phase 3: BendersCore Orchestration 🚧 NEXT
 **Goal**: Implement the main orchestrator that composes strategies
 
 **Tasks**:
