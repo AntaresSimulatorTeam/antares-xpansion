@@ -16,10 +16,11 @@ add_library(antaresXpansion::benders_strategy ALIAS benders_strategy)
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include")
 
-# Add a small smoke test when the strategy feature is enabled
+# Add tests when the strategy feature is enabled
 if(ENABLE_BENDERS_STRATEGY)
     find_package(GTest QUIET)
     if(GTEST_FOUND)
+        # Adapter smoke test
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -30,6 +31,23 @@ if(ENABLE_BENDERS_STRATEGY)
         )
         target_link_libraries(adapter_smoke_test PRIVATE GTest::GTest antaresXpansion::benders_core antaresXpansion::factories)
         add_test(NAME adapter_smoke_test COMMAND adapter_smoke_test)
+
+        # SequentialExecutionStrategy unit test
+        add_executable(SequentialExecutionStrategy_test tests/SequentialExecutionStrategy_test.cpp)
+        target_include_directories(SequentialExecutionStrategy_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_sequential/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        )
+        target_link_libraries(SequentialExecutionStrategy_test PRIVATE 
+            GTest::GTest 
+            GTest::Main
+            antaresXpansion::benders_core 
+            antaresXpansion::benders_sequential
+            antaresXpansion::factories)
+        add_test(NAME SequentialExecutionStrategy_test COMMAND SequentialExecutionStrategy_test)
     else()
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
@@ -41,6 +59,6 @@ if(ENABLE_BENDERS_STRATEGY)
         )
         target_link_libraries(adapter_smoke_test PRIVATE antaresXpansion::benders_core antaresXpansion::factories)
         add_test(NAME adapter_smoke_test COMMAND adapter_smoke_test)
-        message(STATUS "GTest not found, strategy adapter smoke test will not be built")
+        message(STATUS "GTest not found, strategy tests will not be built with GTest::Main")
     endif()
 endif()

@@ -1,0 +1,14 @@
+# Target labels
+ antares-solver_project
+# Source files and their labels
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/project_build/CMakeFiles/antares-solver_project
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/project_build/CMakeFiles/antares-solver_project.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/project_build/CMakeFiles/antares-solver_project-complete.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-build.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-configure.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-download.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-install.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-mkdir.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-patch.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-test.rule
+/home/runner/work/antares-xpansion/antares-xpansion/build_strategy/build_deps/antares-solver/stamp/antares-solver_project-update.rule
