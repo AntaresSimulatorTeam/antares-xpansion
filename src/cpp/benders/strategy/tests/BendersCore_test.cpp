@@ -218,12 +218,10 @@ TEST(BendersCoreNoOuterLoopTest, LaunchWithoutOuterLoop)
 {
     auto exec = std::make_unique<MockExecutionStrategy>();
     auto batch = std::make_unique<MockBatchingStrategy>();
-    auto outer = std::make_unique<MockOuterLoopStrategy>();
     
     auto exec_ptr = exec.get();
-    auto outer_ptr = outer.get();
     
-    // Create core but we'll test with null outer loop
+    // Create core without outer loop
     auto core = std::make_unique<BendersCore>(
         std::move(exec),
         std::move(batch),

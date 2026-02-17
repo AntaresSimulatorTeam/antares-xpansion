@@ -24,12 +24,13 @@ class BendersCore : public IBendersCore
 public:
     /**
      * @brief Constructor with strategy injection
-     * @param execution_strategy Execution strategy (Sequential or ParallelMPI)
-     * @param batching_strategy Batching strategy (NoBatching or ByBatch)
-     * @param outer_loop_strategy Outer loop strategy (NoOuterLoop or OuterLoop)
+     * @param execution_strategy Execution strategy (Sequential or ParallelMPI), can be nullptr
+     * @param batching_strategy Batching strategy (NoBatching or ByBatch), can be nullptr
+     * @param outer_loop_strategy Outer loop strategy (NoOuterLoop or OuterLoop), can be nullptr
      * 
-     * Note: All three strategies must be provided. Use "No-op" strategies
-     * (NoBatchingStrategy, NoOuterLoopStrategy) when features are not needed.
+     * Note: Strategies can be nullptr. The class handles null strategies gracefully.
+     * For features not needed, you can pass nullptr or use "No-op" strategies
+     * (NoBatchingStrategy, NoOuterLoopStrategy) for clarity.
      */
     BendersCore(std::unique_ptr<IExecutionStrategy> execution_strategy,
                 std::unique_ptr<IBatchingStrategy> batching_strategy,
