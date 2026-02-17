@@ -48,6 +48,23 @@ if(ENABLE_BENDERS_STRATEGY)
             antaresXpansion::benders_sequential
             antaresXpansion::factories)
         add_test(NAME SequentialExecutionStrategy_test COMMAND SequentialExecutionStrategy_test)
+
+        # ParallelMpiExecutionStrategy unit test
+        add_executable(ParallelMpiExecutionStrategy_test tests/ParallelMpiExecutionStrategy_test.cpp)
+        target_include_directories(ParallelMpiExecutionStrategy_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_mpi/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        )
+        target_link_libraries(ParallelMpiExecutionStrategy_test PRIVATE 
+            GTest::GTest 
+            GTest::Main
+            antaresXpansion::benders_core 
+            antaresXpansion::benders_mpi
+            antaresXpansion::factories)
+        add_test(NAME ParallelMpiExecutionStrategy_test COMMAND ParallelMpiExecutionStrategy_test)
     else()
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
