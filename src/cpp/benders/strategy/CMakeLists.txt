@@ -116,6 +116,17 @@ if(ENABLE_BENDERS_STRATEGY)
             GTest::Main
             antaresXpansion::outer_loop)
         add_test(NAME OuterLoopAdapter_test COMMAND OuterLoopAdapter_test)
+
+        # BendersCore unit test
+        add_executable(BendersCore_test tests/BendersCore_test.cpp)
+        target_include_directories(BendersCore_test PRIVATE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
+        )
+        target_link_libraries(BendersCore_test PRIVATE 
+            GTest::GTest 
+            GTest::Main)
+        add_test(NAME BendersCore_test COMMAND BendersCore_test)
     else()
         add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
         target_include_directories(adapter_smoke_test PRIVATE
