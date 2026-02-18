@@ -1,6 +1,8 @@
 add_library(plugins)
 target_sources(plugins PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/plugins/BendersPlugin.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/plugins/NoOperationPlugin.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/NoOperationPlugin.cpp
 )
 
 target_link_libraries(plugins

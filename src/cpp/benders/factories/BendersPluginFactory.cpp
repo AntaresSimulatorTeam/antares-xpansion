@@ -1,4 +1,6 @@
 #include "antares-xpansion/benders/factories/BendersPluginFactory.h"
+#include <antares-xpansion/benders/plugins/NoOperationPlugin.h>
+
 
 #include "antares-xpansion/benders/benders_core/common.h"
 
@@ -14,5 +16,5 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
 {
     std::cout << "creating plugin ..... " << std::endl;
 
-    return nullptr;
+    return std::make_shared<NoOperationPlugin>();
 }
