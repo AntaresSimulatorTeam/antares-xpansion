@@ -25,23 +25,21 @@ public:
   */
     virtual void OnBendersEnd() = 0;
 
-    
-
     /*
       This method will be called at the beginning of a benders iteration
-      @inputs : 
+      @inputs :
     */
-    virtual void  OnBendersIterationStart() = 0 ; 
+    virtual void OnBendersIterationStart() = 0;
 
-     /*
-      This method will be called at the end  of a benders iteration 
-      @inputs :  
-     */
-      virtual void  OnBendersIterationEnd() = 0 ; 
+    /*
+     This method will be called at the end  of a benders iteration
+     @inputs :
+    */
+    virtual void OnBendersIterationEnd() = 0;
 
     /*
       This method will be called at the start of the master iteration after solving the master
-      @inputs : 
+      @inputs :
     */
     virtual void OnBendersMasterIterationStart() = 0;
     /*
@@ -53,7 +51,7 @@ public:
 
     /*
       This method will be called before solving a subproblem (for each subproblem)
-      @inputs : 
+      @inputs :
     */
     virtual void OnBendersMicroIterationStart() = 0;
 
@@ -61,6 +59,5 @@ public:
       This method will be called after solving a subproblem (for each subproblem)
       @inputs :
     */
-    virtual void OnBendersMicroIterationEnd()
-      = 0;
+    virtual void OnBendersMicroIterationEnd() = 0;
 };

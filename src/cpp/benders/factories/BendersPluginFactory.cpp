@@ -1,6 +1,6 @@
 #include "antares-xpansion/benders/factories/BendersPluginFactory.h"
-#include <antares-xpansion/benders/plugins/NoOperationPlugin.h>
 
+#include <antares-xpansion/benders/plugins/NoOperationPlugin.h>
 
 #include "antares-xpansion/benders/benders_core/common.h"
 

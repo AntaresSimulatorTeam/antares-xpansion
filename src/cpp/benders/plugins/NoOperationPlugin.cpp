@@ -1,52 +1,37 @@
 #include <antares-xpansion/benders/plugins/NoOperationPlugin.h>
 
-
-
-
-NoOperationPlugin::NoOperationPlugin() 
+NoOperationPlugin::NoOperationPlugin()
 {
-
 }
 
-void NoOperationPlugin::OnBendersStart() 
+void NoOperationPlugin::OnBendersStart()
 {
-
 }
 
-
-void NoOperationPlugin::OnBendersEnd() 
+void NoOperationPlugin::OnBendersEnd()
 {
-
 }
 
 void NoOperationPlugin::OnBendersIterationStart()
 {
-
-}
-    
-
-void  NoOperationPlugin::OnBendersIterationEnd()  
-{
-
 }
 
-void NoOperationPlugin::OnBendersMasterIterationStart() 
+void NoOperationPlugin::OnBendersIterationEnd()
 {
-
 }
 
-void NoOperationPlugin::OnBendersMasterIterationEnd() 
+void NoOperationPlugin::OnBendersMasterIterationStart()
 {
-
 }
 
-void NoOperationPlugin::OnBendersMicroIterationStart() 
+void NoOperationPlugin::OnBendersMasterIterationEnd()
 {
-
 }
 
-
-void NoOperationPlugin::OnBendersMicroIterationEnd() 
+void NoOperationPlugin::OnBendersMicroIterationStart()
 {
-    
+}
+
+void NoOperationPlugin::OnBendersMicroIterationEnd()
+{
 }
