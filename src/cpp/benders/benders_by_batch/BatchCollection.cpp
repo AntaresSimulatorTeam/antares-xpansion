@@ -1,4 +1,5 @@
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 #include <cmath>
 #include <iostream>
@@ -13,7 +14,7 @@ BatchCollection::BatchCollection(const std::vector<std::string>& sub_problem_nam
 {
 }
 
-void BatchCollection::BuildBatches()
+void BatchCollection::BuildBatches(bool cache_problems)
 {
     if (batch_size_ > sub_problems_number_)
     {
@@ -34,12 +35,22 @@ void BatchCollection::BuildBatches()
         b.sub_problem_names.insert(b.sub_problem_names.end(),
                                    sub_problem_names_.begin() + batch_size_ * id,
                                    sub_problem_names_.begin() + batch_size_ * (id + 1));
+
+            b.sub_problems_names_for_cuts = b.sub_problem_names ;  
+        
+        b.proc_numbers.assign(b.sub_problem_names.size(),0) ; 
         batch_collections_.push_back(b);
+        
     }
     Batch last;
     last.id = number_of_batch_ - 1;
     last.sub_problem_names.insert(last.sub_problem_names.end(),
                                   sub_problem_names_.begin() + (number_of_batch_ - 1) * batch_size_,
                                   sub_problem_names_.end());
+ 
+    last.proc_numbers.assign(last.sub_problem_names.size(),0) ; 
+
+        last.sub_problems_names_for_cuts = last.sub_problem_names ;  
+
     batch_collections_.push_back(last);
 }

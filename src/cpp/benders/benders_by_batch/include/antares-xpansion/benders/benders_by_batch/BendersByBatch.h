@@ -42,8 +42,9 @@ private:
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const std::vector<std::string>& batch_sub_problems);
 
-    std::vector<std::vector<SubProblemNamesInCut>> get_subs_per_cut_per_batch(
-      const std::vector<SubProblemNamesInCut>& subs_per_batch);
+    std::vector<std::vector<SubProblemNamesInCut>> get_subs_per_cut_per_batch();
+
+
     BatchCollection batch_collection_;
     void MasterLoop();
     void SolveBatches();
