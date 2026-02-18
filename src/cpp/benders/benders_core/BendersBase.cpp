@@ -1528,3 +1528,22 @@ void BendersBase::free()
     free_subproblems();
 }
 
+LogData BendersBase::GetBestIterationData() const
+{
+    return best_iteration_data;
+}
+
+WorkerMasterDataVect BendersBase::AllCuts() const
+{
+    return workerMasterDataVect_;
+}
+
+int BendersBase::MasterRowIndex(const std::string& row_name) const
+{
+    if (master_is_empty_ || !_master)
+    {
+        return -1;
+    }
+    // Worker::RowIndex is non-const; call via const_cast on _master.get()
+    return const_cast<WorkerMaster*>(_master.get())->RowIndex(row_name);
+}

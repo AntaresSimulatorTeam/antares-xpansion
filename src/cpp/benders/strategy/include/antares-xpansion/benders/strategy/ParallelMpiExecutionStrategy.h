@@ -25,7 +25,7 @@ public:
      * Note: The MPI communicator must be provided to BendersMPI at construction
      * and must remain valid for the lifetime of this strategy.
      */
-    explicit ParallelMpiExecutionStrategy(std::unique_ptr<BendersMpi> mpi_benders)
+    explicit ParallelMpiExecutionStrategy(std::unique_ptr<BendersBase> mpi_benders)
         : mpi_benders_(std::move(mpi_benders))
     {
     }
@@ -42,16 +42,16 @@ public:
     {
         if (mpi_benders_)
         {
+            // Call through base type so access checks use BendersBase (public)
             mpi_benders_->InitializeProblems();
         }
     }
 
     void Run() override
     {
-        // BendersMPI's Run() is protected, but launch() calls it internally
-        // Delegate to launch() which handles the full MPI execution
         if (mpi_benders_)
         {
+            // launch orchestrates the run lifecycle for MPI
             mpi_benders_->launch();
         }
     }
@@ -117,6 +117,5 @@ public:
     }
 
 private:
-    std::unique_ptr<BendersMpi> mpi_benders_;
+    std::unique_ptr<BendersBase> mpi_benders_;
 };
-

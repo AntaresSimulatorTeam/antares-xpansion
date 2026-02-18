@@ -25,12 +25,14 @@ class ILogger;
 class SimulationOptions;
 struct BendersBaseOptions;
 
+BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop);
+
 class BendersFactory
 {
 public:
     struct BendersEnvironment
     {
-        std::unique_ptr<IBendersCore> benders{nullptr};
+        std::shared_ptr<IBendersCore> benders{nullptr};
         std::variant<Benders::Criterion::CriterionInputData,
                      Benders::Criterion::OuterLoopCriterionInputData>
           criterion_input_data;

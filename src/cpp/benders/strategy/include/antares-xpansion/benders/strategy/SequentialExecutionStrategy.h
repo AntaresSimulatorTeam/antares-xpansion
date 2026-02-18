@@ -1,25 +1,20 @@
 #pragma once
 
 #include "IExecutionStrategy.h"
-#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include <memory>
 
 /**
  * @class SequentialExecutionStrategy
  * @brief Execution strategy adapter for BendersSequential
- * 
- * Wraps BendersSequential to implement IExecutionStrategy interface.
- * This adapter allows the sequential Benders implementation to be used
- * within the Strategy pattern composition.
+ *
+ * Wraps a BendersBase-derived implementation to implement IExecutionStrategy.
  */
 class SequentialExecutionStrategy : public IExecutionStrategy
 {
 public:
-    /**
-     * @brief Constructor that takes ownership of a BendersSequential instance
-     * @param sequential Unique pointer to BendersSequential implementation
-     */
-    explicit SequentialExecutionStrategy(std::unique_ptr<BendersSequential> sequential)
+    // Accept any BendersBase-derived implementation (BendersSequential, etc.)
+    explicit SequentialExecutionStrategy(std::unique_ptr<BendersBase> sequential)
         : sequential_(std::move(sequential))
     {
     }
@@ -42,17 +37,16 @@ public:
 
     void Run() override
     {
-        // BendersSequential's Run() is protected, but launch() calls it internally
-        // For now, delegate to launch() which handles the full execution
         if (sequential_)
         {
+            // Run is protected in derived classes; launch() orchestrates run lifecycle.
             sequential_->launch();
         }
     }
 
     [[nodiscard]] std::string BendersName() const override
     {
-        return sequential_ ? sequential_->BendersName() : "SequentialExecutionStrategy";
+        return sequential_ ? sequential_->BendersName() : std::string("SequentialExecutionStrategy");
     }
 
     [[nodiscard]] double execution_time() const override
@@ -60,7 +54,6 @@ public:
         return sequential_ ? sequential_->execution_time() : 0.0;
     }
 
-    // Master problem interaction
     void set_input_map(const CouplingMap& coupling_map) override
     {
         if (sequential_)
@@ -82,7 +75,6 @@ public:
         }
     }
 
-    // Results and data access
     [[nodiscard]] LogData GetBestIterationData() const override
     {
         return sequential_ ? sequential_->GetBestIterationData() : LogData{};
@@ -93,11 +85,11 @@ public:
         return sequential_ ? sequential_->AllCuts() : WorkerMasterDataVect{};
     }
 
-    // Resource management
     void free() override
     {
         if (sequential_)
         {
+            // Call through base type: BendersBase::free() is a public virtual method.
             sequential_->free();
         }
     }
@@ -111,6 +103,5 @@ public:
     }
 
 private:
-    std::unique_ptr<BendersSequential> sequential_;
+    std::unique_ptr<BendersBase> sequential_;
 };
-

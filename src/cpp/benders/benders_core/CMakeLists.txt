@@ -77,6 +77,8 @@ target_include_directories(benders_core
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../output/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../adapters/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../strategy/include>
+        # Ensure core headers are visible when compiling/linking against benders_core
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
 )
 
 find_package(fmt REQUIRED)

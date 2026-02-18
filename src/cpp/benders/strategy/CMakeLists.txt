@@ -27,8 +27,9 @@ if(GTEST_FOUND)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
-    target_link_libraries(adapter_smoke_test PRIVATE GTest::GTest antaresXpansion::benders_core antaresXpansion::factories)
+    target_link_libraries(adapter_smoke_test PRIVATE GTest::GTest antaresXpansion::benders_core antaresXpansion::factories antaresXpansion::core)
     add_test(NAME adapter_smoke_test COMMAND adapter_smoke_test)
 
     # SequentialExecutionStrategy unit test
@@ -39,13 +40,15 @@ if(GTEST_FOUND)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
     target_link_libraries(SequentialExecutionStrategy_test PRIVATE 
         GTest::GTest 
         GTest::Main
         antaresXpansion::benders_core 
         antaresXpansion::benders_sequential_core
-        antaresXpansion::factories)
+        antaresXpansion::factories
+        antaresXpansion::core)
     add_test(NAME SequentialExecutionStrategy_test COMMAND SequentialExecutionStrategy_test)
 
     # ParallelMpiExecutionStrategy unit test
@@ -56,13 +59,15 @@ if(GTEST_FOUND)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
     target_link_libraries(ParallelMpiExecutionStrategy_test PRIVATE 
         GTest::GTest 
         GTest::Main
         antaresXpansion::benders_core 
         antaresXpansion::benders_mpi_core
-        antaresXpansion::factories)
+        antaresXpansion::factories
+        antaresXpansion::core)
     add_test(NAME ParallelMpiExecutionStrategy_test COMMAND ParallelMpiExecutionStrategy_test)
 
     # NoBatchingStrategy unit test
@@ -84,6 +89,7 @@ if(GTEST_FOUND)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
     target_link_libraries(ByBatchStrategy_test PRIVATE 
         GTest::GTest 
@@ -91,7 +97,8 @@ if(GTEST_FOUND)
         antaresXpansion::benders_core 
         antaresXpansion::benders_by_batch_core
         antaresXpansion::benders_mpi_core
-        antaresXpansion::factories)
+        antaresXpansion::factories
+        antaresXpansion::core)
     add_test(NAME ByBatchStrategy_test COMMAND ByBatchStrategy_test)
 
     # NoOuterLoopStrategy unit test
@@ -109,11 +116,13 @@ if(GTEST_FOUND)
     target_include_directories(OuterLoopAdapter_test PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../outer_loop/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
     target_link_libraries(OuterLoopAdapter_test PRIVATE 
         GTest::GTest 
         GTest::Main
-        antaresXpansion::outer_loop_lib)
+        antaresXpansion::outer_loop_lib
+        antaresXpansion::core)
     add_test(NAME OuterLoopAdapter_test COMMAND OuterLoopAdapter_test)
 
     # BendersCore unit test
@@ -121,10 +130,14 @@ if(GTEST_FOUND)
     target_include_directories(BendersCore_test PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
     target_link_libraries(BendersCore_test PRIVATE 
         GTest::GTest 
-        GTest::Main)
+        GTest::Main
+        antaresXpansion::core
+        antaresXpansion::benders_core
+        antaresXpansion::solvers)
     add_test(NAME BendersCore_test COMMAND BendersCore_test)
 
     # BendersFactory unit test
@@ -133,11 +146,13 @@ if(GTEST_FOUND)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
     target_link_libraries(BendersFactory_test PRIVATE 
         GTest::GTest 
         GTest::Main
-        antaresXpansion::factories)
+        antaresXpansion::factories
+        antaresXpansion::core)
     add_test(NAME BendersFactory_test COMMAND BendersFactory_test)
 else()
     add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
@@ -147,8 +162,9 @@ else()
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
     )
-    target_link_libraries(adapter_smoke_test PRIVATE antaresXpansion::benders_core antaresXpansion::factories)
+    target_link_libraries(adapter_smoke_test PRIVATE antaresXpansion::benders_core antaresXpansion::factories antaresXpansion::core)
     add_test(NAME adapter_smoke_test COMMAND adapter_smoke_test)
     message(STATUS "GTest not found, strategy tests will not be built with GTest::Main")
 endif()

@@ -12,6 +12,10 @@ public:
     // accepte pointeur non-owning (peut être nullptr)
     explicit BendersBaseAdapter(BendersBase* base = nullptr) : base_(base) {}
 
+    // Accept a reference convenience overload so callers can pass an object directly
+    // (e.g. `BendersBaseAdapter adapter(dummy);`) — stores non-owning pointer.
+    explicit BendersBaseAdapter(BendersBase& base) : base_(&base) {}
+
     void launch() override { if (base_) base_->launch(); }
     void set_input_map(const CouplingMap& coupling_map) override { if (base_) base_->set_input_map(coupling_map); }
     [[nodiscard]] int MasterRowIndex(const std::string& row_name) const override { return base_ ? base_->MasterRowIndex(row_name) : -1; }

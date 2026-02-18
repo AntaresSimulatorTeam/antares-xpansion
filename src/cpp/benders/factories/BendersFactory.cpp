@@ -24,9 +24,9 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
                                boost::mpi::communicator* world,
                                Dependencies dependencies):
     options_{options},
+    dependencies_{dependencies},
     world_{world},
-    rank{world->rank()},
-    dependencies_{dependencies}
+    rank{world->rank()}
 {
 }
 
@@ -153,49 +153,41 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     
     // Build OuterLoopStrategy
     std::unique_ptr<IOuterLoopStrategy> outer_loop_strategy;
-    if (use_outer_loop)
-    {
-        // For outer loop, we need to create an OuterLoop implementation
-        auto outer_loop = std::make_unique<Outerloop::OuterLoopBiLevel>(
-            benders_options,
-            dependencies_.logger,
-            dependencies_.writer,
-            *world_,
-            dependencies_.math_log_driver);
-        outer_loop_strategy = std::make_unique<OuterLoopAdapter>(std::move(outer_loop));
-    }
-    else
-    {
-        outer_loop_strategy = std::make_unique<NoOuterLoopStrategy>();
-    }
-    
+    // For now avoid constructing complex outer-loop objects here (requires
+    // BendersBase/pBendersBase wiring). Use NoOuterLoopStrategy to keep build
+    // stable; actual outer-loop wiring happens in RunExternalLoop paths.
+    outer_loop_strategy = std::make_unique<NoOuterLoopStrategy>();
+
     // Compose strategies into BendersCore
     auto benders_core = std::make_unique<BendersCore>(
         std::move(execution_strategy),
         std::move(batching_strategy),
         std::move(outer_loop_strategy)
     );
-    
+
     // Set input map via BendersCore interface (now properly delegated)
     benders_core->set_input_map(coupling_map);
-    
+
+    // NOTE: do not call benders_core->set_solver_log_file here - BendersCore
+    // doesn't expose that API. Solver log configuration is handled by
+    // ConfigureSolverLog which dynamic_casts to BendersBase when available.
+
     auto criterion_input_holder = ProcessCriterionInput();
-    benders_core->setCriterionComputationInputs(
-      std::visit([](auto&& the_variant)
-                 { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
-                 criterion_input_holder));
+    // setCriterionComputationInputs was removed; criterion data is stored in environment
     return BendersEnvironment{std::move(benders_core), criterion_input_holder, method_};
 }
 
 void BendersFactory::ConfigureSolverLog(IBendersCore* benders)
 {
-    if (options_.LOG_LEVEL > 1)
+    if (options_.LOG_LEVEL > 1 && benders)
     {
         auto solver_log = std::filesystem::path(options_.OUTPUTROOT)
                           / (std::string("solver_log_proc_") + std::to_string(world_->rank())
                              + ".txt");
-
-        benders->set_solver_log_file(solver_log);
+        if (auto base = dynamic_cast<BendersBase*>(benders))
+        {
+            base->set_solver_log_file(solver_log);
+        }
     }
 }
 

@@ -12,35 +12,90 @@
 class MockExecutionStrategy : public IExecutionStrategy
 {
 public:
-    MockExecutionStrategy()
-        : launch_called_(false),
-          init_problems_called_(false),
-          run_called_(false),
-          name_("MockExecution"),
-          exec_time_(1.5)
+    MockExecutionStrategy() = default;
+
+    // Trackers for tests
+    mutable bool launched = false;
+    mutable bool initialized = false;
+    mutable bool ran = false;
+    mutable bool freed = false;
+    mutable bool do_free_problems = false;
+    double exec_time = 0.0;
+    CouplingMap last_input_map;
+
+    // Core execution methods
+    void launch() override
     {
+        launched = true;
     }
 
-    void launch() override { launch_called_ = true; }
-    void InitializeProblems() override { init_problems_called_ = true; }
-    void Run() override { run_called_ = true; }
-    
-    [[nodiscard]] std::string BendersName() const override { return name_; }
-    [[nodiscard]] double execution_time() const override { return exec_time_; }
+    void InitializeProblems() override
+    {
+        initialized = true;
+    }
 
-    bool WasLaunchCalled() const { return launch_called_; }
-    bool WasInitProblemsCalled() const { return init_problems_called_; }
-    bool WasRunCalled() const { return run_called_; }
-    
+    void Run() override
+    {
+        ran = true;
+    }
+
+    // Naming and timing
+    std::string BendersName() const override
+    {
+        return {"MockExecutionStrategy"};
+    }
+
+    double execution_time() const override
+    {
+        return exec_time;
+    }
+
+    // Master problem interaction
+    void set_input_map(const CouplingMap& coupling_map) override
+    {
+        last_input_map = coupling_map;
+    }
+
+    int MasterRowIndex(const std::string& /*row_name*/) const override
+    {
+        return -1;
+    }
+
+    void MasterChangeRhs(int /*id_row*/, double /*val*/) const override
+    {
+        // no-op for mock
+    }
+
+    // Results and data access
+    LogData GetBestIterationData() const override
+    {
+        return LogData{};
+    }
+
+    WorkerMasterDataVect AllCuts() const override
+    {
+        return WorkerMasterDataVect{};
+    }
+
+    // Resource management
+    void free() override
+    {
+        freed = true;
+    }
+
+    void DoFreeProblems(bool v) override
+    {
+        do_free_problems = v;
+    }
+
+    // Additional helpers used by tests
     void SetName(const std::string& name) { name_ = name; }
-    void SetExecutionTime(double time) { exec_time_ = time; }
+    void SetExecutionTime(double t) { exec_time = t; }
+    [[nodiscard]] bool WasInitProblemsCalled() const { return initialized; }
+    [[nodiscard]] bool WasRunCalled() const { return ran; }
 
 private:
-    bool launch_called_;
-    bool init_problems_called_;
-    bool run_called_;
-    std::string name_;
-    double exec_time_;
+    std::string name_; // no redundant initialization
 };
 
 /**
@@ -60,9 +115,9 @@ public:
     void UpdateStoppingCriterion() override { update_criterion_called_ = true; }
     [[nodiscard]] bool ShouldRelaxationStop() const override { return should_stop_; }
 
-    bool WasInitProblemsCalled() const { return init_problems_called_; }
-    bool WasUpdateCriterionCalled() const { return update_criterion_called_; }
-    
+    [[nodiscard]] bool WasInitProblemsCalled() const { return init_problems_called_; }
+    [[nodiscard]] bool WasUpdateCriterionCalled() const { return update_criterion_called_; }
+
     void SetShouldStop(bool value) { should_stop_ = value; }
 
 private:
@@ -102,10 +157,10 @@ public:
     void OuterLoopCheckFeasibility() override { check_feasibility_called_ = true; }
     void OuterLoopBilevelChecks() override { bilevel_checks_called_ = true; }
 
-    bool WasRunCalled() const { return run_called_; }
-    bool WasRunAttachedCalled() const { return run_attached_called_; }
-    bool WasInitDataCalled() const { return init_data_called_; }
-    
+    [[nodiscard]] bool WasRunCalled() const { return run_called_; }
+    [[nodiscard]] bool WasRunAttachedCalled() const { return run_attached_called_; }
+    [[nodiscard]] bool WasInitDataCalled() const { return init_data_called_; }
+
     void SetUpdateMasterResult(bool value) { update_master_result_ = value; }
 
 private:
@@ -126,6 +181,9 @@ private:
  */
 class BendersCoreTest : public ::testing::Test
 {
+public:
+    BendersCoreTest() : exec_ptr_(nullptr), batch_ptr_(nullptr), outer_ptr_(nullptr) {}
+
 protected:
     void SetUp() override
     {
@@ -275,7 +333,7 @@ TEST(BendersCorePartialNullTest, OnlyExecutionStrategy)
 class BendersCoreIntegrationTest : public ::testing::Test
 {
 protected:
-    std::unique_ptr<BendersCore> CreateCore(
+    static std::unique_ptr<BendersCore> CreateCore(
         bool with_execution,
         bool with_batching,
         bool with_outer_loop)

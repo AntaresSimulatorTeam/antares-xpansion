@@ -145,3 +145,9 @@ void BendersSequential::launch()
     post_run_actions();
     free();
 }
+
+void BendersSequential::Run()
+{
+    // Delegate to launch() which handles the full sequential algorithm
+    launch();
+}
