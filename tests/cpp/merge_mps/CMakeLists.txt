@@ -1,5 +1,11 @@
 add_executable(merge_mps_test
-        merge_mps_test.cpp
+        MergeMpsFixture.h
+        basic_tests.cpp
+        matrix_bounds_tests.cpp
+        weights_tests.cpp
+        results_tests.cpp
+        coupling_tests.cpp
+        misc_tests.cpp
 )
 
 find_package(fmt REQUIRED)
