@@ -39,11 +39,7 @@ protected:
     std::filesystem::path temp_dir;
     std::filesystem::path test_mps_file;
 };
-TEST_F(BendersProblemFromFileTest, ConstructorStoresFilePath)
-{
-    BendersProblemFromFile problem_provider(test_mps_file);
-    EXPECT_EQ(problem_provider.problem_file_path, test_mps_file);
-}
+
 TEST_F(BendersProblemFromFileTest, ProvideFilePathReturnsCorrectPath)
 {
     BendersProblemFromFile problem_provider(test_mps_file);
