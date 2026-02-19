@@ -38,7 +38,7 @@ BatchCollection::BatchCollection(const std::vector<std::string>& sub_problem_nam
 {
 }
 
-void BatchCollection::BuildBatches(bool cache_problems, int n_procs)
+void BatchCollection::BuildBatches(int n_procs)
 {
     if (batch_size_ > sub_problems_number_)
     {

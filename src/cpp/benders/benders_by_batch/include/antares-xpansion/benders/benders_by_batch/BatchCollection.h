@@ -42,7 +42,7 @@ public:
     BatchCollection(const std::vector<std::string>& sub_problem_names,
                     size_t batch_size,
                     Logger logger);
-    void BuildBatches(bool cache_problems, int n_procs);
+    void BuildBatches(int n_procs);
 
     void SetLogger(Logger logger)
     {

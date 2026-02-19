@@ -27,8 +27,9 @@ void BendersByBatch::InitializeProblems()
         batch_collection_.SetLogger(_logger);
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
-        batch_collection_.BuildBatches(_options.CACHE_PROBLEMS, WorldSize());
+        batch_collection_.BuildBatches(WorldSize());
         batch_collection_for_cuts_ = batch_collection_;
+        get_subs_per_cut_per_batch();
     }
     BroadCast(batch_collection_, rank_0);
 
@@ -69,11 +70,6 @@ void BendersByBatch::InitializeProblems()
                 ++problem_count;
             }
         }
-    }
-
-    if (_world.rank() == rank_0)
-    {
-        get_subs_per_cut_per_batch();
     }
 
     BroadCastVariablesIndices();
