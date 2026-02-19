@@ -1,32 +1,33 @@
 #pragma once
 
+#include <memory>
+
 #include "IExecutionStrategy.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
-#include <memory>
 
 /**
  * @class ParallelMpiExecutionStrategy
  * @brief Execution strategy adapter for BendersMPI
- * 
+ *
  * Wraps BendersMPI to implement IExecutionStrategy interface.
  * This adapter allows the MPI-based parallel Benders implementation to be used
  * within the Strategy pattern composition.
- * 
+ *
  * The MPI communicator is managed externally and passed by reference to BendersMPI.
  */
-class ParallelMpiExecutionStrategy : public IExecutionStrategy
+class ParallelMpiExecutionStrategy: public IExecutionStrategy
 {
 public:
     /**
      * @brief Constructor that takes ownership of a BendersMPI instance
      * @param mpi_benders Unique pointer to BendersMPI implementation
-     * 
+     *
      * Note: The MPI communicator must be provided to BendersMPI at construction
      * and must remain valid for the lifetime of this strategy.
      */
-    explicit ParallelMpiExecutionStrategy(std::unique_ptr<BendersBase> mpi_benders)
-        : mpi_benders_(std::move(mpi_benders))
+    explicit ParallelMpiExecutionStrategy(std::unique_ptr<BendersBase> mpi_benders):
+        mpi_benders_(std::move(mpi_benders))
     {
     }
 

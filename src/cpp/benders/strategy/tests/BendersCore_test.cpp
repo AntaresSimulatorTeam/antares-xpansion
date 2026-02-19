@@ -1,15 +1,16 @@
+#include "antares-xpansion/benders/strategy/BendersCore.h"
+
 #include <gtest/gtest.h>
 #include <memory>
 
-#include "antares-xpansion/benders/strategy/BendersCore.h"
-#include "antares-xpansion/benders/strategy/IExecutionStrategy.h"
 #include "antares-xpansion/benders/strategy/IBatchingStrategy.h"
+#include "antares-xpansion/benders/strategy/IExecutionStrategy.h"
 #include "antares-xpansion/benders/strategy/IOuterLoopStrategy.h"
 
 /**
  * @brief Mock ExecutionStrategy for testing
  */
-class MockExecutionStrategy : public IExecutionStrategy
+class MockExecutionStrategy: public IExecutionStrategy
 {
 public:
     MockExecutionStrategy() = default;
@@ -89,10 +90,25 @@ public:
     }
 
     // Additional helpers used by tests
-    void SetName(const std::string& name) { name_ = name; }
-    void SetExecutionTime(double t) { exec_time = t; }
-    [[nodiscard]] bool WasInitProblemsCalled() const { return initialized; }
-    [[nodiscard]] bool WasRunCalled() const { return ran; }
+    void SetName(const std::string& name)
+    {
+        name_ = name;
+    }
+
+    void SetExecutionTime(double t)
+    {
+        exec_time = t;
+    }
+
+    [[nodiscard]] bool WasInitProblemsCalled() const
+    {
+        return initialized;
+    }
+
+    [[nodiscard]] bool WasRunCalled() const
+    {
+        return ran;
+    }
 
 private:
     std::string name_; // no redundant initialization
@@ -101,24 +117,45 @@ private:
 /**
  * @brief Mock BatchingStrategy for testing
  */
-class MockBatchingStrategy : public IBatchingStrategy
+class MockBatchingStrategy: public IBatchingStrategy
 {
 public:
-    MockBatchingStrategy()
-        : init_problems_called_(false),
-          update_criterion_called_(false),
-          should_stop_(false)
+    MockBatchingStrategy():
+        init_problems_called_(false),
+        update_criterion_called_(false),
+        should_stop_(false)
     {
     }
 
-    void InitializeProblems() override { init_problems_called_ = true; }
-    void UpdateStoppingCriterion() override { update_criterion_called_ = true; }
-    [[nodiscard]] bool ShouldRelaxationStop() const override { return should_stop_; }
+    void InitializeProblems() override
+    {
+        init_problems_called_ = true;
+    }
 
-    [[nodiscard]] bool WasInitProblemsCalled() const { return init_problems_called_; }
-    [[nodiscard]] bool WasUpdateCriterionCalled() const { return update_criterion_called_; }
+    void UpdateStoppingCriterion() override
+    {
+        update_criterion_called_ = true;
+    }
 
-    void SetShouldStop(bool value) { should_stop_ = value; }
+    [[nodiscard]] bool ShouldRelaxationStop() const override
+    {
+        return should_stop_;
+    }
+
+    [[nodiscard]] bool WasInitProblemsCalled() const
+    {
+        return init_problems_called_;
+    }
+
+    [[nodiscard]] bool WasUpdateCriterionCalled() const
+    {
+        return update_criterion_called_;
+    }
+
+    void SetShouldStop(bool value)
+    {
+        should_stop_ = value;
+    }
 
 private:
     bool init_problems_called_;
@@ -129,39 +166,92 @@ private:
 /**
  * @brief Mock OuterLoopStrategy for testing
  */
-class MockOuterLoopStrategy : public IOuterLoopStrategy
+class MockOuterLoopStrategy: public IOuterLoopStrategy
 {
 public:
-    MockOuterLoopStrategy()
-        : run_called_(false),
-          run_attached_called_(false),
-          update_master_result_(false),
-          print_log_called_(false),
-          init_data_called_(false),
-          exception_raised_(false),
-          lambda_min_(0.0),
-          lambda_max_(0.0),
-          check_feasibility_called_(false),
-          bilevel_checks_called_(false)
+    MockOuterLoopStrategy():
+        run_called_(false),
+        run_attached_called_(false),
+        update_master_result_(false),
+        print_log_called_(false),
+        init_data_called_(false),
+        exception_raised_(false),
+        lambda_min_(0.0),
+        lambda_max_(0.0),
+        check_feasibility_called_(false),
+        bilevel_checks_called_(false)
     {
     }
 
-    void Run() override { run_called_ = true; }
-    void RunAttachedAlgo() override { run_attached_called_ = true; }
-    bool UpdateMaster() override { return update_master_result_; }
-    void PrintLog() override { print_log_called_ = true; }
-    void init_data() override { init_data_called_ = true; }
-    bool isExceptionRaised() override { return exception_raised_; }
-    [[nodiscard]] double OuterLoopLambdaMin() const override { return lambda_min_; }
-    [[nodiscard]] double OuterLoopLambdaMax() const override { return lambda_max_; }
-    void OuterLoopCheckFeasibility() override { check_feasibility_called_ = true; }
-    void OuterLoopBilevelChecks() override { bilevel_checks_called_ = true; }
+    void Run() override
+    {
+        run_called_ = true;
+    }
 
-    [[nodiscard]] bool WasRunCalled() const { return run_called_; }
-    [[nodiscard]] bool WasRunAttachedCalled() const { return run_attached_called_; }
-    [[nodiscard]] bool WasInitDataCalled() const { return init_data_called_; }
+    void RunAttachedAlgo() override
+    {
+        run_attached_called_ = true;
+    }
 
-    void SetUpdateMasterResult(bool value) { update_master_result_ = value; }
+    bool UpdateMaster() override
+    {
+        return update_master_result_;
+    }
+
+    void PrintLog() override
+    {
+        print_log_called_ = true;
+    }
+
+    void init_data() override
+    {
+        init_data_called_ = true;
+    }
+
+    bool isExceptionRaised() override
+    {
+        return exception_raised_;
+    }
+
+    [[nodiscard]] double OuterLoopLambdaMin() const override
+    {
+        return lambda_min_;
+    }
+
+    [[nodiscard]] double OuterLoopLambdaMax() const override
+    {
+        return lambda_max_;
+    }
+
+    void OuterLoopCheckFeasibility() override
+    {
+        check_feasibility_called_ = true;
+    }
+
+    void OuterLoopBilevelChecks() override
+    {
+        bilevel_checks_called_ = true;
+    }
+
+    [[nodiscard]] bool WasRunCalled() const
+    {
+        return run_called_;
+    }
+
+    [[nodiscard]] bool WasRunAttachedCalled() const
+    {
+        return run_attached_called_;
+    }
+
+    [[nodiscard]] bool WasInitDataCalled() const
+    {
+        return init_data_called_;
+    }
+
+    void SetUpdateMasterResult(bool value)
+    {
+        update_master_result_ = value;
+    }
 
 private:
     bool run_called_;
@@ -179,10 +269,15 @@ private:
 /**
  * @brief Test fixture for BendersCore tests
  */
-class BendersCoreTest : public ::testing::Test
+class BendersCoreTest: public ::testing::Test
 {
 public:
-    BendersCoreTest() : exec_ptr_(nullptr), batch_ptr_(nullptr), outer_ptr_(nullptr) {}
+    BendersCoreTest():
+        exec_ptr_(nullptr),
+        batch_ptr_(nullptr),
+        outer_ptr_(nullptr)
+    {
+    }
 
 protected:
     void SetUp() override
@@ -191,18 +286,14 @@ protected:
         auto exec = std::make_unique<MockExecutionStrategy>();
         auto batch = std::make_unique<MockBatchingStrategy>();
         auto outer = std::make_unique<MockOuterLoopStrategy>();
-        
+
         // Keep raw pointers for verification
         exec_ptr_ = exec.get();
         batch_ptr_ = batch.get();
         outer_ptr_ = outer.get();
-        
+
         // Create BendersCore with mock strategies
-        core_ = std::make_unique<BendersCore>(
-            std::move(exec),
-            std::move(batch),
-            std::move(outer)
-        );
+        core_ = std::make_unique<BendersCore>(std::move(exec), std::move(batch), std::move(outer));
     }
 
     std::unique_ptr<BendersCore> core_;
@@ -236,9 +327,9 @@ TEST_F(BendersCoreTest, InitializeProblems)
 {
     EXPECT_FALSE(batch_ptr_->WasInitProblemsCalled());
     EXPECT_FALSE(exec_ptr_->WasInitProblemsCalled());
-    
+
     core_->InitializeProblems();
-    
+
     EXPECT_TRUE(batch_ptr_->WasInitProblemsCalled());
     EXPECT_TRUE(exec_ptr_->WasInitProblemsCalled());
 }
@@ -253,18 +344,18 @@ TEST_F(BendersCoreTest, LaunchOrchestration)
     EXPECT_FALSE(exec_ptr_->WasInitProblemsCalled());
     EXPECT_FALSE(outer_ptr_->WasRunCalled());
     EXPECT_FALSE(batch_ptr_->WasUpdateCriterionCalled());
-    
+
     core_->launch();
-    
+
     // Verify all initialization steps occurred
     EXPECT_TRUE(outer_ptr_->WasInitDataCalled());
     EXPECT_TRUE(batch_ptr_->WasInitProblemsCalled());
     EXPECT_TRUE(exec_ptr_->WasInitProblemsCalled());
-    
+
     // Verify outer loop runs (not execution directly, since outer loop is active)
     EXPECT_TRUE(outer_ptr_->WasRunCalled());
     EXPECT_FALSE(exec_ptr_->WasRunCalled());
-    
+
     // Verify batching update called
     EXPECT_TRUE(batch_ptr_->WasUpdateCriterionCalled());
 }
@@ -276,20 +367,19 @@ TEST(BendersCoreNoOuterLoopTest, LaunchWithoutOuterLoop)
 {
     auto exec = std::make_unique<MockExecutionStrategy>();
     auto batch = std::make_unique<MockBatchingStrategy>();
-    
+
     auto exec_ptr = exec.get();
-    
+
     // Create core without outer loop
-    auto core = std::make_unique<BendersCore>(
-        std::move(exec),
-        std::move(batch),
-        nullptr  // No outer loop
+    auto core = std::make_unique<BendersCore>(std::move(exec),
+                                              std::move(batch),
+                                              nullptr // No outer loop
     );
-    
+
     EXPECT_FALSE(exec_ptr->WasRunCalled());
-    
+
     core->launch();
-    
+
     // Without outer loop, execution should run directly
     EXPECT_TRUE(exec_ptr->WasRunCalled());
 }
@@ -301,11 +391,11 @@ TEST(BendersCoreNullTest, NullSafety)
 {
     // Create core with null strategies
     BendersCore core(nullptr, nullptr, nullptr);
-    
+
     // Should not crash
     EXPECT_NO_THROW(core.launch());
     EXPECT_NO_THROW(core.InitializeProblems());
-    
+
     // Should return safe defaults
     EXPECT_EQ(core.BendersName(), "BendersCore(NoExecution)");
     EXPECT_DOUBLE_EQ(core.execution_time(), 0.0);
@@ -318,11 +408,11 @@ TEST(BendersCorePartialNullTest, OnlyExecutionStrategy)
 {
     auto exec = std::make_unique<MockExecutionStrategy>();
     auto exec_ptr = exec.get();
-    
+
     BendersCore core(std::move(exec), nullptr, nullptr);
-    
+
     EXPECT_NO_THROW(core.launch());
-    
+
     // Execution should run since there's no outer loop
     EXPECT_TRUE(exec_ptr->WasRunCalled());
 }
@@ -330,31 +420,26 @@ TEST(BendersCorePartialNullTest, OnlyExecutionStrategy)
 /**
  * @brief Test different strategy combinations
  */
-class BendersCoreIntegrationTest : public ::testing::Test
+class BendersCoreIntegrationTest: public ::testing::Test
 {
 protected:
-    static std::unique_ptr<BendersCore> CreateCore(
-        bool with_execution,
-        bool with_batching,
-        bool with_outer_loop)
+    static std::unique_ptr<BendersCore> CreateCore(bool with_execution,
+                                                   bool with_batching,
+                                                   bool with_outer_loop)
     {
-        std::unique_ptr<IExecutionStrategy> exec = with_execution 
-            ? std::make_unique<MockExecutionStrategy>() 
-            : nullptr;
-        
+        std::unique_ptr<IExecutionStrategy> exec = with_execution
+                                                     ? std::make_unique<MockExecutionStrategy>()
+                                                     : nullptr;
+
         std::unique_ptr<IBatchingStrategy> batch = with_batching
-            ? std::make_unique<MockBatchingStrategy>()
-            : nullptr;
-        
+                                                     ? std::make_unique<MockBatchingStrategy>()
+                                                     : nullptr;
+
         std::unique_ptr<IOuterLoopStrategy> outer = with_outer_loop
-            ? std::make_unique<MockOuterLoopStrategy>()
-            : nullptr;
-        
-        return std::make_unique<BendersCore>(
-            std::move(exec),
-            std::move(batch),
-            std::move(outer)
-        );
+                                                      ? std::make_unique<MockOuterLoopStrategy>()
+                                                      : nullptr;
+
+        return std::make_unique<BendersCore>(std::move(exec), std::move(batch), std::move(outer));
     }
 };
 

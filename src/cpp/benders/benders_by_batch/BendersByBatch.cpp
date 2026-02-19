@@ -3,11 +3,11 @@
 #include <mutex>
 #include <numeric>
 
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
+#include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 #include "antares-xpansion/benders/benders_core/BatchSubproblemSolver.h"
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_core/NoOuterLoopStrategy.h"
-#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
-#include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 #include "antares-xpansion/benders/benders_mpi/MpiCommunication.h"
 
 void BendersByBatch::InitializeProblems()
@@ -167,9 +167,10 @@ void BendersByBatch::launch()
         auto comm = std::make_shared<MpiCommunication>(_world);
         auto benders_ptr = std::shared_ptr<BendersBase>(this, [](BendersBase*) {});
         auto solver = std::make_shared<BatchSubproblemSolver>(benders_ptr);
-        
+
         auto algorithm = std::make_shared<BendersAlgorithm>(comm, solver, nullptr, benders_ptr);
-        auto no_outer_loop = std::make_shared<NoOuterLoopStrategy>([algorithm]() { algorithm->MasterLoop(); });
+        auto no_outer_loop = std::make_shared<NoOuterLoopStrategy>([algorithm]()
+                                                                   { algorithm->MasterLoop(); });
         algorithm->set_outer_loop(no_outer_loop);
 
         algorithm->Run();

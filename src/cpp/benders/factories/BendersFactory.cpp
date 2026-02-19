@@ -8,15 +8,15 @@
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h>
-#include <antares-xpansion/benders/strategy/BendersCore.h>
-#include <antares-xpansion/benders/strategy/SequentialExecutionStrategy.h>
-#include <antares-xpansion/benders/strategy/ParallelMpiExecutionStrategy.h>
-#include <antares-xpansion/benders/strategy/NoBatchingStrategy.h>
-#include <antares-xpansion/benders/strategy/ByBatchStrategy.h>
-#include <antares-xpansion/benders/strategy/NoOuterLoopStrategy.h>
-#include <antares-xpansion/benders/strategy/OuterLoopAdapter.h>
 #include <antares-xpansion/benders/benders_sequential/BendersSequential.h>
 #include <antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h>
+#include <antares-xpansion/benders/strategy/BendersCore.h>
+#include <antares-xpansion/benders/strategy/ByBatchStrategy.h>
+#include <antares-xpansion/benders/strategy/NoBatchingStrategy.h>
+#include <antares-xpansion/benders/strategy/NoOuterLoopStrategy.h>
+#include <antares-xpansion/benders/strategy/OuterLoopAdapter.h>
+#include <antares-xpansion/benders/strategy/ParallelMpiExecutionStrategy.h>
+#include <antares-xpansion/benders/strategy/SequentialExecutionStrategy.h>
 #include <antares-xpansion/helpers/AreaParser.h>
 #include <variant>
 
@@ -106,23 +106,25 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                       const CouplingMap& coupling_map) -> BendersEnvironment
 {
     // Determine which strategies to create based on method
-    bool use_batching = (method_ == BENDERSMETHOD::BENDERS_BY_BATCH 
+    bool use_batching = (method_ == BENDERSMETHOD::BENDERS_BY_BATCH
                          || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP);
-    bool use_outer_loop = (method_ == BENDERSMETHOD::BENDERS_OUTERLOOP 
+    bool use_outer_loop = (method_ == BENDERSMETHOD::BENDERS_OUTERLOOP
                            || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP);
-    
+
     // Build ExecutionStrategy
     // Use Sequential if running with single process (world size == 1), otherwise use MPI
     std::unique_ptr<IExecutionStrategy> execution_strategy;
-    
+
     if (world_->size() == 1)
     {
         // Sequential execution (single process)
-        auto sequential_benders = std::make_unique<BendersSequential>(benders_options,
-                                                                      dependencies_.logger,
-                                                                      dependencies_.writer,
-                                                                      dependencies_.math_log_driver);
-        execution_strategy = std::make_unique<SequentialExecutionStrategy>(std::move(sequential_benders));
+        auto sequential_benders = std::make_unique<BendersSequential>(
+          benders_options,
+          dependencies_.logger,
+          dependencies_.writer,
+          dependencies_.math_log_driver);
+        execution_strategy = std::make_unique<SequentialExecutionStrategy>(
+          std::move(sequential_benders));
     }
     else
     {
@@ -134,7 +136,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                         dependencies_.math_log_driver);
         execution_strategy = std::make_unique<ParallelMpiExecutionStrategy>(std::move(mpi_benders));
     }
-    
+
     // Build BatchingStrategy
     std::unique_ptr<IBatchingStrategy> batching_strategy;
     if (use_batching)
@@ -150,7 +152,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     {
         batching_strategy = std::make_unique<NoBatchingStrategy>();
     }
-    
+
     // Build OuterLoopStrategy
     std::unique_ptr<IOuterLoopStrategy> outer_loop_strategy;
     // For now avoid constructing complex outer-loop objects here (requires
@@ -159,11 +161,9 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     outer_loop_strategy = std::make_unique<NoOuterLoopStrategy>();
 
     // Compose strategies into BendersCore
-    auto benders_core = std::make_unique<BendersCore>(
-        std::move(execution_strategy),
-        std::move(batching_strategy),
-        std::move(outer_loop_strategy)
-    );
+    auto benders_core = std::make_unique<BendersCore>(std::move(execution_strategy),
+                                                      std::move(batching_strategy),
+                                                      std::move(outer_loop_strategy));
 
     // Set input map via BendersCore interface (now properly delegated)
     benders_core->set_input_map(coupling_map);

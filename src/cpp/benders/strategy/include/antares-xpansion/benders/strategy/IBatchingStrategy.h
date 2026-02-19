@@ -8,4 +8,3 @@ public:
     virtual void UpdateStoppingCriterion() = 0;
     virtual bool ShouldRelaxationStop() const = 0;
 };
-

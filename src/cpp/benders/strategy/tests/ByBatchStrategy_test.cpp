@@ -1,33 +1,33 @@
+#include "antares-xpansion/benders/strategy/ByBatchStrategy.h"
+
 #include <gtest/gtest.h>
 #include <memory>
 
-#include "antares-xpansion/benders/strategy/ByBatchStrategy.h"
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 
 /**
  * @brief Mock BendersByBatch for testing purposes
- * 
+ *
  * Overrides BendersByBatch methods to avoid actual execution
  * while allowing us to verify the adapter delegates correctly.
  */
-class MockBendersByBatch : public BendersByBatch
+class MockBendersByBatch: public BendersByBatch
 {
 public:
     /**
      * @brief Constructor with mock MPI communicator
      */
-    MockBendersByBatch(mpi::communicator& world)
-        : BendersByBatch(
-              BendersBaseOptions(SolverBaseOptions()),
-              build_void_logger(),
-              std::shared_ptr<Output::OutputWriter>(),
-              world,
-              std::shared_ptr<MathLoggerDriver>()),
-          init_called_(false),
-          update_called_(false),
-          should_stop_(false)
+    MockBendersByBatch(mpi::communicator& world):
+        BendersByBatch(BendersBaseOptions(SolverBaseOptions()),
+                       build_void_logger(),
+                       std::shared_ptr<Output::OutputWriter>(),
+                       world,
+                       std::shared_ptr<MathLoggerDriver>()),
+        init_called_(false),
+        update_called_(false),
+        should_stop_(false)
     {
     }
 
@@ -46,9 +46,20 @@ public:
         return should_stop_;
     }
 
-    void SetShouldStop(bool value) { should_stop_ = value; }
-    bool WasInitCalled() const { return init_called_; }
-    bool WasUpdateCalled() const { return update_called_; }
+    void SetShouldStop(bool value)
+    {
+        should_stop_ = value;
+    }
+
+    bool WasInitCalled() const
+    {
+        return init_called_;
+    }
+
+    bool WasUpdateCalled() const
+    {
+        return update_called_;
+    }
 
 protected:
     void Run() override
@@ -65,18 +76,18 @@ private:
 /**
  * @brief Test fixture for ByBatchStrategy tests
  */
-class ByBatchStrategyTest : public ::testing::Test
+class ByBatchStrategyTest: public ::testing::Test
 {
 protected:
     void SetUp() override
     {
         // Create a mock MPI communicator
         world_ = std::make_unique<mpi::communicator>();
-        
+
         // Create a mock batch benders instance
         auto mock = std::make_unique<MockBendersByBatch>(*world_);
         mock_ptr_ = mock.get();
-        
+
         // Create the strategy with the mock
         strategy_ = std::make_unique<ByBatchStrategy>(std::move(mock));
     }
@@ -99,9 +110,9 @@ protected:
 TEST_F(ByBatchStrategyTest, InitializeProblemsDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasInitCalled());
-    
+
     strategy_->InitializeProblems();
-    
+
     EXPECT_TRUE(mock_ptr_->WasInitCalled());
 }
 
@@ -111,9 +122,9 @@ TEST_F(ByBatchStrategyTest, InitializeProblemsDelegation)
 TEST_F(ByBatchStrategyTest, UpdateStoppingCriterionDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasUpdateCalled());
-    
+
     strategy_->UpdateStoppingCriterion();
-    
+
     EXPECT_TRUE(mock_ptr_->WasUpdateCalled());
 }
 
@@ -124,11 +135,11 @@ TEST_F(ByBatchStrategyTest, ShouldRelaxationStopDelegation)
 {
     // Initially false
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
-    
+
     // Change the mock's behavior
     mock_ptr_->SetShouldStop(true);
     EXPECT_TRUE(strategy_->ShouldRelaxationStop());
-    
+
     // Change back
     mock_ptr_->SetShouldStop(false);
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
@@ -140,11 +151,11 @@ TEST_F(ByBatchStrategyTest, ShouldRelaxationStopDelegation)
 TEST(ByBatchStrategyNullTest, NullSafety)
 {
     ByBatchStrategy strategy(nullptr);
-    
+
     // Should not crash with null pointer
     EXPECT_NO_THROW(strategy.InitializeProblems());
     EXPECT_NO_THROW(strategy.UpdateStoppingCriterion());
-    
+
     // Should return safe default (false)
     EXPECT_FALSE(strategy.ShouldRelaxationStop());
 }
@@ -157,14 +168,14 @@ TEST_F(ByBatchStrategyTest, BatchingWorkflow)
     // Initialize
     strategy_->InitializeProblems();
     EXPECT_TRUE(mock_ptr_->WasInitCalled());
-    
+
     // Initially should not stop
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
-    
+
     // Update criterion
     strategy_->UpdateStoppingCriterion();
     EXPECT_TRUE(mock_ptr_->WasUpdateCalled());
-    
+
     // Check if should stop (depends on mock behavior)
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
 }

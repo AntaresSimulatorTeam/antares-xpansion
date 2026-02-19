@@ -1,26 +1,27 @@
+#include "antares-xpansion/benders/strategy/OuterLoopAdapter.h"
+
 #include <gtest/gtest.h>
 #include <memory>
 
-#include "antares-xpansion/benders/strategy/OuterLoopAdapter.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 
 /**
  * @brief Mock concrete OuterLoop implementation for testing
  */
-class MockOuterLoop : public Outerloop::OuterLoop
+class MockOuterLoop: public Outerloop::OuterLoop
 {
 public:
-    MockOuterLoop()
-        : run_called_(false),
-          run_attached_called_(false),
-          update_master_result_(false),
-          print_log_called_(false),
-          init_data_called_(false),
-          exception_raised_(false),
-          lambda_min_(1.0),
-          lambda_max_(10.0),
-          check_feasibility_called_(false),
-          bilevel_checks_called_(false)
+    MockOuterLoop():
+        run_called_(false),
+        run_attached_called_(false),
+        update_master_result_(false),
+        print_log_called_(false),
+        init_data_called_(false),
+        exception_raised_(false),
+        lambda_min_(1.0),
+        lambda_max_(10.0),
+        check_feasibility_called_(false),
+        bilevel_checks_called_(false)
     {
     }
 
@@ -70,17 +71,51 @@ public:
     }
 
     // Setters for test control
-    void SetUpdateMasterResult(bool value) { update_master_result_ = value; }
-    void SetExceptionRaised(bool value) { exception_raised_ = value; }
-    void SetLambdaMin(double value) { lambda_min_ = value; }
-    void SetLambdaMax(double value) { lambda_max_ = value; }
+    void SetUpdateMasterResult(bool value)
+    {
+        update_master_result_ = value;
+    }
+
+    void SetExceptionRaised(bool value)
+    {
+        exception_raised_ = value;
+    }
+
+    void SetLambdaMin(double value)
+    {
+        lambda_min_ = value;
+    }
+
+    void SetLambdaMax(double value)
+    {
+        lambda_max_ = value;
+    }
 
     // Getters for verification
-    bool WasRunAttachedCalled() const { return run_attached_called_; }
-    bool WasPrintLogCalled() const { return print_log_called_; }
-    bool WasInitDataCalled() const { return init_data_called_; }
-    bool WasCheckFeasibilityCalled() const { return check_feasibility_called_; }
-    bool WasBilevelChecksCalled() const { return bilevel_checks_called_; }
+    bool WasRunAttachedCalled() const
+    {
+        return run_attached_called_;
+    }
+
+    bool WasPrintLogCalled() const
+    {
+        return print_log_called_;
+    }
+
+    bool WasInitDataCalled() const
+    {
+        return init_data_called_;
+    }
+
+    bool WasCheckFeasibilityCalled() const
+    {
+        return check_feasibility_called_;
+    }
+
+    bool WasBilevelChecksCalled() const
+    {
+        return bilevel_checks_called_;
+    }
 
 private:
     bool run_called_;
@@ -98,7 +133,7 @@ private:
 /**
  * @brief Test fixture for OuterLoopAdapter tests
  */
-class OuterLoopAdapterTest : public ::testing::Test
+class OuterLoopAdapterTest: public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -118,9 +153,9 @@ protected:
 TEST_F(OuterLoopAdapterTest, RunAttachedAlgoDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasRunAttachedCalled());
-    
+
     strategy_->RunAttachedAlgo();
-    
+
     EXPECT_TRUE(mock_ptr_->WasRunAttachedCalled());
 }
 
@@ -131,11 +166,11 @@ TEST_F(OuterLoopAdapterTest, UpdateMasterDelegation)
 {
     // Initially false
     EXPECT_FALSE(strategy_->UpdateMaster());
-    
+
     // Change mock behavior
     mock_ptr_->SetUpdateMasterResult(true);
     EXPECT_TRUE(strategy_->UpdateMaster());
-    
+
     // Change back
     mock_ptr_->SetUpdateMasterResult(false);
     EXPECT_FALSE(strategy_->UpdateMaster());
@@ -147,9 +182,9 @@ TEST_F(OuterLoopAdapterTest, UpdateMasterDelegation)
 TEST_F(OuterLoopAdapterTest, PrintLogDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasPrintLogCalled());
-    
+
     strategy_->PrintLog();
-    
+
     EXPECT_TRUE(mock_ptr_->WasPrintLogCalled());
 }
 
@@ -159,9 +194,9 @@ TEST_F(OuterLoopAdapterTest, PrintLogDelegation)
 TEST_F(OuterLoopAdapterTest, InitDataDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasInitDataCalled());
-    
+
     strategy_->init_data();
-    
+
     EXPECT_TRUE(mock_ptr_->WasInitDataCalled());
 }
 
@@ -171,10 +206,10 @@ TEST_F(OuterLoopAdapterTest, InitDataDelegation)
 TEST_F(OuterLoopAdapterTest, IsExceptionRaisedDelegation)
 {
     EXPECT_FALSE(strategy_->isExceptionRaised());
-    
+
     mock_ptr_->SetExceptionRaised(true);
     EXPECT_TRUE(strategy_->isExceptionRaised());
-    
+
     mock_ptr_->SetExceptionRaised(false);
     EXPECT_FALSE(strategy_->isExceptionRaised());
 }
@@ -186,10 +221,10 @@ TEST_F(OuterLoopAdapterTest, LambdaValuesDelegation)
 {
     EXPECT_DOUBLE_EQ(strategy_->OuterLoopLambdaMin(), 1.0);
     EXPECT_DOUBLE_EQ(strategy_->OuterLoopLambdaMax(), 10.0);
-    
+
     mock_ptr_->SetLambdaMin(2.5);
     mock_ptr_->SetLambdaMax(20.0);
-    
+
     EXPECT_DOUBLE_EQ(strategy_->OuterLoopLambdaMin(), 2.5);
     EXPECT_DOUBLE_EQ(strategy_->OuterLoopLambdaMax(), 20.0);
 }
@@ -200,9 +235,9 @@ TEST_F(OuterLoopAdapterTest, LambdaValuesDelegation)
 TEST_F(OuterLoopAdapterTest, CheckFeasibilityDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasCheckFeasibilityCalled());
-    
+
     strategy_->OuterLoopCheckFeasibility();
-    
+
     EXPECT_TRUE(mock_ptr_->WasCheckFeasibilityCalled());
 }
 
@@ -212,9 +247,9 @@ TEST_F(OuterLoopAdapterTest, CheckFeasibilityDelegation)
 TEST_F(OuterLoopAdapterTest, BilevelChecksDelegation)
 {
     EXPECT_FALSE(mock_ptr_->WasBilevelChecksCalled());
-    
+
     strategy_->OuterLoopBilevelChecks();
-    
+
     EXPECT_TRUE(mock_ptr_->WasBilevelChecksCalled());
 }
 
@@ -224,7 +259,7 @@ TEST_F(OuterLoopAdapterTest, BilevelChecksDelegation)
 TEST(OuterLoopAdapterNullTest, NullSafety)
 {
     OuterLoopAdapter strategy(nullptr);
-    
+
     // Should not crash with null pointer
     EXPECT_NO_THROW(strategy.Run());
     EXPECT_NO_THROW(strategy.RunAttachedAlgo());
@@ -232,7 +267,7 @@ TEST(OuterLoopAdapterNullTest, NullSafety)
     EXPECT_NO_THROW(strategy.init_data());
     EXPECT_NO_THROW(strategy.OuterLoopCheckFeasibility());
     EXPECT_NO_THROW(strategy.OuterLoopBilevelChecks());
-    
+
     // Should return safe defaults
     EXPECT_FALSE(strategy.UpdateMaster());
     EXPECT_FALSE(strategy.isExceptionRaised());
@@ -248,22 +283,22 @@ TEST_F(OuterLoopAdapterTest, CompleteWorkflow)
     EXPECT_NO_THROW({
         strategy_->init_data();
         EXPECT_TRUE(mock_ptr_->WasInitDataCalled());
-        
+
         strategy_->Run();
         strategy_->RunAttachedAlgo();
         EXPECT_TRUE(mock_ptr_->WasRunAttachedCalled());
-        
+
         EXPECT_FALSE(strategy_->UpdateMaster());
-        
+
         strategy_->OuterLoopCheckFeasibility();
         EXPECT_TRUE(mock_ptr_->WasCheckFeasibilityCalled());
-        
+
         strategy_->OuterLoopBilevelChecks();
         EXPECT_TRUE(mock_ptr_->WasBilevelChecksCalled());
-        
+
         strategy_->PrintLog();
         EXPECT_TRUE(mock_ptr_->WasPrintLogCalled());
-        
+
         EXPECT_FALSE(strategy_->isExceptionRaised());
     });
 }

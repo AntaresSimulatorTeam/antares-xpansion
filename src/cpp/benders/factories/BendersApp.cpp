@@ -3,6 +3,7 @@
 #include <antares-xpansion/benders/factories/BendersFactory.h>
 #include <filesystem>
 #include <fmt/format.h>
+
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_core/BatchSubproblemSolver.h"
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"

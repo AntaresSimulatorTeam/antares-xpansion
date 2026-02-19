@@ -5,19 +5,19 @@
 /**
  * @class NoOuterLoopStrategy
  * @brief No-op outer loop strategy (passthrough)
- * 
+ *
  * This strategy implements the IOuterLoopStrategy interface without
  * performing any actual outer loop logic. It's used when outer loop
  * optimization is not required. All methods are no-ops or return safe defaults.
  */
-class NoOuterLoopStrategy : public IOuterLoopStrategy
+class NoOuterLoopStrategy: public IOuterLoopStrategy
 {
 public:
     /**
      * @brief Default constructor
      */
     NoOuterLoopStrategy() = default;
-    
+
     /**
      * @brief Virtual destructor
      */
@@ -45,7 +45,7 @@ public:
      */
     bool UpdateMaster() override
     {
-        return false;  // No outer loop, so no master update
+        return false; // No outer loop, so no master update
     }
 
     /**
@@ -70,7 +70,7 @@ public:
      */
     bool isExceptionRaised() override
     {
-        return false;  // No outer loop, so no exceptions
+        return false; // No outer loop, so no exceptions
     }
 
     /**
@@ -79,7 +79,7 @@ public:
      */
     [[nodiscard]] double OuterLoopLambdaMin() const override
     {
-        return 0.0;  // No outer loop, return default
+        return 0.0; // No outer loop, return default
     }
 
     /**
@@ -88,7 +88,7 @@ public:
      */
     [[nodiscard]] double OuterLoopLambdaMax() const override
     {
-        return 0.0;  // No outer loop, return default
+        return 0.0; // No outer loop, return default
     }
 
     /**

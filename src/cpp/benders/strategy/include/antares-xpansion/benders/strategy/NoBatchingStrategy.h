@@ -5,19 +5,19 @@
 /**
  * @class NoBatchingStrategy
  * @brief No-op batching strategy (passthrough)
- * 
+ *
  * This strategy implements the IBatchingStrategy interface without
  * performing any actual batching. It's used when batching is not required.
  * All methods are no-ops or return safe defaults.
  */
-class NoBatchingStrategy : public IBatchingStrategy
+class NoBatchingStrategy: public IBatchingStrategy
 {
 public:
     /**
      * @brief Default constructor
      */
     NoBatchingStrategy() = default;
-    
+
     /**
      * @brief Virtual destructor
      */
@@ -45,6 +45,6 @@ public:
      */
     [[nodiscard]] bool ShouldRelaxationStop() const override
     {
-        return false;  // No batching, so never stop relaxation for batch reasons
+        return false; // No batching, so never stop relaxation for batch reasons
     }
 };

@@ -1,12 +1,12 @@
+#include "antares-xpansion/benders/strategy/NoBatchingStrategy.h"
+
 #include <gtest/gtest.h>
 #include <memory>
-
-#include "antares-xpansion/benders/strategy/NoBatchingStrategy.h"
 
 /**
  * @brief Test fixture for NoBatchingStrategy tests
  */
-class NoBatchingStrategyTest : public ::testing::Test
+class NoBatchingStrategyTest: public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -24,7 +24,7 @@ TEST_F(NoBatchingStrategyTest, InitializeProblems)
 {
     // Should not crash
     EXPECT_NO_THROW(strategy_->InitializeProblems());
-    
+
     // Can be called multiple times
     EXPECT_NO_THROW(strategy_->InitializeProblems());
     EXPECT_NO_THROW(strategy_->InitializeProblems());
@@ -37,7 +37,7 @@ TEST_F(NoBatchingStrategyTest, UpdateStoppingCriterion)
 {
     // Should not crash
     EXPECT_NO_THROW(strategy_->UpdateStoppingCriterion());
-    
+
     // Can be called multiple times
     EXPECT_NO_THROW(strategy_->UpdateStoppingCriterion());
     EXPECT_NO_THROW(strategy_->UpdateStoppingCriterion());
@@ -50,11 +50,11 @@ TEST_F(NoBatchingStrategyTest, ShouldRelaxationStop)
 {
     // Should always return false (no batching means no batch-based stopping)
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
-    
+
     // Even after updates, still false
     strategy_->UpdateStoppingCriterion();
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
-    
+
     // After initialization, still false
     strategy_->InitializeProblems();
     EXPECT_FALSE(strategy_->ShouldRelaxationStop());
@@ -80,13 +80,13 @@ TEST(NoBatchingStrategyMultiInstanceTest, MultipleInstances)
 {
     auto strategy1 = std::make_unique<NoBatchingStrategy>();
     auto strategy2 = std::make_unique<NoBatchingStrategy>();
-    
+
     strategy1->InitializeProblems();
     EXPECT_FALSE(strategy1->ShouldRelaxationStop());
-    
+
     strategy2->UpdateStoppingCriterion();
     EXPECT_FALSE(strategy2->ShouldRelaxationStop());
-    
+
     // Both should be independent
     EXPECT_FALSE(strategy1->ShouldRelaxationStop());
     EXPECT_FALSE(strategy2->ShouldRelaxationStop());

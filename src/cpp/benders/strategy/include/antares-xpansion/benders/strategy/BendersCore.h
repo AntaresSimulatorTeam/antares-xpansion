@@ -1,25 +1,26 @@
 #pragma once
 
-#include "IBendersCore.h"
-#include "IExecutionStrategy.h"
-#include "IBatchingStrategy.h"
-#include "IOuterLoopStrategy.h"
 #include <memory>
 #include <string>
+
+#include "IBatchingStrategy.h"
+#include "IBendersCore.h"
+#include "IExecutionStrategy.h"
+#include "IOuterLoopStrategy.h"
 
 /**
  * @class BendersCore
  * @brief Main orchestrator that composes execution, batching, and outer-loop strategies
- * 
+ *
  * This class implements the Strategy pattern by composing three independent strategies:
  * - ExecutionStrategy: Handles Sequential or MPI parallel execution
  * - BatchingStrategy: Handles batch processing or no batching
  * - OuterLoopStrategy: Handles outer loop optimization or no outer loop
- * 
+ *
  * BendersCore orchestrates these strategies to provide a complete Benders implementation
  * that can be configured at runtime by injecting different strategy combinations.
  */
-class BendersCore : public IBendersCore
+class BendersCore: public IBendersCore
 {
 public:
     /**
@@ -27,23 +28,23 @@ public:
      * @param execution_strategy Execution strategy (Sequential or ParallelMPI), can be nullptr
      * @param batching_strategy Batching strategy (NoBatching or ByBatch), can be nullptr
      * @param outer_loop_strategy Outer loop strategy (NoOuterLoop or OuterLoop), can be nullptr
-     * 
+     *
      * Note: Strategies can be nullptr. The class handles null strategies gracefully.
      * For features not needed, you can pass nullptr or use "No-op" strategies
      * (NoBatchingStrategy, NoOuterLoopStrategy) for clarity.
      */
     BendersCore(std::unique_ptr<IExecutionStrategy> execution_strategy,
                 std::unique_ptr<IBatchingStrategy> batching_strategy,
-                std::unique_ptr<IOuterLoopStrategy> outer_loop_strategy)
-        : execution_(std::move(execution_strategy)),
-          batching_(std::move(batching_strategy)),
-          outer_loop_(std::move(outer_loop_strategy))
+                std::unique_ptr<IOuterLoopStrategy> outer_loop_strategy):
+        execution_(std::move(execution_strategy)),
+        batching_(std::move(batching_strategy)),
+        outer_loop_(std::move(outer_loop_strategy))
     {
     }
 
     /**
      * @brief Orchestrates the complete Benders execution
-     * 
+     *
      * Coordinates the three strategies:
      * 1. Outer loop initialization (if applicable)
      * 2. Batching initialization (if applicable)
@@ -92,7 +93,7 @@ public:
 
     /**
      * @brief Set input mapping
-     * 
+     *
      * Delegates to the execution strategy's underlying implementation.
      */
     void set_input_map(const CouplingMap& coupling_map) override
@@ -105,7 +106,7 @@ public:
 
     /**
      * @brief Get master row index by name
-     * 
+     *
      * Delegates to execution strategy.
      */
     [[nodiscard]] int MasterRowIndex(const std::string& row_name) const override
@@ -115,7 +116,7 @@ public:
 
     /**
      * @brief Change master RHS value
-     * 
+     *
      * Delegates to execution strategy.
      */
     void MasterChangeRhs(int id_row, double val) const override
@@ -128,7 +129,7 @@ public:
 
     /**
      * @brief Get best iteration data
-     * 
+     *
      * Delegates to execution strategy.
      */
     [[nodiscard]] LogData GetBestIterationData() const override
@@ -138,7 +139,7 @@ public:
 
     /**
      * @brief Get all cuts from workers
-     * 
+     *
      * Delegates to execution strategy.
      */
     [[nodiscard]] WorkerMasterDataVect AllCuts() const override
@@ -148,7 +149,7 @@ public:
 
     /**
      * @brief Save outer loop solution to output file
-     * 
+     *
      * Delegates to outer loop strategy if available.
      * Note: This functionality may need to be added to IOuterLoopStrategy
      * if outer loop implementations need to expose this method.
@@ -161,7 +162,7 @@ public:
 
     /**
      * @brief Free allocated resources
-     * 
+     *
      * Delegates to execution strategy.
      */
     void free() override
@@ -174,7 +175,7 @@ public:
 
     /**
      * @brief Set whether to free problems
-     * 
+     *
      * Delegates to execution strategy.
      */
     void DoFreeProblems(bool v) override
@@ -194,7 +195,7 @@ public:
         {
             batching_->InitializeProblems();
         }
-        
+
         if (execution_)
         {
             execution_->InitializeProblems();
@@ -203,13 +204,13 @@ public:
 
     /**
      * @brief Get Benders algorithm name
-     * 
+     *
      * Returns a composite name indicating the strategy configuration.
      */
     [[nodiscard]] std::string BendersName() const override
     {
         std::string name = "BendersCore(";
-        
+
         if (execution_)
         {
             name += execution_->BendersName();
@@ -218,14 +219,14 @@ public:
         {
             name += "NoExecution";
         }
-        
+
         name += ")";
         return name;
     }
 
     /**
      * @brief Get execution time
-     * 
+     *
      * Returns the execution time from the execution strategy.
      */
     [[nodiscard]] double execution_time() const override

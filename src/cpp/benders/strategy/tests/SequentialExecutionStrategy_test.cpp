@@ -1,28 +1,28 @@
+#include "antares-xpansion/benders/strategy/SequentialExecutionStrategy.h"
+
 #include <gtest/gtest.h>
 #include <memory>
 
-#include "antares-xpansion/benders/strategy/SequentialExecutionStrategy.h"
-#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 
 /**
  * @brief Mock BendersSequential for testing purposes
- * 
+ *
  * Overrides BendersSequential methods to avoid actual execution
  * while allowing us to verify the adapter delegates correctly.
  */
-class MockBendersSequential : public BendersSequential
+class MockBendersSequential: public BendersSequential
 {
 public:
-    MockBendersSequential()
-        : BendersSequential(
-              BendersBaseOptions(SolverBaseOptions()),
-              build_void_logger(),
-              std::shared_ptr<Output::OutputWriter>(),
-              std::shared_ptr<MathLoggerDriver>()),
-          launch_called_(false),
-          init_problems_called_(false)
+    MockBendersSequential():
+        BendersSequential(BendersBaseOptions(SolverBaseOptions()),
+                          build_void_logger(),
+                          std::shared_ptr<Output::OutputWriter>(),
+                          std::shared_ptr<MathLoggerDriver>()),
+        launch_called_(false),
+        init_problems_called_(false)
     {
     }
 
@@ -41,8 +41,15 @@ public:
         return "MockSequential";
     }
 
-    bool was_launch_called() const { return launch_called_; }
-    bool was_init_problems_called() const { return init_problems_called_; }
+    bool was_launch_called() const
+    {
+        return launch_called_;
+    }
+
+    bool was_init_problems_called() const
+    {
+        return init_problems_called_;
+    }
 
 private:
     bool launch_called_;
@@ -52,21 +59,21 @@ private:
 /**
  * @brief Test fixture for SequentialExecutionStrategy tests
  */
-class SequentialExecutionStrategyTest : public ::testing::Test
+class SequentialExecutionStrategyTest: public ::testing::Test
 {
 protected:
     void SetUp() override
     {
         // Create a mock sequential instance
         auto mock = std::make_unique<MockBendersSequential>();
-        mock_ptr_ = mock.get();  // Keep raw pointer for verification
-        
+        mock_ptr_ = mock.get(); // Keep raw pointer for verification
+
         // Create the strategy with the mock
         strategy_ = std::make_unique<SequentialExecutionStrategy>(std::move(mock));
     }
 
     std::unique_ptr<SequentialExecutionStrategy> strategy_;
-    MockBendersSequential* mock_ptr_;  // Non-owning pointer for verification
+    MockBendersSequential* mock_ptr_; // Non-owning pointer for verification
 };
 
 /**
@@ -92,9 +99,9 @@ TEST_F(SequentialExecutionStrategyTest, ExecutionTime)
 TEST_F(SequentialExecutionStrategyTest, LaunchDelegation)
 {
     EXPECT_FALSE(mock_ptr_->was_launch_called());
-    
+
     strategy_->launch();
-    
+
     EXPECT_TRUE(mock_ptr_->was_launch_called());
 }
 
@@ -104,9 +111,9 @@ TEST_F(SequentialExecutionStrategyTest, LaunchDelegation)
 TEST_F(SequentialExecutionStrategyTest, InitializeProblemsDelegation)
 {
     EXPECT_FALSE(mock_ptr_->was_init_problems_called());
-    
+
     strategy_->InitializeProblems();
-    
+
     EXPECT_TRUE(mock_ptr_->was_init_problems_called());
 }
 
@@ -116,9 +123,9 @@ TEST_F(SequentialExecutionStrategyTest, InitializeProblemsDelegation)
 TEST_F(SequentialExecutionStrategyTest, RunDelegation)
 {
     EXPECT_FALSE(mock_ptr_->was_launch_called());
-    
+
     strategy_->Run();
-    
+
     EXPECT_TRUE(mock_ptr_->was_launch_called());
 }
 
@@ -128,12 +135,12 @@ TEST_F(SequentialExecutionStrategyTest, RunDelegation)
 TEST(SequentialExecutionStrategyNullTest, NullSafety)
 {
     SequentialExecutionStrategy strategy(nullptr);
-    
+
     // Should not crash with null pointer
     EXPECT_NO_THROW(strategy.launch());
     EXPECT_NO_THROW(strategy.InitializeProblems());
     EXPECT_NO_THROW(strategy.Run());
-    
+
     // Should return safe defaults
     EXPECT_EQ(strategy.BendersName(), "SequentialExecutionStrategy");
     EXPECT_DOUBLE_EQ(strategy.execution_time(), 0.0);

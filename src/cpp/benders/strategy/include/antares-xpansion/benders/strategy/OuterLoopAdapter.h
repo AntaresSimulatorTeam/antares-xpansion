@@ -1,30 +1,31 @@
 #pragma once
 
+#include <memory>
+
 #include "IOuterLoopStrategy.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
-#include <memory>
 
 /**
  * @class OuterLoopAdapter
  * @brief Outer loop strategy adapter for OuterLoop
- * 
+ *
  * Wraps Outerloop::OuterLoop to implement IOuterLoopStrategy interface.
  * This adapter allows the outer loop Benders implementation to be used
  * within the Strategy pattern composition.
- * 
+ *
  * Note: OuterLoop is an abstract class with pure virtual methods that
  * must be implemented by concrete subclasses. This adapter wraps any
  * concrete OuterLoop implementation.
  */
-class OuterLoopAdapter : public IOuterLoopStrategy
+class OuterLoopAdapter: public IOuterLoopStrategy
 {
 public:
     /**
      * @brief Constructor that takes ownership of an OuterLoop instance
      * @param outer_loop Unique pointer to a concrete OuterLoop implementation
      */
-    explicit OuterLoopAdapter(std::unique_ptr<Outerloop::OuterLoop> outer_loop)
-        : outer_loop_(std::move(outer_loop))
+    explicit OuterLoopAdapter(std::unique_ptr<Outerloop::OuterLoop> outer_loop):
+        outer_loop_(std::move(outer_loop))
     {
     }
 

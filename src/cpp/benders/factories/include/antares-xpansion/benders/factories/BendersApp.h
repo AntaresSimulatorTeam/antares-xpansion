@@ -7,12 +7,20 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/strategy/IBendersCore.h"
 
-namespace boost { namespace mpi { class communicator; } }
+namespace boost
+{
+namespace mpi
+{
+class communicator;
+}
+} // namespace boost
 
 class BendersApp
 {
 public:
-    BendersApp(const std::filesystem::path& options_file, boost::mpi::communicator& world, const SOLVER& solver = SOLVER::BENDERS);
+    BendersApp(const std::filesystem::path& options_file,
+               boost::mpi::communicator& world,
+               const SOLVER& solver = SOLVER::BENDERS);
     ~BendersApp() = default;
 
     int Run();

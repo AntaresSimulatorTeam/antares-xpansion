@@ -39,6 +39,7 @@ class BendersAlgorithm;
 class BendersBase
 {
     friend class BendersAlgorithm;
+
 public:
     virtual ~BendersBase() = default;
     BendersBase(BendersBaseOptions options,
@@ -98,25 +99,53 @@ public:
     WorkerMasterData BestIterationWorkerMaster() const;
     void SetMasterObjectiveFunctionCoeffsToZeros() const;
     void SetMasterObjectiveFunction(const double* coeffs, int first, int last) const;
+
     BendersBaseOptions Options() const
     {
         return _options;
     }
+
     virtual void InitializeProblems() = 0;
 
-    bool IsStop() const { return _data.stop; }
-    void set_stop(bool stop) { _data.stop = stop; }
+    bool IsStop() const
+    {
+        return _data.stop;
+    }
+
+    void set_stop(bool stop)
+    {
+        _data.stop = stop;
+    }
 
 public:
     virtual void free();
-    virtual void BuildCut() {}
-    virtual void solve_master() {}
-    virtual void check_convergence() {}
-    virtual Point get_master_x() const { return Point(); }
-    virtual void set_master_x(const Point& x) {}
 
-    CurrentIterationData& getCurrentIterationData() { return _data; }
-    
+    virtual void BuildCut()
+    {
+    }
+
+    virtual void solve_master()
+    {
+    }
+
+    virtual void check_convergence()
+    {
+    }
+
+    virtual Point get_master_x() const
+    {
+        return Point();
+    }
+
+    virtual void set_master_x(const Point& x)
+    {
+    }
+
+    CurrentIterationData& getCurrentIterationData()
+    {
+        return _data;
+    }
+
     virtual void init_data();
     void OpenCsvFile();
     void CloseCsvFile();

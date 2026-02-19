@@ -12,4 +12,3 @@ public:
     virtual void flush() = 0;
 };
 } // namespace Output
-

@@ -1,8 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "IExecutionStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include <memory>
 
 /**
  * @class SequentialExecutionStrategy
@@ -10,12 +11,12 @@
  *
  * Wraps a BendersBase-derived implementation to implement IExecutionStrategy.
  */
-class SequentialExecutionStrategy : public IExecutionStrategy
+class SequentialExecutionStrategy: public IExecutionStrategy
 {
 public:
     // Accept any BendersBase-derived implementation (BendersSequential, etc.)
-    explicit SequentialExecutionStrategy(std::unique_ptr<BendersBase> sequential)
-        : sequential_(std::move(sequential))
+    explicit SequentialExecutionStrategy(std::unique_ptr<BendersBase> sequential):
+        sequential_(std::move(sequential))
     {
     }
 
@@ -46,7 +47,8 @@ public:
 
     [[nodiscard]] std::string BendersName() const override
     {
-        return sequential_ ? sequential_->BendersName() : std::string("SequentialExecutionStrategy");
+        return sequential_ ? sequential_->BendersName()
+                           : std::string("SequentialExecutionStrategy");
     }
 
     [[nodiscard]] double execution_time() const override

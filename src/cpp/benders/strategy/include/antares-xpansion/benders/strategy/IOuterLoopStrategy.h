@@ -15,4 +15,3 @@ public:
     virtual void OuterLoopCheckFeasibility() = 0;
     virtual void OuterLoopBilevelChecks() = 0;
 };
-

@@ -1,12 +1,12 @@
+#include "antares-xpansion/benders/strategy/NoOuterLoopStrategy.h"
+
 #include <gtest/gtest.h>
 #include <memory>
-
-#include "antares-xpansion/benders/strategy/NoOuterLoopStrategy.h"
 
 /**
  * @brief Test fixture for NoOuterLoopStrategy tests
  */
-class NoOuterLoopStrategyTest : public ::testing::Test
+class NoOuterLoopStrategyTest: public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -23,7 +23,7 @@ protected:
 TEST_F(NoOuterLoopStrategyTest, Run)
 {
     EXPECT_NO_THROW(strategy_->Run());
-    
+
     // Can be called multiple times
     EXPECT_NO_THROW(strategy_->Run());
     EXPECT_NO_THROW(strategy_->Run());
@@ -44,7 +44,7 @@ TEST_F(NoOuterLoopStrategyTest, RunAttachedAlgo)
 TEST_F(NoOuterLoopStrategyTest, UpdateMaster)
 {
     EXPECT_FALSE(strategy_->UpdateMaster());
-    
+
     // Even after multiple calls, still false
     strategy_->Run();
     EXPECT_FALSE(strategy_->UpdateMaster());
@@ -74,7 +74,7 @@ TEST_F(NoOuterLoopStrategyTest, InitData)
 TEST_F(NoOuterLoopStrategyTest, IsExceptionRaised)
 {
     EXPECT_FALSE(strategy_->isExceptionRaised());
-    
+
     // Even after running, no exceptions
     strategy_->Run();
     EXPECT_FALSE(strategy_->isExceptionRaised());
@@ -131,13 +131,13 @@ TEST(NoOuterLoopStrategyMultiInstanceTest, MultipleInstances)
 {
     auto strategy1 = std::make_unique<NoOuterLoopStrategy>();
     auto strategy2 = std::make_unique<NoOuterLoopStrategy>();
-    
+
     strategy1->Run();
     EXPECT_FALSE(strategy1->UpdateMaster());
-    
+
     strategy2->init_data();
     EXPECT_FALSE(strategy2->isExceptionRaised());
-    
+
     // Both should be independent
     EXPECT_FALSE(strategy1->isExceptionRaised());
     EXPECT_FALSE(strategy2->UpdateMaster());

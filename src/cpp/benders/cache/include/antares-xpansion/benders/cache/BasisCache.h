@@ -1,7 +1,7 @@
 #pragma once
 
-#include <optional>
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -18,4 +18,3 @@ public:
 private:
     std::unordered_map<std::string, Basis> data_;
 };
-

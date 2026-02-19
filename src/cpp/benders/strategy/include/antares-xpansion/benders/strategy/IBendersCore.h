@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 class IBendersCore
@@ -20,4 +21,3 @@ public:
     virtual std::string BendersName() const = 0;
     virtual double execution_time() const = 0;
 };
-

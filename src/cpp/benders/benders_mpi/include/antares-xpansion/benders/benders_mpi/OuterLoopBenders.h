@@ -1,6 +1,6 @@
 #pragma once
-#include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/CutsManagement.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
@@ -28,11 +28,13 @@ public:
 
     void Run() override;
 
-    void set_algorithm(std::shared_ptr<BendersAlgorithm> algorithm) {
+    void set_algorithm(std::shared_ptr<BendersAlgorithm> algorithm)
+    {
         algorithm_ = algorithm;
     }
 
-    void free() {
+    void free()
+    {
         benders_->free();
     }
 
