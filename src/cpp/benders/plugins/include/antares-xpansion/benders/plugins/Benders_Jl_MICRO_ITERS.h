@@ -185,7 +185,7 @@ public:
     /*
         Implementation of benders end call back
     */                           
-    virtual void OnBendersEnd(int rank);
+    virtual void OnBendersEnd();
  
     /*
         Implementation of master iteration start call back  

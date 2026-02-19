@@ -498,8 +498,7 @@ void BendersMpi::launch()
 
     if (benders_plugin_)
     {
-        int rank_proc = Rank() ; 
-        benders_plugin_->OnBendersEnd(rank_proc);
+        benders_plugin_->OnBendersEnd();
     }
 
     post_run_actions();

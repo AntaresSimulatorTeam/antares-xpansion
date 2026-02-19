@@ -215,10 +215,10 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
     }
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersEnd(int rank)
+void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 {
     if (options_.LOG_LEVEL >= 2)
-        micro_iterations_logger_->Dump(rank) ; 
+        micro_iterations_logger_->Dump(_world->rank()) ; 
 
 
     if (handle_)
@@ -295,20 +295,29 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
 
 void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows, std::string solving_time)
 {
+
+    std::cout<<"entered in OnBendersMicroIterationEnd"<<std::endl ;
     std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
     auto constraint_reader = constraints_map_[constraint_reader_name];
 
+    std::cout<<"after constraint_reader"<<std::endl ; 
+
     
     auto sub_solution = constraint_reader->get_sub_solution();
+    std::cout<<"variables_to_follow_ size "<<variables_to_follow_.size()<<std::endl ; 
     std::vector<FlowN> flows_to_follow;
     flows_to_follow.reserve(variables_to_follow_.size());
+    std::cout<<"after flows_to_follow"<<std::endl ; 
 
 
 
     for (auto& [line, line_id]: variables_to_follow_)
     {
+        std::cout<<"line "<<line<<" line_id "<<line_id<<std::endl ; 
         int variable_index = constraint_reader->get_variable_index_in_solution(line_id);
+        std::cout<<"variable_index "<<variable_index<<std::endl ; 
         auto value = sub_solution[variable_index];
+        std::cout<<"value "<<value<<std::endl ; 
         flows_to_follow.push_back(FlowN{line.c_str(), value});
     }
 
@@ -329,11 +338,14 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     }
     
     std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add,
-                                                                             sub_name);
-    
+        sub_name);
+        
+    std::cout<<"after get_constraints_to_add"<<std::endl ; 
     for (auto& constraint_to_add: constraints_to_add_vec)
     {
+        std::cout<<"constraint_to_add "<<constraint_to_add<<std::endl ; 
         constraint_reader->add_rows(constraint_to_add);
+        std::cout<<"ended adding rows "<<std::endl ; 
     }
 
     auto t2 = std::chrono::high_resolution_clock::now() ;  
@@ -344,6 +356,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
         micro_iterations_logger_->AddMicroIterionLog(sub_name,solving_time,std::to_string(elapsed_microseconds),constraints_keys_vec) ; 
 
     added_rows = constraints_to_add_vec.size();
+    std::cout<<"end of OnBendersMicroIterationEnd"<<std::endl ; 
 }
 
 void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
