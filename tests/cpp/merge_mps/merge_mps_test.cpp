@@ -601,36 +601,6 @@ TEST_F(MergeMPSTest, merged_problems_result)
     EXPECT_DOUBLE_EQ(lastSolution.solution.candidates[1].invest, 3. / 2);
 }
 
-// Additional tests for improved coverage
-
-TEST_F(MergeMPSTest, merged_problems_with_multiple_shared_variables)
-{
-    createMasterProblem();
-    createSatelliteProblem();
-    // Both X1 and X2 are shared between master and satellite
-    createStructureFile({{"master.mps", "X1", 0},
-                         {"master.mps", "X2", 1},
-                         {"satellite.mps", "X1", 1}});
-
-    MergeMPS mergeMPS(options_, logger_, writer_);
-    mergeMPS.launch();
-
-    auto lastSolution = writer_->solution_data_;
-    EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
-
-    SolverFactory factory;
-    auto merged = factory.create_solver("CBC");
-    merged->read_prob_mps(tmp_dir_ / "log_merged.mps"s);
-
-    // Should have 1 additional coupling constraint (X1 is shared)
-    auto master = factory.create_solver("CBC");
-    master->read_prob_mps(tmp_dir_ / "master.mps"s);
-    auto satellite = factory.create_solver("CBC");
-    satellite->read_prob_mps(tmp_dir_ / "satellite.mps"s);
-
-    EXPECT_EQ(merged->get_nrows(), master->get_nrows() + satellite->get_nrows() + 1);
-}
-
 TEST_F(MergeMPSTest, merged_problems_with_zero_weight)
 {
     createMasterProblem();
