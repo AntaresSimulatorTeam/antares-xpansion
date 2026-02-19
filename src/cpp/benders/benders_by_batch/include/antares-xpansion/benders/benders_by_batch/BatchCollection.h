@@ -5,23 +5,23 @@
 
 #include <boost/serialization/map.hpp>
 
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/benders_core/common.h"
-
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 struct Batch
 {
     std::vector<std::string> sub_problem_names;
-    std::vector<std::string> sub_problems_names_for_cuts ; 
-    std::vector<int> proc_numbers ; 
+    std::vector<int> proc_numbers;
+    std::vector<SubProblemNamesInCut> cuts;
     unsigned id;
     friend class boost::serialization::access;
+
+    void BuildCuts(int n_cuts);
 
     template<class Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned int version)
     {
         ar & sub_problem_names;
-        ar & sub_problems_names_for_cuts ; 
         ar & proc_numbers;
         ar & id;
     }
@@ -42,7 +42,7 @@ public:
     BatchCollection(const std::vector<std::string>& sub_problem_names,
                     size_t batch_size,
                     Logger logger);
-    void BuildBatches(bool cache_problems);
+    void BuildBatches(bool cache_problems, int n_procs);
 
     void SetLogger(Logger logger)
     {

@@ -42,10 +42,10 @@ private:
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const std::vector<std::string>& batch_sub_problems);
 
-    std::vector<std::vector<SubProblemNamesInCut>> get_subs_per_cut_per_batch();
-
+    void get_subs_per_cut_per_batch();
 
     BatchCollection batch_collection_;
+    BatchCollection batch_collection_for_cuts_;
     void MasterLoop();
     void SolveBatches();
     void SeparationLoop();
@@ -59,7 +59,6 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
-    std::vector<std::vector<SubProblemNamesInCut>> cuts_per_batch_list_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

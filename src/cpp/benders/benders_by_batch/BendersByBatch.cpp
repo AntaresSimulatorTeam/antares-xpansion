@@ -15,6 +15,7 @@ void BendersByBatch::InitializeProblems()
     const auto& coupling_map_size = coupling_map_.size();
 
     // Only rank 0 builds the batch collection, then it is broadcasted to all procs
+
     if (Rank() == rank_0)
     {
         std::vector<std::string> problem_names;
@@ -26,18 +27,16 @@ void BendersByBatch::InitializeProblems()
         batch_collection_.SetLogger(_logger);
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
-        batch_collection_.BuildBatches(_options.CACHE_PROBLEMS);
-
+        batch_collection_.BuildBatches(_options.CACHE_PROBLEMS, WorldSize());
+        batch_collection_for_cuts_ = batch_collection_;
     }
     BroadCast(batch_collection_, rank_0);
 
     // Dispatch subproblems to process: only add those assigned to this rank
     auto problem_count = 0;
 
-
     for (auto& batch: batch_collection_.BatchCollections())
     {
-
         if (_options.CACHE_PROBLEMS)
         {
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
@@ -49,9 +48,6 @@ void BendersByBatch::InitializeProblems()
                 }
                 else
                 {
-                    auto sub_pos_it = std::find(batch.sub_problems_names_for_cuts.begin(),batch.sub_problems_names_for_cuts.end(),*it) ; 
-                    auto sub_pos = std::distance(batch.sub_problems_names_for_cuts.begin(), sub_pos_it) ; 
-                    batch.proc_numbers[sub_pos] =  process_to_feed ; 
                     ++it;
                 }
                 ++problem_count;
@@ -60,74 +56,37 @@ void BendersByBatch::InitializeProblems()
         }
         else
         {
-            for (int problem_pos=0; problem_pos<batch.sub_problem_names.size();problem_pos++  )
+            for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
             {
                 // In case there are more subproblems than process
                 if (auto process_to_feed = problem_count % WorldSize(); process_to_feed == Rank())
                 { // Assign  [problemNumber % WorldSize] to processID
 
-                    const auto subProblemFilePath = GetSubproblemPath(batch.sub_problem_names[problem_pos]);
-                    batch.proc_numbers[problem_pos] = process_to_feed ; 
-                    AddSubproblem({batch.sub_problem_names[problem_pos], coupling_map_[batch.sub_problem_names[problem_pos]]});
+                    AddSubproblem({batch.sub_problem_names[problem_pos],
+                                   coupling_map_[batch.sub_problem_names[problem_pos]]});
                     AddSubproblemName(batch.sub_problem_names[problem_pos]);
                 }
                 ++problem_count;
             }
         }
-
-
-        std::vector<int> reduced_proc_numbers ; 
-        mpi::reduce(_world,batch.proc_numbers,reduced_proc_numbers,std::plus<int>(),rank_0) ; 
-
-        if (_world.rank() == rank_0) 
-        {
-
-            batch.proc_numbers = std::move(reduced_proc_numbers) ; 
-            for (int i=0; i<batch.sub_problems_names_for_cuts.size(); i++ ) 
-            {
-                std::cout<<"sub "<<batch.sub_problems_names_for_cuts[i]<<" proc "<<batch.proc_numbers[i]<<std::endl ; 
-            }
-        }
-
-        cuts_per_batch_list_ = get_subs_per_cut_per_batch() ; 
-   
     }
+
+    if (_world.rank() == rank_0)
+    {
+        get_subs_per_cut_per_batch();
+    }
+
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
 
-
-
-std::vector<std::vector<SubProblemNamesInCut>> BendersByBatch::get_subs_per_cut_per_batch()
+void BendersByBatch::get_subs_per_cut_per_batch()
 {
-    std::vector<std::vector<SubProblemNamesInCut>> result;
-    for (auto& batch : batch_collection_.BatchCollections())
+    for (auto& batch: batch_collection_for_cuts_.BatchCollections())
     {
-        int n_cuts = SetAggregation(batch.sub_problems_names_for_cuts.size());
-        std::vector<SubProblemNamesInCut> cuts_in_batch;
-        cuts_in_batch.reserve(n_cuts);
-        SubProblemNamesInCut cut;
-        cut.reserve((batch.sub_problems_names_for_cuts.size() + n_cuts - 1) / n_cuts);
-        for (int i=0; i<batch.sub_problems_names_for_cuts.size(); i++) 
-        {
-            cut.push_back(std::make_pair(batch.sub_problems_names_for_cuts[i],batch.proc_numbers[i] ));
-            if (cut.size()
-                == static_cast<size_t>((batch.sub_problems_names_for_cuts.size() + n_cuts - 1) / n_cuts))
-            {
-                cuts_in_batch.push_back(std::move(cut));
-                cut.clear();
-                cut.reserve((batch.sub_problems_names_for_cuts.size() + n_cuts - 1) / n_cuts);
-            }
-        }
-        if (!cut.empty())
-        {
-            cuts_in_batch.push_back(std::move(cut));
-        }
-
-        result.push_back(std::move(cuts_in_batch));
+        int n_cuts = SetAggregation(batch.sub_problem_names.size());
+        batch.BuildCuts(n_cuts);
     }
-
-    return result;
 }
 
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox()
@@ -397,11 +356,12 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
     if (_world.rank() == rank_0)
     {
-        auto cuts_in_batch = cuts_per_batch_list_[current_batch_id_];
+        auto& batch_cuts_list = batch_collection_for_cuts_.BatchCollections();
 
-        *batch_contribution_in_gap = ComputeBatchContributionInGap(gathered_subproblem_map,
-                                                                   cuts_in_batch);
-        build_all_aggregated_cuts(cuts_in_batch, gathered_subproblem_map);
+        *batch_contribution_in_gap = ComputeBatchContributionInGap(
+          gathered_subproblem_map,
+          batch_cuts_list[current_batch_id_].cuts);
+        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].cuts, gathered_subproblem_map);
     }
 }
 
