@@ -187,7 +187,9 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
           {
               // copy of the problem needed if gridCollection contains multiple
               // gridDefinitions, and for multistock
-              std::shared_ptr<Problem> problem = std::make_shared<Problem>(*(pb.second->clone()));
+              // make_shared will be wrong about the counter here, resulting in a memory leak
+              // use shared_ptr instead
+              std::shared_ptr<Problem> problem = std::shared_ptr<Problem>(pb.second->clone());
               std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                    + std::to_string(pbId.week) + "--optim-nb-1";
               logger->display_message("Modifying problem: " + pbName,
