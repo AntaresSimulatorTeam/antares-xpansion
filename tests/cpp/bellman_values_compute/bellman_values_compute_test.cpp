@@ -84,7 +84,7 @@ protected:
         std::filesystem::copy(data_dir,
                               tmpDir,
                               std::filesystem::copy_options::recursive
-                                | std::filesystem::copy_options::update_existing);
+                                | std::filesystem::copy_options::overwrite_existing);
     }
 
     void copyDataThreeNodes()
@@ -95,7 +95,7 @@ protected:
         std::filesystem::copy(data_dir,
                               tmpDir,
                               std::filesystem::copy_options::recursive
-                                | std::filesystem::copy_options::update_existing);
+                                | std::filesystem::copy_options::overwrite_existing);
     }
 
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> getOutputCosts(
