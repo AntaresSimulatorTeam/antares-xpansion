@@ -75,9 +75,22 @@ class FullRunDriver:
         self.logger.info(f"Current directory is now: {os.getcwd()}")
         self.logger.info(f"Command is {' '.join(self.full_command())}")
         ret = subprocess.run(
-            self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
-            encoding='utf-8')
+            self.full_command(),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if ret.stdout:
+            sys.stdout.write(ret.stdout)
+        if ret.stderr:
+            sys.stderr.write(ret.stderr)
         if ret.returncode != 0:
+            binary_path = self._resolve_solver_binary()
+            self.benders_driver._try_symbolize_stacktrace(
+                (ret.stdout or "") + (ret.stderr or ""),
+                binary_path,
+            )
             raise FullRunDriver.FullRunExecutionError(
                 f"ERROR: exited {self.full_exe} with status {ret.returncode}"
             )
@@ -102,6 +115,16 @@ class FullRunDriver:
             return mpi_command
         else:
             return bare_solver_command
+
+    def _resolve_solver_binary(self) -> Path:
+        command = self.full_command()
+        if not command:
+            return Path(self.full_exe)
+        if command[0] == self.benders_driver.MPI_LAUNCHER:
+            root_len = len(self.benders_driver.get_mpi_run_command_root())
+            if root_len < len(command):
+                return Path(command[root_len])
+        return Path(command[0])
 
     class FullRunExecutionError(Exception):
         pass

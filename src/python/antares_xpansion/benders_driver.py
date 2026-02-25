@@ -6,8 +6,11 @@ import glob
 import os
 import subprocess
 import sys
+import re
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Iterable, Dict, List
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
@@ -81,12 +84,22 @@ class BendersDriver:
         ret = subprocess.run(
             self._get_solver_cmd(),
             shell=False,
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            encoding="utf-8",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
         )
 
+        if ret.stdout:
+            sys.stdout.write(ret.stdout)
+        if ret.stderr:
+            sys.stderr.write(ret.stderr)
+
         if ret.returncode != 0:
+            self._try_symbolize_stacktrace(
+                (ret.stdout or "") + (ret.stderr or ""),
+                Path(self.solver),
+            )
+            self._log_symbolize_hint(lp_path, ret.returncode)
             raise BendersDriver.BendersExecutionError(
                 f"ERROR: exited solver with status {ret.returncode}"
             )
@@ -177,6 +190,81 @@ class BendersDriver:
                     f"Error {sys.platform} platform is not supported \n"
                 )
             )
+
+    def _log_symbolize_hint(self, work_dir: Path, returncode: int):
+        if not sys.platform.startswith("linux"):
+            return
+        self.logger.error(
+            "Solver exited with status %s. Core dumps are disabled; run under gdb for a symbolized stack trace.",
+            returncode,
+        )
+        self.logger.error(
+            "Example: cd %s && gdb --args %s %s",
+            work_dir,
+            self.solver,
+            self.options_file,
+        )
+
+    def _try_symbolize_stacktrace(self, output: str, binary_path: Path):
+        if not sys.platform.startswith("linux"):
+            return
+        if not output:
+            return
+        if shutil.which("addr2line") is None:
+            self.logger.error("addr2line not found; install binutils to symbolize stack traces.")
+            return
+
+        frames = self._extract_stacktrace_frames(output, binary_path)
+        if not frames:
+            return
+
+        self.logger.error("Symbolized stack trace (addr2line):")
+        for entry in frames:
+            symbol = self._addr2line_symbol(binary_path, entry["offset"])
+            self.logger.error("%s [%s] %s", entry["prefix"], entry["frame"], symbol)
+
+    def _extract_stacktrace_frames(self, output: str, binary_path: Path) -> List[Dict[str, str]]:
+        binary_name = binary_path.name
+        frame_regex = re.compile(
+            r"^\[(?P<prefix>[^\]]+)\]\s+\[\s*(?P<frame>\d+)\]\s+"
+            r"(?P<binary>\S+)\(\+0x(?P<offset>[0-9a-fA-F]+)\)\[0x[0-9a-fA-F]+\]"
+        )
+        frames: List[Dict[str, str]] = []
+        for line in output.splitlines():
+            match = frame_regex.search(line)
+            if not match:
+                continue
+            binary = Path(match.group("binary")).name
+            if binary != binary_name:
+                continue
+            frames.append(
+                {
+                    "prefix": f"[{match.group('prefix')}]",
+                    "frame": match.group("frame"),
+                    "offset": f"0x{match.group('offset')}",
+                }
+            )
+        return frames
+
+    def _addr2line_symbol(self, binary_path: Path, offset: str) -> str:
+        try:
+            result = subprocess.run(
+                [
+                    "addr2line",
+                    "-e",
+                    str(binary_path),
+                    "-f",
+                    "-C",
+                    "-i",
+                    offset,
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            return result.stdout.strip() or "??"
+        except Exception as exc:
+            return f"addr2line failed: {exc}"
 
     simulation_output_path = property(
         get_simulation_output_path, set_simulation_output_path
