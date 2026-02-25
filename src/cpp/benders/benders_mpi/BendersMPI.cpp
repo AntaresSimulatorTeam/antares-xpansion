@@ -465,20 +465,117 @@ void BendersMpi::PreRunInitialization()
 
 void BendersMpi::launch()
 {
-    if (init_problems_)
+    std::exception_ptr exception_ptr = nullptr;
+    int success = 1; // 1 = success, 0 = failure
+
+    try
     {
-        InitializeProblems();
+        if (init_problems_)
+        {
+            InitializeProblems();
+        }
     }
+    catch (const std::exception& ex)
+    {
+        success = 0;
+        exception_ptr = std::current_exception();
+        write_exception_message(ex);
+    }
+    catch (...)
+    {
+        success = 0;
+        exception_ptr = std::current_exception();
+        _logger->display_message("Unknown exception occurred during InitializeProblems ");
+    }
+
+    // Synchronize error status across all processes
+    check_if_some_proc_had_a_failure(success);
+
     _world.barrier();
 
-    Run();
+    if (exception_ptr)
+    {
+        std::rethrow_exception(exception_ptr);
+    }
+
+    try
+    {
+        Run();
+    }
+    catch (const std::exception& ex)
+    {
+        success = 0;
+        exception_ptr = std::current_exception();
+        write_exception_message(ex);
+    }
+    catch (...)
+    {
+        success = 0;
+        exception_ptr = std::current_exception();
+        _logger->display_message("Unknown exception occurred during Run");
+    }
+
+    check_if_some_proc_had_a_failure(success);
+
     _world.barrier();
 
-    post_run_actions();
+    if (exception_ptr)
+    {
+        std::rethrow_exception(exception_ptr);
+    }
+
+    try
+    {
+        post_run_actions();
+    }
+    catch (const std::exception& ex)
+    {
+        success = 0;
+        exception_ptr = std::current_exception();
+        write_exception_message(ex);
+    }
+    catch (...)
+    {
+        success = 0;
+        exception_ptr = std::current_exception();
+        _logger->display_message("Unknown exception occurred during post_run_actions");
+    }
+
+    check_if_some_proc_had_a_failure(success);
+
+    _world.barrier();
+
+    if (exception_ptr)
+    {
+        std::rethrow_exception(exception_ptr);
+    }
 
     if (free_problems_)
     {
-        free();
+        try
+        {
+            free();
+        }
+        catch (const std::exception& ex)
+        {
+            success = 0;
+            exception_ptr = std::current_exception();
+            write_exception_message(ex);
+        }
+        catch (...)
+        {
+            success = 0;
+            exception_ptr = std::current_exception();
+            _logger->display_message("Unknown exception occurred during free");
+        }
     }
+
+    check_if_some_proc_had_a_failure(success);
+
     _world.barrier();
+
+    if (exception_ptr)
+    {
+        std::rethrow_exception(exception_ptr);
+    }
 }
