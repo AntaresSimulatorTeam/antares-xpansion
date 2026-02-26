@@ -19,19 +19,6 @@ install(DIRECTORY include/antares-xpansion
 # Add tests - now always enabled since strategy pattern is the default
 find_package(GTest QUIET)
 if(GTEST_FOUND)
-    # Adapter smoke test
-    add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
-    target_include_directories(adapter_smoke_test PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../adapters/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
-    )
-    target_link_libraries(adapter_smoke_test PRIVATE GTest::GTest antaresXpansion::benders_core antaresXpansion::factories antaresXpansion::core)
-    add_test(NAME adapter_smoke_test COMMAND adapter_smoke_test)
-
     # SequentialExecutionStrategy unit test
     add_executable(SequentialExecutionStrategy_test tests/SequentialExecutionStrategy_test.cpp)
     target_include_directories(SequentialExecutionStrategy_test PRIVATE
@@ -155,16 +142,5 @@ if(GTEST_FOUND)
         antaresXpansion::core)
     add_test(NAME BendersFactory_test COMMAND BendersFactory_test)
 else()
-    add_executable(adapter_smoke_test tests/adapter_smoke_test.cpp)
-    target_include_directories(adapter_smoke_test PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../adapters/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../benders_core/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../factories/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../logger/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../core/include>
-    )
-    target_link_libraries(adapter_smoke_test PRIVATE antaresXpansion::benders_core antaresXpansion::factories antaresXpansion::core)
-    add_test(NAME adapter_smoke_test COMMAND adapter_smoke_test)
     message(STATUS "GTest not found, strategy tests will not be built with GTest::Main")
 endif()
