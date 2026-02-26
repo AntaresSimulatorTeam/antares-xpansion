@@ -73,11 +73,13 @@ int main(int argc, char** argv)
     catch (std::exception& e)
     {
         std::cerr << "error: " << e.what() << std::endl;
+        mpi::environment::abort(-1);
         return 1;
     }
     catch (...)
     {
         std::cerr << "Exception of unknown type!" << std::endl;
+        mpi::environment::abort(-1);
         return 1;
     }
 }
