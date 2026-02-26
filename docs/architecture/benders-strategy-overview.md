@@ -68,55 +68,16 @@ This architecture enables **8 different combinations** while maintaining clean s
 
 ### Key Abstractions
 
-#### IBendersCore Interface
-The main interface for Benders engine operations:
-```cpp
-class IBendersCore {
-public:
-    virtual void launch() = 0;
-    virtual void InitializeProblems() = 0;
-    virtual void set_input_map(const CouplingMap&) = 0;
-    virtual int MasterRowIndex(const std::string&) const = 0;
-    virtual LogData GetBestIterationData() const = 0;
-    virtual WorkerMasterDataVect AllCuts() const = 0;
-    // ... other methods
-};
-```
+#### Key Strategy Interfaces
 
-#### Strategy Interfaces
+Three focused interfaces separate concerns:
 
-**IExecutionStrategy**: Controls how subproblems are solved
-```cpp
-class IExecutionStrategy {
-public:
-    virtual void Run() = 0;
-    virtual void InitializeProblems() = 0;
-    virtual void set_input_map(const CouplingMap&) = 0;
-    virtual std::string BendersName() const = 0;
-    // ... other methods
-};
-```
+- **IBendersCore**: Main interface for Benders engine operations
+- **IExecutionStrategy**: Controls how subproblems are solved (Sequential vs. MPI)
+- **IBatchingStrategy**: Controls problem batching
+- **IOuterLoopStrategy**: Controls outer-loop optimization
 
-**IBatchingStrategy**: Controls problem batching
-```cpp
-class IBatchingStrategy {
-public:
-    virtual void InitializeProblems() = 0;
-    virtual void UpdateStoppingCriterion() = 0;
-    virtual bool ShouldRelaxationStop() const = 0;
-};
-```
-
-**IOuterLoopStrategy**: Controls outer-loop optimization
-```cpp
-class IOuterLoopStrategy {
-public:
-    virtual void Run(IBendersCore*) = 0;
-    virtual void init_data() = 0;
-    virtual bool UpdateMaster(WorkerMasterDataVect&) = 0;
-    // ... other methods
-};
-```
+For detailed interface signatures and methods, see [API Reference](../../api/benders-strategy-api.md)
 
 ## Component Details
 
@@ -130,135 +91,43 @@ public:
 - Delegates operations to appropriate strategy
 - Coordinates execution flow
 
-**Location**: `src/cpp/benders/strategy/include/antares-xpansion/benders/strategy/BendersCore.h`
-
-**Example**:
-```cpp
-class BendersCore : public IBendersCore {
-public:
-    BendersCore(
-        std::unique_ptr<IExecutionStrategy> exec,
-        std::unique_ptr<IBatchingStrategy> batch,
-        std::unique_ptr<IOuterLoopStrategy> outer
-    );
-    
-    void launch() override;
-    // ... other IBendersCore methods
-    
-private:
-    std::unique_ptr<IExecutionStrategy> execution_;
-    std::unique_ptr<IBatchingStrategy> batching_;
-    std::unique_ptr<IOuterLoopStrategy> outer_loop_;
-};
-```
+For implementation details and code examples, see [API Reference - BendersCore](../../api/benders-strategy-api.md#orchestrator)
 
 ### Execution Strategies
 
-#### SequentialExecutionStrategy
-**Wraps**: BendersSequential  
-**Use Case**: Single-process execution  
-**Selection**: Automatic when `world->size() == 1`  
-**Location**: `src/cpp/benders/strategy/include/.../SequentialExecutionStrategy.h`
+- **SequentialExecutionStrategy**: Single-process execution
+- **ParallelMpiExecutionStrategy**: Multi-process MPI execution
 
-#### ParallelMpiExecutionStrategy
-**Wraps**: BendersMPI  
-**Use Case**: Multi-process MPI execution  
-**Selection**: Automatic when `world->size() > 1`  
-**Location**: `src/cpp/benders/strategy/include/.../ParallelMpiExecutionStrategy.h`
+Automatically selected based on `world->size()`. Details in [API Reference](../../api/benders-strategy-api.md#concrete-strategies)
 
 ### Batching Strategies
 
-#### NoBatchingStrategy
-**Behavior**: Passthrough (no batching logic)  
-**Use Case**: Process all subproblems together  
-**Selection**: When BENDERSMETHOD doesn't include "BY_BATCH"  
-**Location**: `src/cpp/benders/strategy/include/.../NoBatchingStrategy.h`
+- **NoBatchingStrategy**: Process all subproblems together
+- **ByBatchStrategy**: Process subproblems in batches
 
-#### ByBatchStrategy
-**Wraps**: BendersByBatch  
-**Use Case**: Process subproblems in batches  
-**Selection**: When BENDERSMETHOD includes "BY_BATCH"  
-**Location**: `src/cpp/benders/strategy/include/.../ByBatchStrategy.h`
+Selected based on BENDERSMETHOD enum. See [Developer Guide](../../developer-guide/benders-strategy-guide.md) for usage.
 
 ### Outer-Loop Strategies
 
-#### NoOuterLoopStrategy
-**Behavior**: Passthrough (no outer-loop optimization)  
-**Use Case**: Standard Benders without outer loop  
-**Selection**: When BENDERSMETHOD doesn't include "OUTERLOOP"  
-**Location**: `src/cpp/benders/strategy/include/.../NoOuterLoopStrategy.h`
+- **NoOuterLoopStrategy**: Standard Benders without outer loop
+- **OuterLoopAdapter**: Benders with outer-loop optimization
 
-#### OuterLoopAdapter
-**Wraps**: Outerloop::OuterLoop  
-**Use Case**: Benders with outer-loop optimization  
-**Selection**: When BENDERSMETHOD includes "OUTERLOOP"  
-**Location**: `src/cpp/benders/strategy/include/.../OuterLoopAdapter.h`
+Selected based on BENDERSMETHOD enum. See [API Reference](../../api/benders-strategy-api.md) for details.
 
 ## Execution Flow
 
-### Initialization Flow
+### Overview
 
-```
-BendersFactory::PrepareForExecution()
-    │
-    ├─→ Determine BENDERSMETHOD (from options)
-    │
-    ├─→ ConfigureBenders()
-    │   │
-    │   ├─→ Create ExecutionStrategy
-    │   │   └─→ world->size() == 1 ? Sequential : MPI
-    │   │
-    │   ├─→ Create BatchingStrategy
-    │   │   └─→ method has BY_BATCH ? ByBatch : NoBatch
-    │   │
-    │   ├─→ Create OuterLoopStrategy
-    │   │   └─→ method has OUTERLOOP ? OuterLoop : None
-    │   │
-    │   └─→ Create BendersCore(exec, batch, outer)
-    │
-    └─→ Return BendersEnvironment { benders: IBendersCore* }
-```
+Execution follows this sequence:
+1. **Initialize outer-loop**: Set up data structures
+2. **Initialize batching**: Configure batch processing
+3. **Initialize execution**: Set up solver strategies
+4. **Run**: Execute outer-loop (if enabled) or direct execution
+5. **Update stopping criterion**: Check convergence
 
-### Runtime Execution Flow
-
-```
-client->launch()  // Called on IBendersCore
-    │
-    ▼
-BendersCore::launch()
-    │
-    ├─→ 1. outer_loop_->init_data()
-    │
-    ├─→ 2. batching_->InitializeProblems()
-    │
-    ├─→ 3. execution_->InitializeProblems()
-    │
-    ├─→ 4. if (outer_loop_ != nullptr)
-    │   │     outer_loop_->Run(this)  // Outer loop controls execution
-    │   │
-    │   └─→ else
-    │         execution_->Run()        // Direct execution
-    │
-    └─→ 5. batching_->UpdateStoppingCriterion()
-```
-
-### Delegation Examples
-
-**Example 1: Get master row index**
-```
-Client → BendersCore::MasterRowIndex()
-           │
-           └─→ execution_->MasterRowIndex()
-                  │
-                  └─→ wrapped_benders_->MasterRowIndex()
-```
-
-**Example 2: Check if should stop**
-```
-Client → BendersCore::ShouldRelaxationStop()
-           │
-           └─→ batching_->ShouldRelaxationStop()
-```
+For detailed flow diagrams and code examples, see:
+- [API Reference - Orchestrator](../../api/benders-strategy-api.md#orchestrator)
+- [Developer Guide - Using the Strategy Pattern](../../developer-guide/benders-strategy-guide.md#using-the-strategy-pattern)
 
 ## Design Principles
 
@@ -332,9 +201,12 @@ All **8 combinations** are supported:
 
 ## Next Steps
 
-For detailed information, see:
-- **Developer Guide**: `docs/developer-guide/benders-strategy-guide.md`
-- **Code Navigation**: `docs/developer-guide/code-navigation.md`
-- **Testing Guide**: `docs/developer-guide/testing-strategy-pattern.md`
-- **API Reference**: `docs/api/benders-strategy-api.md`
-- **ADR**: `docs/architecture/adr/0001-benders-strategy-pattern.md`
+**Start here**: This is a high-level architecture overview.
+
+**For detailed API information**: See [API Reference](../../api/benders-strategy-api.md)
+
+**For practical guidance**: See [Developer Guide](../../developer-guide/benders-strategy-guide.md)
+
+**For code location and navigation**: See [Code Navigation](../../developer-guide/code-navigation.md)
+
+**For architectural decision context**: See [ADR 0001](adr/0001-benders-strategy-pattern.md)

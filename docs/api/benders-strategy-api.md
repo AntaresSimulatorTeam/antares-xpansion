@@ -1,5 +1,7 @@
 # Benders Strategy Pattern - API Reference
 
+**Overview**: See [Architecture Overview](../architecture/benders-strategy-overview.md) for high-level design and diagrams.
+
 ## Table of Contents
 1. [Interfaces](#interfaces)
 2. [Concrete Strategies](#concrete-strategies)
@@ -645,41 +647,7 @@ All methods from `BendersBase` are available in `IBendersCore`, ensuring backwar
 
 ## Summary
 
-### Strategy Hierarchy
-
-```
-IBendersCore (main interface)
-    └── BendersCore (orchestrator)
-            ├── IExecutionStrategy
-            │   ├── SequentialExecutionStrategy
-            │   └── ParallelMpiExecutionStrategy
-            ├── IBatchingStrategy
-            │   ├── NoBatchingStrategy
-            │   └── ByBatchStrategy
-            └── IOuterLoopStrategy
-                ├── NoOuterLoopStrategy
-                └── OuterLoopAdapter
-```
-
-### Available Combinations
-
-All **8 combinations** are supported:
-
-| Execution | Batching | OuterLoop | When Used |
-|-----------|----------|-----------|-----------|
-| Sequential | NoBatching | NoOuterLoop | Single process, no options |
-| Sequential | NoBatching | OuterLoop | Single process, outer-loop on |
-| Sequential | ByBatch | NoOuterLoop | Single process, batching on |
-| Sequential | ByBatch | OuterLoop | Single process, batching + outer-loop |
-| MPI | NoBatching | NoOuterLoop | Multi-process, no options |
-| MPI | NoBatching | OuterLoop | Multi-process, outer-loop on |
-| MPI | ByBatch | NoOuterLoop | Multi-process, batching on |
-| MPI | ByBatch | OuterLoop | Multi-process, batching + outer-loop |
-
----
-
-## Next Steps
-
-- Read [Developer Guide](../developer-guide/benders-strategy-guide.md) for usage patterns
-- See [Architecture Overview](../architecture/benders-strategy-overview.md) for design details
-- Review [Code Navigation](../developer-guide/code-navigation.md) to find code
+See [Architecture Overview](../architecture/benders-strategy-overview.md) for:
+- Complete strategy hierarchy diagram
+- Design principles and benefits
+- Available strategy combinations table

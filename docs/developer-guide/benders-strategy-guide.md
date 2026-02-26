@@ -7,6 +7,7 @@
 4. [Common Patterns](#common-patterns)
 5. [Best Practices](#best-practices)
 6. [Troubleshooting](#troubleshooting)
+7. [Next Steps](#next-steps)
 
 ## Quick Start
 
@@ -57,45 +58,13 @@ The interface is the same! `IBendersCore` provides all methods from `BendersBase
 
 The factory creates a `BendersCore` with three composed strategies:
 
-```cpp
-// Inside BendersFactory::ConfigureBenders()
+For details on factory implementation, see [API Reference - Factory](../api/benders-strategy-api.md#factory)
 
-// 1. Select execution strategy based on MPI world size
-if (world_->size() == 1) {
-    // Single process → Sequential
-    auto sequential = std::make_unique<BendersSequential>(...);
-    execution = std::make_unique<SequentialExecutionStrategy>(
-        std::move(sequential)
-    );
-} else {
-    // Multiple processes → MPI
-    auto mpi = std::make_unique<BendersMpi>(...);
-    execution = std::make_unique<ParallelMpiExecutionStrategy>(
-        std::move(mpi)
-    );
-}
-
-// 2. Select batching strategy based on method
-if (method == BENDERS_BY_BATCH || method == BENDERS_BY_BATCH_OUTERLOOP) {
-    batching = std::make_unique<ByBatchStrategy>(...);
-} else {
-    batching = std::make_unique<NoBatchingStrategy>();
-}
-
-// 3. Select outer-loop strategy based on method
-if (method == BENDERS_OUTERLOOP || method == BENDERS_BY_BATCH_OUTERLOOP) {
-    outer_loop = std::make_unique<OuterLoopAdapter>(...);
-} else {
-    outer_loop = std::make_unique<NoOuterLoopStrategy>();
-}
-
-// 4. Compose into BendersCore
-return std::make_unique<BendersCore>(
-    std::move(execution),
-    std::move(batching),
-    std::move(outer_loop)
-);
-```
+**Key points**:
+1. **Execution strategy** is automatically selected based on MPI world size
+2. **Batching strategy** is selected based on BENDERSMETHOD enum
+3. **Outer-loop strategy** is selected based on BENDERSMETHOD enum
+4. All three are composed into BendersCore which orchestrates their execution
 
 ### Accessing Strategy Components
 
@@ -113,6 +82,8 @@ benders->launch();
 ```
 
 **Note**: You shouldn't need to access individual strategies directly. `BendersCore` handles all orchestration.
+
+For detailed interface documentation, see [API Reference](../api/benders-strategy-api.md)
 
 ## Adding New Strategies
 
@@ -530,6 +501,6 @@ Currently, strategies are set at construction. For runtime swapping:
 
 ## Next Steps
 
-- Read [Architecture Overview](../architecture/benders-strategy-overview.md)
-- Study [Code Navigation Guide](code-navigation.md)
-- Check [API Reference](../api/benders-strategy-api.md)
+- Read [Architecture Overview](../architecture/benders-strategy-overview.md) for design principles
+- Study [Code Navigation Guide](code-navigation.md) to find code in the repository
+- Review [API Reference](../api/benders-strategy-api.md) for interface details and method signatures
