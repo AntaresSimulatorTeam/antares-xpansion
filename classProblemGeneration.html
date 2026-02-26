@@ -140,6 +140,7 @@ $(function(){initNavTree('classProblemGeneration.html',''); initResizable(true);
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classProblemGeneration-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ProblemGeneration Class Reference</div></div>
@@ -160,6 +161,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ceaddadad29a224f7e82cdd4c7bcc30" id="r_a6ceaddadad29a224f7e82cdd4c7bcc30"><td class="memItemLeft" align="right" valign="top"><a id="a6ceaddadad29a224f7e82cdd4c7bcc30" name="a6ceaddadad29a224f7e82cdd4c7bcc30"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ProblemGeneration</b> (<a class="el" href="classProblemGenerationOptions.html">ProblemGenerationOptions</a> &amp;options)</td></tr>
 <tr class="separator:a6ceaddadad29a224f7e82cdd4c7bcc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a957acac85539627b906c1fca1eeb5f" id="r_a4a957acac85539627b906c1fca1eeb5f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a957acac85539627b906c1fca1eeb5f">performAntaresSimulation</a> (const std::filesystem::path &amp;study_dir)</td></tr>
+<tr class="separator:a4a957acac85539627b906c1fca1eeb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e1932ba99ac0d4bb6909830e1d79e00" id="r_a8e1932ba99ac0d4bb6909830e1d79e00"><td class="memItemLeft" align="right" valign="top"><a id="a8e1932ba99ac0d4bb6909830e1d79e00" name="a8e1932ba99ac0d4bb6909830e1d79e00"></a>
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>updateProblems</b> ()</td></tr>
 <tr class="separator:a8e1932ba99ac0d4bb6909830e1d79e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,6 +173,12 @@ Public Attributes</h2></td></tr>
 const <a class="el" href="classProblemGenerationOptions.html">ProblemGenerationOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>options_</b></td></tr>
 <tr class="separator:a808a80fb13842f8d94c270c0f1b9bde9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a96a05a6264e73f83f655392c98d26cfd" id="r_a96a05a6264e73f83f655392c98d26cfd"><td class="memItemLeft" align="right" valign="top"><a id="a96a05a6264e73f83f655392c98d26cfd" name="a96a05a6264e73f83f655392c98d26cfd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>loadProblemsFromAntares</b> (const std::filesystem::path &amp;study_dir, const std::filesystem::path &amp;simulation_dir, <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a> *logger)</td></tr>
+<tr class="separator:a96a05a6264e73f83f655392c98d26cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:aa7879c1871c3e8a76e2a31a3920c5f9d" id="r_aa7879c1871c3e8a76e2a31a3920c5f9d"><td class="memItemLeft" align="right" valign="top"><a id="aa7879c1871c3e8a76e2a31a3920c5f9d" name="aa7879c1871c3e8a76e2a31a3920c5f9d"></a>
@@ -179,6 +188,33 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="structConfigurationManager_1_1ConfigDirectories.html">ConfigurationManager::ConfigDirectories</a>&#160;</td><td class="memItemRight" valign="bottom"><b>directories_</b></td></tr>
 <tr class="separator:a5874d8f64b89b5c849d667529d9f2c0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4a957acac85539627b906c1fca1eeb5f" name="a4a957acac85539627b906c1fca1eeb5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a957acac85539627b906c1fca1eeb5f">&#9670;&#160;</a></span>performAntaresSimulation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ProblemGeneration::performAntaresSimulation </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>study_dir</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Antares simulator allocate a lot of memory Even if there is no memory leak not all freed memory become available. Allocator or OS may cache some memory to reuse it With malloc_trim(0) we free all memory that is not used anymore to be reclaimed by the program It is necessary to avoid allocating Xpansion memory on top of the unavailable memory from simulator</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cpp/lpnamer/main/include/antares-xpansion/lpnamer/main/<a class="el" href="ProblemGeneration_8h_source.html">ProblemGeneration.h</a></li>
 <li>src/cpp/lpnamer/main/<b>ProblemGeneration.cpp</b></li>

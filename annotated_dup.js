@@ -532,7 +532,7 @@ var annotated_dup =
     [ "Problem", "classProblem.html", "classProblem" ],
     [ "ProblemConstructionTest", "classProblemConstructionTest.html", null ],
     [ "ProblemData", "structProblemData.html", null ],
-    [ "ProblemGeneration", "classProblemGeneration.html", null ],
+    [ "ProblemGeneration", "classProblemGeneration.html", "classProblemGeneration" ],
     [ "ProblemGenerationExeOptions", "classProblemGenerationExeOptions.html", null ],
     [ "ProblemGenerationExeOptionsTest", "classProblemGenerationExeOptionsTest.html", null ],
     [ "ProblemGenerationLoggerTest", "classProblemGenerationLoggerTest.html", null ],

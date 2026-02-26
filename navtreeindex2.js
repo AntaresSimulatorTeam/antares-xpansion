@@ -80,6 +80,7 @@ var NAVTREEINDEX2 =
 "classProblem.html#afe80be61b65b3d0779d3343be8c653fb":[34,0,195,24],
 "classProblemConstructionTest.html":[34,0,196],
 "classProblemGeneration.html":[34,0,198],
+"classProblemGeneration.html#a4a957acac85539627b906c1fca1eeb5f":[34,0,198,0],
 "classProblemGenerationExeOptions.html":[34,0,199],
 "classProblemGenerationExeOptionsTest.html":[34,0,200],
 "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html":[34,0,16,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classSolverCbc.html#a96ca23915e64d82081f78d1069db00ff":[34,0,244,23],
 "classSolverCbc.html#a9dae09f0eedde8ef50396b32f9a50991":[34,0,244,26],
 "classSolverCbc.html#aa737d3b19b6c04f5b23ffab2f9b66dc4":[34,0,244,28],
-"classSolverCbc.html#aa796dc288cd44d788f1f748645b68897":[34,0,244,48],
-"classSolverCbc.html#aab7ba381ec42739bb961fe1460c67b7a":[34,0,244,16]
+"classSolverCbc.html#aa796dc288cd44d788f1f748645b68897":[34,0,244,48]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classSolverCbc.html#aab7ba381ec42739bb961fe1460c67b7a":[34,0,244,16],
 "classSolverCbc.html#aad90c1c8f2f777232fb385b3985d44cb":[34,0,244,32],
 "classSolverCbc.html#aafbf6280dc866850a566abe4eac5d139":[34,0,244,31],
 "classSolverCbc.html#abb7b1a608d2b6fd0ea1d962ff800aacd":[34,0,244,38],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classZipProblemProviderAdapter.html":[34,0,289],
 "classZipProblemsProviderAdapter.html":[34,0,290],
 "classact.html":[34,0,27],
-"classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html":[32,0,0,0,0],
-"classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html":[34,0,0,0,0]
+"classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html":[32,0,0,0,0]
 };
