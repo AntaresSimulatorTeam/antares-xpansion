@@ -18,6 +18,7 @@ private:
     std::string problemFormat_;
     bool useOptimalTrajectory_;
     std::string verbosity_;
+    bool streamProblemsFromDisk_;
 
 public:
     BellmanValuesExeOptions();
@@ -77,5 +78,10 @@ public:
     std::string Verbosity() const
     {
         return verbosity_;
+    }
+
+    bool StreamProblemsFromDisk() const
+    {
+        return streamProblemsFromDisk_;
     }
 };

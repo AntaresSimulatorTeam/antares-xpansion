@@ -5,6 +5,7 @@
 
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
 #include "antares-xpansion/bellman_values/PenaltiesConfigReader.h"
+#include "antares-xpansion/bellman_values/ProblemManager.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
@@ -117,6 +118,9 @@ int main(int argc, char** argv)
         const std::string problemFormat = optionsParser.ProblemFormat();
         const bool useOptimalTrajectory = optionsParser.UseOptimalTrajectory();
         const std::string verbosity = optionsParser.Verbosity();
+        // this bool needs to be implemented correctly after merging with the more recent use of
+        // YAML setting files
+        bool streamProblemsFromDisk = optionsParser.StreamProblemsFromDisk();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                / "user/water_values/grid.csv");
@@ -154,19 +158,24 @@ int main(int argc, char** argv)
           masterLogger,
           LogUtils::StrToLogLevel(verbosity));
 
+        auto problemManager = std::make_shared<ProblemManager>(solverName,
+                                                               problemFormat,
+                                                               writePbFiles,
+                                                               streamProblemsFromDisk,
+                                                               directories.simulation_dir
+                                                                 / "initial_problems");
+
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message(
           "Generating problems (starting time: " + formatTime(startProblemGeneration) + ")");
         ProblemGenerationForWaterValueCalculation pbg(
           directories,
           logger,
-          solverName,
+          problemManager,
           ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
             useOptimalTrajectory), // not used in grid_evaluator
           startWeek,
-          endWeek,
-          writePbFiles,
-          problemFormat);
+          endWeek);
         auto endProblemGeneration = std::chrono::system_clock::now();
         logger->display_message("Problems generated (end time: " + formatTime(endProblemGeneration)
                                 + ")");

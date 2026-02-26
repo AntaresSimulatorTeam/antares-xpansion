@@ -14,7 +14,9 @@ target_sources(bellman_values_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BellmanValues.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BellmanValuesExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/PenaltiesConfigReader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/bellman_values/BellmanValues.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/bellman_values/ProblemManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/bellman_values/BellmanValuesExeOptions.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/bellman_values/PenaltiesConfigReader.h
 )
