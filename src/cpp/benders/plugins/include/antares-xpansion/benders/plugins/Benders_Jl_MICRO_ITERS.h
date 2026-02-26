@@ -12,6 +12,7 @@ loaded into Benders_Jl_MICRO_ITERS class.
 #include <chrono> 
 #include <memory>
 
+
 #include "antares-xpansion/benders/benders_core/ConstraintsReader.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
@@ -19,7 +20,8 @@ loaded into Benders_Jl_MICRO_ITERS class.
 #include "antares-xpansion/benders/logger/MicroIterationsLog.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
-
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
 
 
 /*
@@ -97,6 +99,49 @@ struct ViolatedFlowConstraints
     int size;
 };
 
+/*
+    We will compute the necessary factors at each master iteration at one proc 
+    Then we will serialize them and set them on the other proc from c++ 
+    This struct contain pointer to these serialized objects 
+    @memebers 
+        - HVDC_dict_serialized : serialized HVDC dict
+        - dict_incident_factors_serialized : dict incidenet factors serialized 
+        - all_monitored_branches_serialized : serialized monitored branches
+*/
+
+
+struct SerializedObject 
+{
+    uint8_t* bytes_ptr; 
+    int bytes_length ; 
+}; 
+
+
+struct SerializedFactors 
+{
+    SerializedObject HVDC_dict_serialized; 
+    SerializedObject dict_incident_factors_serialized; 
+    SerializedObject all_monitored_branches_serialized;   
+}; 
+
+
+struct SerializedBuffers
+{
+    std::vector<uint8_t> HVDC_dict_serialized_buff ; 
+    std::vector<uint8_t> dict_incident_factors_serialized_buff ; 
+    std::vector<uint8_t> all_monitored_branches_serialized_buff ;
+
+    template<class Archive> 
+    void serialize(Archive& ar, const unsigned int version) 
+    {
+        ar & HVDC_dict_serialized_buff ; 
+        ar & dict_incident_factors_serialized_buff ; 
+        ar & all_monitored_branches_serialized_buff ; 
+    }
+
+} ; 
+
+
 
 /*
     This type will be the map resulting of reading co,nstraints_dictionary.csv. 
@@ -129,7 +174,7 @@ using shut_down_julia_FUNC = void (*)(int);
     It takes as an input an object of type SubProblemIds
 
 */
-using jl_load_variables_FUNC = void (*)(SubProblemIds);
+using jl_load_variables_FUNC = void (*)(SubProblemIds,int);
 
 /*
     This type will be used for the julia function jl_compute_factors_for_microiterations. 
@@ -137,7 +182,7 @@ using jl_load_variables_FUNC = void (*)(SubProblemIds);
     It takes as an input an object of type MasterBendersInput that contains the result 
     of solving the master problem 
 */
-using jl_compute_factors_for_microiterations_FUNC = const char* (*)(CandidateLineInvestmentStatusList, int);
+using jl_compute_factors_for_microiterations_FUNC = SerializedFactors  (*)(CandidateLineInvestmentStatusList, int);
 
 /*
     This type will be used for the Julia function jl_return_constraints_for_micro_iteration.
@@ -145,9 +190,22 @@ using jl_compute_factors_for_microiterations_FUNC = const char* (*)(CandidateLin
     It takes as inputs : 
         - a c-style string : the id of the subproblem 
         - FlowNList object : the list of flows we need to compute violated constraints
+        - SerializedFactors object : contains the serailizd factors computed at the master iteration on proc 0
 */
 using jl_return_constraints_for_micro_iteration_FUNC = ViolatedFlowConstraints (*)(const char*, FlowNList);
 
+
+
+/*
+    Since the input julia that allow updating the factos at each master iterations are quite heavy. 
+    we can't compute the new ptdf and the different factors needed at benders master iteration at each process. 
+    The idea is to do the computing on the proc 0 on julia side, serialize these object, send a pointer to the c++
+    abd set them on the other procs so we can update compute violated constraints at each proc
+*/
+using jl_deserialize_factors_FUNC = void (*) (SerializedFactors) ;
+
+
+using jl_clean_buffers_FUNC = void (*) () ; 
 
 /*
     Implementation of BendersPlugin to manage the microiterations workflow
@@ -251,13 +309,14 @@ private:
     void read_constraints_dict() ; 
     void read_investment_dictionnary() ; 
     void read_variables_dictionnary() ; 
-
     mpi::communicator* _world ; 
     void* handle_;
     shut_down_julia_FUNC shut_down_julia_ ; 
     jl_compute_factors_for_microiterations_FUNC compute_factors_ ; 
     jl_return_constraints_for_micro_iteration_FUNC jl_return_constraints_for_micro_iteration_ ; 
     jl_load_variables_FUNC jl_load_variables_ ; 
+    jl_clean_buffers_FUNC clean_buffers_ ;
+    jl_deserialize_factors_FUNC jl_deserialize_factors_ ; 
     const SimulationOptions& options_ ; 
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;
@@ -276,4 +335,5 @@ private:
     Logger _logger;
     std::shared_ptr<MicroIterationsLog> micro_iterations_logger_; 
     bool warm_start_; 
+    SerializedFactors serialized_factors_;
 };

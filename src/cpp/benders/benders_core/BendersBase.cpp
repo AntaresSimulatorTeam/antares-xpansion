@@ -503,7 +503,6 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
                             SolveSubproblem(subproblem_data, name, worker);
 
                             std::lock_guard guard(m);
-                            std::cout<<"printing name "<<name<<std::endl ; 
                             subproblem_data_map[name] = subproblem_data;
                         });
       },
@@ -627,11 +626,11 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
         int num_micro_iter(0);
         while (added_rows)
         {
+            std::cout<<"new micro iteration "<<std::endl ; 
             int num_master_iter = _data.it - 1 ; 
             size_t start = name.find_last_of('/') + 1;
             size_t end = name.find(".");
             auto t1 = std::chrono::high_resolution_clock::now() ; 
-            std::cout<<"solving sub problem ..."<<std::endl ; 
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
                           _options.LAST_MASTER_MPS + MPS_SUFFIX,

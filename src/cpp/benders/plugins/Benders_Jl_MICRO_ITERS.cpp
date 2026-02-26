@@ -13,6 +13,7 @@
 
 #include "iostream"
 
+
 Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
                                                const CouplingMap& coupling_map,
                                                 mpi::communicator* world)
@@ -51,12 +52,13 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
                                     = (jl_return_constraints_for_micro_iteration_FUNC)
                                     dlsym(handle_, "jl_return_constraints_for_micro_iteration");
 
+        clean_buffers_ = (jl_clean_buffers_FUNC) dlsym(handle_, "jl_clean_buffers");
 
 
         jl_load_variables_ = (jl_load_variables_FUNC)
                                             dlsym(handle_, "jl_load_variables");
                         
-
+        jl_deserialize_factors_ = (jl_deserialize_factors_FUNC) dlsym(handle_,"jl_deserialize_factors") ; 
         init_julia(0, NULL);
     }
     else 
@@ -199,7 +201,6 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
                                             const BendersBaseOptions& options,
                                             const SolverLogManager& solver_log_manager)
 {
-    std::cout<<"OnBendersStart "<<std::endl ; 
     _logger = logger;
 
     
@@ -211,7 +212,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
         BuildConstraintsReaderMap(subproblem_map, options, solver_log_manager);
 
         //reading inputs on julia side
-        jl_load_variables_(sub_pb_ids_);
+        jl_load_variables_(sub_pb_ids_,_world->rank());
     }
 }
 
@@ -254,8 +255,41 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
       master_out.size()};
     
     auto t1 = std::chrono::high_resolution_clock::now() ; 
+    // SerializedFactors_mpi serialized_factors_mpi ; 
+    std::vector<uint8_t> HVDC_dict_serialized_buff ; 
+    std::vector<uint8_t> dict_incident_factors_serialized_buff ; 
+    std::vector<uint8_t> all_monitored_branches_serialized_buff ; 
+    SerializedBuffers serialized_buffs ; 
     
-    const char* jl_log_msg = compute_factors_(master_benders_input,num_iter);
+    if (_world->rank() == 0)
+    {
+        
+        serialized_factors_ = compute_factors_(master_benders_input,num_iter);
+        serialized_buffs.HVDC_dict_serialized_buff.resize(serialized_factors_.HVDC_dict_serialized.bytes_length) ; 
+        std::memcpy(serialized_buffs.HVDC_dict_serialized_buff.data(), serialized_factors_.HVDC_dict_serialized.bytes_ptr, serialized_factors_.HVDC_dict_serialized.bytes_length* sizeof(uint8_t)) ; 
+        
+        serialized_buffs.dict_incident_factors_serialized_buff.resize(serialized_factors_.dict_incident_factors_serialized.bytes_length) ; 
+        std::memcpy(serialized_buffs.dict_incident_factors_serialized_buff.data(),serialized_factors_.dict_incident_factors_serialized.bytes_ptr, serialized_factors_.dict_incident_factors_serialized.bytes_length * sizeof(uint8_t)) ; 
+        
+        serialized_buffs.all_monitored_branches_serialized_buff.resize(serialized_factors_.all_monitored_branches_serialized.bytes_length) ; 
+        std::memcpy(serialized_buffs.all_monitored_branches_serialized_buff.data(),serialized_factors_.all_monitored_branches_serialized.bytes_ptr , serialized_factors_.all_monitored_branches_serialized.bytes_length * sizeof(uint8_t)) ; 
+        clean_buffers_() ; 
+    }
+
+    mpi::broadcast(*_world,serialized_buffs,0) ;
+
+    if (_world->rank() != 0)
+    {
+        SerializedFactors serialized_factors{
+            SerializedObject{serialized_buffs.HVDC_dict_serialized_buff.data(), serialized_buffs.HVDC_dict_serialized_buff.size()} , 
+            SerializedObject{serialized_buffs.dict_incident_factors_serialized_buff.data(), serialized_buffs.dict_incident_factors_serialized_buff.size()} , 
+            SerializedObject{serialized_buffs.all_monitored_branches_serialized_buff.data(), serialized_buffs.all_monitored_branches_serialized_buff.size()} , 
+        } ; 
+        jl_deserialize_factors_(serialized_factors) ; 
+
+    }
+
+    
     auto t2 = std::chrono::high_resolution_clock::now() ; 
     auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
     if (options_.LOG_LEVEL >= 2)
@@ -296,28 +330,22 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
 void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows, std::string solving_time)
 {
 
-    std::cout<<"entered in OnBendersMicroIterationEnd"<<std::endl ;
     std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
     auto constraint_reader = constraints_map_[constraint_reader_name];
 
-    std::cout<<"after constraint_reader"<<std::endl ; 
+    // ""<<"after constraint_reader"<<std::endl ; 
 
     
     auto sub_solution = constraint_reader->get_sub_solution();
-    std::cout<<"variables_to_follow_ size "<<variables_to_follow_.size()<<std::endl ; 
     std::vector<FlowN> flows_to_follow;
     flows_to_follow.reserve(variables_to_follow_.size());
-    std::cout<<"after flows_to_follow"<<std::endl ; 
 
 
 
     for (auto& [line, line_id]: variables_to_follow_)
     {
-        std::cout<<"line "<<line<<" line_id "<<line_id<<std::endl ; 
         int variable_index = constraint_reader->get_variable_index_in_solution(line_id);
-        std::cout<<"variable_index "<<variable_index<<std::endl ; 
         auto value = sub_solution[variable_index];
-        std::cout<<"value "<<value<<std::endl ; 
         flows_to_follow.push_back(FlowN{line.c_str(), value});
     }
 
@@ -326,9 +354,11 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
 
     ViolatedFlowConstraints constraints_to_add = jl_return_constraints_for_micro_iteration_(
       sub_name.c_str(),
-      N_flows);
+      N_flows
+      );
 
-    //for logger 
+
+    
     std::vector<std::string> constraints_keys_vec ;
     for (int i=0; i<constraints_to_add.size; i++) 
     {
@@ -337,15 +367,13 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
 
     }
     
+    // 
     std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add,
         sub_name);
         
-    std::cout<<"after get_constraints_to_add"<<std::endl ; 
     for (auto& constraint_to_add: constraints_to_add_vec)
     {
-        std::cout<<"constraint_to_add "<<constraint_to_add<<std::endl ; 
         constraint_reader->add_rows(constraint_to_add);
-        std::cout<<"ended adding rows "<<std::endl ; 
     }
 
     auto t2 = std::chrono::high_resolution_clock::now() ;  
@@ -356,7 +384,6 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
         micro_iterations_logger_->AddMicroIterionLog(sub_name,solving_time,std::to_string(elapsed_microseconds),constraints_keys_vec) ; 
 
     added_rows = constraints_to_add_vec.size();
-    std::cout<<"end of OnBendersMicroIterationEnd"<<std::endl ; 
 }
 
 void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
@@ -389,7 +416,6 @@ void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
         if (!check_if_constraint_key_is_added(constraints_to_add_obj.constraints[i], sub_name))
         {
             std::string constraint_key(constraints_to_add_obj.constraints[i]);
-
             constraints_to_add.insert(constraints_to_add.end(),
                                       constraints_csv_map_[constraint_key].begin(),
                                       constraints_csv_map_[constraint_key].end());
