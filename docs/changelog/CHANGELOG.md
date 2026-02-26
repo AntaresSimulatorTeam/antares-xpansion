@@ -12,7 +12,7 @@ v1.8.0 (01/2026)
 
 * Fix Benders by batch criterion computation when aggregating cuts (#1154)
 * Fix CutTrace inadvertently overriden (#1160)
-* Fix benders by batch not handlig "large study" option
+* Fix benders by batch not handling "large study" option
 * Bound alpha now default to false
 
 ### CI
