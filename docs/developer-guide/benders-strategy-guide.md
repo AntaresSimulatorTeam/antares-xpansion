@@ -532,5 +532,4 @@ Currently, strategies are set at construction. For runtime swapping:
 
 - Read [Architecture Overview](../architecture/benders-strategy-overview.md)
 - Study [Code Navigation Guide](code-navigation.md)
-- Learn [Testing Practices](testing-strategy-pattern.md)
 - Check [API Reference](../api/benders-strategy-api.md)

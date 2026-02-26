@@ -682,5 +682,4 @@ All **8 combinations** are supported:
 
 - Read [Developer Guide](../developer-guide/benders-strategy-guide.md) for usage patterns
 - See [Architecture Overview](../architecture/benders-strategy-overview.md) for design details
-- Check [Testing Guide](../developer-guide/testing-strategy-pattern.md) for test patterns
 - Review [Code Navigation](../developer-guide/code-navigation.md) to find code

@@ -39,13 +39,6 @@ This directory contains comprehensive documentation for the Benders Strategy Pat
 - Entry points for common tasks
 - Quick reference
 
-**[Testing Guide](developer-guide/testing-strategy-pattern.md)**
-- Testing philosophy
-- Test structure and patterns
-- Running tests
-- Adding new tests
-- Mocking strategies
-
 ### API Reference
 
 **[API Reference](api/benders-strategy-api.md)**
@@ -63,7 +56,6 @@ This directory contains comprehensive documentation for the Benders Strategy Pat
 - **Learn the architecture**: Read [Architecture Overview](architecture/benders-strategy-overview.md)
 - **Use the Strategy pattern**: Read [Developer Guide](developer-guide/benders-strategy-guide.md)
 - **Find specific code**: Read [Code Navigation](developer-guide/code-navigation.md)
-- **Write tests**: Read [Testing Guide](developer-guide/testing-strategy-pattern.md)
 - **Look up an API**: Read [API Reference](api/benders-strategy-api.md)
 
 ### For New Developers
@@ -78,7 +70,6 @@ Start here:
 Quick references:
 - [Code Navigation](developer-guide/code-navigation.md) - Find files quickly
 - [API Reference](api/benders-strategy-api.md) - Look up interfaces
-- [Testing Guide](developer-guide/testing-strategy-pattern.md) - Test patterns
 
 ## Architecture Summary
 

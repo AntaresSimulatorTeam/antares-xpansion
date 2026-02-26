@@ -430,5 +430,4 @@ grep -r "->launch()" src/cpp/benders/
 
 - Read [Developer Guide](benders-strategy-guide.md) for usage patterns
 - See [Architecture Overview](../architecture/benders-strategy-overview.md) for design
-- Check [Testing Guide](testing-strategy-pattern.md) for test patterns
 - Review [API Reference](../api/benders-strategy-api.md) for interface details
