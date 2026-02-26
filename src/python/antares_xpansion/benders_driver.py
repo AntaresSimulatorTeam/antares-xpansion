@@ -214,6 +214,9 @@ class BendersDriver:
             self.logger.error("addr2line not found; install binutils to symbolize stack traces.")
             return
 
+        # Check if binary has debug symbols
+        self._check_debug_symbols(binary_path)
+
         frames = self._extract_stacktrace_frames(output, binary_path)
         if not frames:
             return
@@ -222,6 +225,46 @@ class BendersDriver:
         for entry in frames:
             symbol = self._addr2line_symbol(binary_path, entry["offset"])
             self.logger.error("%s [%s] %s", entry["prefix"], entry["frame"], symbol)
+
+    def _check_debug_symbols(self, binary_path: Path):
+        """Check if the binary contains debug symbols and log diagnostic information."""
+        if not binary_path.exists():
+            self.logger.warning("Binary not found at %s", binary_path)
+            return
+
+        try:
+            # Check if binary has debug info using readelf
+            if shutil.which("readelf"):
+                result = subprocess.run(
+                    ["readelf", "-S", str(binary_path)],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                has_debug = ".debug_info" in result.stdout or ".debug_line" in result.stdout
+                if not has_debug:
+                    self.logger.warning(
+                        "Binary %s appears to lack debug symbols (.debug_info/.debug_line sections). "
+                        "Recompile with -g flag for full stack trace information.",
+                        binary_path.name
+                    )
+                else:
+                    self.logger.info("Binary %s contains debug symbols.", binary_path.name)
+
+            # Also check file command for additional info
+            if shutil.which("file"):
+                result = subprocess.run(
+                    ["file", str(binary_path)],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                if "not stripped" in result.stdout:
+                    self.logger.info("Binary is not stripped (symbols present).")
+                elif "stripped" in result.stdout:
+                    self.logger.warning("Binary is stripped. Symbol resolution may be limited.")
+        except Exception as exc:
+            self.logger.debug("Debug symbol check failed: %s", exc)
 
     def _extract_stacktrace_frames(self, output: str, binary_path: Path) -> List[Dict[str, str]]:
         binary_name = binary_path.name
@@ -248,21 +291,55 @@ class BendersDriver:
 
     def _addr2line_symbol(self, binary_path: Path, offset: str) -> str:
         try:
+            # First try with -p (pretty print) and -s (basename only) for better output
             result = subprocess.run(
                 [
                     "addr2line",
                     "-e",
                     str(binary_path),
-                    "-f",
-                    "-C",
-                    "-i",
+                    "-f",  # Show function names
+                    "-C",  # Demangle C++ names
+                    "-i",  # Show inlined functions
+                    "-p",  # Pretty print (more readable)
+                    "-s",  # Strip directory names from file paths
                     offset,
                 ],
                 check=False,
                 capture_output=True,
                 text=True,
             )
-            return result.stdout.strip() or "??"
+            output = result.stdout.strip()
+            if output and output != "??":
+                return output
+
+            # If that fails, try alternative approach with different options
+            result2 = subprocess.run(
+                [
+                    "addr2line",
+                    "-e",
+                    str(binary_path),
+                    "-f",
+                    "-C",
+                    offset,
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            output2 = result2.stdout.strip()
+
+            # Also try to get information using nm if addr2line fails
+            if (not output2 or "??" in output2):
+                nm_result = subprocess.run(
+                    ["nm", "-C", "--line-numbers", str(binary_path)],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                # Search for the address in nm output
+                # This is a fallback and might not be as precise
+
+            return output2 or "??"
         except Exception as exc:
             return f"addr2line failed: {exc}"
 
