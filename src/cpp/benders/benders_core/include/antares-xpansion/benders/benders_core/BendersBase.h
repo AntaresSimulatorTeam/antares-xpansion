@@ -255,7 +255,7 @@ protected:
     [[nodiscard]] std::string get_solver_name() const;
     [[nodiscard]] int get_log_level() const;
     [[nodiscard]] bool is_trace() const;
-    [[nodiscard]] Point get_x_cut() const;
+    [[nodiscard]] virtual Point get_x_cut() const;
     void set_x_cut(const Point& x0);
     [[nodiscard]] Point get_x_out() const;
     void set_x_out(const Point& x0);
