@@ -3,6 +3,7 @@
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
 #include <utility>
+#include <fmt/format.h>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
@@ -340,7 +341,10 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success)
     if (global_success == 0)
     {
         exception_raised_ = true;
+        _data.stop = true;
     }
+    // Synchronize _data.stop across all processes immediately after setting it
+    broadcast(_world, _data.stop, rank_0);
 }
 
 void BendersMpi::write_exception_message(const std::exception& ex) const
