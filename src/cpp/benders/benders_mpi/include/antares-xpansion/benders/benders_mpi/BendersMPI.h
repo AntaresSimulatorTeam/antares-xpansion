@@ -24,6 +24,13 @@ public:
                std::shared_ptr<mpi::communicator> world,
                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
+    // Backwards-compatible overload: accept a reference and wrap it into a shared_ptr
+    BendersMpi(const BendersBaseOptions& options,
+               std::shared_ptr<ILogger> logger,
+               std::shared_ptr<Output::OutputWriter> writer,
+               mpi::communicator& world,
+               std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+
     void launch() override;
 
     std::string BendersName() const override

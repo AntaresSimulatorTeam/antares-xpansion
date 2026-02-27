@@ -297,7 +297,6 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne)
     double relaxed_gap = 1e-2;
     double sep_param = 1;
     BendersSequentialDouble benders = init_benders_sequential(master_formulation,
-    BendersSequentialDouble benders = init_benders_sequential(master_formulation,
                                                               max_iter,
                                                               relaxed_gap,
                                                               sep_param);

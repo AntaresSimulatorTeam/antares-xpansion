@@ -1,5 +1,3 @@
-
-
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
 #include <utility>
@@ -527,4 +525,13 @@ void BendersMpi::launch()
         free();
     }
     _world->barrier();
+}
+
+BendersMpi::BendersMpi(const BendersBaseOptions& options,
+                       std::shared_ptr<ILogger> logger,
+                       std::shared_ptr<Output::OutputWriter> writer,
+                       mpi::communicator& world,
+                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersMpi(options, std::move(logger), std::move(writer), std::make_shared<mpi::communicator>(world), std::move(mathLoggerDriver))
+{
 }

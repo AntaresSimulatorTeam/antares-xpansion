@@ -152,7 +152,7 @@ void BendersByBatch::launch()
     {
         InitializeProblems();
     }
-    _world.barrier();
+    _world->barrier();
 
     try
     {
@@ -181,7 +181,7 @@ void BendersByBatch::launch()
         _logger->display_message(error);
     }
 
-    _world.barrier();
+    _world->barrier();
 
     post_run_actions();
 
@@ -189,7 +189,7 @@ void BendersByBatch::launch()
     {
         free();
     }
-    _world.barrier();
+    _world->barrier();
 }
 
 void BendersByBatch::ComputeXCut()
@@ -327,7 +327,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
     // }
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         auto subproblems_per_cut = split_subproblem_data_pairs(
           gathered_subproblem_map,
