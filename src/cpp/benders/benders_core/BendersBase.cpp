@@ -360,6 +360,7 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
  */
 void BendersBase::get_master_value()
 {
+    _logger->display_message("\tSolving master...");
     Timer timer_master;
 
     _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);

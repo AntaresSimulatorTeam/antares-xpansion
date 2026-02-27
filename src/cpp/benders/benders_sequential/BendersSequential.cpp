@@ -118,11 +118,11 @@ void BendersSequential::set_master_x(const Point& x)
 
 void BendersSequential::launch()
 {
-    _logger->display_message("Building input");
-    _logger->display_message("Constructing workers...");
-
     InitializeProblems();
-    _logger->display_message("Running solver...");
+
+    // Log initialization (include iterations before restart for resume mode)
+    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
+
     try
     {
         auto comm = std::make_shared<SequentialCommunication>();
@@ -135,7 +135,6 @@ void BendersSequential::launch()
         algorithm->set_outer_loop(no_outer_loop);
 
         algorithm->Run();
-        _logger->display_message(BendersName() + " solver terminated.");
     }
     catch (const std::exception& ex)
     {
