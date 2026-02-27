@@ -1252,7 +1252,7 @@ void BendersBase::UpdateMaxNumberIterationResumeMode(int nb_iteration_done)
 
 double BendersBase::execution_time() const
 {
-    return _data.benders_time;
+    return benders_timer.elapsed();
 }
 
 void BendersBase::ChecksResumeMode()

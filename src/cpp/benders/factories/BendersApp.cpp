@@ -3,6 +3,7 @@
 #include <antares-xpansion/benders/factories/BendersFactory.h>
 #include <filesystem>
 #include <fmt/format.h>
+#include <iomanip>
 
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_core/BatchSubproblemSolver.h"
@@ -146,7 +147,7 @@ void BendersApp::EndMessage(const double execution_time)
 
     str.str("");
 
-    str << context_ << " ran in " << execution_time << " s" << std::endl;
+    str << context_ << " ran in " << std::fixed << std::setprecision(2) << execution_time << " s" << std::endl;
     benders_loggers_.display_message(str.str(), LogUtils::LOGLEVEL::INFO, context_);
 }
 
