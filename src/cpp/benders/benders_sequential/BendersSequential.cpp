@@ -120,6 +120,23 @@ void BendersSequential::launch()
 {
     InitializeProblems();
 
+    // Ensure initial master relaxation is handled in sequential runs the same way
+    // it is for MPI runs. This triggers the logger call LogAtInitialRelaxation()
+    // when the options request an initial relaxation.
+    if (init_data_)
+    {
+        // Call shared handler that checks options and logs if needed
+        HandleInitialMasterRelaxation();
+
+        // Write math logger header if available (mirrors MPI behavior)
+        if (mathLoggerDriver_)
+        {
+            mathLoggerDriver_->write_header();
+        }
+
+        init_data_ = false;
+    }
+
     // Log initialization (include iterations before restart for resume mode)
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
 
