@@ -1291,7 +1291,10 @@ void BendersBase::LoggerLogAtIterationEnd()
 
 void BendersBase::mathLoggerDriverWriteheader()
 {
-    mathLoggerDriver_->write_header();
+    if (mathLoggerDriver_)
+    {
+        mathLoggerDriver_->write_header();
+    }
 }
 
 void BendersBase::SaveCurrentBendersData()

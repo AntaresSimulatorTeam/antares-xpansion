@@ -335,7 +335,11 @@ void MathLoggerDriver::write_header()
 {
     for (auto logger: math_loggers_)
     {
-        logger->write_header();
+        if (logger)
+        {
+            // delegate safely to the implementation (which may itself be null)
+            logger->write_header();
+        }
     }
 }
 
@@ -431,42 +435,70 @@ MathLoggerImplementation::MathLoggerImplementation(std::shared_ptr<MathLogger> i
 
 void MathLoggerImplementation::display_message(const std::string& str)
 {
-    implementation_->display_message(str);
+    if (implementation_)
+    {
+        implementation_->display_message(str);
+    }
 }
 
 void MathLoggerImplementation::display_message(const std::string& str,
                                                LogUtils::LOGLEVEL level,
                                                const std::string& context)
 {
-    implementation_->display_message(str, level, context);
+    if (implementation_)
+    {
+        implementation_->display_message(str, level, context);
+    }
 }
 
 void MathLoggerImplementation::Print(const CurrentIterationData& data)
 {
-    implementation_->Print(data);
+    if (implementation_)
+    {
+        implementation_->Print(data);
+    }
 }
 
 void MathLoggerImplementation::PrintIterationSeparatorBegin()
 {
-    implementation_->PrintIterationSeparatorBegin();
+    if (implementation_)
+    {
+        implementation_->PrintIterationSeparatorBegin();
+    }
 }
 
 void MathLoggerImplementation::PrintIterationSeparatorEnd()
 {
-    implementation_->PrintIterationSeparatorEnd();
+    if (implementation_)
+    {
+        implementation_->PrintIterationSeparatorEnd();
+    }
 }
 
 void MathLoggerImplementation::setHeadersList()
 {
-    implementation_->setHeadersList();
+    if (implementation_)
+    {
+        implementation_->setHeadersList();
+    }
 }
 
 std::vector<std::string> MathLoggerImplementation::Headers() const
 {
-    return implementation_->Headers();
+    if (implementation_)
+    {
+        return implementation_->Headers();
+    }
+    return {};
 }
 
 LogDestination& MathLoggerImplementation::LogsDestination()
 {
-    return implementation_->LogsDestination();
+    if (implementation_)
+    {
+        return implementation_->LogsDestination();
+    }
+    // Provide a local static fallback destination to avoid returning a dangling reference
+    static LogDestination fallback(40);
+    return fallback;
 }
