@@ -28,14 +28,42 @@ void BendersAlgorithm::MasterLoop()
             if (benders_base_->SwitchToIntegerMaster(
                   benders_base_->getCurrentIterationData().is_in_initial_relaxation))
             {
+                benders_base_->_logger->LogAtSwitchToInteger();
                 benders_base_->ActivateIntegrityConstraints();
                 benders_base_->ResetDataPostRelaxation();
             }
+
+            benders_base_->_logger->log_at_initialization(
+              benders_base_->getCurrentIterationData().it
+              + benders_base_->GetNumIterationsBeforeRestart());
+            benders_base_->_logger->display_message("\tSolving master...");
         }
 
         solve_master();
+
+        if (comm_->Rank() == 0)
+        {
+            benders_base_->_logger->log_master_solving_duration(
+              benders_base_->getCurrentIterationData().timer_master);
+        }
+
         benders_base_->ComputeXCut();
+
+        if (comm_->Rank() == 0)
+        {
+            benders_base_->_logger->log_iteration_candidates(
+              benders_base_->bendersDataToLogData(benders_base_->getCurrentIterationData()));
+            benders_base_->_logger->display_message("\tSolving subproblems...");
+        }
+
         solve_subproblems();
+
+        if (comm_->Rank() == 0)
+        {
+            benders_base_->_logger->LogSubproblemsSolvingWalltime(
+              benders_base_->getCurrentIterationData().subproblems_walltime);
+        }
+
         benders_base_->compute_ub();
         update_bounds();
         check_convergence();
