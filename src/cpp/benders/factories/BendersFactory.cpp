@@ -13,7 +13,6 @@
 #include <antares-xpansion/benders/strategy/BendersCore.h>
 #include <antares-xpansion/benders/strategy/ByBatchStrategy.h>
 #include <antares-xpansion/benders/strategy/NoBatchingStrategy.h>
-#include <antares-xpansion/benders/strategy/NoOuterLoopStrategy.h>
 #include <antares-xpansion/benders/strategy/OuterLoopAdapter.h>
 #include <antares-xpansion/benders/strategy/ParallelMpiExecutionStrategy.h>
 #include <antares-xpansion/benders/strategy/SequentialExecutionStrategy.h>
@@ -155,10 +154,10 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
 
     // Build OuterLoopStrategy
     std::unique_ptr<IOuterLoopStrategy> outer_loop_strategy;
-    // For now avoid constructing complex outer-loop objects here (requires
-    // BendersBase/pBendersBase wiring). Use NoOuterLoopStrategy to keep build
-    // stable; actual outer-loop wiring happens in RunExternalLoop paths.
-    outer_loop_strategy = std::make_unique<NoOuterLoopStrategy>();
+    // Don't create NoOuterLoopStrategy - just leave it as nullptr
+    // The BendersCore will handle nullptr gracefully and run execution directly
+    // Actual outer-loop wiring happens in RunExternalLoop paths when needed.
+    outer_loop_strategy = nullptr;
 
     // Compose strategies into BendersCore
     auto benders_core = std::make_unique<BendersCore>(std::move(execution_strategy),
