@@ -131,7 +131,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         auto mpi_benders = std::make_unique<BendersMpi>(benders_options,
                                                         dependencies_.logger,
                                                         dependencies_.writer,
-                                                        *world_,
+                                                        std::make_shared<mpi::communicator>(*world_),
                                                         dependencies_.math_log_driver);
         execution_strategy = std::make_unique<ParallelMpiExecutionStrategy>(std::move(mpi_benders));
     }
@@ -143,7 +143,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         auto batch_benders = std::make_unique<BendersByBatch>(benders_options,
                                                               dependencies_.logger,
                                                               dependencies_.writer,
-                                                              *world_,
+                                                              std::make_shared<mpi::communicator>(*world_),
                                                               dependencies_.math_log_driver);
         batching_strategy = std::make_unique<ByBatchStrategy>(std::move(batch_benders));
     }

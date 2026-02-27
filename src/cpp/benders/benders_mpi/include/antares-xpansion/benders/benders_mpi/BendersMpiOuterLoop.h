@@ -12,7 +12,7 @@ public:
     BendersMpiOuterLoop(const BendersBaseOptions& options,
                         Logger logger,
                         std::shared_ptr<Output::OutputWriter> writer,
-                        mpi::communicator& world,
+                        std::shared_ptr<mpi::communicator> world,
                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
     void launch() override;

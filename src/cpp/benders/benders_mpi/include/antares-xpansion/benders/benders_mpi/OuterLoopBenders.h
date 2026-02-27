@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "antares-xpansion/benders/benders_core/BendersAlgorithm.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
@@ -24,7 +26,7 @@ public:
       std::shared_ptr<IMasterUpdate> master_updater,
       std::shared_ptr<ICutsManager> cuts_manager,
       pBendersBase benders,
-      mpi::communicator& world);
+      std::shared_ptr<mpi::communicator> world);
 
     void Run() override;
 
@@ -54,7 +56,7 @@ private:
     std::shared_ptr<ICutsManager> cuts_manager_;
     pBendersBase benders_;
     BendersLoggerBase loggers_;
-    mpi::communicator& world_;
+    std::shared_ptr<mpi::communicator> world_;
     bool is_bilevel_check_all_ = false;
     void InitExternalValues(bool is_bilevel_check_all, double lambda);
     OuterLoopBiLevel outer_loop_biLevel_;

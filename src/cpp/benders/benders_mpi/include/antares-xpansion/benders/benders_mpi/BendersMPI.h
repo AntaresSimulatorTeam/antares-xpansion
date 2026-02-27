@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
@@ -19,7 +21,7 @@ public:
     BendersMpi(const BendersBaseOptions& options,
                std::shared_ptr<ILogger> logger,
                std::shared_ptr<Output::OutputWriter> writer,
-               mpi::communicator& world,
+               std::shared_ptr<mpi::communicator> world,
                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
     void launch() override;
@@ -46,7 +48,7 @@ protected:
     void SetSubproblemDataCostAndSimplexIter(
       const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
-    mpi::communicator& _world;
+    std::shared_ptr<mpi::communicator> _world;
 
 private:
     void step_1_solve_master();
@@ -77,49 +79,49 @@ protected:
 
     int Rank() const
     {
-        return _world.rank();
+        return _world->rank();
     }
 
     template<typename T>
     void BroadCast(T& value, int root) const
     {
-        mpi::broadcast(_world, value, root);
+        mpi::broadcast(*_world, value, root);
     }
 
     template<typename T>
     void BroadCast(T* values, int n, int root) const
     {
-        mpi::broadcast(_world, values, n, root);
+        mpi::broadcast(*_world, values, n, root);
     }
 
     template<typename T>
     void Gather(const T& value, std::vector<T>& vector_of_values, int root) const
     {
-        mpi::gather(_world, value, vector_of_values, root);
+        mpi::gather(*_world, value, vector_of_values, root);
     }
 
     void BuildMasterProblem();
 
     int WorldSize() const
     {
-        return _world.size();
+        return _world->size();
     }
 
     void Barrier() const
     {
-        _world.barrier();
+        _world->barrier();
     }
 
     template<typename T, typename Op>
     void Reduce(const T& in_value, T& out_value, Op op, int root) const
     {
-        mpi::reduce(_world, in_value, out_value, op, root);
+        mpi::reduce(*_world, in_value, out_value, op, root);
     }
 
     template<typename T, typename Op>
     void AllReduce(const T& in_value, T& out_value, Op op) const
     {
-        mpi::all_reduce(_world, in_value, out_value, op);
+        mpi::all_reduce(*_world, in_value, out_value, op);
     }
 
     virtual void GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime);

@@ -12,10 +12,10 @@
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<ILogger> logger,
                        std::shared_ptr<Output::OutputWriter> writer,
-                       mpi::communicator& world,
+                       std::shared_ptr<mpi::communicator> world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
-    _world(world)
+    _world(std::move(world))
 {
 }
 
@@ -35,8 +35,8 @@ void BendersMpi::InitializeProblems()
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
         {
-            auto process_to_feed = current_problem_id % _world.size();
-            if (process_to_feed != _world.rank())
+            auto process_to_feed = current_problem_id % _world->size();
+            if (process_to_feed != _world->rank())
             {
                 it = coupling_map_.erase(it);
             }
@@ -54,8 +54,8 @@ void BendersMpi::InitializeProblems()
         for (const auto& problem: coupling_map_)
         {
             // In case there are more subproblems than process
-            if (auto process_to_feed = current_problem_id % _world.size();
-                process_to_feed == _world.rank())
+            if (auto process_to_feed = current_problem_id % _world->size();
+                process_to_feed == _world->rank())
             { // Assign  [problemNumber % processCount] to processID
 
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
@@ -71,7 +71,7 @@ void BendersMpi::InitializeProblems()
 
 void BendersMpi::BroadCastVariablesIndices()
 {
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         SetSubproblemsVariablesIndices();
     }
@@ -80,7 +80,7 @@ void BendersMpi::BroadCastVariablesIndices()
 
 void BendersMpi::BuildMasterProblem()
 {
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         std::shared_ptr<IBendersProblemProvider>
           benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
@@ -127,7 +127,7 @@ void BendersMpi::step_1_solve_master()
 
 void BendersMpi::check_convergence()
 {
-    step_4_update_best_solution(_world.rank());
+    step_4_update_best_solution(_world->rank());
 }
 
 Point BendersMpi::get_master_x() const
@@ -147,7 +147,7 @@ void BendersMpi::BuildCut()
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts()
 {
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
         {
@@ -164,7 +164,7 @@ void BendersMpi::BroadcastXCut()
     if (!exception_raised_)
     {
         Point x_cut = get_x_cut();
-        mpi::broadcast(_world, x_cut, rank_0);
+        mpi::broadcast(*_world, x_cut, rank_0);
         set_x_cut(x_cut);
     }
 }
@@ -228,7 +228,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
 void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
-    mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
+    mpi::gather(*_world, subproblem_data_map, gathered_subproblem_map, rank_0);
     _data.subproblems_walltime = walltime.elapsed();
     double cumulative_subproblems_timer_per_iter(0);
     Reduce(_data.subproblems_cputime,
@@ -243,7 +243,7 @@ void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const 
     {
         ComputeSubproblemsContributionToCriteria(subproblem_data_map);
 
-        if (_world.rank() == rank_0)
+        if (_world->rank() == rank_0)
         {
             criteria_vector_for_each_iteration_.push_back(
               _data.criteria_current_iteration_data.criteria);
@@ -323,7 +323,7 @@ void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathere
 
     _data.ub = 0;
 
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         // TODO: In Benders MPI the subproblem split can be done once as it is the same at each
         // iteration
@@ -360,7 +360,7 @@ void BendersMpi::SetSubproblemDataCostAndSimplexIter(
 void BendersMpi::check_if_some_proc_had_a_failure(int success)
 {
     int global_success;
-    mpi::all_reduce(_world, success, global_success, mpi::bitwise_and<int>());
+    mpi::all_reduce(*_world, success, global_success, mpi::bitwise_and<int>());
     if (global_success == 0)
     {
         exception_raised_ = true;
@@ -394,7 +394,7 @@ void BendersMpi::step_4_update_best_solution(int rank)
  */
 void BendersMpi::free()
 {
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         free_master();
     }
@@ -402,7 +402,7 @@ void BendersMpi::free()
     {
         free_subproblems();
     }
-    _world.barrier();
+    _world->barrier();
 }
 
 /*!
@@ -442,12 +442,12 @@ void BendersMpi::Run()
 
         if (!exception_raised_)
         {
-            step_4_update_best_solution(_world.rank());
+            step_4_update_best_solution(_world->rank());
         }
         _data.stop |= exception_raised_;
 
-        broadcast(_world, _data.is_in_initial_relaxation, rank_0);
-        broadcast(_world, _data.stop, rank_0);
+        broadcast(*_world, _data.is_in_initial_relaxation, rank_0);
+        broadcast(*_world, _data.stop, rank_0);
 
         if (Rank() == rank_0)
         {
@@ -455,27 +455,27 @@ void BendersMpi::Run()
             SaveCurrentBendersData();
         }
     }
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         CloseCsvFile();
         EndWritingInOutputFile();
         write_basis();
     }
-    _world.barrier();
+    _world->barrier();
 }
 
 void BendersMpi::PreRunInitialization()
 {
     init_data();
 
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         HandleInitialMasterRelaxation();
     }
 
-    _world.barrier();
+    _world->barrier();
 
-    if (_world.rank() == rank_0)
+    if (_world->rank() == rank_0)
     {
         ChecksResumeMode();
         if (is_trace())
@@ -498,7 +498,7 @@ void BendersMpi::launch()
     {
         InitializeProblems();
     }
-    _world.barrier();
+    _world->barrier();
 
     try
     {
@@ -518,7 +518,7 @@ void BendersMpi::launch()
         write_exception_message(ex);
     }
 
-    _world.barrier();
+    _world->barrier();
 
     post_run_actions();
 
@@ -526,5 +526,5 @@ void BendersMpi::launch()
     {
         free();
     }
-    _world.barrier();
+    _world->barrier();
 }
