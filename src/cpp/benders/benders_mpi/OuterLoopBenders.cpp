@@ -21,6 +21,25 @@ OuterLoopBenders::OuterLoopBenders(
     benders_->InitializeProblems();
 }
 
+// Backwards-compatible overload: wrap la référence dans un shared_ptr
+OuterLoopBenders::OuterLoopBenders(
+  const std::vector<Benders::Criterion::CriterionSingleInputData>& outer_loop_data,
+  std::shared_ptr<IMasterUpdate> master_updater,
+  std::shared_ptr<ICutsManager> cuts_manager,
+  pBendersBase benders,
+  mpi::communicator& world):
+    master_updater_(std::move(master_updater)),
+    cuts_manager_(std::move(cuts_manager)),
+    benders_(std::move(benders)),
+    world_(std::make_shared<mpi::communicator>(world)),
+    outer_loop_biLevel_(outer_loop_data)
+{
+    loggers_.AddLogger(benders_->_logger);
+    loggers_.AddLogger(benders_->mathLoggerDriver_);
+    benders_->DoFreeProblems(false);
+    benders_->InitializeProblems();
+}
+
 void OuterLoopBenders::PrintLog()
 {
     std::ostringstream msg;

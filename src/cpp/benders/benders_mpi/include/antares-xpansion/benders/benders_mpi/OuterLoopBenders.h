@@ -28,6 +28,14 @@ public:
       pBendersBase benders,
       std::shared_ptr<mpi::communicator> world);
 
+    // Backwards-compatible overload: accept a reference and wrap it into a shared_ptr
+    explicit OuterLoopBenders(
+      const std::vector<Benders::Criterion::CriterionSingleInputData>& outer_loop_data,
+      std::shared_ptr<IMasterUpdate> master_updater,
+      std::shared_ptr<ICutsManager> cuts_manager,
+      pBendersBase benders,
+      mpi::communicator& world);
+
     void Run() override;
 
     void set_algorithm(std::shared_ptr<BendersAlgorithm> algorithm)

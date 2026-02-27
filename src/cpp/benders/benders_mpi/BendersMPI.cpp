@@ -7,6 +7,7 @@
 #include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/helpers/Timer.h"
 
+// Remplacement/ajout des constructeurs :
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<ILogger> logger,
                        std::shared_ptr<Output::OutputWriter> writer,
@@ -14,6 +15,17 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
     _world(std::move(world))
+{
+}
+
+// Backwards-compatible overload: wrap la référence dans un shared_ptr
+BendersMpi::BendersMpi(const BendersBaseOptions& options,
+                       std::shared_ptr<ILogger> logger,
+                       std::shared_ptr<Output::OutputWriter> writer,
+                       mpi::communicator& world,
+                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
+    _world(std::make_shared<mpi::communicator>(world))
 {
 }
 
@@ -162,6 +174,7 @@ void BendersMpi::BroadcastXCut()
     if (!exception_raised_)
     {
         Point x_cut = get_x_cut();
+        // Déréférencer le shared_ptr pour fournir un `communicator&` à boost::mpi
         mpi::broadcast(*_world, x_cut, rank_0);
         set_x_cut(x_cut);
     }
@@ -226,6 +239,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
 void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
+    // Déréférencer `_world` pour les collectives boost::mpi
     mpi::gather(*_world, subproblem_data_map, gathered_subproblem_map, rank_0);
     _data.subproblems_walltime = walltime.elapsed();
     double cumulative_subproblems_timer_per_iter(0);
@@ -358,6 +372,7 @@ void BendersMpi::SetSubproblemDataCostAndSimplexIter(
 void BendersMpi::check_if_some_proc_had_a_failure(int success)
 {
     int global_success;
+    // Déréférencer `_world` pour les collectives
     mpi::all_reduce(*_world, success, global_success, mpi::bitwise_and<int>());
     if (global_success == 0)
     {
@@ -444,8 +459,9 @@ void BendersMpi::Run()
         }
         _data.stop |= exception_raised_;
 
-        broadcast(*_world, _data.is_in_initial_relaxation, rank_0);
-        broadcast(*_world, _data.stop, rank_0);
+        // Utiliser les méthodes membres BroadCast définies dans l'en-tête
+        BroadCast(_data.is_in_initial_relaxation, rank_0);
+        BroadCast(_data.stop, rank_0);
 
         if (Rank() == rank_0)
         {
@@ -525,13 +541,4 @@ void BendersMpi::launch()
         free();
     }
     _world->barrier();
-}
-
-BendersMpi::BendersMpi(const BendersBaseOptions& options,
-                       std::shared_ptr<ILogger> logger,
-                       std::shared_ptr<Output::OutputWriter> writer,
-                       mpi::communicator& world,
-                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersMpi(options, std::move(logger), std::move(writer), std::make_shared<mpi::communicator>(world), std::move(mathLoggerDriver))
-{
 }

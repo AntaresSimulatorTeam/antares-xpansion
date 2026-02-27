@@ -164,7 +164,7 @@ void BendersByBatch::launch()
         cumulative_subproblems_timer_per_iter_ = 0;
         first_unsolved_batch_ = 0;
 
-        auto comm = std::make_shared<MpiCommunication>(_world);
+        auto comm = std::make_shared<MpiCommunication>(*_world);
         auto benders_ptr = std::shared_ptr<BendersBase>(this, [](BendersBase*) {});
         auto solver = std::make_shared<BatchSubproblemSolver>(benders_ptr);
 
