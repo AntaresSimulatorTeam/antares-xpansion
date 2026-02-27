@@ -21,8 +21,22 @@ void BendersAlgorithm::MasterLoop()
     init();
     while (!benders_base_->IsStop())
     {
+        ++benders_base_->getCurrentIterationData().it;
+
+        if (comm_->Rank() == 0)
+        {
+            if (benders_base_->SwitchToIntegerMaster(
+                  benders_base_->getCurrentIterationData().is_in_initial_relaxation))
+            {
+                benders_base_->ActivateIntegrityConstraints();
+                benders_base_->ResetDataPostRelaxation();
+            }
+        }
+
         solve_master();
+        benders_base_->ComputeXCut();
         solve_subproblems();
+        benders_base_->compute_ub();
         update_bounds();
         check_convergence();
     }
@@ -32,8 +46,13 @@ void BendersAlgorithm::MasterLoop()
 void BendersAlgorithm::init()
 {
     benders_base_->init_data();
-    benders_base_->OpenCsvFile();
+    benders_base_->ChecksResumeMode();
+    if (benders_base_->is_trace())
+    {
+        benders_base_->OpenCsvFile();
+    }
     benders_base_->mathLoggerDriverWriteheader();
+    benders_base_->HandleInitialMasterRelaxation();
 }
 
 void BendersAlgorithm::solve_master()
@@ -84,4 +103,6 @@ void BendersAlgorithm::check_convergence()
 void BendersAlgorithm::finalize()
 {
     benders_base_->CloseCsvFile();
+    benders_base_->EndWritingInOutputFile();
+    benders_base_->write_basis();
 }

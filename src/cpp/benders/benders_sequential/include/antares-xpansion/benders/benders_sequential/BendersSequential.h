@@ -16,12 +16,12 @@ public:
                                Logger logger,
                                std::shared_ptr<Output::OutputWriter> writer,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
-    virtual ~BendersSequential() = default;
-    virtual void launch();
-    virtual void BuildCut();
-    virtual void InitializeProblems();
+    ~BendersSequential() override = default;
+    void launch() override;
+    void BuildCut() override;
+    void InitializeProblems() override;
 
-    std::string BendersName() const
+    std::string BendersName() const override
     {
         return "Sequential";
     }
@@ -32,8 +32,8 @@ public:
     void set_master_x(const Point& x) override;
 
 protected:
-    virtual void free();
-    virtual void Run();
+    void free() override;
+    void Run() override;
 
     [[nodiscard]] bool shouldParallelize() const final
     {
