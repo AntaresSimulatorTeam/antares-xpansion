@@ -119,13 +119,13 @@ jobs:
           key: vcpkg-cache-centos7-${{ hashFiles('vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: archive/single
           name: ${{ steps.get-archives.outputs.SINGLE_FILE_NAME }}
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: archive/multiple
           name: ${{ steps.get-archives.outputs.TGZ_NAME }}
@@ -156,7 +156,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -175,7 +175,7 @@ jobs:
           outputs: type=docker,dest=/tmp/centos.tar
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: centos
           path: /tmp/centos.tar
