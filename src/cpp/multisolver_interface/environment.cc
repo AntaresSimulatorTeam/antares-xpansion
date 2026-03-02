@@ -180,6 +180,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSinit, "XPRSinit");
     xpress_dynamic_library->GetFunction(&XPRScopyprob, "XPRScopyprob");
     xpress_dynamic_library->GetFunction(&XPRSwritebasis, "XPRSwritebasis");
+    xpress_dynamic_library->GetFunction(&XPRSwritesol, "XPRSwritesol");
     xpress_dynamic_library->GetFunction(&XPRSreadprob, "XPRSreadprob");
     xpress_dynamic_library->GetFunction(&XPRSgetlasterror, "XPRSgetlasterror");
     xpress_dynamic_library->GetFunction(&XPRSsaveas, "XPRSsaveas");
