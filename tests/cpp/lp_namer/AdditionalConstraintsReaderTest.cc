@@ -1,9 +1,9 @@
 #include <fstream>
 #include <sstream>
 
-#include "AdditionalConstraintsReader.h"
+#include "antares-xpansion/lpnamer/input_reader/AdditionalConstraintsReader.h"
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
 class AdditionalConstraintsReaderTest : public ::testing::Test {

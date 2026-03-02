@@ -1,41 +1,37 @@
-// projet_benders.cpp : définit le point d'entrée pour l'application console.
-//
-
 #include <filesystem>
 
-#include "JsonWriter.h"
-#include "MergeMPS.h"
-#include "SimulationOptions.h"
-#include "Worker.h"
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
+#include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
+#include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
-#include "logger/User.h"
-#include "solver_utils.h"
+int main(int argc, char** argv)
+{
+    usage(argc);
+    SimulationOptions options(argv[1]);
+    options.print(std::cout);
 
-//@suggest: create and move to standardlp.cpp
-// Initialize static member
-size_t StandardLp::appendCNT = 0;
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-int main(int argc, char **argv) {
-  usage(argc);
-  SimulationOptions options(argv[1]);
-  options.print(std::cout);
+    logger->display_message("starting merge_mps",
+                            LogUtils::LOGLEVEL::INFO,
+                            MERGE_MPS_LOGGER_CONTEXT);
 
-  Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
+    std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
+                                                                       options.JSON_FILE),
+                                                                     false);
+    try
+    {
+        MergeMPS merge_mps(options.get_solver_options(), logger, writer);
+        merge_mps.launch();
+    }
+    catch (std::exception& ex)
+    {
+        std::string error = "Exception raised and program stopped : " + std::string(ex.what());
+        logger->display_message(error, LogUtils::LOGLEVEL::FATAL, MERGE_MPS_LOGGER_CONTEXT);
+        exit(1);
+    }
 
-  logger->display_message("starting merge_mps");
-
-  Writer writer =
-      build_json_writer(std::filesystem::path(options.JSON_FILE), false);
-  try {
-    MergeMPS merge_mps(options.get_base_options(), logger, writer);
-    merge_mps.launch();
-  } catch (std::exception &ex) {
-    std::string error =
-        "Exception raised and program stopped : " + std::string(ex.what());
-    logger->display_message(error);
-    exit(1);
-  }
-
-  return 0;
+    return 0;
 }

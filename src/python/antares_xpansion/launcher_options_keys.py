@@ -1,4 +1,3 @@
-
 class LauncherOptionsKeys:
     @staticmethod
     def allow_run_as_root_key():
@@ -39,3 +38,19 @@ class LauncherOptionsKeys:
     @staticmethod
     def step_key():
         return "step"
+
+    @staticmethod
+    def memory_key():
+        return "memory"
+
+    @staticmethod
+    def presolve_key():
+        return "run_presolve"
+
+    @staticmethod
+    def cache_problems_key():
+        return "cache_problems"
+
+    @staticmethod
+    def problem_format_key():
+        return "problem_format"

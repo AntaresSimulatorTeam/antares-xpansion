@@ -1,27 +1,38 @@
-#include "OuterLoop.h"
-namespace Outerloop {
+#include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 
-void OuterLoop::Run() {
-  OuterLoopCheckFeasibility();
+#include "antares-xpansion/helpers/Timer.h"
 
-  bool stop_update_master = false;
-  while (!stop_update_master) {
-    PrintLog();
-    init_data();
-    RunAttachedAlgo();
-    if (!isExceptionRaised()) {
-      OuterLoopBilevelChecks();
-      stop_update_master = UpdateMaster();
-    } else {
-      stop_update_master = true;
+namespace Outerloop
+{
+
+void OuterLoop::Run()
+{
+    Timer time_counter;
+    OuterLoopCheckFeasibility();
+
+    bool stop_update_master = false;
+    while (!stop_update_master)
+    {
+        PrintLog();
+        init_data();
+        RunAttachedAlgo();
+        if (!isExceptionRaised())
+        {
+            OuterLoopBilevelChecks();
+            stop_update_master = UpdateMaster();
+        }
+        else
+        {
+            stop_update_master = true;
+        }
     }
-  }
-  PrintLog();
+    runtime_ = time_counter.elapsed();
+    PrintLog();
 }
 
-OuterLoop::OuterLoop(CriterionComputation &criterion_computation)
-    : criterion_computation_(criterion_computation),
-      outer_loop_biLevel_(
-          criterion_computation.getOuterLoopInputData().OuterLoopData()) {}
+double OuterLoop::Runtime() const
+{
+    return runtime_;
+}
 
-}  // namespace Outerloop
+} // namespace Outerloop

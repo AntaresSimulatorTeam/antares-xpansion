@@ -44,7 +44,6 @@ CMakeFiles/*
 src/python/config.yaml
 src/python/antares_xpansion/__version__.py
 src/python/resources.py
-config-ui.yaml
 build_config.yaml
 
 # Tests
@@ -54,6 +53,7 @@ coverage-reports
 # Doc pdf file
 antaresxpansionuserguide.pdf
 include/google/protobuf/message.h
+xwiki_source
 
 # vscode
 .vscode
@@ -61,3 +61,4 @@ include/google/protobuf/message.h
 # Local env
 .venv
 vcpkg_installed
+CMakeUserPresets.json

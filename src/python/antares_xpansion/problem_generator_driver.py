@@ -21,6 +21,8 @@ class ProblemGeneratorData:
     weight_file_name_for_lp: str
     lp_namer_exe_path: Path
     active_years: List
+    memory: bool
+    problem_format: str
 
 
 class ProblemGeneratorDriver:
@@ -61,6 +63,8 @@ class ProblemGeneratorDriver:
         self.is_relaxed = False
         self._lp_path = None
         self.logger = step_logger(__name__, __class__.__name__)
+        self.memory = problem_generator_data.memory
+        self.problem_format = problem_generator_data.problem_format
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -72,6 +76,15 @@ class ProblemGeneratorDriver:
 
         self.create_lp_dir()
 
+        self.is_relaxed = is_relaxed
+        self._lp_step()
+
+    def launch_memory(self, study_path: Path, is_relaxed: bool):
+        """
+            problem generation step : getnames + lp_namer
+        """
+        self.logger.info("Problem Generation")
+        self.study_path = study_path
         self.is_relaxed = is_relaxed
         self._lp_step()
 
@@ -118,13 +131,20 @@ class ProblemGeneratorDriver:
 
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
-        ret = ["-a", str(self.output_path), "-f", is_relaxed]
+        if self.memory:
+            ret = ["--study", str(os.path.normpath(self.study_path)), "-f", is_relaxed]  # study path
+        else:
+            ret = ["-a", str(self.output_path), "-f", is_relaxed]
         if self.weight_file_name_for_lp:
             ret.extend(["-w", str(self.user_weights_file_path)])
 
         if self.additional_constraints != "":
             ret.extend(["-e",
                         self.additional_constraints])
+
+        # Add problem format option
+        if self.problem_format:
+            ret.extend(["--problem-format", self.problem_format])
 
         return ret
 

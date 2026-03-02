@@ -1,11 +1,11 @@
 #include <cstdio>
 
-#include "WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
 #include "gtest/gtest.h"
 using namespace ProblemGenerationLog;
 class WeightsFileReaderTest : public ::testing::Test {
  protected:
-  ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLogger> logger_;
 
   void SetUp() {
     logger_ = std::make_shared<ProblemGenerationLogger>(LogUtils::LOGLEVEL::NONE);

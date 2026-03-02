@@ -132,7 +132,7 @@ $$
 $$
 
 This problem can be linearized by introducing continuous variables \\(\vartheta_{l, s} \in \mathbb{R}\\) for \\(l \in [1, N]\\) and \\(s \in [1,52]\\), which gives rise to an equivalent reformulation of the investment problem, known as the Benders reformulation or _Benders master problem_:
-    
+
 $$
 \begin{aligned}
     \min\_{x \in \mathcal{X}}\ & c^{\top}x + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \vartheta_{l, s} \\\\

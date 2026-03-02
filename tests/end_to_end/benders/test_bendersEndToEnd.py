@@ -3,10 +3,9 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-import sys
-import yaml
 import numpy as np
-from zipfile import ZipFile, ZIP_DEFLATED
+
+from tests.end_to_end.utils_functions import get_conf, get_mpi_command
 
 # File RESULT_FILE_PATH
 # Json file containing
@@ -21,10 +20,6 @@ from zipfile import ZipFile, ZIP_DEFLATED
 #               value of the variable
 RESULT_FILE_PATH = Path('resultTest.json')
 
-# File CONFIG_FILE_PATH
-# yaml file containing executable name
-CONFIG_FILE_PATH = Path.cwd() / ".." / ".." / ".." / \
-    "src" / 'python' / 'config.yaml'
 
 
 def remove_outputs(study_path):
@@ -122,10 +117,10 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
 
-    if (solver == "MERGE_MPS"):
-        solver_executable = get_solver_exe(solver)
+    if solver == "MERGE_MPS":
+        solver_executable = get_conf(solver)
     else:
-        solver_executable = get_solver_exe("BENDERS")
+        solver_executable = get_conf("BENDERS")
     pre_command = []
 
     if mpi:
@@ -157,31 +152,4 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
             expected_results_dict[instance], tmp_study/"expansion/out.json")
 
 
-def get_solver_exe(solver: str):
-    solver_executable = ""
-    with open(CONFIG_FILE_PATH) as file:
-        content = yaml.full_load(file)
-        if content is not None:
-            solver_executable = content.get(solver)
-        else:
-            raise RuntimeError(
-                "Please check file config.yaml, content is empty")
 
-    return solver_executable
-
-
-def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
-    MPI_LAUNCHER = ""
-    MPI_N = ""
-    nproc_str = str(nproc)
-    if sys.platform.startswith("win32"):
-        MPI_LAUNCHER = "mpiexec"
-        MPI_N = "-n"
-        return [MPI_LAUNCHER, MPI_N, nproc_str]
-    elif sys.platform.startswith("linux"):
-        MPI_LAUNCHER = "mpirun"
-        MPI_N = "-np"
-        if (allow_run_as_root):
-            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc_str, "--oversubscribe"]
-        else:
-            return [MPI_LAUNCHER, MPI_N, nproc_str, "--oversubscribe"]

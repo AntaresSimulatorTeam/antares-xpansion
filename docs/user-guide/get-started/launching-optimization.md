@@ -1,24 +1,28 @@
 # Launch the optimization
 
-Once you have [set up your Antares study](prepare-a-simulation.md) with the `candidates.ini` and `settings.ini` files, you are ready to launch the Antares-Xpansion package to solve the investment problem.
+Once you have [set up your Antares study](prepare-a-simulation.md) with the `candidates.ini` and `settings.ini` files,
+you are ready to launch the Antares-Xpansion package to solve the investment problem.
 
-Antares-Xpansion includes an experimental graphical interface but it is optimally used as a command line prompt. 
+Antares-Xpansion includes an experimental graphical interface but it is optimally used as a command line prompt.
+
 ## Command line usage
 
 ### Quick start
 
-1.  Open a command prompt in your Antares-Xpansion install directory (by default it is named `antaresXpansion-x.y.z-win64`
-where `x.y.z` is the version number). 
+1. Open a command prompt in your Antares-Xpansion install directory (by default it is named
+   `antaresXpansion-x.y.z-win64`
+   where `x.y.z` is the version number).
 
-	You can launch a command line prompt by typing `cmd` in the path.
+   You can launch a command line prompt by typing `cmd` in the path.
 
-	![](../../assets/media/image21.png)
+   ![](../../assets/media/image21.png)
 
-2.  Run `antares-xpansion-launcher.exe` and choose the path to the
-    Antares study with the `-i` parameter:
-    ```
-    antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates
-    ```
+2. Run `antares-xpansion-launcher.exe` and choose the path to the
+   Antares study with the `-i` parameter:
+   ```
+   antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates
+   ```
+
 > The `-i` parameter can also be replaced by `--dataDir`.
 
 ### Command line parameters
@@ -27,22 +31,23 @@ where `x.y.z` is the version number).
 
 Show a help message and exit.
 
-#### `--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}`
+#### `--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}`
 
-Default value: `full`. 
+Default value: `full`.
 
 The execution of Antares-Xpansion consists of several steps that can be run separately. The
 `--step` parameter allows to select the steps to execute:
 
-| Step                 | Description                    |
-| :--------            | ------------------------------------------------------------------------ |
+| Step                 | Description                                                                                                                                         |
+|:---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `antares`            | Launch Antares-Simulator once to get the Antares problem.
-| `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run. |
-| `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md).|
-| `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm. |
-| `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`           |
-| `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                       |
-| `resume`        | resume benders step of a study in accordance with `--simulationName`, by default `last` study is resumed.                      |
+| `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run.                                        |
+| `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md). |
+| `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm.     |
+| `full`               | Launch all steps in order: `antares` > `problem_generation` > `benders` > `study_update`                                                            |
+| `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                                                                   |
+| `presolve`           | Launch a presolver on the decomposed problem (only available with Xpress solver). See [Calling the presolve](../optimization-principles/investment-problem.md#calling-the-presolve) |
+| `resume`             | resume benders step of a study in accordance with `--simulationName`, by default `last` study is resumed.                                           |
 
 #### `-i, --dataDir`
 
@@ -59,21 +64,35 @@ In a step by step workflow keep both _.zip_ file and _-Xpansion_ corresponding f
 
 #### `-m, --method {benders, mergeMPS, adequacy_criterion}`
 
-Default value: `benders`. 
+Default value: `benders`.
 
 Sets the optimization method used by Antares-Xpansion.
 
-| Option | Description                           |
-| ---------- | ----------------------------------------------------------------------- |
-| `benders` | Launch the classical Benders decomposition or the Benders by batch algorithm depending on `batch_size`.
-| `mergeMPS`   | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.|
-| `adequacy_criterion`   | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md). |
+| Option               | Description                                                                                                                                            |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `benders`            | Launch the classical Benders decomposition or the Benders by batch algorithm depending on `batch_size`.
+| `mergeMPS`           | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition. |
+| `adequacy_criterion` | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md).                                                 |
+
+#### `--problem-format {MPS, OPTIMIZED}`
+
+Default value: `OPTIMIZED`.
+
+Selects the storage format of the generated mathematical problems (master + subproblems):
+
+- `OPTIMIZED` (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and
+  I/O time.
+  The underlying format depends on the solver used.
+    - _XPRESS_ : `svf` format: compressed binary format.
+    - _COIN_ : unsupported. Falls back to `MPS`.
+- `MPS` : write the problems in MPS format, which is a standard format for mathematical programming problems.
 
 #### `-n, --np`
 
-Default value: 2. 
+Default value: 2.
 
-Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set to `benders`.
+Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set
+to `benders`.
 
 #### `--antares-n-cpu`
 
@@ -85,7 +104,16 @@ Sets the number of threads to use for Antares-Simulator in the initial `antares`
 
 Default value: `False`.
 
-If set to `True`, keeps `mps` files that encodes the problems solved by the optimizer. This option must be set to `True` if the user intends to launch the optimization several times on the same study (`--step benders`) without doing the other steps of Antares-Xpansion.
+If set to `True`, keeps `mps` files that encodes the problems solved by the optimizer. This option must be set to `True`
+if the user intends to launch the optimization several times on the same study (`--step benders`) without doing the
+other steps of Antares-Xpansion.
+
+#### `--presolve`
+
+Default value: `False`.
+
+If set to `True`, runs the `presolve` step before calling the `benders` step
+
 #### `-v, --version`
 
 Show the Antares-Xpansion version.
@@ -94,46 +122,53 @@ Show the Antares-Xpansion version.
 
 Show the Antares-Simulator version (used in the `antares` step).
 
-## Graphical user interface
+### `--cache_problems`
 
-Since v0.6.0, Antares-Xpansion comes with a GUI. The GUI can be launched by running `antares-xpansion-ui.exe`. For now, this GUI is in the experimental phase. 
-
-![](../../assets/media/ui.png)
+Enable "cache mode" for benders. Problems are not preloaded but loaded on demand. This is useful when hitting memory
+limitation during benders at the cost of some processing time.
 
 ## Output of Antares-Xpansion
 
 ### Results
+
 When the Antares-Xpansion algorithm terminates, i.e. when an optimal
 investment combination has been found, the
 package produces an archive `simulation-name.zip` located in the `output` folder of the Antares study.
 
-Once you unzip the archive, the files `lp/reportbenders.txt` and the `expansion/out.json` log information for each iteration:
+Once you unzip the archive, the files `lp/reportbenders.txt` and the `expansion/out.json` log information for each
+iteration:
 
 1. The investment combination that has been evaluated,
-2. The operational, investment and overall costs, 
+2. The operational, investment and overall costs,
 3. The current lower and upper bounds (no upper bound for the Benders by batch),
-4. The absolute and relative gap,  
+4. The absolute and relative gap,
 5. The resolution time for the subproblems and the master problem.
 
-There is also information on the iteration number which has led to the best solution. The file `out.json` also gives the parameters that are used by the optimization algorithm (some of them are defined by the user in `settings.ini`).   
+There is also information on the iteration number which has led to the best solution. The file `out.json` also gives the
+parameters that are used by the optimization algorithm (some of them are defined by the user in `settings.ini`).
 
 ### Updates of candidate links
 
-At the end of the run, Antares-Xpansion updates the Antares study by replacing the capacities of investment candidate links with their optimal value taking into account the
+At the end of the run, Antares-Xpansion updates the Antares study by replacing the capacities of investment candidate
+links with their optimal value taking into account the
 `link-profile`, the `already-installed-capacity` and the
 `already-installed-link-profile`, see **Figure 15**.
 
-The user can therefore immediately launch an Antares simulation using the results of the best iteration. 
+The user can therefore immediately launch an Antares simulation using the results of the best iteration.
 
-!!! Advice 
-	It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further analysis. Antares-Xpansion relaxes some constraints (see `link-profile` and `uc_type` parameters for example), therefore the total cost may be a bit different.
+!!! Advice
+It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further
+analysis. Antares-Xpansion relaxes some constraints (see `link-profile` and `uc_type` parameters for example), therefore
+the total cost may be a bit different.
 
 ![](../../assets/media/image23.png)
 
 **Figure** **15** – Update of the Antares study.
 
 ### Logs
-During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the `reportbenders.txt` text file.
+
+During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to
+the data written in the `reportbenders.txt` text file.
 
 ```
 ITERATION 6:
@@ -145,7 +180,7 @@ Time master solve pure = 27.202
 			             peak = 1300.00 invested MW -- possible interval [0.00; 2000.00] MW
 			               pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
 			         semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
-			transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
+				transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
 	Solving subproblems...
 	Subproblems solved in 0.165742 s
 		Solution =
@@ -165,7 +200,7 @@ Time master solve pure = 30.593
 			             peak = 1400.00 invested MW -- possible interval [0.00; 2000.00] MW
 			               pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
 			         semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
-			transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
+				transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
 	Solving subproblems...
 	Subproblems solved in 0.168702 s
 		Solution =
@@ -197,4 +232,3 @@ unique index and name per candidate.
 In case of a problem, put an issue on Github:
 
 <https://github.com/AntaresSimulatorTeam/antares-xpansion/>
-

@@ -8,11 +8,15 @@ scl enable devtoolset-10 bash
 source /opt/rh/rh-git227/enable
 module load mpi
 ```
-## Update git submodule
-```
-git submodule update --init antares-deps
-```
+
 ## Configure build with CMake
+
+Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.
+
+The first time vcpkg will download and compile all dependencies. This can take a long time. Especially openmpi.
+Unless some dependencies are updated, nothing will be done on the next build.
+VCPKG store sources in a cache folder, removing your build folder will only remove the compiled dependencies. Meaning later builds will be faster than the first one even if you remove your build folder
+
 === "Windows"
 
     ```
@@ -38,7 +42,6 @@ Here is a list of available CMake configure options:
 |`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager.|
 |`BUILD_ALL`|`OFF`|Enable build of ALL external librairies.|
 |`BUILD_TESTING`|`OFF`|Enable test build.|
-|`BUILD_UI`|`OFF`|Enable UI build.|
 |`ALLOW_RUN_AS_ROOT`|`OFF`|allow mpi to run as root for centOs docker.|
 
 Additionnal vcpkg options:
@@ -48,28 +51,28 @@ Additionnal vcpkg options:
 |`CMAKE_TOOLCHAIN_FILE`|Define `vcpkg` toolchain file. |
 |`VCPKG_TARGET_TRIPLET`|Define `<vcpkg-triplet>`. |
 
-Additionnal options for Xpress use:
 
-|Option | Default|Description |
-|:-------|-------|-------|
-|`XPRESS`|`OFF`| Enable Xpress support. |
-|`XPRESS_ROOT`|`C:/xpressmp` on Windows, `/opt/xpressmp` on Unix. | Define Xpress installation directory. |
+You may need to install lsb_release
+Example on Ubuntu:
+```
+sudo apt install lsb-release
+```
 
 ## Build
 === "Windows"
 
     ```
-    cmake --build _build --config Release -j8 --target install
+    cmake --build _build --config Release -j8
     ```
 === "Centos"
 
     ```
-    cmake3 --build _build --config Release -j8 --target install
+    cmake3 --build _build --config Release -j8
     ```
 === "Ubuntu"
 
     ```
-    cmake --build _build --config Release -j8 --target install
+    cmake --build _build --config Release -j8
     ```
 !!! Note
     Compilation can be done on several processor with the `-j` option.

@@ -60,6 +60,10 @@ class OptimisationKeys:
         return "MASTER_NAME"
 
     @staticmethod
+    def problems_format_key():
+        return "PROBLEMS_FORMAT"
+
+    @staticmethod
     def last_mps_master_name_key():
         return "LAST_MASTER_MPS"
 
@@ -107,3 +111,26 @@ class OptimisationKeys:
     def outer_loop_option_file_key():
         return "OUTER_LOOP_OPTION_FILE"
 
+    @staticmethod
+    def area_file_key():
+        return "AREA_FILE"
+
+    @staticmethod
+    def cache_problems_keys():
+        return "CACHE_PROBLEMS"
+
+    @staticmethod
+    def master_solution_tolerance_key():
+        return "MASTER_SOLUTION_TOLERANCE"
+
+    @staticmethod
+    def cut_coefficient_tolerance_key():
+        return "CUT_COEFFICIENT_TOLERANCE"
+
+    @staticmethod
+    def keep_full_key():
+        return "KEEP_FULL"
+
+    @staticmethod
+    def full_dir_key():
+        return "FULL_DIR"

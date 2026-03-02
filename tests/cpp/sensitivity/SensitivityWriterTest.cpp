@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include "SensitivityWriter.h"
+#include "antares-xpansion/sensitivity/SensitivityWriter.h"
 #include "gtest/gtest.h"
 
 const std::string peak_name = "peak";

@@ -3,11 +3,14 @@ name: SonarCloud
 on:
   push:
     branches:
-      - main
       - develop
+      - feature/*
+      - features/*
+      - fix/*
+      - issue-*
       - release/*
-      - dependabot/*
-  pull_request:
+      - doc/*
+      - dependabot/**
 
 jobs:
   sonarcloud:
@@ -16,19 +19,17 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ ubuntu-20.04 ]
+        os: [ ubuntu-22.04 ]
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_ubuntu-22.04_static_sirius.zip"
+      PYTHON_VERSION: "3.10"
 
     steps:
-
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - id: sonar-install
-        name: Install sonar-scanner and build-wrapper
-        uses: SonarSource/sonarcloud-github-c-cpp@v3
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
@@ -36,9 +37,11 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
+        id: python-setup
         with:
-          python-version: 3.8
+          cache: 'pip'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install gcovr
         run: sudo pip install gcovr==5.0 #5.1 generate issues with sonarcloud report parsing
@@ -46,27 +49,23 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip3 install -r requirements-tests.txt
+          python -m pip install -r requirements-tests.txt
+
+      - name: Set-up Xpress with pip for Ubuntu
+        shell: bash
+        run: |
+          python -m pip install "xpress==9.2.12"
+          XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpresslibs
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install g++-10 gcc-10 libgtest-dev
-          sudo apt-get install -y libopenmpi-dev
-          cd /usr/src/googletest/
-          sudo cmake .
-          sudo cmake --build . --target install
+          sudo apt-get install -y g++
 
-      - name: Update alternatives
-        #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
-        run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
-          sudo update-alternatives --set cc /usr/bin/gcc
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
-          sudo update-alternatives --set c++ /usr/bin/g++ 
-      
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -86,7 +85,9 @@ jobs:
         with:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
-          os-full-name: Ubuntu-20.04
+          os-full-name: Ubuntu-22.04
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Init submodule
         run: |
@@ -99,7 +100,7 @@ jobs:
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -111,22 +112,23 @@ jobs:
         run: |
           cmake -B _build -S . \
           -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-          -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
+          -DCMAKE_C_COMPILER=/usr/bin/gcc \
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-          -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+          -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
           -DCODE_COVERAGE=ON \
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
           -DCMAKE_INSTALL_PREFIX=_install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+          -DVCPKG_TARGET_TRIPLET=x64-linux-release \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -140,15 +142,16 @@ jobs:
       - name: Test and generate coverage
         continue-on-error: true
         run: |
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "unit"
+          ctest -C Release --output-on-failure
 
       - name: Compile coverage reports
         run: |
           cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
 
       - name: Run sonar-scanner
+        uses: SonarSource/sonarqube-scan-action@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}
-        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_HOST_URL }}"

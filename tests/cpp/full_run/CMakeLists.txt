@@ -1,5 +1,5 @@
 add_executable (full_run_tests
-		FullRunTest.cpp)
+        FullRunOptionsTest.cpp)
 
 target_link_libraries (full_run_tests
 		PRIVATE

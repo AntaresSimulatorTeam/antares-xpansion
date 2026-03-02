@@ -2,17 +2,24 @@
 // Created by marechaljas on 02/05/2022.
 //
 
-#include <filesystem>
-#include <boost/tokenizer.hpp>
-#include "ProblemNameParser.h"
+#include "antares-xpansion/lpnamer/model/ProblemNameParser.h"
 
-unsigned int MCYear(const std::filesystem::path &file_path) {
-  return MCYear(file_path.filename().string());
+#include <filesystem>
+
+#include <boost/tokenizer.hpp>
+
+std::pair<unsigned int, unsigned int> McYearAndWeek(const std::filesystem::path& file_path)
+{
+    return McYearAndWeek(file_path.filename().string());
 }
-unsigned int MCYear(const std::string &problem_file_name) {
-  boost::tokenizer<> tok(problem_file_name);
-  auto prefix = tok.begin();
-  std::string year = *(++prefix);
-  unsigned int mc_year = std::stoi(year);
-  return mc_year;
+
+std::pair<unsigned int, unsigned int> McYearAndWeek(const std::string& problem_file_name)
+{
+    boost::tokenizer<> tok(problem_file_name);
+    auto prefix = tok.begin();
+    std::string str = *(++prefix);
+    unsigned int mc_year = std::stoi(str);
+    str = *(++prefix);
+    unsigned int week = std::stoi(str);
+    return {mc_year, week};
 }

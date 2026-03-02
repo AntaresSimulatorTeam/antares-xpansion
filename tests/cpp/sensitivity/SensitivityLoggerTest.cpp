@@ -1,16 +1,18 @@
-#include "Commons.h"
-#include "SensitivityFileLogger.h"
-#include "SensitivityILogger.h"
-#include "SensitivityLogger.h"
-#include "SensitivityMasterLogger.h"
+#include "antares-xpansion/benders/logger/Commons.h"
+#include "antares-xpansion/sensitivity/SensitivityFileLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityMasterLogger.h"
 #include "gtest/gtest.h"
 
 class SensitivityFileLoggerTest : public ::testing::Test {
  public:
   std::string _fileName;
 
-  void SetUp() { _fileName = std::tmpnam(nullptr); }
-  void TearDown() { std::remove(_fileName.c_str()); }
+  void SetUp() override
+  { _fileName = std::tmpnam(nullptr); }
+  void TearDown() override
+  { std::remove(_fileName.c_str()); }
 };
 
 TEST_F(SensitivityFileLoggerTest, InvalidFileNotified) {

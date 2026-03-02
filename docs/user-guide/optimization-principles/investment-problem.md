@@ -113,3 +113,13 @@ decomposition - is an iterative method, which for each iteration:
   These derivatives are also called Bender cuts.
 
 A mathematical formulation of the optimization problem solved by Antares-Xpansion as well as details on the Benders decomposition method ar given in [Mathematical formulation of the investment problem](../optimization-principles/problem-formalization.md).
+
+### Calling the presolve
+
+When used, the solver's pre-solve step will be called for each of the sub-problems in the decomposed investment problem. This generates a set of simplified sub-problems that can be later utilized during the `benders` step. Currently, it replaces the previous complete sub-problems files with the new simplified ones.
+
+A pre-solve step aims to simplify the original optimization problem by deleting and/or modifying variables and constraints. This reduction creates a new, simplified problem that is equivalent to the original one, allowing the solver to solve it faster while maintaining the integrity of the original solution.
+
+The `presolve` step can be executed as a standalone step or automatically before the `benders` step when the `--presolve` flag is set.
+
+Currently, this functionality is only compatible with the Xpress solver. Using any other solver will result in an error.

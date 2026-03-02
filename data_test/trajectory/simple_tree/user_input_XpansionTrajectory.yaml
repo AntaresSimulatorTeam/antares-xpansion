@@ -1,0 +1,85 @@
+# Global trajectory data
+global:
+  formulation: relaxed # If set to 'integer', capacity is built in steps of unit-size
+  discount_rate: 0.064
+  first_investment_year: 2030
+  end_of_horizon: 2060
+  scaling: 1 # e.g. if 1e6, objective function will be expressed in M€
+  studies:
+    "2030": ./node_2030_study
+    "2040": ./node_2040_study
+    "2050_A": ./node_2050_A_study
+    "2050_B": ./node_2050_B_study
+
+# Represents the tree's structure
+tree:
+  node: "2030"
+  children:
+    - node: "2040"
+      probability: 1.0
+      children:
+        - node: "2050_A"
+          probability: 0.8
+        - node: "2050_B"
+          probability: 0.2
+
+constraints:
+  - name: add_max_1_GW_semibase
+    nodes: ["2030", "2040", "2050_A"]
+    candidates: [semibase]
+    type: max_investment_per_node_per_candidate
+    value: 1000
+  - name: add_max_1.5GW_peak
+    nodes: ["2040", "2050_A", "2050_B"]
+    candidates: [peak]
+    type: max_investment_per_node_per_candidate
+    value: 1500
+  - name: add_cum_2GW
+    nodes: ["2040", "2050_A"]
+    candidates: [peak, semibase]
+    type: max_cumulative_investment_per_node
+    value: 2000
+  - name: forbid_retirement
+    nodes: all
+    candidates: all
+    type: max_retirement_per_node_per_candidate
+    value: 0
+
+# Nodes' individual data
+# Some candidates are not present throughout the horizon to test
+# that candidates appearing / disappearing works correctly
+nodes:
+  "2030":
+    investment_date: 2030
+    candidate_to_type:
+      semibase: semibase_type # Only semibase this node
+  "2040":
+    investment_date: 2040
+    candidate_to_type:
+      semibase: semibase_type
+      peak: peak_type
+  "2050_A":
+    investment_date: 2050
+    candidate_to_type:
+      semibase: semibase_type
+      peak: peak_type
+  "2050_B":
+    investment_date: 2050
+    candidate_to_type:
+      peak: peak_type # Only peak this node, semibase is decommissioned
+
+# Candidates costs structures
+candidates_types:
+  semibase_type:
+    investment: 500000
+    operation_maintenance: 10000
+    retirement: 0
+  peak_type:
+    investment: 350000
+    operation_maintenance: 10000
+    retirement: 0
+
+# Initial conditions
+initial_capacities:
+  default: 0
+  semibase: 250

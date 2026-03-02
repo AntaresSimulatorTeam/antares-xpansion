@@ -11,7 +11,7 @@ zipfile_ZipFile = "antares_xpansion.problem_generator_driver.zipfile.ZipFile"
 
 
 def get_zipped_output(tmp_path) -> Path:
-    zipped_output = tmp_path.parent / (tmp_path.name+".zip")
+    zipped_output = tmp_path.parent / (tmp_path.name + ".zip")
     shutil.make_archive(tmp_path, "zip", tmp_path)
     return zipped_output
 
@@ -28,7 +28,10 @@ class TestProblemGeneratorDriver:
                                                         weight_file_name_for_lp="",
                                                         lp_namer_exe_path=Path(
                                                             ""),
-                                                        active_years=[])
+                                                        active_years=[],
+                                                        memory=False,
+                                                        problem_format="OPTIMIZED"
+                                                        )
 
     def test_problem_generator_data(self):
 
@@ -68,7 +71,10 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[])
+                                             active_years=[],
+                                             memory=False,
+                                             problem_format="OPTIMIZED"
+                                             )
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
@@ -95,7 +101,9 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[])
+                                             active_years=[],
+                                             memory=False,
+                                             problem_format="OPTIMIZED")
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
@@ -162,7 +170,7 @@ class TestProblemGeneratorDriver:
 
         what_time = hour + minute + second
         file_name = prefix + "-" + year + "-" + week + "-" + \
-            today_date + "-" + what_time + "." + extension
+                    today_date + "-" + what_time + "." + extension
         return file_name
 
     def _create_empty_area_file(self, tmp_path):
@@ -175,7 +183,7 @@ class TestProblemGeneratorDriver:
 
         TestProblemGeneratorDriver.number += 1
         fname = prefix + \
-            str(TestProblemGeneratorDriver.number) + "." + extension
+                str(TestProblemGeneratorDriver.number) + "." + extension
         file = tmp_path / fname
         file.write_text("")
 

@@ -8,14 +8,14 @@
 #include <fstream>
 #include <utility>
 
-#include "ChronicleMapProvider.h"
-#include "ChronicleMapReader.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapProvider.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapReader.h"
 #include "LoggerBuilder.h"
 
 class ChronicleProviderTest : public ::testing::Test {
  public:
   std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_ =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_ =
       emptyLogger();
 
  protected:

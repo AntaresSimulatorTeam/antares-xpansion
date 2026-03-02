@@ -1,12 +1,12 @@
 
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 using namespace ProblemGenerationLog;
 class ProblemGenerationLoggerTest : public ::testing::Test {
  public:
   std::filesystem::path temp_file_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 
 };
 

@@ -15,7 +15,7 @@ add_executable (sensitivity
 )
 
 target_link_libraries (sensitivity
-		sensitivity_core
+		antaresXpansion::sensitivity_core
 		Boost::boost Boost::program_options)
 
 install(TARGETS sensitivity DESTINATION bin)

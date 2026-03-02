@@ -1,0 +1,22 @@
+{
+  "default-registry": {
+    "kind": "git",
+    "baseline": "ce613c41372b23b1f51333815feb3edd87ef8a8b",
+    "repository": "https://github.com/microsoft/vcpkg"
+  },
+  "registries": [
+    {
+      "kind": "git",
+      "repository": "https://github.com/AntaresSimulatorTeam/antares-vcpkg-registry",
+      "baseline": "9b4a8e17c594af44915fdd75b9affb5ff3be4cc8",
+      "packages": [
+        "coin-or-cbc",
+        "coin-or-cgl",
+        "coin-or-clp",
+        "coin-or-osi",
+        "coinutils",
+        "sirius-solver"
+      ]
+    }
+  ]
+}

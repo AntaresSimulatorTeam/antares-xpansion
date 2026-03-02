@@ -2,6 +2,8 @@
 
 ## Status: Accepted [06/2024]
 
+Superseded by [[011] Don't build second degree dependencies](./%5B011%5DDon%27t%20build%20or%20port%20second%20degree%20dependency.md)
+
 
 ## Context
 

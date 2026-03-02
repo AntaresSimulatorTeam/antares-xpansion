@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "LoggerBuilder.h"
-#include "LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 
 const auto LP_FILE_EXTRACTOR_TEST_DIR =
     std::filesystem::path("data_test") / "tests_lpnamer" / "LpFilesExtractor";
@@ -16,7 +16,7 @@ const std::filesystem::path ONE_AREA_0_INTERCO =
 
 class LpFilesExtractorTest : public ::testing::Test {
  protected:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_ =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_ =
       emptyLogger();
 };
 

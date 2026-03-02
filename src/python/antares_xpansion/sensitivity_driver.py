@@ -2,12 +2,9 @@
     Class to control the sensitivity analysis
 """
 
-import glob
 import os
-import shutil
 import subprocess
 import sys
-import zipfile
 from pathlib import Path
 
 from antares_xpansion.logger import step_logger
@@ -52,7 +49,7 @@ class SensitivityDriver:
         old_cwd = os.getcwd()
         os.chdir(xpansion_simulation_output)
         self.logger.info(f"Current directory is now {os.getcwd()}")
-
+        self.logger.info(f"Launching sensitivity analysis : {self._get_sensitivity_cmd()}")
         returned_l = subprocess.run(
             self._get_sensitivity_cmd(),
             shell=False,

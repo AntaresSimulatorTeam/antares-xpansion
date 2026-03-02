@@ -31,37 +31,46 @@ theme:
 
 nav:
   - Home: index.md
-  - 'Antares ecosystem': 'https://antares-doc.readthedocs.io'
-  - 'User guide':
-    - 'How does Antares-Xpansion work ?':
-        - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
-        - 'Mathematical aspects of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
-        - 'Performance history': 'user-guide/performance-history/perf-graphs.ipynb'
-    - 'Getting started':
-      - 'Installation': 'user-guide/get-started/installation.md'
-      - 'Set up an Antares-Xpansion study':
-        - 'Prepare the Antares study': 'user-guide/get-started/prepare-a-simulation.md'
-        - 'Define the candidates': 'user-guide/get-started/candidate-definition.md'
-        - 'Settings of the algorithm': 'user-guide/get-started/settings-definition.md'
-      - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
-      - 'Adequacy criterion': 'user-guide/get-started/adequacy-criterion.md'
-      - 'Sensitivity analysis': 'user-guide/get-started/sensitivity-analysis.md'
-  - 'Developer guide': 
-    - 'Install from sources':
-      - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'
-      - 'Development requirements': 'developer-guide/install_from_sources/1-Development-requirements.md'
-      - 'Dependencies install': 'developer-guide/install_from_sources/2-Dependencies-install.md'
-      - 'Build': 'developer-guide/install_from_sources/3-Build.md'
-      - 'Tests': 'developer-guide/install_from_sources/4-Tests.md'
-      - 'UI creation': 'developer-guide/install_from_sources/5-ui-creation.md'
-      - 'Installer creation': 'developer-guide/install_from_sources/6-Installer-creation.md'
-    - 'Antares-Xpansion simulation procedure' : 
-      - 'Overview' : 'developer-guide/xpansion_steps/0-overview.md'
-      - 'Antares optimization problem retrieval' : 'developer-guide/xpansion_steps/1-antares-solver-problem.md'
-      - 'Investment problem generation' : 'developer-guide/xpansion_steps/2-problem-modification.md'
-  - 'Changelog': 
-    - 'Changelog': 'changelog/CHANGELOG.md'
-    - 'File format changes': 'changelog/format_changes.md'
+  - "Antares ecosystem": "https://antares-doc.readthedocs.io"
+  - "User guide":
+      - "How does Antares-Xpansion work ?":
+          - "The optimal investment problem in Antares-Xpansion": "user-guide/optimization-principles/investment-problem.md"
+          - "Mathematical aspects of the investment problem": "user-guide/optimization-principles/problem-formalization.md"
+          - "Performance history": "user-guide/performance-history/perf-graphs.ipynb"
+      - "Getting started":
+          - "Installation": "user-guide/get-started/installation.md"
+          - "Set up an Antares-Xpansion study":
+              - "Prepare the Antares study": "user-guide/get-started/prepare-a-simulation.md"
+              - "Define the candidates": "user-guide/get-started/candidate-definition.md"
+              - "Settings of the algorithm": "user-guide/get-started/settings-definition.md"
+              - "Settings of benders executable": "user-guide/get-started/options-definition.md"
+          - "Launch the optimization": "user-guide/get-started/launching-optimization.md"
+          - "Adequacy criterion": "user-guide/get-started/adequacy-criterion.md"
+          - "Sensitivity analysis": "user-guide/get-started/sensitivity-analysis.md"
+      - "Trajectory investment":
+          - "Trajectory investment problem": "user-guide/trajectory-investment/trajectory-problem.md"
+          - "Full trajectory workflow": "user-guide/trajectory-investment/trajectory-workflow.md"
+          - "Launching the workflow": "user-guide/trajectory-investment/orchestration.md"
+          - "User input file parsing": "user-guide/trajectory-investment/user-input.md"
+          - "Multiple problem generation": "user-guide/trajectory-investment/multiple-problem-generation.md"
+          - "Merged weights file generation ": "user-guide/trajectory-investment/merge-weights.md"
+          - "Merging annual problems": "user-guide/trajectory-investment/merge-master.md"
+  - "Developer guide":
+      - "Install from sources":
+          - "Introduction": "developer-guide/install_from_sources/0-INSTALL.md"
+          - "Development requirements": "developer-guide/install_from_sources/1-Development-requirements.md"
+          - "Dependencies install": "developer-guide/install_from_sources/2-Dependencies-install.md"
+          - "Build": "developer-guide/install_from_sources/3-Build.md"
+          - "Tests": "developer-guide/install_from_sources/4-Tests.md"
+          - "Installer creation": "developer-guide/install_from_sources/5-Installer-creation.md"
+          - "Xpress": "developer-guide/install_from_sources/6-Xpress.md"
+      - "Antares-Xpansion simulation procedure":
+          - "Overview": "developer-guide/xpansion_steps/0-overview.md"
+          - "Antares optimization problem retrieval": "developer-guide/xpansion_steps/1-antares-solver-problem.md"
+          - "Investment problem generation": "developer-guide/xpansion_steps/2-problem-modification.md"
+  - "Changelog":
+      - "Changelog": "changelog/CHANGELOG.md"
+      - "File format changes": "changelog/format_changes.md"
 
 plugins:
   - search
@@ -70,7 +79,7 @@ plugins:
       show_input: False
       theme: dark
   - bibtex:
-      bib_file: 'docs/user-guide/benders.bib'
+      bib_file: "docs/user-guide/benders.bib"
 
 extra_css:
   - stylesheets/extra.css
@@ -79,6 +88,7 @@ extra_javascript:
   - https://code.jquery.com/jquery-3.6.0.min.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
 
 markdown_extensions:
   - attr_list
@@ -93,5 +103,7 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed
   - footnotes
+  - pymdownx.arithmatex:
+      generic: true
 
 copyright: Copyright &copy; 2007 - 2024 RTE

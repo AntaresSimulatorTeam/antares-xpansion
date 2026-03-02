@@ -1,16 +1,16 @@
 #ifndef __TESTS_LOGGER_UTILS_h__
 #define __TESTS_LOGGER_UTILS_h__
 
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger();
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> emptyLogger();
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 BuildLoggerWithParams(const LogUtils::LOGLEVEL& logLevel,
                       const std::filesystem::path& FilePath);
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 BuildLoggerWithParams(const LogUtils::LOGLEVEL& logLevel,
                       const std::filesystem::path& FilePath,
                       std::ostream& stream);
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 BuildLoggerWithParams(const LogUtils::LOGLEVEL& logLevel, std::ostream& stream);
 #endif  //__TESTS_LOGGER_UTILS_h__

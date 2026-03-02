@@ -1,6 +1,6 @@
 #include "LoggerBuilder.h"
 
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger() {
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> emptyLogger() {
   return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
       LogUtils::LOGLEVEL::NONE);
 }
@@ -14,7 +14,7 @@ ProblemGenerationLog::ProblemGenerationILoggerSharedPointer StreamLogger(
   return std::make_shared<ProblemGenerationLog::ProblemGenerationOstreamLogger>(
       stream);
 }
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
                       const std::filesystem::path& FilePath,
                       std::ostream& stream) {
@@ -25,7 +25,7 @@ BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
 
   return logger;
 }
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
                       const std::filesystem::path& FilePath) {
   auto fileLogger = FileLogger(FilePath);
@@ -35,7 +35,7 @@ BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
   return logger;
 }
 
-ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
                       std::ostream& stream) {
   auto StdOutLogger = StreamLogger(stream);

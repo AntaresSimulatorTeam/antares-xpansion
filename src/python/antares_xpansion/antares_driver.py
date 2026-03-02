@@ -7,9 +7,9 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
+from antares_xpansion.__version__ import __antares_simulator_version__
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.__version__ import __antares_simulator_version__
 from packaging import version
 
 
@@ -23,18 +23,18 @@ class AntaresDriver:
         self.antares_exe_path = antares_exe_path
         # antares study dir is set just before launch
         self.data_dir = ""
-
+        self.use_xpress = False
         self.output = 'output'
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1  # default
         self.zip_option = "-z"
         self.logger = step_logger(__name__, __class__.__name__)
-        #TODO update antares version which comes with named problems
+        # TODO update antares version which comes with named problems
         self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.7"
 
-
-    def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
+    def launch(self, antares_study_path, antares_n_cpu: int, use_xpress: bool = False) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)
+        self.use_xpress = use_xpress
         return self._launch(antares_study_path)
 
     def _set_antares_n_cpu(self, antares_n_cpu: int):
@@ -64,6 +64,7 @@ class AntaresDriver:
         self.logger.info("Launching antares")
 
         start_time = datetime.now()
+        self.logger.info(self._get_antares_cmd())
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
@@ -75,6 +76,10 @@ class AntaresDriver:
         if returned_l.returncode == 1:
             raise AntaresDriver.AntaresExecutionError(
                 f"Error: exited antares with status {returned_l.returncode}")
+        elif returned_l.returncode == -9:
+            raise AntaresDriver.AntaresExecutionError(
+                f"Error: exited antares with status {returned_l.returncode}"
+                f" (probably due to memory limit)")
         elif returned_l.returncode != 0 and returned_l.returncode != 1:
             self.logger.info(
                 f"Warning: exited antares with status {returned_l.returncode}")
@@ -100,10 +105,16 @@ class AntaresDriver:
             self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
-        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
+        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu),
+               self.zip_option]
+        if self.use_xpress:
+            cmd.extend(["--linear-solver=xpress"])
+        else:
+            cmd.extend(["--linear-solver=sirius"])
         simulator_version = version.parse(__antares_simulator_version__)
         simulator_version_with_named_mps = version.parse(self.FIRST_VERSION_WITH_NAMED_PROBLEMS)
-        if (simulator_version.major > simulator_version_with_named_mps.major) or (simulator_version.major >= simulator_version_with_named_mps.major and simulator_version.minor >= simulator_version_with_named_mps.minor):
+        if (simulator_version.major > simulator_version_with_named_mps.major) or (
+                simulator_version.major >= simulator_version_with_named_mps.major and simulator_version.minor >= simulator_version_with_named_mps.minor):
             cmd.append("--named-mps-problems")
 
         return cmd

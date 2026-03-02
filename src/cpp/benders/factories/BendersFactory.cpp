@@ -1,225 +1,173 @@
+#include "antares-xpansion/benders/factories/BendersFactory.h"
 
-#include "BendersFactory.h"
+#include <antares-xpansion/benders/benders_by_batch/BendersByBatch.h>
+#include <antares-xpansion/benders/benders_core/BendersBase.h>
+#include <antares-xpansion/benders/benders_core/BendersMethod.h>
+#include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
+#include <antares-xpansion/benders/benders_core/StartUp.h>
+#include <antares-xpansion/benders/benders_core/common.h>
+#include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
+#include <antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h>
+#include <antares-xpansion/helpers/AreaParser.h>
+#include <variant>
 
-#include <filesystem>
-
-#include "BendersByBatch.h"
-#include "BendersMpiOuterLoop.h"
-#include "BendersSequential.h"
-#include "ILogger.h"
-#include "LogUtils.h"
-#include "LoggerFactories.h"
-#include "MasterUpdate.h"
-#include "OuterLoopBenders.h"
-#include "OutputWriter.h"
-#include "StartUp.h"
-#include "Timer.h"
-#include "Worker.h"
-#include "WriterFactories.h"
-
-BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
-                                  bool external_loop) {
-  if (batch_size == 0 || batch_size == coupling_map_size - 1) {
-    if (external_loop) {
-      return BENDERSMETHOD::BENDERS_EXTERNAL_LOOP;
-    } else {
-      return BENDERSMETHOD::BENDERS;
-    }
-  } else {
-    if (external_loop) {
-      return BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP;
-    } else {
-      return BENDERSMETHOD::BENDERS_BY_BATCH;
-    }
-  }
+BendersFactory::BendersFactory(const SimulationOptions& options,
+                               boost::mpi::communicator* world,
+                               Dependencies dependencies):
+    options_{options},
+    world_{world},
+    rank{world->rank()},
+    dependencies_{dependencies}
+{
 }
 
-pBendersBase BendersMainFactory::PrepareForExecution(
-    BendersLoggerBase& benders_loggers, const SimulationOptions& options,
-    bool external_loop,
-    Outerloop::CriterionComputation* criterion_computation) const {
-  pBendersBase benders;
-  Logger logger;
-  std::shared_ptr<MathLoggerDriver> math_log_driver;
+BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
+{
+    if (batch_size == 0 || batch_size == coupling_map_size - 1)
+    {
+        if (outer_loop)
+        {
+            return BENDERSMETHOD::BENDERS_OUTERLOOP;
+        }
+        return BENDERSMETHOD::BENDERS;
+    }
+    if (outer_loop)
+    {
+        return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
+    }
+    return BENDERSMETHOD::BENDERS_BY_BATCH;
+}
 
+std::variant<Benders::Criterion::CriterionInputData,
+             Benders::Criterion::OuterLoopCriterionInputData>
+BendersFactory::ProcessCriterionInput()
+{
+    const auto fpath = std::filesystem::path(options_.INPUTROOT) / options_.OUTER_LOOP_OPTION_FILE;
+    // if adequacy_criterion.yml is provided read it
+    if ((method_ == BENDERSMETHOD::BENDERS_OUTERLOOP
+         || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP)
+        && std::filesystem::exists(fpath))
+    {
+        return Benders::Criterion::CriterionInputFromYaml().Read(fpath);
+    }
+    // else compute criterion for all areas!
+    else
+    {
+        return BuildPatternsUsingAreaFile();
+    }
+}
 
-  BendersBaseOptions benders_options(options.get_benders_options());
-  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
+Benders::Criterion::CriterionInputData BendersFactory::BuildPatternsUsingAreaFile()
+{
+    std::set<std::string> unique_areas = ReadAreaFile();
+    Benders::Criterion::CriterionInputData ret;
+    ret.SetCriterionCountThreshold(1);
 
-  auto log_reports_name =
-      std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
+    for (const auto& area: unique_areas)
+    {
+        Benders::Criterion::CriterionSingleInputData
+          singleInputData(Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
+        ret.AddSingleData(singleInputData);
+    }
 
-  auto math_logs_file =
-      std::filesystem::path(options.OUTPUTROOT) / "benders_solver.log";
+    return ret;
+}
 
-  Writer writer;
-  const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
-  const auto method = DeduceBendersMethod(coupling_map.size(),
-                                          options.BATCH_SIZE, external_loop);
+std::set<std::string> BendersFactory::ReadAreaFile()
+{
+    std::set<std::string> unique_areas;
+    const auto area_file = std::filesystem::path(options_.INPUTROOT) / options_.AREA_FILE;
+    const auto area_file_data = AreaParser::ReadAreaFile(area_file);
+    if (const auto& msg = area_file_data.error_message; !msg.empty())
+    {
+        dependencies_.benders_loggers.display_message(msg, LogUtils::LOGLEVEL::WARNING, context_);
+        std::ostringstream ms;
+        ms << " Consequently, " << LOLD_FILE
+           << " and other criterion based files will not be produced!";
 
-  if (pworld_->rank() == 0) {
-    auto benders_log_console = benders_options.LOG_LEVEL > 0;
-    auto logger_factory =
-        FileAndStdoutLoggerFactory(log_reports_name, benders_log_console);
-    auto math_log_factory =
-        MathLoggerFactory(method, benders_log_console, math_logs_file);
+        dependencies_.benders_loggers.display_message(ms.str(),
+                                                      LogUtils::LOGLEVEL::WARNING,
+                                                      context_);
+        return {};
+    }
+    return {area_file_data.areas.begin(), area_file_data.areas.end()};
+}
 
-    logger = logger_factory.get_logger();
-    math_log_driver = math_log_factory.get_logger();
-    writer = build_json_writer(options.JSON_FILE, options.RESUME);
-    if (Benders::StartUp startup;
-        startup.StudyAlreadyAchievedCriterion(options, writer, logger))
-      return nullptr;
-  } else {
-    logger = build_void_logger();
-    writer = build_void_writer();
-    math_log_driver = MathLoggerFactory::get_void_logger();
-  }
-
-  benders_loggers.AddLogger(logger);
-  benders_loggers.AddLogger(math_log_driver);
-  switch (method) {
+auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
+                                      const CouplingMap& coupling_map) -> BendersEnvironment
+{
+    std::unique_ptr<BendersBase> benders;
+    switch (method_)
+    {
     case BENDERSMETHOD::BENDERS:
-      benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                             *penv_, *pworld_, math_log_driver);
-      break;
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
-      benders = std::make_shared<Outerloop::BendersMpiOuterLoop>(
-          benders_options, logger, writer, *penv_, *pworld_, math_log_driver,
-          *criterion_computation);
-      break;
+        benders = std::make_unique<BendersMpi>(benders_options,
+                                               dependencies_.logger,
+                                               dependencies_.writer,
+                                               *world_,
+                                               dependencies_.math_log_driver);
+        break;
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
+        benders = std::make_unique<Outerloop::BendersMpiOuterLoop>(benders_options,
+                                                                   dependencies_.logger,
+                                                                   dependencies_.writer,
+                                                                   *world_,
+                                                                   dependencies_.math_log_driver);
+        break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
-    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
-      benders = std::make_shared<BendersByBatch>(
-          benders_options, logger, writer, *penv_, *pworld_, math_log_driver);
-      break;
-  }
-
-  benders->set_input_map(coupling_map);
-  std::ostringstream oss_l = start_message(options, benders->BendersName());
-  oss_l << std::endl;
-  benders_loggers.display_message(oss_l.str());
-
-  if (benders_options.LOG_LEVEL > 1) {
-    auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
-                      (std::string("solver_log_proc_") +
-                       std::to_string(pworld_->rank()) + ".txt");
-
-    benders->set_solver_log_file(solver_log);
-  }
-  writer->write_log_level(options.LOG_LEVEL);
-  writer->write_master_name(options.MASTER_NAME);
-  writer->write_solver_name(options.SOLVER_NAME);
-  return benders;
-}
-
-int BendersMainFactory::RunBenders() const {
-  // Read options, needed to have options.OUTPUTROOT
-  BendersLoggerBase benders_loggers;
-
-  try {
-    SimulationOptions options(options_file_);
-    auto benders = PrepareForExecution(benders_loggers, options, false);
-    if (benders) {
-      benders->launch();
-
-      std::stringstream str;
-      str << "Optimization results available in : " << options.JSON_FILE
-          << std::endl;
-      benders_loggers.display_message(str.str());
-
-      str.str("");
-      str << "Benders ran in " << benders->execution_time() << " s"
-          << std::endl;
-      benders_loggers.display_message(str.str());
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
+        benders = std::make_unique<BendersByBatch>(benders_options,
+                                                   dependencies_.logger,
+                                                   dependencies_.writer,
+                                                   *world_,
+                                                   dependencies_.math_log_driver);
+        break;
     }
 
-  } catch (std::exception& e) {
-    std::ostringstream msg;
-    msg << "error: " << e.what() << std::endl;
-    benders_loggers.display_message(msg.str());
-    mpi::environment::abort(1);
-    return 1;
-  } catch (...) {
-    std::ostringstream msg;
-    msg << "Exception of unknown type!" << std::endl;
-    benders_loggers.display_message(msg.str());
-    mpi::environment::abort(1);
-    return 1;
-  }
-  return 0;
-}
-int BendersMainFactory::RunExternalLoop() const {
-  BendersLoggerBase benders_loggers;
-
-  try {
-    SimulationOptions options(options_file_);
-    auto outer_loop_input_data = Outerloop::OuterLoopInputFromYaml().Read(
-        std::filesystem::path(options.INPUTROOT) /
-        options.OUTER_LOOP_OPTION_FILE);
-    Outerloop::CriterionComputation criterion_computation(
-        outer_loop_input_data);
-    auto benders = PrepareForExecution(benders_loggers, options, true,
-                                       &criterion_computation);
-
-    double tau = 0.5;
-    double epsilon_lambda = 0.1;
-
-    std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
-        std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau, outer_loop_input_data.StoppingThreshold());
-    std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
-        std::make_shared<Outerloop::CutsManagerRunTime>();
-
-    Outerloop::OuterLoopBenders ext_loop(criterion_computation, master_updater,
-                                         cuts_manager, benders, *pworld_);
-    ext_loop.Run();
-
-    } catch (std::exception& e) {
-    std::ostringstream msg;
-    msg << "error: " << e.what() << std::endl;
-    benders_loggers.display_message(msg.str());
-    mpi::environment::abort(1);
-    return 1;
-  } catch (...) {
-    std::ostringstream msg;
-    msg << "Exception of unknown type!" << std::endl;
-    benders_loggers.display_message(msg.str());
-    mpi::environment::abort(1);
-    return 1;
-  }
-  return 0;
+    benders->set_input_map(coupling_map);
+    auto criterion_input_holder = ProcessCriterionInput();
+    benders->setCriterionComputationInputs(
+      std::visit([](auto&& the_variant)
+                 { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
+                 criterion_input_holder));
+    return BendersEnvironment{std::move(benders), criterion_input_holder, method_};
 }
 
-BendersMainFactory::BendersMainFactory(int argc, char** argv,
-                                       mpi::environment& env,
-                                       mpi::communicator& world,
-                                       const SOLVER& solver)
-    : argv_(argv), penv_(&env), pworld_(&world), solver_(solver) {
-  // First check usage (options are given)
-  if (world.rank() == 0) {
-    usage(argc);
-  }
+void BendersFactory::ConfigureSolverLog(BendersBase* benders)
+{
+    if (options_.LOG_LEVEL > 1)
+    {
+        auto solver_log = std::filesystem::path(options_.OUTPUTROOT)
+                          / (std::string("solver_log_proc_") + std::to_string(world_->rank())
+                             + ".txt");
 
-  options_file_ = std::filesystem::path(argv_[1]);
+        benders->set_solver_log_file(solver_log);
+    }
 }
 
-BendersMainFactory::BendersMainFactory(
-    int argc, char** argv, const std::filesystem::path& options_file,
-    mpi::environment& env, mpi::communicator& world, const SOLVER& solver)
-    : argv_(argv), options_file_(options_file),
-      penv_(&env),
-      pworld_(&world),
-      solver_(solver) {
-  // First check usage (options are given)
-  if (world.rank() == 0) {
-    usage(argc);
-  }
-}
-int BendersMainFactory::Run() const {
-  if (solver_ == SOLVER::BENDERS) {
-    return RunBenders();
-  } else {
-    return RunExternalLoop();
-  }
+auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>
+{
+    BendersBaseOptions benders_options(options_.get_benders_options());
+    benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = outer_loop;
+
+    const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
+                                                               dependencies_.logger.get(),
+                                                               "Benders");
+
+    method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
+    context_ = bendersmethod_to_string(method_);
+
+    if (rank == 0)
+    {
+        if (Benders::StartUp startup;
+            startup.StudyAlreadyAchievedCriterion(options_,
+                                                  dependencies_.writer.get(),
+                                                  dependencies_.logger.get()))
+        {
+            return {};
+        }
+    }
+
+    auto environment = ConfigureBenders(benders_options, coupling_map);
+    ConfigureSolverLog(environment.benders.get());
+    return std::optional<BendersEnvironment>(std::move(environment));
 }

@@ -5,7 +5,7 @@
 #include <vector>
 #include <filesystem>
 
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /* Contains all the data to check the results of the tests on an instance*/
 class InstanceData {
@@ -21,9 +21,12 @@ class InstanceData {
   std::vector<int> _mind;
   std::vector<int> _mstart;
 
-  std::vector<double> _matval_delete;
-  std::vector<int> _mind_delete;
-  std::vector<int> _mstart_delete;
+  std::vector<double> _matval_delete_row;
+  std::vector<double> _matval_delete_col;
+  std::vector<int> _mind_delete_row;
+  std::vector<int> _mind_delete_col;
+  std::vector<int> _mstart_delete_row;
+  std::vector<int> _mstart_delete_col;
 
   std::vector<double> _rhs;
   std::vector<char> _coltypes;
@@ -53,7 +56,8 @@ enum INSTANCES {
   NET_SP1,
   NET_SP2,
   SLACKS,
-  REDUCED
+  REDUCED,
+  EQUALITY
 };
 
 typedef std::vector<InstanceData> AllDatas;

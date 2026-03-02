@@ -4,16 +4,20 @@ on:
   merge_group:
   push:
     branches:
-      - main
       - develop
-      - dependabot/*
+      - feature/*
+      - features/*
+      - fix/*
+      - issue-*
       - release/*
-  pull_request:
+      - doc/*
+      - dependabot/**
   release:
     types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
+  PYTHON_VERSION: "3.10"
 
 jobs:
   build:
@@ -21,42 +25,27 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ ubuntu-20.04 ]
-        xprs: [
-          #{ value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: 9.2.5 },
-          #       { value: XPRESS-OFF }
-        ]
+        os: [ ubuntu-22.04 ]
     env:
-      XPRESSDIR: ${{ github.workspace }}/xpress
-      XPRESS: ${{ github.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_ubuntu-22.04_static_sirius.zip"
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
       SINGLE_FILE_NAME: ${{ steps.export_output.outputs.SINGLE_FILE_NAME }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
-
-      - name: Checkout xpressmp linux
-        if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v4
-        with:
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          ref: ${{ matrix.xprs.ref}}
-          token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
           sudo apt-get install -y ccache
-          sudo apt-get install -y g++-10 gcc-10
-      
+          sudo apt-get install -y g++
+
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
@@ -64,31 +53,26 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
+        id: python-setup
         with:
           cache: 'pip'
-          python-version: 3.8
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
-          pip install -r requirements-ui.txt
 
-      - name: Update alternatives
-        #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
+      - name: Set-up Xpress with pip for Ubuntu
+        shell: bash
         run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
-          sudo update-alternatives --set cc /usr/bin/gcc
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
-          sudo update-alternatives --set c++ /usr/bin/g++
-
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
+          python -m pip install "xpress==9.2.12"
+          XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpresslibs
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Read antares-solver version
         id: antares-version
@@ -109,7 +93,9 @@ jobs:
         with:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
-          os-full-name: Ubuntu-20.04
+          os-full-name: Ubuntu-22.04
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: vcpkg install
         run: |
@@ -120,7 +106,7 @@ jobs:
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -132,30 +118,35 @@ jobs:
         run: |
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
+                -DCMAKE_C_COMPILER=/usr/bin/gcc \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+                -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \
-                -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
-                -DBUILD_UI=ON  \
+                -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
+                -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: |
           cmake --build _build --config Release -j$(nproc)
 
+      - name: Tests with Cucumber
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
+
       - name: Test
         run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -182,13 +173,13 @@ jobs:
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
@@ -207,7 +198,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -224,7 +215,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -234,7 +225,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
       - name: setup
@@ -256,7 +247,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: setup
@@ -278,31 +269,27 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
       - name: Download userguide
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: user-guide
           path: docs/
 
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
       - name: Download build assets single file
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .
-
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
 
       - name: Upload Release Asset
         env:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}

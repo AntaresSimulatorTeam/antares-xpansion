@@ -1,8 +1,8 @@
 #include <fstream>
 
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
 const std::string VALID_DIRECT_PROFILE_NAME("temp_direct_profile.txt");
@@ -11,7 +11,7 @@ const std::string INVALID_DIRECT_PROFILE("temp_invalid_direct_profile.txt");
 
 class LinkProfileReaderTest : public ::testing::Test {
  protected:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_ =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_ =
       emptyLogger();
   static void createMergedProfileFile(
       const std::string& temp_profile_name,

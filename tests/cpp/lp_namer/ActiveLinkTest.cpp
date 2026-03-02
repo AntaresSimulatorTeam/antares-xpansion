@@ -1,10 +1,10 @@
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "gtest/gtest.h"
 
 const double DEFAULT_CAPACITY = 0;
 const double DEFAULT_PROFILE_VALUE = 1;
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+static std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
 emptyLogger() {
   return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
       LogUtils::LOGLEVEL::NONE);

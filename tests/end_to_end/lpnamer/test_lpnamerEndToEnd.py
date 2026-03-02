@@ -13,29 +13,36 @@ DATA_TEST = Path("../../../data_test/")
 DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
 DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
 TEST_LP_INTEGER_01 = DATA_TEST_INTEGER / \
-    "test_lpnamer_01" / "output" / "economy"
+                     "test_lpnamer_01" / "output" / "economy"
+TEST_LP_INTEGER_XPRESS = DATA_TEST_INTEGER / \
+                         "test_lpnamer_Xpress" / "output" / "economy"
 TEST_LP_INTEGER_02 = DATA_TEST_INTEGER / \
-    "test_one_link_one_candidate_1week" / "output" / "economy/"
+                     "test_one_link_one_candidate_1week" / "output" / "economy/"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob" \
-    / "output" / "economy"
+                                                  / "output" / "economy"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST_INTEGER / \
-    "test_one_link_two_candidates_1week" / "output" / "economy"
+                                      "test_one_link_two_candidates_1week" / "output" / "economy"
 
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob_hurdle_cost" \
-    / "output" / "economy"
+                                                          / "output" / "economy"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob_null_profile" \
-    / "output" / "economy"
+                                                               / "output" / "economy"
 
 TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / \
-    "test_one_link_one_candidate-relaxed" / "output" / "economy/"
+                     "test_one_link_one_candidate-relaxed" / "output" / "economy/"
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
-    / "economy"
+                     / "economy"
 test_data = [
     (TEST_LP_INTEGER_01, "integer"),
     (TEST_LP_INTEGER_02, "integer"),
     (TEST_LP_RELAXED_01, "relaxed"),
     (TEST_LP_RELAXED_02, "relaxed")
 ]
+
+test_data_xpress = [
+    (TEST_LP_INTEGER_XPRESS, "integer")
+]
+
 
 class OptionType(Enum):
     ARCHIVE = 1
@@ -55,6 +62,7 @@ test_data_multiple_candidates = [
 test_data_study_option = [
     DATA_TEST / "tests_lpnamer" / "SmallTestFiveCandidates"
 ]
+
 
 @pytest.fixture
 def setup_lp_directory(request, tmp_path):
@@ -96,6 +104,7 @@ def setup_study(request, tmp_path):
     test_dir = tmp_path.joinpath(*source_dir.parts[index:])
     yield test_dir
 
+
 @pytest.mark.parametrize("test_dir, master_mode", test_data)
 @pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
 def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_lp_directory, tmp_path):
@@ -104,6 +113,16 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
         launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory)
     elif option_mode == OptionType.OUTPUT:
         launch_and_compare_lp_with_reference_output(install_dir, master_mode, setup_lp_directory)
+
+
+@pytest.mark.parametrize("test_dir, master_mode", test_data_xpress)
+def test_xpress(install_dir, test_dir, master_mode, setup_lp_directory, tmp_path):
+    launch_command, lp_dir, old_path, reference_lp_dir = given(install_dir, master_mode, setup_lp_directory, False)
+    returned_l = subprocess.run(launch_command, shell=False)
+    os.chdir(old_path)
+    files_to_find = os.listdir(reference_lp_dir)
+    files_to_compare = os.listdir(lp_dir)
+    assert set(files_to_find) <= set(files_to_compare)
 
 
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
@@ -119,7 +138,6 @@ def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode,
 @pytest.mark.parametrize("study_dir", test_data_study_option)
 @pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", [OptionType.STUDY])
-@pytest.mark.skip(reason="study option not implemented yet")
 def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, setup_study, tmp_path):
     launch_and_compare_lp_with_reference_study(install_dir, master_mode, setup_study)
 
@@ -140,8 +158,16 @@ def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_d
     then(lp_dir, old_path, reference_lp_dir, returned_l)
 
 
+def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir, unnamed_problems=True):
+    launch_command, lp_dir, old_path, reference_lp_dir = given(install_dir, master_mode, test_dir, unnamed_problems)
+    print(f"launch_command: '{' '.join(launch_command)}'")
+    # when
+    returned_l = subprocess.run(launch_command, shell=False)
+    # then
+    then(lp_dir, old_path, reference_lp_dir, returned_l)
 
-def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir):
+
+def given(install_dir, master_mode, test_dir, unnamed_problems):
     old_path = os.getcwd()
     reference_lp_dir = test_dir / "reference_lp"
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
@@ -149,11 +175,10 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
     os.chdir(test_dir.parent.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
-    # when
-    returned_l = subprocess.run(launch_command, shell=False)
-    # then
-    then(lp_dir, old_path, reference_lp_dir, returned_l)
+                      "-e", "contraintes.txt", "-f", master_mode]
+    if unnamed_problems:
+        launch_command.append("--unnamed-problems")
+    return launch_command, lp_dir, old_path, reference_lp_dir
 
 
 def get_lp_dir(study_dir):
@@ -175,7 +200,7 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
     lp_namer_exe = Path(install_dir) / "lp_namer"
     os.chdir(study_dir)
     constraint_path = get_constraint_path(study_dir)
-    launch_command = [str(lp_namer_exe), "--study", str(study_dir),
+    launch_command = [str(lp_namer_exe), "--study", study_dir,
                       "-e", constraint_path, "-f", master_mode, "--unnamed-problems"]
     # when
     returned_l = subprocess.run(launch_command, shell=False)
@@ -187,6 +212,22 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
 def then(lp_dir, old_path, reference_lp_dir, returned_l):
     os.chdir(old_path)
     files_to_compare = os.listdir(reference_lp_dir)
+
+    def compare_structure_files(file1, file2):
+        with open(file1, 'r') as f1, open(file2, 'r') as f2:
+            lines1 = f1.readlines()
+            lines2 = f2.readlines()
+            if len(lines1) != len(lines2):
+                return False
+            for line1, line2 in zip(lines1, lines2):
+                if ' '.join(line1.split()) != ' '.join(line2.split()):
+                    return False
+        return True
+
+    if "structure.txt" in files_to_compare:
+        files_to_compare.remove("structure.txt")
+        assert compare_structure_files(Path(reference_lp_dir) / "structure.txt", Path(lp_dir) / "structure.txt")
+
     match, mismatch, errors = filecmp.cmpfiles(
         reference_lp_dir, lp_dir, files_to_compare)
     assert len(match) == len(files_to_compare)

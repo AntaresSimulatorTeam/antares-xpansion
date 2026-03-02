@@ -1,12 +1,11 @@
 import argparse
+import sys
 from typing import List
 
-import sys
+from antares_xpansion.__version__ import __version__, __revision__, __antares_simulator_version__
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
-
-from antares_xpansion.xpansionConfig import InputParameters
-from antares_xpansion.__version__ import __version__, __antares_simulator_version__
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
+from antares_xpansion.xpansionConfig import InputParameters
 
 
 class InputParser:
@@ -18,9 +17,9 @@ class InputParser:
     def _initialize_parser(self):
         self.parser.add_argument("--step",
                                  dest=LauncherOptionsKeys.step_key(),
-                                 choices=["full", "antares", "problem_generation",
+                                 choices=["full", "antares", "problem_generation", "presolve",
                                           "benders", "study_update", "sensitivity", "resume"],
-                                 help='Step to execute ("full", "antares", "problem_generation", "benders", "study_update", "sensitivity", "resume")',
+                                 help='Step to execute ("full", "antares", "problem_generation", "presolve", "benders", "study_update", "sensitivity", "resume")',
                                  default=LauncherOptionsDefaultValues.DEFAULT_STEP())
         self.parser.add_argument("--simulationName",
                                  dest=LauncherOptionsKeys.simulationName_key(),
@@ -63,6 +62,10 @@ class InputParser:
                                  action='version',
                                  version=__version__,
                                  help='show antares-xpansion version and exit ')
+        self.parser.add_argument("--revision",
+                                 action='version',
+                                 version=__revision__,
+                                 help='show the latest abbreviated commit hash ')
         self.parser.add_argument("--antares-version",
                                  action='version',
                                  version=__antares_simulator_version__,
@@ -77,6 +80,26 @@ class InputParser:
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
                                  action='store_true',
                                  help='allow-run-as-root option (linux only)')
+        self.parser.add_argument("--memory",
+                                 dest=LauncherOptionsKeys.memory_key(),
+                                 default=False,
+                                 action='store_true',
+                                 help="Work in memory, don't write file if possible")
+        self.parser.add_argument("--presolve",
+                                 dest=LauncherOptionsKeys.presolve_key(),
+                                 default=False,
+                                 action='store_true',
+                                 help="Runs presolve step before Benders methods (Xpress only)")
+        self.parser.add_argument("--cache_problems",
+                                 dest=LauncherOptionsKeys.cache_problems_key(),
+                                 default=False,
+                                 action='store_true',
+                                 help="Cache problems on disque during benders")
+        self.parser.add_argument("--problem-format",
+                                 dest=LauncherOptionsKeys.problem_format_key(),
+                                 choices=["mps", "OPTIMIZED"],
+                                 help='Problem format to use ("mps" or "OPTIMIZED")',
+                                 default=LauncherOptionsDefaultValues.DEFAULT_PROBLEM_FORMAT())
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -95,6 +118,10 @@ class InputParser:
             keep_mps=params.keep_mps,
             oversubscribe=params.oversubscribe,
             allow_run_as_root=params.allow_run_as_root,
+            memory=params.memory,
+            run_presolve=params.run_presolve,
+            cache_problems=params.cache_problems,
+            problem_format=params.problem_format
         )
         return my_parameters
 
@@ -127,3 +154,6 @@ class InputParser:
 
         if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
             params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
+
+        if params.problem_format == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.problem_format = LauncherOptionsDefaultValues.DEFAULT_PROBLEM_FORMAT()

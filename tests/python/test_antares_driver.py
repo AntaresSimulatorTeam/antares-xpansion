@@ -2,18 +2,18 @@ import configparser
 import os
 from pathlib import Path
 from unittest.mock import patch
-import pytest
-from packaging import version
 
+import pytest
+from antares_xpansion.__version__ import __antares_simulator_version__
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
     GeneralDataFileExceptions,
     GeneralDataProcessor,
 )
-from antares_xpansion.general_data_reader import IniReader, GeneralDataIniReader
+from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
 
 from tests.build_config_reader import get_antares_solver_path
-from antares_xpansion.__version__ import __antares_simulator_version__
+
 SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
 
 
@@ -110,7 +110,6 @@ class TestGeneralDataProcessor:
             "key2 = value2\n"
             "[input]\n"
             "import = blabla\n"
-
         )
 
         gen_data_path.write_text(default_val)
@@ -212,11 +211,12 @@ class TestGeneralDataProcessor:
     ):
         actual_config = configparser.ConfigParser()
         actual_config.read(general_data_ini_file)
-        for (section, key) in expected_val:
+        for section, key in expected_val:
             value = actual_config.get(section, key, fallback=None)
             assert value is not None
             print(
-                f"Section {section}, key {key}, value {value}, expected {expected_val[(section, key)]}")
+                f"Section {section}, key {key}, value {value}, expected {expected_val[(section, key)]}"
+            )
             assert value == expected_val[(section, key)]
 
         with open(general_data_ini_file, "r") as reader:
@@ -238,9 +238,10 @@ class TestGeneralDataProcessor:
 
 class TestAntaresDriver:
     def setup_method(self):
-        #TODO update antares version which comes with named problems
-        #self.nammed_problems = version.parse(__antares_simulator_version__) >= version.parse("8.6")
-        self.nammed_problems=True
+        # TODO update antares version which comes with named problems
+        # self.nammed_problems = version.parse(__antares_simulator_version__) >= version.parse("8.6")
+        self.nammed_problems = True
+
     def test_antares_cmd(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin1"
@@ -248,8 +249,15 @@ class TestAntaresDriver:
         # mock subprocess.run
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
-            if(self.nammed_problems):
+            expected_cmd = [
+                exe_path,
+                study_dir,
+                "--force-parallel",
+                "1",
+                "-z",
+                "--linear-solver=sirius",
+            ]
+            if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
 
             run_function.assert_called_once_with(
@@ -264,9 +272,15 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
 
-            expected_cmd = [exe_path, study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
-            if(self.nammed_problems):
+            expected_cmd = [
+                exe_path,
+                study_dir,
+                "--force-parallel",
+                str(n_cpu),
+                "-z",
+                "--linear-solver=sirius",
+            ]
+            if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -285,9 +299,10 @@ class TestAntaresDriver:
                 study_dir,
                 "--force-parallel",
                 str(expected_n_cpu),
-                "-z"
+                "-z",
+                "--linear-solver=sirius",
             ]
-            if(self.nammed_problems):
+            if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -302,9 +317,15 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
-            if(self.nammed_problems):
+            expected_cmd = [
+                str(exe_path),
+                study_dir,
+                "--force-parallel",
+                str(n_cpu),
+                "-z",
+                "--linear-solver=sirius",
+            ]
+            if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -365,9 +386,15 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
-            if(self.nammed_problems):
+            expected_cmd = [
+                str(exe_path),
+                study_dir,
+                "--force-parallel",
+                str(n_cpu),
+                "-z",
+                "--linear-solver=sirius",
+            ]
+            if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -377,8 +404,7 @@ class TestAntaresDriver:
         config_reader.read(gen_data_path)
         assert config_reader.getboolean("adequacy patch", "dummy") is False
         assert config_reader.get("adequacy patch", "foo") == "bar"
-        assert config_reader.getboolean(
-            "adequacy patch", "include-adq-patch") is True
+        assert config_reader.getboolean("adequacy patch", "include-adq-patch") is True
 
     def test_preserve_general_file_section_missing(self, tmp_path):
         settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
@@ -391,9 +417,15 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
-            if(self.nammed_problems):
+            expected_cmd = [
+                str(exe_path),
+                study_dir,
+                "--force-parallel",
+                str(n_cpu),
+                "-z",
+                "--linear-solver=sirius",
+            ]
+            if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3

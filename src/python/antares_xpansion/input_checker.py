@@ -1,5 +1,5 @@
 """
-    module to perform checks on antares xpansion input data
+module to perform checks on antares xpansion input data
 """
 
 import os
@@ -44,17 +44,20 @@ def _check_profile_file_consistency(filename_path):
                 if len(line_vals) != 0:
                     first_profile.append(float(line_vals[0]))
             except ValueError:
-                logger.error('Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
-                             % (idx + 1, filename_path))
+                logger.error(
+                    'Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
+                    % (idx + 1, filename_path)
+                )
                 raise ProfileFileValueError
-            if (first_profile[-1] < 0):
-                logger.error('Line %d in file %s indicates a negative value'
-                             % (idx + 1, filename_path))
+            if first_profile[-1] < 0:
+                logger.error(
+                    "Line %d in file %s indicates a negative value"
+                    % (idx + 1, filename_path)
+                )
                 raise ProfileFileNegativeValue
 
     if len(first_profile) != 8760:
-        logger.error('file %s does not have 8760 lines'
-                     % filename_path)
+        logger.error("file %s does not have 8760 lines" % filename_path)
         raise ProfileFileWrongNumberOfLines
     return any(first_profile)
 
@@ -69,7 +72,7 @@ def _check_profile_file(filename_path):
     """
     # check file existence
     if not os.path.isfile(filename_path):
-        logger.error(f'{filename_path} is not an existent file')
+        logger.error(f"{filename_path} is not an existent file")
         raise ProfileFileNotExists
 
     return _check_profile_file_consistency(filename_path)
@@ -119,16 +122,16 @@ def _check_candidate_option_type(option, value):
     ]
 
     if obsolete_options.count(option):
-        logger.warning(
-            f"{option} option is no longer used by antares-xpansion")
+        logger.warning(f"{option} option is no longer used by antares-xpansion")
         return True
     else:
         option_type = candidate_options_type.get(option)
         if option_type is None:
             logger.error(
-                f"check_candidate_option_type: {option} option not recognized in candidates file.\n" +
-                "Authorized options are: %s"+'\n'.join(
-                    candidate_options_type.keys()))
+                f"check_candidate_option_type: {option} option not recognized in candidates file.\n"
+                + "Valid options are: %s"
+                + "\n".join(candidate_options_type.keys())
+            )
             raise UnrecognizedCandidateOptionType
         if option_type == "string":
             return True
@@ -159,15 +162,16 @@ def _verify_name_has_no_invalid_character(name, section):
     illegal_chars = " \n\r\t\f\v-+=:[]()"
     for c in illegal_chars:
         if c in name:
-            logger.error('Candidates name should not contain %s, found in section %s in "%s"' % (
-                c, section, name))
+            logger.error(
+                'Candidates name should not contain %s, found in section %s in "%s"'
+                % (c, section, name)
+            )
             raise IllegalCharsInCandidateName
 
 
 def _verify_name_is_not_empty(name, section):
     if (not name) or (name.lower() == "na"):
-        logger.error(
-            'Candidates name cannot be empty : found in section %s' % section)
+        logger.error("Candidates name cannot be empty : found in section %s" % section)
         raise EmptyCandidateName
 
 
@@ -184,12 +188,12 @@ def _check_candidate_link(link, section):
     checks that the candidate's link is not empty
     """
     if (not link) or (link.lower() == "na"):
-        logger.error(
-            'Candidates link cannot be empty : found in section %s' % section)
+        logger.error("Candidates link cannot be empty : found in section %s" % section)
         raise EmptyCandidateLink
     if " - " not in link:
         logger.error(
-            'Candidates link value must contain " - " : found in section %s' % section)
+            'Candidates link value must contain " - " : found in section %s' % section
+        )
         raise CandidateLinkWithoutSeparator
 
 
@@ -218,12 +222,12 @@ def _check_candidate_attributes(ini_file):
     # check attributes types and values
     err_msg = ""
     for each_section in ini_file.sections():
-        for (option, value) in ini_file.items(each_section):
+        for option, value in ini_file.items(each_section):
             if not _check_candidate_option_type(option, value):
                 err_msg += f"value {value} for option {option} has the wrong type, it has to be {candidate_options_type[option]}\n"
-    
-    if(err_msg!=""):
-        logger.error(err_msg)                
+
+    if err_msg != "":
+        logger.error(err_msg)
         raise CandidateFileWrongTypeValue
 
 
@@ -234,8 +238,10 @@ def _check_name_is_unique(ini_file):
         for each_section in ini_file.sections():
             value = ini_file[each_section][verified_attribute].strip().lower()
             if value in unique_values:
-                logger.error('Error candidates %ss have to be unique, duplicate %s %s in section %s'
-                             % (verified_attribute, verified_attribute, value, each_section))
+                logger.error(
+                    "Error candidates %ss have to be unique, duplicate %s %s in section %s"
+                    % (verified_attribute, verified_attribute, value, each_section)
+                )
                 raise CandidateNameDuplicatedError
             else:
                 unique_values.add(value)
@@ -272,11 +278,13 @@ def _check_candidate_exclusive_attributes(ini_file):
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
                 logger.error(
-                    f"Illegal values in section {each_section}: cannot assign non-null values simultaneously to max-investment and (unit-size or max_units)")
+                    f"Illegal values in section {each_section}: cannot assign non-null values simultaneously to max-investment and (unit-size or max_units)"
+                )
                 raise MaxUnitsAndMaxInvestmentNonNullSimultaneously
         elif max_units == 0 or unit_size == 0:
             logger.error(
-                f"Illegal values in section {each_section}: need to assign non-null values to max-investment or (unit-size and max_units)")
+                f"Illegal values in section {each_section}: need to assign non-null values to max-investment or (unit-size and max_units)"
+            )
             raise MaxUnitsAndMaxInvestmentAreNullSimultaneously
 
 
@@ -285,8 +293,10 @@ def _copy_in_backup(ini_file, candidates_ini_filepath):
     shutil.copyfile(candidates_ini_filepath, backup_path)
     with open(candidates_ini_filepath, "w") as out_file:
         ini_file.write(out_file)
-    logger.error("%s file was overwritten! backup file %s created"
-                 % (candidates_ini_filepath, backup_path))
+    logger.error(
+        "%s file was overwritten! backup file %s created"
+        % (candidates_ini_filepath, backup_path)
+    )
 
 
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
@@ -305,8 +315,11 @@ def _check_attribute_profile_values(ini_file, capacity_dir_path):
                 # check file existence
                 filename_path = os.path.normpath(os.path.join(capacity_dir_path, value))
                 if not os.path.isfile(filename_path):
-                    logger.error('Illegal value : option can be 0, 1 or an existent filename.\
-                            %s is not an existent file' % filename_path)
+                    logger.error(
+                        "Illegal value : option can be 0, 1 or an existent filename.\
+                            %s is not an existent file"
+                        % filename_path
+                    )
                     raise ProfileFileNotExists
     return config_changed
 
@@ -344,23 +357,19 @@ class NotHandledOption(Exception):
 class NotHandledValue(Exception):
     pass
 
+
 # return ->tuple[is_a_bool: bool, result: bool]
 
 
 # -> tuple[bool, bool]: not working with python <3.9
-def str_to_bool(my_str: str):
-    if my_str in ["true", "True", "TRUE", "1"]:
-        return (True, True)
-    elif my_str in ["false", "False", "False", "0"]:
-        return (True, False)
-    else:
-        return (False, False)
+def is_bool(my_str: str):
+    return my_str.lower() in ("true", "false", "1", "0")
+
 
 type_str = str
 type_int = int
 type_float = float
 type_bool = bool
-
 
 # "option": (type, legal_value(s))
 options_types_and_legal_values = {
@@ -377,6 +386,8 @@ options_types_and_legal_values = {
     "log_level": (type_int, ["0", "1", "2", "3"]),
     "separation_parameter": (type_float, None),
     "batch_size": (type_int, None),
+    "master_solution_tolerance": (type_float, None),
+    "cut_coefficient_tolerance": (type_float, None),
 }
 
 
@@ -393,7 +404,8 @@ def _check_setting_option_type(option, value):
 
     if options_types_and_legal_values.get(option) is None:
         logger.error(
-            'check_setting_option_type: Illegal %s option in settings file.' % option)
+            "check_setting_option_type: Illegal %s option in settings file." % option
+        )
         raise NotHandledOption
 
     option_type = options_types_and_legal_values.get(option)[0]
@@ -404,7 +416,9 @@ def _check_setting_option_type(option, value):
             return True
         except ValueError:
             logger.error(
-                'check_setting_option_type: Illegal %s option in type, numerical value is expected .' % option)
+                "check_setting_option_type: Illegal %s option in type, numerical value is expected ."
+                % option
+            )
             return False
     elif option_type == type_int:
         if value in INFINITY_LIST:
@@ -415,19 +429,25 @@ def _check_setting_option_type(option, value):
                     return True
                 else:
                     logger.error(
-                        'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
+                        "check_setting_option_type: Illegal %s option in type, integer is expected ."
+                        % option
+                    )
                     return False
             except ValueError:
                 logger.error(
-                    'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
+                    "check_setting_option_type: Illegal %s option in type, integer is expected ."
+                    % option
+                )
                 return False
     elif option_type == type_bool:
-        [is_a_bool, ret] = str_to_bool(value)
+        is_a_bool = is_bool(value)
         if is_a_bool:
             return True
         else:
             logger.error(
-                'check_setting_option_type: Illegal %s option in type, boolean is expected .' % option)
+                "check_setting_option_type: Illegal %s option in type, boolean is expected ."
+                % option
+            )
             return False
 
     return isinstance(value, type_str)
@@ -437,7 +457,7 @@ class OptionTypeError(Exception):
     pass
 
 
-class GapValueError(Exception):
+class PositiveFloatValueError(Exception):
     pass
 
 
@@ -476,7 +496,7 @@ def check_options(options):
     """
 
     option_items = options.items()
-    for (option, value) in option_items:
+    for option, value in option_items:
         _check_setting_option_value(option, value)
 
 
@@ -489,7 +509,8 @@ def _check_max_iteration(value) -> bool:
             return True
         else:
             logger.error(
-                f"Illegal {value} for option max_iteration : only -1 or positive values are allowed")
+                f"Illegal {value} for option max_iteration : only -1 or positive values are allowed"
+            )
             raise MaxIterValueError
 
 
@@ -501,7 +522,8 @@ def _check_timelimit(value) -> bool:
             return True
         else:
             logger.error(
-                f"Illegal {value} for option timelimit : only positive values are allowed")
+                f"Illegal {value} for option timelimit : only positive values are allowed"
+            )
             raise TimelimitValueError
 
 
@@ -510,7 +532,8 @@ def _check_log_level(value) -> bool:
         return True
     else:
         logger.error(
-            f"Illegal {value} for option log_level : only greater than or equal to zero values are accepted")
+            f"Illegal {value} for option log_level : only greater than or equal to zero values are accepted"
+        )
         raise LogLevelValueError
 
 
@@ -519,10 +542,9 @@ def _check_batch_size(value) -> bool:
         return True
     else:
         logger.error(
-            f"Illegal {value} for option batch_size : only greater than or equal to zero values are accepted")
+            f"Illegal {value} for option batch_size : only greater than or equal to zero values are accepted"
+        )
         raise BatchSizeValueError
-
-
 
 
 def _check_separation(value) -> bool:
@@ -530,7 +552,8 @@ def _check_separation(value) -> bool:
         return True
     else:
         logger.error(
-            f"Illegal {value} for option separation_parameter : only values within the interval [0,1] are accepted")
+            f"Illegal {value} for option separation_parameter : only values within the interval [0,1] are accepted"
+        )
         raise SeparationParameterValueError
 
 
@@ -546,7 +569,9 @@ def _check_setting_option_value(option, value):
 
     if not _check_setting_option_type(option, value):
         logger.error(
-            "check_settings : value %s for option %s has the wrong type!" % (value, option))
+            "check_settings : value %s for option %s has the wrong type!"
+            % (value, option)
+        )
         raise OptionTypeError
 
     legal_values = options_types_and_legal_values.get(option)[1]
@@ -558,10 +583,12 @@ def _check_setting_option_value(option, value):
     ):
         return True
 
-    if (
-        (option == "optimality_gap")
-        or (option == "relative_gap")
-        or (option == "relaxed_optimality_gap")
+    if option in (
+        "optimality_gap",
+        "relative_gap",
+        "relaxed_optimality_gap",
+        "master_solution_tolerance",
+        "cut_coefficient_tolerance",
     ):
         if float(value) >= 0:
             return True
@@ -570,7 +597,7 @@ def _check_setting_option_value(option, value):
                 "Illegal value %s for option %s : only positive values are allowed"
                 % (value, option)
             )
-            raise GapValueError
+            raise PositiveFloatValueError
 
     elif option == "max_iteration":
         return _check_max_iteration(value)
@@ -588,5 +615,6 @@ def _check_setting_option_value(option, value):
         return _check_batch_size(value)
 
     logger.error(
-        'check_candidate_option_value: Illegal value %s for option %s' % (value, option))
+        "check_candidate_option_value: Illegal value %s for option %s" % (value, option)
+    )
     sys.exit(1)

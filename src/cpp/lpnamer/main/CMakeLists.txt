@@ -10,32 +10,64 @@
 # Problem Generation  runner lib
 # ---------------------------------------------------------------------------
 
-add_library (problem_generation_main STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
+find_package(Antares REQUIRED)
+add_library(problem_generation_main)
+target_sources(problem_generation_main PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ConfigurationManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGeneration.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGenerationOptions.h
-		${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Version.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ConfigurationManager.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGeneration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGenerationOptions.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/private/Version.h
 )
 
-target_link_libraries (problem_generation_main 
-	PRIVATE 
-		${PROJECT_NAME}::lp_namer_helper
-		${PROJECT_NAME}::lp_namer_model
-		${PROJECT_NAME}::lp_namer_input_reader
-		${PROJECT_NAME}::lp_namer_problem_modifier
-		Boost::boost Boost::program_options
-		helpers)
-
-get_target_property(helpers_include helpers INTERFACE_INCLUDE_DIRECTORIES)
+target_link_libraries(problem_generation_main
+        PRIVATE
+        ${PROJECT_NAME}::lp_namer_model
+        ${PROJECT_NAME}::lp_namer_problem_modifier
+        Boost::boost Boost::program_options
+        antaresXpansion::helpers
+        antaresXpansion::xpansion_interfaces
+        Antares::single_problem_api
+        PUBLIC
+        ${PROJECT_NAME}::lp_namer_helper
+        ${PROJECT_NAME}::lp_namer_input_reader
+        Antares::antares-solver-simulation
+        ${PROJECT_NAME}::core
+)
 
 target_include_directories(problem_generation_main
         PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${helpers_include}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        PRIVATE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/private>
 )
 
 
-add_library (${PROJECT_NAME}::problem_generation_main ALIAS problem_generation_main)
+add_library(${PROJECT_NAME}::problem_generation_main ALIAS problem_generation_main)
 
+#Multiple problem generation lib
+add_library(multiple_problem_generation_lib)
+target_sources(multiple_problem_generation_lib PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/MultipleProblemGeneration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/MultipleProblemGeneration.cpp
+)
+
+target_link_libraries(multiple_problem_generation_lib PUBLIC
+        ${PROJECT_NAME}::problem_generation_main
+        ${PROJECT_NAME}::node_lp_data_location
+)
+
+target_include_directories(multiple_problem_generation_lib
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+add_library(${PROJECT_NAME}::multiple_problem_generation_lib ALIAS multiple_problem_generation_lib)
+
+
+install(DIRECTORY include/antares-xpansion
+        DESTINATION "include"
+)

@@ -3,12 +3,12 @@ add_executable(outer_loop_test
 
 target_link_libraries(outer_loop_test
         PRIVATE
-        solvers
-        outer_loop_lib
-        benders_by_batch_core
-        benders_core
-        output_core
-        logger_lib
+        antaresXpansion::solvers
+        antaresXpansion::outer_loop_lib
+        antaresXpansion::benders_by_batch_core
+        antaresXpansion::benders_core
+        antaresXpansion::output_core
+        antaresXpansion::logger_lib
         GTest::Main
         tests_utils)
 

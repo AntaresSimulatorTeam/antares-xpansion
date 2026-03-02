@@ -1,2 +1,3 @@
 __version__ = "${CMAKE_PROJECT_VERSION}" 
+__revision__ = "${GIT_HASH}" 
 __antares_simulator_version__ = "${ANTARES_VERSION}" 
