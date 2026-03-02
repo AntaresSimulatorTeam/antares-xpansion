@@ -37,7 +37,7 @@ jobs:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: upload user guide
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.create-user-guide.outputs.pdf-name }}
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
