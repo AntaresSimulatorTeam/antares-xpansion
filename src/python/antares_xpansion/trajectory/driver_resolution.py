@@ -238,6 +238,7 @@ class TrajectoryResolutionDriver:
         # Write options file for the solver
         self.logger.info(f"Writing options file: {self.data.benders_options_file}")
         self.logger.info(f"Current directory is now: {os.getcwd()}")
+        self.logger.info(f"Options values: {options_values}")
         with open(self.data.benders_options_file, "w") as options_file:
             json.dump(options_values, options_file, indent=4)
 
