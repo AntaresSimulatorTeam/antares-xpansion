@@ -3,13 +3,13 @@
 ProblemManager::ProblemManager(const std::string& solverName,
                                const std::string& problemFormat,
                                bool writePbFiles,
-                               bool streamProblemsFromDisk,
+                               bool cacheProblems,
                                std::optional<std::filesystem::path> problemsPath):
     solverName_(solverName),
     problemFormat_(problemsFormatFromString(
       "OPTIMIZED")), // here, can be updated to choose the file format for real
     writePbFiles_(writePbFiles),
-    streamProblemsFromDisk_(streamProblemsFromDisk),
+    cacheProblems_(cacheProblems),
     problemsPath_(problemsPath),
     solverLogManager_(),
     solverFactory_()
@@ -20,12 +20,12 @@ ProblemManager::ProblemManager(const std::string& solverName,
                      "format will be used.\n";
         problemFormat_ = ProblemsFormat::MPS_FILE;
     }
-    if (streamProblemsFromDisk && problemsPath == std::nullopt)
+    if (cacheProblems && problemsPath == std::nullopt)
     {
         throw std::runtime_error(
           "Error: trying to stream problems from disk without specify a folder.");
     }
-    if (streamProblemsFromDisk && !std::filesystem::exists(problemsPath.value()))
+    if (cacheProblems && !std::filesystem::exists(problemsPath.value()))
     {
         std::filesystem::create_directories(problemsPath.value());
     }
@@ -36,7 +36,7 @@ void ProblemManager::setProblems(
 {
     problems_.clear();
     problemIds.clear();
-    if (streamProblemsFromDisk_)
+    if (cacheProblems_)
     {
         for (auto& [pbId, problem]: problems)
         {
@@ -56,7 +56,7 @@ void ProblemManager::setProblems(
 
 std::shared_ptr<Problem> ProblemManager::readProblemFromDisk(const std::string& problemName) const
 {
-    if (!streamProblemsFromDisk_)
+    if (!cacheProblems_)
     {
         throw std::runtime_error("Error: trying to stream problem from disk.");
     }

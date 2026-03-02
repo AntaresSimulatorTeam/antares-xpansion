@@ -40,8 +40,8 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       po::value<std::string>(&verbosity_)->default_value("INFO"),
       "Specify the desired verbosity for logging in the console or log file (optional, default is "
       "INFO). Possible values are: NONE, TRACE, DEBUG, INFO, WARNING, ERR, FATAL")(
-      "stream-problems-from-disk",
-      po::value<bool>(&streamProblemsFromDisk_)->default_value(false),
+      "cache-problems",
+      po::value<bool>(&cacheProblems_)->default_value(false),
       "Write and read problems from disk to reduce memory use (will increase computation time) "
       "(optional, "
       "default is false)");

@@ -18,7 +18,7 @@ private:
     std::string problemFormat_;
     bool useOptimalTrajectory_;
     std::string verbosity_;
-    bool streamProblemsFromDisk_;
+    bool cacheProblems_;
 
 public:
     BellmanValuesExeOptions();
@@ -80,8 +80,8 @@ public:
         return verbosity_;
     }
 
-    bool StreamProblemsFromDisk() const
+    bool CacheProblems() const
     {
-        return streamProblemsFromDisk_;
+        return cacheProblems_;
     }
 };

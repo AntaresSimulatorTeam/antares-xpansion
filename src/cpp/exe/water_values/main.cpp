@@ -206,7 +206,7 @@ int main(int argc, char** argv)
         const std::string verbosity = optionsParser.Verbosity();
         // this bool needs to be implemented correctly after merging with the more recent use of
         // YAML setting files
-        bool streamProblemsFromDisk = optionsParser.StreamProblemsFromDisk();
+        bool cacheProblems = optionsParser.CacheProblems();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                / "user/water_values/grid.csv");
@@ -242,7 +242,7 @@ int main(int argc, char** argv)
         auto problemManager = std::make_shared<ProblemManager>(solverName,
                                                                problemFormat,
                                                                writePbFiles,
-                                                               streamProblemsFromDisk,
+                                                               cacheProblems,
                                                                directories.simulation_dir
                                                                  / "initial_problems");
 

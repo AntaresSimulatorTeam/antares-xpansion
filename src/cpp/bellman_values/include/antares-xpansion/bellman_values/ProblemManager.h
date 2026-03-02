@@ -17,7 +17,7 @@ public:
     ProblemManager(const std::string& solverName = "xpress",
                    const std::string& problemFormat = "OPTIMIZED",
                    bool writePbFiles = false,
-                   bool streamProblemsFromDisk = false,
+                   bool cacheProblems = false,
                    std::optional<std::filesystem::path> problemsPath = std::nullopt);
 
     /**
@@ -72,7 +72,7 @@ public:
 
     std::shared_ptr<Problem> getProblemFromId(const Antares::Solver::WeeklyProblemId& pbId) const
     {
-        if (streamProblemsFromDisk_)
+        if (cacheProblems_)
         {
             return readProblemFromDisk(getPbNameFromId(pbId));
         }
@@ -85,7 +85,7 @@ public:
     std::shared_ptr<Problem> getProblemCloneFromId(
       const Antares::Solver::WeeklyProblemId& pbId) const
     {
-        if (streamProblemsFromDisk_)
+        if (cacheProblems_)
         {
             return readProblemFromDisk(getPbNameFromId(pbId));
         }
@@ -97,7 +97,7 @@ public:
 
     void setProblem(const Antares::Solver::WeeklyProblemId& pbId, std::shared_ptr<Problem> pb)
     {
-        if (streamProblemsFromDisk_)
+        if (cacheProblems_)
         {
             problemIds.emplace(pbId);
             saveProblemToFile(pbId, pb, problemsPath_.value());
@@ -116,9 +116,9 @@ public:
 private:
     std::shared_ptr<Problem> readProblemFromDisk(const std::string& problemName) const;
 
-    bool streamProblemsFromDisk_ = false; // for optimization purposes, problems can be read
-                                          // from/saved on disk instead of in memory
-    bool writePbFiles_ = false; // save problem files to disk, for analysis purposes for example
+    bool cacheProblems_ = false; // for optimization purposes, problems can be read
+                                 // from/saved on disk instead of in memory
+    bool writePbFiles_ = false;  // save problem files to disk, for analysis purposes for example
     std::string solverName_ = "xpress";
     ProblemsFormat problemFormat_ = ProblemsFormat::OPTIMIZED; // can be MPS_FILE or OPTIMIZED (SVF)
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
