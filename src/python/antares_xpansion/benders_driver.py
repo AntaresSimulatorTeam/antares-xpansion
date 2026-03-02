@@ -48,13 +48,13 @@ class BendersDriver:
         self.custom_working_dir = dir
 
     def launch(
-        self,
-        simulation_output_path,
-        method,
-        keep_mps=False,
-        n_mpi=1,
-        oversubscribe=False,
-        allow_run_as_root=False,
+            self,
+            simulation_output_path,
+            method,
+            keep_mps=False,
+            n_mpi=1,
+            oversubscribe=False,
+            allow_run_as_root=False,
     ):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
@@ -73,11 +73,11 @@ class BendersDriver:
         self.logger.info(f"Current directory is now: {os.getcwd()}")
 
         self.set_solver()
-
+        self.logger.info(f"Solver is now: {self.solver}")
         # delete execution logs
         self._clean_log_files()
-
-        print(self._get_solver_cmd())
+        self.logger.info("Solver execution")
+        self.logger.info(self._get_solver_cmd())
         ret = subprocess.run(
             self._get_solver_cmd(),
             shell=False,
