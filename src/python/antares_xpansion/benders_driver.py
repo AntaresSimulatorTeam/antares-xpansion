@@ -4,13 +4,13 @@ Class to control the execution of Benders
 
 import glob
 import os
-import subprocess
-import sys
 import re
 import shutil
+import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Dict, List
+from typing import Dict, List
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
@@ -51,13 +51,13 @@ class BendersDriver:
         self.custom_working_dir = dir
 
     def launch(
-        self,
-        simulation_output_path,
-        method,
-        keep_mps=False,
-        n_mpi=1,
-        oversubscribe=False,
-        allow_run_as_root=False,
+            self,
+            simulation_output_path,
+            method,
+            keep_mps=False,
+            n_mpi=1,
+            oversubscribe=False,
+            allow_run_as_root=False,
     ):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
@@ -76,11 +76,11 @@ class BendersDriver:
         self.logger.info(f"Current directory is now: {os.getcwd()}")
 
         self.set_solver()
-
+        self.logger.info(f"Launching solver : {self.solver}")
         # delete execution logs
         self._clean_log_files()
-
-        print(self._get_solver_cmd())
+        self.logger.info(f"Solver set to {self.solver}")
+        self.logger.info(self._get_solver_cmd())
         ret = subprocess.run(
             self._get_solver_cmd(),
             shell=False,
