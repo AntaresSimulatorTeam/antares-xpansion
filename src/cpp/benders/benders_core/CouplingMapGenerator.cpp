@@ -25,10 +25,13 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
                                              ILoggerXpansion* logger,
                                              const std::string& context)
 {
+    using namespace std::string_literals;
     CouplingMap coupling_map;
+    logger->display_message("Stucture file absolute path " + std::filesystem::absolute(structure_path).string(), LogUtils::LOGLEVEL::INFO, context);
     std::ifstream summary(structure_path, std::ios::in);
     if (!summary)
     {
+        logger->display_message("Cannot open structure file: "s + strerror(errno), LogUtils::LOGLEVEL::FATAL, context);
         auto log_location = LOGLOCATION;
         std::ostringstream msg;
         msg << "Cannot open structure file " << structure_path << std::endl;
