@@ -63,7 +63,6 @@ using mps_coupling_list = std::list<mps_coupling>;
 
 using SubProblemNamesInCut = std::vector<std::pair<std::string, int>>;
 
-using sub_per_cut_in_batch = std::vector<std::vector<std::string>>;
 
 struct Predicate
 {

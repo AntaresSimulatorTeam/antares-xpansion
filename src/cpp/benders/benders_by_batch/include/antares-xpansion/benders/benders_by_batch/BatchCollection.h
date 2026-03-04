@@ -12,11 +12,11 @@ struct Batch
 {
     std::vector<std::string> sub_problem_names;
     std::vector<int> proc_numbers;
-    std::vector<SubProblemNamesInCut> cuts;
+    std::vector<SubProblemNamesInCut> name_to_cut;
     unsigned id;
     friend class boost::serialization::access;
 
-    void BuildCuts(int n_cuts);
+    void AssociateSubProblemsToCut(int n_cuts);
 
     template<class Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned int version)

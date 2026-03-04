@@ -28,7 +28,7 @@ void BendersByBatch::InitializeProblems()
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
         batch_collection_.BuildBatches(WorldSize());
-        batch_collection_for_cuts_ = batch_collection_;
+        batch_collection_full_for_cuts_ = batch_collection_;
         get_subs_per_cut_per_batch();
     }
     BroadCast(batch_collection_, rank_0);
@@ -60,7 +60,7 @@ void BendersByBatch::InitializeProblems()
             for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
             {
                 // In case there are more subproblems than process
-                if (auto process_to_feed = problem_count % WorldSize(); process_to_feed == Rank())
+                if (batch.proc_numbers[problem_pos] == Rank())
                 { // Assign  [problemNumber % WorldSize] to processID
 
                     AddSubproblem({batch.sub_problem_names[problem_pos],
@@ -78,10 +78,10 @@ void BendersByBatch::InitializeProblems()
 
 void BendersByBatch::get_subs_per_cut_per_batch()
 {
-    for (auto& batch: batch_collection_for_cuts_.BatchCollections())
+    for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
         int n_cuts = SetAggregation(batch.sub_problem_names.size());
-        batch.BuildCuts(n_cuts);
+        batch.AssociateSubProblemsToCut(n_cuts);
     }
 }
 
@@ -352,12 +352,12 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
     if (_world.rank() == rank_0)
     {
-        auto& batch_cuts_list = batch_collection_for_cuts_.BatchCollections();
+        auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
 
         *batch_contribution_in_gap = ComputeBatchContributionInGap(
           gathered_subproblem_map,
-          batch_cuts_list[current_batch_id_].cuts);
-        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].cuts, gathered_subproblem_map);
+          batch_cuts_list[current_batch_id_].name_to_cut);
+        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].name_to_cut, gathered_subproblem_map);
     }
 }
 

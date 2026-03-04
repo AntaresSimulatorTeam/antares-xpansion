@@ -3,11 +3,9 @@
 #include <cmath>
 #include <iostream>
 
-#include "antares-xpansion/benders/benders_core/BendersBase.h"
-
-void Batch::BuildCuts(int n_cuts)
+void Batch::AssociateSubProblemsToCut(int n_cuts)
 {
-    cuts.reserve(n_cuts);
+    name_to_cut.reserve(n_cuts);
     SubProblemNamesInCut cut;
     cut.reserve((sub_problem_names.size() + n_cuts - 1) / n_cuts);
     for (int i = 0; i < sub_problem_names.size(); i++)
@@ -15,14 +13,14 @@ void Batch::BuildCuts(int n_cuts)
         cut.push_back(std::make_pair(std::move(sub_problem_names[i]), std::move(proc_numbers[i])));
         if (cut.size() == static_cast<size_t>((sub_problem_names.size() + n_cuts - 1) / n_cuts))
         {
-            cuts.push_back(std::move(cut));
+            name_to_cut.push_back(std::move(cut));
             cut.clear();
             cut.reserve((sub_problem_names.size() + n_cuts - 1) / n_cuts);
         }
     }
     if (!cut.empty())
     {
-        cuts.push_back(std::move(cut));
+        name_to_cut.push_back(std::move(cut));
     }
     sub_problem_names.clear();
     proc_numbers.clear();
