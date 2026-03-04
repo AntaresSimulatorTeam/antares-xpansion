@@ -195,7 +195,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.SEPARATION_PARAM = SEPARATION_PARAM;
 
     result.RESUME = RESUME;
-    result.AGGREGATION = AGGREGATION;
+    result.NB_CUTS_PER_ITER = NB_CUTS_PER_ITER;
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;
     result.CACHE_PROBLEMS = CACHE_PROBLEMS;

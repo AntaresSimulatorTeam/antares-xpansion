@@ -137,7 +137,7 @@ class XpansionConfigConstants:
         }
 
     def bound_alpha_default_value(self):
-        return True
+        return False
 
     def csv_name_default_value(self):
         return "benders_output_trace"

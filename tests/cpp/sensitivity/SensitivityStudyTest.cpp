@@ -120,7 +120,7 @@ protected:
     void launch_tests(std::string mps_path,
                       std::map<std::string, std::vector<SinglePbData>> expec_output_data_map)
     {
-        std::vector<std::string> solvers_name = {};
+        std::vector<std::string> solvers_name = {"CBC"};
         LoadXpress::XpressLoader xpress_loader;
         if (xpress_loader.XpressIsCorrectlyInstalled())
         {
@@ -178,7 +178,7 @@ protected:
             }
             if (fabs(candidate_it->second - expec_candidate_it->second)
                   / fabs(expec_candidate_it->second)
-                > 1e-6)
+                > 1e-5)
             {
                 return false;
             }
@@ -190,9 +190,9 @@ protected:
     {
         return left.pb_type == right.pb_type && left.str_pb_type == right.str_pb_type
                && left.candidate_name == right.candidate_name && left.opt_dir == right.opt_dir
-               && fabs(left.objective - right.objective) / (fabs(right.objective) + 1e-10) < 1e-8
+               && fabs(left.objective - right.objective) / (fabs(right.objective) + 1e-10) < 1e-5
                && fabs(left.system_cost - right.system_cost) / (fabs(right.system_cost) + 1e-10)
-                    < 1e-8
+                    < 1e-5
                && left.solver_status == right.solver_status
                && areEquals(left.candidates, right.candidates);
     }

@@ -156,8 +156,8 @@ protected:
     bool is_bilevel_check_all_ = false;
 
     std::vector<SubProblemNamesInCut> split_subproblem_data_pairs(
-      std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      int n_cuts);
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+      int n_cuts) const;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -179,6 +179,9 @@ protected:
                                                    const std::string& name);
     std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap>& kvp) const;
+    void SetBasisForSubproblem(const std::string& name,
+                               const std::vector<int>& rstatus,
+                               const std::vector<int>& cstatus);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
@@ -328,6 +331,7 @@ private:
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
+    int SetAggregation(int max_aggregation) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;
@@ -339,7 +343,7 @@ private:
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
-    WorkerMasterData FillWorkerMasterData() const;
+    void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     WorkerMasterPtr _master;

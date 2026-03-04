@@ -128,7 +128,6 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     benders = std::make_shared<BendersMpi>(bendersoptions,
                                            logger,
                                            writer,
-                                           *penv,
                                            *pworld,
                                            math_log_driver);
     benders->set_input_map(coupling_map);
@@ -174,7 +173,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     // get added constraint infos (coeff, sign & rhs)
     std::vector<int> mstart(1 + 1);
     auto n_elems = benders->MasterGetNElems();
-    auto nnz = master_variables.size();
+
     std::vector<int> mclind(n_elems);
     std::vector<double> matval(n_elems);
     std::vector<int> p_nels(1, 0);

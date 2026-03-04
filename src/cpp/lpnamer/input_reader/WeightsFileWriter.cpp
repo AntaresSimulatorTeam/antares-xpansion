@@ -59,12 +59,6 @@ void YearlyWeightsWriter::FillMpsWeightsMap(
     }
 }
 
-int YearlyWeightsWriter::GetYearFromMpsName(const std::string& file_name) const
-{
-    auto split_name = StringManip::split(StringManip::trim(file_name), '-');
-    return std::stoi(split_name[1]);
-}
-
 void YearlyWeightsWriter::DumpMpsWeightsToFile() const
 {
     auto file = xpansion_lp_dir_ / output_file_.filename().string();

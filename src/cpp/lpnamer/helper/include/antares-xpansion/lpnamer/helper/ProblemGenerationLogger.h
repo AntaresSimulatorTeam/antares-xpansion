@@ -1,12 +1,13 @@
 #ifndef __PROBLEMGENERATIONLOGGER_H__
 #define __PROBLEMGENERATIONLOGGER_H__
-#include <chrono>
+
 #include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <list>
 #include <memory>
+#include <mutex>
 #include <ostream>
 #include <set>
 #include <string>
@@ -117,13 +118,23 @@ public:
 
     const std::string& getContext() const;
 
-    ProblemGenerationLogger& operator()(const LogUtils::LOGLEVEL log_level)
+    ProblemGenerationLogger& operator()(const LogUtils::LOGLEVEL log_level, bool lock = false)
     {
+        std::unique_lock ulck(write_mutex_, std::defer_lock);
+        if (lock)
+        {
+            ulck.lock();
+        }
         return (*this) << log_level;
     }
 
-    ProblemGenerationLogger& operator()()
+    ProblemGenerationLogger& operator()(bool lock = false)
     {
+        std::unique_lock ulck(write_mutex_, std::defer_lock);
+        if (lock)
+        {
+            ulck.lock();
+        }
         return (*this) << PrefixMessage(log_level_, context_);
     }
 
@@ -140,6 +151,7 @@ public:
     ProblemGenerationLogger& operator<<(const T& t);
 
 private:
+    std::mutex write_mutex_;
     std::list<ProblemGenerationILoggerSharedPointer> loggers_;
     std::set<ProblemGenerationILoggerSharedPointer> enabled_loggers_;
     void update_enabled_logger();
