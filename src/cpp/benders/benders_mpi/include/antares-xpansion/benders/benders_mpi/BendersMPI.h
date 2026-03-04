@@ -130,3 +130,9 @@ protected:
                          const std::shared_ptr<SubproblemWorker>& worker) override;
     void UpdateMaxCriterionArea();
 };
+
+struct Entry
+{
+    const std::string* name = nullptr;
+    int vecPos = -1;
+};

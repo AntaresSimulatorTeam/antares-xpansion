@@ -357,7 +357,8 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
         *batch_contribution_in_gap = ComputeBatchContributionInGap(
           gathered_subproblem_map,
           batch_cuts_list[current_batch_id_].name_to_cut);
-        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].name_to_cut, gathered_subproblem_map);
+        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].name_to_cut,
+                                  gathered_subproblem_map);
     }
 }
 

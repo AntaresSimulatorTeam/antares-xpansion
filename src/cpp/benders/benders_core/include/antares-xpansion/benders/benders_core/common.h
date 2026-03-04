@@ -63,7 +63,6 @@ using mps_coupling_list = std::list<mps_coupling>;
 
 using SubProblemNamesInCut = std::vector<std::pair<std::string, int>>;
 
-
 struct Predicate
 {
     bool operator()(const PointPtr& lhs, const PointPtr& rhs) const
