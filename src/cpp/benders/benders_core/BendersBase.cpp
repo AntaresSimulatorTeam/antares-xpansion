@@ -1290,7 +1290,10 @@ void BendersBase::writeLastIterationSubproblemsSolution() const
 
     for (const auto& [name, worker]: sub_pblm_map)
     {
-        worker->_solver->write_sol(dirname / std::filesystem::path(name).replace_extension());
+        auto filename = std::filesystem::path(name).replace_extension();
+        auto filename_with_it_num = std::filesystem::path(filename.string() + "_"
+                                                          + std::to_string(_data.it));
+        worker->_solver->write_sol(dirname / filename_with_it_num);
     }
 }
 

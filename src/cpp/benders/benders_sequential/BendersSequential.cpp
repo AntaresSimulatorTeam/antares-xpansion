@@ -125,6 +125,11 @@ void BendersSequential::Run()
         BuildCut();
         _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
+        if (_data.it == 1)
+        {
+            writeLastIterationSubproblemsSolution();
+        }
+
         compute_ub();
         update_best_ub();
 
@@ -142,7 +147,7 @@ void BendersSequential::Run()
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
-    writeLastIterationSubproblemsSolution();
+    // writeLastIterationSubproblemsSolution();
 }
 
 void BendersSequential::launch()

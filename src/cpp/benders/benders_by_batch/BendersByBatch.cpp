@@ -103,8 +103,8 @@ void BendersByBatch::Run()
         CloseCsvFile();
         EndWritingInOutputFile();
         write_basis();
-        writeLastIterationSubproblemsSolution();
     }
+    writeLastIterationSubproblemsSolution();
 }
 
 void BendersByBatch::MasterLoop()

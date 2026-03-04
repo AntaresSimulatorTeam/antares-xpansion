@@ -414,6 +414,10 @@ void BendersMpi::Run()
         if (!exception_raised_)
         {
             step_2_solve_subproblems_and_build_cuts();
+            if (_data.it == 1)
+            {
+                writeLastIterationSubproblemsSolution();
+            }
         }
 
         if (!exception_raised_)
@@ -436,8 +440,8 @@ void BendersMpi::Run()
         CloseCsvFile();
         EndWritingInOutputFile();
         write_basis();
-        writeLastIterationSubproblemsSolution();
     }
+    // writeLastIterationSubproblemsSolution();
     _world.barrier();
 }
 
