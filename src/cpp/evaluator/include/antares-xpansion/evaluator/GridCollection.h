@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
+#include "antares-xpansion/evaluator/ReservoirManagement.h"
 
 /// @brief key area name, value constraint map
 using Week = int;

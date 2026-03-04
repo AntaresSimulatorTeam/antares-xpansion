@@ -10,15 +10,17 @@ namespace PlainData
 
 struct SubProblemData
 {
-    double subproblem_cost;
-    Point var_name_and_subgradient;
-    std::vector<double> criteria;
+    double subproblem_cost{0.0};
+    std::map<std::string, double> dual{};
+
+    Point var_name_and_subgradient{};
+    std::vector<double> criteria{};
     // no-supplied energy
-    std::vector<double> patterns_values;
-    double single_subpb_costs_under_approx;
-    double subproblem_timer;
-    int simplex_iter;
-    int lpstatus;
+    std::vector<double> patterns_values{};
+    double single_subpb_costs_under_approx{0.0};
+    double subproblem_timer{0.0};
+    int simplex_iter{0};
+    int lpstatus{0};
     friend class boost::serialization::access;
 
     template<class Archive>

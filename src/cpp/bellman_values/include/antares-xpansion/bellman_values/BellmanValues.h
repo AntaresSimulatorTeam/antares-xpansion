@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
+#include "antares-xpansion/evaluator/GridEvaluator.h"
 
 /// @brief Class to compute Bellman values
 class BellmanValues

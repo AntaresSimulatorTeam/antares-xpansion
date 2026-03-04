@@ -1,5 +1,5 @@
 
-#include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
+#include "antares-xpansion/evaluator/ReservoirManagement.h"
 
 #include <algorithm>
 #include <filesystem>
@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "antares-xpansion/grid_evaluator/Interpolator.h"
+#include "antares-xpansion/evaluator/Interpolator.h"
 
 /// @brief Load a reservoir from path of the study and the name of the area
 /// @param path_to_input path of the study

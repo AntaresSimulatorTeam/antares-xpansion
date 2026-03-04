@@ -1,5 +1,5 @@
 
-#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
+#include "antares-xpansion/evaluator/GridEvaluator.h"
 
 #include <fmt/core.h>
 #include <regex>
@@ -11,9 +11,7 @@
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/helpers/Timer.h"
 
-std::atomic<int> totalSimplexIter = 0;     ///< Total number of simplex iterations
-std::atomic<double> totalSubPbTimer = 0;   ///< Total time spent solving subproblems
-std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subproblems
+using namespace PlainData;
 
 /// @brief Constructor
 /// @param logger Logger
@@ -28,12 +26,8 @@ GridEvaluator::GridEvaluator(
   std::string solverName,
   std::filesystem::path studyDir,
   int nbThreads):
-    logger{std::move(logger)},
-    problems(problems),
-    gridDefinition(gridDefinition),
-    solverName(solverName),
-    studyDir(studyDir),
-    nbThreads(nbThreads)
+    Evaluator(logger, problems, solverName, studyDir, nbThreads),
+    gridDefinition(gridDefinition)
 {
 }
 
@@ -189,52 +183,6 @@ std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vect
     return reordered;
 }
 
-/// @brief Set the constraints RHS values for a given subproblem
-/// @param rhsValues The RHS values to set
-/// @param subProblem The subproblem
-void GridEvaluator::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
-                                            std::shared_ptr<Problem> subProblem)
-{
-    for (const auto& [constraintName, value]: rhsValues)
-    {
-        subProblem->fix_rhs_to(constraintName, value);
-    }
-}
-
-/// @brief Get the name of the constraint in the mps file
-/// @param id ID of the subproblem
-/// @param area The name of the area
-/// @param constraint The name of the constraint
-/// @return The name of the constraint in the mps file
-std::string GridEvaluator::GetConstraintName(const Antares::Solver::WeeklyProblemId id,
-                                             const std::string& area,
-                                             const std::string& constraint) const
-{
-    return fmt::format("{}::area<{}>::week<{}>", constraint, area, id.week - 1);
-}
-
-/// @brief Runs the ProcessSubproblem method in parallel for each subproblem
-void GridEvaluator::Run()
-{
-    // Limiter TBB au nombre de cœurs physiques
-    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
-
-    tbb::parallel_for_each(problems.begin(),
-                           problems.end(),
-                           [this](auto& kv)
-                           {
-                               auto& [yearWeekId, subPb] = kv;
-                               logger->display_message((std::stringstream()
-                                                        << "Processing subproblem : year "
-                                                        << yearWeekId.year << " week "
-                                                        << yearWeekId.week)
-                                                         .str(),
-                                                       LogUtils::LOGLEVEL::INFO,
-                                                       GRID_EVALUATOR_LOGGER_CONTEXT);
-                               ProcessSubproblem(yearWeekId, subPb);
-                           });
-}
-
 /// @brief Process a single subproblem
 /// @details this function generates all possible combinations of right-hand side (RHS)
 /// constraint
@@ -275,69 +223,27 @@ void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId sub
         Timer timer;
         SetConstraintsRHSValues(subPbCombo, subProblem);
         totalPbModifTimer += timer.elapsed();
-        GridPointResult res = SolveSubproblem(subProblem, subPbCombo);
+        SubProblemData res = SolveSubproblem(subProblem);
+
+        std::vector<double> dualValuesCst(subProblem->get_nrows());
+        subProblem->get_lp_sol(NULL, dualValuesCst.data(), NULL);
+        for (const auto& [constraintName, value]: subPbCombo)
+        {
+            res.dual.emplace(constraintName,
+                             dualValuesCst[subProblem->get_row_index(constraintName)]);
+        }
 
         variationDeNiveauxDeStockResults.insert({subPbCombo, subProblemId.week, subProblemId.year},
                                                 res);
-        logger->display_message((std::stringstream() << "Cost: " << res.cost).str(),
+        logger->display_message((std::stringstream() << "Cost: " << res.subproblem_cost).str(),
                                 LogUtils::LOGLEVEL::DEBUG,
                                 GRID_EVALUATOR_LOGGER_CONTEXT);
     }
 }
 
-/// @brief Solve the subproblem and return the cost
-/// @param problem The subproblem to solve
-/// @return The data of the solved subproblem : cost and dualValues
-GridPointResult GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem, Point subPbCombo)
-{
-    PlainData::SubProblemData subproblem_data;
-    GridPointResult gridPointRes;
-    Timer subproblem_timer;
-    int status = problem->solve_lp();
-    if (status != 0)
-    {
-        logger->display_message("ERROR: status for this problem was not 0. MPS file saved to disk "
-                                "in output folder for analysis.",
-                                LogUtils::LOGLEVEL::ERR,
-                                GRID_EVALUATOR_LOGGER_CONTEXT);
-        std::filesystem::path problemFileName("illformed_problem_year_"
-                                              + std::to_string(problem->mc_year) + "_week_"
-                                              + std::to_string(problem->week) + ".mps");
-        problem->write_prob_mps(studyDir / problemFileName);
-        logger->display_message("File saved at: " + studyDir.string(),
-                                LogUtils::LOGLEVEL::ERR,
-                                GRID_EVALUATOR_LOGGER_CONTEXT);
-    }
-
-    std::vector<double> dualValues(problem->get_ncols());
-    problem->get_lp_sol(NULL, dualValues.data(), NULL);
-
-    gridPointRes.cost = problem->get_lp_value();
-    subproblem_data.subproblem_cost = gridPointRes.cost;
-
-    subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-
-    for (const auto& [constraintName, value]: subPbCombo)
-    {
-        gridPointRes.dual.emplace(constraintName,
-                                  dualValues[problem->get_row_index(constraintName)]);
-    }
-
-    int nbSimplexIter = problem->get_splex_num_of_ite_last();
-    logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
-                                                 << subproblem_data.subproblem_timer << " seconds")
-                              .str(),
-                            LogUtils::LOGLEVEL::DEBUG,
-                            GRID_EVALUATOR_LOGGER_CONTEXT);
-    totalSimplexIter += nbSimplexIter;
-    totalSubPbTimer += subproblem_data.subproblem_timer;
-
-    return gridPointRes;
-}
-
 /// @brief Launch the Stock level variation computation
 /// @return The stock level variation results
-std::map<Output::PointWeekScenarioKey, GridPointResult> GridEvaluator::ComputeCostsAndDuals()
+std::map<Output::PointWeekScenarioKey, SubProblemData> GridEvaluator::ComputeCostsAndDuals()
 {
     logger->display_message((std::stringstream() << "Launching Stock level variation").str(),
                             LogUtils::LOGLEVEL::INFO,
