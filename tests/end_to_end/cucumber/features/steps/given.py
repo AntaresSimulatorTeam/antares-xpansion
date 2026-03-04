@@ -1,4 +1,5 @@
 import fileinput
+import json
 import re
 import shutil
 from pathlib import Path
@@ -18,10 +19,22 @@ def study_path_is(context, string):
 def set_solver(context, string):
     context.solver = string
     match = False
-    with fileinput.FileInput(str(context.tmp_study / "user" / "expansion" / "settings.ini"), inplace=True) as file:
+    with fileinput.FileInput(
+        str(context.tmp_study / "user" / "expansion" / "settings.ini"), inplace=True
+    ) as file:
         for line in file:
-            match = match or re.search(r'solver\s*=.*', line)
-            print(re.sub(r'solver\s*=.*', f'solver= {string}', line), end='')
+            match = match or re.search(r"solver\s*=.*", line)
+            print(re.sub(r"solver\s*=.*", f"solver= {string}", line), end="")
     if not match:
-        with open(context.tmp_study / "user/expansion/settings.ini", 'a') as file:
-            file.write(f'\nsolver = {string}')
+        with open(context.tmp_study / "user/expansion/settings.ini", "a") as file:
+            file.write(f"\nsolver = {string}")
+
+
+@given("the batch size is {batch_size}")
+def set_batch_size(context, batch_size):
+    context.batch_size = batch_size
+    with open(str(context.tmp_study / "options.json"), "r") as file:
+        options_content = json.load(file)
+    options_content["BATCH_SIZE"] = int(batch_size)
+    with open(str(context.tmp_study / "options.json"), "w") as file:
+        json.dump(options_content, file, indent=4)

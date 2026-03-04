@@ -20,6 +20,7 @@ struct SubProblemData
     int simplex_iter;
     int lpstatus;
     friend class boost::serialization::access;
+    double contribution_in_gap;
 
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
@@ -32,6 +33,7 @@ struct SubProblemData
         ar & subproblem_timer;
         ar & simplex_iter;
         ar & lpstatus;
+        ar & contribution_in_gap;
     }
 };
 } // namespace PlainData

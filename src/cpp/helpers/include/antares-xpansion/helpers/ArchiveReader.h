@@ -47,7 +47,7 @@ public:
     void LoadEntriesPath();
     std::vector<std::filesystem::path> GetEntriesPathWithExtension(const std::string& ext);
 
-    void* InternalPointer() const
+    void* InternalPointer() const override
     {
         return pmz_zip_reader_instance_;
     }
