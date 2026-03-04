@@ -5,5 +5,5 @@ dependencies:
   - pip
   - pip:
       - -r requirements-tests.txt
-  - fico-xpress::xpress=9.2.12
-  - fico-xpress::xpresslibs=9.2.12
+  - fico-xpress::xpress=9.8
+  - fico-xpress::xpresslibs=9.8
