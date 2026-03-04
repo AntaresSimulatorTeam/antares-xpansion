@@ -50,25 +50,22 @@ ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(bool useOp
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ConfigurationManager::ConfigDirectories directories,
   Logger logger,
-  const std::string& solverName,
+  std::shared_ptr<ProblemManager> problemManager,
   const WaterValueComputationMode& computationMode,
   unsigned int startWeek,
-  unsigned int endWeek,
-  bool writePbFiles,
-  const std::string& problemFormat):
+  unsigned int endWeek):
     directories(directories),
     logger(std::move(logger)),
+    problemManager(problemManager),
     computationMode(computationMode),
     startWeek(startWeek),
-    endWeek(endWeek),
-    writePbFiles(writePbFiles),
-    problemFormat(problemsFormatFromString(problemFormat))
+    endWeek(endWeek)
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
-    optOptions.firstOptimOptions.solverName = solverName;
-    optOptions.secondOptimOptions.solverName = solverName;
+    optOptions.firstOptimOptions.solverName = problemManager->solverName();
+    optOptions.secondOptimOptions.solverName = problemManager->solverName();
 
-    if (solverName == SolverConfig("xpress"))
+    if (problemManager->solverName() == SolverConfig("xpress"))
     {
         optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
         optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
@@ -94,16 +91,19 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
     // auto solver_log_manager = SolverLogManager(directories.simulation_dir / "solver.log");
     // problems opening too many log files, and not writing anything yet.
     // for now: no log files passed to the problems.
-    auto solver_log_manager = SolverLogManager();
+    // auto solver_log_manager = SolverLogManager();
     for (const auto& [pbId, _]: results.weeklyProblems)
     {
-        auto problem = adapter.provideProblem(solverName == SolverConfig("xpress") ? "xpress"
-                                                                                   : "CBC",
-                                              solver_log_manager,
+        auto problem = adapter.provideProblem(problemManager->solverName() == SolverConfig("xpress")
+                                                ? "xpress"
+                                                : "CBC",
+                                              problemManager->solverLogManager(),
                                               pbId);
-        problems[pbId] = problem;
+        // problems[pbId] = problem;
+        this->problemManager->setProblem(pbId, problem);
     }
 
+    auto problems = this->problemManager->getProblems();
     if (!problems.empty())
     {
         this->startWeek = std::max(startWeek, problems.begin()->first.week);
@@ -177,19 +177,21 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
     std::filesystem::create_directory(outputMpsPath);
+    auto problems = problemManager->getProblemIds();
     tbb::parallel_for_each(
       problems.begin(),
       problems.end(),
-      [&](auto& pb)
+      [&](auto& pbId)
       {
-          auto pbId = pb.first;
+          //   auto pbId = pb.first;
           if (startWeek <= pbId.week && pbId.week <= endWeek)
           {
               // copy of the problem needed if gridCollection contains multiple
               // gridDefinitions, and for multistock
-              std::shared_ptr<Problem> problem = std::make_shared<Problem>(*(pb.second->clone()));
-              std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
-                                   + std::to_string(pbId.week) + "--optim-nb-1";
+              // make_shared will be wrong about the counter here, resulting in a memory leak
+              // use shared_ptr instead
+              std::shared_ptr<Problem> problem = problemManager->getProblemCloneFromId(pbId);
+              std::string pbName = problemManager->getPbNameFromId(pbId);
               logger->display_message("Modifying problem: " + pbName,
                                       LogUtils::LOGLEVEL::DEBUG,
                                       logger->CONTEXT);
@@ -199,20 +201,10 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
                                       logger->CONTEXT);
               modifiedProblems[pbId] = problem;
 
-              if (writePbFiles)
+              if (problemManager->writePbFiles())
               {
                   logger->display_message("Writing problem " + pbName + " to disk...");
-                  switch (problemFormat)
-                  {
-                  case ProblemsFormat::MPS_FILE:
-                      problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
-                      break;
-                  case ProblemsFormat::OPTIMIZED:
-                      problem->save_prob(outputMpsPath / (pbName + ".svf"));
-                      break;
-                      // potential errors are handled by
-                      // problemsFormatFromString in constructor
-                  }
+                  problemManager->saveProblemToFile(pbId, problem, outputMpsPath);
               }
           }
       });

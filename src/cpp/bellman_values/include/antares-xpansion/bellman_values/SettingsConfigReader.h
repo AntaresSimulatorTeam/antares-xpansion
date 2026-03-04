@@ -39,10 +39,16 @@ public:
         return getValueFromKey<std::string>(verbosityKey);
     }
 
+    bool getCacheProblems() const
+    {
+        return getValueFromKey<bool>(cacheProblemsKey);
+    }
+
 private:
     void emplaceAllElements() override;
 
     // keys from YAML file:
     inline static const std::string solverKey = "solver", keepMpsKey = "keep_mps",
-                                    problemFormatKey = "problem_format", verbosityKey = "verbosity";
+                                    problemFormatKey = "problem_format", verbosityKey = "verbosity",
+                                    cacheProblemsKey = "cache_problems";
 };

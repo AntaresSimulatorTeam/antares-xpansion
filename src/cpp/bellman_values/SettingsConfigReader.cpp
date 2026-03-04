@@ -8,4 +8,5 @@ void SettingsConfigReader::emplaceAllElements()
     elements_.emplace(keepMpsKey, YAMLElement(keepMpsKey, false));
     elements_.emplace(problemFormatKey, YAMLElement(problemFormatKey, "OPTIMIZED"));
     elements_.emplace(verbosityKey, YAMLElement(verbosityKey, "INFO"));
+    elements_.emplace(cacheProblemsKey, YAMLElement(cacheProblemsKey, false));
 }

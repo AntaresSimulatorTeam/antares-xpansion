@@ -39,6 +39,7 @@ target_link_libraries(problem_generation_main
         ${PROJECT_NAME}::grid_evaluator_lib
         Antares::antares-solver-simulation
         ${PROJECT_NAME}::core
+        ${PROJECT_NAME}::bellman_values_lib
 )
 
 target_include_directories(problem_generation_main

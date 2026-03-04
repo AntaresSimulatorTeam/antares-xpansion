@@ -265,7 +265,13 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
       .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
+    auto problemManager = std::make_shared<ProblemManager>(solverName,
+                                                           "MPS",
+                                                           false,
+                                                           true,
+                                                           config_dirs.simulation_dir
+                                                             / "initial_problems");
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, problemManager);
     auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
@@ -305,7 +311,13 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
       .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
+    auto problemManager = std::make_shared<ProblemManager>(solverName,
+                                                           "MPS",
+                                                           false,
+                                                           true,
+                                                           config_dirs.simulation_dir
+                                                             / "initial_problems");
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, problemManager);
     auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
@@ -346,7 +358,13 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
       .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
+    auto problemManager = std::make_shared<ProblemManager>(solverName,
+                                                           "MPS",
+                                                           false,
+                                                           true,
+                                                           config_dirs.simulation_dir
+                                                             / "initial_problems");
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, problemManager);
     auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
@@ -381,10 +399,16 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
       .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
+    auto problemManager = std::make_shared<ProblemManager>(solverNameMultistock,
+                                                           "MPS",
+                                                           false,
+                                                           true,
+                                                           config_dirs.simulation_dir
+                                                             / "initial_problems");
     ProblemGenerationForWaterValueCalculation pbg(
       config_dirs,
       logger,
-      solverNameMultistock,
+      problemManager,
       ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
         SEQUENTIAL_UPDATE_TRAJECTORY);
 
@@ -463,10 +487,16 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
       .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
+    auto problemManager = std::make_shared<ProblemManager>(solverNameMultistock,
+                                                           "MPS",
+                                                           false,
+                                                           true,
+                                                           config_dirs.simulation_dir
+                                                             / "initial_problems");
     ProblemGenerationForWaterValueCalculation pbg(
       config_dirs,
       logger,
-      solverNameMultistock,
+      problemManager,
       ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
         SEQUENTIAL_UPDATE_TRAJECTORY);
 
@@ -548,10 +578,16 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
       .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
+    auto problemManager = std::make_shared<ProblemManager>(solverNameMultistock,
+                                                           "MPS",
+                                                           false,
+                                                           true,
+                                                           config_dirs.simulation_dir
+                                                             / "initial_problems");
     ProblemGenerationForWaterValueCalculation pbg(
       config_dirs,
       logger,
-      solverNameMultistock,
+      problemManager,
       ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
         SEQUENTIAL_UPDATE_TRAJECTORY);
 

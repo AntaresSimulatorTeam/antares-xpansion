@@ -5,6 +5,7 @@
 
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
 #include "antares-xpansion/bellman_values/DynamicProgrammingConfigReader.h"
+#include "antares-xpansion/bellman_values/ProblemManager.h"
 #include "antares-xpansion/bellman_values/SettingsConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
@@ -131,6 +132,7 @@ int main(int argc, char** argv)
         bool writePbFiles = scr.getKeepMps();
         const std::string problemFormat = scr.getProblemFormat();
         const std::string verbosity = scr.getVerbosity();
+        const bool cacheProblems = scr.getCacheProblems();
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
@@ -162,19 +164,24 @@ int main(int argc, char** argv)
                                                 dpcr.getForceFinalLevel(),
                                                 dpcr.getFinalLevel());
 
+        auto problemManager = std::make_shared<ProblemManager>(solverName,
+                                                               problemFormat,
+                                                               writePbFiles,
+                                                               cacheProblems,
+                                                               directories.simulation_dir
+                                                                 / "initial_problems");
+
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message(
           "Generating problems (starting time: " + formatTime(startProblemGeneration) + ")");
         ProblemGenerationForWaterValueCalculation pbg(
           directories,
           logger,
-          solverName,
+          problemManager,
           ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
             useOptimalTrajectory), // not used in grid_evaluator
           startWeek,
-          endWeek,
-          writePbFiles,
-          problemFormat);
+          endWeek);
         auto endProblemGeneration = std::chrono::system_clock::now();
         logger->display_message("Problems generated (end time: " + formatTime(endProblemGeneration)
                                 + ")");

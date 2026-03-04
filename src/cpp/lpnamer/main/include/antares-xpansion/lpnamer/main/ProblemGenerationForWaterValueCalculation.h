@@ -12,6 +12,7 @@
 
 #include "ConfigurationManager.h"
 #include "ProblemGenerationOptions.h"
+#include "antares-xpansion/bellman_values/ProblemManager.h"
 #include "antares-xpansion/core/ProblemFormat.h"
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
@@ -35,13 +36,11 @@ public:
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
       Logger logger,
-      const std::string& solverName = "xpress",
+      std::shared_ptr<ProblemManager> problemManager,
       const WaterValueComputationMode& computationMode = WaterValueComputationMode::
         SEQUENTIAL_IGNORE_TRAJECTORY,
       unsigned int startWeek = 1,
-      unsigned int endWeek = 52,
-      bool savePbFiles = false,
-      const std::string& problemFormat = "OPTIMIZED");
+      unsigned int endWeek = 52);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition,
@@ -98,12 +97,12 @@ private:
 
     ConfigurationManager::ConfigDirectories
       directories; /// Directories, used for the original problems generation
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-      problems;                   /// Problems before any modification
-    unsigned int startWeek;       /// Start week of the problems to take into account
-    unsigned int endWeek;         /// End week of the problems to take into account
-    bool writePbFiles;            /// Flag to writePbFiles to memory
-    ProblemsFormat problemFormat; /// Problem format to be saved
+    // std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+    //   problems;             /// Problems before any modification
+    unsigned int startWeek; /// Start week of the problems to take into account
+    unsigned int endWeek;   /// End week of the problems to take into account
+    std::shared_ptr<ProblemManager> problemManager; /// The manager taking care of reading problems
+                                                    /// from disk, problem formats, etc.
     WaterValueComputationMode computationMode = WaterValueComputationMode::
       SEQUENTIAL_IGNORE_TRAJECTORY; /// Computation mode for water values
     Logger logger;                  /// Logger used
