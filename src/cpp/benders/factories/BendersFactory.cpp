@@ -97,7 +97,6 @@ std::set<std::string> BendersFactory::ReadAreaFile()
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                       const CouplingMap& coupling_map) -> BendersEnvironment
 {
-
     std::unique_ptr<BendersBase> benders;
     switch (method_)
     {
@@ -123,14 +122,11 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                    *world_,
                                                    dependencies_.math_log_driver);
         break;
-
-    
-
     }
 
     std::shared_ptr<BendersPlugin> benders_plugin(
-    benders_plugin_factory_->CreatePlugin(coupling_map, false, world_));
-        benders->SetPlugin(benders_plugin);
+      benders_plugin_factory_->CreatePlugin(coupling_map, false, world_));
+    benders->SetPlugin(benders_plugin);
 
     benders->set_input_map(coupling_map);
     auto criterion_input_holder = ProcessCriterionInput();

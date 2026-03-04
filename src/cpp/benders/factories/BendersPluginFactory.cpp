@@ -14,6 +14,6 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
                                                                   bool micro_iter,
                                                                   boost::mpi::communicator* world)
 {
-    std::shared_ptr<BendersPlugin> result = std::make_shared<NoOperationPlugin>() ; 
-    return result ;
+    std::shared_ptr<BendersPlugin> result = std::make_shared<NoOperationPlugin>();
+    return result;
 }
