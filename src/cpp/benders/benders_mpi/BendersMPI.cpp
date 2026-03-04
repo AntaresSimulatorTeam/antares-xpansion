@@ -413,7 +413,7 @@ void BendersMpi::Run()
 
         step_1_solve_master();
 
-        // benders_plugin_->OnBendersMasterIterationEnd();
+        benders_plugin_->OnBendersMasterIterationEnd();
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
