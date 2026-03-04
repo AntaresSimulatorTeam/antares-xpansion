@@ -613,7 +613,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
 
-    if (benders_plugin_)
+    if (benders_plugin_) //fix 
         benders_plugin_->OnBendersMicroIterationStart();
 
     worker->solve(subproblem_data.lpstatus,
