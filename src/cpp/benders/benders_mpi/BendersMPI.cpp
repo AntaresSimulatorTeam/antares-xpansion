@@ -409,11 +409,13 @@ void BendersMpi::Run()
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
-        benders_plugin_->OnBendersMasterIterationStart();
+        if (benders_plugin_)
+            benders_plugin_->OnBendersMasterIterationStart();
 
         step_1_solve_master();
 
-        benders_plugin_->OnBendersMasterIterationEnd();
+        if (benders_plugin_)
+            benders_plugin_->OnBendersMasterIterationEnd();
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
@@ -437,6 +439,7 @@ void BendersMpi::Run()
             SaveCurrentBendersData();
         }
 
+    if (benders_plugin_)        
         benders_plugin_->OnBendersMasterIterationEnd();
     }
     if (_world.rank() == rank_0)
@@ -447,7 +450,8 @@ void BendersMpi::Run()
     }
     _world.barrier();
 
-    benders_plugin_->OnBendersIterationEnd();
+    if (benders_plugin_)
+        benders_plugin_->OnBendersIterationEnd();
 }
 
 void BendersMpi::PreRunInitialization()
@@ -481,12 +485,14 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
-    benders_plugin_->OnBendersStart();
+    if (benders_plugin_)
+        benders_plugin_->OnBendersStart();
 
     Run();
     _world.barrier();
 
-    benders_plugin_->OnBendersEnd();
+    if (benders_plugin_)
+        benders_plugin_->OnBendersEnd();
 
     post_run_actions();
 

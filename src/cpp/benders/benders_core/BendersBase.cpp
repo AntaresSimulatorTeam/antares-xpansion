@@ -613,7 +613,8 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
 
-    benders_plugin_->OnBendersMicroIterationStart();
+    if (benders_plugin_)
+        benders_plugin_->OnBendersMicroIterationStart();
 
     worker->solve(subproblem_data.lpstatus,
                   _options.OUTPUTROOT,
@@ -623,7 +624,8 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
 
-    benders_plugin_->OnBendersMicroIterationEnd();
+    if (benders_plugin_)
+        benders_plugin_->OnBendersMicroIterationEnd();
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
