@@ -43,6 +43,7 @@ class XpansionSettingsReader:
     def __init__(self, study_path: Path, xpansion_defaults: XpansionConfigConstants):
         self.path = study_path
         self._config_defaults = xpansion_defaults
+        self.logger = step_logger(__name__, __class__.__name__)
 
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()

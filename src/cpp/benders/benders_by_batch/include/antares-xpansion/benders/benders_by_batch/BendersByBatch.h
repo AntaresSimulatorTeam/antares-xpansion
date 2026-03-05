@@ -13,8 +13,9 @@ public:
     ~BendersByBatch() override = default;
     void Run() override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
-                  double* sum,
-                  std::vector<double>& external_loop_criterion_current_batch);
+                  double* batch_contribution_in_gap,
+                  std::vector<double>& external_loop_criterion_current_batch,
+                  int& local_solved);
 
     std::string BendersName() const override
     {
@@ -30,8 +31,16 @@ protected:
 
 private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
-                          const std::vector<std::string>& batch_sub_problems,
-                          double* batch_subproblems_costs_contribution_in_gap_per_proc);
+                          const std::vector<std::string>& batch_sub_problems);
+    double ComputeBatchContributionInGap(
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+      const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
+    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
+                               const std::vector<std::string>& batch_sub_problems);
+    Timer calculate_subproblem_contribution(const std::string& name,
+                                            PlainData::SubProblemData& subproblem_data);
+    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
+                              const std::vector<std::string>& batch_sub_problems);
     BatchCollection batch_collection_;
     void MasterLoop();
     void SolveBatches();
@@ -41,7 +50,6 @@ private:
     double Gap() const;
     size_t number_of_batch_;
     unsigned current_batch_id_;
-    int number_of_sub_problem_resolved_;
     double remaining_epsilon_;
     double cumulative_subproblems_timer_per_iter_;
     bool misprice_;

@@ -8,7 +8,7 @@
 
 #include <antares/api/solver.h>
 
-#include "antares-xpansion/grid_evaluator/Interpolator.h"
+#include "antares-xpansion/evaluator/Interpolator.h"
 
 BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
                              const ReservoirManagement& reservoirManagement,
@@ -91,7 +91,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 
     for (const auto& [key, data]: variationDeNiveauxDeStockData)
     {
-        costs[{key.scenario - 1, key.week - 1}].push_back(data.cost);
+        costs[{key.scenario - 1, key.week - 1}].push_back(data.subproblem_cost);
     }
 
     auto scenarios = getYears(costs);

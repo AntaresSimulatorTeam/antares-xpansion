@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
+#include "antares-xpansion/evaluator/ReservoirManagement.h"
 #include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 

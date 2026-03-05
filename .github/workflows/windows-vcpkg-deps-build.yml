@@ -44,7 +44,7 @@ jobs:
       - name: Set-up Xpress with pip
         shell: bash
         run: |
-          python -m pip install --no-cache-dir "xpress==9.2.12"
+          python -m pip install --no-cache-dir "xpress~=9.8"
           SITE_PACKAGE="${{ env.pythonLocation }}\Lib\site-packages"
           XPRESS_DIR="$SITE_PACKAGE\xpresslibs"
           cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
@@ -76,7 +76,7 @@ jobs:
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-windows-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -91,7 +91,7 @@ jobs:
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-windows-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}

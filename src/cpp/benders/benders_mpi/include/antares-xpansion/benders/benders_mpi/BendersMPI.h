@@ -1,15 +1,11 @@
 #pragma once
 
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"
-#include "antares-xpansion/benders/benders_core/WorkerMaster.h"
-#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 #include "common_mpi.h"
 
 /*!
@@ -23,7 +19,6 @@ public:
     BendersMpi(const BendersBaseOptions& options,
                std::shared_ptr<ILogger> logger,
                std::shared_ptr<Output::OutputWriter> writer,
-               mpi::environment& env,
                mpi::communicator& world,
                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
@@ -41,6 +36,9 @@ protected:
     void Run() override;
     void InitializeProblems() override;
     void BroadcastXCut();
+    void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
+    void SetSubproblemDataCostAndSimplexIter(
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     mpi::communicator& _world;
 
@@ -49,7 +47,6 @@ private:
     void step_2_solve_subproblems_and_build_cuts();
     void step_4_update_best_solution(int rank);
 
-    void master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map);
     SubProblemDataMap get_subproblem_cut_package();
 
     void solve_master_and_create_trace();
@@ -63,8 +60,6 @@ private:
     void write_exception_message(const std::exception& ex) const;
 
     void check_if_some_proc_had_a_failure(int success);
-
-    mpi::environment& _env;
 
 protected:
     [[nodiscard]] bool shouldParallelize() const final

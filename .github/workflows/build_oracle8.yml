@@ -79,7 +79,7 @@ jobs:
           submodules: true
 
       - name: Setup Python environment using conda
-        uses: conda-incubator/setup-miniconda@v3.2.0
+        uses: conda-incubator/setup-miniconda@v3.3.0
         with:
           auto-update-conda: false
           activate-environment: xpansion-tests
@@ -96,7 +96,7 @@ jobs:
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
-          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
+          ln -s $XPRESS_DIR/lib/libxprs.so.46 $XPRESS_DIR/lib/libxprs.so
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -120,7 +120,7 @@ jobs:
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ env.VCPKG_CACHE_DIR }}
           key: vcpkg-cache-oracle8-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -160,7 +160,7 @@ jobs:
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ env.VCPKG_CACHE_DIR }}
           key: vcpkg-cache-oracle8-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -179,7 +179,7 @@ jobs:
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
@@ -191,7 +191,7 @@ jobs:
           antares-xpansion-version: ${{needs.versions.outputs.antares-xpansion-version}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
@@ -225,7 +225,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -240,13 +240,13 @@ jobs:
     steps:
 
       - name: Download Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .

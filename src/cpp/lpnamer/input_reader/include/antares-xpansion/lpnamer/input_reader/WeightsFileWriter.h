@@ -38,7 +38,6 @@ private:
     std::string solver_name_;
     std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
     void FillMpsWeightsMap(const std::vector<std::pair<int, ProblemData>>& problems_and_data);
-    int GetYearFromMpsName(const std::string& file_name) const;
     void DumpMpsWeightsToFile() const;
 };
 #endif // SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H

@@ -3,7 +3,7 @@ FROM antaresrte/xpansion-centos7:1.1.3
 # Métadonnées
 LABEL maintainer="AntaresSimulatorTeam"
 LABEL description="Antares Xpansion build environment with dependencies"
-LABEL version="1.1.0"
+LABEL version="1.1.1"
 
 # Arguments de build avec valeurs par défaut
 ARG BRANCH=develop
@@ -128,7 +128,7 @@ RUN \
       export XPRESSDIR=$XPRESS_DIR && \
       export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
       echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
-      ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
+      ln -s $XPRESS_DIR/lib/libxprs.so.46 $XPRESS_DIR/lib/libxprs.so && \
       export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
       pushd tests/end_to_end && \
       behave --tags "not @flaky and not @noci"  cucumber/features --no-capture --no-capture-stderr --format pretty && \

@@ -9,7 +9,7 @@
 #include "antares-xpansion/bellman_values/SettingsConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
-#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
+#include "antares-xpansion/evaluator/GridEvaluator.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
@@ -58,7 +58,7 @@ void write_joined(std::ostream& os, R&& r, std::string_view sep)
 
 void saveCostsAndDuals(const std::filesystem::path& path,
                        const GridDefinition grid,
-                       const std::map<Output::PointWeekScenarioKey, GridPointResult>& values,
+                       const std::map<Output::PointWeekScenarioKey, SubProblemData>& values,
                        const Logger& logger)
 {
     std::ofstream file(path);
@@ -92,12 +92,12 @@ void saveCostsAndDuals(const std::filesystem::path& path,
                  ",");
     file << '\n';
 
-    for (const auto& [pointScenarioWeek, gridPointRes]: values)
+    for (const auto& [pointScenarioWeek, supPbData]: values)
     {
         file << pointScenarioWeek.scenario << "," << pointScenarioWeek.week << ",";
         write_joined(file, pointScenarioWeek.rhsValues | std::views::values, ",");
-        file << "," << gridPointRes.cost << ",";
-        write_joined(file, gridPointRes.dual | std::views::values, ",");
+        file << "," << supPbData.subproblem_cost << ",";
+        write_joined(file, supPbData.dual | std::views::values, ",");
         file << '\n';
     }
 }
@@ -209,8 +209,8 @@ int main(int argc, char** argv)
             auto res = GridEvaluator(logger,
                                      problems,
                                      grid,
-                                     solverName,
                                      directories.simulation_dir,
+                                     solverName,
                                      nbThreads)
                          .ComputeCostsAndDuals();
             std::string fileName = "gridPointsValues_" + std::to_string(grid.gridID) + ".csv";
