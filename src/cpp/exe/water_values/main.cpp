@@ -318,8 +318,8 @@ int main(int argc, char** argv)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverName,
                                            directories.simulation_dir,
+                                           solverName,
                                            nbThreads);
 
             logger->display_message("Instantiating BellmanValues",

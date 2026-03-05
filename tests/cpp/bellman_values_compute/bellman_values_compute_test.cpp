@@ -153,7 +153,7 @@ protected:
     struct GridEvaluatorMock: public GridEvaluator
     {
         GridEvaluatorMock():
-            GridEvaluator(nullptr, {}, gridDef, "mockSolver", "", 0)
+            GridEvaluator(nullptr, {}, gridDef, "", "mockSolver", 0)
         {
         }
 
@@ -277,8 +277,8 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     auto evaluator = GridEvaluator(logger,
                                    problems,
                                    grid,
-                                   solverName,
                                    config_dirs.simulation_dir,
+                                   solverName,
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
@@ -323,8 +323,8 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     auto evaluator = GridEvaluator(logger,
                                    problems,
                                    grid,
-                                   solverName,
                                    config_dirs.simulation_dir,
+                                   solverName,
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
@@ -370,8 +370,8 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     auto evaluator = GridEvaluator(logger,
                                    problems,
                                    grid,
-                                   solverName,
                                    config_dirs.simulation_dir,
+                                   solverName,
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
@@ -444,8 +444,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverNameMultistock,
                                            config_dirs.simulation_dir,
+                                           solverNameMultistock,
                                            8);
 
             auto bellmanValues = BellmanValues(evaluator, reservoir_management, logger);
@@ -535,8 +535,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverNameMultistock,
                                            config_dirs.simulation_dir,
+                                           solverNameMultistock,
                                            8);
 
             auto bellmanValues = BellmanValues(evaluator, reservoir_management, logger);
@@ -627,8 +627,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverNameMultistock,
                                            config_dirs.simulation_dir,
+                                           solverNameMultistock,
                                            8);
 
             auto bellmanValues = BellmanValues(evaluator, reservoir_management, logger);

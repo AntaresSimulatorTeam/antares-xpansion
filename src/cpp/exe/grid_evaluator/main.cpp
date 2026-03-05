@@ -203,8 +203,8 @@ int main(int argc, char** argv)
             auto res = GridEvaluator(logger,
                                      problems,
                                      grid,
-                                     solverName,
                                      directories.simulation_dir,
+                                     solverName,
                                      nbThreads)
                          .ComputeCostsAndDuals();
             std::string fileName = "gridPointsValues_" + std::to_string(grid.gridID) + ".csv";
