@@ -23,7 +23,7 @@ target_sources(bellman_values_lib PRIVATE
 
 target_link_libraries(bellman_values_lib
         PUBLIC
-        antaresXpansion::grid_evaluator_lib
+        antaresXpansion::evaluator_lib
         antaresXpansion::helpers
         yaml-cpp::yaml-cpp
 )

@@ -157,7 +157,7 @@ protected:
         {
         }
 
-        std::map<Output::PointWeekScenarioKey, GridPointResult> ComputeCostsAndDuals() override
+        std::map<Output::PointWeekScenarioKey, SubProblemData> ComputeCostsAndDuals() override
         {
             return {
               {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), {100.0}},

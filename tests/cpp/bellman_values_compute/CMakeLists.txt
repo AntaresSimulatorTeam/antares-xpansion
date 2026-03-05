@@ -3,7 +3,7 @@ add_executable(bellman_values_compute_test
 
 target_link_libraries(bellman_values_compute_test
         PRIVATE
-        antaresXpansion::grid_evaluator_lib
+        antaresXpansion::evaluator_lib
         antaresXpansion::bellman_values_lib
         antaresXpansion::output_core
         antaresXpansion::logger_lib
