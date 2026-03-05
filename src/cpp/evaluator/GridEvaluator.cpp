@@ -17,16 +17,17 @@ using namespace PlainData;
 /// @param logger Logger
 /// @param problems map of subproblems to evaluate
 /// @param gridDefinition GridCollection containing the grids to evaluate
+/// @param studyDir Path to the study, used to save MPS files in case of error
 /// @param solverName Name of the solver to use
 /// @param nbThreads Number of threads to use
 GridEvaluator::GridEvaluator(
   Logger logger,
   std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
   GridDefinition& gridDefinition,
-  std::string solverName,
   std::filesystem::path studyDir,
+  std::string solverName,
   int nbThreads):
-    Evaluator(logger, problems, solverName, studyDir, nbThreads),
+    Evaluator(logger, problems, studyDir, solverName, nbThreads),
     gridDefinition(gridDefinition)
 {
 }
