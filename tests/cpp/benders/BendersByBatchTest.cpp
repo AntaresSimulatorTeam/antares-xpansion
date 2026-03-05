@@ -44,7 +44,7 @@ TEST_F(BatchCollectionTest,
                   ")\nWhich means that there is only one batch!\n";
   auto batch_collection =
       BatchCollection(sub_problems_name_list, batch_size, logger_);
-  batch_collection.BuildBatches();
+  batch_collection.BuildBatches(1);
 
   std::cerr.rdbuf(initialBufferCerr);
   auto redirectedErrorStreamWithoutLogPrefix =
@@ -56,14 +56,14 @@ TEST_F(
     IfNumberOfSubProblemIsEqualToBatchSizeThanBatchCollectionSizeIsEqualTo1) {
   auto batch_collection = BatchCollection(
       sub_problems_name_list, sub_problems_name_list.size(), logger_);
-  batch_collection.BuildBatches();
+  batch_collection.BuildBatches(1);
 
   ASSERT_EQ(batch_collection.size(), 1);
 }
 TEST_F(BatchCollectionTest, NumberOfSubProblemIsEqualToTheSumOfBatchSize) {
   auto batch_collection = BatchCollection(
       sub_problems_name_list, sub_problems_name_list.size(), logger_);
-  batch_collection.BuildBatches();
+  batch_collection.BuildBatches(1);
 
   auto sum_batch_size = 0;
   for (const auto& batch : batch_collection.BatchCollections()) {
@@ -74,21 +74,21 @@ TEST_F(BatchCollectionTest, NumberOfSubProblemIsEqualToTheSumOfBatchSize) {
 TEST_F(BatchCollectionTest,
        IfNumberOFSubProblemIs3AndBatchSize2ThenNumberOfBatchIs2) {
   auto batch_collection = BatchCollection(sub_problems_name_list, 2, logger_);
-  batch_collection.BuildBatches();
+  batch_collection.BuildBatches(1);
 
   ASSERT_EQ(batch_collection.NumberOfBatch(), 2);
 }
 TEST_F(BatchCollectionTest,
        IfNumberOFSubProblemIs4AndBatchSize2ThenNumberOfBatchIs2) {
   auto batch_collection = BatchCollection(sub_problems_name_list_4, 2, logger_);
-  batch_collection.BuildBatches();
+  batch_collection.BuildBatches(1);
 
   ASSERT_EQ(batch_collection.NumberOfBatch(), 2);
 }
 TEST_F(BatchCollectionTest,
        IfNumberOFSubProblemIs5AndBatchSize2Then_P2_isInBatch1AndP3IsInBatch2) {
   auto batch_collection = BatchCollection(sub_problems_name_list_5, 2, logger_);
-  batch_collection.BuildBatches();
+  batch_collection.BuildBatches(1);
 
   ASSERT_EQ(batch_collection.NumberOfBatch(), 3);
   const auto vec_batch0 = batch_collection.GetBatchFromId(0).sub_problem_names;

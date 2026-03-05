@@ -38,3 +38,17 @@ def set_batch_size(context, batch_size):
     options_content["BATCH_SIZE"] = int(batch_size)
     with open(str(context.tmp_study / "options.json"), "w") as file:
         json.dump(options_content, file, indent=4)
+
+@given("we have batch problems")
+def set_batch_problems(context) : 
+    with open(str(context.tmp_study / "options.json"), "r") as file:
+        options_content = json.load(file)
+    options_content["CACHE_PROBLEMS"] = True  
+    with open(str(context.tmp_study / "options.json"), "w") as file:
+        json.dump(options_content, file, indent=4)
+
+
+
+    
+
+
