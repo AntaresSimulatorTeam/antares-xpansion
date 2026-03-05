@@ -17,12 +17,14 @@
 class BendersPluginFactory
 {
 public:
+    BendersPluginFactory() = default ; 
     /*
         Constructor
         @inputs :
             - options : study simulation
     */
     BendersPluginFactory(const SimulationOptions& options);
+
 
     /*
         This method will be called to instantiate the benders plugin
@@ -36,7 +38,7 @@ public:
                                                 boost::mpi::communicator* world);
 
 private:
-    const SimulationOptions& options_;
+    const SimulationOptions options_;
 };
 
 typedef BendersPlugin* (*CreatePluginFunc)();
