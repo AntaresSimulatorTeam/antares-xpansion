@@ -121,6 +121,7 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
 {
     logger->display_message("Cleaning problems for Bellman calculations");
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> modifiedProblems;
+    std::mutex mapMutex;
 
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
@@ -147,7 +148,10 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
               logger->display_message("Problem: " + pbName + " modified",
                                       LogUtils::LOGLEVEL::DEBUG,
                                       logger->CONTEXT);
-              modifiedProblems[pbId] = problem;
+              {
+                  std::lock_guard<std::mutex> lock(mapMutex);
+                  modifiedProblems[pbId] = problem;
+              }
 
               if (problemManager->writePbFiles())
               {
