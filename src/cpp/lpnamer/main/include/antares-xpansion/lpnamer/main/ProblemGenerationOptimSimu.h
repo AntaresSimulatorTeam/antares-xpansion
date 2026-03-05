@@ -40,4 +40,10 @@ public:
     std::shared_ptr<ProblemManager> problemManager; /// The manager taking care of reading problems
                                                     /// from disk, problem formats, etc.
     Logger logger;                                  /// Logger used
+
+private:
+    void loadProblemsFromAntares();
+    void generateAntaresProblems();
+    void performAntaresSimulation();
+    void lpsToProblems(const Antares::Solver::LpsFromAntares& lps);
 };
