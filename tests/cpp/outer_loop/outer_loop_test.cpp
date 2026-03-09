@@ -128,16 +128,16 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
         // override solver
         // std::shared_ptr<BendersPlugin> benders_plugin(benders_plugin_factory_->CreatePlugin(coupling_map, false, pworld))
     auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map,false,pworld) ; 
-    benders->SetPlugin(benders_plugin);
-
+    
     bendersoptions.SOLVER_NAME = GetParam();
     bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
     bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE = OUTER_OPTIONS_FILE;
     benders = std::make_shared<BendersMpi>(bendersoptions,
-                                           logger,
+        logger,
                                            writer,
                                            *pworld,
                                            math_log_driver);
+    benders->SetPlugin(benders_plugin);
 
 
                             
