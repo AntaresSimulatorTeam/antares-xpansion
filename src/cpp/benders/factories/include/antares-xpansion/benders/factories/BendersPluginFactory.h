@@ -17,7 +17,7 @@
 class BendersPluginFactory
 {
 public:
-    BendersPluginFactory() = default ; 
+    BendersPluginFactory() = default;
     /*
         Constructor
         @inputs :
@@ -25,13 +25,12 @@ public:
     */
     BendersPluginFactory(const SimulationOptions& options);
 
-
     /*
         This method will be called to instantiate the benders plugin
         @inputs :
             - coupling_map : coupling map
             - micro_iter : boolean to check if Micro iterations is needed to build the right plugin
-            - worlld : MPI communicator 
+            - worlld : MPI communicator
     */
     std::shared_ptr<BendersPlugin> CreatePlugin(const CouplingMap& coupling_map,
                                                 bool micro_iter,

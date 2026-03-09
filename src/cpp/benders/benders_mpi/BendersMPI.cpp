@@ -437,7 +437,7 @@ void BendersMpi::Run()
             SaveCurrentBendersData();
         }
 
-       benders_plugin_->OnBendersMasterIterationEnd();
+        benders_plugin_->OnBendersMasterIterationEnd();
     }
     if (_world.rank() == rank_0)
     {
