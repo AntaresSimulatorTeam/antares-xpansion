@@ -80,8 +80,9 @@ std::set<unsigned int> getWeeks(const MapType& container)
 
 /// @brief Compute the Bellman values
 /// @param nbLevels The levels discretization's number
-/// @return The bellman values for each week
-std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
+/// @return The bellman values and the costs for each week
+std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>>
+BellmanValues::compute(int nbLevels)
 {
     auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCostsAndDuals();
 
@@ -204,14 +205,19 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
     }
 
     std::vector<std::vector<double>> V_final;
-    for (unsigned int week = startWeek; week <= endWeek + 1; ++week)
+    std::vector<std::vector<double>> costs_final;
+
+    for (unsigned int week = startWeek; week <= endWeek; ++week)
     {
-        V_final.push_back(V[{*scenarios.begin(), week}]);
+        V_final.push_back(V.at({*scenarios.begin(), week}));
+        costs_final.push_back(costs.at({*scenarios.begin(), week}));
     }
+    // extra last week in V_final:
+    V_final.push_back(V.at({*scenarios.begin(), endWeek + 1}));
 
     this->bellmanValues = V; // copy stored in case of multistock
     this->costs = costs;     // copy stored in case of multistock
-    return V_final;
+    return std::make_pair(V_final, costs_final);
 }
 
 /// @brief Solve the weekly problem
@@ -358,5 +364,8 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
                                            V_fut());
         }
     }
+    logger->display_message("Computed optimal trajectory, for all weeks.",
+                            LogUtils::LOGLEVEL::DEBUG,
+                            logger->CONTEXT);
     return trajectory;
 }

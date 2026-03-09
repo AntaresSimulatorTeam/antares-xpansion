@@ -320,8 +320,8 @@ int main(int argc, char** argv)
             auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement, logger);
 
             logger->display_message("Computing Bellman values...");
-            auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);
-            logger->display_message("Computed Bellman values");
+            auto [bellmanValues, costs] = bellmanValuesEvaluator.compute(nbLevels);
+            logger->display_message("Computed Bellman values and costs");
 
             std::string bellmanValuesFileName = std::to_string(grid.gridID) + "_" + gridElement.area
                                                 + "_bellman_values.csv";
@@ -329,6 +329,10 @@ int main(int argc, char** argv)
                        bellmanValues,
                        logger,
                        false);
+
+            std::string costsFileName = std::to_string(grid.gridID) + "_" + gridElement.area
+                                        + "_costs.csv";
+            saveValues(directories.simulation_dir / costsFileName, costs, logger, false);
 
             auto levels = bellmanValuesEvaluator.getLevels();
             if (antaresFormat)

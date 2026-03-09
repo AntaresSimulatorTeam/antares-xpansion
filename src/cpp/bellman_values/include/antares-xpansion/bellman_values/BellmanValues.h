@@ -12,7 +12,8 @@ public:
                   const ReservoirManagement& reservoirManagement,
                   Logger logger);
 
-    std::vector<std::vector<double>> compute(int nbLevels = 10);
+    std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> compute(
+      int nbLevels = 10);
 
     const std::vector<double>& getLevels() const;
 
