@@ -481,12 +481,12 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
-    // benders_plugin_->OnBendersStart();
+    benders_plugin_->OnBendersStart();
 
     Run();
     _world.barrier();
 
-    // benders_plugin_->OnBendersEnd();
+    benders_plugin_->OnBendersEnd();
 
     post_run_actions();
 
