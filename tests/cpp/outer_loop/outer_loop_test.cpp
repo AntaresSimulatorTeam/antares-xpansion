@@ -126,7 +126,6 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
         logger.get(),
         ::testing::UnitTest::GetInstance()->current_test_info()->name());
         // override solver
-        // std::shared_ptr<BendersPlugin> benders_plugin(benders_plugin_factory_->CreatePlugin(coupling_map, false, pworld))
     auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map,false,pworld) ; 
     
     bendersoptions.SOLVER_NAME = GetParam();

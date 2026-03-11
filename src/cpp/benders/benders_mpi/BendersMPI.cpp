@@ -409,11 +409,11 @@ void BendersMpi::Run()
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
-        benders_plugin_->OnBendersMasterIterationStart();
+        benders_plugin_->OnBendersMasterResolutionStart();
 
         step_1_solve_master();
 
-        benders_plugin_->OnBendersMasterIterationEnd();
+        benders_plugin_->OnBendersMasterResolutionEnd();
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
@@ -437,7 +437,6 @@ void BendersMpi::Run()
             SaveCurrentBendersData();
         }
 
-        benders_plugin_->OnBendersMasterIterationEnd();
     }
     if (_world.rank() == rank_0)
     {

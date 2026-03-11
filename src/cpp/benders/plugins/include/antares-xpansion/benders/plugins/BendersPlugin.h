@@ -41,13 +41,13 @@ public:
       This method will be called at the start of the master iteration after solving the master
       @inputs :
     */
-    virtual void OnBendersMasterIterationStart() = 0;
+    virtual void OnBendersMasterResolutionStart() = 0;
     /*
       This method will be called at the end of the master iteration after solving subprolems
       @inputs :
 
     */
-    virtual void OnBendersMasterIterationEnd() = 0;
+    virtual void OnBendersMasterResolutionEnd() = 0;
 
     /*
       This method will be called before solving a subproblem (for each subproblem)

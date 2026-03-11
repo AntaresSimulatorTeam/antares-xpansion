@@ -20,11 +20,11 @@ void NoOperationPlugin::OnBendersIterationEnd()
 {
 }
 
-void NoOperationPlugin::OnBendersMasterIterationStart()
+void NoOperationPlugin::OnBendersMasterResolutionStart()
 {
 }
 
-void NoOperationPlugin::OnBendersMasterIterationEnd()
+void NoOperationPlugin::OnBendersMasterResolutionEnd()
 {
 }
 
