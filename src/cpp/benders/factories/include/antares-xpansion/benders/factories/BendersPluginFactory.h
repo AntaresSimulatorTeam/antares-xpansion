@@ -30,7 +30,7 @@ public:
         @inputs :
             - coupling_map : coupling map
             - micro_iter : boolean to check if Micro iterations is needed to build the right plugin
-            - worlld : MPI communicator
+            - world : MPI communicator
     */
     std::shared_ptr<BendersPlugin> CreatePlugin(const CouplingMap& coupling_map,
                                                 bool micro_iter,
