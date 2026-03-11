@@ -14,8 +14,8 @@ public:
     void OnBendersIterationStart();
     void OnBendersIterationEnd();
 
-    void OnBendersMasterIterationStart();
-    void OnBendersMasterIterationEnd();
+    void OnBendersMasterResolutionStart();
+    void OnBendersMasterResolutionEnd();
 
     void OnBendersMicroIterationStart();
     void OnBendersMicroIterationEnd();
