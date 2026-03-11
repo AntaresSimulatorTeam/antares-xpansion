@@ -436,7 +436,6 @@ void BendersMpi::Run()
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
         }
-
     }
     if (_world.rank() == rank_0)
     {
