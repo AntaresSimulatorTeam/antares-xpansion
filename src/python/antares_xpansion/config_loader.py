@@ -748,6 +748,9 @@ class ConfigLoader(XpansionSettingsReader):
     def outer_loop_exe(self):
         return self.exe_path(self._config.OUTER_LOOP)
 
+    def antares_problem_generator_exe(self):
+        return self.exe_path(self._config.ANTARES_PROBLEM_GENERATOR)
+
     def method(self):
         return self._config.method
 
