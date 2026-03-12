@@ -402,12 +402,18 @@ void BendersMpi::Run()
 
     while (!_data.stop)
     {
+        benders_plugin_->OnBendersIterationStart();
+
         ++_data.it;
         ResetSimplexIterationsBounds();
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
+        benders_plugin_->OnBendersMasterResolutionStart();
+
         step_1_solve_master();
+
+        benders_plugin_->OnBendersMasterResolutionEnd();
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
@@ -438,6 +444,8 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
+
+    benders_plugin_->OnBendersIterationEnd();
 }
 
 void BendersMpi::PreRunInitialization()
@@ -471,8 +479,12 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
+    benders_plugin_->OnBendersStart();
+
     Run();
     _world.barrier();
+
+    benders_plugin_->OnBendersEnd();
 
     post_run_actions();
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <execution>
 #include <filesystem>
 #include <mutex>
@@ -58,6 +59,7 @@ public:
     void MasterChangeRhs(int id_row, double val) const;
     // for test
     void MasterGetRhs(double& rhs, int id_row) const;
+    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
 
     const VariableMap& MasterVariables() const
     {
@@ -142,6 +144,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
+    std::shared_ptr<BendersPlugin> benders_plugin_;
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
