@@ -128,7 +128,7 @@ def process_command(context, n, option_file: str, command_builder):
 def run_outer_loop(context, n, option_file: str = "options.json"):
     old_cwd, options = process_command(context, n, option_file, build_outer_loop_command)
     context.loss_of_load_file = (Path(options["OUTPUTROOT"]) / "LOLD.txt").absolute()
-    context.positive_unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "PositiveUnsuppliedEnergy.txt").absolute()
+    context.positive_unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "UnsuppliedEnergy.txt").absolute()
 
     os.chdir(old_cwd)
 

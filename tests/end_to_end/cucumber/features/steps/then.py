@@ -267,7 +267,7 @@ def check_solution(context):
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
 
-@then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
+@then("LOLD.txt and UnsuppliedEnergy.txt files are full of zeros")
 def check_other_outputs(context):
     assert (is_file_full_of_zeros(context.loss_of_load_file))
     assert (is_file_full_of_zeros(context.positive_unsupplied_energy_file))
