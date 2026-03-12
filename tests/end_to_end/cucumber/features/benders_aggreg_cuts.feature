@@ -99,9 +99,10 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
 			| z[LINE-330-319]   | 1.0 |
 
 	@short @full-launch
-	Scenario: Classical Benders with 1 proc with cache problems
+	Scenario: Classical Benders with 1 proc with cache mode
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
-		When I run benders with 1 proc(s) with cache mode
+		And we are in cache mode
+		When I run benders with 1 proc(s) 
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
@@ -124,9 +125,10 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
 
 
     @short @full-launch
-	Scenario: Benders MPI with multiple procs
+	Scenario: Benders MPI with multiple procs with cache mode
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
-		When I run benders with 5 proc(s) with cache mode
+		And we are in cache mode
+		When I run benders with 5 proc(s) 
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
@@ -149,10 +151,11 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
 
 
     @short @full-launch
-	Scenario: Benders by batch single proc
+	Scenario: Benders by batch single proc with cache mode
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
         And the batch size is 5
-		When I run benders with 1 proc(s) with cache mode
+		And we are in cache mode
+		When I run benders with 1 proc(s) 
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
@@ -175,10 +178,11 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
 
 
     @short @full-launch
-	Scenario: Benders by batch multiple proc
+	Scenario: Benders by batch multiple proc with cache mode
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
         And the batch size is 5
-		When I run benders with 3 proc(s) with cache mode
+		And we are in cache mode
+		When I run benders with 3 proc(s) 
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254

@@ -139,16 +139,6 @@ def run_benders(context, n, option_file: str = "options.json"):
     old_cwd, _ = process_command(context, n, option_file, build_benders_command)
     os.chdir(old_cwd)
 
-@when('I run benders with {n:d} proc(s) with cache mode')
-def run_benders(context, n, option_file: str = "options.json"):
-    with open(str(context.tmp_study / "options.json"), "r") as file:
-        options_content = json.load(file)
-    options_content["CACHE_PROBLEMS"] = True  
-    with open(str(context.tmp_study / "options.json"), "w") as file:
-        json.dump(options_content, file, indent=4)
-    old_cwd, _ = process_command(context, n, option_file, build_benders_command)
-    os.chdir(old_cwd)
-
 
 
 @when('I run antares-xpansion with the {method} method and {n:d} proc(s)')

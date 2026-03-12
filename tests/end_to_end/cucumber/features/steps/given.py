@@ -42,5 +42,12 @@ def set_batch_size(context, batch_size):
 
 
     
+@given('we are in cache mode')
+def run_benders(context):
+    with open(str(context.tmp_study / "options.json"), "r") as file:
+        options_content = json.load(file)
+    options_content["CACHE_PROBLEMS"] = True  
+    with open(str(context.tmp_study / "options.json"), "w") as file:
+        json.dump(options_content, file, indent=4)
 
 
