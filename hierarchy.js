@@ -90,6 +90,7 @@ var hierarchy =
     [ "BendersFactory::Dependencies", "structBendersFactory_1_1Dependencies.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
     [ "Solver::DynamicLibrary", "classSolver_1_1DynamicLibrary.html", null ],
+    [ "Entry", "structEntry.html", null ],
     [ "LpFilesExtractor::ErrorWithAreaFile", "classLpFilesExtractor_1_1ErrorWithAreaFile.html", null ],
     [ "LpFilesExtractor::ErrorWithIntercosFile", "classLpFilesExtractor_1_1ErrorWithIntercosFile.html", null ],
     [ "Exception", null, [

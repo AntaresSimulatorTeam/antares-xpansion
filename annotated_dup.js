@@ -426,6 +426,7 @@ var annotated_dup =
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
     [ "EmptyLogger", "structEmptyLogger.html", "structEmptyLogger" ],
     [ "EmptyLogManager", "classEmptyLogManager.html", null ],
+    [ "Entry", "structEntry.html", null ],
     [ "ExternalLoopOptions", "structExternalLoopOptions.html", null ],
     [ "FileAndStdoutLoggerFactory", "classFileAndStdoutLoggerFactory.html", null ],
     [ "FileBuffer", "structFileBuffer.html", null ],

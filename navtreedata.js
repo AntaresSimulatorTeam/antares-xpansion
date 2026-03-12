@@ -433,7 +433,7 @@ var NAVTREEINDEX =
 "classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile_1_1ProfileFileValueError.html",
 "dir_cb044fc867eacaf6ed3dab28204c440c.html",
 "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md165",
-"structSolverBaseOptions.html"
+"structSinglePbData.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
