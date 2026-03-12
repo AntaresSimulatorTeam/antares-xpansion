@@ -101,8 +101,7 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
 	@short @full-launch
 	Scenario: Classical Benders with 1 proc with cache problems
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
-		And we have batch problems
-		When I run benders with 1 proc(s)
+		When I run benders with 1 proc(s) with cache mode
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
@@ -127,8 +126,7 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
     @short @full-launch
 	Scenario: Benders MPI with multiple procs
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
-		And we have batch problems
-		When I run benders with 5 proc(s)
+		When I run benders with 5 proc(s) with cache mode
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
@@ -153,9 +151,8 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
     @short @full-launch
 	Scenario: Benders by batch single proc
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
-		And we have batch problems
         And the batch size is 5
-		When I run benders with 1 proc(s)
+		When I run benders with 1 proc(s) with cache mode
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
@@ -180,9 +177,8 @@ Feature: NB_CUTS_PER_ITER in options.json file sets the number cuts to add to th
     @short @full-launch
 	Scenario: Benders by batch multiple proc
 		Given the study path is "data_test/test_cut_aggregation_ieee96_10inc"
-		And we have batch problems
         And the batch size is 5
-		When I run benders with 3 proc(s)
+		When I run benders with 3 proc(s) with cache mode
 		Then the simulation succeeds
 		And the expected overall cost is 5731.9596696788394
 		And the expected investment cost is 5707.7625570776254
