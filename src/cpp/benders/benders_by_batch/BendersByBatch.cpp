@@ -13,7 +13,9 @@ void BendersByBatch::InitializeProblems()
     BuildMasterProblem();
 
     const auto& coupling_map_size = coupling_map_.size();
+
     // Only rank 0 builds the batch collection, then it is broadcasted to all procs
+
     if (Rank() == rank_0)
     {
         std::vector<std::string> problem_names;
@@ -25,12 +27,15 @@ void BendersByBatch::InitializeProblems()
         batch_collection_.SetLogger(_logger);
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
-        batch_collection_.BuildBatches();
+        batch_collection_.BuildBatches(WorldSize());
+        batch_collection_full_for_cuts_ = batch_collection_;
+        get_subs_per_cut_per_batch();
     }
     BroadCast(batch_collection_, rank_0);
 
     // Dispatch subproblems to process: only add those assigned to this rank
     auto problem_count = 0;
+
     for (auto& batch: batch_collection_.BatchCollections())
     {
         if (_options.CACHE_PROBLEMS)
@@ -52,22 +57,32 @@ void BendersByBatch::InitializeProblems()
         }
         else
         {
-            for (const auto& problem_name: batch.sub_problem_names)
+            for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
             {
                 // In case there are more subproblems than process
-                if (auto process_to_feed = problem_count % WorldSize(); process_to_feed == Rank())
+                if (batch.proc_numbers[problem_pos] == Rank())
                 { // Assign  [problemNumber % WorldSize] to processID
 
-                    const auto subProblemFilePath = GetSubproblemPath(problem_name);
-                    AddSubproblem({problem_name, coupling_map_[problem_name]});
-                    AddSubproblemName(problem_name);
+                    AddSubproblem({batch.sub_problem_names[problem_pos],
+                                   coupling_map_[batch.sub_problem_names[problem_pos]]});
+                    AddSubproblemName(batch.sub_problem_names[problem_pos]);
                 }
                 ++problem_count;
             }
         }
     }
+
     BroadCastVariablesIndices();
     init_problems_ = false;
+}
+
+void BendersByBatch::get_subs_per_cut_per_batch()
+{
+    for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
+    {
+        int n_cuts = SetAggregation(batch.sub_problem_names.size());
+        batch.AssociateSubProblemsToCut(n_cuts);
+    }
 }
 
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox()
@@ -258,7 +273,6 @@ void BendersByBatch::SolveBatches()
         current_batch_id_ = random_batch_permutation_[first_unsolved_batch_];
         first_unsolved_batch_++;
         const auto& batch = batch_collection_.GetBatchFromId(current_batch_id_);
-        current_batch_id_++;
         const auto& batch_sub_problems = batch.sub_problem_names;
         double batch_contribution_in_gap = 0;
         std::vector<double> external_loop_criterion_current_batch = {};
@@ -274,6 +288,7 @@ void BendersByBatch::SolveBatches()
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
                rank_0);
+        current_batch_id_++;
 
         if (Rank() == rank_0)
         {
@@ -329,6 +344,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     misprice_ = global_misprice;
     Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
     _data.subproblems_walltime = subproblems_timer_per_proc.elapsed();
+
     // if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     //   external_loop_criterion_current_batch =
     //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
@@ -336,13 +352,13 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
     if (_world.rank() == rank_0)
     {
-        auto subproblems_per_cut = split_subproblem_data_pairs(
-          gathered_subproblem_map,
-          std::max(_data.nsubproblem, static_cast<int>(batch_sub_problems.size())));
+        auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
 
-        *batch_contribution_in_gap = ComputeBatchContributionInGap(gathered_subproblem_map,
-                                                                   subproblems_per_cut);
-        build_all_aggregated_cuts(subproblems_per_cut, gathered_subproblem_map);
+        *batch_contribution_in_gap = ComputeBatchContributionInGap(
+          gathered_subproblem_map,
+          batch_cuts_list[current_batch_id_].name_to_cut);
+        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].name_to_cut,
+                                  gathered_subproblem_map);
     }
 }
 

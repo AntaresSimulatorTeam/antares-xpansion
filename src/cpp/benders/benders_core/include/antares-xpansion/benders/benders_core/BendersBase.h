@@ -149,6 +149,8 @@ protected:
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
+    VariableMap _problem_to_id;
+
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;
@@ -157,10 +159,6 @@ protected:
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
-
-    std::vector<SubProblemNamesInCut> split_subproblem_data_pairs(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      int n_cuts) const;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -325,6 +323,8 @@ protected:
     void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
                                    const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
+    int SetAggregation(int max_aggregation) const;
+
 private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
@@ -334,7 +334,6 @@ private:
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
-    int SetAggregation(int max_aggregation) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;
@@ -350,7 +349,6 @@ private:
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     WorkerMasterPtr _master;
-    VariableMap _problem_to_id;
     StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
