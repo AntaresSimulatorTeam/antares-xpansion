@@ -9,9 +9,15 @@
 void BendersByBatch::InitializeProblems()
 {
     MatchProblemToId();
-
+    BuildBatches() ; 
     BuildMasterProblem();
+    BroadCastVariablesIndices();
+    init_problems_ = false;
+}
 
+
+void BendersByBatch::BuildBatches()
+{
     const auto& coupling_map_size = coupling_map_.size();
 
     // Only rank 0 builds the batch collection, then it is broadcasted to all procs
@@ -72,9 +78,8 @@ void BendersByBatch::InitializeProblems()
         }
     }
 
-    BroadCastVariablesIndices();
-    init_problems_ = false;
 }
+
 
 void BendersByBatch::get_subs_per_cut_per_batch()
 {
