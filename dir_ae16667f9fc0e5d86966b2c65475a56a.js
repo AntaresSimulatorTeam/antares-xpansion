@@ -9,5 +9,6 @@ var dir_ae16667f9fc0e5d86966b2c65475a56a =
     [ "merge_master_mps", "dir_09070df9a7347cb5e56f3dd0c86e8d11.html", "dir_09070df9a7347cb5e56f3dd0c86e8d11" ],
     [ "merge_mps", "dir_36baed32578fbe5805d02554f43f3918.html", "dir_36baed32578fbe5805d02554f43f3918" ],
     [ "outer_loop", "dir_f632cfb2f9433bf506b59b1a5d5e8528.html", "dir_f632cfb2f9433bf506b59b1a5d5e8528" ],
-    [ "output", "dir_20a3ed28dc7d38f2b8870ca77de533d4.html", "dir_20a3ed28dc7d38f2b8870ca77de533d4" ]
+    [ "output", "dir_20a3ed28dc7d38f2b8870ca77de533d4.html", "dir_20a3ed28dc7d38f2b8870ca77de533d4" ],
+    [ "plugins", "dir_9c10d2229ef4b2370d01e0da7a8c7997.html", "dir_9c10d2229ef4b2370d01e0da7a8c7997" ]
 ];

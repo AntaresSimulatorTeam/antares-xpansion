@@ -44,6 +44,10 @@ var hierarchy =
     [ "antares_xpansion.benders_driver.BendersDriver", "classantares__xpansion_1_1benders__driver_1_1BendersDriver.html", null ],
     [ "BendersFactory::BendersEnvironment", "structBendersFactory_1_1BendersEnvironment.html", null ],
     [ "BendersFactory", "classBendersFactory.html", null ],
+    [ "BendersPlugin", "classBendersPlugin.html", [
+      [ "NoOperationPlugin", "classNoOperationPlugin.html", null ]
+    ] ],
+    [ "BendersPluginFactory", "classBendersPluginFactory.html", null ],
     [ "BendersRelevantIterationsData", "structBendersRelevantIterationsData.html", null ],
     [ "Candidate", "classCandidate.html", null ],
     [ "MergeMasterTrajectoryMPS::CandidateCosts", "structMergeMasterTrajectoryMPS_1_1CandidateCosts.html", null ],
