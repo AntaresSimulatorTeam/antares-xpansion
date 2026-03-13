@@ -3,8 +3,15 @@
 #include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <execution>
 #include <filesystem>
+#include <memory>
 #include <mutex>
 #include <tbb/tbb.h>
+
+class ISubproblemSolver;
+class ILoopStrategy;
+
+using SubproblemSolverPtr = std::unique_ptr<ISubproblemSolver>;
+using LoopStrategyPtr = std::unique_ptr<ILoopStrategy>;
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
@@ -140,6 +147,16 @@ public:
     void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData& criterion_input_data);
 
+    void setSubproblemSolver(SubproblemSolverPtr solver)
+    {
+        subproblem_solver_ = std::move(solver);
+    }
+
+    void setLoopStrategy(LoopStrategyPtr strategy)
+    {
+        loop_strategy_ = std::move(strategy);
+    }
+
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
@@ -159,6 +176,9 @@ protected:
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
+
+    SubproblemSolverPtr subproblem_solver_;
+    LoopStrategyPtr loop_strategy_;
 
     virtual void Run() = 0;
     void update_best_ub();
