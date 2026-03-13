@@ -4,6 +4,8 @@
 
 #include "SubproblemWorker.h"
 #include "Worker.h"
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
+
 /*!
  * \class SubproblemWorker
  * \brief Class daughter of Worker Class, build and manage a master problem
@@ -27,6 +29,9 @@ public:
                  double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
+
+    void addCutsAlphas(std::vector<SubProblemNamesInCut>&); 
+    void addCutsAlphas(BatchCollection&) ; 
 
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,

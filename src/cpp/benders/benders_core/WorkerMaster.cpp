@@ -1,6 +1,7 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
 #include "antares-xpansion/helpers/solver_utils.h"
+#include "iostream"
 
 /*!
  *  \brief Constructor of a Master Problem
@@ -368,6 +369,56 @@ void WorkerMaster::_set_upper_bounds() const
     _solver->chg_bounds(indices, bndTypes, bounds);
 }
 
+void WorkerMaster::addCutsAlphas(std::vector<SubProblemNamesInCut>& mpi_cuts)
+{
+    std::cout<<"addCutsAlphas in mpi case"<<std::endl ; 
+    std::cout<<"mpi cuts size "<<mpi_cuts.size()<<std::endl ; 
+    for (auto& cut : mpi_cuts) 
+    {
+        std::cout<<"new cut "<<std::endl ; 
+        for (size_t i=0; i<cut.size()-1; i++) 
+        {
+            size_t start = cut[i].first.find('_') + 1 ; 
+            size_t end = cut[i].first.find('.',start) ; 
+            auto sub_index_str = cut[i].first.substr(start,end-start) ;
+            std::stringstream alpha_i; 
+            alpha_i<<"alpha_"<<sub_index_str; 
+            auto alpha_i_pos = _solver->get_col_index(alpha_i.str()); 
+
+            for (size_t j=i+1 ; j<cut.size(); j++) 
+            {
+                start = cut[j].first.find('_') + 1 ; 
+                end = cut[j].first.find('.',start) ; 
+                sub_index_str = cut[j].first.substr(start,end-start) ;            
+
+                std::stringstream alpha_j ; 
+                alpha_j<<"alpha_"<<sub_index_str;
+                auto alpha_j_pos = _solver->get_col_index(alpha_j.str()); 
+
+                std::cout<<"to add "<<alpha_i_pos<<"   "<<alpha_j_pos<<std::endl ; 
+
+                std::vector<char> rowtype = {'E'};
+                std::vector<double> rowrhs = {0};
+                std::vector<int> mstart = {0, 2};
+                std::vector<double> matval(2);
+                matval[0] = 1 ; 
+                matval[1] = -1 ; 
+                std::vector<int> mclind(2);
+                mclind[0] = alpha_i_pos ;
+                mclind[1] = alpha_j_pos ; 
+                std::cout<<"adding a new row to master !! "<<std::endl ; 
+                solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+            }
+        }
+        std::cout<<"\n\n"<<std::endl ; 
+    }
+}
+    
+void WorkerMaster::addCutsAlphas(BatchCollection& batches) 
+{
+    std::cout<<"addCutsAlphas in by batch case "<<std::endl ; 
+}
+
 void WorkerMaster::_set_alpha_var()
 {
     // add the variable overall_subpb_cost_under_approx
@@ -380,6 +431,7 @@ void WorkerMaster::_set_alpha_var()
         if (_mps_has_alpha)
         {
             _id_alpha = _solver->get_col_index(alpha_str);
+            std::cout<<"_id_alpha "<<_id_alpha<<std::endl ; 
             for (int i(0); i < subproblems_count; ++i)
             {
                 std::stringstream buffer;
@@ -393,6 +445,7 @@ void WorkerMaster::_set_alpha_var()
             double ub(+1e20); /*!< Upper Bound*/
             double obj(+1);
             _id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
+            std::cout<<"id alpha else "<<_id_alpha<<std::endl ; 
 
             solver_addcols(*_solver,
                            DblVector(1, obj),

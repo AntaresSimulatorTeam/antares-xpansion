@@ -29,7 +29,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
-    BuildMasterProblem();
+
     SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS)
     {
@@ -74,7 +74,8 @@ void BendersMpi::InitializeProblems()
     {
         subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
     }
-
+    
+    BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
@@ -140,6 +141,7 @@ void BendersMpi::BroadCastVariablesIndices()
 
 void BendersMpi::BuildMasterProblem()
 {
+    std::cout<<"BuildMasterProblem : calling mpi implementation !!!!"<<std::endl ; 
     if (_world.rank() == rank_0)
     {
         std::shared_ptr<IBendersProblemProvider>
@@ -156,6 +158,7 @@ void BendersMpi::BuildMasterProblem()
                                    Options().MASTER_SOLUTION_TOLERANCE,
                                    Options().CUT_COEFFICIENT_TOLERANCE);
     }
+    _master->addCutsAlphas(subproblem_per_cut_indices_) ; 
 }
 
 /*!

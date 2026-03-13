@@ -97,7 +97,7 @@ protected:
         mpi::gather(_world, value, vector_of_values, root);
     }
 
-    void BuildMasterProblem();
+    virtual void BuildMasterProblem();
 
     int WorldSize() const
     {
