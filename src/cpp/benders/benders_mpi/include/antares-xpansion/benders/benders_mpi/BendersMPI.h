@@ -11,8 +11,9 @@
 /*!
  * \class BendersMpi
  * \brief Class use run the benders algorithm in parallel
+ * \deprecated Use BendersCore instead - will be removed in future version
  */
-class BendersMpi: public BendersBase
+class [[deprecated("Use BendersCore instead")]] BendersMpi: public BendersBase
 {
 public:
     ~BendersMpi() override = default;

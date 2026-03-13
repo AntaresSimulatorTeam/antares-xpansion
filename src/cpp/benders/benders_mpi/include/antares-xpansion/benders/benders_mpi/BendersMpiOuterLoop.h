@@ -5,7 +5,13 @@
 namespace Outerloop
 {
 
-class BendersMpiOuterLoop: public BendersMpi
+/*!
+ * \class BendersMpiOuterLoop
+ * \brief Outer loop variant of Benders
+ * \deprecated Use BendersCore with OuterLoopStrategy instead - will be removed in future version
+ */
+class [[deprecated("Use BendersCore with OuterLoopStrategy instead")]] BendersMpiOuterLoop
+    : public BendersMpi
 {
 public:
     ~BendersMpiOuterLoop() override = default;

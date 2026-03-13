@@ -8,8 +8,9 @@
 /*!
  * \class BendersSequential
  * \brief Class use run the benders algorithm in sequential
+ * \deprecated Use BendersCore instead - will be removed in future version
  */
-class BendersSequential: public BendersBase
+class [[deprecated("Use BendersCore instead")]] BendersSequential: public BendersBase
 {
 public:
     explicit BendersSequential(const BendersBaseOptions& options,

@@ -4,7 +4,12 @@
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
-class BendersByBatch: public BendersMpi
+/*!
+ * \class BendersByBatch
+ * \brief Class for batch-based benders decomposition
+ * \deprecated Use BendersCore instead - will be removed in future version
+ */
+class [[deprecated("Use BendersCore instead")]] BendersByBatch: public BendersMpi
 {
     std::vector<unsigned> random_batch_permutation_;
 
