@@ -296,6 +296,21 @@ else ()
     message(WARNING "ANTARES_SOLVER_PATH does not exist: ${ANTARES_SOLVER_PATH}")
 endif ()
 
+# Get antares-problem-generator path
+get_target_property(ANTARES_PROBLEM_GENERATOR_PATH Antares::antares-problem-generator IMPORTED_LOCATION_RELEASE)
+if (NOT ANTARES_PROBLEM_GENERATOR_PATH)
+    get_target_property(ANTARES_PROBLEM_GENERATOR_PATH Antares::antares-problem-generator IMPORTED_LOCATION_DEBUG)
+endif ()
+
+# Copy antares-problem-generator to build directory
+if (EXISTS ${ANTARES_PROBLEM_GENERATOR_PATH})
+    file(COPY ${ANTARES_PROBLEM_GENERATOR_PATH}
+            DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+            USE_SOURCE_PERMISSIONS)
+else ()
+    message(WARNING "ANTARES_PROBLEM_GENERATOR_PATH does not exist: ${ANTARES_PROBLEM_GENERATOR_PATH}")
+endif ()
+
 # Create target for copying shared libraries
 add_custom_target(copy_shared_libs ALL
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
@@ -399,6 +414,10 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../bin/
         FILES_MATCHING PATTERN "*.so*")
 
 install(PROGRAMS ${ANTARES_SOLVER_PATH}
+        TYPE BIN)
+
+# Install antares-problem-generator
+install(PROGRAMS ${ANTARES_PROBLEM_GENERATOR_PATH}
         TYPE BIN)
 
 include(InstallRequiredSystemLibraries)
