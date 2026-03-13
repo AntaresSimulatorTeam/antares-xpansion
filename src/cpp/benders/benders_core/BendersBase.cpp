@@ -612,6 +612,9 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 {
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
+
+    benders_plugin_->OnBendersMicroIterationStart();
+
     worker->solve(subproblem_data.lpstatus,
                   _options.OUTPUTROOT,
                   _options.LAST_MASTER_MPS + MPS_SUFFIX,
@@ -619,6 +622,8 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_value(subproblem_data.subproblem_cost);
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+
+    benders_plugin_->OnBendersMicroIterationEnd();
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
@@ -734,41 +739,6 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
 
         relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
     }
-}
-
-std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-  int max_aggregation) const
-{
-    int n_cuts = SetAggregation(max_aggregation);
-    std::vector<SubProblemNamesInCut> result(n_cuts);
-
-    if (_data.nsubproblem == 0 || n_cuts <= 0)
-    {
-        return std::vector<std::vector<std::pair<std::string, int>>>();
-    }
-
-    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
-
-    size_t subpb_count_in_cut = 0;
-    size_t current_cut = 0;
-
-    for (size_t i = 0; i < gathered_subproblem_map.size(); i++)
-    {
-        const auto& spMap = gathered_subproblem_map[i];
-        for (const auto& [subproblem_name, _]: spMap)
-        {
-            result[current_cut].emplace_back(subproblem_name, static_cast<int>(i));
-            subpb_count_in_cut++;
-            if (subpb_count_in_cut >= target_per_cut && current_cut + 1 < n_cuts)
-            {
-                subpb_count_in_cut = 0;
-                current_cut++;
-            }
-        }
-    }
-
-    return result;
 }
 
 int BendersBase::SetAggregation(int max_aggregation) const
@@ -1506,4 +1476,9 @@ void BendersBase::roundXCut()
             kvp.second = ub;
         }
     }
+}
+
+void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
+{
+    benders_plugin_ = benders_plugin;
 }
