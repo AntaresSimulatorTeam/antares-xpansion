@@ -139,9 +139,8 @@ void BendersMpi::BroadCastVariablesIndices()
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
-void BendersMpi::BuildMasterProblem()
+void BendersMpi::ResetMaster() 
 {
-    std::cout<<"BuildMasterProblem : calling mpi implementation !!!!"<<std::endl ; 
     if (_world.rank() == rank_0)
     {
         std::shared_ptr<IBendersProblemProvider>
@@ -158,7 +157,14 @@ void BendersMpi::BuildMasterProblem()
                                    Options().MASTER_SOLUTION_TOLERANCE,
                                    Options().CUT_COEFFICIENT_TOLERANCE);
     }
-    _master->addCutsAlphas(subproblem_per_cut_indices_) ; 
+}
+
+
+void BendersMpi::BuildMasterProblem()
+{
+    ResetMaster() ; 
+    if (_world.rank() == rank_0)
+        _master->addCutsAlphas(subproblem_per_cut_indices_) ; 
 }
 
 /*!

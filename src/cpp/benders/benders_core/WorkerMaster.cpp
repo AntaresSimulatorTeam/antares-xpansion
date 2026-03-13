@@ -371,11 +371,8 @@ void WorkerMaster::_set_upper_bounds() const
 
 void WorkerMaster::addCutsAlphas(std::vector<SubProblemNamesInCut>& mpi_cuts)
 {
-    std::cout<<"addCutsAlphas in mpi case"<<std::endl ; 
-    std::cout<<"mpi cuts size "<<mpi_cuts.size()<<std::endl ; 
     for (auto& cut : mpi_cuts) 
     {
-        std::cout<<"new cut "<<std::endl ; 
         for (size_t i=0; i<cut.size()-1; i++) 
         {
             size_t start = cut[i].first.find('_') + 1 ; 
@@ -395,7 +392,6 @@ void WorkerMaster::addCutsAlphas(std::vector<SubProblemNamesInCut>& mpi_cuts)
                 alpha_j<<"alpha_"<<sub_index_str;
                 auto alpha_j_pos = _solver->get_col_index(alpha_j.str()); 
 
-                std::cout<<"to add "<<alpha_i_pos<<"   "<<alpha_j_pos<<std::endl ; 
 
                 std::vector<char> rowtype = {'E'};
                 std::vector<double> rowrhs = {0};
@@ -406,22 +402,17 @@ void WorkerMaster::addCutsAlphas(std::vector<SubProblemNamesInCut>& mpi_cuts)
                 std::vector<int> mclind(2);
                 mclind[0] = alpha_i_pos ;
                 mclind[1] = alpha_j_pos ; 
-                std::cout<<"adding a new row to master !! "<<std::endl ; 
                 solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
             }
         }
-        std::cout<<"\n\n"<<std::endl ; 
     }
 }
     
 void WorkerMaster::addCutsAlphas(BatchCollection& batches) 
 {
-    std::cout<<"addCutsAlphas in by batch case "<<std::endl ; 
     for (auto& cuts_in_batch : batches.BatchCollections())
     {
-        std::cout<<"new batch "<<std::endl ; 
         addCutsAlphas(cuts_in_batch.name_to_cut) ; 
-        std::cout<<"\n\n"<<std::endl ; 
     }
 }
 
@@ -437,7 +428,6 @@ void WorkerMaster::_set_alpha_var()
         if (_mps_has_alpha)
         {
             _id_alpha = _solver->get_col_index(alpha_str);
-            std::cout<<"_id_alpha "<<_id_alpha<<std::endl ; 
             for (int i(0); i < subproblems_count; ++i)
             {
                 std::stringstream buffer;
@@ -451,7 +441,6 @@ void WorkerMaster::_set_alpha_var()
             double ub(+1e20); /*!< Upper Bound*/
             double obj(+1);
             _id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
-            std::cout<<"id alpha else "<<_id_alpha<<std::endl ; 
 
             solver_addcols(*_solver,
                            DblVector(1, obj),

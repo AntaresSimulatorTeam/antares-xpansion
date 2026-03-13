@@ -21,25 +21,9 @@ void BendersByBatch::InitializeProblems()
 
 void BendersByBatch::BuildMasterProblem() 
 {
-    std::cout<<"BuildMasterProblem : calling the by batch implementation !!!"<<std::endl ; 
+    ResetMaster() ; 
     if (_world.rank() == rank_0)
-    {
-        std::shared_ptr<IBendersProblemProvider>
-          benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
-        reset_master<WorkerMaster>(master_variable_map_,
-                                   get_solver_name(),
-                                   get_log_level(),
-                                   _data.nsubproblem,
-                                   solver_log_manager_,
-                                   IsResumeMode(),
-                                   _logger,
-                                   Options().PROBLEMS_FORMAT,
-                                   benders_problem_provider.get(),
-                                   Options().MASTER_SOLUTION_TOLERANCE,
-                                   Options().CUT_COEFFICIENT_TOLERANCE);
-        
-    }
-    _master->addCutsAlphas(batch_collection_full_for_cuts_) ; 
+        _master->addCutsAlphas(batch_collection_full_for_cuts_) ; 
 }
 
 
