@@ -30,6 +30,11 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/CriterionInputDataReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CouplingMapGenerator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/MPISubproblemSolver.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/SequentialSubproblemSolver.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/BatchSubproblemSolver.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/SingleLoopStrategy.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/OuterLoopStrategy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersProblemFromFile.h
@@ -52,6 +57,13 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/Worker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/WorkerMaster.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/common.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/ISubproblemSolver.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/ILoopStrategy.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/MPISubproblemSolver.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/SequentialSubproblemSolver.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/BatchSubproblemSolver.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/SingleLoopStrategy.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/OuterLoopStrategy.h
 )
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)
@@ -59,6 +71,7 @@ add_library(antaresXpansion::benders_core ALIAS benders_core)
 target_include_directories(benders_core
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/strategies/include>
 )
 
 find_package(fmt REQUIRED)
