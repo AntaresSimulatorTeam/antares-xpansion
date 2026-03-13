@@ -1,7 +1,6 @@
 #include "antares-xpansion/benders/factories/BendersFactory.h"
 
-#include <antares-xpansion/benders/benders_by_batch/BendersByBatch.h>
-#include <antares-xpansion/benders/benders_core/BendersBase.h>
+#include <antares-xpansion/benders/benders_core/BendersCore.h>
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
 #include <antares-xpansion/benders/benders_core/StartUp.h>
@@ -11,8 +10,6 @@
 #include <antares-xpansion/benders/benders_core/strategies/OuterLoopStrategy.h>
 #include <antares-xpansion/benders/benders_core/strategies/SequentialSubproblemSolver.h>
 #include <antares-xpansion/benders/benders_core/strategies/SingleLoopStrategy.h>
-#include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
-#include <antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h>
 #include <antares-xpansion/helpers/AreaParser.h>
 #include <variant>
 
@@ -102,7 +99,6 @@ std::set<std::string> BendersFactory::ReadAreaFile()
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                       const CouplingMap& coupling_map) -> BendersEnvironment
 {
-    std::unique_ptr<BendersBase> benders;
     SubproblemSolverPtr solver_strategy;
     LoopStrategyPtr loop_strategy;
 
@@ -128,34 +124,12 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         loop_strategy = std::make_unique<SingleLoopStrategy>();
     }
 
-    switch (method_)
-    {
-    case BENDERSMETHOD::BENDERS:
-        benders = std::make_unique<BendersMpi>(benders_options,
-                                               dependencies_.logger,
-                                               dependencies_.writer,
-                                               *world_,
-                                               dependencies_.math_log_driver);
-        break;
-    case BENDERSMETHOD::BENDERS_OUTERLOOP:
-        benders = std::make_unique<Outerloop::BendersMpiOuterLoop>(benders_options,
-                                                                   dependencies_.logger,
-                                                                   dependencies_.writer,
-                                                                   *world_,
-                                                                   dependencies_.math_log_driver);
-        break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH:
-    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
-        benders = std::make_unique<BendersByBatch>(benders_options,
-                                                   dependencies_.logger,
-                                                   dependencies_.writer,
-                                                   *world_,
-                                                   dependencies_.math_log_driver);
-        break;
-    }
-
-    benders->setSubproblemSolver(std::move(solver_strategy));
-    benders->setLoopStrategy(std::move(loop_strategy));
+    auto benders = std::make_unique<BendersCore>(benders_options,
+                                                 dependencies_.logger,
+                                                 dependencies_.writer,
+                                                 dependencies_.math_log_driver,
+                                                 std::move(solver_strategy),
+                                                 std::move(loop_strategy));
 
     std::shared_ptr<BendersPlugin> benders_plugin(
       benders_plugin_factory_->CreatePlugin(coupling_map, false, world_));
