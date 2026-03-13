@@ -349,7 +349,6 @@ private:
     void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    WorkerMasterPtr _master;
     StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
