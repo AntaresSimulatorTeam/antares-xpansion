@@ -63,6 +63,7 @@ class XpansionConfigConstants:
     def _set_constants(self):
         # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
         self.SETTINGS = "settings"
+        self.INPUT = "input"
         self.GENERAL_DATA_INI = "generaldata.ini"
         self.OUTPUT = "output"
 

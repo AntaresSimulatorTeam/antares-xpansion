@@ -109,6 +109,16 @@ class XpansionDriver:
         launch antares xpansion steps
         """
 
+        use_gems = (
+            self.config_loader.step() in ("benders", "full")
+            and self.config_loader.has_optim_config()
+        )
+
+        if use_gems:
+            self.update_study_settings(memory_mode=False)
+            self.launch_gems_step()
+            return
+
         if self.config_loader.step() == "full" and not self.config_loader.memory():
             self.launch_antares_step()
             self.logger.info("Post Antares")

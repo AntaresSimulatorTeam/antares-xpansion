@@ -102,6 +102,19 @@ class XpansionSettingsReader:
         """
         return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
 
+    def has_optim_config(self):
+        """
+        Check if optim-config.yml exists in the study input folder
+        """
+        optim_config_path = os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.INPUT,
+                "optim-config.yml",
+            )
+        )
+        return os.path.isfile(optim_config_path)
+
     def general_data(self):
         """
         returns path to general data ini file
