@@ -86,6 +86,9 @@ void BendersByBatch::BuildBatches()
             }
         }
     }
+
+    BroadCastVariablesIndices();
+    init_problems_ = false;
 }
 
 void BendersByBatch::get_subs_per_cut_per_batch()

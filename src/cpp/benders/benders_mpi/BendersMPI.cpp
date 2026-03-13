@@ -29,7 +29,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
-
+    BuildMasterProblem();
     SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS)
     {
@@ -75,7 +75,6 @@ void BendersMpi::InitializeProblems()
         subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
     }
 
-    BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
