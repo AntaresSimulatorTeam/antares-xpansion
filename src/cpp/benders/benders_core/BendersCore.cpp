@@ -113,7 +113,7 @@ void BendersCore::Run()
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
         _logger->display_message("\tSolving subproblems...");
-        BuildCut();
+        solver_strategy_->solve_subproblems(*this);
         _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
         compute_ub();
