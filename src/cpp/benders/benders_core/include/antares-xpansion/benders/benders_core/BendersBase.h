@@ -45,7 +45,9 @@ auto selectPolicy(lambda f, bool shouldParallelize)
 class BendersBase
 {
 public:
-    virtual ~BendersBase() = default;
+    // Déclare le destructeur hors-ligne pour permettre la destruction
+    // correcte des unique_ptr vers des types potentiellement incomplets
+    virtual ~BendersBase();
     BendersBase(BendersBaseOptions options,
                 Logger logger,
                 std::shared_ptr<Output::OutputWriter> writer,
@@ -147,15 +149,8 @@ public:
     void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData& criterion_input_data);
 
-    void setSubproblemSolver(SubproblemSolverPtr solver)
-    {
-        subproblem_solver_ = std::move(solver);
-    }
-
-    void setLoopStrategy(LoopStrategyPtr strategy)
-    {
-        loop_strategy_ = std::move(strategy);
-    }
+    void setSubproblemSolver(SubproblemSolverPtr solver);
+    void setLoopStrategy(LoopStrategyPtr strategy);
 
 protected:
     bool exception_raised_ = false;

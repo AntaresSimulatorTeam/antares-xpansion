@@ -12,6 +12,13 @@
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
+// Assurer que le type ISubproblemSolver est complet au point de destruction
+#include "antares-xpansion/benders/benders_core/strategies/ISubproblemSolver.h"
+#include "antares-xpansion/benders/benders_core/strategies/ILoopStrategy.h"
+
+// Définition hors-ligne du destructeur
+BendersBase::~BendersBase() = default;
+
 BendersBase::BendersBase(BendersBaseOptions options,
                          Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
@@ -22,6 +29,16 @@ BendersBase::BendersBase(BendersBaseOptions options,
     _options(std::move(options)),
     _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv"))
 {
+}
+
+void BendersBase::setSubproblemSolver(SubproblemSolverPtr solver)
+{
+    subproblem_solver_ = std::move(solver);
+}
+
+void BendersBase::setLoopStrategy(LoopStrategyPtr strategy)
+{
+    loop_strategy_ = std::move(strategy);
 }
 
 /*!
