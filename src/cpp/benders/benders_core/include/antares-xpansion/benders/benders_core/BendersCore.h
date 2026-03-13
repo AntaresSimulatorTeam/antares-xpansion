@@ -25,6 +25,8 @@ public:
     void launch() override;
     std::string BendersName() const override;
     void InitializeProblems() override;
+    void free() override;
+    [[nodiscard]] bool shouldParallelize() const override;
 
 protected:
     void Run() override;

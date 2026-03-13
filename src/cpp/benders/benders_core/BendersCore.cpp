@@ -142,3 +142,17 @@ void BendersCore::post_run_actions() const
         SaveSolutionInOutputFile();
     }
 }
+
+void BendersCore::free()
+{
+    if (get_master())
+    {
+        free_master();
+    }
+    free_subproblems();
+}
+
+bool BendersCore::shouldParallelize() const
+{
+    return solver_strategy_->should_parallelize();
+}
