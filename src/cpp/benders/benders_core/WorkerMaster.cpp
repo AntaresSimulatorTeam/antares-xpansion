@@ -417,6 +417,12 @@ void WorkerMaster::addCutsAlphas(std::vector<SubProblemNamesInCut>& mpi_cuts)
 void WorkerMaster::addCutsAlphas(BatchCollection& batches) 
 {
     std::cout<<"addCutsAlphas in by batch case "<<std::endl ; 
+    for (auto& cuts_in_batch : batches.BatchCollections())
+    {
+        std::cout<<"new batch "<<std::endl ; 
+        addCutsAlphas(cuts_in_batch.name_to_cut) ; 
+        std::cout<<"\n\n"<<std::endl ; 
+    }
 }
 
 void WorkerMaster::_set_alpha_var()
