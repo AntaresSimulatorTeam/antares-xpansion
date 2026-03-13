@@ -1,5 +1,6 @@
 #pragma once
 #include <antares-xpansion/benders/benders_core/BendersBase.h>
+#include <antares-xpansion/benders/benders_core/BendersCore.h>
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
