@@ -1,12 +1,14 @@
 #include "antares-xpansion/benders/benders_core/strategies/MPISubproblemSolver.h"
 
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 
 MPISubproblemSolver::MPISubproblemSolver() = default;
 
 void MPISubproblemSolver::solve_subproblems(BendersBase& benders)
 {
-    benders.GetSubproblemCut(benders.subproblem_map);
+    SubProblemDataMap subproblem_data_map;
+    benders.GetSubproblemCut(subproblem_data_map);
 }
 
 void MPISubproblemSolver::broadcast_master_solution(BendersBase& benders)

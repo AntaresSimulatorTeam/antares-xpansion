@@ -6,6 +6,11 @@
 #include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
 #include <antares-xpansion/benders/benders_core/StartUp.h>
 #include <antares-xpansion/benders/benders_core/common.h>
+#include <antares-xpansion/benders/benders_core/strategies/BatchSubproblemSolver.h>
+#include <antares-xpansion/benders/benders_core/strategies/MPISubproblemSolver.h>
+#include <antares-xpansion/benders/benders_core/strategies/OuterLoopStrategy.h>
+#include <antares-xpansion/benders/benders_core/strategies/SequentialSubproblemSolver.h>
+#include <antares-xpansion/benders/benders_core/strategies/SingleLoopStrategy.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h>
 #include <antares-xpansion/helpers/AreaParser.h>
@@ -98,6 +103,31 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                       const CouplingMap& coupling_map) -> BendersEnvironment
 {
     std::unique_ptr<BendersBase> benders;
+    SubproblemSolverPtr solver_strategy;
+    LoopStrategyPtr loop_strategy;
+
+    const bool is_batch = (benders_options.BATCH_SIZE > 0
+                           && benders_options.BATCH_SIZE != coupling_map.size() - 1);
+    const bool is_outer_loop = benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP;
+
+    if (is_batch)
+    {
+        solver_strategy = std::make_unique<BatchSubproblemSolver>();
+    }
+    else
+    {
+        solver_strategy = std::make_unique<MPISubproblemSolver>();
+    }
+
+    if (is_outer_loop)
+    {
+        loop_strategy = std::make_unique<OuterLoopStrategy>();
+    }
+    else
+    {
+        loop_strategy = std::make_unique<SingleLoopStrategy>();
+    }
+
     switch (method_)
     {
     case BENDERSMETHOD::BENDERS:
@@ -123,6 +153,9 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                    dependencies_.math_log_driver);
         break;
     }
+
+    benders->setSubproblemSolver(std::move(solver_strategy));
+    benders->setLoopStrategy(std::move(loop_strategy));
 
     std::shared_ptr<BendersPlugin> benders_plugin(
       benders_plugin_factory_->CreatePlugin(coupling_map, false, world_));

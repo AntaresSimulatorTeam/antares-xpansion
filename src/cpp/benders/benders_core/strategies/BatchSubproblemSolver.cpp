@@ -1,12 +1,14 @@
 #include "antares-xpansion/benders/benders_core/strategies/BatchSubproblemSolver.h"
 
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 
 BatchSubproblemSolver::BatchSubproblemSolver() = default;
 
 void BatchSubproblemSolver::solve_subproblems(BendersBase& benders)
 {
-    benders.GetSubproblemCut(benders.subproblem_map);
+    SubProblemDataMap subproblem_data_map;
+    benders.GetSubproblemCut(subproblem_data_map);
 }
 
 void BatchSubproblemSolver::broadcast_master_solution(BendersBase& benders)

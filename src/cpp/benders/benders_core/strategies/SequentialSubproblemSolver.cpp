@@ -3,12 +3,14 @@
 #include <execution>
 
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 
 SequentialSubproblemSolver::SequentialSubproblemSolver() = default;
 
 void SequentialSubproblemSolver::solve_subproblems(BendersBase& benders)
 {
-    benders.GetSubproblemCut(benders.subproblem_map);
+    SubProblemDataMap subproblem_data_map;
+    benders.GetSubproblemCut(subproblem_data_map);
 }
 
 void SequentialSubproblemSolver::broadcast_master_solution(BendersBase& benders)
