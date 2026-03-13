@@ -74,7 +74,7 @@ void BendersMpi::InitializeProblems()
     {
         subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
     }
-    
+
     BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
@@ -139,7 +139,7 @@ void BendersMpi::BroadCastVariablesIndices()
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
-void BendersMpi::ResetMaster() 
+void BendersMpi::ResetMaster()
 {
     if (_world.rank() == rank_0)
     {
@@ -159,12 +159,13 @@ void BendersMpi::ResetMaster()
     }
 }
 
-
 void BendersMpi::BuildMasterProblem()
 {
-    ResetMaster() ; 
+    ResetMaster();
     if (_world.rank() == rank_0)
-        _master->addCutsAlphas(subproblem_per_cut_indices_) ; 
+    {
+        _master->addCutsAlphas(subproblem_per_cut_indices_);
+    }
 }
 
 /*!

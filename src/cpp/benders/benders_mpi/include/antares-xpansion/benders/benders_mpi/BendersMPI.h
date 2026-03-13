@@ -67,8 +67,8 @@ private:
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 
 protected:
+    void ResetMaster();
 
-    void ResetMaster() ; 
     [[nodiscard]] bool shouldParallelize() const final
     {
         return false;

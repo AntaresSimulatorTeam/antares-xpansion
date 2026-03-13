@@ -43,8 +43,8 @@ private:
                               const std::vector<std::string>& batch_sub_problems);
 
     void get_subs_per_cut_per_batch();
-    void BuildMasterProblem() override ; 
-    void BuildBatches() ; 
+    void BuildMasterProblem() override;
+    void BuildBatches();
 
     BatchCollection batch_collection_;
     BatchCollection batch_collection_full_for_cuts_;

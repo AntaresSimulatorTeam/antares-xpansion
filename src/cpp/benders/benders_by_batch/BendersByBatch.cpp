@@ -7,26 +7,23 @@
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 
-
 void BendersByBatch::InitializeProblems()
 {
     MatchProblemToId();
-    BuildBatches() ; 
+    BuildBatches();
     BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
 
-
-
-void BendersByBatch::BuildMasterProblem() 
+void BendersByBatch::BuildMasterProblem()
 {
-    ResetMaster() ; 
+    ResetMaster();
     if (_world.rank() == rank_0)
-        _master->addCutsAlphas(batch_collection_full_for_cuts_) ; 
+    {
+        _master->addCutsAlphas(batch_collection_full_for_cuts_);
+    }
 }
-
-
 
 void BendersByBatch::BuildBatches()
 {
@@ -89,9 +86,7 @@ void BendersByBatch::BuildBatches()
             }
         }
     }
-
 }
-
 
 void BendersByBatch::get_subs_per_cut_per_batch()
 {

@@ -371,48 +371,47 @@ void WorkerMaster::_set_upper_bounds() const
 
 void WorkerMaster::addCutsAlphas(std::vector<SubProblemNamesInCut>& mpi_cuts)
 {
-    for (auto& cut : mpi_cuts) 
+    for (auto& cut: mpi_cuts)
     {
-        for (size_t i=0; i<cut.size()-1; i++) 
+        for (size_t i = 0; i < cut.size() - 1; i++)
         {
-            size_t start = cut[i].first.find('_') + 1 ; 
-            size_t end = cut[i].first.find('.',start) ; 
-            auto sub_index_str = cut[i].first.substr(start,end-start) ;
-            std::stringstream alpha_i; 
-            alpha_i<<"alpha_"<<sub_index_str; 
-            auto alpha_i_pos = _solver->get_col_index(alpha_i.str()); 
+            size_t start = cut[i].first.find('_') + 1;
+            size_t end = cut[i].first.find('.', start);
+            auto sub_index_str = cut[i].first.substr(start, end - start);
+            std::stringstream alpha_i;
+            alpha_i << "alpha_" << sub_index_str;
+            auto alpha_i_pos = _solver->get_col_index(alpha_i.str());
 
-            for (size_t j=i+1 ; j<cut.size(); j++) 
+            for (size_t j = i + 1; j < cut.size(); j++)
             {
-                start = cut[j].first.find('_') + 1 ; 
-                end = cut[j].first.find('.',start) ; 
-                sub_index_str = cut[j].first.substr(start,end-start) ;            
+                start = cut[j].first.find('_') + 1;
+                end = cut[j].first.find('.', start);
+                sub_index_str = cut[j].first.substr(start, end - start);
 
-                std::stringstream alpha_j ; 
-                alpha_j<<"alpha_"<<sub_index_str;
-                auto alpha_j_pos = _solver->get_col_index(alpha_j.str()); 
-
+                std::stringstream alpha_j;
+                alpha_j << "alpha_" << sub_index_str;
+                auto alpha_j_pos = _solver->get_col_index(alpha_j.str());
 
                 std::vector<char> rowtype = {'E'};
                 std::vector<double> rowrhs = {0};
                 std::vector<int> mstart = {0, 2};
                 std::vector<double> matval(2);
-                matval[0] = 1 ; 
-                matval[1] = -1 ; 
+                matval[0] = 1;
+                matval[1] = -1;
                 std::vector<int> mclind(2);
-                mclind[0] = alpha_i_pos ;
-                mclind[1] = alpha_j_pos ; 
+                mclind[0] = alpha_i_pos;
+                mclind[1] = alpha_j_pos;
                 solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
             }
         }
     }
 }
-    
-void WorkerMaster::addCutsAlphas(BatchCollection& batches) 
+
+void WorkerMaster::addCutsAlphas(BatchCollection& batches)
 {
-    for (auto& cuts_in_batch : batches.BatchCollections())
+    for (auto& cuts_in_batch: batches.BatchCollections())
     {
-        addCutsAlphas(cuts_in_batch.name_to_cut) ; 
+        addCutsAlphas(cuts_in_batch.name_to_cut);
     }
 }
 
