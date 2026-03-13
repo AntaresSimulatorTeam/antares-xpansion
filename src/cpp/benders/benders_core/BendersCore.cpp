@@ -113,7 +113,7 @@ void BendersCore::Run()
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
         _logger->display_message("\tSolving subproblems...");
-        solver_strategy_->solve_subproblems(*this);
+        BuildCut();
         _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
         compute_ub();
@@ -141,6 +141,22 @@ void BendersCore::post_run_actions() const
     {
         SaveSolutionInOutputFile();
     }
+}
+
+void BendersCore::BuildCut()
+{
+    SubProblemDataMap subproblem_data_map;
+    Timer timer;
+    GetSubproblemCut(subproblem_data_map);
+    SetSubproblemCost(0);
+    for (const auto& [_, subproblem_data]: subproblem_data_map)
+    {
+        SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+    }
+
+    _data.subproblems_walltime = timer.elapsed();
+    _data.ub = 0;
+    BuildCutFull(subproblem_data_map);
 }
 
 void BendersCore::free()

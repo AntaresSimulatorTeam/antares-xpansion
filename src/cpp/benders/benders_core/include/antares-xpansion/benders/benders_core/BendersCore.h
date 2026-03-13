@@ -31,6 +31,7 @@ public:
 protected:
     void Run() override;
     void post_run_actions() const override;
+    void BuildCut();
 
 private:
     SubproblemSolverPtr solver_strategy_;
