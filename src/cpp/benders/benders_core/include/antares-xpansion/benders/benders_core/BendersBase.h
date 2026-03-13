@@ -44,6 +44,12 @@ auto selectPolicy(lambda f, bool shouldParallelize)
 
 class BendersBase
 {
+    friend class MPISubproblemSolver;
+    friend class SequentialSubproblemSolver;
+    friend class BatchSubproblemSolver;
+    friend class SingleLoopStrategy;
+    friend class OuterLoopStrategy;
+
 public:
     // Déclare le destructeur hors-ligne pour permettre la destruction
     // correcte des unique_ptr vers des types potentiellement incomplets
