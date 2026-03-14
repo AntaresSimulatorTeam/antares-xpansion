@@ -5,6 +5,7 @@
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/strategies/MPISubproblemSolver.h"
 #include "antares-xpansion/benders/benders_core/strategies/SingleLoopStrategy.h"
+#include "antares-xpansion/benders/benders_core/strategies/StandardBatchStrategy.h"
 #include "antares-xpansion/helpers/Timer.h"
 
 BendersCore::BendersCore(BendersBaseOptions options,
@@ -13,7 +14,8 @@ BendersCore::BendersCore(BendersBaseOptions options,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
     solver_strategy_(std::make_unique<MPISubproblemSolver>()),
-    loop_strategy_(std::make_unique<SingleLoopStrategy>())
+    loop_strategy_(std::make_unique<SingleLoopStrategy>()),
+    batch_strategy_(std::make_unique<StandardBatchStrategy>())
 {
 }
 
@@ -25,7 +27,22 @@ BendersCore::BendersCore(BendersBaseOptions options,
                          LoopStrategyPtr loop_strategy):
     BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
     solver_strategy_(std::move(solver_strategy)),
-    loop_strategy_(std::move(loop_strategy))
+    loop_strategy_(std::move(loop_strategy)),
+    batch_strategy_(std::make_unique<StandardBatchStrategy>())
+{
+}
+
+BendersCore::BendersCore(BendersBaseOptions options,
+                         Logger logger,
+                         std::shared_ptr<Output::OutputWriter> writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                         SubproblemSolverPtr solver_strategy,
+                         LoopStrategyPtr loop_strategy,
+                         BatchStrategyPtr batch_strategy):
+    BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
+    solver_strategy_(std::move(solver_strategy)),
+    loop_strategy_(std::move(loop_strategy)),
+    batch_strategy_(std::move(batch_strategy))
 {
 }
 
@@ -82,6 +99,18 @@ void BendersCore::InitializeProblems()
 }
 
 void BendersCore::Run()
+{
+    if (batch_strategy_)
+    {
+        batch_strategy_->Run(*this);
+    }
+    else
+    {
+        RunCore();
+    }
+}
+
+void BendersCore::RunCore()
 {
     init_data();
     ChecksResumeMode();

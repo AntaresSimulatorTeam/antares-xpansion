@@ -36,6 +36,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/strategies/BatchSubproblemSolver.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/strategies/SingleLoopStrategy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/strategies/OuterLoopStrategy.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/StandardBatchStrategy.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersCore.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
@@ -66,6 +67,8 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/BatchSubproblemSolver.h
         ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/SingleLoopStrategy.h
         ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/OuterLoopStrategy.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/IBatchStrategy.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/strategies/include/antares-xpansion/benders/benders_core/strategies/StandardBatchStrategy.h
 )
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)
