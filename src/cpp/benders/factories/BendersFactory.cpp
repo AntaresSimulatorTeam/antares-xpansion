@@ -1,5 +1,6 @@
 #include "antares-xpansion/benders/factories/BendersFactory.h"
 
+#include <antares-xpansion/benders/benders_by_batch/BendersByBatch.h>
 #include <antares-xpansion/benders/benders_core/BendersCore.h>
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
@@ -104,37 +105,38 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                            && benders_options.BATCH_SIZE != coupling_map.size() - 1);
     const bool is_outer_loop = benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP;
 
-    SubproblemSolverPtr solver_strategy;
-    LoopStrategyPtr loop_strategy;
-    BatchStrategyPtr batch_strategy;
+    std::unique_ptr<BendersBase> benders;
 
     if (is_batch)
     {
-        batch_strategy = std::make_unique<StandardBatchStrategy>();
+        benders = std::make_unique<BendersByBatch>(benders_options,
+                                                   dependencies_.logger,
+                                                   dependencies_.writer,
+                                                   *world_,
+                                                   dependencies_.math_log_driver);
     }
     else
     {
-        batch_strategy = std::make_unique<StandardBatchStrategy>();
-    }
+        SubproblemSolverPtr solver_strategy = std::make_unique<MPISubproblemSolver>();
+        LoopStrategyPtr loop_strategy;
+        if (is_outer_loop)
+        {
+            loop_strategy = std::make_unique<OuterLoopStrategy>();
+        }
+        else
+        {
+            loop_strategy = std::make_unique<SingleLoopStrategy>();
+        }
+        BatchStrategyPtr batch_strategy = std::make_unique<StandardBatchStrategy>();
 
-    if (is_outer_loop)
-    {
-        loop_strategy = std::make_unique<OuterLoopStrategy>();
+        benders = std::make_unique<BendersCore>(benders_options,
+                                                dependencies_.logger,
+                                                dependencies_.writer,
+                                                dependencies_.math_log_driver,
+                                                std::move(solver_strategy),
+                                                std::move(loop_strategy),
+                                                std::move(batch_strategy));
     }
-    else
-    {
-        loop_strategy = std::make_unique<SingleLoopStrategy>();
-    }
-
-    solver_strategy = std::make_unique<MPISubproblemSolver>();
-
-    auto benders = std::make_unique<BendersCore>(benders_options,
-                                                 dependencies_.logger,
-                                                 dependencies_.writer,
-                                                 dependencies_.math_log_driver,
-                                                 std::move(solver_strategy),
-                                                 std::move(loop_strategy),
-                                                 std::move(batch_strategy));
 
     std::shared_ptr<BendersPlugin> benders_plugin(
       benders_plugin_factory_->CreatePlugin(coupling_map, false, world_));
