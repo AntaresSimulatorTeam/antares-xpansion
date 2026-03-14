@@ -133,6 +133,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                 dependencies_.logger,
                                                 dependencies_.writer,
                                                 dependencies_.math_log_driver,
+                                                world_,
                                                 std::move(solver_strategy),
                                                 std::move(loop_strategy),
                                                 std::move(batch_strategy));

@@ -15,7 +15,21 @@ BendersCore::BendersCore(BendersBaseOptions options,
     BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
     solver_strategy_(std::make_unique<MPISubproblemSolver>()),
     loop_strategy_(std::make_unique<SingleLoopStrategy>()),
-    batch_strategy_(std::make_unique<StandardBatchStrategy>())
+    batch_strategy_(std::make_unique<StandardBatchStrategy>()),
+    world_(nullptr)
+{
+}
+
+BendersCore::BendersCore(BendersBaseOptions options,
+                         Logger logger,
+                         std::shared_ptr<Output::OutputWriter> writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                         mpi::communicator* world):
+    BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
+    solver_strategy_(std::make_unique<MPISubproblemSolver>()),
+    loop_strategy_(std::make_unique<SingleLoopStrategy>()),
+    batch_strategy_(std::make_unique<StandardBatchStrategy>()),
+    world_(world)
 {
 }
 
@@ -28,7 +42,8 @@ BendersCore::BendersCore(BendersBaseOptions options,
     BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
     solver_strategy_(std::move(solver_strategy)),
     loop_strategy_(std::move(loop_strategy)),
-    batch_strategy_(std::make_unique<StandardBatchStrategy>())
+    batch_strategy_(std::make_unique<StandardBatchStrategy>()),
+    world_(nullptr)
 {
 }
 
@@ -42,8 +57,35 @@ BendersCore::BendersCore(BendersBaseOptions options,
     BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
     solver_strategy_(std::move(solver_strategy)),
     loop_strategy_(std::move(loop_strategy)),
-    batch_strategy_(std::move(batch_strategy))
+    batch_strategy_(std::move(batch_strategy)),
+    world_(nullptr)
 {
+}
+
+BendersCore::BendersCore(BendersBaseOptions options,
+                         Logger logger,
+                         std::shared_ptr<Output::OutputWriter> writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                         mpi::communicator* world,
+                         SubproblemSolverPtr solver_strategy,
+                         LoopStrategyPtr loop_strategy,
+                         BatchStrategyPtr batch_strategy):
+    BendersBase(std::move(options), std::move(logger), std::move(writer), mathLoggerDriver),
+    solver_strategy_(std::move(solver_strategy)),
+    loop_strategy_(std::move(loop_strategy)),
+    batch_strategy_(std::move(batch_strategy)),
+    world_(world)
+{
+}
+
+int BendersCore::Rank() const
+{
+    return world_ ? world_->rank() : 0;
+}
+
+int BendersCore::WorldSize() const
+{
+    return world_ ? world_->size() : 1;
 }
 
 void BendersCore::launch()
