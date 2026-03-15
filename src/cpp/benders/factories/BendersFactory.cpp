@@ -26,76 +26,13 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(options);
 }
 
-BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
+std::string GetMethodName(bool is_batch, bool is_outer_loop)
 {
-    if (batch_size == 0 || batch_size == coupling_map_size - 1)
+    if (is_batch)
     {
-        if (outer_loop)
-        {
-            return BENDERSMETHOD::BENDERS_OUTERLOOP;
-        }
-        return BENDERSMETHOD::BENDERS;
+        return is_outer_loop ? "Benders by batch outerloop" : "Benders by batch";
     }
-    if (outer_loop)
-    {
-        return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
-    }
-    return BENDERSMETHOD::BENDERS_BY_BATCH;
-}
-
-std::variant<Benders::Criterion::CriterionInputData,
-             Benders::Criterion::OuterLoopCriterionInputData>
-BendersFactory::ProcessCriterionInput()
-{
-    const auto fpath = std::filesystem::path(options_.INPUTROOT) / options_.OUTER_LOOP_OPTION_FILE;
-    // if adequacy_criterion.yml is provided read it
-    if ((method_ == BENDERSMETHOD::BENDERS_OUTERLOOP
-         || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP)
-        && std::filesystem::exists(fpath))
-    {
-        return Benders::Criterion::CriterionInputFromYaml().Read(fpath);
-    }
-    // else compute criterion for all areas!
-    else
-    {
-        return BuildPatternsUsingAreaFile();
-    }
-}
-
-Benders::Criterion::CriterionInputData BendersFactory::BuildPatternsUsingAreaFile()
-{
-    std::set<std::string> unique_areas = ReadAreaFile();
-    Benders::Criterion::CriterionInputData ret;
-    ret.SetCriterionCountThreshold(1);
-
-    for (const auto& area: unique_areas)
-    {
-        Benders::Criterion::CriterionSingleInputData
-          singleInputData(Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
-        ret.AddSingleData(singleInputData);
-    }
-
-    return ret;
-}
-
-std::set<std::string> BendersFactory::ReadAreaFile()
-{
-    std::set<std::string> unique_areas;
-    const auto area_file = std::filesystem::path(options_.INPUTROOT) / options_.AREA_FILE;
-    const auto area_file_data = AreaParser::ReadAreaFile(area_file);
-    if (const auto& msg = area_file_data.error_message; !msg.empty())
-    {
-        dependencies_.benders_loggers.display_message(msg, LogUtils::LOGLEVEL::WARNING, context_);
-        std::ostringstream ms;
-        ms << " Consequently, " << LOLD_FILE
-           << " and other criterion based files will not be produced!";
-
-        dependencies_.benders_loggers.display_message(ms.str(),
-                                                      LogUtils::LOGLEVEL::WARNING,
-                                                      context_);
-        return {};
-    }
-    return {area_file_data.areas.begin(), area_file_data.areas.end()};
+    return is_outer_loop ? "Outerloop around Benders" : "Benders";
 }
 
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
@@ -144,7 +81,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     benders->SetPlugin(benders_plugin);
 
     benders->set_input_map(coupling_map);
-    auto criterion_input_holder = ProcessCriterionInput();
+    auto criterion_input_holder = ProcessCriterionInput(is_batch, is_outer_loop);
     benders->setCriterionComputationInputs(
       std::visit([](auto&& the_variant)
                  { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
@@ -173,8 +110,8 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
                                                                dependencies_.logger.get(),
                                                                "Benders");
 
-    method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
-    context_ = bendersmethod_to_string(method_);
+    bool is_batch = (options_.BATCH_SIZE > 0 && options_.BATCH_SIZE != coupling_map.size() - 1);
+    context_ = GetMethodName(is_batch, outer_loop);
 
     if (rank == 0)
     {
@@ -190,4 +127,48 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
     auto environment = ConfigureBenders(benders_options, coupling_map);
     ConfigureSolverLog(environment.benders.get());
     return std::optional<BendersEnvironment>(std::move(environment));
+}
+
+auto BendersFactory::ProcessCriterionInput(bool is_batch, bool is_outer_loop)
+  -> std::variant<Benders::Criterion::CriterionInputData,
+                  Benders::Criterion::OuterLoopCriterionInputData>
+{
+    if (is_outer_loop)
+    {
+        std::filesystem::path criterion_file = std::filesystem::path(options_.OUTPUTROOT)
+                                               / "criterionOptimisation.yaml";
+        Benders::Criterion::CriterionInputFromYaml reader;
+        return reader.Read(criterion_file);
+    }
+    else
+    {
+        return BuildPatternsUsingAreaFile();
+    }
+}
+
+Benders::Criterion::CriterionInputData BendersFactory::BuildPatternsUsingAreaFile()
+{
+    Benders::Criterion::CriterionInputData criterion_data;
+    auto areas = ReadAreaFile();
+
+    for (const auto& area: areas)
+    {
+        criterion_data.AddSingleData(Benders::Criterion::CriterionSingleInputData(area, "", 0.0));
+    }
+
+    return criterion_data;
+}
+
+std::set<std::string> BendersFactory::ReadAreaFile()
+{
+    std::filesystem::path area_file = std::filesystem::path(options_.OUTPUTROOT)
+                                      / options_.AREA_FILE;
+    auto area_data = AreaParser::ReadAreaFile(area_file);
+
+    if (!area_data.error_message.empty())
+    {
+        throw std::runtime_error("Error reading area file: " + area_data.error_message);
+    }
+
+    return std::set<std::string>(area_data.areas.begin(), area_data.areas.end());
 }

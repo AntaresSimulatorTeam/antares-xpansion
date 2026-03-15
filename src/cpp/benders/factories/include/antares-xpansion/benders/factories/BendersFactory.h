@@ -57,7 +57,7 @@ private:
                           const CouplingMap& coupling_map) -> BendersEnvironment;
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
-    ProcessCriterionInput();
+    ProcessCriterionInput(bool is_batch, bool is_outer_loop);
     Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
     std::set<std::string> ReadAreaFile();
     void ConfigureSolverLog(BendersBase* benders);
@@ -68,6 +68,6 @@ private:
     std::shared_ptr<BendersPluginFactory> benders_plugin_factory_;
     int rank = 0;
     BENDERSMETHOD method_;
-    std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
+    std::string context_;
     static constexpr const char* const LOLD_FILE = "LOLD.txt";
 };
