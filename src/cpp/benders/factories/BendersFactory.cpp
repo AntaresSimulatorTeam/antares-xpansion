@@ -148,27 +148,36 @@ auto BendersFactory::ProcessCriterionInput(bool is_batch, bool is_outer_loop)
 
 Benders::Criterion::CriterionInputData BendersFactory::BuildPatternsUsingAreaFile()
 {
-    Benders::Criterion::CriterionInputData criterion_data;
-    auto areas = ReadAreaFile();
+    std::set<std::string> unique_areas = ReadAreaFile();
+    Benders::Criterion::CriterionInputData ret;
+    ret.SetCriterionCountThreshold(1);
 
-    for (const auto& area: areas)
+    for (const auto& area: unique_areas)
     {
-        criterion_data.AddSingleData(Benders::Criterion::CriterionSingleInputData(area, "", 0.0));
+        Benders::Criterion::CriterionSingleInputData
+          singleInputData(Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
+        ret.AddSingleData(singleInputData);
     }
 
-    return criterion_data;
+    return ret;
 }
 
 std::set<std::string> BendersFactory::ReadAreaFile()
 {
-    std::filesystem::path area_file = std::filesystem::path(options_.OUTPUTROOT)
-                                      / options_.AREA_FILE;
-    auto area_data = AreaParser::ReadAreaFile(area_file);
-
-    if (!area_data.error_message.empty())
+    std::set<std::string> unique_areas;
+    const auto area_file = std::filesystem::path(options_.INPUTROOT) / options_.AREA_FILE;
+    const auto area_file_data = AreaParser::ReadAreaFile(area_file);
+    if (const auto& msg = area_file_data.error_message; !msg.empty())
     {
-        throw std::runtime_error("Error reading area file: " + area_data.error_message);
-    }
+        dependencies_.benders_loggers.display_message(msg, LogUtils::LOGLEVEL::WARNING, context_);
+        std::ostringstream ms;
+        ms << " Consequently, " << LOLD_FILE
+           << " and other criterion based files will not be produced!";
 
-    return std::set<std::string>(area_data.areas.begin(), area_data.areas.end());
+        dependencies_.benders_loggers.display_message(ms.str(),
+                                                      LogUtils::LOGLEVEL::WARNING,
+                                                      context_);
+        return {};
+    }
+    return {area_file_data.areas.begin(), area_file_data.areas.end()};
 }
