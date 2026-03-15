@@ -64,7 +64,15 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     }
     else
     {
-        SubproblemSolverPtr solver_strategy = std::make_unique<MPISubproblemSolver>();
+        SubproblemSolverPtr solver_strategy;
+        if (world_->size() == 1)
+        {
+            solver_strategy = std::make_unique<SequentialSubproblemSolver>();
+        }
+        else
+        {
+            solver_strategy = std::make_unique<MPISubproblemSolver>();
+        }
         LoopStrategyPtr loop_strategy;
         if (is_outer_loop)
         {
