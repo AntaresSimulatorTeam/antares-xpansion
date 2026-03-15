@@ -35,6 +35,16 @@ std::string GetMethodName(bool is_batch, bool is_outer_loop)
     return is_outer_loop ? "Outerloop around Benders" : "Benders";
 }
 
+BENDERSMETHOD GetBendersMethod(bool is_batch, bool is_outer_loop)
+{
+    if (is_batch)
+    {
+        return is_outer_loop ? BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP
+                             : BENDERSMETHOD::BENDERS_BY_BATCH;
+    }
+    return is_outer_loop ? BENDERSMETHOD::BENDERS_OUTERLOOP : BENDERSMETHOD::BENDERS;
+}
+
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                       const CouplingMap& coupling_map) -> BendersEnvironment
 {
@@ -86,6 +96,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
       std::visit([](auto&& the_variant)
                  { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
                  criterion_input_holder));
+    method_ = GetBendersMethod(is_batch, is_outer_loop);
     return BendersEnvironment{std::move(benders), criterion_input_holder, method_};
 }
 
