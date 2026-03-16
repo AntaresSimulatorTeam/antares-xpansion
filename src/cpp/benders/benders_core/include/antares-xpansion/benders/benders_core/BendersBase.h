@@ -116,6 +116,11 @@ public:
         return _data.criteria_current_iteration_data.benders_num_run;
     }
 
+    void IncrementBendersRunNumber()
+    {
+        ++_data.criteria_current_iteration_data.benders_num_run;
+    }
+
     CurrentIterationData GetCurrentIterationData() const;
 
     CriteriaCurrentIterationData GetOuterLoopData() const;

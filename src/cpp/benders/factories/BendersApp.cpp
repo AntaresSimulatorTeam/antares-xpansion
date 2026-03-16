@@ -75,37 +75,47 @@ void BendersApp::AddCriterionOutputs()
                                  &CriteriaCurrentIterationData::patterns_values);
 }
 
+void BendersApp::InitializeBendersEnvironment(bool outer_loop)
+{
+    SetupLoggerAndOutputWriter(options_.get_benders_options());
+    BendersFactory factory(
+      options_,
+      pworld_,
+      BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
+    auto env = factory.PrepareForExecution(outer_loop);
+    if (!env)
+    {
+        if (outer_loop)
+        {
+            throw std::runtime_error(
+              "Could not initialize benders. Please see above messages for actual error.");
+        }
+        return;
+    }
+    auto&& environment = env.value();
+    benders_ = std::move(environment.benders);
+    criterion_input_holder_ = environment.criterion_input_data;
+    method_ = environment.method;
+    context_ = bendersmethod_to_string(method_);
+    if (pworld_->rank() == 0)
+    {
+        if (!isCriterionListEmpty())
+        {
+            AddCriterionOutputs();
+        }
+    }
+}
+
 int BendersApp::RunBenders()
 {
     try
     {
-        SetupLoggerAndOutputWriter(options_.get_benders_options());
-        BendersFactory factory(
-          options_,
-          pworld_,
-          BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
-        auto env = factory.PrepareForExecution(false);
-        // context =
-        // method =
-        if (env)
+        InitializeBendersEnvironment(false);
+        if (benders_)
         {
-            auto&& environment = env.value();
-            benders_ = std::move(environment.benders);
-            criterion_input_holder_ = environment.criterion_input_data;
-            method_ = environment.method;
-            if (pworld_->rank() == 0)
-            {
-                if (!isCriterionListEmpty())
-                {
-                    AddCriterionOutputs();
-                }
-            }
-            if (benders_)
-            {
-                StartMessage();
-                benders_->launch();
-                EndMessage(benders_->execution_time());
-            }
+            StartMessage();
+            benders_->launch();
+            EndMessage(benders_->execution_time());
         }
     }
     catch (std::exception& e)
@@ -150,28 +160,7 @@ int BendersApp::RunExternalLoop()
 {
     try
     {
-        SetupLoggerAndOutputWriter(options_.get_benders_options());
-        BendersFactory factory(
-          options_,
-          pworld_,
-          BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
-        auto env = factory.PrepareForExecution(true);
-        if (!env)
-        {
-            throw std::runtime_error(
-              "Could not initialize benders. Please see above messages for actual error.");
-        }
-        auto&& environment = env.value();
-        benders_ = std::move(environment.benders);
-        criterion_input_holder_ = environment.criterion_input_data;
-        method_ = environment.method;
-        if (pworld_->rank() == 0)
-        {
-            if (!isCriterionListEmpty())
-            {
-                AddCriterionOutputs();
-            }
-        }
+        InitializeBendersEnvironment(true);
         double tau = 0.5;
         const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
           criterion_input_holder_);
