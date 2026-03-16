@@ -297,7 +297,12 @@ else ()
     message(WARNING "ANTARES_SOLVER_PATH does not exist: ${ANTARES_SOLVER_PATH}")
 endif ()
 
-set(ANTARES_PROBLEM_GENERATOR_PATH "${ANTARES_SOLVER_DIR}/antares-problem-generator")
+if (WIN32)
+    set(ANTARES_PROBLEM_GENERATOR_PATH "${ANTARES_SOLVER_DIR}/antares-problem-generator.exe")
+else ()
+    set(ANTARES_PROBLEM_GENERATOR_PATH "${ANTARES_SOLVER_DIR}/antares-problem-generator")
+endif ()
+
 # Copy antares-problem-generator to build directory
 if (EXISTS ${ANTARES_PROBLEM_GENERATOR_PATH})
     file(COPY ${ANTARES_PROBLEM_GENERATOR_PATH}
