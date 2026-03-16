@@ -44,7 +44,7 @@ public:
                 Logger logger,
                 std::shared_ptr<Output::OutputWriter> writer,
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
-                std::shared_ptr<ICommunicationStrategy> comm_strategy = nullptr);
+                std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
 
