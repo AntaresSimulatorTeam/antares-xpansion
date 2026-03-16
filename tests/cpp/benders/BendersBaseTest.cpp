@@ -100,12 +100,6 @@ public:
     {
         return _data.x_cut;
     }
-
-protected:
-    [[nodiscard]] bool shouldParallelize() const final
-    {
-        return false;
-    }
 };
 
 class BendersBaseTest: public ::testing::Test

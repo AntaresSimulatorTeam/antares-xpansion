@@ -15,13 +15,24 @@
 BendersBase::BendersBase(BendersBaseOptions options,
                          Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
-                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                         std::shared_ptr<ICommunicationStrategy> comm_strategy):
     _logger(std::move(logger)),
     _writer(std::move(writer)),
     mathLoggerDriver_(std::move(mathLoggerDriver)),
     _options(std::move(options)),
-    _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv"))
+    _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv")),
+    communication_strategy_(std::move(comm_strategy))
 {
+}
+
+bool BendersBase::shouldParallelize() const
+{
+    if (communication_strategy_)
+    {
+        return communication_strategy_->ShouldParallelize();
+    }
+    return true;
 }
 
 /*!

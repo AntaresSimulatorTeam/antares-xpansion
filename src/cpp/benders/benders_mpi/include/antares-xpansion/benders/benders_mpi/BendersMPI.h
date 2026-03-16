@@ -6,6 +6,7 @@
 #include "antares-xpansion/benders/benders_core/Worker.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "MpiCommunicationStrategy.h"
 #include "common_mpi.h"
 
 /*!
@@ -67,11 +68,6 @@ private:
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 
 protected:
-    [[nodiscard]] bool shouldParallelize() const final
-    {
-        return false;
-    }
-
     void PreRunInitialization();
 
     int Rank() const

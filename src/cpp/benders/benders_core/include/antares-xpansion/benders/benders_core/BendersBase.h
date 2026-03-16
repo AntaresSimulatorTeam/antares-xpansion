@@ -9,6 +9,7 @@
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
+#include "ICommunicationStrategy.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "Worker.h"
@@ -42,7 +43,8 @@ public:
     BendersBase(BendersBaseOptions options,
                 Logger logger,
                 std::shared_ptr<Output::OutputWriter> writer,
-                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+                std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                std::shared_ptr<ICommunicationStrategy> comm_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
 
@@ -347,7 +349,11 @@ private:
     void compute_cut(const SubProblemDataMap& subproblem_data_map);
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
-    [[nodiscard]] virtual bool shouldParallelize() const = 0;
+    [[nodiscard]] virtual bool shouldParallelize() const;
+    [[nodiscard]] const std::shared_ptr<ICommunicationStrategy>& GetCommunicationStrategy() const
+    {
+        return communication_strategy_;
+    }
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
@@ -363,6 +369,7 @@ private:
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+    std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;
