@@ -350,10 +350,12 @@ private:
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const;
+
     [[nodiscard]] const std::shared_ptr<ICommunicationStrategy>& GetCommunicationStrategy() const
     {
         return communication_strategy_;
     }
+
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
