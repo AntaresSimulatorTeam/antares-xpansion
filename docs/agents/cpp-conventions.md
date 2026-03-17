@@ -52,7 +52,7 @@ Disable formatting for specific sections:
 #include "benders/benders_core/BendersOptions.h"
 #include <vector>
 #include <memory>
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include <boost/mpi.hpp>
 ```
 
 ## Project Structure
