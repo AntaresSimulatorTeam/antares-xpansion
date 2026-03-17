@@ -30,8 +30,8 @@ public:
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
 
-    void addCutsAlphas(std::vector<SubProblemNamesInCut>&);
-    void addCutsAlphas(BatchCollection&);
+    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&);
+    void addAlphasFixingConstraints(BatchCollection&);
 
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,

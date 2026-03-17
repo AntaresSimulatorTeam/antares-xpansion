@@ -138,7 +138,7 @@ void BendersMpi::BroadCastVariablesIndices()
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
-void BendersMpi::ResetMaster()
+void BendersMpi::InitializeMaster()
 {
     if (_world.rank() == rank_0)
     {
@@ -160,10 +160,10 @@ void BendersMpi::ResetMaster()
 
 void BendersMpi::BuildMasterProblem()
 {
-    ResetMaster();
+    InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        _master->addCutsAlphas(subproblem_per_cut_indices_);
+        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_);
     }
 }
 

@@ -18,10 +18,10 @@ void BendersByBatch::InitializeProblems()
 
 void BendersByBatch::BuildMasterProblem()
 {
-    ResetMaster();
+    InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        _master->addCutsAlphas(batch_collection_full_for_cuts_);
+        _master->addAlphasFixingConstraints(batch_collection_full_for_cuts_);
     }
 }
 
