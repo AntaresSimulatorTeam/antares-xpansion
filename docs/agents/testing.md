@@ -19,16 +19,36 @@ cmake --build build
 ctest --test-dir build
 ```
 
-### C++ Tests Only
+### Unit Tests Only (C++ and Python)
 
 ```bash
-ctest --test-dir build -R cpp
+ctest --test-dir build -L unit
 ```
 
-### Python Tests Only
+### C++ Unit Tests Only
 
 ```bash
-pytest tests/python/
+ctest --test-dir build -R '^unit_' -E unit_launcher
+```
+
+### Python Unit Tests Only
+
+```bash
+ctest --test-dir build -R unit_launcher
+```
+
+### End-to-End Tests
+
+```bash
+ctest --test-dir build -L end_to_end
+```
+
+### By Duration Label
+
+```bash
+ctest --test-dir build -L short    # Fast tests
+ctest --test-dir build -L medium    # Medium duration
+ctest --test-dir build -L long      # Long running tests
 ```
 
 ### With Coverage
@@ -39,6 +59,24 @@ cmake --build build
 ctest --test-dir build
 # Coverage report in build/coverage/
 ```
+
+## Test Organization
+
+### Test Names
+
+| Test Pattern | Description |
+|-------------|-------------|
+| `unit_*` | C++ unit tests |
+| `unit_launcher` | Python unit tests |
+| `examples_*` | Example-based integration tests |
+| `sequential`, `mpibenders` | Benders integration tests |
+
+### Labels
+
+- `unit` - Unit tests
+- `end_to_end` - Integration tests
+- `short`, `medium`, `long` - Duration categories
+- `benders`, `lpnamer`, `bdd` - Functional categories
 
 ## C++ Tests (Google Test)
 
@@ -55,11 +93,6 @@ tests/cpp/
 ├── restart_benders/
 └── zip_mps/
 ```
-
-### Naming
-
-- Test files: `*_test.cpp`
-- Test executables: automatically built
 
 ### Writing Tests
 
@@ -79,11 +112,6 @@ TEST_F(MyClassTest, ShouldDoSomething) {
 }
 ```
 
-### Test Fixtures
-
-- Use `SetUp()` / `TearDown()` for resource management
-- Prefer fixtures over global state
-
 ### Assertions
 
 - Use `EXPECT_*` for non-fatal failures (test continues)
@@ -94,11 +122,6 @@ TEST_F(MyClassTest, ShouldDoSomething) {
 EXPECT_EQ(actual, expected) << "Failed for input: " << input;
 ```
 
-### Mocking
-
-- Use GoogleMock for mocking
-- Keep mocks simple and focused
-
 ## Python Tests (pytest)
 
 ### Location
@@ -106,12 +129,6 @@ EXPECT_EQ(actual, expected) << "Failed for input: " << input;
 ```
 tests/python/
 ```
-
-### Naming
-
-- Test files: `test_*.py`
-- Test functions: `test_*`
-- Test classes: `Test*`
 
 ### Writing Tests
 
@@ -130,65 +147,19 @@ def study_path(tmp_path):
     return tmp_path / "test_study"
 ```
 
-### Fixtures
+### Markers
 
-Use pytest fixtures for setup:
+Available pytest markers (defined in `tests/python/pytest.ini` or conftest):
+- `@pytest.mark.short_sequential`
+- `@pytest.mark.short_mpi`
+- `@pytest.mark.medium_*`
+- `@pytest.mark.long_*`
 
-```python
-@pytest.fixture
-def mock_logger():
-    return MockLogger()
+Run specific markers:
+
+```bash
+pytest -m short_sequential tests/python/
 ```
-
-### Parameterized Tests
-
-```python
-@pytest.mark.parametrize("input,expected", [
-    (1, 2),
-    (2, 4),
-])
-def test_double(input, expected):
-    assert double(input) == expected
-```
-
-## Test Data
-
-### C++ Test Data
-
-Located in `data_test/` and test directories. Copy required data in `SetUp()`:
-
-```cpp
-void SetUp() override {
-    fs::copy("test_data/input.mps", temp_dir_, true);
-}
-```
-
-### Python Test Data
-
-Use `tmp_path` fixture for temporary test files.
-
-## Integration Tests
-
-Some tests require full Antares solver. Mark these:
-
-```cpp
-// Mark slow tests
-TEST(SolverTest, DISABLED_FullIntegration) {
-    // Only run manually
-}
-```
-
-## Debugging Failed Tests
-
-1. Run single test:
-   ```bash
-   ctest --test-dir build -R "test_name" -V
-   ```
-
-2. Run with verbose output:
-   ```bash
-   ctest --test-dir build -V
-   ```
 
 ## CI Requirements
 

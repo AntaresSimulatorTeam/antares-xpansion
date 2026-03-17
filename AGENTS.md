@@ -18,8 +18,9 @@ Run tests: `cmake -B build -S . -DBUILD_TESTING=ON && ctest --test-dir build`
 ## Key Paths
 
 - `src/cpp/` - C++ source
-- `src/python/` - Python source  
+- `src/python/` - Python source
 - `tests/cpp/` - C++ tests (Google Test)
+- `tests/python/` - Python tests (pytest)
 - `docs/` - Documentation
 
 ## Format Code
