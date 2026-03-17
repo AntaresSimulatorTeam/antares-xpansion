@@ -85,12 +85,20 @@ ctest --test-dir build
 ```
 tests/cpp/
 ├── benders/
+├── full_run/
+├── helpers/
+├── json_output_writer/
 ├── logger/
+├── lp_namer/
 ├── merge_mps/
 ├── multisolver_interface/
-├── solvers_interface/
 ├── outer_loop/
 ├── restart_benders/
+├── sensitivity/
+├── solvers_interface/
+├── study_updater/
+├── TestDoubles/
+├── tests_utils/
 └── zip_mps/
 ```
 

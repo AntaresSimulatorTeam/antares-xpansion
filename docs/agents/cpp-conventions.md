@@ -37,7 +37,8 @@ Disable formatting for specific sections:
 ### Naming
 
 - Classes: `PascalCase` (e.g., `BendersSolver`)
-- Functions: `PascalCase` (e.g., `InitializeSolver`)
+- Public member functions: `PascalCase` (e.g., `InitializeSolver`)
+- Private member functions / helper functions: `snake_case` (e.g., `initialize_solver`)
 - Variables: `snake_case` (e.g., `iteration_count`)
 - Constants: `UPPER_SNAKE_CASE` (e.g., `MAX_ITERATIONS`)
 - Private members: `snake_case_` (trailing underscore)
@@ -50,8 +51,11 @@ Disable formatting for specific sections:
 
 ```cpp
 #include "benders/benders_core/BendersOptions.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+
 #include <vector>
 #include <memory>
+
 #include <boost/mpi.hpp>
 ```
 

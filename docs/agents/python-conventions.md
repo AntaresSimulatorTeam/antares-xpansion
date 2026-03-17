@@ -36,7 +36,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
-from antares_xpansion import study_reader
+from antares_xpansion import xpansion_study_reader
 ```
 
 ## Project Structure
