@@ -13,7 +13,7 @@ cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
 
-Run tests: `cmake -B build -S . -DBUILD_TESTING=ON && ctest --test-dir build`
+Run tests: `cmake -B build -S . -DBUILD_TESTING=ON && cmake --build build && ctest --test-dir build`
 
 ## Key Paths
 
