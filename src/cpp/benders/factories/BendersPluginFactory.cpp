@@ -5,13 +5,15 @@
 
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
-
+#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 
 
 BendersPluginFactory::BendersPluginFactory(const SimulationOptions& options) : options_(options)  
-
 {
 }
+
+
+
 
 std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map, bool micro_iter, boost::mpi::communicator* world)
 {
@@ -36,6 +38,7 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
 
         return plugin;
     }
-
-    return nullptr;
+    
+    std::shared_ptr<BendersPlugin> noOp_plugin = std::make_shared<NoOperationPlugin>();
+    return noOp_plugin ; 
 }

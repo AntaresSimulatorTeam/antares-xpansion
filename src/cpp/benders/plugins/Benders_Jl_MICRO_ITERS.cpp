@@ -232,7 +232,20 @@ void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
+
+
+void Benders_Jl_MICRO_ITERS::OnBendersIterationStart() 
+{
+
+} 
+    
+
+void Benders_Jl_MICRO_ITERS::OnBendersIterationEnd() 
+{
+
+}
+
+void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionStart(
   std::map<std::string, double>& master_out,
     int& num_iter)
 {   
@@ -296,7 +309,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
         micro_iterations_logger_->AddMasterIterationLog(num_iter, std::to_string(elapsed_microseconds)) ; 
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
+void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionEnd()
 {
     if (!warm_start_)
     {

@@ -119,13 +119,13 @@ jobs:
           key: vcpkg-cache-centos7-${{ hashFiles('vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: archive/single
           name: ${{ steps.get-archives.outputs.SINGLE_FILE_NAME }}
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: archive/multiple
           name: ${{ steps.get-archives.outputs.TGZ_NAME }}
@@ -156,7 +156,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -165,17 +165,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build and export
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           tags: centos:run
           file: docker/centos7_test_run
           outputs: type=docker,dest=/tmp/centos.tar
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: centos
           path: /tmp/centos.tar
@@ -185,12 +185,12 @@ jobs:
     needs: [ build, build_running_image ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
 
       - name: Download image
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: centos
           path: /tmp
@@ -226,12 +226,12 @@ jobs:
     needs: [ build, build_running_image ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
 
       - name: Download image
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: centos
           path: /tmp
@@ -268,19 +268,19 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
       - name: Download userguide
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: user-guide
           path: docs/
 
       - name: Download build assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
       - name: Download build assets single file
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .

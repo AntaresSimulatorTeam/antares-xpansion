@@ -775,41 +775,6 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
     }
 }
 
-std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-  int max_aggregation) const
-{
-    int n_cuts = SetAggregation(max_aggregation);
-    std::vector<SubProblemNamesInCut> result(n_cuts);
-
-    if (_data.nsubproblem == 0 || n_cuts <= 0)
-    {
-        return std::vector<std::vector<std::pair<std::string, int>>>();
-    }
-
-    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
-
-    size_t subpb_count_in_cut = 0;
-    size_t current_cut = 0;
-
-    for (size_t i = 0; i < gathered_subproblem_map.size(); i++)
-    {
-        const auto& spMap = gathered_subproblem_map[i];
-        for (const auto& [subproblem_name, _]: spMap)
-        {
-            result[current_cut].emplace_back(subproblem_name, static_cast<int>(i));
-            subpb_count_in_cut++;
-            if (subpb_count_in_cut >= target_per_cut && current_cut + 1 < n_cuts)
-            {
-                subpb_count_in_cut = 0;
-                current_cut++;
-            }
-        }
-    }
-
-    return result;
-}
-
 int BendersBase::SetAggregation(int max_aggregation) const
 {
     if (max_aggregation < _options.NB_CUTS_PER_ITER)

@@ -19,7 +19,7 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     rank{world->rank()},
     dependencies_{dependencies}
 {
-    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(options);
+    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(options_);
 }
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)

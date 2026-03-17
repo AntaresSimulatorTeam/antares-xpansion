@@ -4,9 +4,11 @@ target_sources(factories PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/BendersFactory.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/LoggerFactories.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/WriterFactories.h
-            ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/BendersPluginFactory.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/BendersPluginFactory.h
+
         BendersApp.cpp
         BendersFactory.cpp
+        BendersPluginFactory.cpp
         LoggerFactories.cpp
         WriterFactories.cpp
         BendersPluginFactory.cpp
@@ -21,6 +23,7 @@ target_link_libraries(factories
         antaresXpansion::logger_lib
         ${PROJECT_NAME}::benders_mpi_core
         antaresXpansion::outer_loop_lib
+        antaresXpansion::plugins
 )
 
 target_include_directories(factories

@@ -238,6 +238,10 @@ public:
                                 const BendersBaseOptions& options,
                                 const SolverLogManager& solver_log_manager
                                 );
+
+
+    void OnBendersIterationStart() ; 
+    void OnBendersIterationEnd() ; 
     
     
     /*
@@ -248,13 +252,13 @@ public:
     /*
         Implementation of master iteration start call back  
     */
-    virtual void OnBendersMasterIterationStart(
+    virtual void OnBendersMasterResolutionStart(
       std::map<std::string, double>& master_out, int& num_iter);
     
     /*
         Implementation of master iteration end call back     
     */
-    virtual void OnBendersMasterIterationEnd();
+    virtual void OnBendersMasterResolutionEnd();
     /*
         Implementation of micro iteration start call back 
     */

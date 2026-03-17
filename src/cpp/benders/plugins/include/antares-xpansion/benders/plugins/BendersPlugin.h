@@ -1,6 +1,5 @@
 #pragma once
 
-#include <map>
 #include <memory>
 #include <string>
 
@@ -29,13 +28,20 @@ public:
                                 const BendersBaseOptions& options,
                                 const SolverLogManager& solver_log_manager)
       = 0;
-    
+  
+
       /*
       This method will be called on the end of the benders method 
       @inputs : 
        
     */
     virtual void OnBendersEnd() = 0;
+
+    virtual void OnBendersIterationStart() = 0 ; 
+    
+    virtual void OnBendersIterationEnd() = 0 ;
+
+
 
     /*
       This method will be called at the start of the master iteration after solving the master
@@ -44,13 +50,13 @@ public:
             - num_iter : master iteration number
 
     */
-    virtual void OnBendersMasterIterationStart(std::map<std::string , double>& master_out,int& num_iter) = 0;
+    virtual void OnBendersMasterResolutionStart(std::map<std::string , double>& master_out,int& num_iter) = 0;
     /*
       This method will be called at the end of the master iteration after solving subprolems
       @inputs : 
       
     */
-    virtual void OnBendersMasterIterationEnd() = 0;
+    virtual void OnBendersMasterResolutionEnd() = 0;
 
     /*
       This method will be called before solving a subproblem (for each subproblem)
