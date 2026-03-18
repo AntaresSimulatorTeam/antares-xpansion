@@ -10,11 +10,11 @@
 # Problem Generation Exe
 # ---------------------------------------------------------------------------
 
-add_executable (water_values_exe
+add_executable (water_values
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-target_link_libraries (water_values_exe
+target_link_libraries (water_values
 		PRIVATE
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
@@ -26,4 +26,4 @@ target_link_libraries (water_values_exe
 		
 )
 
-install(TARGETS water_values_exe DESTINATION bin)
+install(TARGETS water_values DESTINATION bin)
