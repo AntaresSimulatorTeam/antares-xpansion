@@ -268,6 +268,10 @@ public:
         Implementation of micro iteration end callback
     */
     virtual void OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows,std::string solving_time);
+
+
+    virtual void OnBendersSubResolutionStart()  ; 
+    virtual void OnBendersSubResolutionEnd(std::string sub_name,int num_micro_iter)  ; 
     
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code

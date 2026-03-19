@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "iostream"
 
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/string.hpp>
@@ -22,40 +23,13 @@ This structure contains the master iteration data that we want want to log
     - removing_rows_per_sub_time : elapsed time to remove the constraints added to subproblem
 workers
 */
-struct MasterIterationLog
-{
-    int num_iter;
-    std::string PTDF_compute_time;
-    std::map<std::string, std::string> removing_rows_per_sub_time;
-};
 
-/*
-This structure contains the microiteration data that we want to log
-    - solving_time : elpased time to solve the sub problem
-    - adding_rows_time : elapsed time to add violated constraints
-    - added_constraints_keys : an array of the keys of constraints that has been added to the
-subproblems
-*/
-struct MicroIterationLog
-{
-    std::string solving_time;
-    std::string adding_rows_time;
-    std::vector<std::string> added_constraints_keys;
-
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
-        ar & solving_time;
-        ar & adding_rows_time;
-        ar & added_constraints_keys;
-    }
-};
 
 /*
 This map will be used will be attached to each master iteration.
 we map each subproblem into the different micoiteration during a benders iteration
 */
-using MicroIterationsPerSub = std::map<std::string, std::vector<MicroIterationLog>>;
+// using MicroIterationsPerSub = std::map<std::string, std::vector<MicroIterationLog>>;
 
 class MicroIterationsLog
 {
@@ -89,14 +63,7 @@ public:
     */
     void AddMasterIterationLog(int num_iter, std::string elapsed_time);
 
-    /*
-        Called in the benders master iteration end callback.
-        It will set the elapsed time of removing added constraints after the microiterations for
-       each subproblem
-        @input :
-            - removing_rows_per_sub_time : time to remove added constraints per subproblem
-    */
-    void UpdateLastMasterIteration(std::map<std::string, std::string>&& removing_rows_per_sub_time);
+
 
     /*
         Called in the micro iteration end callback.
@@ -113,30 +80,16 @@ public:
                             std::string adding_rows_time,
                             std::vector<std::string> added_constraints_keys);
 
-    /*
-        Called in the benders master iteration end callback.
-        It will reset the logger for the next master iteration
-    */
-    void RefreshLogger();
+    void AddMicroIterCount(std::string sub_name, int num_micro_iter) ;
 
-    /*
-        Called in benders end callback.
-        It will write all logged data in micro_iterations.log
-        @inputs :
-            - rank :  the id of the process from which we call the callback
 
-    */
-    void Dump(int rank);
+
 
 private:
     const SimulationOptions& options_;
     mpi::communicator* _world;
-    std::vector<std::string> vec_micro_iter_;
     bool warm_start_;
-    std::map<std::string, std::vector<std::string>>& constraints_per_line_;
-    std::vector<MasterIterationLog> master_iterations_logs_;
-    std::vector<MicroIterationsPerSub> micro_iterations_per_benders_iter;
     std::map<std::string, std::string> sub_constraints_map_;
-    MicroIterationsPerSub micro_iter_per_sub_per_benders_iter_;
+    std::ofstream log_file_ ; 
     int log_level_;
 };

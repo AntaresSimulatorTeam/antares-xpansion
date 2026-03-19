@@ -69,6 +69,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
     // if (options_.LOG_LEVEL >= 2)
         micro_iterations_logger_ = std::make_shared<MicroIterationsLog>(options_,subproblem_constraint_map_,constraints_csv_map_,warm_start_,_world,options_.LOG_LEVEL) ; 
+
 }
 
 
@@ -218,9 +219,8 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_
 
 void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 {
-    if (options_.LOG_LEVEL >= 2)
-        micro_iterations_logger_->Dump(_world->rank()) ; 
-
+    // if (options_.LOG_LEVEL >= 2)
+    //     micro_iterations_logger_->Dump(_world->rank()) ; 
 
     if (handle_)
     {
@@ -305,7 +305,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionStart(
     
     auto t2 = std::chrono::high_resolution_clock::now() ; 
     auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
-    if (options_.LOG_LEVEL >= 2)
+    if (options_.LOG_LEVEL >= 2 && _world->rank() ==0 )
         micro_iterations_logger_->AddMasterIterationLog(num_iter, std::to_string(elapsed_microseconds)) ; 
 }
 
@@ -327,12 +327,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionEnd()
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;
             removing_rows_per_sub_time[sub_name] = std::to_string(elapsed_microseconds) ; 
         }
-        if (options_.LOG_LEVEL >= 2)
-            micro_iterations_logger_->UpdateLastMasterIteration(std::move(removing_rows_per_sub_time)) ; 
         
     }
-    if (options_.LOG_LEVEL >= 2)
-        micro_iterations_logger_->RefreshLogger() ; 
+    
 
 }
 
@@ -393,10 +390,24 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
 
     auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
     
-    if (options_.LOG_LEVEL>=2)
+    if (options_.LOG_LEVEL>=2 ) 
         micro_iterations_logger_->AddMicroIterionLog(sub_name,solving_time,std::to_string(elapsed_microseconds),constraints_keys_vec) ; 
 
     added_rows = constraints_to_add_vec.size();
+}
+
+void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionStart() 
+{
+    std::cout<<"OnBendersSubResolutionStart !!!"<<std::endl ; 
+}
+
+
+void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name,int num_micro_iter)  
+{
+    std::cout<<"OnBendersSubResolutionEnd !!!!"<<std::endl ; 
+    std::cout<<"sub name "<<sub_name<<" num micro iters "<<num_micro_iter<<std::endl ; 
+    if (options_.LOG_LEVEL>=2 ) 
+        micro_iterations_logger_->AddMicroIterCount(sub_name,num_micro_iter) ; 
 }
 
 void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)

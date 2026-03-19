@@ -38,3 +38,14 @@ void NoOperationPlugin::OnBendersMicroIterationStart()
 void NoOperationPlugin::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows,std::string solve_time)
 {
 }
+
+
+void NoOperationPlugin::OnBendersSubResolutionStart()  
+{
+
+}
+
+void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name,int num_micro_iter)
+{
+
+}

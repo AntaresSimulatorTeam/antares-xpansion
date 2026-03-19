@@ -616,14 +616,19 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
 
     worker->fix_to(_data.x_cut);
-    if (benders_plugin_)
-    {
-        benders_plugin_->OnBendersMicroIterationStart();
-    }
+    
+    if (benders_plugin_) 
+        benders_plugin_->OnBendersSubResolutionStart() ; 
+    
+    int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)
     {
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMicroIterationStart();
+        }
+    
         bool added_rows = true;
-        int num_micro_iter(0);
         while (added_rows)
         {
             std::cout<<"new micro iteration "<<std::endl ; 
@@ -660,6 +665,11 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+    
+    if (benders_plugin_) 
+        benders_plugin_->OnBendersSubResolutionEnd(name,num_micro_iter) ; 
+    
+    
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
