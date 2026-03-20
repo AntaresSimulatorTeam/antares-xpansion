@@ -7,18 +7,14 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
                                      const SolverLogManager& solver_log_manager,
                                      Logger& logger,
                                      int log_level,
+                                     ProblemsFormat format , 
                                      const std::shared_ptr<SubproblemWorker>& subproblem_worker):
     logger_(logger)
 
 {
-    std::cout<<"entered in ConstraintsReader"<<std::endl ; 
     auto constraints_file_path_str = std::string(constraint_file_path.c_str()) ; 
-    std::cout<<"constraints_file_path_str "<<std::endl ; 
-    std::cout<<constraints_file_path_str<<std::endl ; 
     auto pos = constraints_file_path_str.find('.') ; 
     auto extension = constraints_file_path_str.substr(pos+1) ; 
-
-    std::cout<<"extension "<<extension<<std::endl ; 
 
     
     SolverFactory solver_factory(logger_);
@@ -29,12 +25,12 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
 
     solver_->set_threads(1);
     solver_->set_output_log_level(log_level);
+
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
-    solver_IO_.configure(solver_name, ProblemsFormat::MPS_FILE);
+    solver_IO_.configure(solver_name, format);
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
     int n_rows = solver_->get_nrows();
     initial_sub_size = subproblem_worker->get_problem_row_num();
-    std::cout<<"constraints reader built correctly, nrows "<<n_rows<<std::endl ; 
 }
 
 std::shared_ptr<SubproblemWorker> ConstraintsReader::get_subproblem_worker()

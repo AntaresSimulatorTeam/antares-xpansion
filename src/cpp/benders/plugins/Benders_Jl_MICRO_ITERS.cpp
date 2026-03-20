@@ -25,7 +25,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
     CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map_,
                                                       subproblem_constraint_map_,
-                                                      constraints_coupling_map_);
+                                                      constraints_coupling_map_,options_);
 
     input_root_ = options_.INPUTROOT ;
     warm_start_ = true ; 
@@ -400,14 +400,11 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
 
 void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionStart() 
 {
-    std::cout<<"OnBendersSubResolutionStart !!!"<<std::endl ; 
 }
 
 
 void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name,int num_micro_iter)  
 {
-    std::cout<<"OnBendersSubResolutionEnd !!!!"<<std::endl ; 
-    std::cout<<"sub name "<<sub_name<<" num micro iters "<<num_micro_iter<<std::endl ; 
     if (options_.LOG_LEVEL>=2 ) 
         micro_iterations_logger_->AddMicroIterCount(sub_name,num_micro_iter) ; 
 }
@@ -469,24 +466,20 @@ void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& 
                                                        const SolverLogManager& solver_log_manager)
 {
 
-    std::cout<<"entered in BuildConstraintsReaderMap "<<std::endl ; 
     for (auto& [sub, sub_worker]: subproblem_map)
     {
 
-        std::cout<<"sub "<<sub<<std::endl ; 
         added_constraints_per_sub_[sub] = std::vector<std::string>();
         std::string constraints_file_name = subproblem_constraint_map_[sub];
-        std::cout<<"constraints_file_name ::: "<<constraints_file_name<<std::endl; 
         auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
                                      / constraints_file_name;
-        std::cout<<"/****/*/* printing path "<<std::endl ; 
-        std::cout<<constraints_file_path<<std::endl ; 
         constraints_map_[constraints_file_name] = std::make_shared<ConstraintsReader>(
           constraints_file_path,
           options.SOLVER_NAME,
           solver_log_manager,
           _logger,
           options.LOG_LEVEL,
+          options.PROBLEMS_FORMAT,
           sub_worker);
     }
 }

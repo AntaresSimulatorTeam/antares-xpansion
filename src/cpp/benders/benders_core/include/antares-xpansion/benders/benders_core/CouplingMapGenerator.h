@@ -1,5 +1,6 @@
 #pragma once
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "common.h"
 
 class CouplingMapGenerator
@@ -11,5 +12,6 @@ public:
 
     static void BuildSubProblemConstaintMap(const CouplingMap& coupling_map,
                                             SubProblemConstraintMap& subproblem_constraint_map,
-                                            CouplingMap& constraints_coupling_map);
+                                            CouplingMap& constraints_coupling_map, 
+                                            const SimulationOptions& options);
 };
