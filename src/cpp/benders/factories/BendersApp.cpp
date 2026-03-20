@@ -82,6 +82,15 @@ void BendersApp::AddCriterionOutputs()
 
 void BendersApp::InitializeBendersEnvironment(bool outer_loop)
 {
+    // Reset all state that depends on a successful PrepareForExecution so that,
+    // whether this call returns early (study already achieved) or succeeds, no
+    // stale data from a previous invocation can be observed by the caller.
+    benders_ = nullptr;
+    criterion_input_holder_ = Benders::Criterion::CriterionInputData{};
+    method_ = BENDERSMETHOD::BENDERS;
+    context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
+    positive_unsupplied_file_.clear();
+
     SetupLoggerAndOutputWriter(options_.get_benders_options());
     BendersFactory factory(
       options_,
