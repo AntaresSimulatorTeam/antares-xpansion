@@ -13,9 +13,21 @@
  * By injecting this strategy into BendersBase, the same algorithmic code can run
  * in different execution contexts without inheritance-based specialization.
  *
- * Usage:
- *   auto strategy = std::make_shared<MpiCommunicationStrategy>(world);
- *   auto benders = BendersMpi(options, logger, writer, strategy, mathLoggerDriver);
+ * Concrete subclasses choose their strategy internally and do not expose the
+ * injection in their own constructors:
+ *
+ *   // BendersMpi wraps an mpi::communicator and builds MpiCommunicationStrategy internally:
+ *   auto benders = std::make_unique<BendersMpi>(options, logger, writer, world, mathLoggerDriver);
+ *
+ *   // BendersSequential builds SequentialCommunicationStrategy internally (no world needed):
+ *   auto benders = std::make_unique<BendersSequential>(options, logger, writer, mathLoggerDriver);
+ *
+ * Direct strategy injection is available through the BendersBase constructor for
+ * custom subclasses (e.g., test doubles or future execution backends):
+ *
+ *   auto strategy = std::make_shared<MyCustomStrategy>();
+ *   // Pass as the optional last argument to BendersBase:
+ *   //   BendersBase(options, logger, writer, mathLoggerDriver, strategy)
  */
 class ICommunicationStrategy
 {
