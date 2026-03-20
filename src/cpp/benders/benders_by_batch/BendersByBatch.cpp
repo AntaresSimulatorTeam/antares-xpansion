@@ -17,9 +17,9 @@ void BendersByBatch::InitializeProblems()
 }
 
 void BendersByBatch::BuildMasterProblem()
-{    
+{
     InitializeMaster();
-    addAlphasFixingConstraints(batch_collection_full_for_cuts_) ; 
+    addAlphasFixingConstraints(batch_collection_full_for_cuts_);
 }
 
 void BendersByBatch::BuildBatches()
@@ -226,14 +226,13 @@ void BendersByBatch::SeparationLoop()
     }
 }
 
-void BendersByBatch::addAlphasFixingConstraints(BatchCollection& batches) 
+void BendersByBatch::addAlphasFixingConstraints(BatchCollection& batches)
 {
     for (auto& cuts_in_batch: batches.BatchCollections())
     {
         BendersMpi::addAlphasFixingConstraints(cuts_in_batch.name_to_cut);
     }
 }
-
 
 void BendersByBatch::ComputeXCut()
 {

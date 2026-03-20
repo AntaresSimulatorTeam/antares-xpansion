@@ -38,9 +38,8 @@ protected:
     void BroadcastXCut();
     void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
     void SetSubproblemDataCostAndSimplexIter(
-    const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-    void addAlphasFixingConstraints( std::vector<SubProblemNamesInCut>& names_in_cuts) ; 
-
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
+    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts);
 
     mpi::communicator& _world;
 

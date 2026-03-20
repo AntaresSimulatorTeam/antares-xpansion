@@ -28,7 +28,6 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 
 void BendersMpi::InitializeProblems()
 {
-
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS)
@@ -161,8 +160,10 @@ void BendersMpi::InitializeMaster()
 void BendersMpi::BuildMasterProblem()
 {
     InitializeMaster();
-    if (_world.rank() == rank_0) 
-        addAlphasFixingConstraints(subproblem_per_cut_indices_) ; 
+    if (_world.rank() == rank_0)
+    {
+        addAlphasFixingConstraints(subproblem_per_cut_indices_);
+    }
 }
 
 /*!
@@ -375,9 +376,6 @@ void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathere
     _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 }
 
-
-
-
 void BendersMpi::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts)
 {
     for (auto& names_in_cut: names_in_cuts)
@@ -408,11 +406,10 @@ void BendersMpi::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& n
             std::vector<int> mclind(2);
             mclind[0] = alpha_i_pos;
             mclind[1] = alpha_j_pos;
-            _master->add_row(rowtype,rowrhs,mstart,mclind,matval) ; 
+            _master->add_row(rowtype, rowrhs, mstart, mclind, matval);
         }
     }
 }
-
 
 void BendersMpi::SetSubproblemDataCostAndSimplexIter(
   const std::vector<SubProblemDataMap>& gathered_subproblem_map)
@@ -596,6 +593,3 @@ void BendersMpi::launch()
     }
     _world.barrier();
 }
-
-
-

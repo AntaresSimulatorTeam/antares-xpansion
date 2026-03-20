@@ -352,13 +352,14 @@ void WorkerMaster::addGroupSubproblemCut(std::vector<int> subproblem_ids,
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
-void WorkerMaster::add_row(std::vector<char>& row_type, std::vector<double>& row_rhs, std::vector<int>& mstart,std::vector<int>& mclind ,std::vector<double>& matval ) 
+void WorkerMaster::add_row(std::vector<char>& row_type,
+                           std::vector<double>& row_rhs,
+                           std::vector<int>& mstart,
+                           std::vector<int>& mclind,
+                           std::vector<double>& matval)
 {
-    solver_addrows(*_solver,row_type,row_rhs,{},mstart,mclind,matval) ;
+    solver_addrows(*_solver, row_type, row_rhs, {}, mstart, mclind, matval);
 }
-
-
-
 
 void WorkerMaster::_set_upper_bounds() const
 {
@@ -377,9 +378,9 @@ void WorkerMaster::_set_upper_bounds() const
     _solver->chg_bounds(indices, bndTypes, bounds);
 }
 
-int WorkerMaster::get_col_index(std::string variable_id) 
+int WorkerMaster::get_col_index(std::string variable_id)
 {
-    return _solver->get_col_index(variable_id) ; 
+    return _solver->get_col_index(variable_id);
 }
 
 void WorkerMaster::_set_alpha_var()
