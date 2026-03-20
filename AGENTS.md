@@ -9,11 +9,14 @@ Investment optimization solver for Antares power system studies (C++/Python).
 ## Build
 
 ```bash
-cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+cmake --preset vcpkg
 cmake --build build
 ```
 
-Run tests: `cmake -B build -S . -DBUILD_TESTING=ON && cmake --build build && ctest --test-dir build`
+Run tests: `cmake --preset vcpkg -DBUILD_TESTING=ON && cmake --build build && ctest --test-dir build`
+
+Without preset, configure with the vcpkg toolchain explicitly (Linux preset equivalent):
+`cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-release`
 
 ## Key Paths
 
