@@ -28,7 +28,7 @@ class BendersApp
     [[nodiscard]] int RunExternalLoop();
     [[nodiscard]] int RunBenders();
     void InitializeBendersEnvironment(bool outer_loop);
-    [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(bool benders_log_console) const;
+    void SetupMathLogger(bool benders_log_console) const;
     void StartMessage();
     void EndMessage(const double execution_time);
     void AddCriterionOutputs();

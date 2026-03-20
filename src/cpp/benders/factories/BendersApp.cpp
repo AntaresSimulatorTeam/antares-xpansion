@@ -22,7 +22,7 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
     {
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
-        math_log_driver_ = BuildMathLogger(benders_log_console);
+        math_log_driver_ = MathLoggerFactory::get_void_logger();
         writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
     }
     else
@@ -45,16 +45,21 @@ bool BendersApp::isCriterionListEmpty() const
                       criterion_input_holder_);
 }
 
-std::shared_ptr<MathLoggerDriver> BendersApp::BuildMathLogger(bool benders_log_console) const
+void BendersApp::SetupMathLogger(bool benders_log_console) const
 {
+    if (pworld_->rank() != 0)
+    {
+        return;
+    }
+
     const std::filesystem::path output_root(options_.OUTPUTROOT);
     auto math_logs_file = output_root / "benders_solver.log";
 
-    auto math_log_factory = MathLoggerFactory(method_, benders_log_console, math_logs_file);
-
-    auto math_log_driver = math_log_factory.get_logger();
-
-    return math_log_driver;
+    math_log_driver_->add_logger(std::make_shared<MathLoggerFile>(method_, math_logs_file));
+    if (benders_log_console)
+    {
+        math_log_driver_->add_logger(std::make_shared<MathLoggerOstream>(method_));
+    }
 }
 
 void BendersApp::AddCriterionOutputs()
@@ -99,6 +104,7 @@ void BendersApp::InitializeBendersEnvironment(bool outer_loop)
     context_ = bendersmethod_to_string(method_);
     if (pworld_->rank() == 0)
     {
+        SetupMathLogger(options_.get_benders_options().LOG_LEVEL > 0);
         if (!isCriterionListEmpty())
         {
             AddCriterionOutputs();
