@@ -658,6 +658,8 @@ void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Poin
     }
 }
 
+
+
 /*!
  *  \brief Add aggregated cut to Master Problem and store it in a set
  *
@@ -773,6 +775,7 @@ void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
     check_status(subproblem_data_map);
     if (_options.NB_CUTS_PER_ITER)
     {
+        std::cout<<"NB_CUTS_PER_ITER "<<_options.NB_CUTS_PER_ITER<<std::endl ; 
         compute_cut_aggregate(subproblem_data_map);
     }
     else

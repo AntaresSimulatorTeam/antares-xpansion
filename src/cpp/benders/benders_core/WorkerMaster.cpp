@@ -352,6 +352,14 @@ void WorkerMaster::addGroupSubproblemCut(std::vector<int> subproblem_ids,
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
+void WorkerMaster::add_row(std::vector<char>& row_type, std::vector<double>& row_rhs, std::vector<int>& mstart,std::vector<int>& mclind ,std::vector<double>& matval ) 
+{
+    solver_addrows(*_solver,row_type,row_rhs,{},mstart,mclind,matval) ;
+}
+
+
+
+
 void WorkerMaster::_set_upper_bounds() const
 {
     // Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is
@@ -369,47 +377,9 @@ void WorkerMaster::_set_upper_bounds() const
     _solver->chg_bounds(indices, bndTypes, bounds);
 }
 
-void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts)
+int WorkerMaster::get_col_index(std::string variable_id) 
 {
-    for (auto& names_in_cut: names_in_cuts)
-    {
-        size_t start = names_in_cut[0].first.find('_') + 1;
-        size_t end = names_in_cut[0].first.find('.', start);
-        auto sub_index_str = names_in_cut[0].first.substr(start, end - start);
-        std::stringstream alpha_i;
-        alpha_i << "alpha_" << sub_index_str;
-        auto alpha_i_pos = _solver->get_col_index(alpha_i.str());
-
-        for (size_t j = 1; j < names_in_cut.size(); j++)
-        {
-            start = names_in_cut[j].first.find('_') + 1;
-            end = names_in_cut[j].first.find('.', start);
-            sub_index_str = names_in_cut[j].first.substr(start, end - start);
-
-            std::stringstream alpha_j;
-            alpha_j << "alpha_" << sub_index_str;
-            auto alpha_j_pos = _solver->get_col_index(alpha_j.str());
-
-            std::vector<char> rowtype = {'E'};
-            std::vector<double> rowrhs = {0};
-            std::vector<int> mstart = {0, 2};
-            std::vector<double> matval(2);
-            matval[0] = 1;
-            matval[1] = -1;
-            std::vector<int> mclind(2);
-            mclind[0] = alpha_i_pos;
-            mclind[1] = alpha_j_pos;
-            solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
-        }
-    }
-}
-
-void WorkerMaster::addAlphasFixingConstraints(BatchCollection& batches)
-{
-    for (auto& cuts_in_batch: batches.BatchCollections())
-    {
-        addAlphasFixingConstraints(cuts_in_batch.name_to_cut);
-    }
+    return _solver->get_col_index(variable_id) ; 
 }
 
 void WorkerMaster::_set_alpha_var()

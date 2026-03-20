@@ -71,7 +71,6 @@ target_link_libraries(benders_core
         antaresXpansion::outer_loop_lib
         antaresXpansion::core
         antaresXpansion::plugins
-        antaresXpansion::benders_by_batch_core
         fmt::fmt
 )
 

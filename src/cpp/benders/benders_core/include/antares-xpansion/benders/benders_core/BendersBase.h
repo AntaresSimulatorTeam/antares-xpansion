@@ -66,6 +66,7 @@ public:
         return master_variable_map_;
     }
 
+
     std::vector<double> MasterObjectiveFunctionCoeffs() const;
     void MasterRowsCoeffs(std::vector<int>& mstart,
                           std::vector<int>& mclind,

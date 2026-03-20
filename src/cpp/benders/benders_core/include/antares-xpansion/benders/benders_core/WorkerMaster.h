@@ -4,7 +4,6 @@
 
 #include "SubproblemWorker.h"
 #include "Worker.h"
-#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 
 /*!
  * \class SubproblemWorker
@@ -29,9 +28,10 @@ public:
                  double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
+    
+    void add_row(std::vector<char>& row_type, std::vector<double>& row_rhs, std::vector<int>& mstart,std::vector<int>& mclind ,std::vector<double>& matval ) ; 
+    int get_col_index(std::string variable_id) ; 
 
-    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&);
-    void addAlphasFixingConstraints(BatchCollection&);
 
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,
