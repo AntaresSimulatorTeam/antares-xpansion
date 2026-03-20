@@ -41,11 +41,15 @@ public:
 
     /// Access the underlying MPI communicator for operations not yet
     /// abstracted into the strategy interface (broadcast, gather, reduce).
-    mpi::communicator& World() const
+    mpi::communicator& World()
     {
         return world_;
     }
 
+    const mpi::communicator& World() const
+    {
+        return world_;
+    }
 private:
     mpi::communicator& world_;
 };
