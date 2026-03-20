@@ -11,6 +11,16 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
     logger_(logger)
 
 {
+    std::cout<<"entered in ConstraintsReader"<<std::endl ; 
+    auto constraints_file_path_str = std::string(constraint_file_path.c_str()) ; 
+    std::cout<<"constraints_file_path_str "<<std::endl ; 
+    std::cout<<constraints_file_path_str<<std::endl ; 
+    auto pos = constraints_file_path_str.find('.') ; 
+    auto extension = constraints_file_path_str.substr(pos+1) ; 
+
+    std::cout<<"extension "<<extension<<std::endl ; 
+
+    
     SolverFactory solver_factory(logger_);
     subproblem_worker_ = subproblem_worker;
     solver_ = solver_factory.create_solver(solver_name,

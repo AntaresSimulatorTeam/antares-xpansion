@@ -19,6 +19,8 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
                                                 mpi::communicator* world)
                                                : options_(options)
 {
+
+    std::cout<<"getting through Benders_Jl_MICRO_ITERS !!! "<<std::endl ; 
     coupling_map_ = coupling_map;
 
     CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map_,
@@ -466,12 +468,19 @@ void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& 
                                                        const BendersBaseOptions& options,
                                                        const SolverLogManager& solver_log_manager)
 {
+
+    std::cout<<"entered in BuildConstraintsReaderMap "<<std::endl ; 
     for (auto& [sub, sub_worker]: subproblem_map)
     {
+
+        std::cout<<"sub "<<sub<<std::endl ; 
         added_constraints_per_sub_[sub] = std::vector<std::string>();
         std::string constraints_file_name = subproblem_constraint_map_[sub];
+        std::cout<<"constraints_file_name ::: "<<constraints_file_name<<std::endl; 
         auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
                                      / constraints_file_name;
+        std::cout<<"/****/*/* printing path "<<std::endl ; 
+        std::cout<<constraints_file_path<<std::endl ; 
         constraints_map_[constraints_file_name] = std::make_shared<ConstraintsReader>(
           constraints_file_path,
           options.SOLVER_NAME,
