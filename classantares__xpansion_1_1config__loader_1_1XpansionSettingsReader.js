@@ -16,6 +16,7 @@ var classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader =
     [ "get_relative_optimality_gap", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#abb40624acb9ae7e76447eb45934a17d4", null ],
     [ "get_relaxed_optimality_gap", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#ad4c5f31521931e45bb4cf7cf756dda5f", null ],
     [ "get_separation", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#af001123292d729ff69442060057d2355", null ],
+    [ "has_optim_config", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#a94e95891ab1b28f039c0deca8c1e3599", null ],
     [ "json_sensitivity_in_path", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#a4b5577d5565426f6b644631867f6f9b0", null ],
     [ "log_level", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#ab13b97739c2580dcf1066d04ef23144f", null ],
     [ "timelimit", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#a4feaf574831d7d9780504b3424ce1bae", null ],

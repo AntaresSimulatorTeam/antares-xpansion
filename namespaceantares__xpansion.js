@@ -4,6 +4,7 @@ var namespaceantares__xpansion =
     [ "benders_driver", "namespaceantares__xpansion_1_1benders__driver.html", "namespaceantares__xpansion_1_1benders__driver" ],
     [ "config_loader", "namespaceantares__xpansion_1_1config__loader.html", "namespaceantares__xpansion_1_1config__loader" ],
     [ "driver", "namespaceantares__xpansion_1_1driver.html", "namespaceantares__xpansion_1_1driver" ],
+    [ "gems_driver", "namespaceantares__xpansion_1_1gems__driver.html", "namespaceantares__xpansion_1_1gems__driver" ],
     [ "input_checker", "namespaceantares__xpansion_1_1input__checker.html", "namespaceantares__xpansion_1_1input__checker" ],
     [ "presolve_driver", "namespaceantares__xpansion_1_1presolve__driver.html", "namespaceantares__xpansion_1_1presolve__driver" ],
     [ "problem_generator_driver", "namespaceantares__xpansion_1_1problem__generator__driver.html", "namespaceantares__xpansion_1_1problem__generator__driver" ],

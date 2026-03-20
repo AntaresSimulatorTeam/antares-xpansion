@@ -37,6 +37,9 @@ var annotated_dup =
       [ "full_run_driver", null, [
         [ "FullRunDriver", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver" ]
       ] ],
+      [ "gems_driver", "namespaceantares__xpansion_1_1gems__driver.html", [
+        [ "GemsDriver", "classantares__xpansion_1_1gems__driver_1_1GemsDriver.html", "classantares__xpansion_1_1gems__driver_1_1GemsDriver" ]
+      ] ],
       [ "general_data_processor", null, [
         [ "GeneralDataFileExceptions", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions" ],
         [ "GeneralDataProcessor", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataProcessor.html", null ]

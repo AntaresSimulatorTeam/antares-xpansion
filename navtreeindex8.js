@@ -1,5 +1,18 @@
 var NAVTREEINDEX8 =
 {
+"structOutput_1_1CandidateData.html":[34,0,13,0],
+"structOutput_1_1Iteration.html":[34,0,13,1],
+"structOutput_1_1IterationsData.html":[34,0,13,2],
+"structOutput_1_1ProblemData.html":[34,0,13,5],
+"structOutput_1_1SolutionData.html":[34,0,13,6],
+"structPlainData_1_1SubProblemData.html":[34,0,15,0],
+"structPredicate.html":[34,0,196],
+"structPresolveOptions.html":[34,0,198],
+"structProblemData.html":[34,0,201],
+"structProblemNameCase.html":[34,0,214],
+"structProblemVariables.html":[34,0,215],
+"structRawPbData.html":[34,0,221],
+"structSensitivityInputData.html":[34,0,227],
 "structSinglePbData.html":[34,0,245],
 "structSolverBaseOptions.html":[34,0,247],
 "structSolverData.html":[34,0,251],

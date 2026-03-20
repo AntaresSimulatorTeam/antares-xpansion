@@ -183,6 +183,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30a9d6225f9b113bc425e76bcc288563" id="r_a30a9d6225f9b113bc425e76bcc288563"><td class="memItemLeft" align="right" valign="top"><a id="a30a9d6225f9b113bc425e76bcc288563" name="a30a9d6225f9b113bc425e76bcc288563"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>launch_benders_step</b> (self)</td></tr>
 <tr class="separator:a30a9d6225f9b113bc425e76bcc288563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d5d55579d5fe92f7212627ff3f3004" id="r_a65d5d55579d5fe92f7212627ff3f3004"><td class="memItemLeft" align="right" valign="top"><a id="a65d5d55579d5fe92f7212627ff3f3004" name="a65d5d55579d5fe92f7212627ff3f3004"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>launch_gems_step</b> (self)</td></tr>
+<tr class="separator:a65d5d55579d5fe92f7212627ff3f3004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af850c64af13dd6e663020d08c46d5cc8" id="r_af850c64af13dd6e663020d08c46d5cc8"><td class="memItemLeft" align="right" valign="top"><a id="af850c64af13dd6e663020d08c46d5cc8" name="af850c64af13dd6e663020d08c46d5cc8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>launch_sensitivity_step</b> (self)</td></tr>
 <tr class="separator:af850c64af13dd6e663020d08c46d5cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,6 +217,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aeaee1f4b8ce420c00d76cafcae1e9299"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a195b21250febe70cfb2a9daa7800b9d0" id="r_a195b21250febe70cfb2a9daa7800b9d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a195b21250febe70cfb2a9daa7800b9d0">full_run_driver</a></td></tr>
 <tr class="separator:a195b21250febe70cfb2a9daa7800b9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0697bb87b014ccb4a8d49426020fabf" id="r_ac0697bb87b014ccb4a8d49426020fabf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0697bb87b014ccb4a8d49426020fabf">gems_driver</a></td></tr>
+<tr class="separator:ac0697bb87b014ccb4a8d49426020fabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a6f254e11ddcc0705116d8a4be9253b" id="r_a5a6f254e11ddcc0705116d8a4be9253b"><td class="memItemLeft" align="right" valign="top"><a id="a5a6f254e11ddcc0705116d8a4be9253b" name="a5a6f254e11ddcc0705116d8a4be9253b"></a>
 str&#160;</td><td class="memItemRight" valign="bottom"><b>settings</b> = &quot;settings&quot;</td></tr>
 <tr class="separator:a5a6f254e11ddcc0705116d8a4be9253b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -325,6 +330,25 @@ the system platform and parses the arguments
 <div class="line">            self.problem_generator_driver,</div>
 <div class="line">            self.benders_driver,</div>
 <div class="line">            self.presolve_driver</div>
+<div class="line">        )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ac0697bb87b014ccb4a8d49426020fabf" name="ac0697bb87b014ccb4a8d49426020fabf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0697bb87b014ccb4a8d49426020fabf">&#9670;&#160;</a></span>gems_driver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.driver.XpansionDriver.gems_driver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=  GemsDriver(</div>
+<div class="line">            self.config_loader.antares_problem_generator_exe(),</div>
+<div class="line">            self.benders_driver,</div>
+<div class="line">            self.config_loader,</div>
 <div class="line">        )</div>
 </div><!-- fragment -->
 </div>

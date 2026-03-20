@@ -121,6 +121,7 @@ var hierarchy =
       [ "antares_xpansion.driver.XpansionDriver.SolverXpressRequirementError", "classantares__xpansion_1_1driver_1_1XpansionDriver_1_1SolverXpressRequirementError.html", null ],
       [ "antares_xpansion.driver.XpansionDriver.UnknownStep", "classantares__xpansion_1_1driver_1_1XpansionDriver_1_1UnknownStep.html", null ],
       [ "antares_xpansion.full_run_driver.FullRunDriver.FullRunExecutionError", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver_1_1FullRunExecutionError.html", null ],
+      [ "antares_xpansion.gems_driver.GemsDriver.GemsExecutionError", "classantares__xpansion_1_1gems__driver_1_1GemsDriver_1_1GemsExecutionError.html", null ],
       [ "antares_xpansion.general_data_processor.GeneralDataFileExceptions.GeneralDataFileNotFound", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions_1_1GeneralDataFileNotFound.html", null ],
       [ "antares_xpansion.general_data_reader.IniFileNotFound", "classantares__xpansion_1_1general__data__reader_1_1IniFileNotFound.html", null ],
       [ "antares_xpansion.input_checker.BatchSizeValueError", "classantares__xpansion_1_1input__checker_1_1BatchSizeValueError.html", null ],
@@ -215,6 +216,7 @@ var hierarchy =
       [ "fmt::formatter< ProblemsFormat >", "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html", null ]
     ] ],
     [ "antares_xpansion.full_run_driver.FullRunDriver", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html", null ],
+    [ "antares_xpansion.gems_driver.GemsDriver", "classantares__xpansion_1_1gems__driver_1_1GemsDriver.html", null ],
     [ "antares_xpansion.general_data_processor.GeneralDataFileExceptions", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html", null ],
     [ "antares_xpansion.general_data_reader.GeneralDataIniReader", "classantares__xpansion_1_1general__data__reader_1_1GeneralDataIniReader.html", null ],
     [ "GeneralDataIniReader", "classGeneralDataIniReader.html", null ],
