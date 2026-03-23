@@ -383,6 +383,13 @@ int WorkerMaster::get_col_index(std::string variable_id)
     return _solver->get_col_index(variable_id);
 }
 
+std::vector<int>& WorkerMaster::get_id_single_subpb_costs_under_approx() 
+{
+    return _id_single_subpb_costs_under_approx ; 
+}
+
+
+
 void WorkerMaster::_set_alpha_var()
 {
     // add the variable overall_subpb_cost_under_approx

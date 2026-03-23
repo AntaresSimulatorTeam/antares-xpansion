@@ -28,14 +28,13 @@ public:
                  double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
-
+    std::vector<int>& get_id_single_subpb_costs_under_approx() ; 
     void add_row(std::vector<char>& row_type,
                  std::vector<double>& row_rhs,
                  std::vector<int>& mstart,
                  std::vector<int>& mclind,
                  std::vector<double>& matval);
     int get_col_index(std::string variable_id);
-
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,
              DblVector& single_subpb_costs_under_approx,
@@ -57,7 +56,6 @@ public:
                                const double& rhs) const;
 
     void fix_alpha(const double& bestUB) const;
-
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
 
