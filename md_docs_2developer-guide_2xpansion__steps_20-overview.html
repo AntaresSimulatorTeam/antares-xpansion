@@ -161,6 +161,23 @@ $(function(){initNavTree('md_docs_2developer-guide_2xpansion__steps_20-overview.
 4- Update of antares study: <code>study_update</code></h1>
 <p>The resolution stage provides, for each candidate, the investment that minimizes the overall cost of the investment problem. However, it does not allow access the details provided by an Antares-Simulator simulation. In order to access these details, a "standard" Antares-Simulator simulation is prepared by updating the original Antares study with the values obtained from the resolution stage. Each investment is associated to a link and its investment value is added to the link direct and indirect transfer capacity.</p>
 <h1><a class="anchor" id="autotoc_md132"></a>
+Gems workflow: <code>gems</code></h1>
+<p>The gems workflow provides a combined execution of <code>antares-problem-generator</code> and <code>benders</code> steps. It uses GEMS objects to generate the investment problems. Workflow steps:</p>
+<ol type="1">
+<li>Running <code>antares-problem-generator</code> to generate the investment optimization problem</li>
+<li>Running <code>benders</code> to solve the optimization</li>
+</ol>
+<h2><a class="anchor" id="autotoc_md133"></a>
+Activation</h2>
+<p>The gems workflow can be activated in two ways:</p>
+<p><b>Explicit activation:</b> </p><div class="fragment"><div class="line">python src/python/launch.py -i &lt;study_path&gt; --step gems --installDir &lt;build_dir&gt;</div>
+</div><!-- fragment --><p><b>Auto-detection (implicit activation):</b> When running <code>benders</code> or <code>full</code> steps, the script automatically checks for the presence of <code>optim-config.yml</code> in the study's input folder:</p>
+<div class="fragment"><div class="line">&lt;study_path&gt;/input/optim-config.yml</div>
+</div><!-- fragment --><p>If this file exists, the gems workflow is automatically activated instead of the standard benders/full workflow.</p>
+<h2><a class="anchor" id="autotoc_md134"></a>
+Requirements</h2>
+<p>Needs an optim-config.yml in the antares study to specify investment problems. Needs a user/expansion/settings.ini in the antares study.</p>
+<h1><a class="anchor" id="autotoc_md135"></a>
 Antares-Xpansion package executables</h1>
 <p>Antares-Xpansion consists in four executables and a Python orchestrator that is responsible for calling these executables with the correct options for each step.</p>
 <table class="markdownTable">
@@ -171,8 +188,10 @@ Antares-Xpansion package executables</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>lp_namer</code>   </td><td class="markdownTableBodyNone">Investment problem generation.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>benders</code>   </td><td class="markdownTableBodyNone">Benders decomposition.    </td></tr>
+<td class="markdownTableBodyNone"><code>antares-problem-generator</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> generation used by gems workflow.    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>benders</code>   </td><td class="markdownTableBodyNone">Benders decomposition.    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>xpansion-study-updater</code>   </td><td class="markdownTableBodyNone">Update of antares study.   </td></tr>
 </table>
 </div></div><!-- contents -->

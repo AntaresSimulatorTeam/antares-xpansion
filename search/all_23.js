@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['xpansion_0',['Xpansion',['../index.html',1,'Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2installation.html#autotoc_md180',1,'Download Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md199',1,'Output of Antares-Xpansion'],['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md134',1,'Specific configuration for Antares-Xpansion'],['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'The optimal investment problem in Antares-Xpansion']]],
+  ['xpansion_0',['Xpansion',['../index.html',1,'Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2installation.html#autotoc_md183',1,'Download Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md202',1,'Output of Antares-Xpansion'],['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md137',1,'Specific configuration for Antares-Xpansion'],['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'The optimal investment problem in Antares-Xpansion']]],
   ['xpansion_20changelog_1',['Antares-Xpansion changelog',['../md_docs_2changelog_2CHANGELOG.html',1,'']]],
-  ['xpansion_20package_20executables_2',['Antares-Xpansion package executables',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md132',1,'']]],
-  ['xpansion_20simulation_3',['Xpansion simulation',['../index.html#autotoc_md3',1,'Antares-Xpansion simulation'],['../md_docs_2index.html#autotoc_md155',1,'Antares-Xpansion simulation']]],
+  ['xpansion_20package_20executables_2',['Antares-Xpansion package executables',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md135',1,'']]],
+  ['xpansion_20simulation_3',['Xpansion simulation',['../index.html#autotoc_md3',1,'Antares-Xpansion simulation'],['../md_docs_2index.html#autotoc_md158',1,'Antares-Xpansion simulation']]],
   ['xpansion_20simulation_20procedure_4',['Antares-Xpansion simulation procedure',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html',1,'']]],
   ['xpansion_20studies_5',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
   ['xpansion_20study_6',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],

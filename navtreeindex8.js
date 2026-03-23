@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html":[34,0,175,3],
+"structMergeMasterTrajectoryMPS_1_1VariablePositions.html":[34,0,175,4],
+"structNodeLpDataLocation.html":[34,0,182],
 "structOutput_1_1CandidateData.html":[34,0,13,0],
 "structOutput_1_1Iteration.html":[34,0,13,1],
 "structOutput_1_1IterationsData.html":[34,0,13,2],

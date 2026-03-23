@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2user-input
   <div class="headertitle"><div class="title">User input file parsing</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md292"></a></p>
-<h1><a class="anchor" id="autotoc_md293"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md295"></a></p>
+<h1><a class="anchor" id="autotoc_md296"></a>
 User input file</h1>
 <p>We give here an example of a user input file corresponding with the illustration given in the problem presentation. <br  />
  <b>input-trajectory.yaml</b> :</p>
@@ -233,7 +233,7 @@ User input file</h1>
 <div class="line">initial_capacities:</div>
 <div class="line">  default: 0</div>
 <div class="line">  semibase: 250</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md294"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md297"></a>
 Input file parser &amp; translator</h1>
 <ul>
 <li>Parses the user input file and verifies that the data given in the file matches with the studies (To be implemented : check that every candidate is present in both the study and the node's info).</li>
@@ -247,7 +247,7 @@ Input file parser &amp; translator</h1>
 <li>Translates the constraints to their mathematical formulation (see the <a href="./merge-master.md#trajectory-constraints">trajectory constraints section</a> of the master merger.)</li>
 <li>Formats and outputs the <code>master_merger_info_file.json</code> used as input in both the <a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-master.html">merged master problem generator</a> and <a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-weights.html">merged weights file generator</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md295"></a>
+<h1><a class="anchor" id="autotoc_md298"></a>
 A note on candidates</h1>
 <p>We recommand that each candidate is defined in all of the studies and adding the necessary constraints to restrict the investment / divestment behaviour for this candidate to the desired feasible space. <br  />
  However, it is still possible to have candidates not present in all of the nodes of the tree. A candidate can either :</p>
@@ -255,11 +255,11 @@ A note on candidates</h1>
 <li>Appear only in later studies, to represent a cluster that might only enter into service later. In this case, when the candidate $i$ first appear in node $n$, the constraint will be : $\text{initial_capacities}_i + dx_{i,n}^+ - dx_{i,n}^- = x_{i,n}$, regardless of wether $n$ is the root node. ( Though as noted above, the recommanded modelisation would be to add the candidate in all the nodes and impose its installed capacity to be $0$ during the construction period)</li>
 <li>Disappear in the final studies, to represent a cluster that is assuredly decommissioned at this point. In this case, when the candidate $i$ disappears at node $n$, the constraint will be : $x_{i, \text{parent}(n)} + dx_{i,n}^+ - dx_{i,n}^- = 0$.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md296"></a>
+<h1><a class="anchor" id="autotoc_md299"></a>
 Trajectory constraints translation</h1>
 <p>The trajectory constraints translator implements 3 types of constraints for now. <br  />
  We implement the <code>all</code> keyword for ease of readability. <code>all</code> will be expanded to a list containing all of the nodes or all of the candidates depending on the context.</p>
-<h2><a class="anchor" id="autotoc_md297"></a>
+<h2><a class="anchor" id="autotoc_md300"></a>
 <code>type: max_investment_per_node_per_candidate</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: add_max_1_GW_semibase</div>
@@ -275,7 +275,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2050_B, semibase}^+ \leq 1000$</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^+ \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md298"></a>
+<h2><a class="anchor" id="autotoc_md301"></a>
 <code>type: max_cumulative_investment_per_node</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: add_cum_2GW</div>
@@ -289,7 +289,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^+ \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md299"></a>
+<h2><a class="anchor" id="autotoc_md302"></a>
 <code>type: max_retirement_per_node_per_candidate</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: forbid_retirement</div>
@@ -306,7 +306,7 @@ Trajectory constraints translation</h1>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^- \leq \text{value} $$</p>
 <p><b>Note :</b> as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.</p>
-<h2><a class="anchor" id="autotoc_md300"></a>
+<h2><a class="anchor" id="autotoc_md303"></a>
 <code>type: max_cumulative_retirement_per_node</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: decom_cum_2GW</div>
@@ -320,7 +320,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2040, semibase}^- + dx_{2040, peak}^- \leq 2000$</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md301"></a>
+<h2><a class="anchor" id="autotoc_md304"></a>
 <code>type: min_investment_per_candidate_per_node</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: min_invest_1_5GW</div>
@@ -335,7 +335,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2040_A, semibase}^+ \geq 1500$,</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^+ \geq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md302"></a>
+<h2><a class="anchor" id="autotoc_md305"></a>
 <code>type: min_retirement_per_candidate_per_node</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: min_decom_1GW</div>
@@ -349,7 +349,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2040, peak}^- \geq 1000$</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value} $$</p>
-<h1><a class="anchor" id="autotoc_md303"></a>
+<h1><a class="anchor" id="autotoc_md306"></a>
 Input data of local study or input data from <code>input-trajectory.yaml</code> ?</h1>
 <p>Each yearly study defines some input data from either <code>candidates.ini</code> and <code>settings.ini</code>. Some of this data are overriden by <code>input-trajectory.yaml</code> whereas some are reused:</p>
 <ul>
