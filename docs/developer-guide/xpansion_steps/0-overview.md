@@ -43,6 +43,36 @@ is prepared by updating the original Antares study with the values obtained from
 Each investment is associated to a link and its investment value is added to the link direct and indirect
 transfer capacity.
 
+## Gems workflow: `gems`
+
+The gems workflow provides a combined execution of `antares-problem-generator` and `benders` steps. It uses GEMS objects to generate the investment problems. Workflow steps:
+
+1. Running `antares-problem-generator` to generate the investment optimization problem
+2. Running `benders` to solve the optimization
+
+### Activation
+
+The gems workflow can be activated in two ways:
+
+**Explicit activation:**
+```bash
+python src/python/launch.py -i <study_path> --step gems --installDir <build_dir>
+```
+
+**Auto-detection (implicit activation):**
+When running `benders` or `full` steps, the script automatically checks for the presence of `optim-config.yml` in the study's input folder:
+
+```
+<study_path>/input/optim-config.yml
+```
+
+If this file exists, the gems workflow is automatically activated instead of the standard benders/full workflow.
+
+### Requirements
+
+Needs an optim-config.yml in the antares study to specify investment problems.
+Needs a user/expansion/settings.ini in the antares study.
+
 ## Antares-Xpansion package executables
 
 Antares-Xpansion consists in four executables and a Python orchestrator that is responsible for 
@@ -53,5 +83,6 @@ calling these executables with the correct options for each step.
 |-----|-----|
 |`antares-x.x-solver`|Antares-Simulator optimization problems retrieval, where `x.x` stands for the version number of Antares-Simulator, for example `antares-8.1-solver`. |
 |`lp_namer`|Investment problem generation. |  
+|`antares-problem-generator`|Problem generation used by gems workflow. |
 |`benders`|Benders decomposition. | 
 |`xpansion-study-updater `|Update of antares study. | 
