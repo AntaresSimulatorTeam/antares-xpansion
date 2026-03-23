@@ -175,6 +175,7 @@ void BendersMpi::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& n
         size_t end = names_in_cut[0].first.find('.', start);
         auto sub_index_str = names_in_cut[0].first.substr(start, end - start);
         std::stringstream alpha_i;
+        
         alpha_i << "alpha_" << sub_index_str;
         auto alpha_i_pos = _master->get_col_index(alpha_i.str());
         auto id_single_subpb_cost_under_approx = _master->get_id_single_subpb_costs_under_approx() ; 
