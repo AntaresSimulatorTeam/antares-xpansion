@@ -56,11 +56,11 @@ The gems workflow can be activated in two ways:
 
 **Explicit activation:**
 ```bash
-antares-xpansion-launcher -i <study_path> --step gems
+python src/python/launch.py -i <study_path> --step gems --installDir <build_dir>
 ```
 
 **Auto-detection (implicit activation):**
-When running `benders` or `full` steps, Antares-Xpansion automatically checks for the presence of `optim-config.yml` in the study's input folder:
+When running `benders` or `full` steps, the script automatically checks for the presence of `optim-config.yml` in the study's input folder:
 
 ```
 <study_path>/input/optim-config.yml
