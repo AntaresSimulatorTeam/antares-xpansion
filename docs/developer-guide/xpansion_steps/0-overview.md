@@ -71,6 +71,7 @@ If this file exists, the gems workflow is automatically activated instead of the
 ### Requirements
 
 Needs an optim-config.yml in the antares study to specify investment problems.
+Needs a user/expansion/settings.ini in the antares study.
 
 ## Antares-Xpansion package executables
 
