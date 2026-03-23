@@ -773,7 +773,6 @@ void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
     check_status(subproblem_data_map);
     if (_options.NB_CUTS_PER_ITER)
     {
-        std::cout << "NB_CUTS_PER_ITER " << _options.NB_CUTS_PER_ITER << std::endl;
         compute_cut_aggregate(subproblem_data_map);
     }
     else
