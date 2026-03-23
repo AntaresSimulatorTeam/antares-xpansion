@@ -389,6 +389,7 @@ void BendersMpi::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& n
 
         for (size_t j = 1; j < names_in_cut.size(); j++)
         {
+            std::cout<<"names_in_cut "<<names_in_cut[j].first<<std::endl ; 
             start = names_in_cut[j].first.find('_') + 1;
             end = names_in_cut[j].first.find('.', start);
             sub_index_str = names_in_cut[j].first.substr(start, end - start);
@@ -396,6 +397,9 @@ void BendersMpi::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& n
             std::stringstream alpha_j;
             alpha_j << "alpha_" << sub_index_str;
             auto alpha_j_pos = _master->get_col_index(alpha_j.str());
+            
+            auto pos = _problem_to_id[names_in_cut[j].first] ; 
+            std::cout<<"alpha_j_pos "<<alpha_j_pos<<" pos "<<pos<<std::endl ; 
 
             std::vector<char> rowtype = {'E'};
             std::vector<double> rowrhs = {0};
