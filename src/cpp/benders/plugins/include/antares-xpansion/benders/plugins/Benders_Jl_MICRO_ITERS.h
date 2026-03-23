@@ -195,6 +195,8 @@ using jl_compute_factors_for_microiterations_FUNC = SerializedFactors  (*)(Candi
 using jl_return_constraints_for_micro_iteration_FUNC = ViolatedFlowConstraints (*)(const char*, FlowNList);
 
 
+using jl_call_GC_FUNC = void (*) () ; 
+
 
 /*
     Since the input julia that allow updating the factos at each master iterations are quite heavy. 
@@ -206,6 +208,7 @@ using jl_deserialize_factors_FUNC = void (*) (SerializedFactors) ;
 
 
 using jl_clean_buffers_FUNC = void (*) () ; 
+
 
 /*
     Implementation of BendersPlugin to manage the microiterations workflow
@@ -325,6 +328,7 @@ private:
     jl_load_variables_FUNC jl_load_variables_ ; 
     jl_clean_buffers_FUNC clean_buffers_ ;
     jl_deserialize_factors_FUNC jl_deserialize_factors_ ; 
+    jl_call_GC_FUNC jl_call_GC_ ; 
     const SimulationOptions& options_ ; 
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;

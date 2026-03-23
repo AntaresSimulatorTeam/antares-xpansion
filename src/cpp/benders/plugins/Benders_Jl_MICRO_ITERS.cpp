@@ -43,30 +43,55 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
     {
         init_julia_FUNC init_julia = (init_julia_FUNC)dlsym(handle_, "init_julia");
         
+        if (init_julia == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
+
+        init_julia(0, NULL);
         shut_down_julia_ = (shut_down_julia_FUNC)dlsym(handle_,
                                                                            "shutdown_julia");        
 
-        compute_factors_
+        if (shut_down_julia_ == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
+
+                                                                           compute_factors_
                                     = (jl_compute_factors_for_microiterations_FUNC)
                                     dlsym(handle_, "jl_compute_factors_for_microiterations");
+        if (compute_factors_ == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
         
-        jl_return_constraints_for_micro_iteration_
+                                    jl_return_constraints_for_micro_iteration_
                                     = (jl_return_constraints_for_micro_iteration_FUNC)
                                     dlsym(handle_, "jl_return_constraints_for_micro_iteration");
 
+        if (jl_return_constraints_for_micro_iteration_ == NULL) 
+                    _world->abort(EXIT_FAILURE) ; 
+
+
         clean_buffers_ = (jl_clean_buffers_FUNC) dlsym(handle_, "jl_clean_buffers");
 
-
+        if (clean_buffers_ == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
+            
         jl_load_variables_ = (jl_load_variables_FUNC)
                                             dlsym(handle_, "jl_load_variables");
                         
-        jl_deserialize_factors_ = (jl_deserialize_factors_FUNC) dlsym(handle_,"jl_deserialize_factors") ; 
-        init_julia(0, NULL);
+        if (jl_load_variables_ == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
+            
+         jl_deserialize_factors_ = (jl_deserialize_factors_FUNC) dlsym(handle_,"jl_deserialize_factors") ; 
+
+        if (jl_deserialize_factors_ == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
+            
+        jl_call_GC_ = (jl_call_GC_FUNC) dlsym(handle_,"jl_call_GC") ; 
+        if (jl_call_GC_ == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
+            
     }
     else 
     {
         std::cerr<<"unable to open : "<<libmylib_path.c_str()<<std::endl; 
-        exit(EXIT_FAILURE) ; 
+        _world->abort(EXIT_FAILURE) ; 
     }
 
     // if (options_.LOG_LEVEL >= 2)
@@ -228,6 +253,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersEnd()
     {
         shut_down_julia_FUNC shut_down_julia = (shut_down_julia_FUNC)dlsym(handle_,
                                                                            "shutdown_julia");
+        
+        if (shut_down_julia == NULL) 
+            _world->abort(EXIT_FAILURE) ; 
         shut_down_julia(0);
         dlclose(handle_);
     }
@@ -244,7 +272,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersIterationStart()
 
 void Benders_Jl_MICRO_ITERS::OnBendersIterationEnd() 
 {
-
+    jl_call_GC_() ; 
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionStart(
