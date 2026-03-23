@@ -81,7 +81,7 @@ calling these executables with the correct options for each step.
 
 |Executable|Simulation step|
 |-----|-----|
-|`antares-x.x-solver`|Antares-Simulator optimization problems retrieval, where `x.x` stands for the version number of Antares-Simulator, for example `antares-8.1-solver`. |
+|`antares-solver`|Antares-Simulator optimization problems retrieval. |
 |`lp_namer`|Investment problem generation. |  
 |`antares-problem-generator`|Problem generation used by gems workflow. |
 |`benders`|Benders decomposition. | 
