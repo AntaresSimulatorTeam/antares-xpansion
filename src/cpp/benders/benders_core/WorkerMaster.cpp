@@ -312,7 +312,8 @@ void WorkerMaster::addSubproblemCut(int i,
     std::vector<int> subproblem_ids = {i};
     define_matval_mclind_for_index(subproblem_ids, subgradient, matval, mclind);
 
-    // Round numerically small rhs ant coefficients to zero to get clean cuts and avoid numerical artifacts
+    // Round numerically small rhs ant coefficients to zero to get clean cuts and avoid numerical
+    // artifacts
     roundIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
     roundIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
 
@@ -524,7 +525,8 @@ void WorkerMaster::roundIfWithinTolerance(std::vector<double>& values,
                                           const std::vector<int>& subproblem_ids) const
 {
     double cut_coefficient_tolerance = 0.0;
-    for (int sb_id : subproblem_ids) {
+    for (int sb_id: subproblem_ids)
+    {
         cut_coefficient_tolerance += _subproblem_tolerance.find(sb_id)->second;
     }
 
@@ -533,8 +535,5 @@ void WorkerMaster::roundIfWithinTolerance(std::vector<double>& values,
     std::transform(values.begin() + first,
                    values.begin() + last,
                    values.begin() + first,
-                   [tolerance](double value)
-                   {
-                       return std::abs(value) < tolerance ? 0.0 : value;
-                   });
+                   [tolerance](double value) { return std::abs(value) < tolerance ? 0.0 : value; });
 }

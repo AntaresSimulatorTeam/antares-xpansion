@@ -65,7 +65,7 @@ private:
     int subproblems_count;
     bool _mps_has_alpha = false;
     double _master_solution_tolerance;
-    std::map<int, double> _subproblem_tolerance;  
+    std::map<int, double> _subproblem_tolerance;
     void define_matval_mclind(const Point& s,
                               std::vector<double>& matval,
                               std::vector<int>& mclind) const;

@@ -31,7 +31,8 @@ void BendersSequential::InitializeProblems()
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
     std::map<int, double> subproblem_cut_coefficient_tolerance{};
-    for (int i=0; i<_data.nsubproblem; i++){
+    for (int i = 0; i < _data.nsubproblem; i++)
+    {
         subproblem_cut_coefficient_tolerance[i] = Options().CUT_COEFFICIENT_TOLERANCE;
     }
     reset_master<WorkerMaster>(master_variable_map_,
