@@ -30,6 +30,10 @@ void BendersSequential::InitializeProblems()
     MatchProblemToId();
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
+    std::map<int, double> subproblem_cut_coefficient_tolerance{};
+    for (int i=0; i<_data.nsubproblem; i++){
+        subproblem_cut_coefficient_tolerance[i] = Options().CUT_COEFFICIENT_TOLERANCE;
+    }
     reset_master<WorkerMaster>(master_variable_map_,
                                get_solver_name(),
                                get_log_level(),
@@ -40,7 +44,7 @@ void BendersSequential::InitializeProblems()
                                Options().PROBLEMS_FORMAT,
                                benders_problem_provider.get(),
                                Options().MASTER_SOLUTION_TOLERANCE,
-                               Options().CUT_COEFFICIENT_TOLERANCE);
+                               subproblem_cut_coefficient_tolerance);
     for (const auto& problem: coupling_map_)
     {
         const auto subProblemFilePath = GetSubproblemPath(problem.first);

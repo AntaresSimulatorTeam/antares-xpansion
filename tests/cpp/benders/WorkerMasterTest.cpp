@@ -77,6 +77,8 @@ protected:
         auto test_solver = std::make_shared<NOOPSolverForWorkerMaster>();
         EmptyLogManager solver_log_manager;
         auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
+        std::map<int, double> subproblem_cut_coefficient_tolerance{};
+        subproblem_cut_coefficient_tolerance[0] = cut_coefficient_tolerance;
         auto master = std::make_shared<WorkerMaster>(VariableMap{},
                                                      "COIN",
                                                      0,
@@ -87,7 +89,7 @@ protected:
                                                      ProblemsFormat::MPS_FILE,
                                                      problem_provider.get(),
                                                      master_solution_tolerance,
-                                                     cut_coefficient_tolerance);
+                                                     subproblem_cut_coefficient_tolerance);
         master->_solver = test_solver;
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
         master->set_id_alpha(3);

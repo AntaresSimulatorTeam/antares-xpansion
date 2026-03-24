@@ -68,7 +68,7 @@ public:
 protected:
     Point subgradient;
 
-    std::shared_ptr<SubproblemWorker> init_subproblem_worker(double cut_coefficient_tolerance) const
+    std::shared_ptr<SubproblemWorker> init_subproblem_worker() const
     {
         auto test_solver = std::make_shared<NOOPSolverForSubproblemWorker>();
         EmptyLogManager solver_log_manager;
@@ -81,8 +81,7 @@ protected:
           solver_log_manager,
           std::make_shared<xpansion::logger::Master>(),
           ProblemsFormat::MPS_FILE,
-          problem_provider.get(),
-          cut_coefficient_tolerance);
+          problem_provider.get());
         subproblem->_solver = test_solver;
         subproblem->_id_to_name = {{2, "var1"}, {3, "var2"}, {4, "var3"}};
         return subproblem;
@@ -97,8 +96,7 @@ TEST_F(SubproblemWorkerTest, RoundSubgradientIfWithinTolerance)
     std::vector<double> lbs;
     std::vector<double> ubs;
 
-    double cut_coefficient_tolerance = 0.1;
-    auto subproblem = init_subproblem_worker(cut_coefficient_tolerance);
+    auto subproblem = init_subproblem_worker();
     std::dynamic_pointer_cast<NOOPSolverForSubproblemWorker>(subproblem->_solver)
       ->setSolverBehavior(reduced_cots, col_types, lbs, ubs);
     subproblem->get_subgradient(subgradient);
