@@ -28,7 +28,6 @@ public:
                  double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
-    std::vector<int>& get_id_single_subpb_costs_under_approx() ; 
     void add_row(std::vector<char>& row_type,
                  std::vector<double>& row_rhs,
                  std::vector<int>& mstart,
@@ -58,6 +57,7 @@ public:
     void fix_alpha(const double& bestUB) const;
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
+    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&,std::map<std::string,int>&) ; 
 
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {

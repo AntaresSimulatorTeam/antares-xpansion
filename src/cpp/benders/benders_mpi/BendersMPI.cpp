@@ -162,40 +162,11 @@ void BendersMpi::BuildMasterProblem()
     InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        addAlphasFixingConstraints(subproblem_per_cut_indices_);
+        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_,_problem_to_id) ; 
     }
 }
 
 
-void BendersMpi::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts)
-{
-    for (auto& names_in_cut: names_in_cuts)
-    {
-        size_t start = names_in_cut[0].first.find('_') + 1;
-        size_t end = names_in_cut[0].first.find('.', start);
-        auto sub_index_str = names_in_cut[0].first.substr(start, end - start);
-        std::stringstream alpha_i;
-        
-        alpha_i << "alpha_" << sub_index_str;
-        auto alpha_i_pos = _master->get_col_index(alpha_i.str());
-        auto id_single_subpb_cost_under_approx = _master->get_id_single_subpb_costs_under_approx() ; 
-        for (size_t j = 1; j < names_in_cut.size(); j++)
-        {
-            auto alpha_j_pos = id_single_subpb_cost_under_approx[ _problem_to_id[names_in_cut[j].first]] ; 
-
-            std::vector<char> rowtype = {'E'};
-            std::vector<double> rowrhs = {0};
-            std::vector<int> mstart = {0, 2};
-            std::vector<double> matval(2);
-            matval[0] = 1;
-            matval[1] = -1;
-            std::vector<int> mclind(2);
-            mclind[0] = alpha_i_pos;
-            mclind[1] = alpha_j_pos;
-            _master->add_row(rowtype, rowrhs, mstart, mclind, matval);
-        }
-    }
-}
 
 /*!
  *  \brief Solve, get and send solution of the Master Problem to every thread
