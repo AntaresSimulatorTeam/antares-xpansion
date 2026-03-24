@@ -39,6 +39,23 @@ public:
         std::copy(solution.begin(), solution.end(), sol);
     }
 
+void add_rows(int newrows,
+              int newnz,
+              const char* qrtype,
+              const double* rhs,
+              const double* range,
+              const int* mstart,
+              const int* mclind,
+              const double* dmatval,
+              const std::vector<std::string>& row_names) override
+    {
+        last_rowrhs.assign(rhs, rhs + newrows);
+        last_matval.assign(dmatval, dmatval + newnz);
+    }
+
+    std::vector<double> last_rowrhs;
+    std::vector<double> last_matval;
+
 private:
     std::vector<double> solution;
 };
@@ -92,6 +109,7 @@ protected:
                                                      subproblem_cut_coefficient_tolerance);
         master->_solver = test_solver;
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
+        master->_name_to_id = {{"var1", 0}, {"var2", 1}, {"var3", 2}};
         master->set_id_alpha(3);
         master->set_id_single_subpb_costs_under_approx({4});
         master->_id_master_only_vars = {};
@@ -218,3 +236,39 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     std::vector<int> expected{2};
     EXPECT_EQ(master->_id_master_only_vars, expected);
 }
+
+TEST_F(WorkerMasterTest, AddSubproblemCutAppliesRoundingOnCoeffs)
+{
+    double master_solution_tolerance = 0.1;
+    double cut_coefficient_tolerance = 0.1;
+    auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
+
+    Point subgradient;
+    subgradient["var1"] = -5e-3; 
+    subgradient["var2"] = -4e-2;
+    subgradient["var3"] = -3e-1;
+
+    Point x_cut;
+    x_cut["var1"] = 1.0;
+    x_cut["var2"] = 10.0;
+    x_cut["var3"] = 100.0;
+
+    double subproblem_cost = 10.0;
+
+    master->addSubproblemCut(0, subgradient, x_cut, subproblem_cost);
+    // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
+    // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
+
+    auto mockSolver = std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver);
+
+    EXPECT_EQ(mockSolver->last_rowrhs.size(), 1);
+    EXPECT_EQ(mockSolver->last_rowrhs[0], -40.405);
+
+    EXPECT_EQ(mockSolver->last_matval.size(),4);
+    EXPECT_EQ(mockSolver->last_matval[0], 0.0);
+    EXPECT_EQ(mockSolver->last_matval[1], 0.0);
+    EXPECT_EQ(mockSolver->last_matval[2], -0.3);
+    EXPECT_EQ(mockSolver->last_matval[3], -1);
+
+}
+
