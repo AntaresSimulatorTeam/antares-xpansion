@@ -28,9 +28,9 @@ runs:
     - id: download-extract
       shell: bash
       run: |
-           curl -OLs https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}.zip
-           unzip rte-antares-${{inputs.antares-version}}.zip
-           rm -rf rte-antares-${{inputs.antares-version}}.zip
+           curl -OLs https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-win64.zip
+           unzip rte-antares-${{inputs.antares-version}}-win64.zip
+           rm -rf rte-antares-${{inputs.antares-version}}-win64.zip
 
     - name: Download & extract OR-Tools
       shell: bash
