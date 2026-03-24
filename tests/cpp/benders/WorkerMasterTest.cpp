@@ -194,7 +194,7 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
         ProblemsFormat::MPS_FILE,
         problem_provider.get(),
         0.1,
-        0.1
+        std::map<int,double>{}
     );
 
     struct FakeSolver : public NOOPSolverForWorkerMaster {
