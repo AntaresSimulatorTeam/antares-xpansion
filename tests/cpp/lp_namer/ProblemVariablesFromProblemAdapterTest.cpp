@@ -13,12 +13,12 @@ std::string mpsWithIndexStartingAt0() {
 ROWS
     N                                                   OBJ
 COLUMNS
-    NTCDirect::link<area1$$area2>::v0<0>                OBJ     -5.0
-    NTCDirect::link<area1$$area2>::v1<1>                OBJ     -4.0
-    IntercoDirectCost::link<area1$$area2>::v2<2>        OBJ     -5.0
-    IntercoDirectCost::link<area1$$area2>::v3<3>        OBJ     -4.0
-    IntercoIndirectCost::link<area1$$area2>::v4<1>      OBJ     -5.0
-    IntercoIndirectCost::link<area1$$area2>::v5<3>      OBJ     -4.0
+    DirectFlow::link<area1$$area2>::v0<0>                OBJ     -5.0
+    DirectFlow::link<area1$$area2>::v1<1>                OBJ     -4.0
+    PositiveDirectFlow::link<area1$$area2>::v2<2>        OBJ     -5.0
+    PositiveDirectFlow::link<area1$$area2>::v3<3>        OBJ     -4.0
+    PositiveIndirectFlow::link<area1$$area2>::v4<1>      OBJ     -5.0
+    PositiveIndirectFlow::link<area1$$area2>::v5<3>      OBJ     -4.0
 ENDATA)";
 }
 
@@ -27,12 +27,12 @@ std::string mpsWithIndexStartingAt168() {
 ROWS
     N                                                     OBJ
 COLUMNS
-    NTCDirect::link<area1$$area2>::v0<168>                OBJ     -5.0
-    NTCDirect::link<area1$$area2>::v1<169>                OBJ     -4.0
-    IntercoDirectCost::link<area1$$area2>::v2<170>        OBJ     -5.0
-    IntercoDirectCost::link<area1$$area2>::v3<171>        OBJ     -4.0
-    IntercoIndirectCost::link<area1$$area2>::v4<169>      OBJ     -5.0
-    IntercoIndirectCost::link<area1$$area2>::v5<171>      OBJ     -4.0
+    DirectFlow::link<area1$$area2>::v0<168>                OBJ     -5.0
+    DirectFlow::link<area1$$area2>::v1<169>                OBJ     -4.0
+    PositiveDirectFlow::link<area1$$area2>::v2<170>        OBJ     -5.0
+    PositiveDirectFlow::link<area1$$area2>::v3<171>        OBJ     -4.0
+    PositiveIndirectFlow::link<area1$$area2>::v4<169>      OBJ     -5.0
+    PositiveIndirectFlow::link<area1$$area2>::v5<171>      OBJ     -4.0
 ENDATA)";
 }
 

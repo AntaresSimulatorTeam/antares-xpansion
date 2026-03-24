@@ -88,9 +88,9 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
 {
     // List of variables
     VariableFileReadNameConfiguration variable_name_config;
-    variable_name_config.ntc_variable_name = "NTCDirect";
-    variable_name_config.cost_origin_variable_name = "IntercoDirectCost";
-    variable_name_config.cost_extremite_variable_name = "IntercoIndirectCost";
+    variable_name_config.ntc_variable_name = "DirectFlow";
+    variable_name_config.cost_origin_variable_name = "PositiveDirectFlow";
+    variable_name_config.cost_extremite_variable_name = "PositiveIndirectFlow";
 
     auto&& var_names = problem_->get_col_names();
     std::string origin;

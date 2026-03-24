@@ -369,7 +369,7 @@ void ProblemGeneration::RunProblemGeneration(
         }
         auto mps_file_writer = std::make_shared<FileWriter>(configuration_manager_.Format());
         std::for_each(
-          std::execution::par,
+          std::execution::seq,
           problems_and_data.begin(),
           problems_and_data.end(),
           [&](const auto& problem_and_data)
