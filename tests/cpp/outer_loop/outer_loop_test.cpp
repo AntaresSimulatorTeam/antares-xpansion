@@ -11,6 +11,8 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
+#include <antares-xpansion/benders/factories/BendersPluginFactory.h>
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include "gtest/gtest.h"
 
 boost::mpi::environment* penv = nullptr;
@@ -117,19 +119,28 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
 {
     BendersBaseOptions bendersoptions = BuildBendersOptions();
+    auto benders_plugin_factory_ = std::make_shared<BendersPluginFactory>();
+    
     CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
-      std::filesystem::path(bendersoptions.INPUTROOT) / bendersoptions.STRUCTURE_FILE,
-      logger.get(),
-      ::testing::UnitTest::GetInstance()->current_test_info()->name());
-    // override solver
+        std::filesystem::path(bendersoptions.INPUTROOT) / bendersoptions.STRUCTURE_FILE,
+        logger.get(),
+        ::testing::UnitTest::GetInstance()->current_test_info()->name());
+        // override solver
+    auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map,false,pworld) ; 
+    
     bendersoptions.SOLVER_NAME = GetParam();
     bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
     bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE = OUTER_OPTIONS_FILE;
     benders = std::make_shared<BendersMpi>(bendersoptions,
-                                           logger,
+        logger,
                                            writer,
                                            *pworld,
                                            math_log_driver);
+    benders->SetPlugin(benders_plugin);
+
+
+                            
+
     benders->set_input_map(coupling_map);
 
     auto outer_loop_input_data = Benders::Criterion::CriterionInputFromYaml().Read(

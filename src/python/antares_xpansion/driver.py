@@ -12,6 +12,7 @@ from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.benders_driver import BendersDriver, SolversExe
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.full_run_driver import FullRunDriver
+from antares_xpansion.gems_driver import GemsDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 from antares_xpansion.logger import step_logger
 from antares_xpansion.presolve_driver import PresolveDriver, PresolveData
@@ -94,12 +95,29 @@ class XpansionDriver:
             self.benders_driver,
             self.presolve_driver
         )
+
+        self.gems_driver = GemsDriver(
+            self.config_loader.antares_problem_generator_exe(),
+            self.benders_driver,
+            self.config_loader,
+        )
+
         self.settings = "settings"
 
     def launch(self):
         """
         launch antares xpansion steps
         """
+
+        use_gems = (
+            self.config_loader.step() in ("benders", "full")
+            and self.config_loader.has_optim_config()
+        )
+
+        if use_gems:
+            self.update_study_settings(memory_mode=False)
+            self.launch_gems_step()
+            return
 
         if self.config_loader.step() == "full" and not self.config_loader.memory():
             self.launch_antares_step()
@@ -157,6 +175,10 @@ class XpansionDriver:
             if self.config_loader.run_presolve():
                 self.launch_presolve_step()
             self.launch_benders_step()
+
+        elif self.config_loader.step() == "gems":
+            self.update_study_settings(memory_mode=False)
+            self.launch_gems_step()
 
         elif self.config_loader.step() == "sensitivity":
             self.launch_sensitivity_step()
@@ -249,6 +271,16 @@ class XpansionDriver:
         self.config_loader.benders_pre_actions()
         self.benders_driver.launch(
             self.config_loader.xpansion_simulation_output(),
+            self.config_loader.method(),
+            self.config_loader.keep_mps(),
+            self.config_loader.n_mpi(),
+            oversubscribe=self.config_loader.oversubscribe(),
+            allow_run_as_root=self.config_loader.allow_run_as_root(),
+        )
+
+    def launch_gems_step(self):
+        self.gems_driver.launch(
+            Path(self.config_loader.data_dir()),
             self.config_loader.method(),
             self.config_loader.keep_mps(),
             self.config_loader.n_mpi(),
