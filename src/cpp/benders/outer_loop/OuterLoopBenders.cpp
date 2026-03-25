@@ -1,4 +1,4 @@
-#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 
 namespace Outerloop
 {
@@ -8,11 +8,11 @@ OuterLoopBenders::OuterLoopBenders(
   std::shared_ptr<IMasterUpdate> master_updater,
   std::shared_ptr<ICutsManager> cuts_manager,
   pBendersBase benders,
-  mpi::communicator& world):
+  std::shared_ptr<ICommunicationStrategy> communication_strategy):
     master_updater_(std::move(master_updater)),
     cuts_manager_(std::move(cuts_manager)),
     benders_(std::move(benders)),
-    world_(world),
+    communication_strategy_(std::move(communication_strategy)),
     outer_loop_biLevel_(outer_loop_data)
 {
     loggers_.AddLogger(benders_->_logger);
@@ -68,20 +68,20 @@ double OuterLoopBenders::OuterLoopLambdaMax() const
 bool OuterLoopBenders::UpdateMaster()
 {
     bool stop_update_master = false;
-    if (world_.rank() == 0)
+    if (communication_strategy_->IsMaster())
     {
         stop_update_master = master_updater_->Update(outer_loop_biLevel_.LambdaMin(),
                                                      outer_loop_biLevel_.LambdaMax());
     }
 
-    mpi::broadcast(world_, stop_update_master, 0);
+    communication_strategy_->BroadcastBool(stop_update_master);
     return stop_update_master;
 }
 
 void OuterLoopBenders::OuterLoopCheckFeasibility()
 {
     std::vector<double> obj_coeff;
-    if (world_.rank() == 0)
+    if (communication_strategy_->IsMaster())
     {
         obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
 
@@ -90,7 +90,7 @@ void OuterLoopBenders::OuterLoopCheckFeasibility()
     }
 
     benders_->launch();
-    if (world_.rank() == 0)
+    if (communication_strategy_->IsMaster())
     {
         benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
         benders_->UpdateOverallCosts();
@@ -118,8 +118,8 @@ void OuterLoopBenders::InitExternalValues(bool is_bilevel_check_all, double lamb
 
 void OuterLoopBenders::OuterLoopBilevelChecks()
 {
-    if (world_.rank() == 0 && benders_->Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP
-        && !is_bilevel_check_all_)
+    if (communication_strategy_->IsMaster()
+        && benders_->Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP && !is_bilevel_check_all_)
     {
         const WorkerMasterData& workerMasterData = benders_->BestIterationWorkerMaster();
         const auto& invest_cost = workerMasterData._invest_cost;

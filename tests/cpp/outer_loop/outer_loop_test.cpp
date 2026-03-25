@@ -6,9 +6,9 @@
 #include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/VariablesGroup.h"
-#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include <antares-xpansion/benders/factories/BendersPluginFactory.h>
@@ -157,7 +157,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
                                          master_updater,
                                          cut_manager,
                                          benders,
-                                         *pworld);
+                                         benders->GetCommunicationStrategy());
     out_loop.OuterLoopCheckFeasibility();
 
     auto num_constraints_master_before = benders->MasterGetnrows();

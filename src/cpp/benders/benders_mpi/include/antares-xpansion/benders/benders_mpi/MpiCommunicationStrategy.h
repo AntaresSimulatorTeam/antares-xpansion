@@ -39,6 +39,11 @@ public:
         return false;
     }
 
+    void BroadcastBool(bool& value) const override
+    {
+        mpi::broadcast(world_, value, 0);
+    }
+
     /// Access the underlying MPI communicator for operations not yet
     /// abstracted into the strategy interface (broadcast, gather, reduce).
     mpi::communicator& World()
