@@ -4,6 +4,7 @@
 #include "antares-xpansion/benders/benders_core/CutsManagement.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBendersAdapter.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "common_mpi.h"
 
@@ -42,6 +43,7 @@ private:
     std::shared_ptr<IMasterUpdate> master_updater_;
     std::shared_ptr<ICutsManager> cuts_manager_;
     pBendersBase benders_;
+    OuterLoopBendersAdapter adapter_;
     BendersLoggerBase loggers_;
     mpi::communicator& world_;
     bool is_bilevel_check_all_ = false;

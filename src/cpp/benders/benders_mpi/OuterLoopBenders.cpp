@@ -12,6 +12,7 @@ OuterLoopBenders::OuterLoopBenders(
     master_updater_(std::move(master_updater)),
     cuts_manager_(std::move(cuts_manager)),
     benders_(std::move(benders)),
+    adapter_(benders_),
     world_(world),
     outer_loop_biLevel_(outer_loop_data)
 {
@@ -26,10 +27,10 @@ void OuterLoopBenders::PrintLog()
     std::ostringstream msg;
     auto logger = benders_->_logger;
     logger->PrintIterationSeparatorBegin();
-    msg << "*** Adequacy criterion loop: " << benders_->GetBendersRunNumber();
+    msg << "*** Adequacy criterion loop: " << adapter_.GetBendersRunNumber();
     logger->display_message(msg.str());
     msg.str("");
-    const auto outer_loop_data = benders_->GetOuterLoopData();
+    const auto outer_loop_data = adapter_.GetOuterLoopData();
     msg << "*** Max Criterion: " << std::scientific << std::setprecision(10)
         << outer_loop_data.max_criterion_best_it;
     logger->display_message(msg.str());
@@ -41,13 +42,13 @@ void OuterLoopBenders::PrintLog()
 
 void OuterLoopBenders::RunAttachedAlgo()
 {
-    benders_->IncrementBendersRunNumber();
+    adapter_.IncrementBendersRunNumber();
     benders_->launch();
 }
 
 void OuterLoopBenders::init_data()
 {
-    benders_->init_data(master_updater_->Rhs(), OuterLoopLambdaMin(), OuterLoopLambdaMax());
+    adapter_.InitOuterLoopData(master_updater_->Rhs(), OuterLoopLambdaMin(), OuterLoopLambdaMax());
 }
 
 bool OuterLoopBenders::isExceptionRaised()
@@ -93,7 +94,7 @@ void OuterLoopBenders::OuterLoopCheckFeasibility()
     if (world_.rank() == 0)
     {
         benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
-        benders_->UpdateOverallCosts();
+        adapter_.UpdateOverallCosts();
         OuterLoopBilevelChecks();
         if (!outer_loop_biLevel_.FoundFeasible())
         {
@@ -129,17 +130,17 @@ void OuterLoopBenders::OuterLoopBilevelChecks()
                                              .criteria_current_iteration_data.lambda;
         if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
               x_cut,
-              benders_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
+              adapter_.GetOuterLoopCriterionAtBestBenders() /*/!\ must
   be at best it*/
               ,
               overall_cost,
               invest_cost,
               external_loop_lambda))
         {
-            benders_->UpdateOuterLoopSolution();
+            adapter_.UpdateOuterLoopSolution();
         }
-        benders_->SaveCurrentOuterLoopIterationInOutputFile();
-        benders_->SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
+        adapter_.SaveCurrentOuterLoopIterationInOutputFile();
+        adapter_.SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
     }
 }
 
@@ -147,7 +148,7 @@ void OuterLoopBenders::Run()
 {
     OuterLoop::Run();
     benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-    benders_->SaveOuterLoopSolutionInOutputFile();
+    adapter_.SaveOuterLoopSolutionInOutputFile();
     benders_->free();
 }
 } // namespace Outerloop
