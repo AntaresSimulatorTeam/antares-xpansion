@@ -373,14 +373,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
     auto constraint_reader = constraints_map_[constraint_reader_name];
 
-    // ""<<"after constraint_reader"<<std::endl ; 
-
-    
     auto sub_solution = constraint_reader->get_sub_solution();
     std::vector<FlowN> flows_to_follow;
     flows_to_follow.reserve(variables_to_follow_.size());
-
-
 
     for (auto& [line, line_id]: variables_to_follow_)
     {
