@@ -42,6 +42,7 @@ void OuterLoopBenders::RunAttachedAlgo()
 {
     adapter_.IncrementBendersRunNumber();
     benders_->launch();
+    adapter_.RefreshOuterLoopStateFromBenders();
 }
 
 void OuterLoopBenders::init_data()
@@ -89,6 +90,7 @@ void OuterLoopBenders::OuterLoopCheckFeasibility()
     }
 
     benders_->launch();
+    adapter_.RefreshOuterLoopStateFromBenders();
     if (world_.rank() == 0)
     {
         benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);

@@ -22,6 +22,7 @@ public:
     std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
 
     void InitOuterLoopData(double lambda, double lambda_min, double lambda_max);
+    void RefreshOuterLoopStateFromBenders();
 
     void SaveOuterLoopSolutionInOutputFile() const;
     void SaveCurrentOuterLoopIterationInOutputFile() const;
@@ -70,6 +71,8 @@ private:
     pBendersBase benders_;
 
     // === Phase B: Locally stored outer loop data ===
+    CriteriaCurrentIterationData current_outer_loop_data_;
+    std::vector<double> outer_loop_criterion_at_best_benders_;
     Output::SolutionData outer_loop_solution_data_;
     double bilevel_best_ub_ = 1e20;
     double lambda_ = 0.0;
