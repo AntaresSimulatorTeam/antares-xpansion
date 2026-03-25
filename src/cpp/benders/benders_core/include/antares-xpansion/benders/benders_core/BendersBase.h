@@ -325,6 +325,8 @@ protected:
 
     int SetAggregation(int max_aggregation) const;
 
+    std::map<int, double> GetSubCutTolerance() const;
+
 private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
