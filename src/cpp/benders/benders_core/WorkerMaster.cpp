@@ -383,15 +383,18 @@ int WorkerMaster::get_col_index(std::string variable_id)
     return _solver->get_col_index(variable_id);
 }
 
-void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts,std::map<std::string,int>& problem_to_id) 
+void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts,
+                                              std::map<std::string, int>& problem_to_id)
 {
     for (auto& names_in_cut: names_in_cuts)
     {
-        auto alpha_i_pos = _id_single_subpb_costs_under_approx[ problem_to_id[names_in_cut[0].first]] ; 
+        auto alpha_i_pos = _id_single_subpb_costs_under_approx
+          [problem_to_id[names_in_cut[0].first]];
         for (size_t j = 1; j < names_in_cut.size(); j++)
         {
-            auto alpha_j_pos = _id_single_subpb_costs_under_approx[ problem_to_id[names_in_cut[j].first]] ; 
-    
+            auto alpha_j_pos = _id_single_subpb_costs_under_approx
+              [problem_to_id[names_in_cut[j].first]];
+
             std::vector<char> rowtype = {'E'};
             std::vector<double> rowrhs = {0};
             std::vector<int> mstart = {0, 2};
@@ -405,7 +408,6 @@ void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&
         }
     }
 }
-
 
 void WorkerMaster::_set_alpha_var()
 {

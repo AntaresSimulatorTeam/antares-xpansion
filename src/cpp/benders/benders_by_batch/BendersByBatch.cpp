@@ -19,9 +19,9 @@ void BendersByBatch::InitializeProblems()
 void BendersByBatch::BuildMasterProblem()
 {
     InitializeMaster();
-    for (auto& batch : batch_collection_full_for_cuts_.BatchCollections()) 
+    for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
-        _master->addAlphasFixingConstraints(batch.name_to_cut,_problem_to_id) ; 
+        _master->addAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
     }
 }
 

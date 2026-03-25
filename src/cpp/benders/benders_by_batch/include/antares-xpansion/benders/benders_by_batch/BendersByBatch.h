@@ -46,7 +46,6 @@ private:
 
     void get_subs_per_cut_per_batch();
 
-
     BatchCollection batch_collection_;
     BatchCollection batch_collection_full_for_cuts_;
     void MasterLoop();

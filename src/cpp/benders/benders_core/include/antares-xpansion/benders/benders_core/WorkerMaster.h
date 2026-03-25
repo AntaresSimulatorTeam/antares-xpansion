@@ -57,7 +57,8 @@ public:
     void fix_alpha(const double& bestUB) const;
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
-    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&,std::map<std::string,int>&) ; 
+    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cut,
+                                    std::map<std::string, int>& problem_to_id);
 
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {

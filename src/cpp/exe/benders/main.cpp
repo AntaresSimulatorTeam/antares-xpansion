@@ -10,14 +10,12 @@ int main(int argc, char** argv)
     {
         mpi::environment env(argc, argv);
         mpi::communicator world;
-        std::cout << "in the try of the main of benders " << std::endl;
         // First check usage (options are given)
         if (world.rank() == 0)
         {
             usage(argc);
         }
         auto benders_factory = BendersApp(argv[1], world, SOLVER::BENDERS);
-        std::cout << "benders factory created successfuly" << std::endl;
         return benders_factory.Run();
     }
     catch (std::exception& e)

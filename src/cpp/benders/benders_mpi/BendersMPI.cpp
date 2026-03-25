@@ -162,11 +162,9 @@ void BendersMpi::BuildMasterProblem()
     InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_,_problem_to_id) ; 
+        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
     }
 }
-
-
 
 /*!
  *  \brief Solve, get and send solution of the Master Problem to every thread
@@ -377,7 +375,6 @@ void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathere
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
     _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 }
-
 
 void BendersMpi::SetSubproblemDataCostAndSimplexIter(
   const std::vector<SubProblemDataMap>& gathered_subproblem_map)
