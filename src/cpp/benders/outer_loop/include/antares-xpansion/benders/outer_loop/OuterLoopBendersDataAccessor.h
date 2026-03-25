@@ -13,7 +13,7 @@
 
 #include <memory>
 #include <vector>
-#include "antares-xpansion/benders/output/SolutionData.h"
+#include "antares-xpansion/benders/output/OutputWriter.h"
 
 class BendersBase;
 
@@ -90,6 +90,4 @@ private:
 };
 
 }  // namespace Outerloop
-
-
 
