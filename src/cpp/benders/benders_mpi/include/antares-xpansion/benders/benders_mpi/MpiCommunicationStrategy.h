@@ -50,6 +50,7 @@ public:
     {
         return world_;
     }
+
 private:
     mpi::communicator& world_;
 };
