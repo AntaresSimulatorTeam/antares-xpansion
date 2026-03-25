@@ -102,6 +102,19 @@ class XpansionSettingsReader:
         """
         return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
 
+    def has_optim_config(self):
+        """
+        Check if optim-config.yml exists in the study input folder
+        """
+        optim_config_path = os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.INPUT,
+                "optim-config.yml",
+            )
+        )
+        return os.path.isfile(optim_config_path)
+
     def general_data(self):
         """
         returns path to general data ini file
@@ -747,6 +760,10 @@ class ConfigLoader(XpansionSettingsReader):
 
     def outer_loop_exe(self):
         return self.exe_path(self._config.OUTER_LOOP)
+
+    def antares_problem_generator_exe(self):
+        antares_exe_path = Path(self.antares_exe())
+        return antares_exe_path.parent / self._config.ANTARES_PROBLEM_GENERATOR
 
     def method(self):
         return self._config.method
