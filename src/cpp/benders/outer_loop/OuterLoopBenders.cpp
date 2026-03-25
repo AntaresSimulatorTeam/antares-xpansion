@@ -119,7 +119,7 @@ void OuterLoopBenders::InitExternalValues(bool is_bilevel_check_all, double lamb
 void OuterLoopBenders::OuterLoopBilevelChecks()
 {
     if (communication_strategy_->IsMaster()
-        && benders_->Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP && !is_bilevel_check_all_)
+        && (benders_->Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP && !is_bilevel_check_all_))
     {
         const WorkerMasterData& workerMasterData = benders_->BestIterationWorkerMaster();
         const auto& invest_cost = workerMasterData._invest_cost;
