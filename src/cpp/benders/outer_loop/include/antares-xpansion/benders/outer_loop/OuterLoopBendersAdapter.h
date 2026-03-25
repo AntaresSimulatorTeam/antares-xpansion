@@ -36,13 +36,6 @@ public:
     int GetBendersRunNumber() const;
     void IncrementBendersRunNumber();
 
-    // === Phase B Migration ===
-    /**
-     * @brief Store the outer loop solution locally in adapter
-     * (migrated from BendersBase::outer_loop_solution_data_)
-     */
-    void StoreOuterLoopSolutionLocally();
-
     /**
      * @brief Get bilevel best upper bound
      * (migrated from BendersBase::_data.criteria_current_iteration_data.outer_loop_bilevel_best_ub)
@@ -66,6 +59,79 @@ public:
      * (migrated from BendersBase::_data.criteria_current_iteration_data.lambda_max)
      */
     [[nodiscard]] double GetLambdaMax() const;
+
+    // === Phase B Step 5: Benders lifecycle delegation ===
+    /**
+     * @brief Get the logger from BendersBase
+     */
+    [[nodiscard]] Logger GetLogger() const;
+
+    /**
+     * @brief Get the math logger driver from BendersBase
+     */
+    [[nodiscard]] std::shared_ptr<MathLoggerDriver> GetMathLoggerDriver() const;
+
+    /**
+     * @brief Set whether Benders should free problems after run
+     */
+    void DoFreeProblems(bool free_problems);
+
+    /**
+     * @brief Initialize Benders problems
+     */
+    void InitializeProblems();
+
+    /**
+     * @brief Launch the Benders algorithm
+     */
+    void Launch();
+
+    /**
+     * @brief Free Benders resources
+     */
+    void Free();
+
+    /**
+     * @brief Check if an exception was raised during Benders execution
+     */
+    [[nodiscard]] bool IsExceptionRaised() const;
+
+    // === Phase B Step 5: Master problem delegation ===
+    /**
+     * @brief Get master problem objective function coefficients
+     */
+    [[nodiscard]] std::vector<double> MasterObjectiveFunctionCoeffs() const;
+
+    /**
+     * @brief Set master objective function coefficients to zeros
+     */
+    void SetMasterObjectiveFunctionCoeffsToZeros() const;
+
+    /**
+     * @brief Set master objective function coefficients
+     */
+    void SetMasterObjectiveFunction(const double* coeffs, int first, int last) const;
+
+    /**
+     * @brief Get master problem variable map
+     */
+    [[nodiscard]] const VariableMap& MasterVariables() const;
+
+    // === Phase B Step 5: Data query delegation ===
+    /**
+     * @brief Get best iteration worker-master data
+     */
+    [[nodiscard]] WorkerMasterData BestIterationWorkerMaster() const;
+
+    /**
+     * @brief Get current iteration data from Benders
+     */
+    [[nodiscard]] CurrentIterationData GetCurrentIterationData() const;
+
+    /**
+     * @brief Check if outer loop is enabled in Benders options
+     */
+    [[nodiscard]] bool DoOuterLoop() const;
 
 private:
     pBendersBase benders_;

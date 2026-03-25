@@ -96,12 +96,6 @@ void OuterLoopBendersAdapter::IncrementBendersRunNumber()
     ++current_outer_loop_data_.benders_num_run;
 }
 
-void OuterLoopBendersAdapter::StoreOuterLoopSolutionLocally()
-{
-    outer_loop_solution_data_ = benders_->GetCurrentBendersSolution();
-    outer_loop_solution_data_.best_it = current_outer_loop_data_.benders_num_run;
-}
-
 double OuterLoopBendersAdapter::GetBilevelBestub() const
 {
     return bilevel_best_ub_;
@@ -126,6 +120,82 @@ void OuterLoopBendersAdapter::UpdateCurrentOuterLoopIterationSnapshot() const
 {
     current_outer_loop_iteration_ = benders_->GetLastOuterLoopIteration();
     current_outer_loop_iteration_num_ = current_outer_loop_data_.benders_num_run;
+}
+
+// === Phase B Step 5: Benders lifecycle delegation ===
+
+Logger OuterLoopBendersAdapter::GetLogger() const
+{
+    return benders_->_logger;
+}
+
+std::shared_ptr<MathLoggerDriver> OuterLoopBendersAdapter::GetMathLoggerDriver() const
+{
+    return benders_->mathLoggerDriver_;
+}
+
+void OuterLoopBendersAdapter::DoFreeProblems(bool free_problems)
+{
+    benders_->DoFreeProblems(free_problems);
+}
+
+void OuterLoopBendersAdapter::InitializeProblems()
+{
+    benders_->InitializeProblems();
+}
+
+void OuterLoopBendersAdapter::Launch()
+{
+    benders_->launch();
+}
+
+void OuterLoopBendersAdapter::Free()
+{
+    benders_->free();
+}
+
+bool OuterLoopBendersAdapter::IsExceptionRaised() const
+{
+    return benders_->isExceptionRaised();
+}
+
+// === Phase B Step 5: Master problem delegation ===
+
+std::vector<double> OuterLoopBendersAdapter::MasterObjectiveFunctionCoeffs() const
+{
+    return benders_->MasterObjectiveFunctionCoeffs();
+}
+
+void OuterLoopBendersAdapter::SetMasterObjectiveFunctionCoeffsToZeros() const
+{
+    benders_->SetMasterObjectiveFunctionCoeffsToZeros();
+}
+
+void OuterLoopBendersAdapter::SetMasterObjectiveFunction(const double* coeffs, int first, int last) const
+{
+    benders_->SetMasterObjectiveFunction(coeffs, first, last);
+}
+
+const VariableMap& OuterLoopBendersAdapter::MasterVariables() const
+{
+    return benders_->MasterVariables();
+}
+
+// === Phase B Step 5: Data query delegation ===
+
+WorkerMasterData OuterLoopBendersAdapter::BestIterationWorkerMaster() const
+{
+    return benders_->BestIterationWorkerMaster();
+}
+
+CurrentIterationData OuterLoopBendersAdapter::GetCurrentIterationData() const
+{
+    return benders_->GetCurrentIterationData();
+}
+
+bool OuterLoopBendersAdapter::DoOuterLoop() const
+{
+    return benders_->Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP;
 }
 
 } // namespace Outerloop

@@ -133,11 +133,7 @@ public:
     void init_data(double external_loop_lambda,
                    double external_loop_lambda_min,
                    double external_loop_lambda_max);
-    Output::SolutionData GetOuterLoopSolution() const;
-    void SaveOuterLoopSolutionInOutputFile() const;
-    void SaveCurrentOuterLoopIterationInOutputFile() const;
     void SetBilevelBestub(double bilevel_best_ub);
-    void UpdateOuterLoopSolution();
 
     // Helper for adapter-driven outer loop iteration output (Phase B Step 2)
     [[nodiscard]] std::optional<Output::Iteration> GetLastOuterLoopIteration() const;
@@ -397,7 +393,6 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
