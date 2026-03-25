@@ -4,6 +4,7 @@
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBendersAdapter.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBendersDataAccessor.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "common_mpi.h"
 
@@ -42,7 +43,8 @@ public:
 private:
     std::shared_ptr<IMasterUpdate> master_updater_;
     pBendersBase benders_;
-    OuterLoopBendersAdapter adapter_;
+    std::shared_ptr<OuterLoopBendersAdapter> adapter_;
+    std::shared_ptr<OuterLoopBendersDataAccessor> data_accessor_;
     BendersLoggerBase loggers_;
     mpi::communicator& world_;
     bool is_bilevel_check_all_ = false;

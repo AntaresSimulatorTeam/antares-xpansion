@@ -29,6 +29,11 @@ std::vector<double> OuterLoopBendersDataAccessor::GetOuterLoopCriteria() const
     return adapter_->GetOuterLoopCriterionAtBestBenders();
 }
 
+CriteriaCurrentIterationData OuterLoopBendersDataAccessor::GetOuterLoopData() const
+{
+    return adapter_->GetOuterLoopData();
+}
+
 LambdaParameters OuterLoopBendersDataAccessor::GetLambdaParameters() const
 {
     return LambdaParameters{
@@ -54,4 +59,5 @@ int OuterLoopBendersDataAccessor::GetBendersRunNumber() const
 }
 
 }  // namespace Outerloop
+
 

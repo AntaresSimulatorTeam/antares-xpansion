@@ -141,27 +141,6 @@ public:
     // Helper for outer loop solution building (Phase B migration)
     [[nodiscard]] Output::SolutionData GetCurrentBendersSolution() const;
 
-    // Getters for outer loop state (Phase B migration to adapter)
-    [[nodiscard]] double GetLambda() const
-    {
-        return _data.criteria_current_iteration_data.lambda;
-    }
-
-    [[nodiscard]] double GetLambdaMin() const
-    {
-        return _data.criteria_current_iteration_data.lambda_min;
-    }
-
-    [[nodiscard]] double GetLambdaMax() const
-    {
-        return _data.criteria_current_iteration_data.lambda_max;
-    }
-
-    [[nodiscard]] double GetBilevelBestub() const
-    {
-        return _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub;
-    }
-
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
     Logger _logger;

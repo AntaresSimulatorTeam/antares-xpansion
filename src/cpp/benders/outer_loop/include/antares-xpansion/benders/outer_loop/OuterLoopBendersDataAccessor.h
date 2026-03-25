@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <vector>
+#include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
 
 class BendersBase;
@@ -62,6 +63,11 @@ public:
     [[nodiscard]] std::vector<double> GetOuterLoopCriteria() const;
 
     /**
+     * @brief Get current outer-loop iteration data
+     */
+    [[nodiscard]] CriteriaCurrentIterationData GetOuterLoopData() const;
+
+    /**
      * @brief Get current lambda parameters for outer loop
      * @return LambdaParameters struct with current, min, max
      */
@@ -90,4 +96,5 @@ private:
 };
 
 }  // namespace Outerloop
+
 
