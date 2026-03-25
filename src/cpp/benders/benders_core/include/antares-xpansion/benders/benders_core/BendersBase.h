@@ -4,6 +4,7 @@
 #include <execution>
 #include <filesystem>
 #include <mutex>
+#include <optional>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
@@ -137,6 +138,33 @@ public:
     void SaveCurrentOuterLoopIterationInOutputFile() const;
     void SetBilevelBestub(double bilevel_best_ub);
     void UpdateOuterLoopSolution();
+
+    // Helper for adapter-driven outer loop iteration output (Phase B Step 2)
+    [[nodiscard]] std::optional<Output::Iteration> GetLastOuterLoopIteration() const;
+
+    // Helper for outer loop solution building (Phase B migration)
+    [[nodiscard]] Output::SolutionData GetCurrentBendersSolution() const;
+
+    // Getters for outer loop state (Phase B migration to adapter)
+    [[nodiscard]] double GetLambda() const
+    {
+        return _data.criteria_current_iteration_data.lambda;
+    }
+
+    [[nodiscard]] double GetLambdaMin() const
+    {
+        return _data.criteria_current_iteration_data.lambda_min;
+    }
+
+    [[nodiscard]] double GetLambdaMax() const
+    {
+        return _data.criteria_current_iteration_data.lambda_max;
+    }
+
+    [[nodiscard]] double GetBilevelBestub() const
+    {
+        return _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub;
+    }
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();

@@ -851,6 +851,16 @@ void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const
     }
 }
 
+std::optional<Output::Iteration> BendersBase::GetLastOuterLoopIteration() const
+{
+    const auto& last_worker_master_data = relevantIterationData_.last;
+    if (!last_worker_master_data._valid)
+    {
+        return std::nullopt;
+    }
+    return iteration(last_worker_master_data);
+}
+
 void BendersBase::SaveSolutionInOutputFile() const
 {
     _writer->write_solution(solution());
@@ -1494,4 +1504,9 @@ void BendersBase::roundXCut()
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {
     benders_plugin_ = benders_plugin;
+}
+
+Output::SolutionData BendersBase::GetCurrentBendersSolution() const
+{
+    return BendersSolution();
 }
