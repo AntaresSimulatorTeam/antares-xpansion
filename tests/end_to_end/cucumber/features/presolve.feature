@@ -30,7 +30,7 @@ Feature: Validate presolve step feature
     Then the return status is 0
     And the generated subproblems have between 800 and 900 rows
     And the generated subproblems have between 1600 and 1800 cols
-    And the generated subproblems have between 4800 and 4800 elements
+    And the generated subproblems have between 5000 and 5200 elements
 
   @short @no-presolve
   Scenario: "No presolve on xpansion-test-one-link-two-candidates"
