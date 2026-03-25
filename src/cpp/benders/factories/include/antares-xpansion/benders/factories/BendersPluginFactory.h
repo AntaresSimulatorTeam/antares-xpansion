@@ -16,14 +16,13 @@
 */
 class BendersPluginFactory
 {
-    public:
+public:
     /*
         Constructor
         @inputs :
             - options : study simulation
     */
     BendersPluginFactory(const SimulationOptions& options);
-
 
     /*
         This method will be called to instantiate the benders plugin

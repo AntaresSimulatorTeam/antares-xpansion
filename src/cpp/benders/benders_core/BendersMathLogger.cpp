@@ -104,9 +104,9 @@ void LogDestination::setDelimiter(const std::string& delimiter)
 
 void MathLoggerBehaviour::write_header()
 {
-    std::cout<<"before write header "<<std::endl ; 
+    std::cout << "before write header " << std::endl;
     setHeadersList();
-    std::cout<<"agter setHeadersList"<<std::endl ; 
+    std::cout << "agter setHeadersList" << std::endl;
     LogsDestination().InsertDelimiter();
     for (const auto& header: Headers())
     {

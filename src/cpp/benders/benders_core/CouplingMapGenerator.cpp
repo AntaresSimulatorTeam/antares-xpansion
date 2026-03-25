@@ -59,40 +59,36 @@ void CouplingMapGenerator::BuildSubProblemConstaintMap(
   const CouplingMap& coupling_map,
   SubProblemConstraintMap& subproblem_constraint_map,
   CouplingMap& constraints_coupling_map,
- const SimulationOptions& options)
+  const SimulationOptions& options)
 {
     for (auto&& [subProblemName, variable_map]: coupling_map)
     {
-        if (options.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE) 
+        if (options.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
         {
-
             size_t underscore_pos = subProblemName.find('_');
             size_t dot_pos = subProblemName.find('.');
-            
-            
-            
+
             std::string subproblem_num = subProblemName.substr(underscore_pos + 1,
-                dot_pos - underscore_pos - 1);
-                
-                std::string extension = subProblemName.substr(dot_pos + 1);
-                                
-                if (subproblem_num != "master")
-                {
-                    std::string constraint_str = "constraints/constraints_" + subproblem_num + "."
-                    + extension;
-                    subproblem_constraint_map[subProblemName] = constraint_str;
-                    constraints_coupling_map[constraint_str] = variable_map;
-                }
-        }
-        else 
-        {
-            size_t underscore_pos = subProblemName.find('_');
-            std::string subproblem_num = subProblemName.substr(underscore_pos+1) ; 
-            
-                            
+                                                               dot_pos - underscore_pos - 1);
+
+            std::string extension = subProblemName.substr(dot_pos + 1);
+
             if (subproblem_num != "master")
             {
-                std::string constraint_str = "constraints/constraints_" + subproblem_num + ".svf" ; 
+                std::string constraint_str = "constraints/constraints_" + subproblem_num + "."
+                                             + extension;
+                subproblem_constraint_map[subProblemName] = constraint_str;
+                constraints_coupling_map[constraint_str] = variable_map;
+            }
+        }
+        else
+        {
+            size_t underscore_pos = subProblemName.find('_');
+            std::string subproblem_num = subProblemName.substr(underscore_pos + 1);
+
+            if (subproblem_num != "master")
+            {
+                std::string constraint_str = "constraints/constraints_" + subproblem_num + ".svf";
                 subproblem_constraint_map[subProblemName] = constraint_str;
                 constraints_coupling_map[constraint_str] = variable_map;
             }

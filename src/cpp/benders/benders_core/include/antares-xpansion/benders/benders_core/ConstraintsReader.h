@@ -44,7 +44,7 @@ public:
                       const SolverLogManager& solver_log_manager,
                       Logger& logger,
                       int log_level,
-                      ProblemsFormat format, 
+                      ProblemsFormat format,
                       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     void add_rows(std::string&);

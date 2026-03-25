@@ -18,13 +18,12 @@ public:
     void OnBendersIterationStart();
     void OnBendersIterationEnd();
 
-    void OnBendersMasterResolutionStart(std::map<std::string , double>& master_out,int& num_iter);
+    void OnBendersMasterResolutionStart(std::map<std::string, double>& master_out, int& num_iter);
     void OnBendersMasterResolutionEnd();
 
-
-    void OnBendersSubResolutionStart() ; 
-    void OnBendersSubResolutionEnd(std::string sub_name,int num_micro_iter)  ; 
+    void OnBendersSubResolutionStart();
+    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter);
 
     void OnBendersMicroIterationStart();
-    void OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows,std::string solve_time);
+    void OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows, std::string solve_time);
 };

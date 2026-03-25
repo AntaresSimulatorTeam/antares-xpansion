@@ -7,7 +7,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "iostream"
 
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/string.hpp>
@@ -15,6 +14,7 @@
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
+#include "iostream"
 
 /*
 This structure contains the master iteration data that we want want to log
@@ -23,7 +23,6 @@ This structure contains the master iteration data that we want want to log
     - removing_rows_per_sub_time : elapsed time to remove the constraints added to subproblem
 workers
 */
-
 
 /*
 This map will be used will be attached to each master iteration.
@@ -63,8 +62,6 @@ public:
     */
     void AddMasterIterationLog(int num_iter, std::string elapsed_time);
 
-
-
     /*
         Called in the micro iteration end callback.
         It will set the output data we want to dump for micro iterations for each subproblem and
@@ -80,16 +77,13 @@ public:
                             std::string adding_rows_time,
                             std::vector<std::string> added_constraints_keys);
 
-    void AddMicroIterCount(std::string sub_name, int num_micro_iter) ;
-
-
-
+    void AddMicroIterCount(std::string sub_name, int num_micro_iter);
 
 private:
     const SimulationOptions& options_;
     mpi::communicator* _world;
     bool warm_start_;
     std::map<std::string, std::string> sub_constraints_map_;
-    std::ofstream log_file_ ; 
+    std::ofstream log_file_;
     int log_level_;
 };

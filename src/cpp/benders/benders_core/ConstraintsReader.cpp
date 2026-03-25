@@ -7,16 +7,15 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
                                      const SolverLogManager& solver_log_manager,
                                      Logger& logger,
                                      int log_level,
-                                     ProblemsFormat format , 
+                                     ProblemsFormat format,
                                      const std::shared_ptr<SubproblemWorker>& subproblem_worker):
     logger_(logger)
 
 {
-    auto constraints_file_path_str = std::string(constraint_file_path.c_str()) ; 
-    auto pos = constraints_file_path_str.find('.') ; 
-    auto extension = constraints_file_path_str.substr(pos+1) ; 
+    auto constraints_file_path_str = std::string(constraint_file_path.c_str());
+    auto pos = constraints_file_path_str.find('.');
+    auto extension = constraints_file_path_str.substr(pos + 1);
 
-    
     SolverFactory solver_factory(logger_);
     subproblem_worker_ = subproblem_worker;
     solver_ = solver_factory.create_solver(solver_name,
@@ -58,7 +57,7 @@ SolverRepresentedRows ConstraintsReader::get_row(const std::string& name)
     result.dmatval.resize(ncols);
 
     int nels(0);
-    
+
     solver_->get_rows(result.mstart.data(),
                       result.mclind.data(),
                       result.dmatval.data(),
