@@ -42,7 +42,6 @@ public:
 
 private:
     std::shared_ptr<IMasterUpdate> master_updater_;
-    pBendersBase benders_;
     std::shared_ptr<OuterLoopBendersAdapter> adapter_;
     std::shared_ptr<OuterLoopBendersDataAccessor> data_accessor_;
     BendersLoggerBase loggers_;
