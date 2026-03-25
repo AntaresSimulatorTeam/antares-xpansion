@@ -4,18 +4,22 @@
  */
 
 #include "antares-xpansion/benders/outer_loop/OuterLoopBendersDataAccessor.h"
+
 #include "antares-xpansion/benders/outer_loop/OuterLoopBendersAdapter.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 namespace Outerloop
 {
 
 OuterLoopBendersDataAccessor::OuterLoopBendersDataAccessor(
-  std::shared_ptr<OuterLoopBendersAdapter> adapter)
-    : adapter_(std::move(adapter))
+  std::shared_ptr<OuterLoopBendersAdapter> adapter):
+    adapter_(std::move(adapter))
 {
     if (!adapter_)
     {
-        throw std::invalid_argument("OuterLoopBendersAdapter pointer cannot be null");
+        throw LogUtils::XpansionError<std::invalid_argument>(
+          "OuterLoopBendersAdapter pointer cannot be null",
+          LOGLOCATION);
     }
 }
 
@@ -36,11 +40,9 @@ CriteriaCurrentIterationData OuterLoopBendersDataAccessor::GetOuterLoopData() co
 
 LambdaParameters OuterLoopBendersDataAccessor::GetLambdaParameters() const
 {
-    return LambdaParameters{
-      adapter_->GetLambda(),
-      adapter_->GetLambdaMin(),
-      adapter_->GetLambdaMax()
-    };
+    return LambdaParameters{adapter_->GetLambda(),
+                            adapter_->GetLambdaMin(),
+                            adapter_->GetLambdaMax()};
 }
 
 double OuterLoopBendersDataAccessor::GetBilevelBestub() const
@@ -58,4 +60,4 @@ int OuterLoopBendersDataAccessor::GetBendersRunNumber() const
     return adapter_->GetBendersRunNumber();
 }
 
-}  // namespace Outerloop
+} // namespace Outerloop
