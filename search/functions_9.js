@@ -6,5 +6,6 @@ var searchData=
   ['initializeproblems_3',['InitializeProblems',['../classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb',1,'BendersMpi']]],
   ['initxpressenv_4',['initXpressEnv',['../classLoadXpress_1_1XpressLoader.html#a1a17e7973088bd65105007a7e2f2481e',1,'LoadXpress::XpressLoader']]],
   ['is_5faccurate_5',['is_accurate',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0c3fa0cf225d9b7bb06864a8aa7f1b45',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['is_5frelaxed_6',['is_relaxed',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a4b43dd57f999df86ffacede36f47e197',1,'antares_xpansion::config_loader::ConfigLoader']]]
+  ['is_5frelaxed_6',['is_relaxed',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a4b43dd57f999df86ffacede36f47e197',1,'antares_xpansion::config_loader::ConfigLoader']]],
+  ['ismaster_7',['IsMaster',['../classICommunicationStrategy.html#a71828ec778c294a3885f5b4753605ff6',1,'ICommunicationStrategy']]]
 ];

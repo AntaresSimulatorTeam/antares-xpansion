@@ -34,8 +34,7 @@ var hierarchy =
     [ "BendersBase", "classBendersBase.html", [
       [ "BendersBaseDouble", "classBendersBaseDouble.html", null ],
       [ "BendersMpi", "classBendersMpi.html", [
-        [ "BendersByBatch", "classBendersByBatch.html", null ],
-        [ "Outerloop::BendersMpiOuterLoop", "classOuterloop_1_1BendersMpiOuterLoop.html", null ]
+        [ "BendersByBatch", "classBendersByBatch.html", null ]
       ] ],
       [ "BendersSequential", "classBendersSequential.html", [
         [ "BendersSequentialDouble", "classBendersSequentialDouble.html", null ]
@@ -228,6 +227,10 @@ var hierarchy =
       [ "BendersProblemFromFile", "classBendersProblemFromFile.html", null ],
       [ "NOOPBendersProblemProvider", "classNOOPBendersProblemProvider.html", null ],
       [ "NOOPBendersProblemProvider", "classNOOPBendersProblemProvider.html", null ]
+    ] ],
+    [ "ICommunicationStrategy", "classICommunicationStrategy.html", [
+      [ "MpiCommunicationStrategy", "classMpiCommunicationStrategy.html", null ],
+      [ "SequentialCommunicationStrategy", "classSequentialCommunicationStrategy.html", null ]
     ] ],
     [ "Benders::Criterion::ICriterionInputDataReader", "classBenders_1_1Criterion_1_1ICriterionInputDataReader.html", [
       [ "Benders::Criterion::CriterionInputFromYaml", "classBenders_1_1Criterion_1_1CriterionInputFromYaml.html", null ]

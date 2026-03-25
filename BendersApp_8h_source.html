@@ -170,22 +170,23 @@ $(function(){initNavTree('BendersApp_8h_source.html',''); initResizable(true); }
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    [[nodiscard]] <span class="keywordtype">int</span> RunExternalLoop();</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    [[nodiscard]] <span class="keywordtype">int</span> RunBenders();</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    [[nodiscard]] std::shared_ptr&lt;MathLoggerDriver&gt; BuildMathLogger(<span class="keywordtype">bool</span> benders_log_console) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> StartMessage();</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> EndMessage(<span class="keyword">const</span> <span class="keywordtype">double</span> execution_time);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> AddCriterionOutputs();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">bool</span> isCriterionListEmpty() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> SetupLoggerAndOutputWriter(<span class="keyword">const</span> <a class="code hl_struct" href="structBendersBaseOptions.html">BendersBaseOptions</a>&amp; benders_options);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classBendersApp.html">BendersApp</a>(<span class="keyword">const</span> std::filesystem::path&amp; options_file,</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                        boost::mpi::communicator&amp; world,</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                        <span class="keyword">const</span> SOLVER&amp; solver);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">int</span> Run();</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    std::filesystem::path LogReportsName() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">void</span> InitializeBendersEnvironment(<span class="keywordtype">bool</span> outer_loop);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> SetupMathLogger(<span class="keywordtype">bool</span> benders_log_console) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> StartMessage();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> EndMessage(<span class="keyword">const</span> <span class="keywordtype">double</span> execution_time);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> AddCriterionOutputs();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">bool</span> isCriterionListEmpty() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> SetupLoggerAndOutputWriter(<span class="keyword">const</span> <a class="code hl_struct" href="structBendersBaseOptions.html">BendersBaseOptions</a>&amp; benders_options);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classBendersApp.html">BendersApp</a>(<span class="keyword">const</span> std::filesystem::path&amp; options_file,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                        boost::mpi::communicator&amp; world,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                        <span class="keyword">const</span> SOLVER&amp; solver);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">int</span> Run();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::filesystem::path LogReportsName() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>};</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif </span><span class="comment">// ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif </span><span class="comment">// ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H</span></div>
 <div class="ttc" id="aclassBendersApp_html"><div class="ttname"><a href="classBendersApp.html">BendersApp</a></div><div class="ttdef"><b>Definition</b> BendersApp.h:11</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputData.html">Benders::Criterion::CriterionInputData</a></div><div class="ttdoc">this class contains all data read from user input file</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:83</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1OuterLoopCriterionInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">Benders::Criterion::OuterLoopCriterionInputData</a></div><div class="ttdoc">this class contains all data read from user input file</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:103</div></div>

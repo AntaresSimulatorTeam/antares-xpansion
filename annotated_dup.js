@@ -189,7 +189,6 @@ var annotated_dup =
       [ "XpansionError", "classLogUtils_1_1XpansionError.html", null ]
     ] ],
     [ "Outerloop", null, [
-      [ "BendersMpiOuterLoop", "classOuterloop_1_1BendersMpiOuterLoop.html", null ],
       [ "CriterionCouldNotBeSatisfied", "classOuterloop_1_1CriterionCouldNotBeSatisfied.html", null ],
       [ "CutsManagerRunTime", "classOuterloop_1_1CutsManagerRunTime.html", null ],
       [ "ICutsManager", "classOuterloop_1_1ICutsManager.html", null ],
@@ -450,6 +449,7 @@ var annotated_dup =
     [ "HeadersManager", "structHeadersManager.html", null ],
     [ "HeadersManagerExternalLoop", "structHeadersManagerExternalLoop.html", null ],
     [ "IBendersProblemProvider", "classIBendersProblemProvider.html", null ],
+    [ "ICommunicationStrategy", "classICommunicationStrategy.html", "classICommunicationStrategy" ],
     [ "ILogger", "classILogger.html", "classILogger" ],
     [ "ILoggerMock", "structILoggerMock.html", "structILoggerMock" ],
     [ "ILoggerXpansion", "structILoggerXpansion.html", "structILoggerXpansion" ],
@@ -515,6 +515,7 @@ var annotated_dup =
     [ "MergeMasterTrajectoryMPS", "classMergeMasterTrajectoryMPS.html", "classMergeMasterTrajectoryMPS" ],
     [ "MergeMPSTest", "classMergeMPSTest.html", "classMergeMPSTest" ],
     [ "MergeWeightsTrajectory", "classMergeWeightsTrajectory.html", null ],
+    [ "MpiCommunicationStrategy", "classMpiCommunicationStrategy.html", "classMpiCommunicationStrategy" ],
     [ "MPSFileProblemProviderAdapter", "classMPSFileProblemProviderAdapter.html", null ],
     [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
     [ "MultipleProblemGeneration", "classMultipleProblemGeneration.html", null ],
@@ -579,6 +580,7 @@ var annotated_dup =
     [ "SensitivityUserLoggerTest", "classSensitivityUserLoggerTest.html", null ],
     [ "SensitivityWriter", "classSensitivityWriter.html", null ],
     [ "SensitivityWriterTest", "classSensitivityWriterTest.html", null ],
+    [ "SequentialCommunicationStrategy", "classSequentialCommunicationStrategy.html", "classSequentialCommunicationStrategy" ],
     [ "SettingsReader", "classSettingsReader.html", "classSettingsReader" ],
     [ "SimpleLoggerMock", "classSimpleLoggerMock.html", "classSimpleLoggerMock" ],
     [ "SimulationOptions", "classSimulationOptions.html", "classSimulationOptions" ],

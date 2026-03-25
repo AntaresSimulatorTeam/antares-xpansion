@@ -23,10 +23,12 @@
 <a href="CustomVector_8h_source.html"/>
 <a href="CutsManagement_8h_source.html"/>
 <a href="IBendersProblemProvider_8h_source.html"/>
+<a href="ICommunicationStrategy_8h_source.html"/>
 <a href="LastIterationPrinter_8h_source.html"/>
 <a href="LastIterationReader_8h_source.html"/>
 <a href="LastIterationWriter_8h_source.html"/>
 <a href="MasterUpdate_8h_source.html"/>
+<a href="SequentialCommunicationStrategy_8h_source.html"/>
 <a href="SimulationOptions_8h_source.html"/>
 <a href="SimulationOptions_8hxx_source.html"/>
 <a href="SolverIO_8h_source.html"/>
@@ -37,8 +39,8 @@
 <a href="Worker_8h_source.html"/>
 <a href="WorkerMaster_8h_source.html"/>
 <a href="BendersMPI_8h_source.html"/>
-<a href="BendersMpiOuterLoop_8h_source.html"/>
 <a href="common__mpi_8h_source.html"/>
+<a href="MpiCommunicationStrategy_8h_source.html"/>
 <a href="OuterLoopBenders_8h_source.html"/>
 <a href="BendersSequential_8h_source.html"/>
 <a href="BendersApp_8h_source.html"/>
@@ -403,6 +405,8 @@
 <a href="structHeadersManagerExternalLoop-members.html"/>
 <a href="classIBendersProblemProvider.html"/>
 <a href="classIBendersProblemProvider-members.html"/>
+<a href="classICommunicationStrategy.html"/>
+<a href="classICommunicationStrategy-members.html"/>
 <a href="classILogger.html"/>
 <a href="classILogger-members.html"/>
 <a href="structILoggerMock.html"/>
@@ -551,6 +555,8 @@
 <a href="classMergeMPSTest-members.html"/>
 <a href="classMergeWeightsTrajectory.html"/>
 <a href="classMergeWeightsTrajectory-members.html"/>
+<a href="classMpiCommunicationStrategy.html"/>
+<a href="classMpiCommunicationStrategy-members.html"/>
 <a href="classMPSFileProblemProviderAdapter.html"/>
 <a href="classMPSFileProblemProviderAdapter-members.html"/>
 <a href="classMpsTxtWriterTest.html"/>
@@ -685,6 +691,8 @@
 <a href="classSensitivityWriter-members.html"/>
 <a href="classSensitivityWriterTest.html"/>
 <a href="classSensitivityWriterTest-members.html"/>
+<a href="classSequentialCommunicationStrategy.html"/>
+<a href="classSequentialCommunicationStrategy-members.html"/>
 <a href="classSettingsReader.html"/>
 <a href="classSettingsReader-members.html"/>
 <a href="classSimpleLoggerMock.html"/>
@@ -1058,8 +1066,6 @@
 <a href="classLoadXpress_1_1XpressLoader-members.html"/>
 <a href="classLogUtils_1_1XpansionError.html"/>
 <a href="classLogUtils_1_1XpansionError-members.html"/>
-<a href="classOuterloop_1_1BendersMpiOuterLoop.html"/>
-<a href="classOuterloop_1_1BendersMpiOuterLoop-members.html"/>
 <a href="classOuterloop_1_1CriterionCouldNotBeSatisfied.html"/>
 <a href="classOuterloop_1_1CriterionCouldNotBeSatisfied-members.html"/>
 <a href="classOuterloop_1_1CutsManagerRunTime.html"/>
@@ -1496,7 +1502,6 @@
 <a href="BendersMPI_8h_source.html"/>
 <a href="BendersMathLogger_8h_source.html"/>
 <a href="BendersMethod_8h_source.html"/>
-<a href="BendersMpiOuterLoop_8h_source.html"/>
 <a href="BendersPluginFactory_8h_source.html"/>
 <a href="BendersPlugin_8h_source.html"/>
 <a href="BendersProblemFromFile_8h_source.html"/>
@@ -1526,6 +1531,7 @@
 <a href="FullRunOptionsParser_8h_source.html"/>
 <a href="GeneralDataReader_8h_source.html"/>
 <a href="IBendersProblemProvider_8h_source.html"/>
+<a href="ICommunicationStrategy_8h_source.html"/>
 <a href="ILogger_8h_source.html"/>
 <a href="IMasterUpdate_8h_source.html"/>
 <a href="INIReader_8h_source.html"/>
@@ -1566,6 +1572,7 @@
 <a href="MergeMPS_8h_source.html"/>
 <a href="MergeMasterMPS_8h_source.html"/>
 <a href="MergeWeightsTrajectory_8h_source.html"/>
+<a href="MpiCommunicationStrategy_8h_source.html"/>
 <a href="MpsTxtWriter_8h_source.html"/>
 <a href="MultipleProblemGeneration_8h_source.html"/>
 <a href="NOOPSolver_8h_source.html"/>
@@ -1602,6 +1609,7 @@
 <a href="SensitivityProblemModifier_8h_source.html"/>
 <a href="SensitivityStudy_8h_source.html"/>
 <a href="SensitivityWriter_8h_source.html"/>
+<a href="SequentialCommunicationStrategy_8h_source.html"/>
 <a href="SettingsReader_8h_source.html"/>
 <a href="SimulationInputMode_8h_source.html"/>
 <a href="SimulationOptions_8h_source.html"/>
@@ -1797,6 +1805,12 @@
 <a href="classGeneralDataIniReaderTests.html"/>
 <a href="classGenericSolverException.html"/>
 <a href="classIBendersProblemProvider.html"/>
+<a href="classICommunicationStrategy.html"/>
+<a href="classICommunicationStrategy.html#a1e4b0d354bce264ff5213d6ec94dcb96"/>
+<a href="classICommunicationStrategy.html#a4b9c320db2629c843eb7898a6dce4c8a"/>
+<a href="classICommunicationStrategy.html#a71828ec778c294a3885f5b4753605ff6"/>
+<a href="classICommunicationStrategy.html#a883bf265f1f45c7804bf671fc920554f"/>
+<a href="classICommunicationStrategy.html#ae1cf17611312f4b910fcd26f914494d9"/>
 <a href="classILogger.html"/>
 <a href="classILogger.html#a319fd8917fa66d8e6244897e74e206fe"/>
 <a href="classINIReader.html"/>
@@ -1878,6 +1892,12 @@
 <a href="classMergeMasterTrajectoryMPS.html"/>
 <a href="classMergeMasterTrajectoryMPS.html#a2dafa25b612ee7ae1859c96151164167"/>
 <a href="classMergeWeightsTrajectory.html"/>
+<a href="classMpiCommunicationStrategy.html"/>
+<a href="classMpiCommunicationStrategy.html#a239e4dc833e1437d71e7c3bd95c989ff"/>
+<a href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a"/>
+<a href="classMpiCommunicationStrategy.html#abce2068bc599a47d5ab156edf1b70f94"/>
+<a href="classMpiCommunicationStrategy.html#ac915406e9dbd0d81052c6ebc0413d12f"/>
+<a href="classMpiCommunicationStrategy.html#aef2bc9a02ac440e7187b33f788de6741"/>
 <a href="classMpsTxtWriterTest.html"/>
 <a href="classMultipleProblemGeneration.html"/>
 <a href="classMultipleProblemGenerationExeOptions.html"/>
@@ -1967,7 +1987,6 @@
 <a href="classOuterLoopBiLevelTest.html"/>
 <a href="classOuterLoopInputFromYamlTest.html"/>
 <a href="classOuterLoopPatternTest.html"/>
-<a href="classOuterloop_1_1BendersMpiOuterLoop.html"/>
 <a href="classOuterloop_1_1CriterionCouldNotBeSatisfied.html"/>
 <a href="classOuterloop_1_1CutsManagerRunTime.html"/>
 <a href="classOuterloop_1_1ICutsManager.html"/>
@@ -2111,6 +2130,11 @@
 <a href="classSensitivityUserLoggerTest.html"/>
 <a href="classSensitivityWriter.html"/>
 <a href="classSensitivityWriterTest.html"/>
+<a href="classSequentialCommunicationStrategy.html"/>
+<a href="classSequentialCommunicationStrategy.html#aa671f6a7fb2b74295ee46eb0e233e488"/>
+<a href="classSequentialCommunicationStrategy.html#aaa28bc2c772c635a711b5c62ee07721e"/>
+<a href="classSequentialCommunicationStrategy.html#acc73774e85d2327c07001627f8dea1f2"/>
+<a href="classSequentialCommunicationStrategy.html#aea5638ffd44c7cbc8c805d7e1bce1288"/>
 <a href="classSettingsReader.html"/>
 <a href="classSettingsReader.html#a626e85953b4356ea49a4686577fb3a8a"/>
 <a href="classSimpleLoggerMock.html"/>

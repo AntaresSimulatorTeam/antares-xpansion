@@ -152,20 +152,19 @@ Inheritance diagram for BendersBase:</div>
  <div class="center">
   <img src="classBendersBase.png" usemap="#BendersBase_map" alt=""/>
   <map id="BendersBase_map" name="BendersBase_map">
-<area href="classBendersBaseDouble.html" alt="BendersBaseDouble" shape="rect" coords="0,56,202,80"/>
-<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="212,56,414,80"/>
-<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="530,56,732,80"/>
-<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="106,112,308,136"/>
-<area href="classOuterloop_1_1BendersMpiOuterLoop.html" alt="Outerloop::BendersMpiOuterLoop" shape="rect" coords="318,112,520,136"/>
-<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="530,112,732,136"/>
+<area href="classBendersBaseDouble.html" alt="BendersBaseDouble" shape="rect" coords="0,56,157,80"/>
+<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="167,56,324,80"/>
+<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="334,56,491,80"/>
+<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="167,112,324,136"/>
+<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="334,112,491,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a87a0122eb98a56e0273236b7c0e279c7" id="r_a87a0122eb98a56e0273236b7c0e279c7"><td class="memItemLeft" align="right" valign="top"><a id="a87a0122eb98a56e0273236b7c0e279c7" name="a87a0122eb98a56e0273236b7c0e279c7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BendersBase</b> (<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> options, Logger logger, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver)</td></tr>
-<tr class="separator:a87a0122eb98a56e0273236b7c0e279c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade139cf757fafcd9f9859fb749726619" id="r_ade139cf757fafcd9f9859fb749726619"><td class="memItemLeft" align="right" valign="top"><a id="ade139cf757fafcd9f9859fb749726619" name="ade139cf757fafcd9f9859fb749726619"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersBase</b> (<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> options, Logger logger, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver, std::shared_ptr&lt; <a class="el" href="classICommunicationStrategy.html">ICommunicationStrategy</a> &gt; communication_strategy=nullptr)</td></tr>
+<tr class="separator:ade139cf757fafcd9f9859fb749726619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41936ea3aa14acf3f3d4883ed418063" id="r_aa41936ea3aa14acf3f3d4883ed418063"><td class="memItemLeft" align="right" valign="top"><a id="aa41936ea3aa14acf3f3d4883ed418063" name="aa41936ea3aa14acf3f3d4883ed418063"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> ()=0</td></tr>
 <tr class="separator:aa41936ea3aa14acf3f3d4883ed418063"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,6 +256,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxIteration</b> (
 <tr class="memitem:aa24eed1c6a43a636946bef99a8953daa" id="r_aa24eed1c6a43a636946bef99a8953daa"><td class="memItemLeft" align="right" valign="top"><a id="aa24eed1c6a43a636946bef99a8953daa" name="aa24eed1c6a43a636946bef99a8953daa"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetBendersRunNumber</b> () const</td></tr>
 <tr class="separator:aa24eed1c6a43a636946bef99a8953daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac469ad54877aa8af852d386cc7862e80" id="r_ac469ad54877aa8af852d386cc7862e80"><td class="memItemLeft" align="right" valign="top"><a id="ac469ad54877aa8af852d386cc7862e80" name="ac469ad54877aa8af852d386cc7862e80"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>IncrementBendersRunNumber</b> ()</td></tr>
+<tr class="separator:ac469ad54877aa8af852d386cc7862e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9a5ed5a1bc0ed04c32a39fb3e1806df" id="r_af9a5ed5a1bc0ed04c32a39fb3e1806df"><td class="memItemLeft" align="right" valign="top"><a id="af9a5ed5a1bc0ed04c32a39fb3e1806df" name="af9a5ed5a1bc0ed04c32a39fb3e1806df"></a>
 <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentIterationData</b> () const</td></tr>
 <tr class="separator:af9a5ed5a1bc0ed04c32a39fb3e1806df"><td class="memSeparator" colspan="2">&#160;</td></tr>
