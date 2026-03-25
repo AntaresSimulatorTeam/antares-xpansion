@@ -2,8 +2,6 @@
  * @file OuterLoopBendersDataAccessor.h
  * @brief Clean interface for outer loop classes to access Benders data
  *
- * Phase B Step 4: Create a clean accessor interface
- *
  * This class provides a single point of access for outer loop components
  * to get Benders data. It shields them from implementation details of
  * both BendersBase and OuterLoopBendersAdapter.
@@ -15,8 +13,6 @@
 #include <vector>
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
-
-class BendersBase;
 
 namespace Outerloop
 {
@@ -96,5 +92,3 @@ private:
 };
 
 }  // namespace Outerloop
-
-

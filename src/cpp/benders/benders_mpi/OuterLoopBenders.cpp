@@ -84,8 +84,7 @@ void OuterLoopBenders::OuterLoopCheckFeasibility()
     if (world_.rank() == 0)
     {
         obj_coeff = adapter_->MasterObjectiveFunctionCoeffs();
-
-        // /!\ partially
+        // Temporarily neutralize objective coefficients for feasibility check.
         adapter_->SetMasterObjectiveFunctionCoeffsToZeros();
     }
 
@@ -129,9 +128,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks()
         const auto external_loop_lambda = data_accessor_->GetLambdaParameters().lambda;
         if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
               x_cut,
-              data_accessor_->GetOuterLoopCriteria() /*/!\ must
-  be at best it*/
-              ,
+              data_accessor_->GetOuterLoopCriteria(), // Must correspond to best iteration.
               overall_cost,
               invest_cost,
               external_loop_lambda))

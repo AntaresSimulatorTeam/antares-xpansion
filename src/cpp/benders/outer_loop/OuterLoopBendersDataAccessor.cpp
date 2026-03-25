@@ -59,5 +59,3 @@ int OuterLoopBendersDataAccessor::GetBendersRunNumber() const
 }
 
 }  // namespace Outerloop
-
-

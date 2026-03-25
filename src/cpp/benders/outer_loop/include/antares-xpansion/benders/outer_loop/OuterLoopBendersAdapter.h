@@ -8,10 +8,9 @@ namespace Outerloop
 /**
  * @brief Adapter that encapsulates outer-loop-specific operations on BendersBase.
  *
- * This class acts as a facade isolating the OuterLoop orchestration from
- * BendersBase's internal outer-loop state.  In Phase A every method simply
- * delegates to the corresponding BendersBase method; in later phases the
- * actual logic will migrate here and be removed from BendersBase.
+ * This facade isolates OuterLoop orchestration code from BendersBase internals.
+ * It owns the outer-loop state used by orchestration and delegates lifecycle/
+ * master-operations to BendersBase.
  */
 class OuterLoopBendersAdapter
 {
@@ -60,7 +59,7 @@ public:
      */
     [[nodiscard]] double GetLambdaMax() const;
 
-    // === Phase B Step 5: Benders lifecycle delegation ===
+    // Benders lifecycle delegation
     /**
      * @brief Get the logger from BendersBase
      */
@@ -96,7 +95,7 @@ public:
      */
     [[nodiscard]] bool IsExceptionRaised() const;
 
-    // === Phase B Step 5: Master problem delegation ===
+    // Master problem delegation
     /**
      * @brief Get master problem objective function coefficients
      */
@@ -117,7 +116,7 @@ public:
      */
     [[nodiscard]] const VariableMap& MasterVariables() const;
 
-    // === Phase B Step 5: Data query delegation ===
+    // Data query delegation
     /**
      * @brief Get best iteration worker-master data
      */
@@ -136,7 +135,7 @@ public:
 private:
     pBendersBase benders_;
 
-    // === Phase B: Locally stored outer loop data ===
+    // Locally stored outer-loop state
     CriteriaCurrentIterationData current_outer_loop_data_;
     std::vector<double> outer_loop_criterion_at_best_benders_;
     Output::SolutionData outer_loop_solution_data_;
@@ -145,7 +144,7 @@ private:
     double lambda_min_ = 0.0;
     double lambda_max_ = 0.0;
 
-    // Phase B Step 2: local snapshot for outer-loop iteration output
+    // Local snapshot for outer-loop iteration output
     mutable std::optional<Output::Iteration> current_outer_loop_iteration_;
     mutable int current_outer_loop_iteration_num_ = 0;
 
@@ -153,4 +152,3 @@ private:
 };
 
 } // namespace Outerloop
-
