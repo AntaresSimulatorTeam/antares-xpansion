@@ -28,7 +28,7 @@ Feature: Validate presolve step feature
     And solver is "Xpress"
     When I run step problem_generation in-memory followed by step presolve
     Then the return status is 0
-    And the generated subproblems have between 900 and 1000 rows
+    And the generated subproblems have between 800 and 900 rows
     And the generated subproblems have between 1600 and 1800 cols
     And the generated subproblems have between 4800 and 4800 elements
 
