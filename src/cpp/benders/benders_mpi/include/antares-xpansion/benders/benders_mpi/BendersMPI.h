@@ -1,5 +1,6 @@
 #pragma once
 
+#include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
@@ -67,11 +68,6 @@ private:
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 
 protected:
-    [[nodiscard]] bool shouldParallelize() const final
-    {
-        return false;
-    }
-
     void PreRunInitialization();
 
     int Rank() const
