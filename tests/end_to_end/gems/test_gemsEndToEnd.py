@@ -5,10 +5,12 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import numpy as np
 
 
 DATA_TEST = Path("../../../data_test")
 STUDY_NAME = "simulator_hybrid_invest_13_1"
+RESULTS_FILE = Path(__file__).parent / "expected_results.json"
 
 
 @pytest.fixture
@@ -24,7 +26,13 @@ def study_path(tmp_path):
     yield test_study
 
 
-def test_gems_workflow(install_dir, study_path, allow_run_as_root):
+@pytest.fixture
+def expected_results():
+    with open(RESULTS_FILE, 'r') as f:
+        return json.load(f)
+
+
+def test_gems_workflow(install_dir, study_path, allow_run_as_root, expected_results):
     launch_py = Path(__file__).parent.parent.parent.parent / "src" / "python" / "launch.py"
 
     cmd = [
@@ -73,6 +81,25 @@ def test_gems_workflow(install_dir, study_path, allow_run_as_root):
     assert output_data["solution"]["problem_status"] == "OPTIMAL", \
         f"Expected OPTIMAL status, got {output_data['solution']['problem_status']}"
 
-    print(f"Test passed! Solution status: {output_data['solution']['problem_status']}")
-    if "overall_cost" in output_data["solution"]:
-        print(f"Overall cost: {output_data['solution']['overall_cost']}")
+    solution = output_data["solution"]
+
+    if "overall_cost" in expected_results:
+        actual_cost = solution.get("overall_cost")
+        expected_cost = expected_results["overall_cost"]
+        assert actual_cost is not None, "No overall_cost in solution"
+        np.testing.assert_allclose(actual_cost, expected_cost, rtol=1e-6, atol=0,
+                                    err_msg=f"Overall cost mismatch: expected {expected_cost}, got {actual_cost}")
+
+    if "variables" in expected_results:
+        assert "values" in solution, "No values in solution"
+        expected_vars = expected_results["variables"]
+        actual_values = solution["values"]
+
+        expected_sorted = np.array([expected_vars[k] for k in sorted(expected_vars.keys())])
+        actual_sorted = np.array([actual_values[k] for k in sorted(expected_vars.keys())])
+
+        np.testing.assert_allclose(actual_sorted, expected_sorted, rtol=1e-6, atol=0,
+                                    err_msg="Variable values mismatch")
+
+    print(f"Test passed! Solution status: {solution['problem_status']}")
+    print(f"Overall cost: {solution.get('overall_cost')}")
