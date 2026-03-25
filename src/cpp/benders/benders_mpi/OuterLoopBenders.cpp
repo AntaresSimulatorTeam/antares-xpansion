@@ -124,8 +124,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks()
         const auto& invest_cost = workerMasterData._invest_cost;
         const auto& overall_cost = invest_cost + workerMasterData._operational_cost;
         const auto& x_cut = benders_->GetCurrentIterationData().x_cut;
-        const auto& external_loop_lambda = benders_->GetCurrentIterationData()
-                                             .criteria_current_iteration_data.lambda;
+        const auto external_loop_lambda = adapter_.GetLambda();
         if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
               x_cut,
               adapter_.GetOuterLoopCriterionAtBestBenders() /*/!\ must
