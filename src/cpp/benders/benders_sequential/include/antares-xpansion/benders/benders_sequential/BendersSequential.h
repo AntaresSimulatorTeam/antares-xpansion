@@ -30,11 +30,6 @@ protected:
     virtual void free();
     virtual void Run();
 
-    [[nodiscard]] bool shouldParallelize() const final
-    {
-        return true;
-    }
-
 private:
     ArchiveReader reader_;
 };
