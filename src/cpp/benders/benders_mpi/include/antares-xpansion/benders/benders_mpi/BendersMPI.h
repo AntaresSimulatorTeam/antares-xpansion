@@ -74,6 +74,7 @@ protected:
     {
         return false;
     }
+
     void PreRunInitialization();
 
     int Rank() const
