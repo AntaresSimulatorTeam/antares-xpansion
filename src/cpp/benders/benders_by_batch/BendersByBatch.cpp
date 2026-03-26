@@ -5,7 +5,6 @@
 
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
-#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 
 void BendersByBatch::InitializeProblems()
 {

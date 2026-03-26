@@ -388,7 +388,7 @@ void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&
 {
     for (auto& names_in_cut: names_in_cuts)
     {
-        auto alpha_i_pos = _id_single_subpb_costs_under_approx
+        auto alpha_0_pos = _id_single_subpb_costs_under_approx
           [problem_to_id[names_in_cut[0].first]];
         for (size_t j = 1; j < names_in_cut.size(); j++)
         {
@@ -402,7 +402,7 @@ void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>&
             matval[0] = 1;
             matval[1] = -1;
             std::vector<int> mclind(2);
-            mclind[0] = alpha_i_pos;
+            mclind[0] = alpha_0_pos;
             mclind[1] = alpha_j_pos;
             add_row(rowtype, rowrhs, mstart, mclind, matval);
         }
