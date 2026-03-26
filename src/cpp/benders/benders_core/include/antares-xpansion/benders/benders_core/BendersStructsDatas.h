@@ -61,14 +61,6 @@ struct CurrentIterationData
     CriteriaCurrentIterationData criteria_current_iteration_data;
 };
 
-// /*! \struct to store benders cuts data
-//  */
-// struct BendersCuts {
-//   Point x_cut;
-//   SubProblemDataMap subsProblemDataMap;
-// };
-
-// using BendersCutsPerIteration = std::vector<BendersCuts>;
 
 /*!
  * \class WorkerMasterData

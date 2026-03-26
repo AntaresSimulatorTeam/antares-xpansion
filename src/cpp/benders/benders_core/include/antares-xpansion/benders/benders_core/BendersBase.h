@@ -51,11 +51,6 @@ public:
 
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
@@ -153,10 +148,7 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
