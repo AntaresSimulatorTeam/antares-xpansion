@@ -1,5 +1,6 @@
 #pragma once
 
+#include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
@@ -73,7 +74,6 @@ protected:
     {
         return false;
     }
-
     void PreRunInitialization();
 
     int Rank() const

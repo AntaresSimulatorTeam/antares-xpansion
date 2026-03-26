@@ -41,6 +41,7 @@ void OuterLoopBenders::PrintLog()
 
 void OuterLoopBenders::RunAttachedAlgo()
 {
+    benders_->IncrementBendersRunNumber();
     benders_->launch();
 }
 
