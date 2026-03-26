@@ -188,6 +188,17 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     )
     set_property(TEST merge_mps PROPERTY LABELS benders merge-mps end_to_end)
 
+    # gems end to end tests
+    add_test(
+            NAME gems_sequential
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion;--cov-append;--cov-report;xml:coverage-reports/coverage-antares_xpansion.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_gemsEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/gems
+            COMMAND_EXPAND_LISTS
+    )
+    set_property(TEST gems_sequential PROPERTY LABELS short gems gems-sequential end_to_end)
+
     add_test(
             NAME lpnamer_end_to_end
             COMMAND Python3::Interpreter -m pytest
