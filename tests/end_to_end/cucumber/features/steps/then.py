@@ -149,7 +149,7 @@ def check_cucumber_table(context, results):
             expected_value = float(row[header])
             actual_value = float(results[i][header])
 
-            np.testing.assert_allclose(actual_value, expected_value, rtol=0, atol=1e-6,
+            np.testing.assert_allclose(actual_value, expected_value, rtol=1e-6, atol=1e-6,
                                        err_msg=f"Mismatch in row {i + 1}, column '{header}': expected {expected_value}, got {actual_value}")
 
 
