@@ -68,14 +68,14 @@ class FilesToRead:
     out_json: Path
     options_json: Path
     lold: Path = None
-    positive_unsupplied_energy: Path = None
+    unsupplied_energy: Path = None
 
 
 class Outputs:
     out_json: str
     options_json: str
     lold: str
-    positive_unsupplied_energy: str
+    unsupplied_energy: str
 
 
 def find_in_simulator_log(output_dir, regex) -> bool:
@@ -102,9 +102,9 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
                 out.options_json = json.loads(archive.read(files_to_read.options_json.as_posix()))
                 if files_to_read.lold:
                     out.lold = archive.read(files_to_read.lold.as_posix()).decode('utf-8')
-                if files_to_read.positive_unsupplied_energy:
-                    out.positive_unsupplied_energy = archive.read(
-                        files_to_read.positive_unsupplied_energy.as_posix()).decode(
+                if files_to_read.unsupplied_energy:
+                    out.unsupplied_energy = archive.read(
+                        files_to_read.unsupplied_energy.as_posix()).decode(
                         'utf-8')
                 return out
     return None
@@ -121,15 +121,15 @@ def output_path(output_dir: Path, use_archive: bool = True) -> Path:
     return None
 
 
-def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_energy=False) -> Outputs:
+def read_outputs(output_path, use_archive=True, lold=False, unsupplied_energy=False) -> Outputs:
     files_to_read = FilesToRead()
     files_to_read.out_json = Path("expansion") / "out.json"
     files_to_read.options_json = Path("lp") / "options.json"
 
     if lold:
         files_to_read.lold = Path("lp") / "LOLD.txt"
-    if positive_unsupplied_energy:
-        files_to_read.positive_unsupplied_energy = Path("lp") / "UnsuppliedEnergy.txt"
+    if unsupplied_energy:
+        files_to_read.unsupplied_energy = Path("lp") / "UnsuppliedEnergy.txt"
 
     if use_archive:
         return get_out_data(output_path, files_to_read)
@@ -146,8 +146,8 @@ def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_
 
         if lold:
             out.lold = read_file(get_filepath(output_path, "lp", "LOLD.txt"))
-        if positive_unsupplied_energy:
-            out.positive_unsupplied_energy = read_file(
+        if unsupplied_energy:
+            out.unsupplied_energy = read_file(
                 get_filepath(output_path, "lp", "UnsuppliedEnergy.txt"))
 
         return out

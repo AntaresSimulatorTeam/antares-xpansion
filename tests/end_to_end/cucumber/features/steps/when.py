@@ -128,7 +128,7 @@ def process_command(context, n, option_file: str, command_builder):
 def run_outer_loop(context, n, option_file: str = "options.json"):
     old_cwd, options = process_command(context, n, option_file, build_outer_loop_command)
     context.loss_of_load_file = (Path(options["OUTPUTROOT"]) / "LOLD.txt").absolute()
-    context.positive_unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "UnsuppliedEnergy.txt").absolute()
+    context.unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "UnsuppliedEnergy.txt").absolute()
 
     os.chdir(old_cwd)
 
@@ -152,11 +152,11 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
                                       allow_run_as_root=get_conf("allow_run_as_root"))
     if context.return_code == 0:  # If the simulation failed we're not sur outputs have been generated properly
         output_path = context.tmp_study / "output"
-        outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
+        outputs = read_outputs(output_path, use_archive=not memory, lold=True, unsupplied_energy=True)
         context.outputs = outputs.out_json
         context.options_data = outputs.options_json
         context.lold = outputs.lold
-        context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
+        context.unsupplied_energy = outputs.unsupplied_energy
 
 
 @when(u'I run step {step} {memory_mode} followed by step presolve')

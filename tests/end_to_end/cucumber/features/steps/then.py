@@ -270,12 +270,12 @@ def check_solution(context):
 @then("LOLD.txt and UnsuppliedEnergy.txt files are full of zeros")
 def check_other_outputs(context):
     assert (is_file_full_of_zeros(context.loss_of_load_file))
-    assert (is_file_full_of_zeros(context.positive_unsupplied_energy_file))
+    assert (is_file_full_of_zeros(context.unsupplied_energy_file))
 
 
 @then("the expected positive unsupplied energy is")
-def check_positive_unsupplied_energy(context):
-    results = read_table_from_string(context.positive_unsupplied_energy)
+def check_unsupplied_energy(context):
+    results = read_table_from_string(context.unsupplied_energy)
     check_cucumber_table(context, results)
 
 
