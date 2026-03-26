@@ -10,6 +10,7 @@
 #include "antares-xpansion/bellman_values/SettingsConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
+#include "antares-xpansion/benders/logger/MultithreadLogger.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
@@ -219,13 +220,22 @@ int main(int argc, char** argv)
         {
             std::filesystem::create_directories(directories.simulation_dir);
         }
-        std::filesystem::path logPath = directories.simulation_dir / "water_values_log.txt";
+        std::string logSubFolder = "water_values_logs";
+        std::string logFilename = "water_values_log.txt";
+        std::filesystem::create_directories(directories.simulation_dir / logSubFolder);
+        std::filesystem::path logPath = directories.simulation_dir / logSubFolder / logFilename;
         std::ofstream{logPath}; // creates log file, since the FileLoggerFactory doesn't
         auto loggerFactory = FileAndStdoutLoggerFactory(logPath, false);
         Logger masterLogger = loggerFactory.get_logger();
-        std::shared_ptr<FilteredLogger> logger = std::make_shared<FilteredLogger>(
+        std::shared_ptr<FilteredLogger> defaultLogger = std::make_shared<FilteredLogger>(
           masterLogger,
           LogUtils::StrToLogLevel(verbosity));
+
+        std::shared_ptr<MultithreadLogger> logger = std::make_shared<MultithreadLogger>(
+          defaultLogger,
+          directories.simulation_dir / logSubFolder,
+          logFilename,
+          nbThreads);
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                  / "user/water_values/grid.csv",
@@ -356,8 +366,8 @@ int main(int argc, char** argv)
             {
                 logger->display_message("Computing optimal trajectory...");
 
-                gridCollection->reservoirs.at(gridElement.area).optimal_trajectory
-                  = bellmanValuesEvaluator.computeOptimalTrajectories();
+                gridCollection->reservoirs.at(gridElement.area)
+                  .optimal_trajectory = bellmanValuesEvaluator.computeOptimalTrajectories();
 
                 logger->display_message("Computed optimal trajectory");
 

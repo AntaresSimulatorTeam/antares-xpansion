@@ -134,6 +134,8 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
           //   auto pbId = pb.first;
           if (startWeek <= pbId.week && pbId.week <= endWeek)
           {
+              //   int threadId = tbb::this_task_arena::current_thread_index();
+              //   logger->display_message("Thread id: " + std::to_string(threadId));
               // copy of the problem needed if gridCollection contains multiple
               // gridDefinitions, and for multistock
               // make_shared will be wrong about the counter here, resulting in a memory leak

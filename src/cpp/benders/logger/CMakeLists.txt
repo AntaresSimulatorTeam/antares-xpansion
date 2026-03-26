@@ -6,6 +6,7 @@ target_sources(logger_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/IterationResultLog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/FilteredLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/Master.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/MultithreadLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/User.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/User.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/UserFile.h
@@ -14,6 +15,7 @@ target_sources(logger_lib PRIVATE
         FilteredLogger.cpp
         Master.cpp
         MathLogger.cpp
+        MultithreadLogger.cpp
         User.cpp
         UserFile.cpp
 )
@@ -23,6 +25,7 @@ add_library(antaresXpansion::logger_lib ALIAS logger_lib)
 target_link_libraries (logger_lib
         PUBLIC
         antaresXpansion::benders_core
+        antaresXpansion::factories
         )
 
 target_include_directories (logger_lib
