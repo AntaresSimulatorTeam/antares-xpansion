@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <vector>
+
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
 
@@ -43,8 +44,7 @@ public:
      * @brief Constructor
      * @param adapter Reference to adapter (owns Benders reference)
      */
-    explicit OuterLoopBendersDataAccessor(
-      std::shared_ptr<OuterLoopBendersAdapter> adapter);
+    explicit OuterLoopBendersDataAccessor(std::shared_ptr<OuterLoopBendersAdapter> adapter);
 
     /**
      * @brief Get the current solution from Benders
@@ -88,7 +88,7 @@ public:
     [[nodiscard]] int GetBendersRunNumber() const;
 
 private:
-    std::shared_ptr<OuterLoopBendersAdapter> adapter_;  ///< Reference to adapter
+    std::shared_ptr<OuterLoopBendersAdapter> adapter_; ///< Reference to adapter
 };
 
-}  // namespace Outerloop
+} // namespace Outerloop

@@ -118,8 +118,7 @@ void OuterLoopBenders::InitExternalValues(bool is_bilevel_check_all, double lamb
 
 void OuterLoopBenders::OuterLoopBilevelChecks()
 {
-    if (world_.rank() == 0 && adapter_->DoOuterLoop()
-        && !is_bilevel_check_all_)
+    if (world_.rank() == 0 && adapter_->DoOuterLoop() && !is_bilevel_check_all_)
     {
         const WorkerMasterData& workerMasterData = adapter_->BestIterationWorkerMaster();
         const auto& invest_cost = workerMasterData._invest_cost;

@@ -18,9 +18,7 @@ std::vector<double> OuterLoopBendersAdapter::GetOuterLoopCriterionAtBestBenders(
     return outer_loop_criterion_at_best_benders_;
 }
 
-void OuterLoopBendersAdapter::InitOuterLoopData(double lambda,
-                                                double lambda_min,
-                                                double lambda_max)
+void OuterLoopBendersAdapter::InitOuterLoopData(double lambda, double lambda_min, double lambda_max)
 {
     lambda_ = lambda;
     lambda_min_ = lambda_min;
@@ -171,7 +169,9 @@ void OuterLoopBendersAdapter::SetMasterObjectiveFunctionCoeffsToZeros() const
     benders_->SetMasterObjectiveFunctionCoeffsToZeros();
 }
 
-void OuterLoopBendersAdapter::SetMasterObjectiveFunction(const double* coeffs, int first, int last) const
+void OuterLoopBendersAdapter::SetMasterObjectiveFunction(const double* coeffs,
+                                                         int first,
+                                                         int last) const
 {
     benders_->SetMasterObjectiveFunction(coeffs, first, last);
 }
@@ -199,4 +199,3 @@ bool OuterLoopBendersAdapter::DoOuterLoop() const
 }
 
 } // namespace Outerloop
-
