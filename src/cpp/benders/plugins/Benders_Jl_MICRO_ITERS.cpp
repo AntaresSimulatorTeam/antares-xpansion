@@ -44,6 +44,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
         if (init_julia == NULL)
         {
+            std::cout<<"can't find init julia "<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
@@ -52,6 +53,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
         if (shut_down_julia_ == NULL)
         {
+            std::cerr<<" shut_down_julia_ julia "<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
@@ -59,6 +61,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
           dlsym(handle_, "jl_compute_factors_for_microiterations");
         if (compute_factors_ == NULL)
         {
+            std::cerr<<"can't find jl_compute_factors_for_microiterations"<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
@@ -68,6 +71,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
         if (jl_return_constraints_for_micro_iteration_ == NULL)
         {
+            std::cerr<<"can't find jl_return_constraints_for_micro_iteration"<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
@@ -75,6 +79,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
         if (clean_buffers_ == NULL)
         {
+            std::cerr<<"can't find clean_buffers_ "<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
@@ -82,6 +87,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
         if (jl_load_variables_ == NULL)
         {
+            std::cerr<<"jl_load_variables_ not found !!"<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
@@ -90,12 +96,14 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
 
         if (jl_deserialize_factors_ == NULL)
         {
+            std::cerr<<"jl_deserialize_factors not found !! "<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
 
         jl_call_GC_ = (jl_call_GC_FUNC)dlsym(handle_, "jl_call_GC");
         if (jl_call_GC_ == NULL)
         {
+            std::cerr<<"jl_call_GC not found "<<std::endl ; 
             _world->abort(EXIT_FAILURE);
         }
     }
