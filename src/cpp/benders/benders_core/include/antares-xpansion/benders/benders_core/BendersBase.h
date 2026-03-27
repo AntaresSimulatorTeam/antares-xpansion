@@ -113,10 +113,7 @@ public:
 
     [[nodiscard]] const std::vector<std::vector<double>>& GetCriteriaPerIteration() const;
     virtual void init_data();
-    void init_data(double external_loop_lambda,
-                   double external_loop_lambda_min,
-                   double external_loop_lambda_max);
-    void SetBilevelBestub(double bilevel_best_ub);
+    void SuppressOutputFileWrites(bool suppress) { suppress_output_file_writes_ = suppress; }
 
     [[nodiscard]] std::optional<WorkerMasterData> GetLastWorkerMasterData() const;
     [[nodiscard]] int GetTotalCumulativeSubproblemSolvedCount() const;
@@ -353,6 +350,7 @@ private:
     Timer benders_timer;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
+    bool suppress_output_file_writes_ = false;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

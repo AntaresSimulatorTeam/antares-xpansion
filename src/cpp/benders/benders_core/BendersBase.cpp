@@ -42,6 +42,7 @@ bool BendersBase::shouldParallelize() const
  */
 void BendersBase::init_data()
 {
+    benders_timer.restart();
     _data.lb = relevantIterationData_.last._lb = -1e20;
     _data.ub = relevantIterationData_.last._ub = +1e20;
     _data.best_ub = relevantIterationData_.last._best_ub = +1e20;
@@ -826,7 +827,7 @@ void BendersBase::post_run_actions() const
 
 void BendersBase::SaveCurrentIterationInOutputFile() const
 {
-    if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP)
+    if (!suppress_output_file_writes_)
     {
         auto& LastWorkerMasterData = relevantIterationData_.last;
         if (LastWorkerMasterData._valid)
@@ -1274,7 +1275,7 @@ void BendersBase::EndWritingInOutputFile() const
     _writer->updateEndTime();
     // TODO duration for outer loop
     _writer->write_duration(_data.benders_time);
-    if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP)
+    if (!suppress_output_file_writes_)
     {
         SaveSolutionInOutputFile();
     }
@@ -1386,21 +1387,6 @@ const std::vector<std::vector<double>>& BendersBase::GetCriteriaPerIteration() c
     return criteria_vector_for_each_iteration_;
 }
 
-void BendersBase::init_data(double external_loop_lambda,
-                            double external_loop_lambda_min,
-                            double external_loop_lambda_max)
-{
-    benders_timer.restart();
-    auto outer_loop_bilevel_best_ub = _data.criteria_current_iteration_data
-                                        .outer_loop_bilevel_best_ub;
-    init_data();
-    _data.criteria_current_iteration_data.criteria.clear();
-    _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
-    _data.criteria_current_iteration_data.lambda = external_loop_lambda;
-    _data.criteria_current_iteration_data.lambda_min = external_loop_lambda_min;
-    _data.criteria_current_iteration_data.lambda_max = external_loop_lambda_max;
-}
-
 bool BendersBase::isExceptionRaised() const
 {
     return exception_raised_;
@@ -1425,11 +1411,6 @@ void BendersBase::UpdateOverallCosts()
     }
 
     relevantIterationData_.best._invest_cost = _data.invest_cost;
-}
-
-void BendersBase::SetBilevelBestub(double bilevel_best_ub)
-{
-    _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = bilevel_best_ub;
 }
 
 void BendersBase::setCriterionComputationInputs(
