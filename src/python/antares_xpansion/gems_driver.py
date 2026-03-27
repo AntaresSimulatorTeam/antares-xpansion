@@ -19,10 +19,12 @@ class GemsDriver:
     def __init__(
         self,
         antares_problem_generator_exe: Path,
+        antares_modeler_exe: Path,
         benders_driver,
         config_loader,
     ) -> None:
         self.antares_problem_generator_exe = Path(antares_problem_generator_exe)
+        self.antares_modeler_exe = Path(antares_modeler_exe)
         self.benders_driver = benders_driver
         self.config_loader = config_loader
         self.data_dir = ""
@@ -54,9 +56,10 @@ class GemsDriver:
         return True
 
     def _run_antares_problem_generator(self):
-        self.logger.info("Launching antares-problem-generator")
+        exe = self._get_problem_generator_exe()
+        self.logger.info(f"Launching {exe}")
 
-        cmd = self._get_antares_problem_generator_cmd()
+        cmd = self._get_problem_generator_cmd(exe)
         self.logger.info(cmd)
 
         returned_l = subprocess.run(
@@ -68,12 +71,18 @@ class GemsDriver:
 
         if returned_l.returncode != 0:
             raise GemsDriver.GemsExecutionError(
-                f"Error: exited antares-problem-generator with status {returned_l.returncode}"
+                f"Error: exited {exe} with status {returned_l.returncode}"
             )
 
-    def _get_antares_problem_generator_cmd(self) -> List[str]:
+    def _get_problem_generator_exe(self) -> Path:
+        if self.config_loader.has_area_folder():
+            return self.antares_problem_generator_exe
+        else:
+            return self.antares_modeler_exe
+
+    def _get_problem_generator_cmd(self, exe: Path) -> List[str]:
         cmd = [
-            str(self.antares_problem_generator_exe),
+            str(exe),
             str(self.data_dir),
         ]
         return cmd

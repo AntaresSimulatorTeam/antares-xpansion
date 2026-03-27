@@ -98,6 +98,7 @@ class XpansionDriver:
 
         self.gems_driver = GemsDriver(
             self.config_loader.antares_problem_generator_exe(),
+            self.config_loader.antares_modeler_exe(),
             self.benders_driver,
             self.config_loader,
         )
@@ -115,7 +116,8 @@ class XpansionDriver:
         )
 
         if use_gems:
-            self.update_study_settings(memory_mode=False)
+            if self.config_loader.has_area_folder():
+                self.update_study_settings(memory_mode=False)
             self.launch_gems_step()
             return
 
@@ -177,7 +179,8 @@ class XpansionDriver:
             self.launch_benders_step()
 
         elif self.config_loader.step() == "gems":
-            self.update_study_settings(memory_mode=False)
+            if self.config_loader.has_area_folder():
+                self.update_study_settings(memory_mode=False)
             self.launch_gems_step()
 
         elif self.config_loader.step() == "sensitivity":

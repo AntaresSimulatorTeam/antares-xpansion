@@ -312,6 +312,22 @@ else ()
     message(WARNING "ANTARES_PROBLEM_GENERATOR_PATH does not exist: ${ANTARES_PROBLEM_GENERATOR_PATH}")
 endif ()
 
+# antares-modeler
+if (WIN32)
+    set(ANTARES_MODELER_PATH "${ANTARES_SOLVER_DIR}/antares-modeler.exe")
+else ()
+    set(ANTARES_MODELER_PATH "${ANTARES_SOLVER_DIR}/antares-modeler")
+endif ()
+
+# Copy antares-modeler to build directory
+if (EXISTS ${ANTARES_MODELER_PATH})
+    file(COPY ${ANTARES_MODELER_PATH}
+            DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+            USE_SOURCE_PERMISSIONS)
+else ()
+    message(WARNING "ANTARES_MODELER_PATH does not exist: ${ANTARES_MODELER_PATH}")
+endif ()
+
 # Create target for copying shared libraries
 add_custom_target(copy_shared_libs ALL
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
@@ -419,6 +435,10 @@ install(PROGRAMS ${ANTARES_SOLVER_PATH}
 
 # Install antares-problem-generator
 install(PROGRAMS ${ANTARES_PROBLEM_GENERATOR_PATH}
+        TYPE BIN)
+
+# Install antares-modeler
+install(PROGRAMS ${ANTARES_MODELER_PATH}
         TYPE BIN)
 
 include(InstallRequiredSystemLibraries)

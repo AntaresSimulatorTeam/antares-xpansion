@@ -25,6 +25,7 @@ class ConfigParameters:
     OUTER_LOOP: str
     ANTARES_ARCHIVE_UPDATER: str
     ANTARES_PROBLEM_GENERATOR: str
+    ANTARES_MODELER: str
     MPIEXEC: str
     AVAILABLE_SOLVERS: List[str]
     # Trajectory investment, maybe split to a TrajectoryConfigParameters class ?
@@ -237,6 +238,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.OUTER_LOOP: str = ""
         self.ANTARES_ARCHIVE_UPDATER: str = ""
         self.ANTARES_PROBLEM_GENERATOR: str = ""
+        self.ANTARES_MODELER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
         self.MPIEXEC: str = ""
@@ -302,6 +304,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.OUTER_LOOP = self.config_parameters.OUTER_LOOP
         self.ANTARES_ARCHIVE_UPDATER = self.config_parameters.ANTARES_ARCHIVE_UPDATER
         self.ANTARES_PROBLEM_GENERATOR = self.config_parameters.ANTARES_PROBLEM_GENERATOR
+        self.ANTARES_MODELER = self.config_parameters.ANTARES_MODELER
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
         self.MPIEXEC = self.config_parameters.MPIEXEC
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS

@@ -115,6 +115,19 @@ class XpansionSettingsReader:
         )
         return os.path.isfile(optim_config_path)
 
+    def has_area_folder(self):
+        """
+        Check if area folder exists in the study input folder
+        """
+        area_folder_path = os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.INPUT,
+                "area",
+            )
+        )
+        return os.path.isdir(area_folder_path)
+
     def general_data(self):
         """
         returns path to general data ini file
@@ -390,12 +403,16 @@ class ConfigLoader(XpansionSettingsReader):
 
         self.candidates_list = []
 
-        self.active_years = GeneralDataIniReader(
-            Path(self.general_data())
-        ).get_active_years()
+        if self.has_area_folder():
+            self.active_years = GeneralDataIniReader(
+                Path(self.general_data())
+            ).get_active_years()
+        else:
+            self.active_years = []
 
-        antares_version = read_antares_version(self._config.data_dir)
-        self.check_NTC_column_constraints(antares_version)
+        if self.has_area_folder():
+            antares_version = read_antares_version(self._config.data_dir)
+            self.check_NTC_column_constraints(antares_version)
 
         # Other settings already checked by parent class
         self._verify_solver()
@@ -764,6 +781,10 @@ class ConfigLoader(XpansionSettingsReader):
     def antares_problem_generator_exe(self):
         antares_exe_path = Path(self.antares_exe())
         return antares_exe_path.parent / self._config.ANTARES_PROBLEM_GENERATOR
+
+    def antares_modeler_exe(self):
+        antares_exe_path = Path(self.antares_exe())
+        return antares_exe_path.parent / self._config.ANTARES_MODELER
 
     def method(self):
         return self._config.method
