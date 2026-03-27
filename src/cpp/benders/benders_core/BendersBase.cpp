@@ -1391,12 +1391,10 @@ void BendersBase::init_data(double external_loop_lambda,
                             double external_loop_lambda_max)
 {
     benders_timer.restart();
-    auto benders_num_run = _data.criteria_current_iteration_data.benders_num_run;
     auto outer_loop_bilevel_best_ub = _data.criteria_current_iteration_data
                                         .outer_loop_bilevel_best_ub;
     init_data();
     _data.criteria_current_iteration_data.criteria.clear();
-    _data.criteria_current_iteration_data.benders_num_run = benders_num_run;
     _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
     _data.criteria_current_iteration_data.lambda = external_loop_lambda;
     _data.criteria_current_iteration_data.lambda_min = external_loop_lambda_min;

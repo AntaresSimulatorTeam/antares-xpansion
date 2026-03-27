@@ -33,8 +33,15 @@ void OuterLoopBendersAdapter::InitOuterLoopData(double lambda, double lambda_min
 
 void OuterLoopBendersAdapter::RefreshOuterLoopStateFromBenders()
 {
-    current_outer_loop_data_ = benders_->GetOuterLoopData();
-    outer_loop_criterion_at_best_benders_ = benders_->GetOuterLoopCriterionAtBestBenders();
+    const auto current_data = benders_->GetCurrentIterationData();
+    current_outer_loop_data_ = current_data.criteria_current_iteration_data;
+
+    const auto& criteria_per_it = benders_->GetCriteriaPerIteration();
+    const auto best_it = current_data.best_it;
+    outer_loop_criterion_at_best_benders_ =
+        (criteria_per_it.empty() || best_it < 1) ? std::vector<double>()
+                                                  : criteria_per_it[best_it - 1];
+
     lambda_ = current_outer_loop_data_.lambda;
     lambda_min_ = current_outer_loop_data_.lambda_min;
     lambda_max_ = current_outer_loop_data_.lambda_max;
@@ -90,7 +97,6 @@ int OuterLoopBendersAdapter::GetBendersRunNumber() const
 
 void OuterLoopBendersAdapter::IncrementBendersRunNumber()
 {
-    benders_->IncrementBendersRunNumber();
     ++current_outer_loop_data_.benders_num_run;
 }
 
@@ -116,7 +122,29 @@ double OuterLoopBendersAdapter::GetLambdaMax() const
 
 void OuterLoopBendersAdapter::UpdateCurrentOuterLoopIterationSnapshot() const
 {
-    current_outer_loop_iteration_ = benders_->GetLastOuterLoopIteration();
+    const auto last = benders_->GetLastWorkerMasterData();
+    if (!last.has_value())
+    {
+        current_outer_loop_iteration_ = std::nullopt;
+        current_outer_loop_iteration_num_ = 0;
+        return;
+    }
+    const auto& d = last.value();
+    Output::Iteration iter;
+    iter.master_duration = d._master_duration;
+    iter.subproblem_duration = d._subproblem_duration;
+    iter.lb = d._lb;
+    iter.ub = d._ub;
+    iter.best_ub = d._best_ub;
+    iter.optimality_gap = d._best_ub - d._lb;
+    iter.relative_gap = (d._best_ub - d._lb) / d._best_ub;
+    iter.investment_cost = d._invest_cost;
+    iter.operational_cost = d._operational_cost;
+    iter.overall_cost = d._invest_cost + d._operational_cost;
+    iter.candidates = candidates_data(d);
+    iter.cumulative_number_of_subproblem_resolved =
+        benders_->GetTotalCumulativeSubproblemSolvedCount();
+    current_outer_loop_iteration_ = iter;
     current_outer_loop_iteration_num_ = current_outer_loop_data_.benders_num_run;
 }
 

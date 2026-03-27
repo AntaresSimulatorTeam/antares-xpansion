@@ -109,16 +109,6 @@ public:
 
     virtual void free() = 0;
 
-    int GetBendersRunNumber() const
-    {
-        return _data.criteria_current_iteration_data.benders_num_run;
-    }
-
-    void IncrementBendersRunNumber()
-    {
-        ++_data.criteria_current_iteration_data.benders_num_run;
-    }
-
     CurrentIterationData GetCurrentIterationData() const;
 
     [[nodiscard]] const std::vector<std::vector<double>>& GetCriteriaPerIteration() const;
@@ -159,7 +149,6 @@ protected:
     BendersBaseOptions _options;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
-    bool is_bilevel_check_all_ = false;
 
     virtual void Run() = 0;
     void update_best_ub();
