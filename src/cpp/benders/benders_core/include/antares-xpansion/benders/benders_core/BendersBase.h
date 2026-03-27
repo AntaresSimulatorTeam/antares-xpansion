@@ -149,6 +149,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     std::shared_ptr<BendersPlugin> benders_plugin_;
+    WorkerMasterPtr _master;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
