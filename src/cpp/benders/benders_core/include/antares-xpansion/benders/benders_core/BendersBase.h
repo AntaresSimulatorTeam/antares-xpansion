@@ -151,6 +151,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
+    WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
@@ -363,7 +364,6 @@ private:
     void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    WorkerMasterPtr _master;
     StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
