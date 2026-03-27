@@ -36,7 +36,7 @@ This design allows for a clear separation between the solver logic and its confi
 |DO_OUTER_LOOP | `false` |  Whether to perform outer loop  |`boolean`|
 |OUTPUTROOT | `.` |  Path to the folder where output files should be printed  | `boolean` |
 |OUTER_LOOP_OPTION_FILE | `adequacy_criterion.yml` |  Outer Loop Options file  |`string`|
-|AREA_FILE | `area.txt` |  Area file used to get areas on which external criteria (LOLD, PositiveUnsuppliedEnergy) are computed |`string` |
+|AREA_FILE | `area.txt` |  Area file used to get areas on which external criteria (LOLD, UnsuppliedEnergy) are computed |`string` |
 |CACHE_PROBLEMS | `false` |  Whether to use subproblems in disk cache rather than loading all problems in memory (allows to reduce RAM usage at the expense of a slight CPU time performance reduction)  | `boolean` |
 |PROBLEMS_FORMAT | `MPS_FILE` |  Format of the problems |`MPS_FILE` or `OPTIMIZED` |
 |MASTER_SOLUTION_TOLERANCE | `1e-4` |  Tolerance for rounding the solution variables of the master problem (to avoid subproblems infeasibilities) | `double` > 0|
