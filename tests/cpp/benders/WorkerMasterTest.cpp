@@ -96,6 +96,142 @@ protected:
         return master;
     }
 };
+class CapturingSolverForAlphas : public NOOPSolverForWorkerMaster
+{
+public:
+    struct CapturedRow
+    {
+        std::vector<char> rowtype;
+        std::vector<double> rhs;
+        std::vector<int> mclind;
+        std::vector<double> matval;
+    };
+
+    std::vector<CapturedRow> captured_rows;
+
+    void add_rows(int newrows,
+                  int newnz,
+                  const char* qrtype,
+                  const double* rhs,
+                  const double* range,
+                  const int* mstart,
+                  const int* mclind,
+                  const double* dmatval,
+                  const std::vector<std::string>& row_names) override
+    {
+        CapturedRow row;
+        row.rowtype = std::vector<char>(qrtype, qrtype + newrows);
+        row.rhs = std::vector<double>(rhs, rhs + newrows);
+        row.mclind = std::vector<int>(mclind, mclind + newnz);
+        row.matval = std::vector<double>(dmatval, dmatval + newnz);
+        captured_rows.push_back(row);
+    }
+};
+
+class WorkerMasterAlphasFixingTest : public ::testing::Test
+{
+protected:
+    EmptyLogManager solver_log_manager;
+    std::shared_ptr<NOOPBendersProblemProvider> problem_provider =
+      std::make_shared<NOOPBendersProblemProvider>();
+
+    std::shared_ptr<WorkerMaster> make_master(int subproblems_count)
+    {
+        return std::make_shared<WorkerMaster>(VariableMap{},
+                                              "COIN",
+                                              0,
+                                              subproblems_count,
+                                              solver_log_manager,
+                                              false,
+                                              std::make_shared<xpansion::logger::Master>(),
+                                              ProblemsFormat::MPS_FILE,
+                                              problem_provider.get(),
+                                              0.1,
+                                              0.1);
+    }
+};
+
+TEST_F(WorkerMasterAlphasFixingTest, NoConstraintsAddedForSingleSubproblemInCut)
+{
+    auto master = make_master(1);
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    master->_solver = capturing_solver;
+    master->set_id_single_subpb_costs_under_approx({10});
+
+    std::map<std::string, int> problem_to_id = {{"pb0", 0}};
+    std::vector<SubProblemNamesInCut> names_in_cuts = {{{"pb0", 0}}};
+
+    master->addAlphasFixingConstraints(names_in_cuts, problem_to_id);
+
+    EXPECT_TRUE(capturing_solver->captured_rows.empty());
+}
+
+TEST_F(WorkerMasterAlphasFixingTest, OneConstraintAddedForTwoSubproblemsInCut)
+{
+    auto master = make_master(2);
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    master->_solver = capturing_solver;
+    master->set_id_single_subpb_costs_under_approx({10, 11});
+
+    std::map<std::string, int> problem_to_id = {{"pb0", 0}, {"pb1", 1}};
+    std::vector<SubProblemNamesInCut> names_in_cuts = {{{"pb0", 0}, {"pb1", 0}}};
+
+    master->addAlphasFixingConstraints(names_in_cuts, problem_to_id);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 1u);
+    const auto& row = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row.rowtype, std::vector<char>({'E'}));
+    EXPECT_EQ(row.rhs, std::vector<double>({0.0}));
+    EXPECT_EQ(row.mclind, std::vector<int>({10, 11}));
+    EXPECT_EQ(row.matval, std::vector<double>({1.0, -1.0}));
+}
+
+TEST_F(WorkerMasterAlphasFixingTest, TwoConstraintsAddedForThreeSubproblemsInCut)
+{
+    // For a cut grouping pb0, pb1, pb2: adds alpha_0=alpha_1 and alpha_0=alpha_2
+    auto master = make_master(3);
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    master->_solver = capturing_solver;
+    master->set_id_single_subpb_costs_under_approx({10, 11, 12});
+
+    std::map<std::string, int> problem_to_id = {{"pb0", 0}, {"pb1", 1}, {"pb2", 2}};
+    std::vector<SubProblemNamesInCut> names_in_cuts = {{{"pb0", 0}, {"pb1", 0}, {"pb2", 0}}};
+
+    master->addAlphasFixingConstraints(names_in_cuts, problem_to_id);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 2u);
+
+    const auto& row0 = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row0.rowtype, std::vector<char>({'E'}));
+    EXPECT_EQ(row0.rhs, std::vector<double>({0.0}));
+    EXPECT_EQ(row0.mclind, std::vector<int>({10, 11}));
+    EXPECT_EQ(row0.matval, std::vector<double>({1.0, -1.0}));
+
+    const auto& row1 = capturing_solver->captured_rows[1];
+    EXPECT_EQ(row1.rowtype, std::vector<char>({'E'}));
+    EXPECT_EQ(row1.rhs, std::vector<double>({0.0}));
+    EXPECT_EQ(row1.mclind, std::vector<int>({10, 12}));
+    EXPECT_EQ(row1.matval, std::vector<double>({1.0, -1.0}));
+}
+
+TEST_F(WorkerMasterAlphasFixingTest, ConstraintsAddedPerCutIndependently)
+{
+    // Two cuts: first groups pb0+pb1 (adds 1 constraint), second has only pb2 (adds none)
+    auto master = make_master(3);
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    master->_solver = capturing_solver;
+    master->set_id_single_subpb_costs_under_approx({10, 11, 12});
+
+    std::map<std::string, int> problem_to_id = {{"pb0", 0}, {"pb1", 1}, {"pb2", 2}};
+    std::vector<SubProblemNamesInCut> names_in_cuts = {{{"pb0", 0}, {"pb1", 0}}, {{"pb2", 0}}};
+
+    master->addAlphasFixingConstraints(names_in_cuts, problem_to_id);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 1u);
+    const auto& row = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row.mclind, std::vector<int>({10, 11}));
+    EXPECT_EQ(row.matval, std::vector<double>({1.0, -1.0}));
+}
 
 class WorkerMasterMock : public WorkerMaster {
 public:
