@@ -14,9 +14,9 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
                                boost::mpi::communicator* world,
                                Dependencies dependencies):
     options_{options},
+    dependencies_{dependencies},
     world_{world},
-    rank{world->rank()},
-    dependencies_{dependencies}
+    rank{world->rank()}
 {
     benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(options);
 }

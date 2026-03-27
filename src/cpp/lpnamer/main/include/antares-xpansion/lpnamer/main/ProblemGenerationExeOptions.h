@@ -59,7 +59,7 @@ public:
         return unnamed_problems_;
     }
 
-    [[nodiscard]] ProblemsFormat Format() const
+    [[nodiscard]] ProblemsFormat Format() const override
     {
         return format_;
     }

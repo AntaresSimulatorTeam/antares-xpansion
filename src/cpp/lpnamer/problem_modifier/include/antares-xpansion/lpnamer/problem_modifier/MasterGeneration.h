@@ -48,6 +48,6 @@ private: /*methods*/
     SolverLogManager& logManager_;
     const std::string solver_name_;
     FileWriter& writer_;
-    ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
+    [[maybe_unused]] ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
 };
 #endif //__MASTER_GENERATION__

@@ -553,7 +553,7 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
 
             if (solver_name == "XPRESS")
             {
-                auto prb_name = std::filesystem::path("test" + ind);
+                auto prb_name = std::filesystem::path("test" + std::to_string(ind));
                 solver->write_prob_mps(prb_name);
                 ind++;
             }
@@ -606,7 +606,7 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
 
             if (solver_name == "XPRESS")
             {
-                auto prb_name = std::filesystem::path("test" + ind);
+                auto prb_name = std::filesystem::path("test" + std::to_string(ind));
                 solver->write_prob_mps(prb_name);
                 ind++;
             }
