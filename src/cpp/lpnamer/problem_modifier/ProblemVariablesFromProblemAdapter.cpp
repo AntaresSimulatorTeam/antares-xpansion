@@ -34,7 +34,7 @@ void ReadLinkZones(const std::string& input, std::string& origin, std::string& d
     std::replace(destination.begin(), destination.end(), WITHESPACESUBSTITUTE, ' ');
 }
 
-int ReadTimeStep(const std::string& input, const unsigned int week)
+int ReadTimeStep(const std::string& input, int week)
 {
     // input format should be x<timeStep>
     int timestep_in_problem = std::stoi(StringBetweenChevrons(input));
@@ -108,7 +108,7 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
                             origin,
                             destination,
                             var_index,
-                            ReadTimeStep(split_name[2], problem_->Week()),
+                            ReadTimeStep(split_name[2], static_cast<int>(problem_->Week())),
                             p_ntc_columns);
         }
         else if (split_name[0] == variable_name_config.cost_origin_variable_name)
@@ -118,7 +118,7 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
                             origin,
                             destination,
                             var_index,
-                            ReadTimeStep(split_name[2], problem_->Week()),
+                            ReadTimeStep(split_name[2], static_cast<int>(problem_->Week())),
                             p_direct_cost_columns);
         }
         else if (split_name[0] == variable_name_config.cost_extremite_variable_name)
@@ -128,7 +128,7 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
                             origin,
                             destination,
                             var_index,
-                            ReadTimeStep(split_name[2], problem_->Week()),
+                            ReadTimeStep(split_name[2], static_cast<int>(problem_->Week())),
                             p_indirect_cost_columns);
         }
     }
