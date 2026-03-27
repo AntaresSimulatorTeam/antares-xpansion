@@ -61,7 +61,6 @@ struct CurrentIterationData
     CriteriaCurrentIterationData criteria_current_iteration_data;
 };
 
-
 /*!
  * \class WorkerMasterData
  * \brief Class use to store trace information during the algorithm run
