@@ -39,23 +39,6 @@ public:
         std::copy(solution.begin(), solution.end(), sol);
     }
 
-void add_rows(int newrows,
-              int newnz,
-              const char* qrtype,
-              const double* rhs,
-              const double* range,
-              const int* mstart,
-              const int* mclind,
-              const double* dmatval,
-              const std::vector<std::string>& row_names) override
-    {
-        last_rowrhs.assign(rhs, rhs + newrows);
-        last_matval.assign(dmatval, dmatval + newnz);
-    }
-
-    std::vector<double> last_rowrhs;
-    std::vector<double> last_matval;
-
 private:
     std::vector<double> solution;
 };
@@ -157,6 +140,10 @@ protected:
 
     std::shared_ptr<WorkerMaster> make_master(int subproblems_count)
     {
+        std::map<int, double> subproblem_cut_coefficient_tolerance{};
+        for (int i=0;i<subproblems_count;i++){
+            subproblem_cut_coefficient_tolerance[0] = 0.1;
+        }
         return std::make_shared<WorkerMaster>(VariableMap{},
                                               "COIN",
                                               0,
@@ -167,7 +154,7 @@ protected:
                                               ProblemsFormat::MPS_FILE,
                                               problem_provider.get(),
                                               0.1,
-                                              0.1);
+                                              subproblem_cut_coefficient_tolerance);
     }
 };
 
@@ -373,11 +360,13 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     EXPECT_EQ(master->_id_master_only_vars, expected);
 }
 
-TEST_F(WorkerMasterTest, AddSubproblemCutAppliesRoundingOnCoeffs)
+TEST_F(WorkerMasterAlphasFixingTest, AddSubproblemCutAppliesRoundingOnCoeffs)
 {
-    double master_solution_tolerance = 0.1;
-    double cut_coefficient_tolerance = 0.1;
-    auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    auto master = make_master(1);
+    master->_solver = capturing_solver;
+    master->_name_to_id = {{"var1", 0}, {"var2", 1}, {"var3", 2}};
+    master->set_id_single_subpb_costs_under_approx({4});
 
     Point subgradient;
     subgradient["var1"] = -5e-3; 
@@ -395,16 +384,15 @@ TEST_F(WorkerMasterTest, AddSubproblemCutAppliesRoundingOnCoeffs)
     // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
     // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
 
-    auto mockSolver = std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver);
+    EXPECT_EQ(capturing_solver->captured_rows.size(), 1);
+    const auto& row = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row.rhs[0], -40.405);
 
-    EXPECT_EQ(mockSolver->last_rowrhs.size(), 1);
-    EXPECT_EQ(mockSolver->last_rowrhs[0], -40.405);
-
-    EXPECT_EQ(mockSolver->last_matval.size(),4);
-    EXPECT_EQ(mockSolver->last_matval[0], 0.0);
-    EXPECT_EQ(mockSolver->last_matval[1], 0.0);
-    EXPECT_EQ(mockSolver->last_matval[2], -0.3);
-    EXPECT_EQ(mockSolver->last_matval[3], -1);
+    EXPECT_EQ(row.matval.size(),4);
+    EXPECT_EQ(row.matval[0], 0.0);
+    EXPECT_EQ(row.matval[1], 0.0);
+    EXPECT_EQ(row.matval[2], -0.3);
+    EXPECT_EQ(row.matval[3], -1);
 
 }
 
