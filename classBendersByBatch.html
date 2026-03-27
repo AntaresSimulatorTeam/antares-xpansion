@@ -318,6 +318,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>BroadcastSingleSubpbC
 <tr class="memitem:ab115c01019bc161456706e7d5778ff42" id="r_ab115c01019bc161456706e7d5778ff42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab115c01019bc161456706e7d5778ff42">ShouldRelaxationStop</a> () const override</td></tr>
 <tr class="memdesc:ab115c01019bc161456706e7d5778ff42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if initial relaxation should stop.  <br /></td></tr>
 <tr class="separator:ab115c01019bc161456706e7d5778ff42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cdb9aeaee74a64d464a7c27ff6d09b3" id="r_a7cdb9aeaee74a64d464a7c27ff6d09b3"><td class="memItemLeft" align="right" valign="top"><a id="a7cdb9aeaee74a64d464a7c27ff6d09b3" name="a7cdb9aeaee74a64d464a7c27ff6d09b3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildBatches</b> ()</td></tr>
+<tr class="separator:a7cdb9aeaee74a64d464a7c27ff6d09b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classBendersMpi"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classBendersMpi')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classBendersMpi.html">BendersMpi</a></td></tr>
 <tr class="memitem:af435deb52a324bfbf0d953bf78644cf4 inherit pro_methods_classBendersMpi" id="r_af435deb52a324bfbf0d953bf78644cf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4">free</a> () override</td></tr>
 <tr class="memdesc:af435deb52a324bfbf0d953bf78644cf4 inherit pro_methods_classBendersMpi"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to free the memory used by each problem.  <br /></td></tr>
@@ -337,6 +340,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>master_build_cuts</b>
 <tr class="memitem:a0dd3342882fc0934b2d4fc00761e9c39 inherit pro_methods_classBendersMpi" id="r_a0dd3342882fc0934b2d4fc00761e9c39"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubproblemDataCostAndSimplexIter</b> (const std::vector&lt; SubProblemDataMap &gt; &amp;gathered_subproblem_map)</td></tr>
 <tr class="separator:a0dd3342882fc0934b2d4fc00761e9c39 inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a404fed85f16a5b8b992feda477314455 inherit pro_methods_classBendersMpi" id="r_a404fed85f16a5b8b992feda477314455"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>InitializeMaster</b> ()</td></tr>
+<tr class="separator:a404fed85f16a5b8b992feda477314455 inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabf23b594567b46b3c5b39579d744fbf inherit pro_methods_classBendersMpi" id="r_aabf23b594567b46b3c5b39579d744fbf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#aabf23b594567b46b3c5b39579d744fbf">shouldParallelize</a> () const final</td></tr>
+<tr class="separator:aabf23b594567b46b3c5b39579d744fbf inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab495e10bbdb47e3ea330d16b416323fb inherit pro_methods_classBendersMpi" id="r_ab495e10bbdb47e3ea330d16b416323fb"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PreRunInitialization</b> ()</td></tr>
 <tr class="separator:ab495e10bbdb47e3ea330d16b416323fb inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -355,9 +363,6 @@ template&lt;typename T &gt; </td></tr>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0404c26bc8d6340295d52d1e23b1526b inherit pro_methods_classBendersMpi"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Gather</b> (const T &amp;value, std::vector&lt; T &gt; &amp;vector_of_values, int root) const</td></tr>
 <tr class="separator:a0404c26bc8d6340295d52d1e23b1526b inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad216e84ca654a5edcc0b226d52689c52 inherit pro_methods_classBendersMpi" id="r_ad216e84ca654a5edcc0b226d52689c52"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildMasterProblem</b> ()</td></tr>
-<tr class="separator:ad216e84ca654a5edcc0b226d52689c52 inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a348aa20a41fe00ad0537eab1463a1b84 inherit pro_methods_classBendersMpi" id="r_a348aa20a41fe00ad0537eab1463a1b84"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>WorldSize</b> () const</td></tr>
 <tr class="separator:a348aa20a41fe00ad0537eab1463a1b84 inherit pro_methods_classBendersMpi"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -645,6 +650,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>exception_raised_</b>
 <tr class="memitem:a37aca7a7579e839eb5dd11108a1708a2 inherit pro_attribs_classBendersBase" id="r_a37aca7a7579e839eb5dd11108a1708a2"><td class="memItemLeft" align="right" valign="top">
 WorkerMasterDataVect&#160;</td><td class="memItemRight" valign="bottom"><b>workerMasterDataVect_</b></td></tr>
 <tr class="separator:a37aca7a7579e839eb5dd11108a1708a2 inherit pro_attribs_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24b17ce072e50bfdc2e6ab2e0b241d12 inherit pro_attribs_classBendersBase" id="r_a24b17ce072e50bfdc2e6ab2e0b241d12"><td class="memItemLeft" align="right" valign="top">
+WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>_master</b></td></tr>
+<tr class="separator:a24b17ce072e50bfdc2e6ab2e0b241d12 inherit pro_attribs_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11bf308dcc77ba4366535f1fea0137b inherit pro_attribs_classBendersBase" id="r_ae11bf308dcc77ba4366535f1fea0137b"><td class="memItemLeft" align="right" valign="top">
 std::shared_ptr&lt; <a class="el" href="classBendersPlugin.html">BendersPlugin</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>benders_plugin_</b></td></tr>
 <tr class="separator:ae11bf308dcc77ba4366535f1fea0137b inherit pro_attribs_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>

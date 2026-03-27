@@ -338,6 +338,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>master_build_cuts</b>
 <tr class="memitem:a0dd3342882fc0934b2d4fc00761e9c39" id="r_a0dd3342882fc0934b2d4fc00761e9c39"><td class="memItemLeft" align="right" valign="top"><a id="a0dd3342882fc0934b2d4fc00761e9c39" name="a0dd3342882fc0934b2d4fc00761e9c39"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubproblemDataCostAndSimplexIter</b> (const std::vector&lt; SubProblemDataMap &gt; &amp;gathered_subproblem_map)</td></tr>
 <tr class="separator:a0dd3342882fc0934b2d4fc00761e9c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a404fed85f16a5b8b992feda477314455" id="r_a404fed85f16a5b8b992feda477314455"><td class="memItemLeft" align="right" valign="top"><a id="a404fed85f16a5b8b992feda477314455" name="a404fed85f16a5b8b992feda477314455"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>InitializeMaster</b> ()</td></tr>
+<tr class="separator:a404fed85f16a5b8b992feda477314455"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabf23b594567b46b3c5b39579d744fbf" id="r_aabf23b594567b46b3c5b39579d744fbf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabf23b594567b46b3c5b39579d744fbf">shouldParallelize</a> () const final</td></tr>
+<tr class="separator:aabf23b594567b46b3c5b39579d744fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab495e10bbdb47e3ea330d16b416323fb" id="r_ab495e10bbdb47e3ea330d16b416323fb"><td class="memItemLeft" align="right" valign="top"><a id="ab495e10bbdb47e3ea330d16b416323fb" name="ab495e10bbdb47e3ea330d16b416323fb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PreRunInitialization</b> ()</td></tr>
 <tr class="separator:ab495e10bbdb47e3ea330d16b416323fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,7 +362,7 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0404c26bc8d6340295d52d1e23b1526b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Gather</b> (const T &amp;value, std::vector&lt; T &gt; &amp;vector_of_values, int root) const</td></tr>
 <tr class="separator:a0404c26bc8d6340295d52d1e23b1526b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad216e84ca654a5edcc0b226d52689c52" id="r_ad216e84ca654a5edcc0b226d52689c52"><td class="memItemLeft" align="right" valign="top"><a id="ad216e84ca654a5edcc0b226d52689c52" name="ad216e84ca654a5edcc0b226d52689c52"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildMasterProblem</b> ()</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildMasterProblem</b> ()</td></tr>
 <tr class="separator:ad216e84ca654a5edcc0b226d52689c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a348aa20a41fe00ad0537eab1463a1b84" id="r_a348aa20a41fe00ad0537eab1463a1b84"><td class="memItemLeft" align="right" valign="top"><a id="a348aa20a41fe00ad0537eab1463a1b84" name="a348aa20a41fe00ad0537eab1463a1b84"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>WorldSize</b> () const</td></tr>
@@ -637,6 +642,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>exception_raised_</b>
 <tr class="memitem:a37aca7a7579e839eb5dd11108a1708a2 inherit pro_attribs_classBendersBase" id="r_a37aca7a7579e839eb5dd11108a1708a2"><td class="memItemLeft" align="right" valign="top">
 WorkerMasterDataVect&#160;</td><td class="memItemRight" valign="bottom"><b>workerMasterDataVect_</b></td></tr>
 <tr class="separator:a37aca7a7579e839eb5dd11108a1708a2 inherit pro_attribs_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24b17ce072e50bfdc2e6ab2e0b241d12 inherit pro_attribs_classBendersBase" id="r_a24b17ce072e50bfdc2e6ab2e0b241d12"><td class="memItemLeft" align="right" valign="top">
+WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>_master</b></td></tr>
+<tr class="separator:a24b17ce072e50bfdc2e6ab2e0b241d12 inherit pro_attribs_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11bf308dcc77ba4366535f1fea0137b inherit pro_attribs_classBendersBase" id="r_ae11bf308dcc77ba4366535f1fea0137b"><td class="memItemLeft" align="right" valign="top">
 std::shared_ptr&lt; <a class="el" href="classBendersPlugin.html">BendersPlugin</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>benders_plugin_</b></td></tr>
 <tr class="separator:ae11bf308dcc77ba4366535f1fea0137b inherit pro_attribs_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -823,6 +831,33 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Method to run Benders algorithm in parallel </p>
 
 <p>Implements <a class="el" href="classBendersBase.html">BendersBase</a>.</p>
+
+</div>
+</div>
+<a id="aabf23b594567b46b3c5b39579d744fbf" name="aabf23b594567b46b3c5b39579d744fbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf23b594567b46b3c5b39579d744fbf">&#9670;&#160;</a></span>shouldParallelize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool BendersMpi::shouldParallelize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">final</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classBendersBase.html">BendersBase</a>.</p>
 
 </div>
 </div>

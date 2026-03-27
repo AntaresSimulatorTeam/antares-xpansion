@@ -57,6 +57,7 @@ var hierarchy =
     [ "CandidatesINIReader", "classCandidatesINIReader.html", null ],
     [ "antares_xpansion.candidates_reader.CandidatesReader", "classantares__xpansion_1_1candidates__reader_1_1CandidatesReader.html", null ],
     [ "ProblemModifier::CandidateWasNotAddedInProblem", "classProblemModifier_1_1CandidateWasNotAddedInProblem.html", null ],
+    [ "CapturingSolverForAlphas::CapturedRow", "structCapturingSolverForAlphas_1_1CapturedRow.html", null ],
     [ "antares_xpansion.chronicles_checker.ChronicleChecker", "classantares__xpansion_1_1chronicles__checker_1_1ChronicleChecker.html", null ],
     [ "class", "classclass.html", null ],
     [ "Clock", "classClock.html", [
@@ -440,7 +441,9 @@ var hierarchy =
       [ "NOOPSolver", "classNOOPSolver.html", [
         [ "NOOPSolverForWorker", "classNOOPSolverForWorker.html", [
           [ "NOOPSolverForSubproblemWorker", "classNOOPSolverForSubproblemWorker.html", null ],
-          [ "NOOPSolverForWorkerMaster", "classNOOPSolverForWorkerMaster.html", null ]
+          [ "NOOPSolverForWorkerMaster", "classNOOPSolverForWorkerMaster.html", [
+            [ "CapturingSolverForAlphas", "classCapturingSolverForAlphas.html", null ]
+          ] ]
         ] ]
       ] ],
       [ "Problem", "classProblem.html", null ],
@@ -532,6 +535,7 @@ var hierarchy =
       [ "VariablesGroupTest", "classVariablesGroupTest.html", null ],
       [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ],
       [ "WeightsFileWriterTest", "classWeightsFileWriterTest.html", null ],
+      [ "WorkerMasterAlphasFixingTest", "classWorkerMasterAlphasFixingTest.html", null ],
       [ "WorkerMasterTest", "classWorkerMasterTest.html", null ]
     ] ],
     [ "tests.python.test_antares_driver.TestAntaresDriver", "classtests_1_1python_1_1test__antares__driver_1_1TestAntaresDriver.html", null ],
