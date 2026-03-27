@@ -121,17 +121,15 @@ public:
 
     CurrentIterationData GetCurrentIterationData() const;
 
-    CriteriaCurrentIterationData GetOuterLoopData() const;
-
-    std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
+    [[nodiscard]] const std::vector<std::vector<double>>& GetCriteriaPerIteration() const;
     virtual void init_data();
     void init_data(double external_loop_lambda,
                    double external_loop_lambda_min,
                    double external_loop_lambda_max);
     void SetBilevelBestub(double bilevel_best_ub);
 
-    // Helper for adapter-driven outer loop iteration output (Phase B Step 2)
-    [[nodiscard]] std::optional<Output::Iteration> GetLastOuterLoopIteration() const;
+    [[nodiscard]] std::optional<WorkerMasterData> GetLastWorkerMasterData() const;
+    [[nodiscard]] int GetTotalCumulativeSubproblemSolvedCount() const;
 
     // Helper for outer loop solution building (Phase B migration)
     [[nodiscard]] Output::SolutionData GetCurrentBendersSolution() const;
@@ -369,3 +367,5 @@ private:
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;
+
+Output::CandidatesVec candidates_data(const WorkerMasterData& data);

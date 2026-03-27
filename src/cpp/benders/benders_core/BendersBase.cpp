@@ -838,14 +838,19 @@ void BendersBase::SaveCurrentIterationInOutputFile() const
     }
 }
 
-std::optional<Output::Iteration> BendersBase::GetLastOuterLoopIteration() const
+std::optional<WorkerMasterData> BendersBase::GetLastWorkerMasterData() const
 {
-    const auto& last_worker_master_data = relevantIterationData_.last;
-    if (!last_worker_master_data._valid)
+    if (!relevantIterationData_.last._valid)
     {
         return std::nullopt;
     }
-    return iteration(last_worker_master_data);
+    return relevantIterationData_.last;
+}
+
+int BendersBase::GetTotalCumulativeSubproblemSolvedCount() const
+{
+    return _data.cumulative_number_of_subproblem_solved
+           + cumulative_number_of_subproblem_resolved_before_resume;
 }
 
 void BendersBase::SaveSolutionInOutputFile() const
@@ -1376,16 +1381,9 @@ CurrentIterationData BendersBase::GetCurrentIterationData() const
     return _data;
 }
 
-CriteriaCurrentIterationData BendersBase::GetOuterLoopData() const
+const std::vector<std::vector<double>>& BendersBase::GetCriteriaPerIteration() const
 {
-    return _data.criteria_current_iteration_data;
-}
-
-std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const
-{
-    return ((criteria_vector_for_each_iteration_.empty())
-              ? std::vector<double>() // Unnamed RVO
-              : criteria_vector_for_each_iteration_[_data.best_it - 1]);
+    return criteria_vector_for_each_iteration_;
 }
 
 void BendersBase::init_data(double external_loop_lambda,
