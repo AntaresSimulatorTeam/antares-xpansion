@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
+#include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
@@ -1494,4 +1495,429 @@ void BendersBase::roundXCut()
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {
     benders_plugin_ = benders_plugin;
+}
+
+void BendersBase::launch()
+{
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        _logger->display_message("Building input");
+        _logger->display_message("Constructing workers...");
+    }
+    if (init_problems_)
+    {
+        InitializeProblems();
+    }
+    GetCommunicationStrategy()->Barrier();
+
+    if (benders_plugin_)
+    {
+        benders_plugin_->OnBendersStart();
+    }
+
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        _logger->display_message("Running solver...");
+    }
+
+    try
+    {
+        Run();
+        if (GetCommunicationStrategy()->IsMaster())
+        {
+            _logger->display_message(BendersName() + " solver terminated.");
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        if (GetCommunicationStrategy()->IsMaster())
+        {
+            std::string error = "Exception raised : " + std::string(ex.what());
+            _logger->display_message(error);
+        }
+    }
+
+    GetCommunicationStrategy()->Barrier();
+
+    if (benders_plugin_)
+    {
+        benders_plugin_->OnBendersEnd();
+    }
+
+    post_run_actions();
+
+    if (free_problems_)
+    {
+        free();
+    }
+    GetCommunicationStrategy()->Barrier();
+}
+
+void BendersBase::Run()
+{
+    if (init_data_)
+    {
+        PreRunInitialization();
+    }
+    else
+    {
+        _data.stop = false;
+    }
+
+    while (!_data.stop)
+    {
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersIterationStart();
+        }
+        ++_data.it;
+        ResetSimplexIterationsBounds();
+
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMasterResolutionStart();
+        }
+        step_1_solve_master();
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMasterResolutionEnd();
+        }
+
+        if (!exception_raised_)
+        {
+            BuildCut();
+        }
+
+        if (!exception_raised_)
+        {
+            step_4_update_best_solution();
+        }
+        _data.stop |= exception_raised_;
+
+        GetCommunicationStrategy()->Broadcast(_data.is_in_initial_relaxation);
+        GetCommunicationStrategy()->Broadcast(_data.stop);
+
+        if (GetCommunicationStrategy()->IsMaster())
+        {
+            if (mathLoggerDriver_)
+            {
+                mathLoggerDriver_->Print(_data);
+            }
+            SaveCurrentBendersData();
+        }
+    }
+
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        CloseCsvFile();
+        EndWritingInOutputFile();
+        write_basis();
+    }
+    GetCommunicationStrategy()->Barrier();
+
+    if (benders_plugin_)
+    {
+        benders_plugin_->OnBendersIterationEnd();
+    }
+}
+
+void BendersBase::BuildCut()
+{
+    int success = 1;
+    SubProblemDataMap subproblem_data_map;
+    Timer walltime;
+    Timer subproblems_timer_per_proc;
+    _logger->display_message("\tSolving subproblems...");
+    try
+    {
+        GetSubproblemCut(subproblem_data_map);
+        _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
+    }
+    catch (const std::exception& ex)
+    {
+        success = 0;
+        write_exception_message(ex);
+    }
+    check_if_some_proc_had_a_failure(success);
+    if (!exception_raised_)
+    {
+        gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
+    }
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        _data.cumulative_number_of_subproblem_solved += _data.nsubproblem;
+        _logger->cumulative_number_of_sub_problem_solved(
+          _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
+    }
+}
+
+void BendersBase::PreRunInitialization()
+{
+    init_data();
+
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        HandleInitialMasterRelaxation();
+    }
+
+    GetCommunicationStrategy()->Barrier();
+
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        ChecksResumeMode();
+        if (is_trace())
+        {
+            OpenCsvFile();
+        }
+    }
+    if (mathLoggerDriver_)
+    {
+        mathLoggerDriver_->write_header();
+    }
+    init_data_ = false;
+}
+
+void BendersBase::step_1_solve_master()
+{
+    int success = 1;
+    try
+    {
+        do_solve_master_create_trace_and_update_cuts();
+    }
+    catch (const std::exception& ex)
+    {
+        success = 0;
+        write_exception_message(ex);
+    }
+    check_if_some_proc_had_a_failure(success);
+    BroadcastXCut();
+}
+
+void BendersBase::do_solve_master_create_trace_and_update_cuts()
+{
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
+        {
+            _logger->LogAtSwitchToInteger();
+            ActivateIntegrityConstraints();
+            ResetDataPostRelaxation();
+        }
+        solve_master_and_create_trace();
+    }
+}
+
+void BendersBase::solve_master_and_create_trace()
+{
+    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
+    _logger->display_message("\tSolving master...");
+    get_master_value();
+    _logger->log_master_solving_duration(_data.timer_master);
+    ComputeXCut();
+    _logger->log_iteration_candidates(bendersDataToLogData(_data));
+}
+
+void BendersBase::BroadcastXCut()
+{
+    if (!exception_raised_)
+    {
+        Point x_cut = get_x_cut();
+        GetCommunicationStrategy()->Broadcast(x_cut);
+        set_x_cut(x_cut);
+    }
+}
+
+void BendersBase::step_4_update_best_solution()
+{
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        compute_ub();
+        update_best_ub();
+        _logger->log_at_iteration_end(bendersDataToLogData(_data));
+        UpdateTrace();
+        _data.iteration_time = -_data.benders_time;
+        _data.benders_time = GetBendersTime();
+        _data.iteration_time += _data.benders_time;
+        _data.stop = ShouldBendersStop();
+    }
+}
+
+void BendersBase::gather_subproblems_cut_package_and_build_cuts(
+  const SubProblemDataMap& subproblem_data_map,
+  const Timer& walltime)
+{
+    if (!exception_raised_)
+    {
+        GatherCuts(subproblem_data_map, walltime);
+    }
+}
+
+void BendersBase::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
+{
+    std::vector<SubProblemDataMap> gathered_subproblem_map;
+    GetCommunicationStrategy()->Gather(subproblem_data_map, gathered_subproblem_map);
+    _data.subproblems_walltime = walltime.elapsed();
+    double cumulative_subproblems_timer_per_iter(0);
+    GetCommunicationStrategy()->Reduce(_data.subproblems_cputime,
+                                       cumulative_subproblems_timer_per_iter);
+    _data.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter;
+
+    master_build_cuts(gathered_subproblem_map);
+
+    if (!criterion_computation_.IsEmpty())
+    {
+        ComputeSubproblemsContributionToCriteria(subproblem_data_map);
+
+        if (GetCommunicationStrategy()->IsMaster())
+        {
+            criteria_vector_for_each_iteration_.push_back(
+              _data.criteria_current_iteration_data.criteria);
+            UpdateMaxCriterionArea();
+        }
+    }
+}
+
+void BendersBase::check_if_some_proc_had_a_failure(int success)
+{
+    int global_success = GetCommunicationStrategy()->AllReduceBitwiseAnd(success);
+    if (global_success == 0)
+    {
+        exception_raised_ = true;
+    }
+}
+
+void BendersBase::master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+{
+    SetSubproblemCost(0);
+    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
+
+    _data.ub = 0;
+
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        build_all_aggregated_cuts(subproblem_per_cut_indices_, gathered_subproblem_map);
+    }
+
+    _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
+    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
+}
+
+void BendersBase::SetSubproblemDataCostAndSimplexIter(
+  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+{
+    for (const auto& subproblem_data_map: gathered_subproblem_map)
+    {
+        for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
+        {
+            SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+            BoundSimplexIterations(subproblem_data.simplex_iter);
+        }
+    }
+}
+
+void BendersBase::ComputeSubproblemsContributionToCriteria(
+  const SubProblemDataMap& subproblem_data_map)
+{
+    const auto vars_size = criterion_computation_.getVarIndices().size();
+    std::vector<double> criteria_per_sub_problem_per_pattern(vars_size, {});
+    _data.criteria_current_iteration_data.criteria.resize(vars_size, 0.);
+    std::vector<double> patterns_values_per_sub_problem_per_pattern(vars_size, {});
+    _data.criteria_current_iteration_data.patterns_values.resize(vars_size, 0.);
+
+    for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
+    {
+        AddVectors<double>(criteria_per_sub_problem_per_pattern, subproblem_data.criteria);
+        AddVectors<double>(patterns_values_per_sub_problem_per_pattern,
+                           subproblem_data.patterns_values);
+    }
+
+    GetCommunicationStrategy()->Reduce(criteria_per_sub_problem_per_pattern,
+                                       _data.criteria_current_iteration_data.criteria);
+    GetCommunicationStrategy()->Reduce(patterns_values_per_sub_problem_per_pattern,
+                                       _data.criteria_current_iteration_data.patterns_values);
+}
+
+void BendersBase::UpdateMaxCriterionArea()
+{
+    auto criteria_begin = _data.criteria_current_iteration_data.criteria.cbegin();
+    auto criteria_end = _data.criteria_current_iteration_data.criteria.cend();
+    auto max_criterion_it = std::max_element(criteria_begin, criteria_end);
+    if (max_criterion_it != criteria_end)
+    {
+        _data.criteria_current_iteration_data.max_criterion = *max_criterion_it;
+        auto max_criterion_index = std::distance(criteria_begin, max_criterion_it);
+        _data.criteria_current_iteration_data.max_criterion_area = criterion_computation_
+                                                                     .getCriterionInputData()
+                                                                     .Criteria()
+                                                                       [max_criterion_index]
+                                                                     .Pattern()
+                                                                     .GetBody();
+    }
+}
+
+void BendersBase::write_exception_message(const std::exception& ex) const
+{
+    std::string error = "Exception raised : " + std::string(ex.what());
+    _logger->display_message(error);
+}
+
+std::vector<SubProblemNamesInCut> BendersBase::get_subs_per_cut(
+  const std::vector<SubProblemNamesInCut>& gathered_sub_per_proc,
+  int max_aggregation)
+{
+    struct Entry
+    {
+        const std::string* name = nullptr;
+        int vecPos = -1;
+    };
+
+    int n_cuts = SetAggregation(max_aggregation);
+
+    if (n_cuts == 0)
+    {
+        return {};
+    }
+
+    std::vector<Entry> ordered(_data.nsubproblem);
+
+    for (const auto& proc_subs_vec: gathered_sub_per_proc)
+    {
+        for (const auto& sub: proc_subs_vec)
+        {
+            auto it = _problem_to_id.find(sub.first);
+            if (it == _problem_to_id.end())
+            {
+                continue;
+            }
+            ordered[it->second] = {&sub.first, sub.second};
+        }
+    }
+
+    std::vector<SubProblemNamesInCut> cuts;
+    cuts.reserve(n_cuts);
+
+    SubProblemNamesInCut cut;
+    cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
+
+    for (const auto& e: ordered)
+    {
+        if (!e.name)
+        {
+            continue;
+        }
+
+        cut.emplace_back(*e.name, e.vecPos);
+        if (cut.size() == static_cast<size_t>((_data.nsubproblem + n_cuts - 1) / n_cuts))
+        {
+            cuts.emplace_back(std::move(cut));
+            cut.clear();
+            cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
+        }
+    }
+
+    if (!cut.empty())
+    {
+        cuts.emplace_back(std::move(cut));
+    }
+    return cuts;
 }

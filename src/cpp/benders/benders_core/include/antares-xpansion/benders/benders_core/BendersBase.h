@@ -45,7 +45,7 @@ public:
                 std::shared_ptr<Output::OutputWriter> writer,
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
-    virtual void launch() = 0;
+    virtual void launch();
     void set_solver_log_file(const std::filesystem::path& log_file);
 
     double execution_time() const;
@@ -168,7 +168,8 @@ protected:
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
 
-    virtual void Run() = 0;
+    virtual void Run();
+    virtual void BuildCut();
     void update_best_ub();
     bool ShouldBendersStop();
     bool is_initial_relaxation_requested() const;
@@ -333,6 +334,27 @@ protected:
 
     int SetAggregation(int max_aggregation) const;
 
+    // These methods are in protected because BendersByBatch (via BendersMpi) calls them directly
+    // in its own Run() override.
+    void PreRunInitialization();
+    void BroadcastXCut();
+    void SetSubproblemDataCostAndSimplexIter(
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
+
+    /// Subproblem-to-cut grouping, set during InitializeProblems by subclasses.
+    /// Maps each cut to the (name, rank) pairs of subproblems contributing to it.
+    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
+
+    [[nodiscard]] const std::shared_ptr<ICommunicationStrategy>& GetCommunicationStrategy() const
+    {
+        return communication_strategy_;
+    }
+
+    /// Compute subproblem-per-cut grouping from gathered (name, rank) assignments.
+    std::vector<SubProblemNamesInCut> get_subs_per_cut(
+      const std::vector<SubProblemNamesInCut>& gathered_sub_per_proc,
+      int max_aggregation);
+
 private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
@@ -352,10 +374,19 @@ private:
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const;
 
-    [[nodiscard]] const std::shared_ptr<ICommunicationStrategy>& GetCommunicationStrategy() const
-    {
-        return communication_strategy_;
-    }
+    // Run() helpers: these implement the unified Benders iteration loop.
+    void step_1_solve_master();
+    void step_4_update_best_solution();
+    void GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime);
+    void check_if_some_proc_had_a_failure(int success);
+    void ComputeSubproblemsContributionToCriteria(const SubProblemDataMap& subproblem_data_map);
+    void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
+    void gather_subproblems_cut_package_and_build_cuts(const SubProblemDataMap& subproblem_data_map,
+                                                       const Timer& walltime);
+    void write_exception_message(const std::exception& ex) const;
+    void solve_master_and_create_trace();
+    void do_solve_master_create_trace_and_update_cuts();
+    void UpdateMaxCriterionArea();
 
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;

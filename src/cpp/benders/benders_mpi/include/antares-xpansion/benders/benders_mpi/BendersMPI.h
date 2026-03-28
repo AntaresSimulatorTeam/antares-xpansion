@@ -23,8 +23,6 @@ public:
                mpi::communicator& world,
                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
-    void launch() override;
-
     std::string BendersName() const override
     {
         return "Benders mpi";
@@ -34,54 +32,12 @@ public:
 
 protected:
     void free() override;
-    void Run() override;
     void InitializeProblems() override;
-    void BroadcastXCut();
-    void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-    void SetSubproblemDataCostAndSimplexIter(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     mpi::communicator& _world;
 
-private:
-    void step_1_solve_master();
-    void step_2_solve_subproblems_and_build_cuts();
-    void step_4_update_best_solution(int rank);
-
-    std::vector<SubProblemNamesInCut> get_subs_per_cut(const std::vector<SubProblemNamesInCut>&,
-                                                       int);
-
-    SubProblemDataMap get_subproblem_cut_package();
-
-    void solve_master_and_create_trace();
-
-    void do_solve_master_create_trace_and_update_cuts();
-
-    virtual void gather_subproblems_cut_package_and_build_cuts(
-      const SubProblemDataMap& subproblem_data_map,
-      const Timer& process_timer);
-
-    void write_exception_message(const std::exception& ex) const;
-
-    void check_if_some_proc_had_a_failure(int success);
-
-    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
-
-protected:
-    void InitializeMaster();
-
-    [[nodiscard]] bool shouldParallelize() const final
-    {
-        return false;
-    }
-
-    void PreRunInitialization();
-
-    int Rank() const
-    {
-        return _world.rank();
-    }
-
+    /// Generic broadcast for types not covered by ICommunicationStrategy
+    /// (used by BendersByBatch for BatchCollection, arrays, etc.)
     template<typename T>
     void BroadCast(T& value, int root) const
     {
@@ -100,18 +56,6 @@ protected:
         mpi::gather(_world, value, vector_of_values, root);
     }
 
-    virtual void BuildMasterProblem();
-
-    int WorldSize() const
-    {
-        return _world.size();
-    }
-
-    void Barrier() const
-    {
-        _world.barrier();
-    }
-
     template<typename T, typename Op>
     void Reduce(const T& in_value, T& out_value, Op op, int root) const
     {
@@ -124,18 +68,25 @@ protected:
         mpi::all_reduce(_world, in_value, out_value, op);
     }
 
-    virtual void GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime);
+    int Rank() const
+    {
+        return _world.rank();
+    }
+
+    int WorldSize() const
+    {
+        return _world.size();
+    }
+
+    void Barrier() const
+    {
+        _world.barrier();
+    }
+
     void BroadCastVariablesIndices();
-    virtual void ComputeSubproblemsContributionToCriteria(
-      const SubProblemDataMap& subproblem_data_map);
+    void InitializeMaster();
+    virtual void BuildMasterProblem();
     void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                          const std::string& name,
                          const std::shared_ptr<SubproblemWorker>& worker) override;
-    void UpdateMaxCriterionArea();
-};
-
-struct Entry
-{
-    const std::string* name = nullptr;
-    int vecPos = -1;
 };

@@ -17,8 +17,6 @@ public:
                                std::shared_ptr<Output::OutputWriter> writer,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     virtual ~BendersSequential() = default;
-    virtual void launch();
-    virtual void BuildCut();
     virtual void InitializeProblems();
 
     std::string BendersName() const
@@ -28,7 +26,6 @@ public:
 
 protected:
     virtual void free();
-    virtual void Run();
 
 private:
     ArchiveReader reader_;

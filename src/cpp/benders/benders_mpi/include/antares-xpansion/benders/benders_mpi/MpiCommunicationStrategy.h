@@ -39,16 +39,37 @@ public:
         return false;
     }
 
-    /// Access the underlying MPI communicator for operations not yet
-    /// abstracted into the strategy interface (broadcast, gather, reduce).
-    mpi::communicator& World()
+    void Broadcast(bool& value) const override
     {
-        return world_;
+        mpi::broadcast(world_, value, 0);
     }
 
-    const mpi::communicator& World() const
+    void Broadcast(Point& value) const override
     {
-        return world_;
+        mpi::broadcast(world_, value, 0);
+    }
+
+    void Gather(const SubProblemDataMap& local,
+                std::vector<SubProblemDataMap>& gathered) const override
+    {
+        mpi::gather(world_, local, gathered, 0);
+    }
+
+    void Reduce(double local, double& global) const override
+    {
+        mpi::reduce(world_, local, global, std::plus<double>(), 0);
+    }
+
+    void Reduce(const std::vector<double>& local, std::vector<double>& global) const override
+    {
+        mpi::reduce(world_, local, global, std::plus<double>(), 0);
+    }
+
+    [[nodiscard]] int AllReduceBitwiseAnd(int local) const override
+    {
+        int result = 0;
+        mpi::all_reduce(world_, local, result, mpi::bitwise_and<int>());
+        return result;
     }
 
 private:

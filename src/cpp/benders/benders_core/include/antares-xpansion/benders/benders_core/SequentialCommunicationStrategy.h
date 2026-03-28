@@ -31,4 +31,35 @@ public:
     {
         return true;
     }
+
+    void Broadcast(bool& /*value*/) const override
+    {
+        // No-op: single process already has the value
+    }
+
+    void Broadcast(Point& /*value*/) const override
+    {
+        // No-op: single process already has the value
+    }
+
+    void Gather(const SubProblemDataMap& local,
+                std::vector<SubProblemDataMap>& gathered) const override
+    {
+        gathered = {local};
+    }
+
+    void Reduce(double local, double& global) const override
+    {
+        global = local;
+    }
+
+    void Reduce(const std::vector<double>& local, std::vector<double>& global) const override
+    {
+        global = local;
+    }
+
+    [[nodiscard]] int AllReduceBitwiseAnd(int local) const override
+    {
+        return local;
+    }
 };

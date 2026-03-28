@@ -1,5 +1,10 @@
 #pragma once
 
+#include <vector>
+
+#include "antares-xpansion/benders/benders_core/SubproblemCut.h"
+#include "antares-xpansion/benders/benders_core/common.h"
+
 /**
  * @brief Strategy interface for communication operations in Benders decomposition.
  *
@@ -53,4 +58,28 @@ public:
     /// Returns true for sequential (local parallelism), false for MPI
     /// (distribution handles parallelism across ranks).
     [[nodiscard]] virtual bool ShouldParallelize() const = 0;
+
+    /// Broadcast a bool value from rank 0 to all processes (no-op for sequential)
+    virtual void Broadcast(bool& value) const = 0;
+
+    /// Broadcast a Point from rank 0 to all processes (no-op for sequential)
+    virtual void Broadcast(Point& value) const = 0;
+
+    /// Gather per-rank SubProblemDataMap into a vector on rank 0.
+    /// Sequential: wraps the local map in a single-element vector.
+    virtual void Gather(const SubProblemDataMap& local,
+                        std::vector<SubProblemDataMap>& gathered) const = 0;
+
+    /// Reduce a double across all ranks onto rank 0 using addition.
+    /// Sequential: global = local.
+    virtual void Reduce(double local, double& global) const = 0;
+
+    /// Reduce a vector<double> element-wise across all ranks onto rank 0 using addition.
+    /// Sequential: global = local.
+    virtual void Reduce(const std::vector<double>& local,
+                        std::vector<double>& global) const = 0;
+
+    /// All-reduce an int across all ranks using bitwise-AND.
+    /// Sequential: returns local unchanged.
+    [[nodiscard]] virtual int AllReduceBitwiseAnd(int local) const = 0;
 };
