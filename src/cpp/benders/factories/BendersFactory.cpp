@@ -6,7 +6,7 @@
 #include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
 #include <antares-xpansion/benders/benders_core/StartUp.h>
 #include <antares-xpansion/benders/benders_core/common.h>
-#include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
+#include <antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h>
 #include <antares-xpansion/helpers/AreaParser.h>
 #include <variant>
 
@@ -100,18 +100,18 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     switch (method_)
     {
     case BENDERSMETHOD::BENDERS:
-        benders = std::make_unique<BendersMpi>(benders_options,
-                                               dependencies_.logger,
-                                               dependencies_.writer,
-                                               *world_,
-                                               dependencies_.math_log_driver);
+        benders = std::make_unique<BendersBase>(benders_options,
+                                                dependencies_.logger,
+                                                dependencies_.writer,
+                                                dependencies_.math_log_driver,
+                                                std::make_shared<MpiCommunicationStrategy>(*world_));
         break;
     case BENDERSMETHOD::BENDERS_OUTERLOOP:
-        benders = std::make_unique<BendersMpi>(benders_options,
-                                               dependencies_.logger,
-                                               dependencies_.writer,
-                                               *world_,
-                                               dependencies_.math_log_driver);
+        benders = std::make_unique<BendersBase>(benders_options,
+                                                dependencies_.logger,
+                                                dependencies_.writer,
+                                                dependencies_.math_log_driver,
+                                                std::make_shared<MpiCommunicationStrategy>(*world_));
         break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
     case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:

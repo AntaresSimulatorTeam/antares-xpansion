@@ -72,6 +72,22 @@ public:
         return result;
     }
 
+    void Gather(const SubProblemNamesInCut& local,
+                std::vector<SubProblemNamesInCut>& gathered) const override
+    {
+        mpi::gather(world_, local, gathered, 0);
+    }
+
+    void Broadcast(std::vector<std::vector<int>>& value) const override
+    {
+        mpi::broadcast(world_, value, 0);
+    }
+
+    [[nodiscard]] std::string Name() const override
+    {
+        return "Benders mpi";
+    }
+
 private:
     mpi::communicator& world_;
 };

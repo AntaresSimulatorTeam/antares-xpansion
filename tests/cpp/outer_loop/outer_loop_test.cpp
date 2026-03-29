@@ -1,6 +1,7 @@
 
 #include <antares-xpansion/benders/benders_core/SimulationOptions.h>
-#include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
+#include <antares-xpansion/benders/benders_core/BendersBase.h>
+#include <antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
@@ -131,11 +132,11 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     bendersoptions.SOLVER_NAME = GetParam();
     bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
     bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE = OUTER_OPTIONS_FILE;
-    benders = std::make_shared<BendersMpi>(bendersoptions,
+    benders = std::make_shared<BendersBase>(bendersoptions,
         logger,
-                                           writer,
-                                           *pworld,
-                                           math_log_driver);
+                                            writer,
+                                            math_log_driver,
+                                            std::make_shared<MpiCommunicationStrategy>(*pworld));
     benders->SetPlugin(benders_plugin);
 
 

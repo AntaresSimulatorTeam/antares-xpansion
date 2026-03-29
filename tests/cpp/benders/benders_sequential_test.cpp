@@ -4,13 +4,14 @@
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
-#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/SequentialCommunicationStrategy.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
 
-class BendersSequentialDouble: public BendersSequential
+class BendersSequentialDouble: public BendersBase
 {
 public:
     bool parametrized_stop = false;
@@ -29,7 +30,11 @@ public:
                                      Logger& logger,
                                      std::shared_ptr<Output::OutputWriter> writer,
                                      std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-        BendersSequential(options, logger, writer, mathLoggerDriver)
+        BendersBase(options,
+                    logger,
+                    writer,
+                    mathLoggerDriver,
+                    std::make_shared<SequentialCommunicationStrategy>())
     {
     }
 
@@ -45,7 +50,7 @@ public:
 
     [[nodiscard]] WorkerMasterPtr get_master() const override
     {
-        return BendersSequential::get_master();
+        return BendersBase::get_master();
     }
 
     void get_master_value() override

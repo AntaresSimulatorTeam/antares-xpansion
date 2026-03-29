@@ -62,4 +62,20 @@ public:
     {
         return local;
     }
+
+    void Gather(const SubProblemNamesInCut& local,
+                std::vector<SubProblemNamesInCut>& gathered) const override
+    {
+        gathered = {local};
+    }
+
+    void Broadcast(std::vector<std::vector<int>>& /*value*/) const override
+    {
+        // No-op: single process already has the value
+    }
+
+    [[nodiscard]] std::string Name() const override
+    {
+        return "Sequential";
+    }
 };

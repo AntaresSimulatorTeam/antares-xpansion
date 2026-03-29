@@ -640,6 +640,12 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     benders_plugin_->OnBendersMicroIterationEnd();
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+
+    std::vector<double> solution = worker->get_solution();
+    criterion_computation_.ComputeCriterion(SubproblemWeight(_data.nsubproblem, name),
+                                            solution,
+                                            subproblem_data.criteria,
+                                            subproblem_data.patterns_values);
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
@@ -1495,6 +1501,114 @@ void BendersBase::roundXCut()
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {
     benders_plugin_ = benders_plugin;
+}
+
+std::string BendersBase::BendersName() const
+{
+    return GetCommunicationStrategy()->Name();
+}
+
+void BendersBase::InitializeMaster()
+{
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        std::shared_ptr<IBendersProblemProvider>
+          benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
+        reset_master<WorkerMaster>(master_variable_map_,
+                                   get_solver_name(),
+                                   get_log_level(),
+                                   _data.nsubproblem,
+                                   solver_log_manager_,
+                                   IsResumeMode(),
+                                   _logger,
+                                   Options().PROBLEMS_FORMAT,
+                                   benders_problem_provider.get(),
+                                   Options().MASTER_SOLUTION_TOLERANCE,
+                                   Options().CUT_COEFFICIENT_TOLERANCE);
+    }
+}
+
+void BendersBase::BuildMasterProblem()
+{
+    InitializeMaster();
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
+    }
+}
+
+void BendersBase::BroadCastVariablesIndices()
+{
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        SetSubproblemsVariablesIndices();
+    }
+    GetCommunicationStrategy()->Broadcast(criterion_computation_.getVarIndices());
+}
+
+void BendersBase::InitializeProblems()
+{
+    MatchProblemToId();
+    SubProblemNamesInCut subs_per_proc;
+    if (_options.CACHE_PROBLEMS)
+    {
+        int current_problem_id = 0;
+        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
+        {
+            auto process_rank = current_problem_id % WorldSize();
+            if (process_rank != Rank())
+            {
+                it = coupling_map_.erase(it);
+            }
+            else
+            {
+                subs_per_proc.emplace_back(it->first, process_rank);
+                ++it;
+            }
+            ++current_problem_id;
+        }
+    }
+    else
+    {
+        int current_problem_id = 0;
+        for (const auto& problem: coupling_map_)
+        {
+            auto process_rank = current_problem_id % WorldSize();
+            if (process_rank == Rank())
+            {
+                subs_per_proc.push_back({problem.first, process_rank});
+                AddSubproblem(problem);
+                AddSubproblemName(problem.first);
+            }
+            ++current_problem_id;
+        }
+    }
+
+    std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
+    GetCommunicationStrategy()->Gather(subs_per_proc, gathered_subs_per_proc);
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
+    }
+    BuildMasterProblem();
+    BroadCastVariablesIndices();
+    init_problems_ = false;
+}
+
+void BendersBase::free()
+{
+    if (GetCommunicationStrategy()->IsMaster())
+    {
+        if (get_master())
+        {
+            free_master();
+        }
+    }
+    else
+    {
+        free_subproblems();
+    }
+    GetCommunicationStrategy()->Barrier();
 }
 
 void BendersBase::launch()

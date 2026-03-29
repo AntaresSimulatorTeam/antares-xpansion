@@ -1,15 +1,20 @@
 #ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
-#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
-class BendersByBatch: public BendersMpi
+class BendersByBatch: public BendersBase
 {
     std::vector<unsigned> random_batch_permutation_;
 
 public:
-    using BendersMpi::BendersMpi;
+    BendersByBatch(const BendersBaseOptions& options,
+                   std::shared_ptr<ILogger> logger,
+                   std::shared_ptr<Output::OutputWriter> writer,
+                   mpi::communicator& world,
+                   std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     ~BendersByBatch() override = default;
     void Run() override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
@@ -22,6 +27,8 @@ public:
         return "Benders By Batch mpi";
     }
 
+    const int rank_0 = 0;
+
 protected:
     void InitializeProblems() override;
     void BroadcastSingleSubpbCostsUnderApprox();
@@ -30,10 +37,44 @@ protected:
     bool ShouldRelaxationStop() const override;
     void BuildBatches();
 
+    mpi::communicator& _world;
+
+    /// Generic broadcast for types not covered by ICommunicationStrategy
+    /// (used for BatchCollection, arrays, scalars, etc.)
+    template<typename T>
+    void BroadCast(T& value, int root) const
+    {
+        mpi::broadcast(_world, value, root);
+    }
+
+    template<typename T>
+    void BroadCast(T* values, int n, int root) const
+    {
+        mpi::broadcast(_world, values, n, root);
+    }
+
+    template<typename T>
+    void Gather(const T& value, std::vector<T>& vector_of_values, int root) const
+    {
+        mpi::gather(_world, value, vector_of_values, root);
+    }
+
+    template<typename T, typename Op>
+    void Reduce(const T& in_value, T& out_value, Op op, int root) const
+    {
+        mpi::reduce(_world, in_value, out_value, op, root);
+    }
+
+    template<typename T, typename Op>
+    void AllReduce(const T& in_value, T& out_value, Op op) const
+    {
+        mpi::all_reduce(_world, in_value, out_value, op);
+    }
+
 private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
                           const std::vector<std::string>& batch_sub_problems);
-    void BuildMasterProblem();
+    void BuildMasterProblem() override;
     double ComputeBatchContributionInGap(
       const std::vector<SubProblemDataMap>& gathered_subproblem_map,
       const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;

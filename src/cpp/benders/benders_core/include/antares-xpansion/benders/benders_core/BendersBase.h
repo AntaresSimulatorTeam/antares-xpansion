@@ -49,7 +49,7 @@ public:
     void set_solver_log_file(const std::filesystem::path& log_file);
 
     double execution_time() const;
-    virtual std::string BendersName() const = 0;
+    virtual std::string BendersName() const;
     // TODO rename to be consistent with data that it hold
     // ref of value?
     WorkerMasterDataVect AllCuts() const;
@@ -99,7 +99,7 @@ public:
     WorkerMasterData BestIterationWorkerMaster() const;
     void SetMasterObjectiveFunctionCoeffsToZeros() const;
     void SetMasterObjectiveFunction(const double* coeffs, int first, int last) const;
-    virtual void InitializeProblems() = 0;
+    virtual void InitializeProblems();
 
     void SetMaxIteration(int max_iteration)
     {
@@ -111,7 +111,7 @@ public:
         return _options;
     }
 
-    virtual void free() = 0;
+    virtual void free();
 
     int GetBendersRunNumber() const
     {
@@ -334,12 +334,27 @@ protected:
 
     int SetAggregation(int max_aggregation) const;
 
-    // These methods are in protected because BendersByBatch (via BendersMpi) calls them directly
+    // These methods are in protected because BendersByBatch calls them directly
     // in its own Run() override.
     void PreRunInitialization();
     void BroadcastXCut();
     void SetSubproblemDataCostAndSimplexIter(
       const std::vector<SubProblemDataMap>& gathered_subproblem_map);
+
+    // Problem initialization helpers (protected so BendersByBatch can override BuildMasterProblem)
+    void InitializeMaster();
+    virtual void BuildMasterProblem();
+    void BroadCastVariablesIndices();
+
+    // Convenience accessors wrapping the communication strategy
+    [[nodiscard]] int Rank() const
+    {
+        return GetCommunicationStrategy()->Rank();
+    }
+    [[nodiscard]] int WorldSize() const
+    {
+        return GetCommunicationStrategy()->WorldSize();
+    }
 
     /// Subproblem-to-cut grouping, set during InitializeProblems by subclasses.
     /// Maps each cut to the (name, rank) pairs of subproblems contributing to it.

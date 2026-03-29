@@ -82,4 +82,15 @@ public:
     /// All-reduce an int across all ranks using bitwise-AND.
     /// Sequential: returns local unchanged.
     [[nodiscard]] virtual int AllReduceBitwiseAnd(int local) const = 0;
+
+    /// Gather SubProblemNamesInCut from all ranks to rank 0.
+    /// Sequential: wraps the local value in a single-element vector.
+    virtual void Gather(const SubProblemNamesInCut& local,
+                        std::vector<SubProblemNamesInCut>& gathered) const = 0;
+
+    /// Broadcast a vector<vector<int>> from rank 0 to all processes (no-op for sequential).
+    virtual void Broadcast(std::vector<std::vector<int>>& value) const = 0;
+
+    /// Human-readable name of this execution context, used for logging.
+    [[nodiscard]] virtual std::string Name() const = 0;
 };
