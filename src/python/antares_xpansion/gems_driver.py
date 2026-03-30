@@ -44,11 +44,18 @@ class GemsDriver:
         Launch the gems step: antares-problem-generator + benders
         """
         self.data_dir = study_path
+        self._is_modeler_mode = not self.config_loader.has_area_folder()
 
         self._run_antares_problem_generator()
-        self._set_simulation_name()
-        self.config_loader._xpansion_simulation_name = self.simulation_output_path()
+
+        if self._is_modeler_mode:
+            self._set_modeler_output_path()
+        else:
+            self._set_simulation_name()
+
         self._create_lp_directory()
+
+        self.config_loader._xpansion_simulation_name = self.simulation_output_path()
         self.config_loader.benders_pre_actions()
         self._run_benders(
             method, keep_mps, n_mpi, oversubscribe, allow_run_as_root
@@ -108,6 +115,9 @@ class GemsDriver:
         if list_of_dirs:
             self.simulation_name = list_of_dirs[-1]
 
+    def _set_modeler_output_path(self):
+        self.simulation_name = ""
+
     def _create_lp_directory(self):
         output_path = self.simulation_output_path()
         lp_path = output_path / "lp"
@@ -124,6 +134,8 @@ class GemsDriver:
                 shutil.copy2(src, dst)
 
     def simulation_output_path(self) -> Path:
+        if self._is_modeler_mode:
+            return Path(self.antares_output_dir())
         return Path(self.antares_output_dir()) / self.simulation_name
 
     def _run_benders(
@@ -138,6 +150,7 @@ class GemsDriver:
 
         output_path = self.simulation_output_path()
         lp_path = output_path / "lp"
+
         self.benders_driver.set_custom_working_dir(lp_path)
         self.benders_driver.set_simulation_output_path(output_path)
 
