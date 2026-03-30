@@ -99,9 +99,9 @@ private:
 protected:
     void _set_master_only_var_ids();
     void setToZeroIfWithinTolerance(std::vector<double>& values,
-                                int first,
-                                int last,
-                                const std::vector<int>& subproblem_ids) const;
+                                    int first,
+                                    int last,
+                                    const std::vector<int>& subproblem_ids) const;
 
 public:
     // Used only for testing purposes

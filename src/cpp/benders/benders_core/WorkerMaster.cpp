@@ -561,9 +561,9 @@ void WorkerMaster::ActivateIntegrityConstraints() const
 }
 
 void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
-                                          int first,
-                                          int last,
-                                          const std::vector<int>& subproblem_ids) const
+                                              int first,
+                                              int last,
+                                              const std::vector<int>& subproblem_ids) const
 {
     double cut_coefficient_tolerance = 0.0;
     for (int sb_id: subproblem_ids)
