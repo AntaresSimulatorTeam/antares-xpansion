@@ -49,6 +49,10 @@ public:
     /// Synchronization barrier across all processes (no-op for sequential)
     virtual void Barrier() const = 0;
 
+    /// Broadcast a bool value from the master (rank 0) to all processes.
+    /// For sequential execution this is a no-op (value is already available).
+    virtual void Broadcast(bool& value) const = 0;
+
     /// Whether subproblems should be parallelized locally using TBB.
     /// Returns true for sequential (local parallelism), false for MPI
     /// (distribution handles parallelism across ranks).

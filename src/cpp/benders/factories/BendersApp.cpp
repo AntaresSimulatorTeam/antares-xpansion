@@ -9,7 +9,8 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
-#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
+#include "antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
@@ -184,11 +185,12 @@ int BendersApp::RunExternalLoop()
         std::shared_ptr<Outerloop::ICutsManager>
           cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
-        Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
-                                             master_updater,
-                                             cuts_manager,
-                                             benders_,
-                                             *pworld_);
+        Outerloop::OuterLoopBenders ext_loop(
+          outer_loop_inputs.Criteria(),
+          master_updater,
+          cuts_manager,
+          benders_,
+          std::make_shared<MpiCommunicationStrategy>(*pworld_));
         StartMessage();
         ext_loop.Run();
         EndMessage(ext_loop.Runtime());

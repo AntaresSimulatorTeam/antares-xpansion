@@ -27,6 +27,11 @@ public:
         // No-op for single process
     }
 
+    void Broadcast(bool& /*value*/) const override
+    {
+        // No-op for single process: value is already set on the only process
+    }
+
     [[nodiscard]] bool ShouldParallelize() const override
     {
         return true;

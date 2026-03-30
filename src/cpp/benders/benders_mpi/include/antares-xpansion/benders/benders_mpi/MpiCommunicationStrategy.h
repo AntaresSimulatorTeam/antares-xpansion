@@ -34,6 +34,11 @@ public:
         world_.barrier();
     }
 
+    void Broadcast(bool& value) const override
+    {
+        mpi::broadcast(world_, value, 0);
+    }
+
     [[nodiscard]] bool ShouldParallelize() const override
     {
         return false;
