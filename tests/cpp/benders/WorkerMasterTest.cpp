@@ -92,7 +92,6 @@ protected:
                                                      subproblem_cut_coefficient_tolerance);
         master->_solver = test_solver;
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
-        master->_name_to_id = {{"var1", 0}, {"var2", 1}, {"var3", 2}};
         master->set_id_alpha(3);
         master->set_id_single_subpb_costs_under_approx({4});
         master->_id_master_only_vars = {};

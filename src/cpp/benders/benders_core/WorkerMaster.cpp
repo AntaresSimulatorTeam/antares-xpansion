@@ -315,8 +315,8 @@ void WorkerMaster::addSubproblemCut(int i,
 
     // Round numerically small rhs ant coefficients to zero to get clean cuts and avoid numerical
     // artifacts
-    roundIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
-    roundIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
+    setToZeroIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
+    setToZeroIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -348,8 +348,8 @@ void WorkerMaster::addGroupSubproblemCut(std::vector<int> subproblem_ids,
     define_matval_mclind_for_index(subproblem_ids, s, matval, mclind);
 
     // Round rhs and coefficients of the cut to clean it
-    roundIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
-    roundIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
+    setToZeroIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
+    setToZeroIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -560,7 +560,7 @@ void WorkerMaster::ActivateIntegrityConstraints() const
     _solver->chg_col_type(_id_int_vars, col_types);
 }
 
-void WorkerMaster::roundIfWithinTolerance(std::vector<double>& values,
+void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
                                           int first,
                                           int last,
                                           const std::vector<int>& subproblem_ids) const

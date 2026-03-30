@@ -98,7 +98,7 @@ private:
 
 protected:
     void _set_master_only_var_ids();
-    void roundIfWithinTolerance(std::vector<double>& values,
+    void setToZeroIfWithinTolerance(std::vector<double>& values,
                                 int first,
                                 int last,
                                 const std::vector<int>& subproblem_ids) const;
