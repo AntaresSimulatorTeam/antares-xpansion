@@ -2,6 +2,7 @@
 #include <cerrno>
 #include <chrono>
 #include <iostream>
+#include <tbb/global_control.h>
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
@@ -185,6 +186,9 @@ int main(int argc, char** argv)
         optionsParser.Parse(argc, argv);
         auto studyPath = optionsParser.StudyPath();
         int nbThreads = optionsParser.NbThreads();
+
+        // limiting the number of TBB threads, as long as this instance is alive
+        tbb::global_control thread_limiter(tbb::global_control::max_allowed_parallelism, nbThreads);
 
         const std::filesystem::path bellmanConfigFilePath(
           studyPath / "user/water_values/dynamic_programming.yaml");
