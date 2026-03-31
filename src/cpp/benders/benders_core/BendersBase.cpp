@@ -210,10 +210,10 @@ void BendersBase::update_best_ub()
         _data.best_ub = _data.ub;
         _data.best_it = _data.it;
         FillWorkerMasterData(relevantIterationData_.best);
-        _data.criteria_current_iteration_data.max_criterion_best_it
-          = _data.criteria_current_iteration_data.max_criterion;
-        _data.criteria_current_iteration_data.max_criterion_area_best_it
-          = _data.criteria_current_iteration_data.max_criterion_area;
+        _data.criteria_current_iteration_data
+          .max_criterion_best_it = _data.criteria_current_iteration_data.max_criterion;
+        _data.criteria_current_iteration_data
+          .max_criterion_area_best_it = _data.criteria_current_iteration_data.max_criterion_area;
         relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
         best_iteration_data = bendersDataToLogData(_data);
     }
@@ -1499,9 +1499,9 @@ std::map<int, double> BendersBase::GetSubCutTolerance() const
     std::map<int, double> subproblem_cut_coefficient_tolerance{};
     for (const auto& subproblem_name: GetSubProblemNames())
     {
-        subproblem_cut_coefficient_tolerance[ProblemToId(subproblem_name)]
-          = Options().CUT_COEFFICIENT_TOLERANCE
-            * SubproblemWeight(_data.nsubproblem, subproblem_name);
+        subproblem_cut_coefficient_tolerance[ProblemToId(
+          subproblem_name)] = Options().CUT_COEFFICIENT_TOLERANCE;
+        // SubproblemWeight(_data.nsubproblem, subproblem_name);
     }
     return subproblem_cut_coefficient_tolerance;
 }

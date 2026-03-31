@@ -571,7 +571,7 @@ void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
         cut_coefficient_tolerance += _subproblem_tolerance.find(sb_id)->second;
     }
 
-    const double tolerance = 5e-3; //cut_coefficient_tolerance;
+    const double tolerance = cut_coefficient_tolerance;
 
     std::transform(values.begin() + first,
                    values.begin() + last,
