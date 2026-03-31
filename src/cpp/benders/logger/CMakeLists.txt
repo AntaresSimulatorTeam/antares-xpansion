@@ -6,7 +6,7 @@ target_sources(logger_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/IterationResultLog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/FilteredLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/Master.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/MultithreadLogger.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/MultithreadTBBLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/User.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/User.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/UserFile.h
@@ -15,7 +15,7 @@ target_sources(logger_lib PRIVATE
         FilteredLogger.cpp
         Master.cpp
         MathLogger.cpp
-        MultithreadLogger.cpp
+        MultithreadTBBLogger.cpp
         User.cpp
         UserFile.cpp
 )

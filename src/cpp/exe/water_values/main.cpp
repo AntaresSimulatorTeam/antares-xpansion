@@ -9,9 +9,7 @@
 #include "antares-xpansion/bellman_values/DynamicProgrammingConfigReader.h"
 #include "antares-xpansion/bellman_values/ProblemManager.h"
 #include "antares-xpansion/bellman_values/SettingsConfigReader.h"
-#include "antares-xpansion/benders/factories/LoggerFactories.h"
-#include "antares-xpansion/benders/logger/FilteredLogger.h"
-#include "antares-xpansion/benders/logger/MultithreadLogger.h"
+#include "antares-xpansion/benders/logger/MultithreadTBBLogger.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
@@ -187,8 +185,13 @@ int main(int argc, char** argv)
         auto studyPath = optionsParser.StudyPath();
         int nbThreads = optionsParser.NbThreads();
 
+        // getting the maximum hardware concurrency (default)
+        int max_thread_concurrency = tbb::global_control::active_value(
+          tbb::global_control::max_allowed_parallelism);
         // limiting the number of TBB threads, as long as this instance is alive
         tbb::global_control thread_limiter(tbb::global_control::max_allowed_parallelism, nbThreads);
+        // nbThreads shouldn't be larger than the maximum hardware concurrency
+        nbThreads = std::min(nbThreads, max_thread_concurrency);
 
         const std::filesystem::path bellmanConfigFilePath(
           studyPath / "user/water_values/dynamic_programming.yaml");
@@ -227,19 +230,11 @@ int main(int argc, char** argv)
         std::string logSubFolder = "water_values_logs";
         std::string logFilename = "water_values_log.txt";
         std::filesystem::create_directories(directories.simulation_dir / logSubFolder);
-        std::filesystem::path logPath = directories.simulation_dir / logSubFolder / logFilename;
-        std::ofstream{logPath}; // creates log file, since the FileLoggerFactory doesn't
-        auto loggerFactory = FileAndStdoutLoggerFactory(logPath, false);
-        Logger masterLogger = loggerFactory.get_logger();
-        std::shared_ptr<FilteredLogger> defaultLogger = std::make_shared<FilteredLogger>(
-          masterLogger,
-          LogUtils::StrToLogLevel(verbosity));
-
-        std::shared_ptr<MultithreadLogger> logger = std::make_shared<MultithreadLogger>(
-          defaultLogger,
+        std::shared_ptr<MultithreadTBBLogger> logger = std::make_shared<MultithreadTBBLogger>(
           directories.simulation_dir / logSubFolder,
           logFilename,
-          nbThreads);
+          nbThreads,
+          LogUtils::StrToLogLevel(verbosity));
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                  / "user/water_values/grid.csv",
