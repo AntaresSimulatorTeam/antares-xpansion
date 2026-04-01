@@ -17,4 +17,4 @@ Feature: outer loop tests
     When I run outer loop with 1 proc(s) and "options_default.json" as option file
     Then the simulation succeeds
     And the simulation takes less than 5 seconds
-    And LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros
+    And LOLD.txt and UnsuppliedEnergy.txt files are full of zeros
