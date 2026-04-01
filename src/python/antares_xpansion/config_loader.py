@@ -40,10 +40,12 @@ class XpansionSettingsReader:
     Minimal class to read data in a study's setting
     """
 
-    def __init__(self, study_path: Path, xpansion_defaults: XpansionConfigConstants):
+    def __init__(self, study_path: Path, xpansion_defaults: XpansionConfigConstants,
+                 skip_file_validation: bool = False):
         self.path = study_path
         self._config_defaults = xpansion_defaults
         self.logger = step_logger(__name__, __class__.__name__)
+        self._skip_file_validation = skip_file_validation
 
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()
@@ -115,6 +117,23 @@ class XpansionSettingsReader:
         )
         return os.path.isfile(optim_config_path)
 
+    @staticmethod
+    def _has_optim_config_static(data_dir, config):
+        optim_config_path = os.path.normpath(
+            os.path.join(
+                data_dir,
+                config.INPUT,
+                "optim-config.yml",
+            )
+        )
+        return os.path.isfile(optim_config_path)
+
+    def is_gems_mode(self):
+        """
+        Check if gems workflow should be used (gems step or benders/full step with optim-config.yml)
+        """
+        return self.step() in ("gems", "benders", "full") and self.has_optim_config()
+
     def general_data(self):
         """
         returns path to general data ini file
@@ -136,6 +155,8 @@ class XpansionSettingsReader:
         )
 
     def check_candidates_file_format(self):
+        if self._skip_file_validation:
+            return
         if not os.path.isfile(self.candidates_ini_filepath()):
             raise ConfigLoader.MissingFile(
                 " %s was not retrieved." % self.candidates_ini_filepath()
@@ -146,6 +167,8 @@ class XpansionSettingsReader:
         )
 
     def check_settings_file_format(self):
+        if self._skip_file_validation:
+            return
         check_options(self.options)
         self._verify_additional_constraints_file()
 
@@ -373,7 +396,11 @@ class ConfigLoader(XpansionSettingsReader):
         :param config: configuration to use for the optimization
         :type config: XpansionConfig object
         """
-        super().__init__(config.data_dir, config)
+        skip_file_validation = (
+            config.step in ("benders", "full", "gems")
+            and XpansionSettingsReader._has_optim_config_static(config.data_dir, config)
+        )
+        super().__init__(config.data_dir, config, skip_file_validation)
         self.platform = sys.platform
         self.logger = step_logger(__name__, __class__.__name__)
 
@@ -390,12 +417,15 @@ class ConfigLoader(XpansionSettingsReader):
 
         self.candidates_list = []
 
-        self.active_years = GeneralDataIniReader(
-            Path(self.general_data())
-        ).get_active_years()
+        if not self._skip_file_validation:
+            self.active_years = GeneralDataIniReader(
+                Path(self.general_data())
+            ).get_active_years()
 
-        antares_version = read_antares_version(self._config.data_dir)
-        self.check_NTC_column_constraints(antares_version)
+            antares_version = read_antares_version(self._config.data_dir)
+            self.check_NTC_column_constraints(antares_version)
+        else:
+            self.active_years = []
 
         # Other settings already checked by parent class
         self._verify_solver()

@@ -110,12 +110,11 @@ class XpansionDriver:
         """
 
         use_gems = (
-            self.config_loader.step() in ("benders", "full")
+            self.config_loader.step() in ("gems", "benders", "full")
             and self.config_loader.has_optim_config()
         )
 
         if use_gems:
-            self.update_study_settings(memory_mode=False)
             self.launch_gems_step()
             return
 
