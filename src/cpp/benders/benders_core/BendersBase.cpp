@@ -1500,8 +1500,8 @@ std::map<int, double> BendersBase::GetSubCutTolerance() const
     for (const auto& subproblem_name: GetSubProblemNames())
     {
         subproblem_cut_coefficient_tolerance[ProblemToId(
-          subproblem_name)] = Options().CUT_COEFFICIENT_TOLERANCE;
-        // SubproblemWeight(_data.nsubproblem, subproblem_name);
+          subproblem_name)] = Options().CUT_COEFFICIENT_TOLERANCE
+                              * SubproblemWeight(_data.nsubproblem, subproblem_name);
     }
     return subproblem_cut_coefficient_tolerance;
 }

@@ -568,7 +568,11 @@ void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
     double cut_coefficient_tolerance = 0.0;
     for (int sb_id: subproblem_ids)
     {
-        cut_coefficient_tolerance += _subproblem_tolerance.find(sb_id)->second;
+        auto it = _subproblem_tolerance.find(sb_id);
+        if (it == _subproblem_tolerance.end()) {
+            throw std::runtime_error("sb_id absent de _subproblem_tolerance");
+        }
+        cut_coefficient_tolerance += it->second;
     }
 
     const double tolerance = cut_coefficient_tolerance;
