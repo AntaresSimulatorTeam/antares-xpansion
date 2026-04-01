@@ -1497,11 +1497,11 @@ void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 std::map<int, double> BendersBase::GetSubCutTolerance() const
 {
     std::map<int, double> subproblem_cut_coefficient_tolerance{};
-    for (const auto& subproblem_name: GetSubProblemNames())
+    for (const auto& subproblem: _problem_to_id)
     {
-        subproblem_cut_coefficient_tolerance[ProblemToId(
-          subproblem_name)] = Options().CUT_COEFFICIENT_TOLERANCE
-                              * SubproblemWeight(_data.nsubproblem, subproblem_name);
+        std::cout << subproblem.first << std::endl;
+        subproblem_cut_coefficient_tolerance[subproblem.second] = Options().CUT_COEFFICIENT_TOLERANCE
+                              * SubproblemWeight(_data.nsubproblem, subproblem.first);
     }
     return subproblem_cut_coefficient_tolerance;
 }
