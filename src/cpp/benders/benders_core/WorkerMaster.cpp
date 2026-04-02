@@ -582,5 +582,6 @@ void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
     std::transform(values.begin() + first,
                    values.begin() + last,
                    values.begin() + first,
-                   [cut_coefficient_tolerance](double value) { return std::abs(value) < cut_coefficient_tolerance ? 0.0 : value; });
+                   [cut_coefficient_tolerance](double value)
+                   { return std::abs(value) < cut_coefficient_tolerance ? 0.0 : value; });
 }
