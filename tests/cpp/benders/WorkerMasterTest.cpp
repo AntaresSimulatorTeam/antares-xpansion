@@ -130,7 +130,7 @@ public:
     }
 };
 
-class WorkerMasterAlphasFixingTest : public ::testing::Test
+class WorkerMasterAddRowsTest : public ::testing::Test
 {
 protected:
     EmptyLogManager solver_log_manager;
@@ -141,7 +141,7 @@ protected:
     {
         std::map<int, double> subproblem_cut_coefficient_tolerance{};
         for (int i=0;i<subproblems_count;i++){
-            subproblem_cut_coefficient_tolerance[0] = 0.1;
+            subproblem_cut_coefficient_tolerance[i] = 0.1;
         }
         return std::make_shared<WorkerMaster>(VariableMap{},
                                               "COIN",
@@ -157,7 +157,7 @@ protected:
     }
 };
 
-TEST_F(WorkerMasterAlphasFixingTest, NoConstraintsAddedForSingleSubproblemInCut)
+TEST_F(WorkerMasterAddRowsTest, NoConstraintsAddedForSingleSubproblemInCut)
 {
     auto master = make_master(1);
     auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
@@ -172,7 +172,7 @@ TEST_F(WorkerMasterAlphasFixingTest, NoConstraintsAddedForSingleSubproblemInCut)
     EXPECT_TRUE(capturing_solver->captured_rows.empty());
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, OneConstraintAddedForTwoSubproblemsInCut)
+TEST_F(WorkerMasterAddRowsTest, OneConstraintAddedForTwoSubproblemsInCut)
 {
     auto master = make_master(2);
     auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
@@ -192,7 +192,7 @@ TEST_F(WorkerMasterAlphasFixingTest, OneConstraintAddedForTwoSubproblemsInCut)
     EXPECT_EQ(row.matval, std::vector<double>({1.0, -1.0}));
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, TwoConstraintsAddedForThreeSubproblemsInCut)
+TEST_F(WorkerMasterAddRowsTest, TwoConstraintsAddedForThreeSubproblemsInCut)
 {
     // For a cut grouping pb0, pb1, pb2: adds alpha_0=alpha_1 and alpha_0=alpha_2
     auto master = make_master(3);
@@ -220,7 +220,7 @@ TEST_F(WorkerMasterAlphasFixingTest, TwoConstraintsAddedForThreeSubproblemsInCut
     EXPECT_EQ(row1.matval, std::vector<double>({1.0, -1.0}));
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, ConstraintsAddedPerCutIndependently)
+TEST_F(WorkerMasterAddRowsTest, ConstraintsAddedPerCutIndependently)
 {
     // Two cuts: first groups pb0+pb1 (adds 1 constraint), second has only pb2 (adds none)
     auto master = make_master(3);
@@ -359,7 +359,7 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     EXPECT_EQ(master->_id_master_only_vars, expected);
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, AddSubproblemCutAppliesRoundingOnCoeffs)
+TEST_F(WorkerMasterAddRowsTest, AddSubproblemCutAppliesRoundingOnCoeffs)
 {
     auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
     auto master = make_master(1);

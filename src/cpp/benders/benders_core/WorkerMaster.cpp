@@ -571,20 +571,16 @@ void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
         auto it = _subproblem_tolerance.find(sb_id);
         if (it == _subproblem_tolerance.end())
         {
-            throw std::runtime_error("sb_id absent de _subproblem_tolerance");
+            throw std::runtime_error("sb_id not found in _subproblem_tolerance");
         }
         cut_coefficient_tolerance += it->second;
     }
 
-    const double tolerance = cut_coefficient_tolerance;
-
-    if (tolerance >= 1)
-    {
-        throw std::runtime_error("Cut tolerance greater than 1");
-    }
+    // When rounding coefficients cut, if the tolerance is greater than 1, this could remove alpha
+    // coefficient. This shouldn't happen as weights and cut_tolerance are less than 1.
 
     std::transform(values.begin() + first,
                    values.begin() + last,
                    values.begin() + first,
-                   [tolerance](double value) { return std::abs(value) < tolerance ? 0.0 : value; });
+                   [cut_coefficient_tolerance](double value) { return std::abs(value) < cut_coefficient_tolerance ? 0.0 : value; });
 }
