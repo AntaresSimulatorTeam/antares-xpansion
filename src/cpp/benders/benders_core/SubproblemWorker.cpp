@@ -19,9 +19,8 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
                                    const SolverLogManager& solver_log_manager,
                                    Logger logger,
                                    ProblemsFormat format,
-                                   IBendersProblemProvider* benders_problem_provider,
-                                   double cut_coefficient_tolerance):
-    Worker(variable_map, std::move(logger), cut_coefficient_tolerance)
+                                   IBendersProblemProvider* benders_problem_provider):
+    Worker(variable_map, std::move(logger))
 {
     init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
 
@@ -75,14 +74,6 @@ void SubproblemWorker::get_subgradient(Point& subgradient) const
     subgradient.clear();
     std::vector<double> ptr(_solver->get_ncols());
     solver_getlpreducedcost(_solver, ptr);
-
-    // If subgradients are numerically small, round to zero so that cuts generated later on are
-    // clean
-    // We only round the values for the candidates. relies on the assumption that they have
-    // successive ids in the problem
-    roundIfWithinTolerance(ptr,
-                           _id_to_name.begin()->first,
-                           _id_to_name.begin()->first + _id_to_name.size());
 
     for (const auto& kvp: _id_to_name)
     {

@@ -157,7 +157,7 @@ void BendersMpi::InitializeMaster()
                                    Options().PROBLEMS_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
-                                   Options().CUT_COEFFICIENT_TOLERANCE);
+                                   GetSubCutTolerance());
     }
 }
 

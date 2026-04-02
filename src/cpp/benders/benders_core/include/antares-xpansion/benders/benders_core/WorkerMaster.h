@@ -25,7 +25,7 @@ public:
                  ProblemsFormat format,
                  IBendersProblemProvider* benders_problem_provider,
                  double master_solution_tolerance,
-                 double cut_coefficient_tolerance);
+                 const std::map<int, double>& subproblem_cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
     void add_row(std::vector<char>& row_type,
@@ -72,6 +72,7 @@ private:
     int subproblems_count;
     bool _mps_has_alpha = false;
     double _master_solution_tolerance;
+    std::map<int, double> _subproblem_tolerance;
     void define_matval_mclind(const Point& s,
                               std::vector<double>& matval,
                               std::vector<int>& mclind) const;
@@ -97,6 +98,10 @@ private:
 
 protected:
     void _set_master_only_var_ids();
+    void setToZeroIfWithinTolerance(std::vector<double>& values,
+                                    int first,
+                                    int last,
+                                    const std::vector<int>& subproblem_ids) const;
 
 public:
     // Used only for testing purposes

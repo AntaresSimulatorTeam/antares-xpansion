@@ -77,6 +77,8 @@ protected:
         auto test_solver = std::make_shared<NOOPSolverForWorkerMaster>();
         EmptyLogManager solver_log_manager;
         auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
+        std::map<int, double> subproblem_cut_coefficient_tolerance{};
+        subproblem_cut_coefficient_tolerance[0] = cut_coefficient_tolerance;
         auto master = std::make_shared<WorkerMaster>(VariableMap{},
                                                      "COIN",
                                                      0,
@@ -87,7 +89,7 @@ protected:
                                                      ProblemsFormat::MPS_FILE,
                                                      problem_provider.get(),
                                                      master_solution_tolerance,
-                                                     cut_coefficient_tolerance);
+                                                     subproblem_cut_coefficient_tolerance);
         master->_solver = test_solver;
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
         master->set_id_alpha(3);
@@ -128,7 +130,7 @@ public:
     }
 };
 
-class WorkerMasterAlphasFixingTest : public ::testing::Test
+class WorkerMasterAddRowsTest : public ::testing::Test
 {
 protected:
     EmptyLogManager solver_log_manager;
@@ -137,6 +139,10 @@ protected:
 
     std::shared_ptr<WorkerMaster> make_master(int subproblems_count)
     {
+        std::map<int, double> subproblem_cut_coefficient_tolerance{};
+        for (int i=0;i<subproblems_count;i++){
+            subproblem_cut_coefficient_tolerance[i] = 0.1;
+        }
         return std::make_shared<WorkerMaster>(VariableMap{},
                                               "COIN",
                                               0,
@@ -147,11 +153,11 @@ protected:
                                               ProblemsFormat::MPS_FILE,
                                               problem_provider.get(),
                                               0.1,
-                                              0.1);
+                                              subproblem_cut_coefficient_tolerance);
     }
 };
 
-TEST_F(WorkerMasterAlphasFixingTest, NoConstraintsAddedForSingleSubproblemInCut)
+TEST_F(WorkerMasterAddRowsTest, NoConstraintsAddedForSingleSubproblemInCut)
 {
     auto master = make_master(1);
     auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
@@ -166,7 +172,7 @@ TEST_F(WorkerMasterAlphasFixingTest, NoConstraintsAddedForSingleSubproblemInCut)
     EXPECT_TRUE(capturing_solver->captured_rows.empty());
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, OneConstraintAddedForTwoSubproblemsInCut)
+TEST_F(WorkerMasterAddRowsTest, OneConstraintAddedForTwoSubproblemsInCut)
 {
     auto master = make_master(2);
     auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
@@ -186,7 +192,7 @@ TEST_F(WorkerMasterAlphasFixingTest, OneConstraintAddedForTwoSubproblemsInCut)
     EXPECT_EQ(row.matval, std::vector<double>({1.0, -1.0}));
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, TwoConstraintsAddedForThreeSubproblemsInCut)
+TEST_F(WorkerMasterAddRowsTest, TwoConstraintsAddedForThreeSubproblemsInCut)
 {
     // For a cut grouping pb0, pb1, pb2: adds alpha_0=alpha_1 and alpha_0=alpha_2
     auto master = make_master(3);
@@ -214,7 +220,7 @@ TEST_F(WorkerMasterAlphasFixingTest, TwoConstraintsAddedForThreeSubproblemsInCut
     EXPECT_EQ(row1.matval, std::vector<double>({1.0, -1.0}));
 }
 
-TEST_F(WorkerMasterAlphasFixingTest, ConstraintsAddedPerCutIndependently)
+TEST_F(WorkerMasterAddRowsTest, ConstraintsAddedPerCutIndependently)
 {
     // Two cuts: first groups pb0+pb1 (adds 1 constraint), second has only pb2 (adds none)
     auto master = make_master(3);
@@ -328,7 +334,7 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
         ProblemsFormat::MPS_FILE,
         problem_provider.get(),
         0.1,
-        0.1
+        std::map<int,double>{}
     );
 
     struct FakeSolver : public NOOPSolverForWorkerMaster {
@@ -352,3 +358,40 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     std::vector<int> expected{2};
     EXPECT_EQ(master->_id_master_only_vars, expected);
 }
+
+TEST_F(WorkerMasterAddRowsTest, AddSubproblemCutAppliesRoundingOnCoeffs)
+{
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    auto master = make_master(1);
+    master->_solver = capturing_solver;
+    master->_name_to_id = {{"var1", 0}, {"var2", 1}, {"var3", 2}};
+    master->set_id_single_subpb_costs_under_approx({4});
+
+    Point subgradient;
+    subgradient["var1"] = -5e-3; 
+    subgradient["var2"] = -4e-2;
+    subgradient["var3"] = -3e-1;
+
+    Point x_cut;
+    x_cut["var1"] = 1.0;
+    x_cut["var2"] = 10.0;
+    x_cut["var3"] = 100.0;
+
+    double subproblem_cost = 10.0;
+
+    master->addSubproblemCut(0, subgradient, x_cut, subproblem_cost);
+    // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
+    // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
+
+    EXPECT_EQ(capturing_solver->captured_rows.size(), 1);
+    const auto& row = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row.rhs[0], -40.405);
+
+    EXPECT_EQ(row.matval.size(),4);
+    EXPECT_EQ(row.matval[0], 0.0);
+    EXPECT_EQ(row.matval[1], 0.0);
+    EXPECT_EQ(row.matval[2], -0.3);
+    EXPECT_EQ(row.matval[3], -1);
+
+}
+
