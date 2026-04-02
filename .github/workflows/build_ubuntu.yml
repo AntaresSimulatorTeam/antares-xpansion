@@ -137,7 +137,10 @@ jobs:
         uses: ./.github/workflows/cucumber-tests
         with:
           mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
-
+      - name: Check CPU info
+        run: |
+          nproc
+          lscpu | grep "CPU(s)"
       - name: Test
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
