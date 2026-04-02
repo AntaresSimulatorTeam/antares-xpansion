@@ -417,9 +417,10 @@ class ConfigLoader(XpansionSettingsReader):
 
         self.candidates_list = []
 
-        if not self._skip_file_validation:
+        general_data_path = self.general_data()
+        if os.path.isfile(general_data_path):
             self.active_years = GeneralDataIniReader(
-                Path(self.general_data())
+                Path(general_data_path)
             ).get_active_years()
 
             antares_version = read_antares_version(self._config.data_dir)
