@@ -145,7 +145,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure
+          ctest -C Release --output-on-failure -j$(nproc)
 
       - name: Compile coverage reports
         run: |

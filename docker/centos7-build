@@ -134,7 +134,7 @@ RUN \
       behave --tags "not @flaky and not @noci"  cucumber/features --no-capture --no-capture-stderr --format pretty && \
       popd && \
       cd _build && \
-      ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+      ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium" -j$(nproc)
 
 # Install
 RUN cd _build && \
