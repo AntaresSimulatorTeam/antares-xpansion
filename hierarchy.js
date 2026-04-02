@@ -226,7 +226,6 @@ var hierarchy =
     ] ],
     [ "IBendersProblemProvider", "classIBendersProblemProvider.html", [
       [ "BendersProblemFromFile", "classBendersProblemFromFile.html", null ],
-      [ "NOOPBendersProblemProvider", "classNOOPBendersProblemProvider.html", null ],
       [ "NOOPBendersProblemProvider", "classNOOPBendersProblemProvider.html", null ]
     ] ],
     [ "ICommunicationStrategy", "classICommunicationStrategy.html", [
@@ -440,7 +439,6 @@ var hierarchy =
     [ "SolverAbstract", "classSolverAbstract.html", [
       [ "NOOPSolver", "classNOOPSolver.html", [
         [ "NOOPSolverForWorker", "classNOOPSolverForWorker.html", [
-          [ "NOOPSolverForSubproblemWorker", "classNOOPSolverForSubproblemWorker.html", null ],
           [ "NOOPSolverForWorkerMaster", "classNOOPSolverForWorkerMaster.html", [
             [ "CapturingSolverForAlphas", "classCapturingSolverForAlphas.html", null ]
           ] ]
@@ -528,14 +526,13 @@ var hierarchy =
       [ "SensitivityUserLoggerTest", "classSensitivityUserLoggerTest.html", null ],
       [ "SensitivityWriterTest", "classSensitivityWriterTest.html", null ],
       [ "StudyUpdateTest", "classStudyUpdateTest.html", null ],
-      [ "SubproblemWorkerTest", "classSubproblemWorkerTest.html", null ],
       [ "UpdateCapacitiesTest", "classUpdateCapacitiesTest.html", null ],
       [ "UserLoggerTest", "classUserLoggerTest.html", null ],
       [ "VariableFileReaderTest", "classVariableFileReaderTest.html", null ],
       [ "VariablesGroupTest", "classVariablesGroupTest.html", null ],
       [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ],
       [ "WeightsFileWriterTest", "classWeightsFileWriterTest.html", null ],
-      [ "WorkerMasterAlphasFixingTest", "classWorkerMasterAlphasFixingTest.html", null ],
+      [ "WorkerMasterAddRowsTest", "classWorkerMasterAddRowsTest.html", null ],
       [ "WorkerMasterTest", "classWorkerMasterTest.html", null ]
     ] ],
     [ "tests.python.test_antares_driver.TestAntaresDriver", "classtests_1_1python_1_1test__antares__driver_1_1TestAntaresDriver.html", null ],

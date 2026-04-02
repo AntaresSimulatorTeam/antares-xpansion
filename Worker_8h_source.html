@@ -155,7 +155,7 @@ $(function(){initNavTree('Worker_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classWorker.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classWorker.html">Worker</a></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_class" href="classWorker.html">Worker</a>(VariableMap variable_map, Logger logger, <span class="keywordtype">double</span> cut_coefficient_tolerance);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_class" href="classWorker.html">Worker</a>(VariableMap variable_map, Logger logger);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classWorker.html#a3cb29b6fca63283d104fe424cd2adbde">init</a>(<span class="keyword">const</span> std::string&amp; solver_name,</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>              <span class="keywordtype">int</span> log_level,</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>              <span class="keyword">const</span> <a class="code hl_class" href="classSolverLogManager.html">SolverLogManager</a>&amp; solver_log_manager,</div>
@@ -204,11 +204,7 @@ $(function(){initNavTree('Worker_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_class" href="classSolverIO.html">SolverIO</a> solver_io_;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordtype">void</span> writeProb(<span class="keyword">const</span> std::filesystem::path&amp; out) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">double</span> cut_coefficient_tolerance_;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">void</span> roundIfWithinTolerance(std::vector&lt;double&gt;&amp; values, <span class="keywordtype">int</span> first, <span class="keywordtype">int</span> last) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>};</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
 </div>
 <div class="ttc" id="aclassIBendersProblemProvider_html"><div class="ttname"><a href="classIBendersProblemProvider.html">IBendersProblemProvider</a></div><div class="ttdef"><b>Definition</b> IBendersProblemProvider.h:7</div></div>
 <div class="ttc" id="aclassSolverIO_html"><div class="ttname"><a href="classSolverIO.html">SolverIO</a></div><div class="ttdef"><b>Definition</b> SolverIO.h:8</div></div>

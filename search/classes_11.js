@@ -63,6 +63,5 @@ var searchData=
   ['studyupdatetest_60',['StudyUpdateTest',['../classStudyUpdateTest.html',1,'']]],
   ['subproblemdata_61',['SubProblemData',['../structPlainData_1_1SubProblemData.html',1,'PlainData']]],
   ['subproblemstats_62',['SubProblemStats',['../classtests_1_1end__to__end_1_1cucumber_1_1features_1_1steps_1_1then_1_1SubProblemStats.html',1,'tests::end_to_end::cucumber::features::steps::then']]],
-  ['subproblemworker_63',['SubproblemWorker',['../classSubproblemWorker.html',1,'']]],
-  ['subproblemworkertest_64',['SubproblemWorkerTest',['../classSubproblemWorkerTest.html',1,'']]]
+  ['subproblemworker_63',['SubproblemWorker',['../classSubproblemWorker.html',1,'']]]
 ];

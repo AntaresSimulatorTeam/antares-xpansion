@@ -124,7 +124,6 @@ var searchData=
   ['subproblemdata_121',['SubProblemData',['../structPlainData_1_1SubProblemData.html',1,'PlainData']]],
   ['subproblemstats_122',['SubProblemStats',['../classtests_1_1end__to__end_1_1cucumber_1_1features_1_1steps_1_1then_1_1SubProblemStats.html',1,'tests::end_to_end::cucumber::features::steps::then']]],
   ['subproblemweight_123',['SubproblemWeight',['../classBendersBase.html#ab979fd9e6fd791c6b01d244da33ba849',1,'BendersBase']]],
-  ['subproblemworker_124',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#a4353df6111363aa803afcfa82c21bd2d',1,'SubproblemWorker::SubproblemWorker()']]],
-  ['subproblemworkertest_125',['SubproblemWorkerTest',['../classSubproblemWorkerTest.html',1,'']]],
-  ['summary_20of_20the_20costs_126',['Summary of the costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md257',1,'']]]
+  ['subproblemworker_124',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#a5a2957a2f29ebafa4adec5fd07fa65e4',1,'SubproblemWorker::SubproblemWorker()']]],
+  ['summary_20of_20the_20costs_125',['Summary of the costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md257',1,'']]]
 ];

@@ -9,7 +9,7 @@ var searchData=
   ['weightsfilewritertest_6',['WeightsFileWriterTest',['../classWeightsFileWriterTest.html',1,'']]],
   ['worker_7',['Worker',['../classWorker.html',1,'']]],
   ['workermaster_8',['WorkerMaster',['../classWorkerMaster.html',1,'']]],
-  ['workermasteralphasfixingtest_9',['WorkerMasterAlphasFixingTest',['../classWorkerMasterAlphasFixingTest.html',1,'']]],
+  ['workermasteraddrowstest_9',['WorkerMasterAddRowsTest',['../classWorkerMasterAddRowsTest.html',1,'']]],
   ['workermasterdata_10',['WorkerMasterData',['../classWorkerMasterData.html',1,'']]],
   ['workermastermock_11',['WorkerMasterMock',['../classWorkerMasterMock.html',1,'']]],
   ['workermastertest_12',['WorkerMasterTest',['../classWorkerMasterTest.html',1,'']]],
