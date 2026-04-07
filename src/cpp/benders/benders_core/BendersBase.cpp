@@ -576,8 +576,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               solver_log_manager_,
                                               _logger,
                                               _options.PROBLEMS_FORMAT,
-                                              benders_problem_provider.get(),
-                                              _options.CUT_COEFFICIENT_TOLERANCE);
+                                              benders_problem_provider.get());
 }
 
 void BendersBase::SetBasisForSubproblem(const std::string& name,
@@ -1091,8 +1090,7 @@ void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
       solver_log_manager_,
       _logger,
       _options.PROBLEMS_FORMAT,
-      benders_problem_provider.get(),
-      _options.CUT_COEFFICIENT_TOLERANCE);
+      benders_problem_provider.get());
 }
 
 void BendersBase::free_subproblems()
@@ -1479,4 +1477,17 @@ void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 Output::SolutionData BendersBase::GetCurrentBendersSolution() const
 {
     return BendersSolution();
+}
+std::map<int, double> BendersBase::GetSubCutTolerance() const
+{
+    std::map<int, double> subproblem_cut_coefficient_tolerance{};
+    for (const auto& subproblem: _problem_to_id)
+    {
+        subproblem_cut_coefficient_tolerance[subproblem.second] = Options()
+                                                                    .CUT_COEFFICIENT_TOLERANCE
+                                                                  * SubproblemWeight(
+                                                                    _data.nsubproblem,
+                                                                    subproblem.first);
+    }
+    return subproblem_cut_coefficient_tolerance;
 }
