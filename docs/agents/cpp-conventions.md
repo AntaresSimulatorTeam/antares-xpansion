@@ -64,7 +64,7 @@ Disable formatting for specific sections:
 ```
 src/cpp/
 ├── benders/           # Benders optimization
-├── lpnamer/          # Linear programming naming
+├── lpnamer/          # Generation of investment problems from simulation ones
 ├── merge_mps/        # MPS file merging
 ├── zip_mps/          # MPS compression
 ├── json_output_writer/
