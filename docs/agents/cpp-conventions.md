@@ -63,14 +63,18 @@ Disable formatting for specific sections:
 
 ```
 src/cpp/
-├── benders/           # Benders optimization
-├── lpnamer/          # Generation of investment problems from simulation ones
-├── merge_mps/        # MPS file merging
-├── zip_mps/          # MPS compression
-├── json_output_writer/
-├── logger/
-├── multisolver_interface/
-└── solvers_interface/
+├── benders/                  # Benders decomposition algorithm
+├── core/                     # Core shared utilities
+├── exe/                      # Executable entry points
+├── full_run/                 # Full run orchestration
+├── helpers/                  # Shared helpers
+├── lpnamer/                  # Generation of investment problems from simulation ones
+├── merge_weights_trajectory/ # Trajectory weight merging
+├── multisolver_interface/    # Solver abstraction layer
+├── presolve/                 # Pre-solve logic
+├── sensitivity/              # Sensitivity analysis
+├── study-updater/            # Study updater
+└── xpansion_interfaces/      # Public interfaces
 ```
 
 ### Header Organization
