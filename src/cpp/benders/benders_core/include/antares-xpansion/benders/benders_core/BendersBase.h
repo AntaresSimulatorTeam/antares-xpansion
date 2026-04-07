@@ -147,7 +147,7 @@ public:
     void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData& criterion_input_data);
 
-    [[nodiscard]] const std::shared_ptr<ICommunicationStrategy>& GetCommunicationStrategy() const
+    [[nodiscard]] std::shared_ptr<ICommunicationStrategy> GetCommunicationStrategy() const
     {
         return communication_strategy_;
     }
