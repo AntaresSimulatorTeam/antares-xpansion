@@ -199,9 +199,23 @@ using jl_call_GC_FUNC = void (*)();
    object, send a pointer to the c++ abd set them on the other procs so we can update compute
    violated constraints at each proc
 */
+
 using jl_deserialize_factors_FUNC = void (*)(SerializedFactors);
 
 using jl_clean_buffers_FUNC = void (*)();
+
+using on_Benders_start_Func = void (*)(SubProblemIds, int);
+using on_Benders_end_Func = void (*)();
+using on_Benders_iteration_start = void (*)();
+using on_Benders_iteration_end = void (*)();
+using on_Benders_master_resolution_start = void (*)(
+  std::map<std::string, double>&,
+  int&,
+  mpi::communicator*,
+  std::map<std::string, std::vector<std::string>>&,
+  std::map<std::string, std::string>&);
+
+using on_Benders_master_resolution_end = void (*)();
 
 /*
     Implementation of BendersPlugin to manage the microiterations workflow
@@ -309,7 +323,10 @@ private:
     void read_micro_iteration_config_file();
     void read_constraints_dict();
     void read_investment_dictionnary();
-    void read_variables_dictionnary();
+    // void read_variables_dictionnary();
+    void read_variables_to_follow_ids();
+    void read_variable_names();
+    std::map<std::string,std::vector<int>> build_variables_to_follow_incidces_vector();
     mpi::communicator* _world;
     void* handle_;
     shut_down_julia_FUNC shut_down_julia_;
@@ -319,17 +336,23 @@ private:
     jl_clean_buffers_FUNC clean_buffers_;
     jl_deserialize_factors_FUNC jl_deserialize_factors_;
     jl_call_GC_FUNC jl_call_GC_;
+    on_Benders_start_Func onBendersStartPlugin_;
+    on_Benders_end_Func OnBendersEndPlugin_;
+    on_Benders_iteration_start OnBendersIterationStart_;
+    on_Benders_iteration_end OnBendersIterationEnd_;
+    on_Benders_master_resolution_start OnBendersMasterResolutionStart_;
+    on_Benders_master_resolution_end OnBendersMasterResolutionEnd_;
     const SimulationOptions& options_;
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;
     SubProblemIds sub_pb_ids_;
     std::map<std::string, std::string> binary_variables_ids_map_;
-    std::map<std::string, std::string> variables_to_follow_;
     constraintsPerLine constraints_csv_map_;
     std::vector<std::string> sub_ids_storage_;
     std::vector<const char*> sub_ids_ptrs_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     std::map<std::string, std::string> micro_iterations_config_;
+    std::vector<std::string> variables_to_follow_;
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
