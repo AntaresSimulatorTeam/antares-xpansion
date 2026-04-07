@@ -85,8 +85,6 @@ except FileNotFoundError as e:
 
 ## Type Hints
 
-Recommended for new code:
-
 ```python
 def process_candidates(candidates: list[str]) -> dict[str, float]:
     ...
