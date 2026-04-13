@@ -32,6 +32,7 @@ class GemsDriver:
     def launch(
         self,
         study_path: Path,
+        study_is_full_gems: bool,
         method: str,
         keep_mps: bool,
         n_mpi: int,
@@ -44,7 +45,7 @@ class GemsDriver:
         self.data_dir = study_path
 
         self._run_antares_problem_generator()
-        self._set_simulation_name()
+        self._set_simulation_name(study_is_full_gems)
         self.config_loader._xpansion_simulation_name = self.simulation_output_path()
         self._create_lp_directory()
         self.config_loader.benders_pre_actions()
@@ -84,8 +85,13 @@ class GemsDriver:
         """
         return os.path.normpath(os.path.join(self.data_dir, self.output))
 
-    def _set_simulation_name(self):
+    def _set_simulation_name(self, study_is_full_gems: bool):
         self.simulation_name = ""
+
+        # files are directly in the output/ dir for full GEMS, skip the search for the latest dir
+        if study_is_full_gems: 
+            return;
+
         list_of_dirs_filter = filter(
             lambda x: os.path.isdir(os.path.join(self.antares_output_dir(), x)),
             os.listdir(self.antares_output_dir()),
