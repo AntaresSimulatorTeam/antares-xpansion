@@ -418,7 +418,8 @@ class ConfigLoader(XpansionSettingsReader):
         self.candidates_list = []
 
         general_data_path = self.general_data()
-        if os.path.isfile(general_data_path):
+        self._general_data_exists = os.path.isfile(general_data_path)
+        if self._general_data_exists:
             self.active_years = GeneralDataIniReader(
                 Path(general_data_path)
             ).get_active_years()
@@ -430,6 +431,9 @@ class ConfigLoader(XpansionSettingsReader):
 
         # Other settings already checked by parent class
         self._verify_solver()
+
+    def use_uniform_weights(self):
+        return not self._general_data_exists
 
     def _set_simulation_name(self):
         if not self._config.simulation_name:
@@ -600,7 +604,9 @@ class ConfigLoader(XpansionSettingsReader):
             )
         )
 
-        if self.weight_file_name():
+        if self.use_uniform_weights():
+            options_values[OptimisationKeys.slave_weight_key()] = "UNIFORM"
+        elif self.weight_file_name():
             options_values[OptimisationKeys.slave_weight_key()] = (
                 self.weight_file_name()
             )
