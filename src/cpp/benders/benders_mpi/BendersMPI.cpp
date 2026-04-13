@@ -14,7 +14,11 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<Output::OutputWriter> writer,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
+    BendersBase(options,
+                std::move(logger),
+                std::move(writer),
+                std::move(mathLoggerDriver),
+                std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world)
 {
 }
@@ -29,7 +33,6 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
-    BuildMasterProblem();
     SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS)
     {
@@ -74,7 +77,7 @@ void BendersMpi::InitializeProblems()
     {
         subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
     }
-
+    BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
@@ -138,7 +141,7 @@ void BendersMpi::BroadCastVariablesIndices()
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
-void BendersMpi::BuildMasterProblem()
+void BendersMpi::InitializeMaster()
 {
     if (_world.rank() == rank_0)
     {
@@ -154,7 +157,16 @@ void BendersMpi::BuildMasterProblem()
                                    Options().PROBLEMS_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
-                                   Options().CUT_COEFFICIENT_TOLERANCE);
+                                   GetSubCutTolerance());
+    }
+}
+
+void BendersMpi::BuildMasterProblem()
+{
+    InitializeMaster();
+    if (_world.rank() == rank_0)
+    {
+        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
     }
 }
 

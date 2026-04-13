@@ -15,13 +15,26 @@
 BendersBase::BendersBase(BendersBaseOptions options,
                          Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
-                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                         std::shared_ptr<ICommunicationStrategy> communication_strategy):
     _logger(std::move(logger)),
     _writer(std::move(writer)),
     mathLoggerDriver_(std::move(mathLoggerDriver)),
     _options(std::move(options)),
-    _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv"))
+    _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv")),
+    communication_strategy_(std::move(communication_strategy))
 {
+}
+
+bool BendersBase::shouldParallelize() const
+{
+    if (communication_strategy_)
+    {
+        return communication_strategy_->ShouldParallelize();
+    }
+    // Default when no strategy is provided (e.g., in test doubles):
+    // use local TBB parallelism
+    return true;
 }
 
 /*!
@@ -565,8 +578,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               solver_log_manager_,
                                               _logger,
                                               _options.PROBLEMS_FORMAT,
-                                              benders_problem_provider.get(),
-                                              _options.CUT_COEFFICIENT_TOLERANCE);
+                                              benders_problem_provider.get());
 }
 
 void BendersBase::SetBasisForSubproblem(const std::string& name,
@@ -1098,8 +1110,7 @@ void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
       solver_log_manager_,
       _logger,
       _options.PROBLEMS_FORMAT,
-      benders_problem_provider.get(),
-      _options.CUT_COEFFICIENT_TOLERANCE);
+      benders_problem_provider.get());
 }
 
 void BendersBase::free_subproblems()
@@ -1481,4 +1492,18 @@ void BendersBase::roundXCut()
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {
     benders_plugin_ = benders_plugin;
+}
+
+std::map<int, double> BendersBase::GetSubCutTolerance() const
+{
+    std::map<int, double> subproblem_cut_coefficient_tolerance{};
+    for (const auto& subproblem: _problem_to_id)
+    {
+        subproblem_cut_coefficient_tolerance[subproblem.second] = Options()
+                                                                    .CUT_COEFFICIENT_TOLERANCE
+                                                                  * SubproblemWeight(
+                                                                    _data.nsubproblem,
+                                                                    subproblem.first);
+    }
+    return subproblem_cut_coefficient_tolerance;
 }

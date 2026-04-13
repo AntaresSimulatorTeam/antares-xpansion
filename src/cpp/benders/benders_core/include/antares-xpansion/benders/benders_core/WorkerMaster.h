@@ -4,6 +4,7 @@
 
 #include "SubproblemWorker.h"
 #include "Worker.h"
+
 /*!
  * \class SubproblemWorker
  * \brief Class daughter of Worker Class, build and manage a master problem
@@ -24,10 +25,15 @@ public:
                  ProblemsFormat format,
                  IBendersProblemProvider* benders_problem_provider,
                  double master_solution_tolerance,
-                 double cut_coefficient_tolerance);
+                 const std::map<int, double>& subproblem_cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
     std::vector<int> _id_master_only_vars;
-
+    void add_row(std::vector<char>& row_type,
+                 std::vector<double>& row_rhs,
+                 std::vector<int>& mstart,
+                 std::vector<int>& mclind,
+                 std::vector<double>& matval);
+    int get_col_index(std::string variable_id);
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,
              DblVector& single_subpb_costs_under_approx,
@@ -49,9 +55,10 @@ public:
                                const double& rhs) const;
 
     void fix_alpha(const double& bestUB) const;
-
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
+    void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cut,
+                                    std::map<std::string, int>& problem_to_id);
 
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {
@@ -65,6 +72,7 @@ private:
     int subproblems_count;
     bool _mps_has_alpha = false;
     double _master_solution_tolerance;
+    std::map<int, double> _subproblem_tolerance;
     void define_matval_mclind(const Point& s,
                               std::vector<double>& matval,
                               std::vector<int>& mclind) const;
@@ -90,6 +98,10 @@ private:
 
 protected:
     void _set_master_only_var_ids();
+    void setToZeroIfWithinTolerance(std::vector<double>& values,
+                                    int first,
+                                    int last,
+                                    const std::vector<int>& subproblem_ids) const;
 
 public:
     // Used only for testing purposes

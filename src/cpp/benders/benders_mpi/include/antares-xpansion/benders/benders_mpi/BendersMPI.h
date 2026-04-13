@@ -1,5 +1,6 @@
 #pragma once
 
+#include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
@@ -67,6 +68,8 @@ private:
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 
 protected:
+    void InitializeMaster();
+
     [[nodiscard]] bool shouldParallelize() const final
     {
         return false;
@@ -97,7 +100,7 @@ protected:
         mpi::gather(_world, value, vector_of_values, root);
     }
 
-    void BuildMasterProblem();
+    virtual void BuildMasterProblem();
 
     int WorldSize() const
     {
