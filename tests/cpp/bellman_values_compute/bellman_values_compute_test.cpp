@@ -453,7 +453,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             auto res = bellmanValues.compute(11);
             logger->display_message("Computed Bellman values");
 
-            for (unsigned int week = 1; week < res.size(); week++)
+            for (unsigned int week = 1; week <= res.size(); week++)
             {
                 logger->display_message("comparing week " + std::to_string(week));
                 for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
@@ -468,8 +468,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
-              = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area)
+              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
@@ -544,7 +544,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             auto res = bellmanValues.compute(11);
             logger->display_message("Computed Bellman values");
 
-            for (unsigned int week = 1; week < res.size(); week++)
+            for (unsigned int week = 1; week <= res.size(); week++)
             {
                 logger->display_message("comparing week " + std::to_string(week));
                 for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
@@ -559,8 +559,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
-              = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area)
+              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
@@ -636,7 +636,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             auto res = bellmanValues.compute(11);
             logger->display_message("Computed Bellman values");
 
-            for (unsigned int week = 1; week < res.size(); week++)
+            for (unsigned int week = 1; week <= res.size(); week++)
             {
                 logger->display_message("comparing week " + std::to_string(week));
                 for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
@@ -651,8 +651,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
-              = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area)
+              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }

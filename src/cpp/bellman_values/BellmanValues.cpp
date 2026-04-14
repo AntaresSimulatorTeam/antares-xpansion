@@ -106,7 +106,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
             V[{scenario, week}] = std::vector<double>(levels.size(), 0.0);
         }
 
-        auto penalty_fn = reservoirManagement.get_penalty(endWeek, endWeek);
+        auto penalty_fn = reservoirManagement.get_penalty(endWeek + 1, endWeek + 1);
         for (int i_level = 0; i_level < levels.size(); ++i_level)
         {
             V[{scenario, endWeek + 1}][i_level] += penalty_fn(levels[i_level]);
@@ -131,14 +131,15 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
             {
                 double Vu;
                 double control;
-                std::tie(Vu, std::ignore, control) = solveWeeklyProblemWithCost(
-                  week,
-                  endWeek,
-                  scenario,
-                  levels[i],
-                  levels,
-                  costs[{scenario, week}],
-                  V_fut());
+                std::tie(Vu,
+                         std::ignore,
+                         control) = solveWeeklyProblemWithCost(week,
+                                                               endWeek,
+                                                               scenario,
+                                                               levels[i],
+                                                               levels,
+                                                               costs[{scenario, week}],
+                                                               V_fut());
                 V[{scenario, week}][i] += Vu;
             }
         }
@@ -347,15 +348,17 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
             // week 0 is always the initial level
             double level = week == 0 ? reservoirManagement.reservoir.initial_level
                                      : trajectory[week][scenario];
-            std::tie(std::ignore, trajectory[week + 1][scenario], std::ignore)
-              = solveWeeklyProblemWithCost(week,
-                                           endWeek,
-                                           scenario,
-                                           level, // here: trajectory of the previous week
-                                                  // (first week: initial level)
-                                           levels,
-                                           costs[{scenario, week}],
-                                           V_fut());
+            std::tie(
+              std::ignore,
+              trajectory[week + 1][scenario],
+              std::ignore) = solveWeeklyProblemWithCost(week,
+                                                        endWeek,
+                                                        scenario,
+                                                        level, // here: trajectory of the previous
+                                                               // week (first week: initial level)
+                                                        levels,
+                                                        costs[{scenario, week}],
+                                                        V_fut());
         }
     }
     return trajectory;
