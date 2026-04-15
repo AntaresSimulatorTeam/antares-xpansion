@@ -47,6 +47,7 @@ protected:
                 newValues[iLevel].push_back(values[iWeeks][iLevel]);
             }
         }
+        std::filesystem::create_directory(path.parent_path());
         std::ofstream file(path);
         file << std::fixed;
         for (const auto& levelValues: newValues)
@@ -58,6 +59,7 @@ protected:
             }
             file << '\n';
         }
+        logger->display_message("Saved reference file: " + path.string());
     }
 
     void SetUp() override
@@ -282,7 +284,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
-    for (unsigned int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week <= res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -328,7 +330,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
-    for (unsigned int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week <= res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -375,7 +377,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
-    for (unsigned int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week <= res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
