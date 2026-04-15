@@ -109,12 +109,7 @@ class XpansionDriver:
         launch antares xpansion steps
         """
 
-        use_gems = (
-            self.config_loader.step() in ("gems", "benders", "full")
-            and self.config_loader.has_optim_config()
-        )
-
-        if use_gems:
+        if self.config_loader.gems_candidates():
             self.launch_gems_step()
             return
 
@@ -174,10 +169,6 @@ class XpansionDriver:
             if self.config_loader.run_presolve():
                 self.launch_presolve_step()
             self.launch_benders_step()
-
-        elif self.config_loader.step() == "gems":
-            self.update_study_settings(memory_mode=False)
-            self.launch_gems_step()
 
         elif self.config_loader.step() == "sensitivity":
             self.launch_sensitivity_step()

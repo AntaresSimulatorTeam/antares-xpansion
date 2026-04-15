@@ -394,7 +394,7 @@ class ConfigLoader(XpansionSettingsReader):
         :type config: XpansionConfig object
         """
         self._use_gems_candidates = (
-            config.step in ("benders", "full", "gems")
+            config.step in ("full", "gems")
             and XpansionSettingsReader._has_optim_config_static(config.data_dir, config)
         )
         super().__init__(config.data_dir, config)
