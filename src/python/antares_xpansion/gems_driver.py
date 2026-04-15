@@ -90,7 +90,7 @@ class GemsDriver:
 
         # files are directly in the output/ dir for full GEMS, skip the search for the latest dir
         if study_is_full_gems: 
-            return;
+            return
 
         list_of_dirs_filter = filter(
             lambda x: os.path.isdir(os.path.join(self.antares_output_dir(), x)),
