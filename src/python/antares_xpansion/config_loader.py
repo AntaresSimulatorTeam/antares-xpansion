@@ -45,6 +45,7 @@ class XpansionSettingsReader:
         self._config_defaults = xpansion_defaults
         self.logger = step_logger(__name__, __class__.__name__)
 
+        self._has_optim_config = self._check_optim_config_exists()
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()
 
@@ -107,6 +108,9 @@ class XpansionSettingsReader:
         """
         Check if optim-config.yml exists in the study input folder
         """
+        return self._has_optim_config
+
+    def _check_optim_config_exists(self):
         optim_config_path = os.path.normpath(
             os.path.join(
                 self.data_dir(),
