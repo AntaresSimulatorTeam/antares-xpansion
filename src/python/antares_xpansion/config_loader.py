@@ -45,7 +45,7 @@ class XpansionSettingsReader:
         self._config_defaults = xpansion_defaults
         self.logger = step_logger(__name__, __class__.__name__)
 
-        self._has_optim_config = self._check_optim_config_exists()
+        self._gems_candidates = self._check_gems_candidates()
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()
 
@@ -104,13 +104,7 @@ class XpansionSettingsReader:
         """
         return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
 
-    def has_optim_config(self):
-        """
-        Check if optim-config.yml exists in the study input folder
-        """
-        return self._has_optim_config
-
-    def _check_optim_config_exists(self):
+    def _check_gems_candidates(self):
         optim_config_path = os.path.normpath(
             os.path.join(
                 self.data_dir(),
@@ -121,7 +115,7 @@ class XpansionSettingsReader:
         return os.path.isfile(optim_config_path)
 
     def gems_candidates(self):
-        return self.has_optim_config()
+        return self._gems_candidates
 
     def general_data(self):
         """
