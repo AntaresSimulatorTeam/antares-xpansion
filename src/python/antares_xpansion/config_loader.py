@@ -48,7 +48,8 @@ class XpansionSettingsReader:
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()
 
-        self.check_candidates_file_format()
+        if not self.gems_candidates():
+            self.check_candidates_file_format()
         self.check_settings_file_format()
 
     def _get_path_from_file_in_xpansion_dir(self, filename):
@@ -147,8 +148,6 @@ class XpansionSettingsReader:
         )
 
     def check_candidates_file_format(self):
-        if self.gems_candidates():
-            return
         if not os.path.isfile(self.candidates_ini_filepath()):
             raise ConfigLoader.MissingFile(
                 " %s was not retrieved." % self.candidates_ini_filepath()
@@ -159,8 +158,6 @@ class XpansionSettingsReader:
         )
 
     def check_settings_file_format(self):
-        if self.gems_candidates():
-            return
         check_options(self.options)
         self._verify_additional_constraints_file()
 
@@ -207,8 +204,16 @@ class XpansionSettingsReader:
             os.path.normpath(os.path.join(self._config_defaults.CONSTRAINTS, filename))
         )
 
+    class AdditionalConstraintsNotSupportedWithGemsCandidates(Exception): 
+        pass
+
     def _verify_additional_constraints_file(self):
         if self.options.get("additional-constraints", "") != "":
+            if self.gems_candidates():
+                raise  XpansionSettingsReader.AdditionalConstraintsNotSupportedWithGemsCandidates(
+                    "Error: additional-constraints file is not supported when using gems candidates"
+                )
+
             additional_constraints_path = self.additional_constraints()
             if not os.path.isfile(additional_constraints_path):
                 self.logger.error(
