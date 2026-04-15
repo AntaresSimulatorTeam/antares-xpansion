@@ -116,16 +116,8 @@ class XpansionSettingsReader:
         )
         return os.path.isfile(optim_config_path)
 
-    @staticmethod
-    def _has_optim_config_static(data_dir, config):
-        optim_config_path = os.path.normpath(
-            os.path.join(
-                data_dir,
-                config.INPUT,
-                "optim-config.yml",
-            )
-        )
-        return os.path.isfile(optim_config_path)
+    def gems_candidates(self):
+        return self.has_optim_config()
 
     def general_data(self):
         """
@@ -393,10 +385,6 @@ class ConfigLoader(XpansionSettingsReader):
         :param config: configuration to use for the optimization
         :type config: XpansionConfig object
         """
-        self._use_gems_candidates = (
-            config.step in ("full", "gems")
-            and XpansionSettingsReader._has_optim_config_static(config.data_dir, config)
-        )
         super().__init__(config.data_dir, config)
         self.platform = sys.platform
         self.logger = step_logger(__name__, __class__.__name__)
@@ -796,9 +784,6 @@ class ConfigLoader(XpansionSettingsReader):
     def antares_problem_generator_exe(self):
         antares_exe_path = Path(self.antares_exe())
         return antares_exe_path.parent / self._config.ANTARES_PROBLEM_GENERATOR
-
-    def gems_candidates(self):
-        return self._use_gems_candidates
 
     def is_full_gems(self):
         return self._study_is_full_gems
