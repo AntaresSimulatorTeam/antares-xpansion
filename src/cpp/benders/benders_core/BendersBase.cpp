@@ -644,7 +644,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
         bool added_rows = true;
         while (added_rows)
         {
-            std::cout << "new micro iteration " << std::endl;
             int num_master_iter = _data.it - 1;
             size_t start = name.find_last_of('/') + 1;
             size_t end = name.find(".");
@@ -658,13 +657,13 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                                                                               - t1)
                                           .count();
 
-            if (benders_plugin_)
-            {
-                benders_plugin_->OnBendersMicroIterationEnd(name,
+            num_micro_iter++; 
+            benders_plugin_->OnBendersMicroIterationEnd(name,
                                                             added_rows,
-                                                            std::to_string(elapsed_microseconds));
-            }
-            num_micro_iter++;
+                                                            std::to_string(elapsed_microseconds),
+                                                            _data.it, 
+                                                            num_micro_iter);
+            
         }
     }
     else
@@ -694,9 +693,7 @@ void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subprobl
     criterion_computation_.SearchVariables(col_names);
 }
 
-// Search for variables in sub problems that satisfy patterns
-// var_indices is a vector(for each patterns p) of vector (var indices related
-// to p)
+
 void BendersBase::SetSubproblemsVariablesIndices()
 {
     if (!subproblem_map.empty())

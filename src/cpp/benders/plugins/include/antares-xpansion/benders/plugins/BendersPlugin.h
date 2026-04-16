@@ -74,6 +74,8 @@ public:
     */
     virtual void OnBendersMicroIterationEnd(std::string sub_name,
                                             bool& added_rows,
-                                            std::string solve_time)
+                                            std::string solve_time,
+                                            int num_master_iter, 
+                                            int num_micro_iter)
       = 0;
 };
