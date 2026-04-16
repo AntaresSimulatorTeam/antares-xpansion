@@ -45,10 +45,12 @@ class XpansionSettingsReader:
         self._config_defaults = xpansion_defaults
         self.logger = step_logger(__name__, __class__.__name__)
 
+        self._gems_candidates = self._use_gems_candidates()
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()
 
-        self.check_candidates_file_format()
+        if not self.gems_candidates():
+            self.check_candidates_file_format()
         self.check_settings_file_format()
 
     def _get_path_from_file_in_xpansion_dir(self, filename):
@@ -102,10 +104,7 @@ class XpansionSettingsReader:
         """
         return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
 
-    def has_optim_config(self):
-        """
-        Check if optim-config.yml exists in the study input folder
-        """
+    def _use_gems_candidates(self):
         optim_config_path = os.path.normpath(
             os.path.join(
                 self.data_dir(),
@@ -114,6 +113,9 @@ class XpansionSettingsReader:
             )
         )
         return os.path.isfile(optim_config_path)
+
+    def gems_candidates(self):
+        return self._gems_candidates
 
     def general_data(self):
         """
@@ -192,8 +194,16 @@ class XpansionSettingsReader:
             os.path.normpath(os.path.join(self._config_defaults.CONSTRAINTS, filename))
         )
 
+    class AdditionalConstraintsNotSupportedWithGemsCandidates(Exception): 
+        pass
+
     def _verify_additional_constraints_file(self):
         if self.options.get("additional-constraints", "") != "":
+            if self.gems_candidates():
+                raise  XpansionSettingsReader.AdditionalConstraintsNotSupportedWithGemsCandidates(
+                    "Error: additional-constraints file is not supported when using gems candidates"
+                )
+
             additional_constraints_path = self.additional_constraints()
             if not os.path.isfile(additional_constraints_path):
                 self.logger.error(
@@ -390,12 +400,18 @@ class ConfigLoader(XpansionSettingsReader):
 
         self.candidates_list = []
 
-        self.active_years = GeneralDataIniReader(
-            Path(self.general_data())
-        ).get_active_years()
+        # if general data doesn't exists we're in a full GEMS study
+        general_data_path = self.general_data()
+        self._study_is_full_gems = not os.path.isfile(general_data_path)
+        if not self._study_is_full_gems:
+            self.active_years = GeneralDataIniReader(
+                Path(general_data_path)
+            ).get_active_years()
 
-        antares_version = read_antares_version(self._config.data_dir)
-        self.check_NTC_column_constraints(antares_version)
+            antares_version = read_antares_version(self._config.data_dir)
+            self.check_NTC_column_constraints(antares_version)
+        else:
+            self.active_years = []
 
         # Other settings already checked by parent class
         self._verify_solver()
@@ -569,7 +585,9 @@ class ConfigLoader(XpansionSettingsReader):
             )
         )
 
-        if self.weight_file_name():
+        if self.is_full_gems():
+            options_values[OptimisationKeys.slave_weight_key()] = "UNIFORM"
+        elif self.weight_file_name():
             options_values[OptimisationKeys.slave_weight_key()] = (
                 self.weight_file_name()
             )
@@ -764,6 +782,9 @@ class ConfigLoader(XpansionSettingsReader):
     def antares_problem_generator_exe(self):
         antares_exe_path = Path(self.antares_exe())
         return antares_exe_path.parent / self._config.ANTARES_PROBLEM_GENERATOR
+
+    def is_full_gems(self):
+        return self._study_is_full_gems
 
     def method(self):
         return self._config.method
