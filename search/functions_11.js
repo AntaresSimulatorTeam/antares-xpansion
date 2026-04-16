@@ -1,12 +1,6 @@
 var searchData=
 [
-  ['update_0',['update',['../classStudyUpdater.html#addee402bd81476fc801f1e4dc12d7a72',1,'StudyUpdater::update(const std::vector&lt; ActiveLink &gt; &amp;links_p, const std::map&lt; std::string, double &gt; &amp;investments_p)'],['../classStudyUpdater.html#ad276097a955839dfc8ab779c9fb58dae',1,'StudyUpdater::update(const std::vector&lt; ActiveLink &gt; &amp;links_p, const std::filesystem::path &amp;jsonPath_p)']]],
-  ['update_5fbest_5fub_1',['update_best_ub',['../classBendersBase.html#af938b540f0daa0592257f5fb9fcfc80f',1,'BendersBase']]],
-  ['update_5fsolution_2',['update_solution',['../classOutput_1_1JsonWriter.html#a447a3dde12aae9451b1ceff853879bbc',1,'Output::JsonWriter::update_solution()'],['../classOutput_1_1OutputWriter.html#a69869ca8212f4f6e985a62c301ae0ba6',1,'Output::OutputWriter::update_solution()'],['../classOutput_1_1VoidWriter.html#ab35583041317430869bcad4e02d3a0dc',1,'Output::VoidWriter::update_solution()'],['../classXpansion_1_1Test_1_1InMemoryWriter.html#ae59cbc1a5daf5f24d68bbe19a52dcb7a',1,'Xpansion::Test::InMemoryWriter::update_solution()'],['../classXpansion_1_1Test_1_1WriterNOOPStub.html#a7733bf61cde2491466c930fbf883c671',1,'Xpansion::Test::WriterNOOPStub::update_solution()']]],
-  ['updatebegintime_3',['updateBeginTime',['../classOutput_1_1JsonWriter.html#a20b400af3d5131c3cb2c07410bcaeb21',1,'Output::JsonWriter']]],
-  ['updatecapacities_4',['updateCapacities',['../structLinkdataRecord.html#aa46f4f8abc7f1561d5f38cfc007db565',1,'LinkdataRecord']]],
-  ['updateendtime_5',['updateEndTime',['../classOutput_1_1JsonWriter.html#a4dacd7f08c2264f7aaf8b436ee9b8975',1,'Output::JsonWriter']]],
-  ['updatelinkdatafile_6',['updateLinkdataFile',['../classStudyUpdater.html#a9db49727f1ceb8bb7c871dcdb99a099f',1,'StudyUpdater']]],
-  ['updatestoppingcriterion_7',['UpdateStoppingCriterion',['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()'],['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()']]],
-  ['updatetrace_8',['UpdateTrace',['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()'],['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()'],['../classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f',1,'BendersBaseDouble::UpdateTrace()']]]
+  ['verify_5fcandidates_5fspan_5fcontinuous_5fsubtree_0',['verify_candidates_span_continuous_subtree',['../classuser__input__translation_1_1UserInputTranslator.html#a1c4e9de1a9b6001c7647eb4edb4f1a77',1,'user_input_translation::UserInputTranslator']]],
+  ['verify_5fconstraint_5fvariable_5freference_1',['verify_constraint_variable_reference',['../classuser__input__translation_1_1UserInputTranslator.html#a073cff2de342e1621b136788b2dd5914',1,'user_input_translation::UserInputTranslator']]],
+  ['voidwriter_2',['VoidWriter',['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter']]]
 ];

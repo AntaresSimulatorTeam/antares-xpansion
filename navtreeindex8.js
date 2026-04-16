@@ -1,7 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structLinkdataRecord_1_1FileColumns.html#a8d83f0f99914a833dfb34896ab69be36":[34,0,148,0,5],
-"structLinkdataRecord_1_1FileColumns.html#ac1c6534362074e573d6a052f0432a111":[34,0,148,0,0],
 "structLinkdataRecord_1_1FileColumns.html#ad65a0ad193fd24591ac5d17f074a419b":[34,0,148,0,1],
 "structLinkdataRecord_1_1FileColumns.html#adfed6f095294c0bb8db291926594dd40":[34,0,148,0,3],
 "structLogData.html":[34,0,155],

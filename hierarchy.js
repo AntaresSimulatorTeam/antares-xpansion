@@ -117,6 +117,7 @@ var hierarchy =
       [ "antares_xpansion.config_loader.ConfigLoader.MissingSimulationName", "classantares__xpansion_1_1config__loader_1_1ConfigLoader_1_1MissingSimulationName.html", null ],
       [ "antares_xpansion.config_loader.ConfigLoader.NotAnXpansionOutputDir", "classantares__xpansion_1_1config__loader_1_1ConfigLoader_1_1NotAnXpansionOutputDir.html", null ],
       [ "antares_xpansion.config_loader.NTCColumnConstraintError", "classantares__xpansion_1_1config__loader_1_1NTCColumnConstraintError.html", null ],
+      [ "antares_xpansion.config_loader.XpansionSettingsReader.AdditionalConstraintsNotSupportedWithGemsCandidates", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader_1_1AdditionalConstraintsNotSupportedWithGemsCandidates.html", null ],
       [ "antares_xpansion.driver.XpansionDriver.AntaresArchiveUpdaterExeError", "classantares__xpansion_1_1driver_1_1XpansionDriver_1_1AntaresArchiveUpdaterExeError.html", null ],
       [ "antares_xpansion.driver.XpansionDriver.SolverXpressRequirementError", "classantares__xpansion_1_1driver_1_1XpansionDriver_1_1SolverXpressRequirementError.html", null ],
       [ "antares_xpansion.driver.XpansionDriver.UnknownStep", "classantares__xpansion_1_1driver_1_1XpansionDriver_1_1UnknownStep.html", null ],
