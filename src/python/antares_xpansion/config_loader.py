@@ -45,7 +45,7 @@ class XpansionSettingsReader:
         self._config_defaults = xpansion_defaults
         self.logger = step_logger(__name__, __class__.__name__)
 
-        self._gems_candidates = self._check_gems_candidates()
+        self._gems_candidates = self._use_gems_candidates()
         self._verify_settings_ini_file_exists()
         self.options = self._get_options_from_settings_inifile()
 
@@ -104,7 +104,7 @@ class XpansionSettingsReader:
         """
         return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
 
-    def _check_gems_candidates(self):
+    def _use_gems_candidates(self):
         optim_config_path = os.path.normpath(
             os.path.join(
                 self.data_dir(),
