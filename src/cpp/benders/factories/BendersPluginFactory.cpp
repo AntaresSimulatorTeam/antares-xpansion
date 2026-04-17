@@ -4,7 +4,7 @@
 #include <filesystem>
 
 #include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
+#include "antares-xpansion/benders/plugins/Benders_MICRO_ITERS.h"
 #include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 
 BendersPluginFactory::BendersPluginFactory(const SimulationOptions& options):
@@ -30,13 +30,13 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
             }
         }
 
-        std::shared_ptr<Benders_Jl_MICRO_ITERS>
-          plugin_jl_micro_iters = std::make_shared<Benders_Jl_MICRO_ITERS>(options_,
+        std::shared_ptr<Benders_MICRO_ITERS>
+          plugin_micro_iters = std::make_shared<Benders_MICRO_ITERS>(options_,
                                                                            coupling_map,
                                                                            world);
-        plugin_jl_micro_iters->SetSubProblemIDs(subs_ids.data(), subs_ids.size());
+        plugin_micro_iters->SetSubProblemIDs(subs_ids.data(), subs_ids.size());
 
-        std::shared_ptr<BendersPlugin> plugin = plugin_jl_micro_iters;
+        std::shared_ptr<BendersPlugin> plugin = plugin_micro_iters;
 
         return plugin;
     }

@@ -2,7 +2,7 @@
 This header file contains the necessary classes and structure to implement the benders plugin
 mechanism for the micro iteration. As some of necessary code components for micro iterations is
 written in Julia, this code will be compiled into a dynamic library, loaded into
-Benders_Jl_MICRO_ITERS class.
+Benders_MICRO_ITERS class.
 */
 
 #pragma once
@@ -204,11 +204,13 @@ using jl_deserialize_factors_FUNC = void (*)(SerializedFactors);
 
 using jl_clean_buffers_FUNC = void (*)();
 
-using on_Benders_start_Func = void (*)(SubProblemIds, int,std::filesystem::path,
-                std::filesystem::path , 
-                  bool ,
-                  mpi::communicator* ,
-                  int );
+using on_Benders_start_Func = void (*)(SubProblemIds,
+                                       int,
+                                       std::filesystem::path,
+                                       std::filesystem::path,
+                                       bool,
+                                       mpi::communicator*,
+                                       int);
 using on_Benders_end_Func = void (*)();
 using on_Benders_iteration_start = void (*)();
 using on_Benders_iteration_end = void (*)();
@@ -227,9 +229,9 @@ using on_Benders_micro_iteration_end = void (*)(std::string sub_name,
                                                 std::vector<double> sub_solution,
                                                 std::vector<int> variables_indices_vector,
                                                 std::vector<std::string>& variables_names_vector,
-                                                std::filesystem::path input_root, 
-                                                std::vector<std::string>& contraints_to_add_vec, 
-                                                int, 
+                                                std::filesystem::path input_root,
+                                                std::vector<std::string>& contraints_to_add_vec,
+                                                int,
                                                 int);
 using on_Benders_sub_resolution_start = void (*)();
 using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_micro_iter);
@@ -238,7 +240,7 @@ using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_mic
     Implementation of BendersPlugin to manage the microiterations workflow
 */
 
-class Benders_Jl_MICRO_ITERS: public BendersPlugin
+class Benders_MICRO_ITERS: public BendersPlugin
 {
 public:
     /*
@@ -247,14 +249,14 @@ public:
             - options : study options
             - coupling_map : coupling map (master and sub to variables)
     */
-    Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
-                           const CouplingMap& coupling_map,
-                           mpi::communicator* world);
+    Benders_MICRO_ITERS(const SimulationOptions& options,
+                        const CouplingMap& coupling_map,
+                        mpi::communicator* world);
 
     /*
         Default destrucor
     */
-    virtual ~Benders_Jl_MICRO_ITERS() = default;
+    virtual ~Benders_MICRO_ITERS() = default;
 
     /*
         Implementation of benders start call back
@@ -293,7 +295,7 @@ public:
     virtual void OnBendersMicroIterationEnd(std::string sub_name,
                                             bool& added_rows,
                                             std::string solving_time,
-                                            int num_master_iter, 
+                                            int num_master_iter,
                                             int num_micro_iter);
 
     virtual void OnBendersSubResolutionStart();
@@ -346,12 +348,12 @@ private:
     void read_variables_to_follow_ids();
     void read_variable_names();
     void build_variables_to_follow_indices_vector(std::string sub_name);
-    const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector() ; 
+    const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
     mpi::communicator* _world;
     void* handle_;
 
-    void* handle_2 ; 
+    void* handle_2;
     on_Benders_start_Func onBendersStartPlugin_;
     on_Benders_end_Func OnBendersEndPlugin_;
     on_Benders_iteration_start OnBendersIterationStart_;
@@ -362,8 +364,8 @@ private:
     on_Benders_micro_iteration_end OnBendersMicroIterationEnd_;
     on_Benders_sub_resolution_start OnBendersSubResolutionStart_;
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
-    std::map<std::string,bool> is_variable_names_indices_created_ ; 
-    std::map<std::string,std::vector<int>> variables_to_follow_indices_per_sub_ ; 
+    std::map<std::string, bool> is_variable_names_indices_created_;
+    std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;

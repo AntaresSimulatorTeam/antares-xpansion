@@ -1,8 +1,8 @@
 /*
-    Implementation of Benders_Jl_MICRO_ITERS
+    Implementation of Benders_MICRO_ITERS
 */
 
-#include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
+#include "antares-xpansion/benders/plugins/Benders_MICRO_ITERS.h"
 
 #include <cassert>
 #include <chrono>
@@ -14,9 +14,9 @@
 
 #include "iostream"
 
-Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
-                                               const CouplingMap& coupling_map,
-                                               mpi::communicator* world):
+Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
+                                            const CouplingMap& coupling_map,
+                                            mpi::communicator* world):
     options_(options)
 {
     coupling_map_ = coupling_map;
@@ -30,18 +30,17 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
     warm_start_ = true;
     _world = world;
 
-    for (auto& [sub_name,_] : coupling_map_) 
+    for (auto& [sub_name, _]: coupling_map_)
     {
-        is_variable_names_indices_created_[sub_name] = false ; 
-
+        is_variable_names_indices_created_[sub_name] = false;
     }
     read_micro_iteration_config_file();
     read_variable_names();
-    
+
     std::filesystem::path libmylib_path = micro_iterations_config_["jl_library_path"];
     std::filesystem::path cpp_lib_path = micro_iterations_config_["cpp_output_package"];
 
-    auto cpp_lib_absolute_path = input_root_ / cpp_lib_path ; 
+    auto cpp_lib_absolute_path = input_root_ / cpp_lib_path;
     handle_ = dlopen(cpp_lib_absolute_path.c_str(), RTLD_NOW);
     if (handle_)
     {
@@ -95,7 +94,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
         if (!OnBendersMicroIterationStart_)
         {
             std::cerr << "can't find OnBendersMicroIterationStart in the plugin" << std::endl;
-            _world->abort(EXIT_FAILURE);        
+            _world->abort(EXIT_FAILURE);
         }
 
         OnBendersMicroIterationEnd_ = (on_Benders_micro_iteration_end)
@@ -103,7 +102,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
         if (!OnBendersMicroIterationEnd_)
         {
             std::cerr << "can't find OnBendersMicroIterationEnd in the plugin" << std::endl;
-            _world->abort(EXIT_FAILURE);      
+            _world->abort(EXIT_FAILURE);
         }
 
         OnBendersSubResolutionStart_ = (on_Benders_sub_resolution_start)
@@ -111,7 +110,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
         if (!OnBendersSubResolutionStart_)
         {
             std::cerr << "can't find OnBendersSubResolutionStart_ in the plugin" << std::endl;
-            _world->abort(EXIT_FAILURE);        
+            _world->abort(EXIT_FAILURE);
         }
 
         OnBendersSubResolutionEnd_ = (on_Benders_sub_resolution_end)
@@ -119,13 +118,12 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const SimulationOptions& options,
         if (!OnBendersSubResolutionEnd_)
         {
             std::cerr << "can't find OnBendersSubResolutionEnd_ in the plugin" << std::endl;
-            _world->abort(EXIT_FAILURE);        
-            }
+            _world->abort(EXIT_FAILURE);
+        }
     }
-
 }
 
-void Benders_Jl_MICRO_ITERS::read_micro_iteration_config_file()
+void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
     std::filesystem::path mirco_iterations_options_path = input_root_
@@ -170,7 +168,7 @@ void Benders_Jl_MICRO_ITERS::read_micro_iteration_config_file()
     }
 }
 
-void Benders_Jl_MICRO_ITERS::read_variable_names()
+void Benders_MICRO_ITERS::read_variable_names()
 {
     // Reading variable names from text file
     std::filesystem::path variable_names_path = input_root_ / "variable_names.txt";
@@ -195,53 +193,51 @@ void Benders_Jl_MICRO_ITERS::read_variable_names()
     }
 }
 
-
-
-
-void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                                            const Logger& logger,
-                                            const BendersBaseOptions& options,
-                                            const SolverLogManager& solver_log_manager)
+void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
+                                         const Logger& logger,
+                                         const BendersBaseOptions& options,
+                                         const SolverLogManager& solver_log_manager)
 {
     _logger = logger;
 
     BuildConstraintsReaderMap(subproblem_map, options, solver_log_manager);
 
-    onBendersStartPlugin_(sub_pb_ids_, _world->rank(),options.INPUTROOT, options.OUTPUTROOT,warm_start_,_world,options.LOG_LEVEL);
+    onBendersStartPlugin_(sub_pb_ids_,
+                          _world->rank(),
+                          options.INPUTROOT,
+                          options.OUTPUTROOT,
+                          warm_start_,
+                          _world,
+                          options.LOG_LEVEL);
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersEnd()
+void Benders_MICRO_ITERS::OnBendersEnd()
 {
     OnBendersEndPlugin_();
     dlclose(handle_);
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersIterationStart()
+void Benders_MICRO_ITERS::OnBendersIterationStart()
 {
     OnBendersIterationStart_();
-
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersIterationEnd()
+void Benders_MICRO_ITERS::OnBendersIterationEnd()
 {
     OnBendersIterationEnd_();
     if (!warm_start_)
     {
-        for (auto& [sub_name, constraint_reader_name] : subproblem_constraint_map_)
+        for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
         {
             auto constraint_reader = constraints_map_[constraint_reader_name];
-            constraint_reader->delete_added_rows() ; 
+            constraint_reader->delete_added_rows();
         }
     }
-
-    
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionStart(
-  std::map<std::string, double>& master_out,
-  int& num_iter)
+void Benders_MICRO_ITERS::OnBendersMasterResolutionStart(std::map<std::string, double>& master_out,
+                                                         int& num_iter)
 {
-
     if (OnBendersMasterResolutionStart_)
     {
         OnBendersMasterResolutionStart_(master_out,
@@ -249,12 +245,10 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionStart(
                                         _world,
                                         added_constraints_per_sub_,
                                         options_.INPUTROOT);
-
-
     }
 }
 
-void Benders_Jl_MICRO_ITERS::build_variables_to_follow_indices_vector(std::string sub_name)
+void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector(std::string sub_name)
 {
     if (!is_variable_names_indices_created_[sub_name])
     {
@@ -270,12 +264,7 @@ void Benders_Jl_MICRO_ITERS::build_variables_to_follow_indices_vector(std::strin
     }
 }
 
-
-
-
-
-
-void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionEnd()
+void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd()
 {
     if (OnBendersMasterResolutionEnd_)
     {
@@ -283,7 +272,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterResolutionEnd()
     }
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
+void Benders_MICRO_ITERS::OnBendersMicroIterationStart()
 {
     if (OnBendersMicroIterationStart_)
     {
@@ -291,11 +280,11 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
     }
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
-                                                        bool& added_rows,
-                                                        std::string solving_time,
-                                                        int num_master_iter, 
-                                                        int num_micro_iter)
+void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
+                                                     bool& added_rows,
+                                                     std::string solving_time,
+                                                     int num_master_iter,
+                                                     int num_micro_iter)
 {
     if (!OnBendersMicroIterationEnd_)
     {
@@ -303,18 +292,17 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     }
 
     // Get the const
-    
+
     std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
     auto constraint_reader = constraints_map_[constraint_reader_name];
 
     // Get the complete subproblem solution vector
     auto sub_solution = constraint_reader->get_sub_solution();
-    build_variables_to_follow_indices_vector(sub_name) ; 
+    build_variables_to_follow_indices_vector(sub_name);
     // Get the pre-built indices vector for variables to follow for this subproblem
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
 
-
-    std::vector<std::string> constraints_to_add_vec ; 
+    std::vector<std::string> constraints_to_add_vec;
     // Call the dynamically loaded function
     OnBendersMicroIterationEnd_(sub_name,
                                 added_rows,
@@ -322,21 +310,21 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
                                 sub_solution,
                                 variables_indices,
                                 variables_to_follow_,
-                                options_.INPUTROOT, 
+                                options_.INPUTROOT,
                                 constraints_to_add_vec,
                                 num_master_iter,
                                 num_micro_iter);
     // for (auto& contraint_to_add)
-    added_rows = constraints_to_add_vec.size() ; 
-    for (auto& contraint_to_add : constraints_to_add_vec ) 
+    added_rows = constraints_to_add_vec.size();
+    for (auto& contraint_to_add: constraints_to_add_vec)
     {
         std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
         auto constraint_reader = constraints_map_[constraint_reader_name];
-        constraint_reader->add_rows(contraint_to_add) ; 
+        constraint_reader->add_rows(contraint_to_add);
     }
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionStart()
+void Benders_MICRO_ITERS::OnBendersSubResolutionStart()
 {
     if (OnBendersSubResolutionStart_)
     {
@@ -344,20 +332,15 @@ void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionStart()
     }
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
+void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
 {
     if (OnBendersSubResolutionEnd_)
     {
         OnBendersSubResolutionEnd_(sub_name, num_micro_iter);
     }
-
-    if (options_.LOG_LEVEL >= 2)
-    {
-        // micro_iterations_logger_->AddMicroIterCount(sub_name, num_micro_iter);
-    }
 }
 
-void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
+void Benders_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
 {
     sub_ids_storage_.clear();
     sub_ids_storage_.reserve(n_subs);
@@ -375,11 +358,9 @@ void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
     sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
 }
 
-
-
-void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& subproblem_map,
-                                                       const BendersBaseOptions& options,
-                                                       const SolverLogManager& solver_log_manager)
+void Benders_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& subproblem_map,
+                                                    const BendersBaseOptions& options,
+                                                    const SolverLogManager& solver_log_manager)
 {
     for (auto& [sub, sub_worker]: subproblem_map)
     {
