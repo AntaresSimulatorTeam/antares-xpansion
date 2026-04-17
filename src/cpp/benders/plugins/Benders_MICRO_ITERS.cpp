@@ -37,10 +37,9 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     read_micro_iteration_config_file();
     read_variable_names();
 
-    std::filesystem::path libmylib_path = micro_iterations_config_["jl_library_path"];
-    std::filesystem::path cpp_lib_path = micro_iterations_config_["cpp_output_package"];
+    std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
-    auto cpp_lib_absolute_path = input_root_ / cpp_lib_path;
+    auto cpp_lib_absolute_path = input_root_ / plugin_lib_path;
     handle_ = dlopen(cpp_lib_absolute_path.c_str(), RTLD_NOW);
     if (handle_)
     {
@@ -120,6 +119,11 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
             std::cerr << "can't find OnBendersSubResolutionEnd_ in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
+    }
+    else 
+    {
+        std::cerr<<"failed to open the plugin given on path "<<cpp_lib_absolute_path<<std::endl ; 
+        _world->abort(EXIT_FAILURE) ; 
     }
 }
 
