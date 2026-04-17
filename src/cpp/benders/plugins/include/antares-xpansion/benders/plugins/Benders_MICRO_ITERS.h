@@ -36,173 +36,173 @@ struct SubProblemIds
     int n_subproblems;
 };
 
-/*
-    This structure will be used after solving the master problem.
-    @members :
-        - candidate_line_id : id of the candidate line
-        - is_invested : 0 if not invest, 1 if invested
+// /*
+//     This structure will be used after solving the master problem.
+//     @members :
+//         - candidate_line_id : id of the candidate line
+//         - is_invested : 0 if not invest, 1 if invested
 
-*/
-struct CandidateLineInvestmentStatus
-{
-    const char* candidate_line_id;
-    int is_invested;
-};
+// */
+// struct CandidateLineInvestmentStatus
+// {
+//     const char* candidate_line_id;
+//     int is_invested;
+// };
 
-/*
-    This structure is an array of the list above
-    @members :
-        - candidates_res : a pointer to an array of CandidateLineInvestmentStatus
-        - size : number of candidate lines
-*/
-struct CandidateLineInvestmentStatusList
-{
-    CandidateLineInvestmentStatus* candidates_res;
-    int size;
-};
+// /*
+//     This structure is an array of the list above
+//     @members :
+//         - candidates_res : a pointer to an array of CandidateLineInvestmentStatus
+//         - size : number of candidate lines
+// */
+// struct CandidateLineInvestmentStatusList
+// {
+//     CandidateLineInvestmentStatus* candidates_res;
+//     int size;
+// };
 
-/*
-    This structure will be used in the Julia code to compute the microiteration violated constraints
-    @members :
-        - flow_id : the id of the flow we need to evaluate the constraints.
-        - value : its value after solving the subproblem
-*/
-struct FlowN
-{
-    const char* flow_id;
-    double value;
-};
+// /*
+//     This structure will be used in the Julia code to compute the microiteration violated constraints
+//     @members :
+//         - flow_id : the id of the flow we need to evaluate the constraints.
+//         - value : its value after solving the subproblem
+// */
+// struct FlowN
+// {
+//     const char* flow_id;
+//     double value;
+// };
 
-/*
-    This structure is an array of the list above
-    @members :
-        - flows : a pointer to an array of FlowN
-        - size : number of flows we need
-*/
-struct FlowNList
-{
-    FlowN* flows;
-    int size;
-};
+// /*
+//     This structure is an array of the list above
+//     @members :
+//         - flows : a pointer to an array of FlowN
+//         - size : number of flows we need
+// */
+// struct FlowNList
+// {
+//     FlowN* flows;
+//     int size;
+// };
 
-/*
-    This structure is what will be rendered by the Julia code at each micro iteration.
-    @members :
-        - constraints : a pointer to an array of c-style strings of keys of constraints to add to
-   the subproblem
-        - size : number of constraints to add
-*/
-struct ViolatedFlowConstraints
-{
-    const char** constraints;
-    int size;
-};
+// /*
+//     This structure is what will be rendered by the Julia code at each micro iteration.
+//     @members :
+//         - constraints : a pointer to an array of c-style strings of keys of constraints to add to
+//    the subproblem
+//         - size : number of constraints to add
+// */
+// struct ViolatedFlowConstraints
+// {
+//     const char** constraints;
+//     int size;
+// };
 
-/*
-    We will compute the necessary factors at each master iteration at one proc
-    Then we will serialize them and set them on the other proc from c++
-    This struct contain pointer to these serialized objects
-    @memebers
-        - HVDC_dict_serialized : serialized HVDC dict
-        - dict_incident_factors_serialized : dict incidenet factors serialized
-        - all_monitored_branches_serialized : serialized monitored branches
-*/
+// /*
+//     We will compute the necessary factors at each master iteration at one proc
+//     Then we will serialize them and set them on the other proc from c++
+//     This struct contain pointer to these serialized objects
+//     @memebers
+//         - HVDC_dict_serialized : serialized HVDC dict
+//         - dict_incident_factors_serialized : dict incidenet factors serialized
+//         - all_monitored_branches_serialized : serialized monitored branches
+// */
 
-struct SerializedObject
-{
-    uint8_t* bytes_ptr;
-    int bytes_length;
-};
+// struct SerializedObject
+// {
+//     uint8_t* bytes_ptr;
+//     int bytes_length;
+// };
 
-struct SerializedFactors
-{
-    SerializedObject HVDC_dict_serialized;
-    SerializedObject dict_incident_factors_serialized;
-    SerializedObject all_monitored_branches_serialized;
-};
+// struct SerializedFactors
+// {
+//     SerializedObject HVDC_dict_serialized;
+//     SerializedObject dict_incident_factors_serialized;
+//     SerializedObject all_monitored_branches_serialized;
+// };
 
-struct SerializedBuffers
-{
-    std::vector<uint8_t> HVDC_dict_serialized_buff;
-    std::vector<uint8_t> dict_incident_factors_serialized_buff;
-    std::vector<uint8_t> all_monitored_branches_serialized_buff;
+// struct SerializedBuffers
+// {
+//     std::vector<uint8_t> HVDC_dict_serialized_buff;
+//     std::vector<uint8_t> dict_incident_factors_serialized_buff;
+//     std::vector<uint8_t> all_monitored_branches_serialized_buff;
 
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
-        ar & HVDC_dict_serialized_buff;
-        ar & dict_incident_factors_serialized_buff;
-        ar & all_monitored_branches_serialized_buff;
-    }
-};
+//     template<class Archive>
+//     void serialize(Archive& ar, const unsigned int version)
+//     {
+//         ar & HVDC_dict_serialized_buff;
+//         ar & dict_incident_factors_serialized_buff;
+//         ar & all_monitored_branches_serialized_buff;
+//     }
+// };
 
-/*
-    This type will be the map resulting of reading co,nstraints_dictionary.csv.
-    This file have the following structure :
-    constraints_key_1 : constraint_to_add_1, ...., constraints_to_add_n
-                            .
-                            .
-    constraints_key_l : constraint_to_add_1, ..., constraints_to_add_k
-*/
-using constraintsPerLine = std::map<std::string, std::vector<std::string>>;
+// /*
+//     This type will be the map resulting of reading co,nstraints_dictionary.csv.
+//     This file have the following structure :
+//     constraints_key_1 : constraint_to_add_1, ...., constraints_to_add_n
+//                             .
+//                             .
+//     constraints_key_l : constraint_to_add_1, ..., constraints_to_add_k
+// */
+// using constraintsPerLine = std::map<std::string, std::vector<std::string>>;
 
-/*
-    This type will be used for the Julia function init_julia.
-    It is necessary to be able to use the Julia functions we need for
-    microiterations workflow
-    Inputs should be set to (0,NULL)
-*/
-using init_julia_FUNC = void (*)(int, char*);
+// /*
+//     This type will be used for the Julia function init_julia.
+//     It is necessary to be able to use the Julia functions we need for
+//     microiterations workflow
+//     Inputs should be set to (0,NULL)
+// */
+// using init_julia_FUNC = void (*)(int, char*);
 
-/*
-    This type will be used to end the Julia process in the benders code.
-    Input shoule be (0)
-*/
-using shut_down_julia_FUNC = void (*)(int);
+// /*
+//     This type will be used to end the Julia process in the benders code.
+//     Input shoule be (0)
+// */
+// using shut_down_julia_FUNC = void (*)(int);
 
-/*
-    This type will be used for the Julia function jl_load_variables.
-    That function is used to read the necessary .jls and .csv file on the julia side.
-    It takes as an input an object of type SubProblemIds
+// /*
+//     This type will be used for the Julia function jl_load_variables.
+//     That function is used to read the necessary .jls and .csv file on the julia side.
+//     It takes as an input an object of type SubProblemIds
 
-*/
-using jl_load_variables_FUNC = void (*)(SubProblemIds, int);
+// */
+// using jl_load_variables_FUNC = void (*)(SubProblemIds, int);
 
-/*
-    This type will be used for the julia function jl_compute_factors_for_microiterations.
-    That function is used to compute the new PTDF at each master iteration.
-    It takes as an input an object of type MasterBendersInput that contains the result
-    of solving the master problem
-*/
-using jl_compute_factors_for_microiterations_FUNC = SerializedFactors (*)(
-  CandidateLineInvestmentStatusList,
-  int);
+// /*
+//     This type will be used for the julia function jl_compute_factors_for_microiterations.
+//     That function is used to compute the new PTDF at each master iteration.
+//     It takes as an input an object of type MasterBendersInput that contains the result
+//     of solving the master problem
+// */
+// using jl_compute_factors_for_microiterations_FUNC = SerializedFactors (*)(
+//   CandidateLineInvestmentStatusList,
+//   int);
 
-/*
-    This type will be used for the Julia function jl_return_constraints_for_micro_iteration.
-    That function is called at each microiteration and for each subproblem to get the list of
-   constraints to add. It takes as inputs :
-        - a c-style string : the id of the subproblem
-        - FlowNList object : the list of flows we need to compute violated constraints
-        - SerializedFactors object : contains the serailizd factors computed at the master iteration
-   on proc 0
-*/
-using jl_return_constraints_for_micro_iteration_FUNC = ViolatedFlowConstraints (*)(const char*,
-                                                                                   FlowNList);
+// /*
+//     This type will be used for the Julia function jl_return_constraints_for_micro_iteration.
+//     That function is called at each microiteration and for each subproblem to get the list of
+//    constraints to add. It takes as inputs :
+//         - a c-style string : the id of the subproblem
+//         - FlowNList object : the list of flows we need to compute violated constraints
+//         - SerializedFactors object : contains the serailizd factors computed at the master iteration
+//    on proc 0
+// */
+// using jl_return_constraints_for_micro_iteration_FUNC = ViolatedFlowConstraints (*)(const char*,
+//                                                                                    FlowNList);
 
-using jl_call_GC_FUNC = void (*)();
+// using jl_call_GC_FUNC = void (*)();
 
-/*
-    Since the input julia that allow updating the factos at each master iterations are quite heavy.
-    we can't compute the new ptdf and the different factors needed at benders master iteration at
-   each process. The idea is to do the computing on the proc 0 on julia side, serialize these
-   object, send a pointer to the c++ abd set them on the other procs so we can update compute
-   violated constraints at each proc
-*/
+// /*
+//     Since the input julia that allow updating the factos at each master iterations are quite heavy.
+//     we can't compute the new ptdf and the different factors needed at benders master iteration at
+//    each process. The idea is to do the computing on the proc 0 on julia side, serialize these
+//    object, send a pointer to the c++ abd set them on the other procs so we can update compute
+//    violated constraints at each proc
+// */
 
-using jl_deserialize_factors_FUNC = void (*)(SerializedFactors);
+// using jl_deserialize_factors_FUNC = void (*)(SerializedFactors);
 
-using jl_clean_buffers_FUNC = void (*)();
+// using jl_clean_buffers_FUNC = void (*)();
 
 using on_Benders_start_Func = void (*)(SubProblemIds,
                                        int,
@@ -353,7 +353,6 @@ private:
     mpi::communicator* _world;
     void* handle_;
 
-    void* handle_2;
     on_Benders_start_Func onBendersStartPlugin_;
     on_Benders_end_Func OnBendersEndPlugin_;
     on_Benders_iteration_start OnBendersIterationStart_;
@@ -371,7 +370,6 @@ private:
     std::filesystem::path variables_dictionary_path_;
     SubProblemIds sub_pb_ids_;
     std::map<std::string, std::string> binary_variables_ids_map_;
-    constraintsPerLine constraints_csv_map_;
     std::vector<std::string> sub_ids_storage_;
     std::vector<const char*> sub_ids_ptrs_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
