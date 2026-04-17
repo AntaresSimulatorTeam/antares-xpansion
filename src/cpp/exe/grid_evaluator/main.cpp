@@ -75,7 +75,7 @@ void saveCostsAndDuals(const std::filesystem::path& path,
     // Header
     file << "scenario,week,";
     std::set<std::string> areaNames;
-    std::ranges::transform(grid.gridElements,
+    std::ranges::transform(grid.gridElements | std::views::values,
                            std::inserter(areaNames, areaNames.end()),
                            &GridElement::area);
 

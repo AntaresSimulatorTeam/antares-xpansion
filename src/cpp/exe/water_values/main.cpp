@@ -284,12 +284,11 @@ int main(int argc, char** argv)
             // In the case of multistock, there should only be one reservoir per
             // gridDefinition; in the case of multivariate (which we cannot compute water values
             // for, yet), there would be more than one reservoir per gridDefinition
-            auto& gridElement = grid.gridElements[0];
 
-            logger->display_message("### Grid element area: " + gridElement.area + " ###");
+            logger->display_message("### Grid element area: " + grid.area + " ###");
             // multistock here
             // update the reservoir in ReservoirManagement based on the considered area
-            ReservoirManagement reservoirManagement(grid.reservoirs.at(gridElement.area),
+            ReservoirManagement reservoirManagement(grid.reservoirs.at(grid.area),
                                                     dpcr.getPenaltyBottomRuleCurve(),
                                                     dpcr.getPenaltyUpperRuleCurve(),
                                                     dpcr.getPenaltyFinalLevel(),
@@ -302,7 +301,7 @@ int main(int argc, char** argv)
             logger->display_message(
               "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
 
-            auto problems = pbg.updateProblems(grid, gridElement.area);
+            auto problems = pbg.updateProblems(grid, grid.area);
 
             auto endProblemUpdate = std::chrono::system_clock::now();
             logger->display_message("Updated problems (end time: " + formatTime(endProblemUpdate)
@@ -332,14 +331,14 @@ int main(int argc, char** argv)
             auto [bellmanValues, costs] = bellmanValuesEvaluator.compute(nbLevels);
             logger->display_message("Computed Bellman values and costs");
 
-            std::string bellmanValuesFileName = std::to_string(grid.gridID) + "_" + gridElement.area
+            std::string bellmanValuesFileName = std::to_string(grid.gridID) + "_" + grid.area
                                                 + "_bellman_values.csv";
             saveValues(directories.simulation_dir / bellmanValuesFileName,
                        bellmanValues,
                        logger,
                        false);
 
-            std::string costsFileName = std::to_string(grid.gridID) + "_" + gridElement.area
+            std::string costsFileName = std::to_string(grid.gridID) + "_" + grid.area
                                         + "_costs.csv";
             saveValues(directories.simulation_dir / costsFileName, costs, logger, false);
 
@@ -354,7 +353,7 @@ int main(int argc, char** argv)
             auto waterValues = computeWaterValues(bellmanValues, levels);
             logger->display_message("Computed water values");
 
-            std::string fileName = std::to_string(grid.gridID) + "_" + gridElement.area
+            std::string fileName = std::to_string(grid.gridID) + "_" + grid.area
                                    + "_water_values.csv";
             saveValues(directories.simulation_dir / fileName, waterValues, logger, antaresFormat);
             logger->display_message("Saved water values to file");
@@ -365,16 +364,15 @@ int main(int argc, char** argv)
             {
                 logger->display_message("Computing optimal trajectory...");
 
-                gridCollection->reservoirs.at(gridElement.area)
+                gridCollection->reservoirs.at(grid.area)
                   .optimal_trajectory = bellmanValuesEvaluator.computeOptimalTrajectories();
 
                 logger->display_message("Computed optimal trajectory");
 
                 std::string optimalTrajectoriesFileName = std::to_string(grid.gridID) + "_"
-                                                          + gridElement.area
-                                                          + "_optimal_trajectory.csv";
+                                                          + grid.area + "_optimal_trajectory.csv";
                 saveValues(directories.simulation_dir / optimalTrajectoriesFileName,
-                           gridCollection->reservoirs.at(gridElement.area).optimal_trajectory,
+                           gridCollection->reservoirs.at(grid.area).optimal_trajectory,
                            logger,
                            false);
             }

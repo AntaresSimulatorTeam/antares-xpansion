@@ -74,8 +74,7 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
     CreateDirectories(directories.simulation_dir);
 
     logger->display_message("Updating problems");
-    logger->display_message(
-      "for area: " + areaName.value_or(gridDefinition.gridElements[0].area + " (assumed)"));
+    logger->display_message("for area: " + areaName.value_or(gridDefinition.area + " (assumed)"));
     // check added instead of passing the entire reservoirManagement, in a multistock context
     if (computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
     {
@@ -84,7 +83,7 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
             logger->display_message(
               "The areaName for the current reservoir must be provided in the "
               "context of a multistock computation. First element is assumed: "
-                + gridDefinition.gridElements[0].area,
+                + gridDefinition.area,
               LogUtils::LOGLEVEL::WARNING,
               logger->CONTEXT);
         }
@@ -98,11 +97,11 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
             }
         }
     }
-    auto modifiedProblems = cleanProblemsForBellmanCalculations(
-      directories.simulation_dir,
-      log_file_path,
-      gridDefinition,
-      areaName.value_or(gridDefinition.gridElements[0].area));
+    auto modifiedProblems = cleanProblemsForBellmanCalculations(directories.simulation_dir,
+                                                                log_file_path,
+                                                                gridDefinition,
+                                                                areaName.value_or(
+                                                                  gridDefinition.area));
 
     return modifiedProblems;
 }
@@ -216,7 +215,7 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
 
     int weekEnd = pbID.week * 168;
 
-    for (const auto& gridElement: gridDefinition.gridElements)
+    for (const auto& gridElement: gridDefinition.gridElements | std::views::values)
     {
         if (gridElement.problemName == "all" || gridElement.problemName == pbName)
         {
@@ -232,8 +231,8 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
     // trajectories, for this specific flag
     if (gridDefinition.gridElements.size() == 1
         && this->computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY
-        && (gridDefinition.gridElements[0].problemName == "all"
-            || gridDefinition.gridElements[0].problemName == pbName))
+        && (gridDefinition.gridElements.begin()->second.problemName == "all"
+            || gridDefinition.gridElements.begin()->second.problemName == pbName))
     {
         for (auto& reservoir: gridDefinition.reservoirs)
         {

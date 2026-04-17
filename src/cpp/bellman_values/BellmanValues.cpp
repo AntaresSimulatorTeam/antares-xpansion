@@ -86,6 +86,8 @@ BellmanValues::compute(int nbLevels)
 {
     auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCostsAndDuals();
 
+    logger->display_message("Computed costs and duals", LogUtils::LOGLEVEL::INFO, logger->CONTEXT);
+
     levels = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> V;
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
@@ -126,20 +128,22 @@ BellmanValues::compute(int nbLevels)
                 { return Interpolator::linearInterpolation(this->levels, V_vec)(x); };
             };
             auto valuesVect = gridDef.weekAreaConstraints.at(week + 1)
-                                .at(gridDef.gridElements[0].area)
-                                .at(gridDef.gridElements[0].name);
+                                .at(gridDef.gridElements.begin()->second.area)
+                                .at(gridDef.gridElements.begin()
+                                      ->second.name); // assuming all problems are the same
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu;
                 double control;
-                std::tie(Vu, std::ignore, control) = solveWeeklyProblemWithCost(
-                  week,
-                  endWeek,
-                  scenario,
-                  levels[i],
-                  levels,
-                  costs[{scenario, week}],
-                  V_fut());
+                std::tie(Vu,
+                         std::ignore,
+                         control) = solveWeeklyProblemWithCost(week,
+                                                               endWeek,
+                                                               scenario,
+                                                               levels[i],
+                                                               levels,
+                                                               costs[{scenario, week}],
+                                                               V_fut());
                 V[{scenario, week}][i] += Vu;
             }
         }
@@ -242,9 +246,8 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
     double Vu = std::numeric_limits<double>::max(); // optimal objective value (Bellman value)
     double xf = 0.;                                 // final level of stock
     const Reservoir reservoir = reservoirManagement.reservoir;
-    auto costFn = Interpolator::linearInterpolation(
-      gridEvaluator.gridDefinition.gridElements[0].rhsValues[week],
-      costs);
+    std::vector<DblVector> rhsValues = gridEvaluator.gridDefinition.getRhsValuesForWeek(week);
+    auto costFn = Interpolator::linearInterpolation(rhsValues[week], costs);
     auto penalty = reservoirManagement.get_penalty(week, endWeek + 1)(level);
 
     for (double value_fut: X)
@@ -263,7 +266,7 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
         }
     }
 
-    for (double u: gridEvaluator.gridDefinition.gridElements[0].rhsValues[week])
+    for (double u: rhsValues[week])
     {
         double state_fut = level - u + reservoir.inflow[week][scenario];
         if (0 <= state_fut && state_fut <= reservoir.capacity)
@@ -353,15 +356,17 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
             // week 0 is always the initial level
             double level = week == 0 ? reservoirManagement.reservoir.initial_level
                                      : trajectory[week][scenario];
-            std::tie(std::ignore, trajectory[week + 1][scenario], std::ignore)
-              = solveWeeklyProblemWithCost(week,
-                                           endWeek,
-                                           scenario,
-                                           level, // here: trajectory of the previous week
-                                                  // (first week: initial level)
-                                           levels,
-                                           costs[{scenario, week}],
-                                           V_fut());
+            std::tie(
+              std::ignore,
+              trajectory[week + 1][scenario],
+              std::ignore) = solveWeeklyProblemWithCost(week,
+                                                        endWeek,
+                                                        scenario,
+                                                        level, // here: trajectory of the previous
+                                                               // week (first week: initial level)
+                                                        levels,
+                                                        costs[{scenario, week}],
+                                                        V_fut());
         }
     }
     logger->display_message("Computed optimal trajectory, for all weeks.",

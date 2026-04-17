@@ -10,6 +10,11 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 /// @brief key area name, value constraint map
+static enum WEEK
+{
+    ALLWEEKS = -1
+};
+
 using Week = int;
 using AreaName = std::string;
 using ConstraintName = std::string;
@@ -39,10 +44,11 @@ struct GridElement
 struct GridDefinition
 {
     int gridID;
+    std::string area;                            // name of the area
     std::map<std::string, Reservoir> reservoirs; // in the case of multistock, each gridDefinition
                                                  // needs its own copy of the reservoirs that will
                                                  // be modified as the computation goes
-    std::vector<GridElement> gridElements;
+    std::map<Week, GridElement> gridElements;
     std::map<Week, AreaConstraintMaps>
       weekAreaConstraints; // key week, value map (key area name, value vector of rhs values)
 
@@ -53,6 +59,8 @@ struct GridDefinition
         this->reservoirs = reservoirs;
         generateGridValues();
     }
+
+    std::vector<std::vector<double>> getRhsValuesForWeek(size_t week) const;
 
     void addGridElement(const std::string& pbName,
                         const std::string& type,
@@ -71,6 +79,7 @@ private:
     void processWeek(GridElement& gridElement, size_t week);
     void processAllWeeks(GridElement& gridElement);
     void processGridElementWeeks(GridElement& gridElement);
+    Week gridDefinitionKeyForProblem(std::string pbName) const;
     void adjustBoundaryValues(GridElement& gridElement);
 };
 

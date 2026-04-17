@@ -40,7 +40,8 @@ void GridDefinition::addGridElement(const std::string& pbName,
                                     "min ∈ [0,1], max ∈ [0,1] & > min, step ∈ (0,1]");
     }
 
-    gridElements.push_back({pbName, type, cstName, areaName, min, max, step});
+    gridElements.emplace(gridDefinitionKeyForProblem(pbName),
+                         GridElement{pbName, type, cstName, areaName, min, max, step});
 }
 
 /// @brief Build a GridCollection from a file
@@ -93,7 +94,7 @@ GridCollection::GridCollection(const std::filesystem::path& filePath,
 
         if (!gridDefinitions.contains(gridID))
         {
-            GridDefinition gridDef{gridID, {}, {}, {}};
+            GridDefinition gridDef{gridID, areaName, {}, {}, {}};
             gridDefinitions.emplace(gridID, gridDef);
         }
         gridDefinitions.at(gridID).addGridElement(pbName, type, cstName, areaName, min, max, step);
@@ -173,15 +174,38 @@ void GridCollection::checkGridValidity() const
     }
 }
 
+Week GridDefinition::gridDefinitionKeyForProblem(std::string pbName) const
+{
+    if (pbName == "all")
+    {
+        return WEEK::ALLWEEKS;
+    }
+    std::optional<int> weekNumber = parseWeekFromProblem(pbName);
+    if (weekNumber.has_value())
+    {
+        return weekNumber.value();
+    }
+    throw std::runtime_error("Could not determine a week number for problem " + pbName
+                             + " in grid.csv");
+}
+
 /// @brief Generate Grid values for all gridElements
 void GridDefinition::generateGridValues()
 {
     // weekAreaConstraints.clear();
-    for (auto& gridElement: gridElements)
+    for (auto& gridElement: gridElements | std::views::values)
     {
         adjustBoundaryValues(gridElement);
         processGridElementWeeks(gridElement);
     }
+}
+
+std::vector<std::vector<double>> GridDefinition::getRhsValuesForWeek(size_t week) const
+{
+    gridElements.begin()->first;
+    // the rhs values will either be from the single gridElement
+    return gridElements.begin()->first == WEEK::ALLWEEKS ? gridElements.begin()->second.rhsValues
+                                                         : gridElements.at(week + 1).rhsValues;
 }
 
 std::optional<int> GridDefinition::parseWeekFromProblem(const std::string& problemName) const

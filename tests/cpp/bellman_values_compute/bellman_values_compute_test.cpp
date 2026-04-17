@@ -199,11 +199,12 @@ protected:
 
         GridDefinition gridDef = {.gridID = 0,
                                   .reservoirs = reservoirs,
-                                  .gridElements = {{
-                                    .name = "cst",
-                                    .area = "area",
-                                    .rhsValues = values,
-                                  }},
+                                  .gridElements = {{WEEK::ALLWEEKS,
+                                                    {
+                                                      .name = "cst",
+                                                      .area = "area",
+                                                      .rhsValues = values,
+                                                    }}},
                                   .weekAreaConstraints = {
                                     {1, {{"area", {{"cst", values[0]}}}}},
                                     {2, {{"area", {{"cst", values[1]}}}}},
@@ -215,8 +216,8 @@ protected:
 TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0);
-    auto [bellmanValues, costs] = BellmanValues(evaluatorMock, reservoirManagement, logger)
-                                    .compute(6);
+    auto [bellmanValues,
+          costs] = BellmanValues(evaluatorMock, reservoirManagement, logger).compute(6);
 
     std::vector<std::vector<double>> expected = {{180, 140, 100, 60, 60, 60},
                                                  {120, 80, 40, 40, 40, 40},
@@ -229,8 +230,8 @@ TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 0);
-    auto [bellmanValues, costs] = BellmanValues(evaluatorMock, reservoirManagement, logger)
-                                    .compute(6);
+    auto [bellmanValues,
+          costs] = BellmanValues(evaluatorMock, reservoirManagement, logger).compute(6);
 
     std::vector<std::vector<double>> expected = {{1220, 180, 140, 100, 60, 1060},
                                                  {1160, 120, 80, 40, 40, 1040},
@@ -243,8 +244,8 @@ TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 TEST_F(BellmanValuesComputeTest, unitTestPenaltiesWithFinalLevel)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 30, true, 400);
-    auto [bellmanValues, costs] = BellmanValues(evaluatorMock, reservoirManagement, logger)
-                                    .compute(6);
+    auto [bellmanValues,
+          costs] = BellmanValues(evaluatorMock, reservoirManagement, logger).compute(6);
 
     std::vector<std::vector<double>> expected = {{4300, 300, 260, 220, 180, 1140},
                                                  {7200, 3200, 200, 160, 120, 1080},
@@ -422,7 +423,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
     {
         grid.setReservoirs(grid_collection->reservoirs);
 
-        for (auto& gridElement: grid.gridElements)
+        for (auto& gridElement: grid.gridElements | std::views::values)
         {
             const std::string referenceFileName = std::to_string(grid.gridID) + "_"
                                                   + gridElement.area
@@ -471,8 +472,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
-              = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area)
+              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
@@ -510,7 +511,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
     {
         grid.setReservoirs(grid_collection->reservoirs);
 
-        for (auto& gridElement: grid.gridElements)
+        for (auto& gridElement: grid.gridElements | std::views::values)
         {
             const std::string referenceFileName = std::to_string(grid.gridID) + "_"
                                                   + gridElement.area
@@ -562,8 +563,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
-              = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area)
+              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
@@ -601,7 +602,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
     {
         grid.setReservoirs(grid_collection->reservoirs);
 
-        for (auto& gridElement: grid.gridElements)
+        for (auto& gridElement: grid.gridElements | std::views::values)
         {
             const std::string referenceFileName = std::to_string(grid.gridID) + "_"
                                                   + gridElement.area
@@ -654,8 +655,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
-              = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area)
+              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
