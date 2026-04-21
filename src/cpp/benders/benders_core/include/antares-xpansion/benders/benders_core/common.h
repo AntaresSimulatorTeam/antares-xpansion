@@ -211,6 +211,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     }
 
     int MAX_ITERATIONS = -1;
+    bool MEMORY_OPTIMIZATION = false ; 
 
     double ABSOLUTE_GAP = 0;
     double RELATIVE_GAP = 0;

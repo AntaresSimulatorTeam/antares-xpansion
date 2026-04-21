@@ -548,18 +548,13 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
-    if (benders_plugin_)
-    {
-        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
-    }
-
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+    
     Run();
+    
     _world.barrier();
 
-    if (benders_plugin_)
-    {
-        benders_plugin_->OnBendersEnd();
-    }
+    benders_plugin_->OnBendersEnd();
 
     post_run_actions();
 
