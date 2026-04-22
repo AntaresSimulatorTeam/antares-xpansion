@@ -17,7 +17,7 @@ void updateMapColumn(const std::vector<ActiveLink>& links,
 
     if (it != links.end())
     {
-        mapColumn[link_id].push_back({id, time_step});
+        mapColumn[link_id].emplace_back(id, time_step);
     }
 }
 
@@ -26,7 +26,7 @@ VariableFileReader::VariableFileReader(
   const std::vector<ActiveLink>& links,
   const VariableFileReadNameConfiguration& variable_name_config,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger):
-    logger_(logger)
+    logger_(std::move(logger))
 {
     std::string line;
     std::ifstream file(fileName.c_str());
@@ -46,7 +46,7 @@ VariableFileReader::VariableFileReader(
   const std::vector<ActiveLink>& links,
   const VariableFileReadNameConfiguration& variable_name_config,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger):
-    logger_(logger)
+    logger_(std::move(logger))
 {
     ReadVarsFromStream(fileInIStringStream, links, variable_name_config);
 }

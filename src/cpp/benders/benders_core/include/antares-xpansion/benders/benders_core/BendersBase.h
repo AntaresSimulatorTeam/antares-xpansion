@@ -154,6 +154,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
+    WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
@@ -324,9 +325,9 @@ protected:
      suffix is different
      * ex variable at index = 0 is named in:
 
-    * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+    * subproblems-1-1  --> DirectFlow::link<area1$$area2>::hour<0>
                                       * subproblems-3-5  -->
-    NTCDirect::link<area1$$area2>::hour<672>
+    DirectFlow::link<area1$$area2>::hour<672>
      */
     // Search for variables in sub problems that satisfy patterns
     // var_indices is a vector(for each patterns p) of vector (var indices related
@@ -337,6 +338,8 @@ protected:
                                    const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     int SetAggregation(int max_aggregation) const;
+
+    std::map<int, double> GetSubCutTolerance() const;
 
 private:
     void print_master_and_cut(std::ostream& file,
@@ -367,7 +370,6 @@ private:
     void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    WorkerMasterPtr _master;
     StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
