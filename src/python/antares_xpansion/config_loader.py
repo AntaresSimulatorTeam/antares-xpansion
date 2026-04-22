@@ -614,7 +614,7 @@ class ConfigLoader(XpansionSettingsReader):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
         options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
 
-        if self.is_full_gems():
+        if self.gems_candidates():
             options_values[OptimisationKeys.problems_format_key()] = "mps"
         else:
             options_values[OptimisationKeys.problems_format_key()] = self.problem_format()
