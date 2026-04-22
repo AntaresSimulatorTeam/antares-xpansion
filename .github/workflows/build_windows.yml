@@ -67,6 +67,12 @@ jobs:
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
+      - name: Pre-requisites
+        shell: cmd
+        run: |
+          curl -OLs https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msmpisetup.exe -unattend
+
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
