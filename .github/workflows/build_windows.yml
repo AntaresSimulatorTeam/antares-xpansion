@@ -67,6 +67,7 @@ jobs:
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
+      # https://github.com/microsoft/vcpkg/blob/3fb54e6717ea6a48099b02798e82fafefb2d410e/ports/msmpi/portfile.cmake#L12
       - name: Pre-requisites
         shell: cmd
         run: |
