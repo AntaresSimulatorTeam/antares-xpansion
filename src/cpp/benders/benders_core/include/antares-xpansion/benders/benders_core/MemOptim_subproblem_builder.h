@@ -8,9 +8,13 @@
 class MemOptimSubProblemBuilder
 {
    public:
-    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot);
+    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot, Logger& logger);
+    void build_sub_skeleton(); 
 
   private:
+
+    Logger logger_ ; 
+
     void read_coef();
     void read_coef_cols();
     void read_coef_rows();

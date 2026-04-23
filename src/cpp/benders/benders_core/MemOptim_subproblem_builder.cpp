@@ -1,4 +1,6 @@
 #include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
+#include <antares-xpansion/benders/benders_core/SolverIO.h>
+
 
 #include <fstream>
 #include <iostream>
@@ -6,9 +8,10 @@
 #include <boost/mpi.hpp>
 #include <boost/tokenizer.hpp>
 
-MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot)
+MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,Logger& logger) 
     : inputRoot_(inputRoot)
 {
+    logger_ = logger ; 
     read_coef();
     read_coef_cols();
     read_coef_rows();
@@ -164,3 +167,6 @@ void MemOptimSubProblemBuilder::read_rhs_rows()
         }
     }
 }
+
+
+    build_sub_skeleton(); 
