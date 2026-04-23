@@ -9,6 +9,9 @@
 #include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h>
 #include <antares-xpansion/helpers/AreaParser.h>
+
+#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
+
 #include <variant>
 
 BendersFactory::BendersFactory(const SimulationOptions& options,
@@ -154,9 +157,13 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
     BendersBaseOptions benders_options(options_.get_benders_options());
     benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = outer_loop;
 
+    std::cout<<"start building the memoptim object "<<std::endl ; 
+
+    auto memoptim_subproblem_builder = std::make_shared<MemOptimSubProblemBuilder>(std::filesystem::path(options_.INPUTROOT)) ;
     const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
                                                                dependencies_.logger.get(),
                                                                "Benders");
+ 
 
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
     context_ = bendersmethod_to_string(method_);
