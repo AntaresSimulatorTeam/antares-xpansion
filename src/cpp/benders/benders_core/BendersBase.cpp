@@ -468,6 +468,10 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     {
         GetSubproblemCutCache(subproblem_data_map);
     }
+    else if (Options().MEMORY_OPTIMIZATION)
+    {
+            std::cout<<"we are in this case memory optimization  !!!!!"<<std::endl ;
+    }
     else
     {
         GetSubproblemCutFast(subproblem_data_map);
@@ -589,6 +593,10 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                         [this, &m, &subproblem_data_map](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
+                            for (auto& [var,var_int] : kvp.second) 
+                            {
+                                std::cout<<"var : "<<var<<" var int "<<var_int<<std::endl ; 
+                            }
                             const auto& [name, variables] = kvp;
                             std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
                             PlainData::SubProblemData subproblem_data;

@@ -169,4 +169,7 @@ void MemOptimSubProblemBuilder::read_rhs_rows()
 }
 
 
-    build_sub_skeleton(); 
+void  MemOptimSubProblemBuilder::build_sub_skeleton()
+{
+  
+} 
