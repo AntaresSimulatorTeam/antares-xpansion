@@ -80,7 +80,7 @@ jobs:
           submodules: true
 
       - name: Setup Python environment using conda
-        uses: conda-incubator/setup-miniconda@v3.3.0
+        uses: conda-incubator/setup-miniconda@v4.0.1
         with:
           auto-update-conda: false
           activate-environment: xpansion-tests
