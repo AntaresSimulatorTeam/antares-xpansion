@@ -1,17 +1,10 @@
 
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 
-#include <execution>
-#include <iostream>
 #include <tbb/parallel_for_each.h>
 #include <utility>
 
 #include <antares/api/solver.h>
-
-#include "antares-xpansion/benders/output/OutputWriter.h"
-#include "antares-xpansion/helpers/solver_utils.h"
-#include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
-#include "malloc.h"
 
 static const std::string LP_DIRNAME = "lp";
 

@@ -1,16 +1,12 @@
 
 #include "antares-xpansion/lpnamer/main/ProblemGenerationOptimSimu.h"
 
-#include <execution>
-#include <iostream>
 #include <tbb/parallel_for_each.h>
 #include <utility>
 
 #include <antares/api/singleProblemGetter.h>
 #include <antares/api/solver.h>
 
-#include "antares-xpansion/benders/output/OutputWriter.h"
-#include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
 
@@ -36,7 +32,7 @@ void ProblemGenerationOptimSimu::loadProblemsFromAntares()
     if (spg.areWeeksIndependent())
     {
         logger->display_message("Weeks are independent, using optimized problem generation");
-        generateAntaresProblems();
+        generateAntaresProblems(spg);
     }
     else
     {
@@ -45,10 +41,9 @@ void ProblemGenerationOptimSimu::loadProblemsFromAntares()
     }
 }
 
-void ProblemGenerationOptimSimu::generateAntaresProblems()
+void ProblemGenerationOptimSimu::generateAntaresProblems(Antares::Solver::SingleProblemGetter& spg)
 {
     Antares::Solver::LpsFromAntares lps;
-    Antares::Solver::SingleProblemGetter spg(directories.study_dir);
     lps.setConstantData(spg.getConstantData());
 
     spg.writeNTCTimeSeries(directories.simulation_dir);

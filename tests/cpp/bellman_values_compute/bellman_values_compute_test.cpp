@@ -1,15 +1,10 @@
-#include <algorithm>
-
 #include "RandomDirGenerator.h"
-#include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/benders/logger/Master.h"
 #include "antares-xpansion/benders/logger/User.h"
-#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/lpnamer/main/ConfigurationManager.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
-#include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
 
 #define EXPECT_NEAR_REL(val1, val2, rel_tol)                                                       \
