@@ -1,4 +1,5 @@
 #include "RandomDirGenerator.h"
+#include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/benders/logger/Master.h"
@@ -465,8 +466,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area)
-              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
+              = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
@@ -556,8 +557,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area)
-              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
+              = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }
@@ -648,8 +649,8 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
 
             logger->display_message("Computing optimal trajectories...");
-            grid_collection->reservoirs.at(gridElement.area)
-              .optimal_trajectory = bellmanValues.computeOptimalTrajectories();
+            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
+              = bellmanValues.computeOptimalTrajectories();
             logger->display_message("Computing done");
         }
     }

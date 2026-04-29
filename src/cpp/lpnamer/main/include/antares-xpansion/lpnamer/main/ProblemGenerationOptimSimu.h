@@ -4,11 +4,15 @@
 
 #pragma once
 
-#include <antares/api/singleProblemGetter.h>
 #include <antares/solver/lps/LpsFromAntares.h>
 
 #include "ConfigurationManager.h"
 #include "antares-xpansion/bellman_values/ProblemManager.h"
+
+namespace Antares::Solver
+{
+class SingleProblemGetter;
+}
 
 /// @brief Class to generate and modify problems in memory
 class ProblemGenerationOptimSimu
