@@ -24,6 +24,10 @@ public:
               const SolverLogManager& solver_log_manager,
               ProblemsFormat format,
               IBendersProblemProvider* benders_problem_provider);
+    
+    //in the case of memory optim we create the solverAbstract object in the MemOptimSubProblemBuilder 
+    //we still need to set up the user 
+    void init_for_mem_optim(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map) ;
     virtual ~Worker() = default;
 
     void get_value(double& lb) const;
@@ -38,11 +42,12 @@ public:
     std::filesystem::path _base_filename;
     VariableMap _name_to_id; /*!< Link between the variable name and its identifier */
     Int2Str _id_to_name;     /*!< Link between the identifier of a variable and its name*/
-
+    
+    void set_id_to_name(VariableMap&) ; 
 public:
     void solve(int& lp_status,
                const std::string& outputroot,
-               const std::string& output_master_mps_file_name,
+               const std::string& output_master_mps_fkile_name,
                std::shared_ptr<Output::OutputWriter> writer) const;
     int RowIndex(const std::string& row_name) const;
     void ChangeRhs(int id_row, double val) const;

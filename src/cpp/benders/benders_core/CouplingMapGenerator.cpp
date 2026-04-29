@@ -23,8 +23,7 @@ struct InvalidStructureFile: LogUtils::XpansionError<std::runtime_error>
  */
 CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& structure_path,
                                              ILoggerXpansion* logger,
-                                             const std::string& context, 
-                                             bool mem_optim)
+                                             const std::string& context)
 {
     CouplingMap coupling_map;
     std::ifstream summary(structure_path, std::ios::in);

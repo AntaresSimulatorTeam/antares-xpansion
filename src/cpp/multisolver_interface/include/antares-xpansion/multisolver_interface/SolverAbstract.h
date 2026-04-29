@@ -461,7 +461,7 @@ public:
     virtual void get_rhs(double* rhs, int first, int last) const = 0;
 
     /**
-    * @brief Returns the right hand side range values for the rows in a given
+    * @brief Returns the right hand side range values for the rows  in a given
     range.
     *
     * @param range  : Double array of length last-first+1 where the right hand
@@ -717,6 +717,9 @@ public:
      */
     virtual void chg_rhs(int id_row, double val) = 0;
 
+
+    virtual void chg_rhs_values(std::vector<int>& id_cols, std::vector<double>&  vals) = 0 ; 
+
     /**
      * @brief Change a coefficient in the matrix
      *
@@ -725,6 +728,18 @@ public:
      * @param val    : new value to set in the matrix
      */
     virtual void chg_coef(int id_row, int id_col, double val) = 0;
+
+
+
+    /**
+     * @brief Change multiple coefficients in the matrix
+     *
+     * @param num_coefs : number of coefficients to change
+     * @param id_rows   : array of row indices
+     * @param id_cols   : array of column indices
+     * @param vals      : array of new values to set in the matrix
+     */
+    virtual void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) = 0;
 
     /**
      * @brief Change the name of a constraint

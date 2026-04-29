@@ -7,6 +7,7 @@
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common_mpi.h"
+#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
 
 /*!
  * \class BendersMpi
@@ -47,10 +48,10 @@ private:
     void step_1_solve_master();
     void step_2_solve_subproblems_and_build_cuts();
     void step_4_update_best_solution(int rank);
-
     std::vector<SubProblemNamesInCut> get_subs_per_cut(const std::vector<SubProblemNamesInCut>&,
                                                        int);
 
+    
     SubProblemDataMap get_subproblem_cut_package();
 
     void solve_master_and_create_trace();

@@ -74,6 +74,24 @@ void Worker::init(const std::string& solver_name,
     }
 }
 
+void Worker::init_for_mem_optim(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map) 
+{
+    _solver = solver ; 
+    set_id_to_name(variable_map) ; 
+}
+
+
+
+void Worker::set_id_to_name(VariableMap& variable_map) 
+{
+    _name_to_id = variable_map ; 
+    for (const auto& kvp : _name_to_id) 
+    {
+        _id_to_name[kvp.second] = kvp.first;
+    }    
+} 
+
+
 /*!
  *  \brief Method to solve a problem
  *

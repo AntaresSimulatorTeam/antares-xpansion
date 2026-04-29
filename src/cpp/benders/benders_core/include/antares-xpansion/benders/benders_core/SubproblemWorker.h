@@ -25,6 +25,9 @@ public:
                      ProblemsFormat format,
                      IBendersProblemProvider* benders_problem_provider,
                      double cut_coefficient_tolerance);
+
+    SubproblemWorker(VariableMap& variable_map, std::shared_ptr<SolverAbstract> solver,Logger logger,double cut_coefficient_tolerance,double slave_weight) ; 
+    void setup_obj(double slave_weight) ; 
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
 

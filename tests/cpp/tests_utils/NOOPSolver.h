@@ -221,6 +221,14 @@ public:
     {
     }
 
+
+    void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) 
+    {
+        
+    }
+
+
+
     void chg_row_name(int id_row, const std::string& name) override
     {
     }
@@ -311,6 +319,10 @@ public:
     void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override
     {
     }
+    void chg_rhs_values(std::vector<int>&, std::vector<double>& ) 
+    {
+         
+    } 
 
     void presolve_only() override
     {

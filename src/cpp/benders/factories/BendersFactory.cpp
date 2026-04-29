@@ -109,6 +109,8 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                dependencies_.writer,
                                                *world_,
                                                dependencies_.math_log_driver);
+
+        std::cout<<"benders mpi is configured correctly "<<std::endl ; 
         break;
     case BENDERSMETHOD::BENDERS_OUTERLOOP:
         benders = std::make_unique<Outerloop::BendersMpiOuterLoop>(benders_options,
@@ -163,7 +165,6 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
 
     std::cout<<"start building the memoptim object "<<std::endl ; 
 
-    auto memoptim_subproblem_builder = std::make_shared<MemOptimSubProblemBuilder>(std::filesystem::path(options_.INPUTROOT),dependencies_.logger) ; 
 
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
     context_ = bendersmethod_to_string(method_);

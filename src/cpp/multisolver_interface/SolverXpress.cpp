@@ -580,6 +580,26 @@ void SolverXpress::chg_rhs(int id_row, double val)
     zero_status_check(status, "change rhs", LOGLOCATION);
 }
 
+void SolverXpress::chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals )   
+{
+    int status = XPRSchgrhs(_xprs,
+                            id_rows.size(),
+                            id_rows.data(),
+                            vals.data());
+                            
+    zero_status_check(status, "change rhs", LOGLOCATION);
+}
+
+
+
+void SolverXpress::chg_coefs(int num_coefs ,int* id_rows, int* id_cols, double* vals) 
+{
+    int status = XPRSchgmcoef(_xprs,num_coefs,id_rows,id_cols,vals); 
+    zero_status_check(status, "change matrix coefficient", LOGLOCATION);
+
+} 
+
+
 void SolverXpress::chg_coef(int id_row, int id_col, double val)
 {
     int status = XPRSchgcoef(_xprs, id_row, id_col, val);

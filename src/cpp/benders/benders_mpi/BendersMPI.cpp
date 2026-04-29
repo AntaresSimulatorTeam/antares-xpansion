@@ -17,6 +17,8 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
     BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
     _world(world)
 {
+    int rank = _world.rank() ; 
+    set_rank(rank) ; 
 }
 
 /*!
@@ -30,7 +32,38 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS)
+
+    if (_options.MEMORY_OPTIMIZATION) 
+    {
+        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(_options.INPUTROOT,_logger,_options.SOLVER_NAME,_options.LOG_LEVEL , _options.PROBLEMS_FORMAT) ; 
+        int current_problem_id = 0;
+        subs_per_procs_mem_optim_.resize(_world.size()) ; 
+        std::cout<<"memory optimization "<<std::endl ; 
+        std::cout<<"coupling map size "<<coupling_map_.size()<<std::endl ;
+        for (auto it= coupling_map_.begin(); it!= coupling_map_.end(); it++ ) 
+        {
+            auto process_to_feed = current_problem_id % _world.size();
+            std::cout<<"process_to_feed "<<process_to_feed<<std::endl ;  
+            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first) ; 
+            
+            current_problem_id++ ;
+        }
+
+
+        for (auto proc=0; proc<subs_per_procs_mem_optim_.size(); proc++) 
+        {
+            auto subs_on_proc = subs_per_procs_mem_optim_[proc] ;
+            std::cout<<"proc "<<proc<<std::endl ;  
+            for (auto sub : subs_on_proc) 
+            {
+                std::cout<<"sub "<<sub<<std::endl ; 
+            }
+            std::cout<<"\n\n"<<std::endl ;      
+        }
+
+        
+    }
+    else if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -254,6 +287,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     if (Rank() == rank_0)
     {
         _data.cumulative_number_of_subproblem_solved += _data.nsubproblem;
+        std::cout<<"cumulative_number_of_subproblem_solved "<<_data.cumulative_number_of_subproblem_solved<<std::endl ; 
         _logger->cumulative_number_of_sub_problem_solved(
           _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
     }

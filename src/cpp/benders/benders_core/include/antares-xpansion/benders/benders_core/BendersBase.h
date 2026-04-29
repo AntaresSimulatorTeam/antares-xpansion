@@ -15,7 +15,9 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
 #include "common.h"
+
 
 /**
  * std execution policies don't share a base type so we can't just select
@@ -151,6 +153,11 @@ protected:
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
+
+    
+    std::vector<std::vector<std::string>> subs_per_procs_mem_optim_ ; 
+    std::shared_ptr<MemOptimSubProblemBuilder> memoptim_subprob_builder_ ; 
+
 
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
@@ -325,6 +332,7 @@ protected:
                                    const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     int SetAggregation(int max_aggregation) const;
+    void set_rank(int rank) ; 
 
 private:
     void print_master_and_cut(std::ostream& file,
@@ -358,6 +366,8 @@ private:
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+    int rank_;
+
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

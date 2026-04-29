@@ -28,6 +28,9 @@ BENDERS_OPTIONS_MACRO(OUTPUTROOT, std::string, ".", asString())
 // True if a trace should be built, false otherwise
 BENDERS_OPTIONS_MACRO(TRACE, bool, true, asBool())
 
+//variable to hande the memory optimization case 
+BENDERS_OPTIONS_MACRO(MEMORY_OPTIMIZATION, bool, false, asBool())
+
 // UNIFORM (1/n), CONSTANT (to set in SLAVE_WEIGHT_VALUE), or a txt file linking
 // each slave to its weight
 BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT, std::string, "CONSTANT", asString())
