@@ -211,10 +211,10 @@ void BendersBase::update_best_ub()
         _data.best_ub = _data.ub;
         _data.best_it = _data.it;
         FillWorkerMasterData(relevantIterationData_.best);
-        _data.criteria_current_iteration_data.max_criterion_best_it
-          = _data.criteria_current_iteration_data.max_criterion;
-        _data.criteria_current_iteration_data.max_criterion_area_best_it
-          = _data.criteria_current_iteration_data.max_criterion_area;
+        _data.criteria_current_iteration_data
+          .max_criterion_best_it = _data.criteria_current_iteration_data.max_criterion;
+        _data.criteria_current_iteration_data
+          .max_criterion_area_best_it = _data.criteria_current_iteration_data.max_criterion_area;
         relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
         best_iteration_data = bendersDataToLogData(_data);
     }
@@ -627,25 +627,16 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     worker->fix_to(_data.x_cut);
 
-    if (benders_plugin_)
-    {
-        benders_plugin_->OnBendersSubResolutionStart();
-    }
+    benders_plugin_->OnBendersSubResolutionStart();
 
     int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)
     {
-        if (benders_plugin_)
-        {
-            benders_plugin_->OnBendersMicroIterationStart();
-        }
+        benders_plugin_->OnBendersMicroIterationStart();
 
         bool added_rows = true;
         while (added_rows)
         {
-            int num_master_iter = _data.it - 1;
-            size_t start = name.find_last_of('/') + 1;
-            size_t end = name.find(".");
             auto t1 = std::chrono::high_resolution_clock::now();
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
@@ -679,10 +670,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    if (benders_plugin_)
-    {
-        benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
-    }
+    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
@@ -940,35 +928,6 @@ Output::Iteration BendersBase::iteration(const WorkerMasterData& masterDataPtr_l
         + cumulative_number_of_subproblem_resolved_before_resume;
     return iteration;
 }
-
-// void BendersBase::read_constraints_csv()
-// {
-//     if (!_options.MICRO_ITERATIONS)
-//         return ;
-//     else
-//     {
-//         std::string csv_name = "constraints_dictionnary.csv" ;
-//         auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ;
-//         std::ifstream file(csv_path) ;
-//         if (file.is_open())
-//         {
-//             std::string line;
-//             typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
-
-//             while (std::getline(file,line))
-//             {
-//                 Tokenizer tok(line) ;
-//                 std::vector<std::string> tokens(tok.begin(), tok.end());
-//                 std::string key = tokens[0] ;
-//                 std::vector<std::string> values ;
-//                 if (tokens.size() > 1 )
-//                 values.assign(tokens.begin()+1,tokens.end()) ;
-
-//                 constraints_csv_map_[key] = values ;
-//             }
-//         }
-//     }
-// }
 
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {

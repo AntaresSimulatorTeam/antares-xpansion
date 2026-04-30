@@ -2,32 +2,33 @@
 
 #include <antares-xpansion/benders/plugins/BendersPlugin.h>
 
-class NoOperationPlugin: public BendersPlugin
+class NoOperationPlugin final: public BendersPlugin
 {
 public:
     NoOperationPlugin();
-    virtual ~NoOperationPlugin() = default;
+    ~NoOperationPlugin() override = default;
 
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                         const Logger& logger,
                         const BendersBaseOptions& options,
-                        const SolverLogManager& solver_log_manager);
+                        const SolverLogManager& solver_log_manager) override;
 
-    void OnBendersEnd();
+    void OnBendersEnd() override;
 
-    void OnBendersIterationStart();
-    void OnBendersIterationEnd();
+    void OnBendersIterationStart() override;
+    void OnBendersIterationEnd() override;
 
-    void OnBendersMasterResolutionStart(std::map<std::string, double>& master_out, int& num_iter);
-    void OnBendersMasterResolutionEnd();
+    void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
+                                      int& num_iter) override;
+    void OnBendersMasterResolutionStart() override;
 
-    void OnBendersSubResolutionStart();
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter);
+    void OnBendersSubResolutionStart() override;
+    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
 
-    void OnBendersMicroIterationStart();
+    void OnBendersMicroIterationStart() override;
     void OnBendersMicroIterationEnd(std::string sub_name,
                                     bool& added_rows,
                                     std::string solve_time,
                                     int num_master_iter,
-                                    int num_micro_iter);
+                                    int num_micro_iter) override;
 };

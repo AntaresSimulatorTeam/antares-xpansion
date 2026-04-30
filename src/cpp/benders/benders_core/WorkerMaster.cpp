@@ -41,6 +41,7 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
     }
     _set_alpha_var();
     _set_nb_units_var_ids();
+    _set_master_only_var_ids();
 }
 
 /*!

@@ -323,12 +323,11 @@ void BendersMpi::UpdateMaxCriterionArea()
     {
         _data.criteria_current_iteration_data.max_criterion = *max_criterion_it;
         auto max_criterion_index = std::distance(criteria_begin, max_criterion_it);
-        _data.criteria_current_iteration_data.max_criterion_area = criterion_computation_
-                                                                     .getCriterionInputData()
-                                                                     .Criteria()
-                                                                       [max_criterion_index]
-                                                                     .Pattern()
-                                                                     .GetBody();
+        _data.criteria_current_iteration_data
+          .max_criterion_area = criterion_computation_.getCriterionInputData()
+                                  .Criteria()[max_criterion_index]
+                                  .Pattern()
+                                  .GetBody();
     }
 }
 
@@ -479,12 +478,11 @@ void BendersMpi::Run()
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
 
+        benders_plugin_->OnBendersMasterResolutionStart();
+
         step_1_solve_master();
 
-        if (benders_plugin_)
-        {
-            benders_plugin_->OnBendersMasterResolutionStart(_data.x_cut, _data.it);
-        }
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
@@ -506,10 +504,6 @@ void BendersMpi::Run()
         {
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
-        }
-        if (benders_plugin_)
-        {
-            benders_plugin_->OnBendersMasterResolutionEnd();
         }
 
         benders_plugin_->OnBendersIterationEnd();

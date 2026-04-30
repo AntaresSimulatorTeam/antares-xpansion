@@ -16,7 +16,6 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
                                                                   bool micro_iter,
                                                                   boost::mpi::communicator* world)
 {
-    std::cout << "creating plugin ..... " << std::endl;
     if (micro_iter)
     {
         int n_subs = coupling_map.size();

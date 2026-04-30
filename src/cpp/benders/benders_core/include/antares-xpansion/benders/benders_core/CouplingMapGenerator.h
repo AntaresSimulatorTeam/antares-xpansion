@@ -10,8 +10,8 @@ public:
                                   ILoggerXpansion* logger,
                                   const std::string& context = "Benders");
 
-    static void BuildSubProblemConstaintMap(const CouplingMap& coupling_map,
-                                            SubProblemConstraintMap& subproblem_constraint_map,
-                                            CouplingMap& constraints_coupling_map,
-                                            const SimulationOptions& options);
+    static void BuildSubProblemConstraintMap(const CouplingMap& coupling_map,
+                                             SubProblemConstraintMap& subproblem_constraint_map,
+                                             CouplingMap& constraints_coupling_map,
+                                             const SimulationOptions& options);
 };

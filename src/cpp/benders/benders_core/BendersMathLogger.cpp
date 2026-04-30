@@ -5,7 +5,6 @@
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
-#include "iostream"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method):
     type_(type),
@@ -104,9 +103,7 @@ void LogDestination::setDelimiter(const std::string& delimiter)
 
 void MathLoggerBehaviour::write_header()
 {
-    std::cout << "before write header " << std::endl;
     setHeadersList();
-    std::cout << "agter setHeadersList" << std::endl;
     LogsDestination().InsertDelimiter();
     for (const auto& header: Headers())
     {

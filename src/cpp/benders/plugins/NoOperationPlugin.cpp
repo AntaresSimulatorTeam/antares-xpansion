@@ -23,12 +23,12 @@ void NoOperationPlugin::OnBendersIterationEnd()
 {
 }
 
-void NoOperationPlugin::OnBendersMasterResolutionStart(std::map<std::string, double>& master_out,
-                                                       int& num_iter)
+void NoOperationPlugin::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
+                                                     int& num_iter)
 {
 }
 
-void NoOperationPlugin::OnBendersMasterResolutionEnd()
+void NoOperationPlugin::OnBendersMasterResolutionStart()
 {
 }
 

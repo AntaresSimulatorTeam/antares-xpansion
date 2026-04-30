@@ -8,14 +8,12 @@ target_sources(logger_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/User.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/User.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/UserFile.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/logger/MicroIterationsLog.h
         CandidateLog.cpp
         IterationResultLog.cpp
         Master.cpp
         MathLogger.cpp
         User.cpp
         UserFile.cpp
-        MicroIterationsLog.cpp
 )
 
 add_library(antaresXpansion::logger_lib ALIAS logger_lib)

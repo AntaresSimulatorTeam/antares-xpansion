@@ -16,11 +16,10 @@ Benders_MICRO_ITERS class.
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/string.hpp>
 
-#include "antares-xpansion/benders/benders_core/ConstraintsReader.h"
+#include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
-#include "antares-xpansion/benders/logger/MicroIterationsLog.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
@@ -46,14 +45,13 @@ using on_Benders_start_Func = void (*)(SubProblemIds,
 using on_Benders_end_Func = void (*)();
 using on_Benders_iteration_start = void (*)();
 using on_Benders_iteration_end = void (*)();
-using on_Benders_master_resolution_start = void (*)(
-  std::map<std::string, double>&,
-  int&,
-  mpi::communicator*,
-  std::map<std::string, std::vector<std::string>>&,
-  std::filesystem::path input_root);
+using on_Benders_master_resolution_start = void (*)();
+using on_Benders_master_resolution_end = void (*)(std::map<std::string, double>&,
+                                                  int&,
+                                                  mpi::communicator*,
+                                                  std::map<std::string, std::vector<std::string>>&,
+                                                  std::filesystem::path input_root);
 
-using on_Benders_master_resolution_end = void (*)();
 using on_Benders_micro_iteration_start = void (*)();
 using on_Benders_micro_iteration_end = void (*)(std::string sub_name,
                                                 bool& added_rows,
@@ -72,7 +70,7 @@ using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_mic
     Implementation of BendersPlugin to manage the microiterations workflow
 */
 
-class Benders_MICRO_ITERS: public BendersPlugin
+class Benders_MICRO_ITERS final: public BendersPlugin
 {
 public:
     /*
@@ -93,45 +91,46 @@ public:
     /*
         Implementation of benders start call back
     */
-    virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                                const Logger& logger,
-                                const BendersBaseOptions& options,
-                                const SolverLogManager& solver_log_manager);
+    void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
+                        const Logger& logger,
+                        const BendersBaseOptions& options,
+                        const SolverLogManager& solver_log_manager) override;
 
-    void OnBendersIterationStart();
-    void OnBendersIterationEnd();
+    void OnBendersIterationStart() override;
+    void OnBendersIterationEnd() override;
 
     /*
         Implementation of benders end call back
     */
-    virtual void OnBendersEnd();
+    void OnBendersEnd() override;
 
     /*
-        Implementation of master iteration start call back
+        Implementation of master resolution end call back
     */
-    virtual void OnBendersMasterResolutionStart(std::map<std::string, double>& master_out,
-                                                int& num_iter);
+    void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
+                                      int& num_iter) override;
 
     /*
-        Implementation of master iteration end call back
+        Implementation of master resolution start call back
     */
-    virtual void OnBendersMasterResolutionEnd();
+    void OnBendersMasterResolutionStart() override;
+
     /*
         Implementation of micro iteration start call back
     */
-    virtual void OnBendersMicroIterationStart();
+    void OnBendersMicroIterationStart() override;
 
     /*
         Implementation of micro iteration end callback
     */
-    virtual void OnBendersMicroIterationEnd(std::string sub_name,
-                                            bool& added_rows,
-                                            std::string solving_time,
-                                            int num_master_iter,
-                                            int num_micro_iter);
+    void OnBendersMicroIterationEnd(std::string sub_name,
+                                    bool& added_rows,
+                                    std::string solving_time,
+                                    int num_master_iter,
+                                    int num_micro_iter) override;
 
-    virtual void OnBendersSubResolutionStart();
-    virtual void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter);
+    void OnBendersSubResolutionStart() override;
+    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
 
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
@@ -153,13 +152,13 @@ private:
     //                                                 std::string sub_name);
 
     /*
-        This function is used to build the ConstraintsReader objects associated to each subproblem
+        This function is used to build the SubproblemConstraintsManager objects associated to each subproblem
         @inputs :
             - subproblem_map : the map to the subproblem workers
             - options : study options
             - solver_log_manager : solver log manger
     */
-    void BuildConstraintsReaderMap(const SubproblemsMapPtr& subproblem_map,
+    void BuildSubproblemConstraintsManagerMap(const SubproblemsMapPtr& subproblem_map,
                                    const BendersBaseOptions& options,
                                    const SolverLogManager& solver_log_manager);
 
@@ -172,11 +171,11 @@ private:
     */
     // bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
 
-    // BuildSubProblemConstaintMap()
+    // BuildSubProblemConstraintMap()
     void read_micro_iteration_config_file();
 
     void read_variables_to_follow_ids();
-    void read_variable_names();
+    void read_variable_names_to_follow();
     void build_variables_to_follow_indices_vector(std::string sub_name);
     const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
@@ -208,7 +207,7 @@ private:
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
-    ConstraintsReaderPtrMap constraints_map_;
+    SubproblemConstraintsManagerPtrMap constraints_map_;
     Logger _logger;
     bool warm_start_;
 };
