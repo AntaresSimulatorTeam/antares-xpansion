@@ -656,13 +656,12 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                                                                               - t1)
                                           .count();
 
-            num_micro_iter++; 
+            num_micro_iter++;
             benders_plugin_->OnBendersMicroIterationEnd(name,
-                                                            added_rows,
-                                                            std::to_string(elapsed_microseconds),
-                                                            _data.it, 
-                                                            num_micro_iter);
-            
+                                                        added_rows,
+                                                        std::to_string(elapsed_microseconds),
+                                                        _data.it,
+                                                        num_micro_iter);
         }
     }
     else
@@ -691,7 +690,6 @@ void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subprobl
     auto&& col_names = subproblem._solver->get_col_names();
     criterion_computation_.SearchVariables(col_names);
 }
-
 
 void BendersBase::SetSubproblemsVariablesIndices()
 {
@@ -1566,9 +1564,6 @@ void BendersBase::roundXCut()
         }
     }
 }
-
-
-
 
 std::map<int, double> BendersBase::GetSubCutTolerance() const
 {

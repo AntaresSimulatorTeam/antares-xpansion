@@ -15,8 +15,8 @@
 #include "iostream"
 
 Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
-                                            const CouplingMap& coupling_map,
-                                            mpi::communicator* world):
+                                         const CouplingMap& coupling_map,
+                                         mpi::communicator* world):
     options_(options)
 {
     coupling_map_ = coupling_map;
@@ -120,10 +120,11 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
             _world->abort(EXIT_FAILURE);
         }
     }
-    else 
+    else
     {
-        std::cerr<<"failed to open the plugin given on path "<<cpp_lib_absolute_path<<std::endl ; 
-        _world->abort(EXIT_FAILURE) ; 
+        std::cerr << "failed to open the plugin given on path " << cpp_lib_absolute_path
+                  << std::endl;
+        _world->abort(EXIT_FAILURE);
     }
 }
 

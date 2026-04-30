@@ -511,9 +511,8 @@ void BendersMpi::Run()
         {
             benders_plugin_->OnBendersMasterResolutionEnd();
         }
-        
-        benders_plugin_->OnBendersIterationEnd();
 
+        benders_plugin_->OnBendersIterationEnd();
     }
     if (_world.rank() == rank_0)
     {
@@ -522,7 +521,6 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
-
 }
 
 void BendersMpi::PreRunInitialization()
@@ -557,9 +555,9 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
-    
+
     Run();
-    
+
     _world.barrier();
 
     benders_plugin_->OnBendersEnd();

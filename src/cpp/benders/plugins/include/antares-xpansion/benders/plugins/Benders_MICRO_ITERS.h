@@ -36,7 +36,6 @@ struct SubProblemIds
     int n_subproblems;
 };
 
-
 using on_Benders_start_Func = void (*)(SubProblemIds,
                                        int,
                                        std::filesystem::path,
