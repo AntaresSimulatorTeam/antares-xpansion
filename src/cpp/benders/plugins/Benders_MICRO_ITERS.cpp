@@ -145,7 +145,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
     // Reading the micro iterations configuration file
     std::filesystem::path mirco_iterations_options_path = input_root_
                                                           / "micro_iterations_config.txt";
-    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.c_str());
+    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.string());
 
     if (micro_iterations_options_stream.is_open())
     {
@@ -180,7 +180,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
     }
     else
     {
-        std::cerr << "unable to open : " << mirco_iterations_options_path.c_str() << std::endl;
+        std::cerr << "unable to open : " << mirco_iterations_options_path.string() << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -189,7 +189,7 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 {
     // Reading variable names from text file
     std::filesystem::path variable_names_path = input_root_ / "variable_names.txt";
-    std::ifstream variable_names_stream(variable_names_path.c_str());
+    std::ifstream variable_names_stream(variable_names_path.string());
 
     if (variable_names_stream.is_open())
     {
@@ -205,7 +205,7 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
     }
     else
     {
-        std::cerr << "unable to open : " << variable_names_path.c_str() << std::endl;
+        std::cerr << "unable to open : " << variable_names_path.string() << std::endl;
         exit(EXIT_FAILURE);
     }
 }
