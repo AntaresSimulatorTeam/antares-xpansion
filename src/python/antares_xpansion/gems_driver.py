@@ -118,7 +118,7 @@ class GemsDriver:
             if f.endswith(".mps") or f == "structure.txt":
                 src = output_path / f
                 dst = lp_path / f
-                shutil.copy2(src, dst)
+                shutil.move(src, dst)
 
     def simulation_output_path(self) -> Path:
         return Path(self.antares_output_dir()) / self.simulation_name
