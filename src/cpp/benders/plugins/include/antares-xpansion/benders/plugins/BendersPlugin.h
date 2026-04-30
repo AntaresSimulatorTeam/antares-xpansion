@@ -26,7 +26,8 @@ public:
     virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                 const Logger& logger,
                                 const BendersBaseOptions& options,
-                                const SolverLogManager& solver_log_manager) = 0;
+                                const SolverLogManager& solver_log_manager)
+      = 0;
 
     /*
     This method will be called on the end of the benders method
@@ -56,7 +57,8 @@ public:
 
     */
     virtual void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                              int& num_iter) = 0;
+                                              int& num_iter)
+      = 0;
 
     /*
       This method will be called before solving a subproblem (for each subproblem)
@@ -76,5 +78,6 @@ public:
                                             bool& added_rows,
                                             std::string solve_time,
                                             int num_master_iter,
-                                            int num_micro_iter) = 0;
+                                            int num_micro_iter)
+      = 0;
 };

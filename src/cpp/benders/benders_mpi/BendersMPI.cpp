@@ -323,11 +323,12 @@ void BendersMpi::UpdateMaxCriterionArea()
     {
         _data.criteria_current_iteration_data.max_criterion = *max_criterion_it;
         auto max_criterion_index = std::distance(criteria_begin, max_criterion_it);
-        _data.criteria_current_iteration_data
-          .max_criterion_area = criterion_computation_.getCriterionInputData()
-                                  .Criteria()[max_criterion_index]
-                                  .Pattern()
-                                  .GetBody();
+        _data.criteria_current_iteration_data.max_criterion_area = criterion_computation_
+                                                                     .getCriterionInputData()
+                                                                     .Criteria()
+                                                                       [max_criterion_index]
+                                                                     .Pattern()
+                                                                     .GetBody();
     }
 }
 

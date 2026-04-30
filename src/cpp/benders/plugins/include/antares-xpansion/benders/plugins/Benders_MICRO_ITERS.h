@@ -16,9 +16,9 @@ Benders_MICRO_ITERS class.
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/string.hpp>
 
-#include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
@@ -152,15 +152,16 @@ private:
     //                                                 std::string sub_name);
 
     /*
-        This function is used to build the SubproblemConstraintsManager objects associated to each subproblem
+        This function is used to build the SubproblemConstraintsManager objects associated to each
+       subproblem
         @inputs :
             - subproblem_map : the map to the subproblem workers
             - options : study options
             - solver_log_manager : solver log manger
     */
     void BuildSubproblemConstraintsManagerMap(const SubproblemsMapPtr& subproblem_map,
-                                   const BendersBaseOptions& options,
-                                   const SolverLogManager& solver_log_manager);
+                                              const BendersBaseOptions& options,
+                                              const SolverLogManager& solver_log_manager);
 
     /*
         This function is used to check if a constraint key rendered by the julia cde

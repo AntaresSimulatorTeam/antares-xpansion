@@ -67,9 +67,9 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
  *    - MPS_FILE:  "<prefix>_<num>.<ext>"  e.g. "problem_0.mps"
  *                 Extracts <num> between the first '_' and the first '.'.
  *                 Constraint path: "constraints/constraints_<num>.<ext>"
- *    - Other (SVF, extension not present in the coupling_map):     "<prefix>_<num>"        e.g. "problem_0"
- *                 Extracts <num> after the first '_'.
- *                 Constraint path: "constraints/constraints_<num>.svf"
+ *    - Other (SVF, extension not present in the coupling_map):     "<prefix>_<num>"        e.g.
+ * "problem_0" Extracts <num> after the first '_'. Constraint path:
+ * "constraints/constraints_<num>.svf"
  *
  *  \param coupling_map              : map from subproblem name to variable map
  *  \param subproblem_constraint_map : filled with subproblem -> constraint path

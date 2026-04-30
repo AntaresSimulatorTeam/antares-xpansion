@@ -360,12 +360,13 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
         auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
                                      / constraints_file_name;
         ConstraintsFileReader file_reader(constraints_file_path,
-                                         options.SOLVER_NAME,
-                                         solver_log_manager,
-                                         _logger,
-                                         options.LOG_LEVEL,
-                                         options.PROBLEMS_FORMAT);
+                                          options.SOLVER_NAME,
+                                          solver_log_manager,
+                                          _logger,
+                                          options.LOG_LEVEL,
+                                          options.PROBLEMS_FORMAT);
         constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
-          std::move(file_reader), sub_worker);
+          std::move(file_reader),
+          sub_worker);
     }
 }

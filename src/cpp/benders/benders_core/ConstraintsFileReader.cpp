@@ -9,7 +9,9 @@ ConstraintsFileReader::ConstraintsFileReader(const std::filesystem::path constra
     logger_(logger)
 {
     SolverFactory solver_factory(logger_);
-    solver_ = solver_factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
+    solver_ = solver_factory.create_solver(solver_name,
+                                           SOLVER_TYPE::CONTINUOUS,
+                                           solver_log_manager);
     solver_->set_threads(1);
     solver_->set_output_log_level(log_level);
 
