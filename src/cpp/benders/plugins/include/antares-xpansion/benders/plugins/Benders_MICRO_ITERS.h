@@ -7,7 +7,11 @@ Benders_MICRO_ITERS class.
 
 #pragma once
 #include <chrono>
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <dlfcn.h>
+#endif
 #include <filesystem>
 #include <map>
 #include <memory>
@@ -181,7 +185,11 @@ private:
     const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
     mpi::communicator* _world;
+#ifdef _WIN32
+    HMODULE handle_;
+#else
     void* handle_;
+#endif
 
     on_Benders_start_Func onBendersStartPlugin_;
     on_Benders_end_Func OnBendersEndPlugin_;

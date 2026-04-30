@@ -40,80 +40,92 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
     auto cpp_lib_absolute_path = input_root_ / plugin_lib_path;
+#ifdef _WIN32
+    handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
+#else
     handle_ = dlopen(cpp_lib_absolute_path.c_str(), RTLD_NOW);
+#endif
     if (handle_)
     {
-        onBendersStartPlugin_ = (on_Benders_start_Func)dlsym(handle_, "OnBendersStart");
+        auto load_sym = [&](const char* name) -> void*
+        {
+#ifdef _WIN32
+            return reinterpret_cast<void*>(GetProcAddress(handle_, name));
+#else
+            return dlsym(handle_, name);
+#endif
+        };
+
+        onBendersStartPlugin_ = (on_Benders_start_Func)load_sym("OnBendersStart");
         if (!onBendersStartPlugin_)
         {
             std::cerr << "can't find OnBendersStart in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersEndPlugin_ = (on_Benders_end_Func)dlsym(handle_, "OnBendersEnd");
+        OnBendersEndPlugin_ = (on_Benders_end_Func)load_sym("OnBendersEnd");
         if (!OnBendersEndPlugin_)
         {
             std::cerr << "can't find OnBendersEnd in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersIterationStart_ = (on_Benders_iteration_start)dlsym(handle_,
-                                                                     "OnBendersIterationStart");
+        OnBendersIterationStart_ = (on_Benders_iteration_start)load_sym("OnBendersIterationStart");
         if (!OnBendersIterationStart_)
         {
             std::cerr << "can't find OnBendersIterationStart in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersIterationEnd_ = (on_Benders_iteration_end)dlsym(handle_, "OnBendersIterationEnd");
+        OnBendersIterationEnd_ = (on_Benders_iteration_end)load_sym("OnBendersIterationEnd");
         if (!OnBendersIterationEnd_)
         {
             std::cerr << "can't find OnBendersIterationEnd in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersMasterResolutionStart_ = (on_Benders_master_resolution_start)
-          dlsym(handle_, "OnBendersMasterResolutionStart");
+        OnBendersMasterResolutionStart_ = (on_Benders_master_resolution_start)load_sym(
+          "OnBendersMasterResolutionStart");
         if (!OnBendersMasterResolutionStart_)
         {
             std::cerr << "can't find OnBendersMasterResolutionStart in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersMasterResolutionEnd_ = (on_Benders_master_resolution_end)
-          dlsym(handle_, "OnBendersMasterResolutionEnd");
+        OnBendersMasterResolutionEnd_ = (on_Benders_master_resolution_end)load_sym(
+          "OnBendersMasterResolutionEnd");
         if (!OnBendersMasterResolutionEnd_)
         {
             std::cerr << "can't find OnBendersMasterResolutionEnd in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersMicroIterationStart_ = (on_Benders_micro_iteration_start)
-          dlsym(handle_, "OnBendersMicroIterationStart");
+        OnBendersMicroIterationStart_ = (on_Benders_micro_iteration_start)load_sym(
+          "OnBendersMicroIterationStart");
         if (!OnBendersMicroIterationStart_)
         {
             std::cerr << "can't find OnBendersMicroIterationStart in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersMicroIterationEnd_ = (on_Benders_micro_iteration_end)
-          dlsym(handle_, "OnBendersMicroIterationEnd");
+        OnBendersMicroIterationEnd_ = (on_Benders_micro_iteration_end)load_sym(
+          "OnBendersMicroIterationEnd");
         if (!OnBendersMicroIterationEnd_)
         {
             std::cerr << "can't find OnBendersMicroIterationEnd in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersSubResolutionStart_ = (on_Benders_sub_resolution_start)
-          dlsym(handle_, "OnBendersSubResolutionStart");
+        OnBendersSubResolutionStart_ = (on_Benders_sub_resolution_start)load_sym(
+          "OnBendersSubResolutionStart");
         if (!OnBendersSubResolutionStart_)
         {
             std::cerr << "can't find OnBendersSubResolutionStart_ in the plugin" << std::endl;
             _world->abort(EXIT_FAILURE);
         }
 
-        OnBendersSubResolutionEnd_ = (on_Benders_sub_resolution_end)
-          dlsym(handle_, "OnBendersSubResolutionEnd");
+        OnBendersSubResolutionEnd_ = (on_Benders_sub_resolution_end)load_sym(
+          "OnBendersSubResolutionEnd");
         if (!OnBendersSubResolutionEnd_)
         {
             std::cerr << "can't find OnBendersSubResolutionEnd_ in the plugin" << std::endl;
@@ -219,7 +231,11 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 void Benders_MICRO_ITERS::OnBendersEnd()
 {
     OnBendersEndPlugin_();
+#ifdef _WIN32
+    FreeLibrary(handle_);
+#else
     dlclose(handle_);
+#endif
 }
 
 void Benders_MICRO_ITERS::OnBendersIterationStart()
