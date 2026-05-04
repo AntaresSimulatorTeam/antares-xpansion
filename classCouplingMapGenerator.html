@@ -149,6 +149,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0f33d1f8d32c6ba960fcff00860a9214" id="r_a0f33d1f8d32c6ba960fcff00860a9214"><td class="memItemLeft" align="right" valign="top">static CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f33d1f8d32c6ba960fcff00860a9214">BuildInput</a> (const std::filesystem::path &amp;structure_path, <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a> *logger, const std::string &amp;context=&quot;Benders&quot;)</td></tr>
 <tr class="memdesc:a0f33d1f8d32c6ba960fcff00860a9214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the input from the structure file.  <br /></td></tr>
 <tr class="separator:a0f33d1f8d32c6ba960fcff00860a9214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f6fd3853c3022d25b8b0191b9825c83" id="r_a0f6fd3853c3022d25b8b0191b9825c83"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f6fd3853c3022d25b8b0191b9825c83">BuildSubProblemConstraintMap</a> (const CouplingMap &amp;coupling_map, SubProblemConstraintMap &amp;subproblem_constraint_map, CouplingMap &amp;constraints_coupling_map, const <a class="el" href="classSimulationOptions.html">SimulationOptions</a> &amp;options)</td></tr>
+<tr class="memdesc:a0f6fd3853c3022d25b8b0191b9825c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build maps from subproblem names to their constraint files Warning : this is heavily dependent on the coupling_map input file format.  <br /></td></tr>
+<tr class="separator:a0f6fd3853c3022d25b8b0191b9825c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0f33d1f8d32c6ba960fcff00860a9214" name="a0f33d1f8d32c6ba960fcff00860a9214"></a>
@@ -194,6 +197,62 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The id in the coupling_map is that of the variable in the solver responsible for the creation of the structure file. </dd></dl>
+
+</div>
+</div>
+<a id="a0f6fd3853c3022d25b8b0191b9825c83" name="a0f6fd3853c3022d25b8b0191b9825c83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f6fd3853c3022d25b8b0191b9825c83">&#9670;&#160;</a></span>BuildSubProblemConstraintMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CouplingMapGenerator::BuildSubProblemConstraintMap </td>
+          <td>(</td>
+          <td class="paramtype">const CouplingMap &amp;</td>          <td class="paramname"><span class="paramname"><em>coupling_map</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SubProblemConstraintMap &amp;</td>          <td class="paramname"><span class="paramname"><em>subproblem_constraint_map</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CouplingMap &amp;</td>          <td class="paramname"><span class="paramname"><em>constraints_coupling_map</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSimulationOptions.html">SimulationOptions</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build maps from subproblem names to their constraint files Warning : this is heavily dependent on the coupling_map input file format. </p>
+<p>Iterates over the coupling_map keys (subproblem names) and derives the path to each subproblem's constraint file. Entries whose extracted number equals "master" are skipped.</p>
+<p>Expected subproblem name formats (as found in coupling_map keys):</p><ul>
+<li>MPS_FILE: "&lt;prefix&gt;_&lt;num&gt;.&lt;ext&gt;" e.g. "problem_0.mps" Extracts &lt;num&gt; between the first '<em>' and the first '.'. Constraint path: "constraints/constraints&lt;/em&gt;&lt;num&gt;.&lt;ext&gt;"</em></li>
+<li><em>Other (SVF, extension not present in the coupling_map): "&lt;prefix&gt;_&lt;num&gt;" e.g. "problem_0" Extracts &lt;num&gt; after the first '_'. Constraint path: "constraints/constraints_&lt;num&gt;.svf"</em></li>
+</ul>
+<p><em></p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coupling_map</td><td>: map from subproblem name to variable map </td></tr>
+    <tr><td class="paramname">subproblem_constraint_map</td><td>: filled with subproblem -&gt; constraint path </td></tr>
+    <tr><td class="paramname">constraints_coupling_map</td><td>: filled with constraint path -&gt; variable map </td></tr>
+    <tr><td class="paramname">options</td><td>: simulation options (determines format) </td></tr>
+  </table>
+  </dd>
+</dl>
+<p></em></p>
 
 </div>
 </div>

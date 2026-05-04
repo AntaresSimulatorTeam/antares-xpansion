@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: src/cpp/presolve/include/antares-xpansion/presolve/presolve.h Source File</title>
+<title>Antares Xpansion: src/cpp/benders/benders_core/include/antares-xpansion/benders/benders_core/ConstraintsFileReader.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('presolve_8h_source.html',''); initResizable(true); });
+$(function(){initNavTree('ConstraintsFileReader_8h_source.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,53 +137,65 @@ $(function(){initNavTree('presolve_8h_source.html',''); initResizable(true); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">presolve.h</div></div>
+  <div class="headertitle"><div class="title">ConstraintsFileReader.h</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;antares-xpansion/multisolver_interface/SolverAbstract.h&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;antares-xpansion/xpansion_interfaces/ILogger.h&gt;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;antares-xpansion/benders/benders_core/SolverIO.h&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;span&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">struct </span><a class="code hl_struct" href="structPresolveOptions.html">PresolveOptions</a>;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classPresolve.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="classPresolve.html">Presolve</a></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> std::string_view PRESOLVE_CONTEXT{<span class="stringliteral">&quot;Presolve&quot;</span>};</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="comment">// Initialise un solver; lève std::runtime_error si indisponible</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    std::shared_ptr&lt;SolverAbstract&gt; init_solver(<span class="keyword">const</span> <a class="code hl_struct" href="structPresolveOptions.html">PresolveOptions</a>&amp; options,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                                std::shared_ptr&lt;ILogger&gt;&amp; logger);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="comment">// Construit le mapping entre indices candidats (full) et indices réduits après presolve.</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="comment">// Pré-condition: solver déjà en état presolve_only.</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="comment">// Post-condition: mapping size == candidate_ids.size() sinon exception.</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    [[nodiscard]] std::unordered_map&lt;int, int&gt; get_candidates_presolve_map(</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      std::span&lt;const int&gt; candidate_ids) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> reduce_problems(std::shared_ptr&lt;SolverAbstract&gt; solver,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                         <span class="keyword">const</span> <a class="code hl_struct" href="structPresolveOptions.html">PresolveOptions</a>&amp; options,</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                         std::shared_ptr&lt;ILogger&gt; logger);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> safe_create_directory(<span class="keyword">const</span> std::filesystem::path&amp; dir);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> safe_move_file(<span class="keyword">const</span> std::filesystem::path&amp; from, <span class="keyword">const</span> std::filesystem::path&amp; <a class="code hl_struct" href="structto.html">to</a>);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;IBendersProblemProvider.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;antares-xpansion/benders/benders_core/BendersProblemFromFile.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structSolverRepresentedRows.html">   12</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSolverRepresentedRows.html">SolverRepresentedRows</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    std::vector&lt;int&gt; mstart;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    std::vector&lt;int&gt; mclind;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    std::vector&lt;double&gt; dmatval;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    std::vector&lt;double&gt; range_p;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    std::vector&lt;char&gt; qrtype_p;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::vector&lt;double&gt; rhs;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    std::vector&lt;std::string&gt; row_names;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>};</div>
 </div>
-<div class="ttc" id="aclassPresolve_html"><div class="ttname"><a href="classPresolve.html">Presolve</a></div><div class="ttdef"><b>Definition</b> presolve.h:11</div></div>
-<div class="ttc" id="aclassSolverAbstract_html"><div class="ttname"><a href="classSolverAbstract.html">SolverAbstract</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:203</div></div>
-<div class="ttc" id="astructPresolveOptions_html"><div class="ttname"><a href="structPresolveOptions.html">PresolveOptions</a></div><div class="ttdef"><b>Definition</b> common.h:172</div></div>
-<div class="ttc" id="astructto_html"><div class="ttname"><a href="structto.html">to</a></div></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classConstraintsFileReader.html">   23</a></span><span class="keyword">class </span><a class="code hl_class" href="classConstraintsFileReader.html">ConstraintsFileReader</a></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classConstraintsFileReader.html">ConstraintsFileReader</a>(<span class="keyword">const</span> std::filesystem::path constraint_file_path,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                          <span class="keyword">const</span> std::string&amp; solver_name,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                          <span class="keyword">const</span> <a class="code hl_class" href="classSolverLogManager.html">SolverLogManager</a>&amp; solver_log_manager,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                          Logger&amp; logger,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                          <span class="keywordtype">int</span> log_level,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                          ProblemsFormat format);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_struct" href="structSolverRepresentedRows.html">SolverRepresentedRows</a> get_row(<span class="keyword">const</span> std::string&amp; name);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">int</span> get_row_index(<span class="keyword">const</span> std::string&amp; name);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    Logger logger_;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    std::shared_ptr&lt;SolverAbstract&gt; solver_;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    std::shared_ptr&lt;BendersProblemFromFile&gt; benders_problem_provider_;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_class" href="classSolverIO.html">SolverIO</a> solver_IO_;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
+</div>
+<div class="ttc" id="aclassConstraintsFileReader_html"><div class="ttname"><a href="classConstraintsFileReader.html">ConstraintsFileReader</a></div><div class="ttdef"><b>Definition</b> ConstraintsFileReader.h:24</div></div>
+<div class="ttc" id="aclassSolverIO_html"><div class="ttname"><a href="classSolverIO.html">SolverIO</a></div><div class="ttdef"><b>Definition</b> SolverIO.h:8</div></div>
+<div class="ttc" id="aclassSolverLogManager_html"><div class="ttname"><a href="classSolverLogManager.html">SolverLogManager</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:20</div></div>
+<div class="ttc" id="astructSolverRepresentedRows_html"><div class="ttname"><a href="structSolverRepresentedRows.html">SolverRepresentedRows</a></div><div class="ttdef"><b>Definition</b> ConstraintsFileReader.h:13</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_6b4847d5f67594431cb62fb4fb98afea.html">presolve</a></li><li class="navelem"><a class="el" href="dir_6f21443d425e7c68ec7394bc4cf8e7a0.html">include</a></li><li class="navelem"><a class="el" href="dir_9e3f035998e0bda3aa59d587f52eab8e.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_3cb3bddde83cec81108fdd769850cdf0.html">presolve</a></li><li class="navelem"><b>presolve.h</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_ae16667f9fc0e5d86966b2c65475a56a.html">benders</a></li><li class="navelem"><a class="el" href="dir_b53e5bf8429ba9c17c53c8a945f0f679.html">benders_core</a></li><li class="navelem"><a class="el" href="dir_729c7454ac508d5ff85a80bc7bc4bc9a.html">include</a></li><li class="navelem"><a class="el" href="dir_5193f23a4e7e662c8447483db21d0cae.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_65d90d6a2bd106d71c05f593d54b14f6.html">benders</a></li><li class="navelem"><a class="el" href="dir_bc0f0c2c49f79414ffb0d87efed051ce.html">benders_core</a></li><li class="navelem"><b>ConstraintsFileReader.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

@@ -44,6 +44,7 @@ var hierarchy =
     [ "BendersFactory::BendersEnvironment", "structBendersFactory_1_1BendersEnvironment.html", null ],
     [ "BendersFactory", "classBendersFactory.html", null ],
     [ "BendersPlugin", "classBendersPlugin.html", [
+      [ "Benders_MICRO_ITERS", "classBenders__MICRO__ITERS.html", null ],
       [ "NoOperationPlugin", "classNoOperationPlugin.html", null ]
     ] ],
     [ "BendersPluginFactory", "classBendersPluginFactory.html", null ],
@@ -69,6 +70,7 @@ var hierarchy =
     [ "antares_xpansion.xpansionConfig.ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
     [ "ConfigurationManager", "classConfigurationManager.html", null ],
     [ "ProblemGenerationOptions::ConflictingParameters", "classProblemGenerationOptions_1_1ConflictingParameters.html", null ],
+    [ "ConstraintsFileReader", "classConstraintsFileReader.html", null ],
     [ "YAML::convert< CriterionSingleInputData >", "classYAML_1_1convert_3_01CriterionSingleInputData_01_4.html", null ],
     [ "YAML::convert< OuterLoopCriterionInputData >", "classYAML_1_1convert_3_01OuterLoopCriterionInputData_01_4.html", null ],
     [ "Benders::Criterion::CouldNotReadAreaField", "classBenders_1_1Criterion_1_1CouldNotReadAreaField.html", null ],
@@ -458,6 +460,7 @@ var hierarchy =
     [ "SolverLogManager", "classSolverLogManager.html", [
       [ "EmptyLogManager", "classEmptyLogManager.html", null ]
     ] ],
+    [ "SolverRepresentedRows", "structSolverRepresentedRows.html", null ],
     [ "antares_xpansion.benders_driver.SolversExe", "classantares__xpansion_1_1benders__driver_1_1SolversExe.html", null ],
     [ "antares_xpansion.split_link_profile.SplitLinkProfile", "classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile.html", null ],
     [ "StandardLp", "classStandardLp.html", null ],
@@ -472,7 +475,9 @@ var hierarchy =
       [ "StudyUpdateLinkCapacitiesStrategy", "classStudyUpdateLinkCapacitiesStrategy.html", null ],
       [ "StudyUpdateLinkParameterStrategy", "classStudyUpdateLinkParameterStrategy.html", null ]
     ] ],
+    [ "SubproblemConstraintsManager", "classSubproblemConstraintsManager.html", null ],
     [ "PlainData::SubProblemData", "structPlainData_1_1SubProblemData.html", null ],
+    [ "SubProblemIds", "structSubProblemIds.html", null ],
     [ "tests.end_to_end.cucumber.features.steps.then.SubProblemStats", "classtests_1_1end__to__end_1_1cucumber_1_1features_1_1steps_1_1then_1_1SubProblemStats.html", null ],
     [ "T", null, [
       [ "LogUtils::XpansionError< T >", "classLogUtils_1_1XpansionError.html", null ],

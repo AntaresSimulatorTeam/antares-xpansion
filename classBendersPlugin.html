@@ -149,15 +149,16 @@ Inheritance diagram for BendersPlugin:</div>
  <div class="center">
   <img src="classBendersPlugin.png" usemap="#BendersPlugin_map" alt=""/>
   <map id="BendersPlugin_map" name="BendersPlugin_map">
-<area href="classNoOperationPlugin.html" alt="NoOperationPlugin" shape="rect" coords="0,56,119,80"/>
+<area href="classBenders__MICRO__ITERS.html" alt="Benders_MICRO_ITERS" shape="rect" coords="0,56,148,80"/>
+<area href="classNoOperationPlugin.html" alt="NoOperationPlugin" shape="rect" coords="158,56,306,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1800f3435a47133163bd425f5516a923" id="r_a1800f3435a47133163bd425f5516a923"><td class="memItemLeft" align="right" valign="top"><a id="a1800f3435a47133163bd425f5516a923" name="a1800f3435a47133163bd425f5516a923"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersStart</b> ()=0</td></tr>
-<tr class="separator:a1800f3435a47133163bd425f5516a923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af11d9be2e0855ee24c7ff67f0d14af88" id="r_af11d9be2e0855ee24c7ff67f0d14af88"><td class="memItemLeft" align="right" valign="top"><a id="af11d9be2e0855ee24c7ff67f0d14af88" name="af11d9be2e0855ee24c7ff67f0d14af88"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersStart</b> (const SubproblemsMapPtr &amp;subproblem_map, const Logger &amp;logger, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager)=0</td></tr>
+<tr class="separator:af11d9be2e0855ee24c7ff67f0d14af88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a8b0779d048634cf5e6daf7afb652ca" id="r_a0a8b0779d048634cf5e6daf7afb652ca"><td class="memItemLeft" align="right" valign="top"><a id="a0a8b0779d048634cf5e6daf7afb652ca" name="a0a8b0779d048634cf5e6daf7afb652ca"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersEnd</b> ()=0</td></tr>
 <tr class="separator:a0a8b0779d048634cf5e6daf7afb652ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,18 +168,24 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersIter
 <tr class="memitem:a8efa6fa5801488f1b47c42e3ec991497" id="r_a8efa6fa5801488f1b47c42e3ec991497"><td class="memItemLeft" align="right" valign="top"><a id="a8efa6fa5801488f1b47c42e3ec991497" name="a8efa6fa5801488f1b47c42e3ec991497"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersIterationEnd</b> ()=0</td></tr>
 <tr class="separator:a8efa6fa5801488f1b47c42e3ec991497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6925d039c747d252d421378b3c739a0a" id="r_a6925d039c747d252d421378b3c739a0a"><td class="memItemLeft" align="right" valign="top"><a id="a6925d039c747d252d421378b3c739a0a" name="a6925d039c747d252d421378b3c739a0a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersSubResolutionStart</b> ()=0</td></tr>
+<tr class="separator:a6925d039c747d252d421378b3c739a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc9cf6873f3ff35818a4994af2ff9e3a" id="r_afc9cf6873f3ff35818a4994af2ff9e3a"><td class="memItemLeft" align="right" valign="top"><a id="afc9cf6873f3ff35818a4994af2ff9e3a" name="afc9cf6873f3ff35818a4994af2ff9e3a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersSubResolutionEnd</b> (std::string sub_name, int num_micro_iter)=0</td></tr>
+<tr class="separator:afc9cf6873f3ff35818a4994af2ff9e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a201db4ea7e82e58499670a6a66f3035a" id="r_a201db4ea7e82e58499670a6a66f3035a"><td class="memItemLeft" align="right" valign="top"><a id="a201db4ea7e82e58499670a6a66f3035a" name="a201db4ea7e82e58499670a6a66f3035a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMasterResolutionStart</b> ()=0</td></tr>
 <tr class="separator:a201db4ea7e82e58499670a6a66f3035a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a901f7ad7a4b194112762c87fd557c126" id="r_a901f7ad7a4b194112762c87fd557c126"><td class="memItemLeft" align="right" valign="top"><a id="a901f7ad7a4b194112762c87fd557c126" name="a901f7ad7a4b194112762c87fd557c126"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMasterResolutionEnd</b> ()=0</td></tr>
-<tr class="separator:a901f7ad7a4b194112762c87fd557c126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e54fac441be8ddf2455b63888a5468" id="r_a69e54fac441be8ddf2455b63888a5468"><td class="memItemLeft" align="right" valign="top"><a id="a69e54fac441be8ddf2455b63888a5468" name="a69e54fac441be8ddf2455b63888a5468"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMasterResolutionEnd</b> (std::map&lt; std::string, double &gt; &amp;master_out, int &amp;num_iter)=0</td></tr>
+<tr class="separator:a69e54fac441be8ddf2455b63888a5468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9edc466904286214921da80b26b85af5" id="r_a9edc466904286214921da80b26b85af5"><td class="memItemLeft" align="right" valign="top"><a id="a9edc466904286214921da80b26b85af5" name="a9edc466904286214921da80b26b85af5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMicroIterationStart</b> ()=0</td></tr>
 <tr class="separator:a9edc466904286214921da80b26b85af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcdcd8cf8f98451385f0d9cbba31f2be" id="r_adcdcd8cf8f98451385f0d9cbba31f2be"><td class="memItemLeft" align="right" valign="top"><a id="adcdcd8cf8f98451385f0d9cbba31f2be" name="adcdcd8cf8f98451385f0d9cbba31f2be"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMicroIterationEnd</b> ()=0</td></tr>
-<tr class="separator:adcdcd8cf8f98451385f0d9cbba31f2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9409703a17102662dd3a880b4ac2f79e" id="r_a9409703a17102662dd3a880b4ac2f79e"><td class="memItemLeft" align="right" valign="top"><a id="a9409703a17102662dd3a880b4ac2f79e" name="a9409703a17102662dd3a880b4ac2f79e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMicroIterationEnd</b> (std::string sub_name, bool &amp;added_rows, std::string solve_time, int num_master_iter, int num_micro_iter)=0</td></tr>
+<tr class="separator:a9409703a17102662dd3a880b4ac2f79e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/cpp/benders/plugins/include/antares-xpansion/benders/plugins/<a class="el" href="BendersPlugin_8h_source.html">BendersPlugin.h</a></li>
