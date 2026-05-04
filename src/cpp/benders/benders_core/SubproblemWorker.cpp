@@ -23,7 +23,6 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     Worker(variable_map, std::move(logger))
 {
     init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
-
     int mps_ncols(_solver->get_ncols());
     DblVector obj_func_coeffs(mps_ncols);
     IntVector sequence(mps_ncols);
@@ -99,4 +98,25 @@ std::vector<double> SubproblemWorker::get_solution() const
         _solver->get_lp_sol(solution.data(), NULL, NULL);
     }
     return solution;
+}
+
+void SubproblemWorker::delete_rows(int start_pos)
+{
+    int num_rows = _solver->get_nrows();
+    num_rows--;
+    _solver->del_rows(start_pos, num_rows);
+}
+
+int SubproblemWorker::get_variable_index(const std::string& variable_name)
+{
+    int variable_index(-1);
+
+    variable_index = _solver->get_col_index(variable_name);
+
+    return variable_index;
+}
+
+int SubproblemWorker::get_problem_row_num()
+{
+    return _solver->get_nrows();
 }

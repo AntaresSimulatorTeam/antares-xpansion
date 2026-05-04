@@ -119,7 +119,8 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
 {
     BendersBaseOptions bendersoptions = BuildBendersOptions();
-    auto benders_plugin_factory_ = std::make_shared<BendersPluginFactory>();
+    SimulationOptions sim_options ; 
+    auto benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(sim_options);
     
     CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
         std::filesystem::path(bendersoptions.INPUTROOT) / bendersoptions.STRUCTURE_FILE,
