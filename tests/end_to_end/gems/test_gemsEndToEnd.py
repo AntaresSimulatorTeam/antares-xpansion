@@ -10,7 +10,7 @@ import numpy as np
 
 DATA_TEST = Path("../../../data_test")
 STUDY_NAME = "simulator_hybrid_invest_13_1"
-RESULTS_FILE = Path(__file__).parent / "expected_results.json"
+RESULTS_FILE = "expected_results.json"
 
 
 @pytest.fixture
@@ -26,13 +26,7 @@ def study_path(tmp_path):
     yield test_study
 
 
-@pytest.fixture
-def expected_results():
-    with open(RESULTS_FILE, 'r') as f:
-        return json.load(f)
-
-
-def test_gems_workflow(install_dir, study_path, allow_run_as_root, expected_results):
+def test_gems_workflow(install_dir, study_path, allow_run_as_root):
     launch_py = Path(__file__).parent.parent.parent.parent / "src" / "python" / "launch.py"
 
     cmd = [
@@ -60,6 +54,10 @@ def test_gems_workflow(install_dir, study_path, allow_run_as_root, expected_resu
 
     expansion_dir = study_path / "expansion"
     output_dir = study_path / "output"
+
+    results_path = study_path / RESULTS_FILE
+    with open(results_path, 'r') as f:
+        expected_results = json.load(f)
 
     if not expansion_dir.exists() and output_dir.exists():
         for sim_dir in sorted(output_dir.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True):
