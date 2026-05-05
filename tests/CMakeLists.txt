@@ -193,7 +193,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             NAME e2e_gems
             COMMAND Python3::Interpreter -m pytest
             "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion;--cov-append;--cov-report;xml:coverage-reports/coverage-antares_xpansion.xml>"
-            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_gemsEndToEnd.py
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_gemsHybridEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/gems
             COMMAND_EXPAND_LISTS
     )
