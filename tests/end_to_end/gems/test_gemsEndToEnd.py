@@ -81,23 +81,21 @@ def test_gems_workflow(install_dir, study_path, allow_run_as_root):
 
     solution = output_data["solution"]
 
-    if "overall_cost" in expected_results:
-        actual_cost = solution.get("overall_cost")
-        expected_cost = expected_results["overall_cost"]
-        assert actual_cost is not None, "No overall_cost in solution"
-        np.testing.assert_allclose(actual_cost, expected_cost, rtol=1e-6, atol=0,
-                                    err_msg=f"Overall cost mismatch: expected {expected_cost}, got {actual_cost}")
+    actual_cost = solution.get("overall_cost")
+    expected_cost = expected_results["overall_cost"]
+    assert actual_cost is not None, "No overall_cost in solution"
+    np.testing.assert_allclose(actual_cost, expected_cost, rtol=1e-6, atol=0,
+                               err_msg=f"Overall cost mismatch: expected {expected_cost}, got {actual_cost}")
 
-    if "variables" in expected_results:
-        assert "values" in solution, "No values in solution"
-        expected_vars = expected_results["variables"]
-        actual_values = solution["values"]
+    assert "values" in solution, "No values in solution"
+    expected_vars = expected_results["variables"]
+    actual_values = solution["values"]
 
-        expected_sorted = np.array([expected_vars[k] for k in sorted(expected_vars.keys())])
-        actual_sorted = np.array([actual_values[k] for k in sorted(expected_vars.keys())])
+    expected_sorted = np.array([expected_vars[k] for k in sorted(expected_vars.keys())])
+    actual_sorted = np.array([actual_values[k] for k in sorted(expected_vars.keys())])
 
-        np.testing.assert_allclose(actual_sorted, expected_sorted, rtol=1e-6, atol=0,
-                                    err_msg="Variable values mismatch")
+    np.testing.assert_allclose(actual_sorted, expected_sorted, rtol=1e-6, atol=0,
+                               err_msg="Variable values mismatch")
 
     print(f"Test passed! Solution status: {solution['problem_status']}")
     print(f"Overall cost: {solution.get('overall_cost')}")
