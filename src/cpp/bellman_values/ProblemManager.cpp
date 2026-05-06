@@ -23,7 +23,7 @@ ProblemManager::ProblemManager(const std::string& solverName,
     if (cacheProblems && problemsPath == std::nullopt)
     {
         throw std::runtime_error(
-          "Error: trying to stream problems from disk without specify a folder.");
+          "Error: trying to stream problems from disk without specifying a folder.");
     }
     if (cacheProblems && !std::filesystem::exists(problemsPath.value()))
     {

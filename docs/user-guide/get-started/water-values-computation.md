@@ -169,6 +169,10 @@ verbosity : INFO
 # and will pass along all messages at the `WARNING`, `ERR` or `FATAL` level.
 # default: INFO
 # possible values are: NONE, TRACE, DEBUG, INFO, WARNING, ERR, FATAL
+
+cache_problems : true
+# Sets whether to write and read problems from disk to reduce memory use (will increase computation time) 
+# default: false
 ```
 
 This file is expected to be located at `<study_root>/user/water_values/settings.yaml`. It is optional, however default values are hard-coded in the program.
