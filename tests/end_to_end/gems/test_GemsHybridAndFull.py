@@ -18,10 +18,6 @@ def study_path(tmp_path, request):
     test_study = tmp_path / request.param
     shutil.copytree(source_study, test_study)
 
-    expansion_dir = test_study / "expansion"
-    if expansion_dir.exists():
-        shutil.rmtree(expansion_dir)
-
     yield test_study
 
 
@@ -55,8 +51,8 @@ def test_gems_end_to_end(install_dir, study_path, allow_run_as_root):
 
     assert result.returncode == 0, f"Gems workflow failed with return code {result.returncode}"
 
-    expansion_dir = study_path / "expansion"
     output_dir = study_path / "output"
+    expansion_dir = output_dir / "expansion"
 
     results_path = study_path / RESULTS_FILE
     with open(results_path, 'r') as f:
