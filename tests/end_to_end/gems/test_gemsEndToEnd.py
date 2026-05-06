@@ -9,7 +9,7 @@ import numpy as np
 
 
 DATA_TEST = Path(__file__).parent.parent.parent.parent / "data_test"
-STUDY_NAME = "simulator_hybrid_invest_13_1"
+STUDY_NAME = "simulator_full_gems_invest_13_1"
 RESULTS_FILE = "expected_results.json"
 
 
@@ -26,7 +26,7 @@ def study_path(tmp_path):
     yield test_study
 
 
-def test_gems_workflow(install_dir, study_path, allow_run_as_root):
+def test_gems_full_end_to_end(install_dir, study_path, allow_run_as_root):
     launch_py = Path(__file__).parent.parent.parent.parent / "src" / "python" / "launch.py"
 
     cmd = [
