@@ -109,7 +109,7 @@ BellmanValues::compute(int nbLevels)
             V[{scenario, week}] = std::vector<double>(levels.size(), 0.0);
         }
 
-        auto penalty_fn = reservoirManagement.get_penalty(endWeek, endWeek);
+        auto penalty_fn = reservoirManagement.get_penalty(endWeek + 1, endWeek + 1);
         for (int i_level = 0; i_level < levels.size(); ++i_level)
         {
             V[{scenario, endWeek + 1}][i_level] += penalty_fn(levels[i_level]);

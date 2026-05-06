@@ -1,15 +1,11 @@
-#include <algorithm>
-
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/logger/FilteredLogger.h"
 #include "antares-xpansion/benders/logger/Master.h"
 #include "antares-xpansion/benders/logger/User.h"
-#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/lpnamer/main/ConfigurationManager.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
-#include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
 
 #define EXPECT_NEAR_REL(val1, val2, rel_tol)                                                       \
@@ -47,6 +43,7 @@ protected:
                 newValues[iLevel].push_back(values[iWeeks][iLevel]);
             }
         }
+        std::filesystem::create_directory(path.parent_path());
         std::ofstream file(path);
         file << std::fixed;
         for (const auto& levelValues: newValues)
@@ -58,6 +55,7 @@ protected:
             }
             file << '\n';
         }
+        logger->display_message("Saved reference file: " + path.string());
     }
 
     void SetUp() override
@@ -286,7 +284,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
                                    8);
     auto [res, costs] = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
-    for (unsigned int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week <= res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -332,7 +330,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
                                    8);
     auto [res, costs] = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
-    for (unsigned int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week <= res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -379,7 +377,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
                                    8);
     auto [res, costs] = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
-    for (unsigned int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week <= res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -454,7 +452,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
         auto [res, costs] = bellmanValues.compute(11);
         logger->display_message("Computed Bellman values");
 
-        for (unsigned int week = 1; week < res.size(); week++)
+        for (unsigned int week = 1; week <= res.size(); week++)
         {
             logger->display_message("comparing week " + std::to_string(week));
             for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
@@ -538,7 +536,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
         auto [res, costs] = bellmanValues.compute(11);
         logger->display_message("Computed Bellman values");
 
-        for (unsigned int week = 1; week < res.size(); week++)
+        for (unsigned int week = 1; week <= res.size(); week++)
         {
             logger->display_message("comparing week " + std::to_string(week));
             for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
@@ -626,7 +624,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
         auto [res, costs] = bellmanValues.compute(11);
         logger->display_message("Computed Bellman values");
 
-        for (unsigned int week = 1; week < res.size(); week++)
+        for (unsigned int week = 1; week <= res.size(); week++)
         {
             logger->display_message("comparing week " + std::to_string(week));
             for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
