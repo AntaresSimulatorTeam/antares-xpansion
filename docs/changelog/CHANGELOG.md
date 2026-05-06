@@ -1,5 +1,48 @@
 Antares-Xpansion changelog
 =================
+
+v1.9.0 (05/2026)
+------------------------------------------------
+
+### Features
+
+* Benders Micro Iterations (#1170)
+* Workflow for basic gemsinvest (#1213)
+* GEMS: use MPS with XPRESS for benders (#1234)
+* Move MPS instead of copy in GEMS workflow (#1235)
+* Ignore candidate in GEMS workflow, allow full GEMS studies (#1229)
+* Handle variable name change [ANT-4727] (#1214)
+* Benders plugin (#1205)
+
+### Bug fixes
+
+* Fix alphas in cuts in aggregation mode (#1215)
+* Adjust cut coefficient tolerance to weights (#1222)
+* Improve aggregation efficiency (#1196)
+
+### Refactoring & Maintenance
+
+* Reduce Benders module complexity via Strategy Pattern (#1216)
+* Update Antares version to 10.1.0 (#1233)
+
+### Documentation
+
+* Add doc for gemsinvest workflow (#1218)
+* Remove version mention from antares-solver docs (#1219)
+* Update `user/expansion/settings.ini`
+
+### CI
+
+* Bump SonarSource/sonarqube-scan-action from 7 to 8 (#1238)
+* Bump conda-incubator/setup-miniconda from 3.3.0 to 4.0.1 (#1236)
+* Bump docker/build-push-action from 6 to 7 (#1211)
+* Bump docker/setup-buildx-action from 3 to 4 (#1212)
+* Update xpress to 9.8 (#1210)
+* Bump actions/download-artifact from 7 to 8 (#1209)
+* Bump actions/upload-artifact from 6 to 7 (#1208)
+* Replace addnab/docker-run-action with native docker command (#1204)
+* Update release action to use gh CLI (#1206)
+
 v1.8.0 (01/2026)
 ------------------------------------------------
 
