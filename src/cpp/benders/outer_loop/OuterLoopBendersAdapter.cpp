@@ -21,28 +21,30 @@ std::vector<double> OuterLoopBendersAdapter::GetOuterLoopCriterionAtBestBenders(
 
 void OuterLoopBendersAdapter::InitOuterLoopData(double lambda, double lambda_min, double lambda_max)
 {
-    lambda_ = lambda;
-    lambda_min_ = lambda_min;
-    lambda_max_ = lambda_max;
     current_outer_loop_data_.lambda = lambda;
     current_outer_loop_data_.lambda_min = lambda_min;
     current_outer_loop_data_.lambda_max = lambda_max;
-    current_outer_loop_data_.outer_loop_bilevel_best_ub = bilevel_best_ub_;
 
     benders_->init_data();
 }
 
 void OuterLoopBendersAdapter::RefreshOuterLoopStateFromBenders()
 {
+    // Adapter-owned fields persist across the bulk copy from Benders.
+    const auto preserved_lambda = current_outer_loop_data_.lambda;
+    const auto preserved_lambda_min = current_outer_loop_data_.lambda_min;
+    const auto preserved_lambda_max = current_outer_loop_data_.lambda_max;
+    const auto preserved_bilevel_best_ub = current_outer_loop_data_.outer_loop_bilevel_best_ub;
+    const auto preserved_benders_num_run = current_outer_loop_data_.benders_num_run;
+
     const auto current_data = benders_->GetCurrentIterationData();
     current_outer_loop_data_ = current_data.criteria_current_iteration_data;
 
-    // Restore adapter-owned fields overwritten by the bulk copy above:
-    current_outer_loop_data_.outer_loop_bilevel_best_ub = bilevel_best_ub_;
-    current_outer_loop_data_.lambda = lambda_;
-    current_outer_loop_data_.lambda_min = lambda_min_;
-    current_outer_loop_data_.lambda_max = lambda_max_;
-    current_outer_loop_data_.benders_num_run = GetBendersRunNumber();
+    current_outer_loop_data_.lambda = preserved_lambda;
+    current_outer_loop_data_.lambda_min = preserved_lambda_min;
+    current_outer_loop_data_.lambda_max = preserved_lambda_max;
+    current_outer_loop_data_.outer_loop_bilevel_best_ub = preserved_bilevel_best_ub;
+    current_outer_loop_data_.benders_num_run = preserved_benders_num_run;
 
     const auto& criteria_per_it = benders_->GetCriteriaPerIteration();
     const auto best_it = current_data.best_it;
@@ -57,7 +59,7 @@ void OuterLoopBendersAdapter::SaveOuterLoopSolutionInOutputFile() const
     benders_->_writer->dump();
 }
 
-void OuterLoopBendersAdapter::SaveCurrentOuterLoopIterationInOutputFile() const
+void OuterLoopBendersAdapter::SaveCurrentOuterLoopIterationInOutputFile()
 {
     UpdateCurrentOuterLoopIterationSnapshot();
     if (!current_outer_loop_iteration_.has_value())
@@ -72,7 +74,6 @@ void OuterLoopBendersAdapter::SaveCurrentOuterLoopIterationInOutputFile() const
 
 void OuterLoopBendersAdapter::SetBilevelBestub(double bilevel_best_ub)
 {
-    bilevel_best_ub_ = bilevel_best_ub;
     current_outer_loop_data_.outer_loop_bilevel_best_ub = bilevel_best_ub;
 }
 
@@ -104,25 +105,17 @@ void OuterLoopBendersAdapter::IncrementBendersRunNumber()
 
 double OuterLoopBendersAdapter::GetBilevelBestub() const
 {
-    return bilevel_best_ub_;
+    return current_outer_loop_data_.outer_loop_bilevel_best_ub;
 }
 
-double OuterLoopBendersAdapter::GetLambda() const
+LambdaParameters OuterLoopBendersAdapter::GetLambdaParameters() const
 {
-    return lambda_;
+    return {current_outer_loop_data_.lambda,
+            current_outer_loop_data_.lambda_min,
+            current_outer_loop_data_.lambda_max};
 }
 
-double OuterLoopBendersAdapter::GetLambdaMin() const
-{
-    return lambda_min_;
-}
-
-double OuterLoopBendersAdapter::GetLambdaMax() const
-{
-    return lambda_max_;
-}
-
-void OuterLoopBendersAdapter::UpdateCurrentOuterLoopIterationSnapshot() const
+void OuterLoopBendersAdapter::UpdateCurrentOuterLoopIterationSnapshot()
 {
     const auto last = benders_->GetLastWorkerMasterData();
     if (!last.has_value())
@@ -150,8 +143,6 @@ void OuterLoopBendersAdapter::UpdateCurrentOuterLoopIterationSnapshot() const
     current_outer_loop_iteration_num_ = current_outer_loop_data_.benders_num_run;
 }
 
-// === Phase B Step 5: Benders lifecycle delegation ===
-
 Logger OuterLoopBendersAdapter::GetLogger() const
 {
     return benders_->_logger;
@@ -175,6 +166,7 @@ void OuterLoopBendersAdapter::InitializeProblems()
 void OuterLoopBendersAdapter::Launch()
 {
     benders_->launch();
+    RefreshOuterLoopStateFromBenders();
 }
 
 void OuterLoopBendersAdapter::Free()
@@ -186,8 +178,6 @@ bool OuterLoopBendersAdapter::IsExceptionRaised() const
 {
     return benders_->isExceptionRaised();
 }
-
-// === Phase B Step 5: Master problem delegation ===
 
 std::vector<double> OuterLoopBendersAdapter::MasterObjectiveFunctionCoeffs() const
 {
@@ -211,8 +201,6 @@ const VariableMap& OuterLoopBendersAdapter::MasterVariables() const
     return benders_->MasterVariables();
 }
 
-// === Phase B Step 5: Data query delegation ===
-
 WorkerMasterData OuterLoopBendersAdapter::BestIterationWorkerMaster() const
 {
     return benders_->BestIterationWorkerMaster();
@@ -221,11 +209,7 @@ WorkerMasterData OuterLoopBendersAdapter::BestIterationWorkerMaster() const
 CurrentIterationData OuterLoopBendersAdapter::GetCurrentIterationData() const
 {
     auto data = benders_->GetCurrentIterationData();
-    data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = bilevel_best_ub_;
-    data.criteria_current_iteration_data.lambda = lambda_;
-    data.criteria_current_iteration_data.lambda_min = lambda_min_;
-    data.criteria_current_iteration_data.lambda_max = lambda_max_;
-    data.criteria_current_iteration_data.benders_num_run = GetBendersRunNumber();
+    data.criteria_current_iteration_data = current_outer_loop_data_;
     return data;
 }
 

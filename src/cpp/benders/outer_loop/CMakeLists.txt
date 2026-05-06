@@ -23,12 +23,10 @@ target_sources(outer_loop_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBendersAdapter.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBendersDataAccessor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/IMasterUpdate.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoop.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBendersAdapter.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBendersDataAccessor.h
 )
 
 target_include_directories(outer_loop_lib
