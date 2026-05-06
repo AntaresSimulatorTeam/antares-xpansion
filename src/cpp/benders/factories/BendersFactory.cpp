@@ -18,7 +18,7 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     rank{world->rank()},
     dependencies_{dependencies}
 {
-    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(options);
+    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(options_);
 }
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
@@ -124,10 +124,11 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     }
 
     std::shared_ptr<BendersPlugin> benders_plugin(
-      benders_plugin_factory_->CreatePlugin(coupling_map, false, world_));
+      benders_plugin_factory_->CreatePlugin(coupling_map, options_.MICRO_ITERATIONS, world_));
     benders->SetPlugin(benders_plugin);
 
     benders->set_input_map(coupling_map);
+
     auto criterion_input_holder = ProcessCriterionInput();
     benders->setCriterionComputationInputs(
       std::visit([](auto&& the_variant)

@@ -157,7 +157,7 @@ void BendersMpi::InitializeMaster()
                                    Options().PROBLEMS_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
-                                   Options().CUT_COEFFICIENT_TOLERANCE);
+                                   GetSubCutTolerance());
     }
 }
 
@@ -222,6 +222,7 @@ void BendersMpi::solve_master_and_create_trace()
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
+
     _logger->log_master_solving_duration(_data.timer_master);
 
     ComputeXCut();
@@ -477,11 +478,12 @@ void BendersMpi::Run()
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
+
         benders_plugin_->OnBendersMasterResolutionStart();
 
         step_1_solve_master();
 
-        benders_plugin_->OnBendersMasterResolutionEnd();
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
@@ -504,6 +506,8 @@ void BendersMpi::Run()
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
         }
+
+        benders_plugin_->OnBendersIterationEnd();
     }
     if (_world.rank() == rank_0)
     {
@@ -512,8 +516,6 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
-
-    benders_plugin_->OnBendersIterationEnd();
 }
 
 void BendersMpi::PreRunInitialization()
@@ -547,9 +549,10 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
-    benders_plugin_->OnBendersStart();
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
 
     Run();
+
     _world.barrier();
 
     benders_plugin_->OnBendersEnd();

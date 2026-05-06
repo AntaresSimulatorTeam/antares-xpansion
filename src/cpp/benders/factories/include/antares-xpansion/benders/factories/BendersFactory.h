@@ -54,6 +54,7 @@ public:
 private:
     auto ConfigureBenders(const BendersBaseOptions& benders_options,
                           const CouplingMap& coupling_map) -> BendersEnvironment;
+
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();
