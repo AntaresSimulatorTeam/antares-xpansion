@@ -1504,15 +1504,11 @@ void BendersBase::roundXCut()
     }
 }
 
-void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
-{
-    benders_plugin_ = benders_plugin;
-}
-
 Output::SolutionData BendersBase::GetCurrentBendersSolution() const
 {
     return BendersSolution();
 }
+
 std::map<int, double> BendersBase::GetSubCutTolerance() const
 {
     std::map<int, double> subproblem_cut_coefficient_tolerance{};
