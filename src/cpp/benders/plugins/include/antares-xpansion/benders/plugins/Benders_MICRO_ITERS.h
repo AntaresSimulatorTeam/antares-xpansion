@@ -181,7 +181,7 @@ private:
 
     void read_variables_to_follow_ids();
     void read_variable_names_to_follow();
-    void build_variables_to_follow_indices_vector(std::string sub_name);
+    void build_variables_to_follow_indices_vector() ; 
     const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
     mpi::communicator* _world;
@@ -201,7 +201,6 @@ private:
     on_Benders_micro_iteration_end OnBendersMicroIterationEnd_;
     on_Benders_sub_resolution_start OnBendersSubResolutionStart_;
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
-    std::map<std::string, bool> is_variable_names_indices_created_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
     std::filesystem::path input_root_;

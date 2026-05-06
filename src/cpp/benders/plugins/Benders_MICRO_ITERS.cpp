@@ -30,10 +30,6 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     warm_start_ = true;
     _world = world;
 
-    for (auto& [sub_name, _]: coupling_map_)
-    {
-        is_variable_names_indices_created_[sub_name] = false;
-    }
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
 
@@ -217,13 +213,15 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
 
+    
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
-
+    build_variables_to_follow_indices_vector() ; 
+    
     onBendersStartPlugin_(sub_pb_ids_,
-                          _world->rank(),
-                          options.INPUTROOT,
-                          options.OUTPUTROOT,
-                          warm_start_,
+        _world->rank(),
+        options.INPUTROOT,
+        options.OUTPUTROOT,
+        warm_start_,
                           _world,
                           options.LOG_LEVEL);
 }
@@ -266,14 +264,13 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
                                   options_.INPUTROOT);
 }
 
-void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector(std::string sub_name)
+
+void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
-    // TODO: Get variables index in sub only once at benders start (need to iterate over all subs,
-    // hard to do in Benders start maybe, the if is here to do this only at first iteration)
-    if (!is_variable_names_indices_created_[sub_name])
+    for (auto& [sub_name,constraint_reader_name] :subproblem_constraint_map_ ) 
     {
+
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
-        std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
         auto constraint_reader = constraints_map_[constraint_reader_name];
         for (auto& variable: variables_to_follow_)
         {
@@ -281,7 +278,8 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector(std::string s
             variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
         }
     }
-}
+}  
+
 
 void Benders_MICRO_ITERS::OnBendersMasterResolutionStart()
 {
@@ -309,7 +307,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     auto sub_constraints_manager = constraints_map_[constraints_manager_name];
 
     auto sub_solution = sub_constraints_manager->get_sub_solution();
-    build_variables_to_follow_indices_vector(sub_name);
+    // build_variables_to_follow_indices_vector(sub_name);
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
 
     std::vector<std::string> constraints_to_add_vec;
