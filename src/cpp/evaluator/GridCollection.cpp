@@ -32,14 +32,8 @@ void GridDefinition::addGridElement(const std::string& pbName,
                                     const std::string& areaName,
                                     double min,
                                     double max,
-                                    double step)
+                                    double nbValues)
 {
-    if (!validateGridElement(min, max, step))
-    {
-        throw std::invalid_argument("Invalid GridElement: "
-                                    "min ∈ [0,1], max ∈ [0,1] & > min, step ∈ (0,1]");
-    }
-
     gridElements.emplace(gridDefinitionKeyForProblem(pbName),
                          GridElement{pbName,
                                      gridDefinitionKeyForProblem(pbName),
@@ -48,7 +42,7 @@ void GridDefinition::addGridElement(const std::string& pbName,
                                      areaName,
                                      min,
                                      max,
-                                     step});
+                                     nbValues});
 }
 
 /// @brief Build a GridCollection from a file
@@ -97,14 +91,15 @@ GridCollection::GridCollection(const std::filesystem::path& filePath,
 
         double min = std::stod(tokens[5]);
         double max = std::stod(tokens[6]);
-        double step = std::stod(tokens[7]);
+        double nbValues = std::stod(tokens[7]);
 
         if (!gridDefinitions.contains(gridID))
         {
             GridDefinition gridDef{gridID, areaName, {}, {}, {}};
             gridDefinitions.emplace(gridID, gridDef);
         }
-        gridDefinitions.at(gridID).addGridElement(pbName, type, cstName, areaName, min, max, step);
+        gridDefinitions.at(gridID)
+          .addGridElement(pbName, type, cstName, areaName, min, max, nbValues);
 
         if (!reservoirs.contains(areaName))
         {
@@ -200,7 +195,6 @@ void GridDefinition::generateGridValues()
     // weekAreaConstraints.clear();
     for (auto& gridElement: gridElements | std::views::values)
     {
-        adjustBoundaryValues(gridElement);
         processGridElementWeeks(gridElement);
     }
 }
@@ -228,37 +222,31 @@ double GridDefinition::interpolate(double min, double max, double normalized) co
     return min + (max - min) * normalized;
 }
 
-std::vector<double> GridDefinition::generateRhsValues(const GridElement& gridElement,
-                                                      double minConstraint,
-                                                      double maxConstraint) const
+std::vector<double> GridDefinition::generateRhsValues(const GridElement& gridElement) const
 {
     std::vector<double> values;
     bool isFixedValue = gridElement.min == gridElement.max;
 
     if (isFixedValue)
     {
-        values.push_back(interpolate(minConstraint, maxConstraint, gridElement.min));
+        values.push_back(gridElement.min);
     }
     else
     {
-        int steps = static_cast<int>((gridElement.max - gridElement.min) / gridElement.step);
-        for (int i = 0; i <= steps; ++i)
+        double step = (gridElement.max - gridElement.min) / (gridElement.nbValues - 1);
+        for (int i = 0; i < gridElement.nbValues; ++i)
         {
-            double normalizedValue = gridElement.min + i * gridElement.step;
-            values.push_back(interpolate(minConstraint, maxConstraint, normalizedValue));
+            values.push_back(gridElement.min + i * step);
         }
     }
-
     return values;
 }
 
 void GridDefinition::processWeek(GridElement& gridElement, size_t week)
 {
     const auto& reservoir = reservoirs.at(gridElement.area);
-    double minConstraint = -reservoir.max_pumping[week - 1] * reservoir.efficiency;
-    double maxConstraint = reservoir.max_generating[week - 1];
 
-    gridElement.rhsValues[week - 1] = generateRhsValues(gridElement, minConstraint, maxConstraint);
+    gridElement.rhsValues[week - 1] = generateRhsValues(gridElement);
 
     weekAreaConstraints[week][gridElement.area].emplace(gridElement.name,
                                                         gridElement.rhsValues[week - 1]);
@@ -281,19 +269,5 @@ void GridDefinition::processGridElementWeeks(GridElement& gridElement)
     else if (auto week = parseWeekFromProblem(gridElement.problemName))
     {
         processWeek(gridElement, *week);
-    }
-}
-
-void GridDefinition::adjustBoundaryValues(GridElement& gridElement)
-{
-    constexpr double epsilon = 0;
-
-    if (gridElement.min == 0.0)
-    {
-        gridElement.min += epsilon;
-    }
-    if (gridElement.max == 1.0)
-    {
-        gridElement.max -= epsilon;
     }
 }
