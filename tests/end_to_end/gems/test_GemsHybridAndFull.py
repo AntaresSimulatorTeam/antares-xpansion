@@ -9,14 +9,13 @@ import numpy as np
 
 
 DATA_TEST = Path(__file__).parent.parent.parent.parent / "data_test"
-STUDY_NAME = "simulator_hybrid_invest_13_1"
 RESULTS_FILE = "expected_results.json"
 
 
 @pytest.fixture
-def study_path(tmp_path):
-    source_study = DATA_TEST / STUDY_NAME
-    test_study = tmp_path / STUDY_NAME
+def study_path(tmp_path, request):
+    source_study = DATA_TEST / request.param
+    test_study = tmp_path / request.param
     shutil.copytree(source_study, test_study)
 
     expansion_dir = test_study / "expansion"
@@ -26,7 +25,11 @@ def study_path(tmp_path):
     yield test_study
 
 
-def test_gems_workflow(install_dir, study_path, allow_run_as_root):
+@pytest.mark.parametrize("study_path", [
+    "simulator_full_gems_invest_13_1",
+    "simulator_hybrid_invest_13_1",
+], indirect=True)
+def test_gems_end_to_end(install_dir, study_path, allow_run_as_root):
     launch_py = Path(__file__).parent.parent.parent.parent / "src" / "python" / "launch.py"
 
     cmd = [
