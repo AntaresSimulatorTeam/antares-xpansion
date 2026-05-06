@@ -19,12 +19,10 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
                                    const SolverLogManager& solver_log_manager,
                                    Logger logger,
                                    ProblemsFormat format,
-                                   IBendersProblemProvider* benders_problem_provider,
-                                   double cut_coefficient_tolerance):
-    Worker(variable_map, std::move(logger), cut_coefficient_tolerance)
+                                   IBendersProblemProvider* benders_problem_provider):
+    Worker(variable_map, std::move(logger))
 {
     init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
-
     int mps_ncols(_solver->get_ncols());
     DblVector obj_func_coeffs(mps_ncols);
     IntVector sequence(mps_ncols);
@@ -76,14 +74,6 @@ void SubproblemWorker::get_subgradient(Point& subgradient) const
     std::vector<double> ptr(_solver->get_ncols());
     solver_getlpreducedcost(_solver, ptr);
 
-    // If subgradients are numerically small, round to zero so that cuts generated later on are
-    // clean
-    // We only round the values for the candidates. relies on the assumption that they have
-    // successive ids in the problem
-    roundIfWithinTolerance(ptr,
-                           _id_to_name.begin()->first,
-                           _id_to_name.begin()->first + _id_to_name.size());
-
     for (const auto& kvp: _id_to_name)
     {
         subgradient[kvp.second] = +ptr[kvp.first];
@@ -108,4 +98,25 @@ std::vector<double> SubproblemWorker::get_solution() const
         _solver->get_lp_sol(solution.data(), NULL, NULL);
     }
     return solution;
+}
+
+void SubproblemWorker::delete_rows(int start_pos)
+{
+    int num_rows = _solver->get_nrows();
+    num_rows--;
+    _solver->del_rows(start_pos, num_rows);
+}
+
+int SubproblemWorker::get_variable_index(const std::string& variable_name)
+{
+    int variable_index(-1);
+
+    variable_index = _solver->get_col_index(variable_name);
+
+    return variable_index;
+}
+
+int SubproblemWorker::get_problem_row_num()
+{
+    return _solver->get_nrows();
 }

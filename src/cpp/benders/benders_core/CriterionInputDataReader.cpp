@@ -7,7 +7,7 @@
 using namespace Benders::Criterion;
 
 /**
- * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
+ * prefix could be := UnsuppliedEnergy:: or something else necessarily
  * /!\ body could be := area name or equivalent or nothing
  */
 CriterionPattern::CriterionPattern(std::string prefix, std::string body):
@@ -177,7 +177,7 @@ public:
         }
 
         rhs.SetCriterion(criterion.as<double>());
-        rhs.ResetPattern(PositiveUnsuppliedEnergy, body.as<std::string>());
+        rhs.ResetPattern(UnsuppliedEnergy, body.as<std::string>());
         return true;
     }
 };

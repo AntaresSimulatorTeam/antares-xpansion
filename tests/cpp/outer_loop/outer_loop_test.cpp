@@ -119,7 +119,8 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
 {
     BendersBaseOptions bendersoptions = BuildBendersOptions();
-    auto benders_plugin_factory_ = std::make_shared<BendersPluginFactory>();
+    SimulationOptions sim_options ; 
+    auto benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(sim_options);
     
     CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
         std::filesystem::path(bendersoptions.INPUTROOT) / bendersoptions.STRUCTURE_FILE,
@@ -366,7 +367,7 @@ TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices)
 
 TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices)
 {
-    std::vector<std::string> variables{"PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+    std::vector<std::string> variables{"UnsuppliedEnergy::area<test>::hour<125>"};
     std::vector<Benders::Criterion::CriterionSingleInputData> data;
 
     Benders::Criterion::VariablesGroup var_grp(variables, data);
@@ -375,7 +376,7 @@ TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices)
 
 TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody)
 {
-    std::vector<std::string> variables{"PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+    std::vector<std::string> variables{"UnsuppliedEnergy::area<test>::hour<125>"};
     std::vector<Benders::Criterion::CriterionSingleInputData> data{
       Benders::Criterion::CriterionSingleInputData("Pref", "Body", 1534.0)};
 
@@ -387,9 +388,9 @@ TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody)
 
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix)
 {
-    std::vector<std::string> variables{"PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+    std::vector<std::string> variables{"UnsuppliedEnergy::area<test>::hour<125>"};
     std::vector<Benders::Criterion::CriterionSingleInputData> data{
-      Benders::Criterion::CriterionSingleInputData("UnsuppliedEnergy::", "test", 1534.0)};
+      Benders::Criterion::CriterionSingleInputData("Energy::", "test", 1534.0)};
 
     Benders::Criterion::VariablesGroup var_grp(variables, data);
     const auto& vect_indices = var_grp.Indices();
@@ -399,9 +400,9 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix)
 
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody)
 {
-    std::vector<std::string> variables{"PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+    std::vector<std::string> variables{"UnsuppliedEnergy::area<test>::hour<125>"};
     std::vector<Benders::Criterion::CriterionSingleInputData> data{
-      Benders::Criterion::CriterionSingleInputData("PositiveUnsuppliedEnergy::", "Body", 1534.0)};
+      Benders::Criterion::CriterionSingleInputData("UnsuppliedEnergy::", "Body", 1534.0)};
 
     Benders::Criterion::VariablesGroup var_grp(variables, data);
     const auto& vect_indices = var_grp.Indices();

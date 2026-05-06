@@ -67,10 +67,11 @@ jobs:
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
+      # https://github.com/microsoft/vcpkg/blob/3fb54e6717ea6a48099b02798e82fafefb2d410e/ports/msmpi/portfile.cmake#L12
       - name: Pre-requisites
         shell: cmd
         run: |
-          curl -OLs https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          curl -OLs https://download.microsoft.com/download/7/2/7/72731ebb-b63c-4170-ade7-836966263a8f/msmpisetup.exe
           msmpisetup.exe -unattend
 
       - name: Read antares-solver version
@@ -116,7 +117,7 @@ jobs:
         shell: bash
         run: >
           cmake -B _build -S .
-          -DCMAKE_PREFIX_PATH="${{github.workspace}}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits;${{env.ORTOOLS_DIR}}/install;${{github.workspace}}/windows-latest_sirius-solver-install"
+          -DCMAKE_PREFIX_PATH="${{github.workspace}}/antares-${{steps.antares-version.outputs.result}}-win64;${{env.ORTOOLS_DIR}}/install;${{github.workspace}}/windows-latest_sirius-solver-install"
           -DBUILD_TESTING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"

@@ -1,6 +1,5 @@
 #pragma once
 
-// #include <dlfcn.h>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -17,7 +16,6 @@
 class BendersPluginFactory
 {
 public:
-    BendersPluginFactory() = default;
     /*
         Constructor
         @inputs :
@@ -30,14 +28,13 @@ public:
         @inputs :
             - coupling_map : coupling map
             - micro_iter : boolean to check if Micro iterations is needed to build the right plugin
-            - world : MPI communicator
     */
     std::shared_ptr<BendersPlugin> CreatePlugin(const CouplingMap& coupling_map,
                                                 bool micro_iter,
                                                 boost::mpi::communicator* world);
 
 private:
-    const SimulationOptions options_;
+    const SimulationOptions& options_;
 };
 
 typedef BendersPlugin* (*CreatePluginFunc)();

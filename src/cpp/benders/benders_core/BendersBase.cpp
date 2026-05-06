@@ -1,5 +1,6 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
+#include <chrono>
 #include <memory>
 #include <mutex>
 #include <numeric>
@@ -578,8 +579,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               solver_log_manager_,
                                               _logger,
                                               _options.PROBLEMS_FORMAT,
-                                              benders_problem_provider.get(),
-                                              _options.CUT_COEFFICIENT_TOLERANCE);
+                                              benders_problem_provider.get());
 }
 
 void BendersBase::SetBasisForSubproblem(const std::string& name,
@@ -624,21 +624,53 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::shared_ptr<SubproblemWorker>& worker)
 {
     Timer subproblem_timer;
+
     worker->fix_to(_data.x_cut);
 
-    benders_plugin_->OnBendersMicroIterationStart();
+    benders_plugin_->OnBendersSubResolutionStart();
 
-    worker->solve(subproblem_data.lpstatus,
-                  _options.OUTPUTROOT,
-                  _options.LAST_MASTER_MPS + MPS_SUFFIX,
-                  _writer);
+    int num_micro_iter(0);
+    if (_options.MICRO_ITERATIONS)
+    {
+        benders_plugin_->OnBendersMicroIterationStart();
+
+        bool added_rows = true;
+        while (added_rows)
+        {
+            auto t1 = std::chrono::high_resolution_clock::now();
+            worker->solve(subproblem_data.lpstatus,
+                          _options.OUTPUTROOT,
+                          _options.LAST_MASTER_MPS + MPS_SUFFIX,
+                          _writer);
+            auto t2 = std::chrono::high_resolution_clock::now();
+            auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2
+                                                                                              - t1)
+                                          .count();
+
+            num_micro_iter++;
+            benders_plugin_->OnBendersMicroIterationEnd(name,
+                                                        added_rows,
+                                                        std::to_string(elapsed_microseconds),
+                                                        _data.it,
+                                                        num_micro_iter);
+        }
+    }
+    else
+    {
+        worker->solve(subproblem_data.lpstatus,
+                      _options.OUTPUTROOT,
+                      _options.LAST_MASTER_MPS + MPS_SUFFIX,
+                      _writer);
+    }
+
     worker->get_value(subproblem_data.subproblem_cost);
+
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
+
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-
-    benders_plugin_->OnBendersMicroIterationEnd();
-
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+
+    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
@@ -647,9 +679,6 @@ void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subprobl
     criterion_computation_.SearchVariables(col_names);
 }
 
-// Search for variables in sub problems that satisfy patterns
-// var_indices is a vector(for each patterns p) of vector (var indices related
-// to p)
 void BendersBase::SetSubproblemsVariablesIndices()
 {
     if (!subproblem_map.empty())
@@ -900,6 +929,11 @@ Output::Iteration BendersBase::iteration(const WorkerMasterData& masterDataPtr_l
     return iteration;
 }
 
+void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
+{
+    benders_plugin_ = benders_plugin;
+}
+
 Output::SolutionData BendersBase::solution() const
 {
     auto solution_data = BendersSolution();
@@ -1111,8 +1145,7 @@ void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
       solver_log_manager_,
       _logger,
       _options.PROBLEMS_FORMAT,
-      benders_problem_provider.get(),
-      _options.CUT_COEFFICIENT_TOLERANCE);
+      benders_problem_provider.get());
 }
 
 void BendersBase::free_subproblems()
@@ -1491,7 +1524,16 @@ void BendersBase::roundXCut()
     }
 }
 
-void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
+std::map<int, double> BendersBase::GetSubCutTolerance() const
 {
-    benders_plugin_ = benders_plugin;
+    std::map<int, double> subproblem_cut_coefficient_tolerance{};
+    for (const auto& subproblem: _problem_to_id)
+    {
+        subproblem_cut_coefficient_tolerance[subproblem.second] = Options()
+                                                                    .CUT_COEFFICIENT_TOLERANCE
+                                                                  * SubproblemWeight(
+                                                                    _data.nsubproblem,
+                                                                    subproblem.first);
+    }
+    return subproblem_cut_coefficient_tolerance;
 }

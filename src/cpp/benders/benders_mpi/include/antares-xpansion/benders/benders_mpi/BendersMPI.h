@@ -68,6 +68,13 @@ private:
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 
 protected:
+    void InitializeMaster();
+
+    [[nodiscard]] bool shouldParallelize() const final
+    {
+        return false;
+    }
+
     void PreRunInitialization();
 
     int Rank() const
@@ -93,7 +100,7 @@ protected:
         mpi::gather(_world, value, vector_of_values, root);
     }
 
-    void BuildMasterProblem();
+    virtual void BuildMasterProblem();
 
     int WorldSize() const
     {
