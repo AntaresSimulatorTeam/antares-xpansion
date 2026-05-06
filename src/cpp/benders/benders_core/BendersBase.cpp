@@ -331,6 +331,7 @@ void BendersBase::HandleInitialMasterRelaxation()
  */
 void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) const
 {
+
     if (_data.master_status != SOLVER_STATUS::OPTIMAL)
     {
         std::ostringstream msg;
@@ -343,6 +344,7 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
     {
         if (subproblemData.lpstatus != SOLVER_STATUS::OPTIMAL)
         {
+
             std::ostringstream stream;
             auto log_location = LOGLOCATION;
             stream << "Subproblem " << subproblem_name << " status is " << subproblemData.lpstatus
@@ -450,6 +452,25 @@ void BendersBase::ComputeInvestCost()
     }
 }
 
+
+void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
+{
+    auto subs_on_proc = subs_per_procs_mem_optim_[rank_] ; 
+        
+    for (auto& sub : subs_on_proc) 
+    {
+        auto variable_map  = coupling_map_[sub] ;
+        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(),sub ) ;  
+        auto subproblem_worker = memoptim_subprob_builder_->create_sub_solver_abstract(sub,variable_map,_options.CUT_COEFFICIENT_TOLERANCE,slave_weights) ;
+        PlainData::SubProblemData subproblem_data;
+        SolveSubproblem(subproblem_data, sub, subproblem_worker);
+
+        subproblem_data_map[sub] = subproblem_data;
+
+    }
+            
+}  
+
 void BendersBase::compute_ub()
 {
     ComputeInvestCost();
@@ -472,37 +493,14 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     }
     else if (Options().MEMORY_OPTIMIZATION)
     {
-
-        std::cout<<"sub problem data size  from solving "<<subproblem_data_map.size()<<std::endl ; 
-        // std::cout<<"we are in this case memory optimization  !!!!!"<<std::endl ;
-        std::cout<<"rank "<<rank_<<std::endl ; 
-        // std::cout<<"size of subs_per_procs_mem_optim_ "<<subs_per_procs_mem_optim_.size()<<std::endl ; 
-        auto subs_on_proc = subs_per_procs_mem_optim_[rank_] ; 
-        
-        for (auto& sub : subs_on_proc) 
-        {
-            auto variable_map  = coupling_map_[sub] ;
-            // std::cout<<"sub "<<sub<<std::endl ;
-            double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(),sub ) ;  
-            auto subproblem_worker = memoptim_subprob_builder_->create_sub_solver_abstract(sub,variable_map,_options.CUT_COEFFICIENT_TOLERANCE,slave_weights) ; 
-            PlainData::SubProblemData subproblem_data;
-            // std::cout<<"start solving "<<sub<<std::endl ; 
-            SolveSubproblem(subproblem_data, sub, subproblem_worker); 
-            subproblem_data_map[sub] = subproblem_data;
-            std::cout<<"sub "<<sub<<" subproblem cost "<<subproblem_data.subproblem_cost<<std::endl ;
-
-
-            // std::cout<<"finished solving  "<<sub<<std::endl ;
-
-        }
-            
+        GetMemOptimCuts(subproblem_data_map) ; 
     }
     else
     {
         GetSubproblemCutFast(subproblem_data_map);
     }
 
-    std::cout<<"subproblem_data_map size "<<subproblem_data_map.size()<<std::endl ; 
+
 
 }
 
@@ -808,6 +806,7 @@ int BendersBase::SetAggregation(int max_aggregation) const
  */
 void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
 {
+
     check_status(subproblem_data_map);
     if (_options.NB_CUTS_PER_ITER)
     {

@@ -192,6 +192,7 @@ protected:
                                const std::vector<int>& rstatus,
                                const std::vector<int>& cstatus);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
+    void GetMemOptimCuts(SubProblemDataMap& subproblem_data_map) ; 
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
     virtual void DeactivateIntegrityConstraints() const;

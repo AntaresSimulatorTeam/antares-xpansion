@@ -35,7 +35,6 @@ void MemOptimSubProblemBuilder::read_coef()
     {
         int j = 0;
         std::string line;
-        std::cout<<"from read coef "<<std::endl;  
         while (std::getline(coef_csv_stream, line))
         {
             Tokenizer tok(line,sep);
@@ -49,11 +48,11 @@ void MemOptimSubProblemBuilder::read_coef()
                                values_double.begin(),
                                [](const std::string& s) { return std::stod(s); });
             }
-            std::cout<<"values vect size "<<values_double.size()<<std::endl ;             
             coeffs_[key] = values_double;
         }
 
     }
+
 }
 
 void MemOptimSubProblemBuilder::read_coef_cols()
@@ -76,9 +75,7 @@ void MemOptimSubProblemBuilder::read_coef_cols()
         {
             constraints_col_indices_.push_back(solver_->get_col_index(col_name)) ; 
         }
-        std::cout<<"constraints_col_indices_ "<<constraints_col_indices_.size()<<std::endl ; 
     }
-
 }
 
 void MemOptimSubProblemBuilder::read_coef_rows()
@@ -101,7 +98,6 @@ void MemOptimSubProblemBuilder::read_coef_rows()
         {
             constraints_row_indices_.push_back(solver_->get_row_index(row_name)) ; 
         }
-        std::cout<<"constraints_row_indices_ "<<constraints_row_indices_.size()<<std::endl ; 
     }
 }
 
@@ -114,7 +110,6 @@ void MemOptimSubProblemBuilder::read_obj_coef()
     std::ifstream obj_coef_stream(obj_coef_path);
     if (obj_coef_stream.is_open())
     {
-        std::cout << "obj_coef not null" << std::endl;
         std::string line;
         int j = 0;
         while (std::getline(obj_coef_stream, line))
@@ -190,6 +185,7 @@ void MemOptimSubProblemBuilder::read_rhs()
         }
 
     }
+
 }
 
 void MemOptimSubProblemBuilder::read_rhs_rows()
@@ -224,22 +220,17 @@ void  MemOptimSubProblemBuilder::build_sub_skeleton(std::string solver_name, con
                                            solver_log_manager);
 
 
-    if (solver_) 
-        std::cout<<"solver is not null "<<std::endl ; 
-
-
     solver_->set_threads(1) ; 
     solver_->set_output_log_level(log_level) ; 
     std::filesystem::path skeleton_sub = inputRoot_ / "sub" / "sub.mps" ; 
 
-    std::cout<<"sub path "<<skeleton_sub.c_str()<<std::endl ;  
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(skeleton_sub);
-    // std::cout<<"solver name "<<solver_name<<std::end l
     solver_IO_.configure(solver_name,format) ; 
 
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
 
     int number_of_rows  = solver_->get_nrows() ; 
+
 } 
 
 int MemOptimSubProblemBuilder::get_sub_number()
@@ -250,7 +241,6 @@ int MemOptimSubProblemBuilder::get_sub_number()
 
 std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_abstract(std::string sub_name,VariableMap& variable_map,double cut_coefficient_tolerance,double slave_weight)
 {
-    // std::cout<<"from mem optim sub name  "<<sub_name<<std::endl ;  
     auto& coeffs_sub = coeffs_[sub_name] ;
     auto& coeffs_obj = obj_coefs_[sub_name] ;
     auto& rhs_values = rhs_[sub_name] ;   
@@ -259,11 +249,10 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
     
     auto start = std::chrono::high_resolution_clock::now();
     sub_solver->chg_coefs(n_coefs,constraints_row_indices_.data(), constraints_col_indices_.data(),coeffs_sub.data()) ; 
-    sub_solver->chg_obj(obj_col_indices_,coeffs_obj) ; 
-    sub_solver->chg_rhs_values(rhs_row_indices_,rhs_values) ; 
+    sub_solver->chg_obj(obj_col_indices_,coeffs_obj) ;
+    sub_solver->chg_rhs_values(rhs_row_indices_,rhs_values) ;
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    // std::cout << "chg_coefs took: " << duration.count() << " microseconds" << std::endl;
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(
              variable_map, 
