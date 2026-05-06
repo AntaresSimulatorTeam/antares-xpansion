@@ -48,16 +48,14 @@ public:
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-
+    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
-    // for test
     void MasterGetRhs(double& rhs, int id_row) const;
-    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
 
     const VariableMap& MasterVariables() const
     {
