@@ -146,6 +146,7 @@ std::function<int(XPRSprob prob, int nrows, const int rowind[], const double rhs
   XPRSchgrhs = nullptr;
 
 std::function<int(XPRSprob prob, int row, int col, double coef)> XPRSchgcoef = nullptr;
+std::function<int(XPRSprob prob, int ncoefs, const int mrow[], const int mcol[], const double dval[])> XPRSchgmcoef = nullptr;
 std::function<int(XPRSprob prob, int rowstat[], int colstat[])> XPRSgetbasis = nullptr;
 std::function<int(XPRSprob prob, int attrib, double* p_value)> XPRSgetdblattrib = nullptr;
 std::function<int(XPRSprob prob, double x[], double slack[], double duals[], double djs[])>
@@ -219,6 +220,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSchgrhs, "XPRSchgrhs");
     xpress_dynamic_library->GetFunction(&XPRSchgcoef, "XPRSchgcoef");
     xpress_dynamic_library->GetFunction(&XPRSgetbasis, "XPRSgetbasis");
+    xpress_dynamic_library->GetFunction(&XPRSchgmcoef, "XPRSchgmcoef");
     xpress_dynamic_library->GetFunction(&XPRSgetlpsol, "XPRSgetlpsol");
     xpress_dynamic_library->GetFunction(&XPRSgetdblattrib, "XPRSgetdblattrib");
     xpress_dynamic_library->GetFunction(&XPRSgetmipsol, "XPRSgetmipsol");

@@ -718,6 +718,15 @@ public:
     virtual void chg_rhs(int id_row, double val) = 0;
 
     /**
+     * @brief Change rhs of a row
+     *
+     * @param id_row : list of indices of the row
+     * @param vals    : list of new rhs values
+     */
+    virtual void chg_rhs_values(std::vector<int>& id_cols, std::vector<double>&  vals) = 0 ; 
+
+
+    /**
      * @brief Change a coefficient in the matrix
      *
      * @param id_row : index of the row
@@ -725,6 +734,17 @@ public:
      * @param val    : new value to set in the matrix
      */
     virtual void chg_coef(int id_row, int id_col, double val) = 0;
+
+
+    /**
+     * @brief Change multiple coefficients in the matrix
+     *
+     * @param num_coefs : number of coefficients to change
+     * @param id_rows   : array of row indices
+     * @param id_cols   : array of column indices
+     * @param vals      : array of new values to set in the matrix
+     */
+    virtual void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) = 0;
 
     /**
      * @brief Change the name of a constraint

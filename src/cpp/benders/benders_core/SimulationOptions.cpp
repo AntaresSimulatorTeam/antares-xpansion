@@ -200,6 +200,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;
     result.CACHE_PROBLEMS = CACHE_PROBLEMS;
+    result.MEMORY_OPTIMIZATION = MEMORY_OPTIMIZATION; 
 
     if (MASTER_FORMULATION == "integer")
     {

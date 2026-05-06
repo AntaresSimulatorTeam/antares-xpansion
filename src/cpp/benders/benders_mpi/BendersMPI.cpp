@@ -21,6 +21,8 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                 std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world)
 {
+    int rank = _world.rank() ; 
+    set_rank(rank) ; 
 }
 
 /*!
@@ -34,43 +36,66 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS)
+    if (_options.MEMORY_OPTIMIZATION) 
     {
+        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(_options.INPUTROOT,_logger,_options.SOLVER_NAME,_options.LOG_LEVEL , _options.PROBLEMS_FORMAT) ; 
         int current_problem_id = 0;
-        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
+        subs_per_procs_mem_optim_.resize(_world.size()) ; 
+        for (auto it= coupling_map_.begin(); it!= coupling_map_.end(); it++ )
         {
             auto process_to_feed = current_problem_id % _world.size();
-            if (process_to_feed != _world.rank())
-            {
-                it = coupling_map_.erase(it);
-            }
-            else
-            {
-                subs_per_proc.emplace_back(it->first, process_to_feed);
-                ++it;
-            }
-            current_problem_id++;
+            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first) ; 
+            subs_per_proc.push_back(std::make_pair(it->first, process_to_feed));
+
+            
+            current_problem_id++ ;
         }
-    }
-    else
-    {
-        int current_problem_id = 0;
-        // Dispatch subproblems to process
-        for (const auto& problem: coupling_map_)
-        {
-            // In case there are more subproblems than process
-            if (auto process_to_feed = current_problem_id % _world.size();
-                process_to_feed == _world.rank())
-            { // Assign  [problemNumber % processCount] to processID
-                const auto subProblemFilePath = GetSubproblemPath(problem.first);
-                subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
-                AddSubproblem(problem);
-                AddSubproblemName(problem.first);
-            }
-            current_problem_id++;
-        }
+        
     }
 
+    else 
+    {
+        if (_options.CACHE_PROBLEMS)
+        {
+            int current_problem_id = 0;
+            for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
+            {
+                auto process_to_feed = current_problem_id % _world.size();
+                if (process_to_feed != _world.rank())
+                {
+                    it = coupling_map_.erase(it);
+                }
+
+                else
+                {
+                    subs_per_proc.emplace_back(it->first, process_to_feed);
+                    ++it;
+                }
+                current_problem_id++;
+            }
+        }
+        else
+        {
+            int current_problem_id = 0;
+            // Dispatch subproblems to process
+            for (const auto& problem: coupling_map_)
+            {
+                // In case there are more subproblems than process
+                if (auto process_to_feed = current_problem_id % _world.size();
+                    process_to_feed == _world.rank())
+                { // Assign  [problemNumber % processCount] to processID
+                    const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                    subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
+                    AddSubproblem(problem);
+                    AddSubproblemName(problem.first);
+                }
+                current_problem_id++;
+            }
+        }
+
+    }
+
+    
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
     if (_world.rank() == rank_0)

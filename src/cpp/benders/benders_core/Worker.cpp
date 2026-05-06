@@ -125,6 +125,23 @@ void Worker::solve(int& lp_status,
     }
 }
 
+
+void Worker::set_id_to_name(VariableMap& variable_map) 
+{
+    _name_to_id = variable_map ; 
+    for (const auto& kvp : _name_to_id) 
+    {
+        _id_to_name[kvp.second] = kvp.first;
+    }    
+} 
+
+
+void Worker::init_for_mem_optim(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map) 
+{
+    _solver = solver ; 
+    set_id_to_name(variable_map) ; 
+}
+
 /*!
  *  \brief Get the number of iteration needed to solve a problem
  *
