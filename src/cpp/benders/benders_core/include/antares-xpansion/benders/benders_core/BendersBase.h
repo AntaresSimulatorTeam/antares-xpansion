@@ -4,7 +4,6 @@
 #include <execution>
 #include <filesystem>
 #include <mutex>
-#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
@@ -15,6 +14,7 @@
 #include "SubproblemWorker.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
+#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
@@ -61,7 +61,7 @@ public:
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
-    void GetMemOptimCuts(SubProblemDataMap& subproblem_data_map) ; 
+    void GetMemOptimCuts(SubProblemDataMap& subproblem_data_map);
 
     const VariableMap& MasterVariables() const
     {
@@ -158,8 +158,8 @@ protected:
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
-    std::vector<std::vector<std::string>> subs_per_procs_mem_optim_ ; 
-    std::shared_ptr<MemOptimSubProblemBuilder> memoptim_subprob_builder_ ;
+    std::vector<std::vector<std::string>> subs_per_procs_mem_optim_;
+    std::shared_ptr<MemOptimSubProblemBuilder> memoptim_subprob_builder_;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;
@@ -199,7 +199,7 @@ protected:
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
-    void set_rank(int rank) ;   
+    void set_rank(int rank);
     [[nodiscard]] std::filesystem::path GetSubproblemPath(const std::string& subproblem_name) const;
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;
@@ -376,8 +376,8 @@ private:
     Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
- 
-    int rank_ ; 
+
+    int rank_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

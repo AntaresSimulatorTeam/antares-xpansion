@@ -166,7 +166,7 @@ public:
                     const std::vector<double>& bnd) override;
     void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) override;
     void chg_rhs(int id_row, double val) override;
-    void chg_rhs_values(std::vector<int>&, std::vector<double>& )override ; 
+    void chg_rhs_values(std::vector<int>&, std::vector<double>&) override;
     void chg_coef(int id_row, int id_col, double val) override;
     void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) override;
     void chg_row_name(int id_row, const std::string& name) override;

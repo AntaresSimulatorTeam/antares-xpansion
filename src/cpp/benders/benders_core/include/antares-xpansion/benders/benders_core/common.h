@@ -222,7 +222,7 @@ struct BendersBaseOptions: public SolverBaseOptions
 
     bool RESUME = false;
     bool MICRO_ITERATIONS = false;
-    bool MEMORY_OPTIMIZATION = false ; 
+    bool MEMORY_OPTIMIZATION = false;
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;
     bool BOUND_ALPHA = false;

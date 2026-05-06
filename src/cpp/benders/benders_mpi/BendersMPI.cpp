@@ -21,8 +21,8 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                 std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world)
 {
-    int rank = _world.rank() ; 
-    set_rank(rank) ; 
+    int rank = _world.rank();
+    set_rank(rank);
 }
 
 /*!
@@ -36,24 +36,27 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.MEMORY_OPTIMIZATION) 
+    if (_options.MEMORY_OPTIMIZATION)
     {
-        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(_options.INPUTROOT,_logger,_options.SOLVER_NAME,_options.LOG_LEVEL , _options.PROBLEMS_FORMAT) ; 
+        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
+          _options.INPUTROOT,
+          _logger,
+          _options.SOLVER_NAME,
+          _options.LOG_LEVEL,
+          _options.PROBLEMS_FORMAT);
         int current_problem_id = 0;
-        subs_per_procs_mem_optim_.resize(_world.size()) ; 
-        for (auto it= coupling_map_.begin(); it!= coupling_map_.end(); it++ )
+        subs_per_procs_mem_optim_.resize(_world.size());
+        for (auto it = coupling_map_.begin(); it != coupling_map_.end(); it++)
         {
             auto process_to_feed = current_problem_id % _world.size();
-            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first) ; 
+            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first);
             subs_per_proc.push_back(std::make_pair(it->first, process_to_feed));
 
-            
-            current_problem_id++ ;
+            current_problem_id++;
         }
-        
     }
 
-    else 
+    else
     {
         if (_options.CACHE_PROBLEMS)
         {
@@ -92,10 +95,8 @@ void BendersMpi::InitializeProblems()
                 current_problem_id++;
             }
         }
-
     }
 
-    
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
     if (_world.rank() == rank_0)

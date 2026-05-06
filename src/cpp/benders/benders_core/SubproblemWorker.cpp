@@ -38,17 +38,18 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     _solver->chg_obj(sequence, obj_func_coeffs);
 }
 
-
-SubproblemWorker::SubproblemWorker(VariableMap& variable_map, std::shared_ptr<SolverAbstract> solver,Logger logger,double slave_weight)  : 
-Worker( variable_map,  logger)
+SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
+                                   std::shared_ptr<SolverAbstract> solver,
+                                   Logger logger,
+                                   double slave_weight):
+    Worker(variable_map, logger)
 {
-    init_for_mem_optim(solver,variable_map) ; 
-    setup_obj(slave_weight) ; 
+    init_for_mem_optim(solver, variable_map);
+    setup_obj(slave_weight);
 }
 
-
-void SubproblemWorker::setup_obj(double slave_weight) 
-{    
+void SubproblemWorker::setup_obj(double slave_weight)
+{
     int mps_ncols(_solver->get_ncols());
     DblVector obj_func_coeffs(mps_ncols);
     IntVector sequence(mps_ncols);
@@ -61,9 +62,8 @@ void SubproblemWorker::setup_obj(double slave_weight)
     {
         c *= slave_weight;
     }
-    _solver->chg_obj(sequence, obj_func_coeffs);    
-} 
-
+    _solver->chg_obj(sequence, obj_func_coeffs);
+}
 
 /*!
  *  \brief Fix a set of variables to constant in a problem

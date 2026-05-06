@@ -723,8 +723,7 @@ public:
      * @param id_row : list of indices of the row
      * @param vals    : list of new rhs values
      */
-    virtual void chg_rhs_values(std::vector<int>& id_cols, std::vector<double>&  vals) = 0 ; 
-
+    virtual void chg_rhs_values(std::vector<int>& id_cols, std::vector<double>& vals) = 0;
 
     /**
      * @brief Change a coefficient in the matrix
@@ -734,7 +733,6 @@ public:
      * @param val    : new value to set in the matrix
      */
     virtual void chg_coef(int id_row, int id_col, double val) = 0;
-
 
     /**
      * @brief Change multiple coefficients in the matrix

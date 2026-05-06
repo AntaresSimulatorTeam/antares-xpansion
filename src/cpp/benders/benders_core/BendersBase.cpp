@@ -482,9 +482,9 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     {
         GetSubproblemCutCache(subproblem_data_map);
     }
-    else if (Options().MEMORY_OPTIMIZATION) 
+    else if (Options().MEMORY_OPTIMIZATION)
     {
-        GetMemOptimCuts(subproblem_data_map) ; 
+        GetMemOptimCuts(subproblem_data_map);
     }
     else
     {
@@ -492,10 +492,9 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     }
 }
 
-
-void BendersBase::set_rank(int rank)  
+void BendersBase::set_rank(int rank)
 {
-    rank_ = rank ; 
+    rank_ = rank;
 }
 
 void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
@@ -629,24 +628,25 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
       shouldParallelize());
 }
 
-
 void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
 {
-    auto subs_on_proc = subs_per_procs_mem_optim_[rank_] ; 
-        
-    for (auto& sub : subs_on_proc) 
+    auto subs_on_proc = subs_per_procs_mem_optim_[rank_];
+
+    for (auto& sub: subs_on_proc)
     {
-        auto variable_map  = coupling_map_[sub] ;
-        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(),sub ) ;  
-        auto subproblem_worker = memoptim_subprob_builder_->create_sub_solver_abstract(sub,variable_map,_options.CUT_COEFFICIENT_TOLERANCE,slave_weights) ;
+        auto variable_map = coupling_map_[sub];
+        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(), sub);
+        auto subproblem_worker = memoptim_subprob_builder_->create_sub_solver_abstract(
+          sub,
+          variable_map,
+          _options.CUT_COEFFICIENT_TOLERANCE,
+          slave_weights);
         PlainData::SubProblemData subproblem_data;
         SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
         subproblem_data_map[sub] = subproblem_data;
-
     }
-            
-}  
+}
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::string& name,

@@ -713,10 +713,8 @@ void SolverCbc::chg_rhs(int id_row, double val)
     }
 }
 
-
 void SolverCbc::chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals)
 {
-
 }
 
 void SolverCbc::chg_coef(int id_row, int id_col, double val)
@@ -960,8 +958,6 @@ void SolverCbc::get_presolve_map(int*, int*) const
     throw NotImplementedFeatureSolverException("get_presolve_map is not supported for CBC solver");
 }
 
-
-void SolverCbc::chg_rhs_values(std::vector<int>&, std::vector<double>& ) 
+void SolverCbc::chg_rhs_values(std::vector<int>&, std::vector<double>&)
 {
-    
-} 
+}

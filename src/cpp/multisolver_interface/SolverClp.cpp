@@ -584,18 +584,13 @@ void SolverClp::chg_coef(int id_row, int id_col, double val)
     matrix->modifyCoefficient(id_row, id_col, val);
 }
 
-void SolverClp::chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) 
+void SolverClp::chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals)
 {
-
 }
 
-
-void SolverClp::chg_rhs_values(std::vector<int>& rhs_indices, std::vector<double>& rhs_values ) 
+void SolverClp::chg_rhs_values(std::vector<int>& rhs_indices, std::vector<double>& rhs_values)
 {
-
-} 
-
-
+}
 
 void SolverClp::chg_row_name(int id_row, const std::string& name)
 {

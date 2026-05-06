@@ -296,10 +296,7 @@ void SolverXpress::set_obj_to_zero()
     auto ncols = get_ncols();
     std::vector<double> zeros_val(ncols, 0.0);
     set_obj(zeros_val.data(), 0, ncols);
-
 }
-
-
 
 void SolverXpress::set_obj(const double* obj, int first, int last)
 {
@@ -574,24 +571,18 @@ void SolverXpress::chg_col_type(const std::vector<int>& mindex, const std::vecto
     zero_status_check(status, "change column types", LOGLOCATION);
 }
 
-void SolverXpress::chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals )   
+void SolverXpress::chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals)
 {
-    int status = XPRSchgrhs(_xprs,
-                            id_rows.size(),
-                            id_rows.data(),
-                            vals.data());
-                            
+    int status = XPRSchgrhs(_xprs, id_rows.size(), id_rows.data(), vals.data());
+
     zero_status_check(status, "change rhs", LOGLOCATION);
 }
 
-
-
-void SolverXpress::chg_coefs(int num_coefs ,int* id_rows, int* id_cols, double* vals) 
+void SolverXpress::chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals)
 {
-    int status = XPRSchgmcoef(_xprs,num_coefs,id_rows,id_cols,vals); 
+    int status = XPRSchgmcoef(_xprs, num_coefs, id_rows, id_cols, vals);
     zero_status_check(status, "change matrix coefficient", LOGLOCATION);
-
-} 
+}
 
 void SolverXpress::chg_rhs(int id_row, double val)
 {
