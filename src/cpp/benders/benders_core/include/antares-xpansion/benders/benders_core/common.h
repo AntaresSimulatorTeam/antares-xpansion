@@ -205,6 +205,8 @@ struct ExternalLoopOptions
 
 struct BendersBaseOptions: public SolverBaseOptions
 {
+    BendersBaseOptions() = default;
+
     explicit BendersBaseOptions(const SolverBaseOptions& other):
         SolverBaseOptions(other)
     {
