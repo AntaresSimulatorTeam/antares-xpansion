@@ -213,15 +213,14 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
 
-    
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
-    build_variables_to_follow_indices_vector() ; 
-    
+    build_variables_to_follow_indices_vector();
+
     onBendersStartPlugin_(sub_pb_ids_,
-        _world->rank(),
-        options.INPUTROOT,
-        options.OUTPUTROOT,
-        warm_start_,
+                          _world->rank(),
+                          options.INPUTROOT,
+                          options.OUTPUTROOT,
+                          warm_start_,
                           _world,
                           options.LOG_LEVEL);
 }
@@ -264,12 +263,10 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
                                   options_.INPUTROOT);
 }
 
-
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
-    for (auto& [sub_name,constraint_reader_name] :subproblem_constraint_map_ ) 
+    for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
     {
-
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
         auto constraint_reader = constraints_map_[constraint_reader_name];
         for (auto& variable: variables_to_follow_)
@@ -278,8 +275,7 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
             variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
         }
     }
-}  
-
+}
 
 void Benders_MICRO_ITERS::OnBendersMasterResolutionStart()
 {

@@ -181,7 +181,7 @@ private:
 
     void read_variables_to_follow_ids();
     void read_variable_names_to_follow();
-    void build_variables_to_follow_indices_vector() ; 
+    void build_variables_to_follow_indices_vector();
     const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
     mpi::communicator* _world;
