@@ -28,6 +28,7 @@ using AreaConstraintMaps = std::map<AreaName, ConstraintMap>;
 struct GridElement
 {
     std::string problemName;           // name of the problem
+    int week;                          // week of the problem
     [[maybe_unused]] std::string type; // field unused at the moment as we only treat constraints
     std::string name;                  // name of the constraint
     std::string area;                  // name of the area

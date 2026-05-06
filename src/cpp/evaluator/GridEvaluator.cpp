@@ -79,8 +79,15 @@ ConstraintCombos GridEvaluator::GenerateSubPbCombos(
 
     for (const auto& [areaName, constraints]: areasConstraints)
     {
+        logger->display_message("Processing areasConstraints for area " + areaName,
+                                LogUtils::LOGLEVEL::DEBUG,
+                                GRID_EVALUATOR_LOGGER_CONTEXT);
         ConstraintCombos newCombos;
         ConstraintCombos localCombos = GenerateConstraintProduct(constraints);
+        logger->display_message("localCombos size: " + std::to_string(localCombos.size())
+                                  + " for area " + areaName,
+                                LogUtils::LOGLEVEL::DEBUG,
+                                GRID_EVALUATOR_LOGGER_CONTEXT);
 
         for (const auto& combo: currentCombos)
         {
@@ -89,6 +96,11 @@ ConstraintCombos GridEvaluator::GenerateSubPbCombos(
                 std::map<std::string, double> merged = combo;
                 for (const auto& [cst, val]: local)
                 {
+                    logger->display_message("Adding value " + std::to_string(val)
+                                              + " to constraint "
+                                              + GetConstraintName(problemId, areaName, cst),
+                                            LogUtils::LOGLEVEL::DEBUG,
+                                            GRID_EVALUATOR_LOGGER_CONTEXT);
                     merged[GetConstraintName(problemId, areaName, cst)] = val;
                 }
                 newCombos.push_back(merged);

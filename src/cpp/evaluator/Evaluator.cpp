@@ -39,6 +39,10 @@ void Evaluator::SetConstraintsRHSValues(const std::map<std::string, double>& rhs
 {
     for (const auto& [constraintName, value]: rhsValues)
     {
+        logger->display_message("Setting value " + std::to_string(value) + " to constraint "
+                                  + constraintName,
+                                LogUtils::LOGLEVEL::DEBUG,
+                                EVALUATOR_LOGGER_CONTEXT);
         subProblem->fix_rhs_to(constraintName, value);
     }
 }
@@ -100,6 +104,11 @@ SubProblemData Evaluator::SolveSubproblem(std::shared_ptr<Problem> problem)
                                 EVALUATOR_LOGGER_CONTEXT);
     }
     subPbData.subproblem_cost = problem->get_lp_value();
+    logger->display_message("Calculated cost for year " + std::to_string(problem->mc_year)
+                              + " week " + std::to_string(problem->week) + ": "
+                              + std::to_string(subPbData.subproblem_cost),
+                            LogUtils::LOGLEVEL::DEBUG,
+                            EVALUATOR_LOGGER_CONTEXT);
     subPbData.subproblem_timer = subproblem_timer.elapsed();
     int nbSimplexIter = problem->get_splex_num_of_ite_last();
 

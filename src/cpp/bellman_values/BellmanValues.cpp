@@ -116,7 +116,6 @@ BellmanValues::compute(int nbLevels)
         }
     }
 
-    const auto& gridDef = gridEvaluator.gridDefinition;
     for (unsigned int week = endWeek + 1; week-- > startWeek;)
     {
         for (unsigned int scenario: scenarios)
@@ -127,10 +126,7 @@ BellmanValues::compute(int nbLevels)
                 return [this, &V_vec, &week, &scenario](double x)
                 { return Interpolator::linearInterpolation(this->levels, V_vec)(x); };
             };
-            auto valuesVect = gridDef.weekAreaConstraints.at(week + 1)
-                                .at(gridDef.gridElements.begin()->second.area)
-                                .at(gridDef.gridElements.begin()
-                                      ->second.name); // assuming all problems are the same
+
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu;

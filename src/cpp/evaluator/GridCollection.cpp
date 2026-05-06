@@ -41,7 +41,14 @@ void GridDefinition::addGridElement(const std::string& pbName,
     }
 
     gridElements.emplace(gridDefinitionKeyForProblem(pbName),
-                         GridElement{pbName, type, cstName, areaName, min, max, step});
+                         GridElement{pbName,
+                                     gridDefinitionKeyForProblem(pbName),
+                                     type,
+                                     cstName,
+                                     areaName,
+                                     min,
+                                     max,
+                                     step});
 }
 
 /// @brief Build a GridCollection from a file
@@ -109,8 +116,6 @@ GridCollection::GridCollection(const std::filesystem::path& filePath,
     {
         gridDefinition.setReservoirs(reservoirs);
     }
-
-    checkGridValidity();
 }
 
 /// @brief Load MC Years and active Years from the generaldata file
@@ -202,8 +207,7 @@ void GridDefinition::generateGridValues()
 
 std::vector<std::vector<double>> GridDefinition::getRhsValuesForWeek(size_t week) const
 {
-    gridElements.begin()->first;
-    // the rhs values will either be from the single gridElement
+    // the rhs values will either be from a single "all problems" gridElement or from a specific one
     return gridElements.begin()->first == WEEK::ALLWEEKS ? gridElements.begin()->second.rhsValues
                                                          : gridElements.at(week + 1).rhsValues;
 }

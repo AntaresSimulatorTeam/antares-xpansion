@@ -217,9 +217,12 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
 
     for (const auto& gridElement: gridDefinition.gridElements | std::views::values)
     {
-        if (gridElement.problemName == "all" || gridElement.problemName == pbName)
+        if (gridElement.week == WEEK::ALLWEEKS || gridElement.week == pbID.week)
         {
             // it was checked earlier that there is only one area in gridDefinition
+            logger->display_message("Cleaning reservoir constraints for problem " + pbName,
+                                    LogUtils::LOGLEVEL::DEBUG,
+                                    logger->CONTEXT);
             cleanReservoirConstraints(problem,
                                       gridDefinition.reservoirs.at(gridElement.area),
                                       pbID,
@@ -229,11 +232,13 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
 
     // other gridElements/reservoirs in a multistock context must be updated with their optimal
     // trajectories, for this specific flag
-    if (gridDefinition.gridElements.size() == 1
-        && this->computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY
+    if (this->computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY
         && (gridDefinition.gridElements.begin()->second.problemName == "all"
-            || gridDefinition.gridElements.begin()->second.problemName == pbName))
+            || gridDefinition.gridElements.count(pbID.week)))
     {
+        logger->display_message("Updating trajectories for problem " + pbName,
+                                LogUtils::LOGLEVEL::DEBUG,
+                                logger->CONTEXT);
         for (auto& reservoir: gridDefinition.reservoirs)
         {
             if (reservoir.second.area != areaName)
@@ -242,6 +247,12 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
                 updateReservoirWithOptimalTrajectory(problem, reservoir.second, pbID);
             }
         }
+    }
+    else
+    {
+        logger->display_message("Not updating trajectories for problem " + pbName,
+                                LogUtils::LOGLEVEL::DEBUG,
+                                logger->CONTEXT);
     }
     // Sort in descending order to preserve indices during deletion
     std::sort(affectedColsAndRows.colsToDelete.rbegin(), affectedColsAndRows.colsToDelete.rend());
