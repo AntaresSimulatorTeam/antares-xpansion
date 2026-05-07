@@ -167,16 +167,7 @@ private:
                                               const BendersBaseOptions& options,
                                               const SolverLogManager& solver_log_manager);
 
-    /*
-        This function is used to check if a constraint key rendered by the julia cde
-        has been added or not to the subproblem worker.
-        @inputs
-            - key : constraint key to check
-            - sub_name : subproblem name
-    */
-    // bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
 
-    // BuildSubProblemConstraintMap()
     void read_micro_iteration_config_file();
 
     void read_variables_to_follow_ids();

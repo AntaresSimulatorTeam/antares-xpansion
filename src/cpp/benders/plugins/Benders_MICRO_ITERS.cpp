@@ -303,7 +303,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     auto sub_constraints_manager = constraints_map_[constraints_manager_name];
 
     auto sub_solution = sub_constraints_manager->get_sub_solution();
-    // build_variables_to_follow_indices_vector(sub_name);
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
 
     std::vector<std::string> constraints_to_add_vec;
