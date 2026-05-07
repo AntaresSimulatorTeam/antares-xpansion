@@ -167,7 +167,6 @@ private:
                                               const BendersBaseOptions& options,
                                               const SolverLogManager& solver_log_manager);
 
-
     void read_micro_iteration_config_file();
 
     void read_variables_to_follow_ids();
