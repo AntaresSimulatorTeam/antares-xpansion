@@ -31,7 +31,7 @@ Antares-Xpansion includes an experimental graphical interface but it is optimall
 
 Show a help message and exit.
 
-#### `--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}`
+#### `--step {full, antares, problem_generation, benders, gems, study_update, sensitivity, presolve, resume}`
 
 Default value: `full`.
 
@@ -43,6 +43,7 @@ The execution of Antares-Xpansion consists of several steps that can be run sepa
 | `antares`            | Launch Antares-Simulator once to get the Antares problem.
 | `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run.                                        |
 | `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md). |
+| `gems`               | Combined step: runs `antares-problem-generator` followed by `benders`. antares-problem-generator creates problems files using GEMS optim-config     |
 | `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm.     |
 | `full`               | Launch all steps in order: `antares` > `problem_generation` > `benders` > `study_update`                                                            |
 | `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                                                                   |

@@ -18,7 +18,7 @@
 class Worker
 {
 public:
-    Worker(VariableMap variable_map, Logger logger, double cut_coefficient_tolerance);
+    Worker(VariableMap variable_map, Logger logger);
     void init(const std::string& solver_name,
               int log_level,
               const SolverLogManager& solver_log_manager,
@@ -73,8 +73,4 @@ public:
 private:
     SolverIO solver_io_;
     void writeProb(const std::filesystem::path& out) const;
-    double cut_coefficient_tolerance_;
-
-protected:
-    void roundIfWithinTolerance(std::vector<double>& values, int first, int last) const;
 };

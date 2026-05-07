@@ -308,4 +308,4 @@ The `master_solution_tolerance` parameter controls the tolerance used when round
 
 Positive float. Default value: `5e-3`.
 
-The `cut_coefficient_tolerance` parameter defines the tolerance under which cuts coefficients and right-hand sides are considered to be zero. This allows to have "clean" cuts in the master problem, in order to avoid numerical issues.
+The `cut_coefficient_tolerance` parameter defines the tolerance under which cuts coefficients and right-hand sides are considered to be zero. This allows to have "clean" cuts in the master problem, in order to avoid numerical issues. This should be less than 1.

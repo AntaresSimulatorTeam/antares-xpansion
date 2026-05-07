@@ -21,6 +21,7 @@ add_library(antaresXpansion::logger_lib ALIAS logger_lib)
 target_link_libraries (logger_lib
         PUBLIC
         antaresXpansion::benders_core
+        antaresXpansion::benders_mpi_core
         )
 
 target_include_directories (logger_lib

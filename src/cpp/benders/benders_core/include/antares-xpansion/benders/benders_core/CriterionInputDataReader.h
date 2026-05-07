@@ -8,7 +8,7 @@
 
 namespace Benders::Criterion
 {
-static constexpr const char* const PositiveUnsuppliedEnergy = "PositiveUnsuppliedEnergy::";
+static constexpr const char* const UnsuppliedEnergy = "UnsuppliedEnergy::";
 
 class CriterionInputFileError: public LogUtils::XpansionError<std::runtime_error>
 {
