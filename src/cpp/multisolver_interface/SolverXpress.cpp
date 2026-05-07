@@ -192,7 +192,8 @@ void SolverXpress::write_basis(const std::filesystem::path& filename)
 
 void SolverXpress::write_sol(const std::filesystem::path& filename)
 {
-    int status = XPRSwritesol(_xprs, filename.string().c_str(), "");
+    std::string nFlags = "sbz";
+    int status = XPRSwritesol(_xprs, filename.string().c_str(), nFlags.c_str());
     zero_status_check(status, "write solution", LOGLOCATION);
 }
 
