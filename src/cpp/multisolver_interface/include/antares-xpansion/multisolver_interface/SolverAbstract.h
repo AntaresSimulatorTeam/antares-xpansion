@@ -734,6 +734,7 @@ public:
      */
     virtual void chg_coef(int id_row, int id_col, double val) = 0;
 
+
     /**
      * @brief Change multiple coefficients in the matrix
      *

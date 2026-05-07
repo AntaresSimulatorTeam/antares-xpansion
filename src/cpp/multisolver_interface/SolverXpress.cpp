@@ -8,6 +8,7 @@
 #include <set>
 #include <utility>
 
+
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 using namespace LoadXpress;
@@ -101,6 +102,7 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
 
 SolverXpress::~SolverXpress()
 {
+
     number_of_problems_counter() -= 1;
     SolverXpress::free();
 
