@@ -36,7 +36,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.MEMORY_OPTIMIZATION )
+    if (_options.MEMORY_OPTIMIZATION)
     {
         memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
           _options.INPUTROOT,
