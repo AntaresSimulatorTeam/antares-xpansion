@@ -1,4 +1,4 @@
-add_executable(outer_loop_test 
+add_executable(outer_loop_test
         outer_loop_test.cpp)
 
 target_link_libraries(outer_loop_test
@@ -16,3 +16,21 @@ target_link_libraries(outer_loop_test
 
 add_test(NAME unit_outer_loop COMMAND outer_loop_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 set_property(TEST unit_outer_loop PROPERTY LABELS unit)
+
+add_executable(outer_loop_benders_adapter_test
+        OuterLoopBendersAdapterTest.cpp)
+
+target_link_libraries(outer_loop_benders_adapter_test
+        PRIVATE
+        antaresXpansion::outer_loop_lib
+        antaresXpansion::benders_core
+        antaresXpansion::output_core
+        antaresXpansion::logger_lib
+        antaresXpansion::factories
+        GTest::Main
+        tests_utils)
+
+add_test(NAME unit_outer_loop_benders_adapter
+        COMMAND outer_loop_benders_adapter_test
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_property(TEST unit_outer_loop_benders_adapter PROPERTY LABELS unit)

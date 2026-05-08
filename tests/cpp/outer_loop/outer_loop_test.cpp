@@ -153,10 +153,8 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
       benders,
       0.5,
       outer_loop_input_data.StoppingThreshold());
-    auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
     Outerloop::OuterLoopBenders out_loop(outer_loop_input_data.Criteria(),
                                          master_updater,
-                                         cut_manager,
                                          benders,
                                          *pworld);
     out_loop.OuterLoopCheckFeasibility();
