@@ -289,8 +289,6 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData& data) const
 void BendersBase::UpdateTrace()
 {
     FillWorkerMasterData(relevantIterationData_.last);
-    // TODO Outer loop --> de-comment for general case
-    // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 
 bool BendersBase::is_initial_relaxation_requested() const
@@ -869,26 +867,19 @@ void BendersBase::SaveCurrentIterationInOutputFile() const
     }
 }
 
-void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const
+std::optional<Output::Iteration> BendersBase::GetLastOuterLoopIteration() const
 {
-    auto& LastWorkerMasterData = relevantIterationData_.last;
-    if (LastWorkerMasterData._valid)
+    const auto& last_worker_master_data = relevantIterationData_.last;
+    if (!last_worker_master_data._valid)
     {
-        _writer->write_iteration(iteration(LastWorkerMasterData),
-                                 _data.criteria_current_iteration_data.benders_num_run);
-        _writer->dump();
+        return std::nullopt;
     }
+    return iteration(last_worker_master_data);
 }
 
 void BendersBase::SaveSolutionInOutputFile() const
 {
     _writer->write_solution(solution());
-    _writer->dump();
-}
-
-void BendersBase::SaveOuterLoopSolutionInOutputFile() const
-{
-    _writer->write_solution(GetOuterLoopSolution());
     _writer->dump();
 }
 
@@ -940,17 +931,6 @@ Output::SolutionData BendersBase::solution() const
     solution_data.best_it = _data.best_it + iterations_before_resume;
 
     return solution_data;
-}
-
-void BendersBase::UpdateOuterLoopSolution()
-{
-    outer_loop_solution_data_ = BendersSolution();
-    outer_loop_solution_data_.best_it = _data.criteria_current_iteration_data.benders_num_run;
-}
-
-Output::SolutionData BendersBase::GetOuterLoopSolution() const
-{
-    return outer_loop_solution_data_;
 }
 
 Output::SolutionData BendersBase::BendersSolution() const
@@ -1522,6 +1502,11 @@ void BendersBase::roundXCut()
             kvp.second = ub;
         }
     }
+}
+
+Output::SolutionData BendersBase::GetCurrentBendersSolution() const
+{
+    return BendersSolution();
 }
 
 std::map<int, double> BendersBase::GetSubCutTolerance() const

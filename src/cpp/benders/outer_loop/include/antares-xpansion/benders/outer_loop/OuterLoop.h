@@ -13,8 +13,6 @@ public:
     virtual void PrintLog() = 0;
     virtual void init_data() = 0;
     virtual bool isExceptionRaised() = 0;
-    virtual double OuterLoopLambdaMin() const = 0;
-    virtual double OuterLoopLambdaMax() const = 0;
 
     virtual ~OuterLoop() = default;
 

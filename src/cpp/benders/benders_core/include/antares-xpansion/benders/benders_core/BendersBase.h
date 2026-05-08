@@ -4,6 +4,7 @@
 #include <execution>
 #include <filesystem>
 #include <mutex>
+#include <optional>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
@@ -50,11 +51,6 @@ public:
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
@@ -130,11 +126,13 @@ public:
     void init_data(double external_loop_lambda,
                    double external_loop_lambda_min,
                    double external_loop_lambda_max);
-    Output::SolutionData GetOuterLoopSolution() const;
-    void SaveOuterLoopSolutionInOutputFile() const;
-    void SaveCurrentOuterLoopIterationInOutputFile() const;
     void SetBilevelBestub(double bilevel_best_ub);
-    void UpdateOuterLoopSolution();
+
+    // Helper for adapter-driven outer loop iteration output (Phase B Step 2)
+    [[nodiscard]] std::optional<Output::Iteration> GetLastOuterLoopIteration() const;
+
+    // Helper for outer loop solution building (Phase B migration)
+    [[nodiscard]] Output::SolutionData GetCurrentBendersSolution() const;
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
@@ -148,11 +146,8 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
-    WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
+    WorkerMasterPtr _master;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
@@ -369,7 +364,6 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
