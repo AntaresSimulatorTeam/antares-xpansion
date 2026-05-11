@@ -26,9 +26,39 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                                        constraints_coupling_map_,
                                                        options_);
 
+
+
+    // if (options.MEMORY_OPTIMIZATION)
+    // {
+    //     std::cout<<"from benders micro iters memory optimization "<<std::endl ; 
+
+    //     std::cout<<"printing sub names "<<std::endl ;
+    //     for (auto& [sub_name,_] : subproblem_constraint_map_) 
+    //     {
+    //         std::cout<<"sub name "<<sub_name<<std::endl ; 
+    //     }
+
+    //     std::cout<<"printing constraint names "<<std::endl ; 
+    //     for (auto& [constraint,_] : constraints_coupling_map_)  
+    //     {
+    //         std::cout<<"constraint "<<constraint<<std::endl ; 
+    //     }
+
+    //     std::cout<<"printing sub constrain map "<<std::endl ; 
+    //     for (auto& [sub, constraint] : subproblem_constraint_map_) 
+    //     {
+    //         std::cout<<"sub "<<sub<<" constraint "<<constraint<<std::endl ; 
+    //     }
+
+
+    // }
+
+                        
+
     input_root_ = options_.INPUTROOT;
     warm_start_ = true;
     _world = world;
+    // _world->abort(EXIT_FAILURE);
 
     for (auto& [sub_name, _]: coupling_map_)
     {
@@ -181,6 +211,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
     else
     {
         std::cerr << "unable to open : " << mirco_iterations_options_path.string() << std::endl;
+        std::cout<<"after the unable "<<std::endl ; 
         exit(EXIT_FAILURE);
     }
 }
@@ -206,6 +237,7 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
     else
     {
         std::cerr << "unable to open : " << variable_names_path.string() << std::endl;
+        std::cout<<"after unable to open" <<std::endl ; 
         exit(EXIT_FAILURE);
     }
 }
@@ -217,7 +249,16 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
 
-    BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    std::cout<<"on benders start "<<std::endl ;
+    
+    if (!options.MEMORY_OPTIMIZATION)
+    {
+        std::cout<<"case no memory optimization "<<std::endl ; 
+        BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    }
+    else 
+        BuildResourcesForMemOptim(options,solver_log_manager) ; 
+
 
     onBendersStartPlugin_(sub_pb_ids_,
                           _world->rank(),
@@ -360,7 +401,7 @@ void Benders_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
     {
         sub_ids_ptrs_[i] = sub_ids_storage_[i].c_str();
     }
-
+ 
     sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
 }
 
@@ -386,3 +427,14 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
           sub_worker);
     }
 }
+
+void Benders_MICRO_ITERS::BuildResourcesForMemOptim( const BendersBaseOptions& options,
+                                                     const SolverLogManager& solver_log_manager)
+{
+
+
+    std::cout<<"building constraints file reader from BuildResourcesForMemOptim"<<std::endl ; 
+    constraints_file_reader_mem_optim_ptr_ =   std::make_shared<ConstraintsFileReaderMemOptim>(std::filesystem::path(options.INPUTROOT), options.SOLVER_NAME,
+                                                                            solver_log_manager, _logger, options.LOG_LEVEL, options.PROBLEMS_FORMAT ) ; 
+}
+

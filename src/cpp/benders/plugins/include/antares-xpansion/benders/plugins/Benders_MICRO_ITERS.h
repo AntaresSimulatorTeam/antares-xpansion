@@ -27,6 +27,9 @@ Benders_MICRO_ITERS class.
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
+#include "antares-xpansion/benders/benders_core/ConstraintsFileReaderMemOptim.h" 
+
+
 /*
     This structure will be used to set the subproblems ids on the Julia side
     @members :
@@ -167,6 +170,9 @@ private:
                                               const BendersBaseOptions& options,
                                               const SolverLogManager& solver_log_manager);
 
+    void BuildResourcesForMemOptim( const BendersBaseOptions& options,
+                                    const SolverLogManager& solver_log_manager);
+
     /*
         This function is used to check if a constraint key rendered by the julia cde
         has been added or not to the subproblem worker.
@@ -190,6 +196,7 @@ private:
 #else
     void* handle_;
 #endif
+
 
     on_Benders_start_Func onBendersStartPlugin_;
     on_Benders_end_Func OnBendersEndPlugin_;
@@ -217,6 +224,8 @@ private:
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
     SubproblemConstraintsManagerPtrMap constraints_map_;
+    std::shared_ptr<ConstraintsFileReaderMemOptim> constraints_file_reader_mem_optim_ptr_ ; 
     Logger _logger;
     bool warm_start_;
+ 
 };

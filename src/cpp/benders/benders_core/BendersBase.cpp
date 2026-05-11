@@ -25,6 +25,8 @@ BendersBase::BendersBase(BendersBaseOptions options,
     _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv")),
     communication_strategy_(std::move(communication_strategy))
 {
+
+    std::cout<<"entered in benders base constructor "<<std::endl ; 
 }
 
 bool BendersBase::shouldParallelize() const
@@ -127,7 +129,7 @@ void BendersBase::PrintCurrentIterationCsv()
  *
  *  \param name : problem name
  *
- *  \param subproblem_index : problem id
+ *  \param subproblem_index : problem idto run sph simulation i need a clus
  */
 void print_cut_csv(std::ostream& stream,
                    const PlainData::SubProblemData& subproblem_data,

@@ -31,9 +31,8 @@ public:
                           ProblemsFormat format);
 
     SolverRepresentedRows get_row(const std::string& name);
-
-private:
     int get_row_index(const std::string& name);
+private:
 
     Logger logger_;
     std::shared_ptr<SolverAbstract> solver_;
