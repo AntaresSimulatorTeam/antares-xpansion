@@ -171,6 +171,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aea5638ffd44c7cbc8c805d7e1bce1288"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc73774e85d2327c07001627f8dea1f2" id="r_acc73774e85d2327c07001627f8dea1f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc73774e85d2327c07001627f8dea1f2">ShouldParallelize</a> () const override</td></tr>
 <tr class="separator:acc73774e85d2327c07001627f8dea1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa42f4779f7687c8a472eb9165959a75a" id="r_aa42f4779f7687c8a472eb9165959a75a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa42f4779f7687c8a472eb9165959a75a">BroadcastBool</a> (bool &amp;) const override</td></tr>
+<tr class="separator:aa42f4779f7687c8a472eb9165959a75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classICommunicationStrategy"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classICommunicationStrategy')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classICommunicationStrategy.html">ICommunicationStrategy</a></td></tr>
 <tr class="memitem:a71828ec778c294a3885f5b4753605ff6 inherit pub_methods_classICommunicationStrategy" id="r_a71828ec778c294a3885f5b4753605ff6"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMaster</b> () const</td></tr>
@@ -207,6 +209,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMaster</b> () const
 <p>Synchronization barrier across all processes (no-op for sequential) </p>
 
 <p>Implements <a class="el" href="classICommunicationStrategy.html#a883bf265f1f45c7804bf671fc920554f">ICommunicationStrategy</a>.</p>
+
+</div>
+</div>
+<a id="aa42f4779f7687c8a472eb9165959a75a" name="aa42f4779f7687c8a472eb9165959a75a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa42f4779f7687c8a472eb9165959a75a">&#9670;&#160;</a></span>BroadcastBool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SequentialCommunicationStrategy::BroadcastBool </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Broadcast a boolean value from the master process (rank 0) to all other processes. No-op for sequential (single process). </p>
+
+<p>Implements <a class="el" href="classICommunicationStrategy.html#a1459c612fddc2f5cb49dbd096c51d791">ICommunicationStrategy</a>.</p>
 
 </div>
 </div>

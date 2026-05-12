@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classNoopProblemGenerationLogger.html#aa4612edb9350a4e9265e28b171f0c3bb":[34,0,190,0],
+"classNotImplementedFeatureSolverException.html":[34,0,194],
 "classOptionsParser.html":[34,0,195],
 "classOptionsParserTest.html":[34,0,196],
 "classOptionsParser_1_1InvalidNumberOfArgumentsPassedToParser.html":[34,0,195,0],
@@ -151,9 +153,10 @@ var NAVTREEINDEX2 =
 "classSensitivityWriter.html":[34,0,244],
 "classSensitivityWriterTest.html":[34,0,245],
 "classSequentialCommunicationStrategy.html":[34,0,246],
-"classSequentialCommunicationStrategy.html#aa671f6a7fb2b74295ee46eb0e233e488":[34,0,246,1],
-"classSequentialCommunicationStrategy.html#aaa28bc2c772c635a711b5c62ee07721e":[34,0,246,3],
-"classSequentialCommunicationStrategy.html#acc73774e85d2327c07001627f8dea1f2":[34,0,246,2],
+"classSequentialCommunicationStrategy.html#aa42f4779f7687c8a472eb9165959a75a":[34,0,246,1],
+"classSequentialCommunicationStrategy.html#aa671f6a7fb2b74295ee46eb0e233e488":[34,0,246,2],
+"classSequentialCommunicationStrategy.html#aaa28bc2c772c635a711b5c62ee07721e":[34,0,246,4],
+"classSequentialCommunicationStrategy.html#acc73774e85d2327c07001627f8dea1f2":[34,0,246,3],
 "classSequentialCommunicationStrategy.html#aea5638ffd44c7cbc8c805d7e1bce1288":[34,0,246,0],
 "classSettingsReader.html":[34,0,247],
 "classSettingsReader.html#a626e85953b4356ea49a4686577fb3a8a":[34,0,247,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "classSolverCbc.html#a1ea1a0ec698466c29e217dba2a6b6eb7":[34,0,253,58],
 "classSolverCbc.html#a1fb1f88139dad2fbdaa5196521138ed1":[34,0,253,46],
 "classSolverCbc.html#a21eca2a1adf0d46c08294fa5e5564871":[34,0,253,19],
-"classSolverCbc.html#a2931bfa90cf40f72e8ea16357715ba2a":[34,0,253,61],
-"classSolverCbc.html#a2c07fe273207425db12c46b7dbf6a036":[34,0,253,54],
-"classSolverCbc.html#a2c14ea49c71844eafcc50aa69e38b444":[34,0,253,13],
-"classSolverCbc.html#a33e87572a8da001d4f728d0772fff27a":[34,0,253,24]
+"classSolverCbc.html#a2931bfa90cf40f72e8ea16357715ba2a":[34,0,253,61]
 };

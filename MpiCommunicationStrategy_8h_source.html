@@ -182,26 +182,34 @@ $(function(){initNavTree('MpiCommunicationStrategy_8h_source.html',''); initResi
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
 </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">   44</a></span>    mpi::communicator&amp; <a class="code hl_function" href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">World</a>()</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">return</span> world_;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classMpiCommunicationStrategy.html#a35789d3e5a05343c4a2603dfb49b9e5a">   42</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classMpiCommunicationStrategy.html#a35789d3e5a05343c4a2603dfb49b9e5a">BroadcastBool</a>(<span class="keywordtype">bool</span>&amp; value)<span class="keyword"> const override</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        mpi::broadcast(world_, value, 0);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
 </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">const</span> mpi::communicator&amp; <a class="code hl_function" href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">World</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">   49</a></span>    mpi::communicator&amp; <a class="code hl_function" href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">World</a>()</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    {</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">return</span> world_;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
+</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    mpi::communicator&amp; world_;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">const</span> mpi::communicator&amp; <a class="code hl_function" href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">World</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> world_;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    mpi::communicator&amp; world_;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
 </div>
 <div class="ttc" id="aclassICommunicationStrategy_html"><div class="ttname"><a href="classICommunicationStrategy.html">ICommunicationStrategy</a></div><div class="ttdoc">Strategy interface for communication operations in Benders decomposition.</div><div class="ttdef"><b>Definition</b> ICommunicationStrategy.h:33</div></div>
 <div class="ttc" id="aclassMpiCommunicationStrategy_html"><div class="ttname"><a href="classMpiCommunicationStrategy.html">MpiCommunicationStrategy</a></div><div class="ttdoc">Communication strategy for MPI-based distributed execution.</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:15</div></div>
 <div class="ttc" id="aclassMpiCommunicationStrategy_html_a239e4dc833e1437d71e7c3bd95c989ff"><div class="ttname"><a href="classMpiCommunicationStrategy.html#a239e4dc833e1437d71e7c3bd95c989ff">MpiCommunicationStrategy::ShouldParallelize</a></div><div class="ttdeci">bool ShouldParallelize() const override</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:37</div></div>
-<div class="ttc" id="aclassMpiCommunicationStrategy_html_a6141f19a5dd0830a81b12d61b2b86f3a"><div class="ttname"><a href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">MpiCommunicationStrategy::World</a></div><div class="ttdeci">mpi::communicator &amp; World()</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:44</div></div>
+<div class="ttc" id="aclassMpiCommunicationStrategy_html_a35789d3e5a05343c4a2603dfb49b9e5a"><div class="ttname"><a href="classMpiCommunicationStrategy.html#a35789d3e5a05343c4a2603dfb49b9e5a">MpiCommunicationStrategy::BroadcastBool</a></div><div class="ttdeci">void BroadcastBool(bool &amp;value) const override</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:42</div></div>
+<div class="ttc" id="aclassMpiCommunicationStrategy_html_a6141f19a5dd0830a81b12d61b2b86f3a"><div class="ttname"><a href="classMpiCommunicationStrategy.html#a6141f19a5dd0830a81b12d61b2b86f3a">MpiCommunicationStrategy::World</a></div><div class="ttdeci">mpi::communicator &amp; World()</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:49</div></div>
 <div class="ttc" id="aclassMpiCommunicationStrategy_html_abce2068bc599a47d5ab156edf1b70f94"><div class="ttname"><a href="classMpiCommunicationStrategy.html#abce2068bc599a47d5ab156edf1b70f94">MpiCommunicationStrategy::Rank</a></div><div class="ttdeci">int Rank() const override</div><div class="ttdoc">Return the rank of this process (0 for sequential)</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:22</div></div>
 <div class="ttc" id="aclassMpiCommunicationStrategy_html_ac915406e9dbd0d81052c6ebc0413d12f"><div class="ttname"><a href="classMpiCommunicationStrategy.html#ac915406e9dbd0d81052c6ebc0413d12f">MpiCommunicationStrategy::WorldSize</a></div><div class="ttdeci">int WorldSize() const override</div><div class="ttdoc">Return the total number of processes (1 for sequential)</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:27</div></div>
 <div class="ttc" id="aclassMpiCommunicationStrategy_html_aef2bc9a02ac440e7187b33f788de6741"><div class="ttname"><a href="classMpiCommunicationStrategy.html#aef2bc9a02ac440e7187b33f788de6741">MpiCommunicationStrategy::Barrier</a></div><div class="ttdeci">void Barrier() const override</div><div class="ttdoc">Synchronization barrier across all processes (no-op for sequential)</div><div class="ttdef"><b>Definition</b> MpiCommunicationStrategy.h:32</div></div>

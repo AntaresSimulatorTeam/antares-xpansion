@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: src/cpp/benders/benders_mpi/include/antares-xpansion/benders/benders_mpi/OuterLoopBenders.h Source File</title>
+<title>Antares Xpansion: src/cpp/benders/outer_loop/include/antares-xpansion/benders/outer_loop/OuterLoopBenders.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -144,10 +144,10 @@ $(function(){initNavTree('OuterLoopBenders_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;antares-xpansion/benders/benders_core/BendersBase.h&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;antares-xpansion/benders/benders_core/CriterionComputation.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;antares-xpansion/benders/benders_core/CutsManagement.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;antares-xpansion/benders/outer_loop/IMasterUpdate.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;antares-xpansion/benders/outer_loop/OuterLoop.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;common_mpi.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;antares-xpansion/benders/benders_core/ICommunicationStrategy.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;antares-xpansion/benders/outer_loop/IMasterUpdate.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;antares-xpansion/benders/outer_loop/OuterLoop.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>Outerloop</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
@@ -168,7 +168,7 @@ $(function(){initNavTree('OuterLoopBenders_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      std::shared_ptr&lt;IMasterUpdate&gt; master_updater,</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      std::shared_ptr&lt;ICutsManager&gt; cuts_manager,</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      pBendersBase benders,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      mpi::communicator&amp; world);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      std::shared_ptr&lt;ICommunicationStrategy&gt; communication_strategy);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">void</span> Run() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
@@ -188,7 +188,7 @@ $(function(){initNavTree('OuterLoopBenders_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::shared_ptr&lt;ICutsManager&gt; cuts_manager_;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    pBendersBase benders_;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a> loggers_;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    mpi::communicator&amp; world_;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    std::shared_ptr&lt;ICommunicationStrategy&gt; communication_strategy_;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">bool</span> is_bilevel_check_all_ = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">void</span> InitExternalValues(<span class="keywordtype">bool</span> is_bilevel_check_all, <span class="keywordtype">double</span> lambda);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_class" href="classOuterloop_1_1OuterLoopBiLevel.html">OuterLoopBiLevel</a> outer_loop_biLevel_;</div>
@@ -205,7 +205,7 @@ $(function(){initNavTree('OuterLoopBenders_8h_source.html',''); initResizable(tr
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_ae16667f9fc0e5d86966b2c65475a56a.html">benders</a></li><li class="navelem"><a class="el" href="dir_44cbf8d36bbdfd1a9d4da3650b4f7484.html">benders_mpi</a></li><li class="navelem"><a class="el" href="dir_a7b66204b6c69e0693fc8f647b632096.html">include</a></li><li class="navelem"><a class="el" href="dir_8e531c6541643a8d6c9392376ac099e9.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_1f8fd1cd33782db4deb3a061a8b2de74.html">benders</a></li><li class="navelem"><a class="el" href="dir_bc4d9e97d6cfb7df51bd46ebb7c0d8ff.html">benders_mpi</a></li><li class="navelem"><b>OuterLoopBenders.h</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_ae16667f9fc0e5d86966b2c65475a56a.html">benders</a></li><li class="navelem"><a class="el" href="dir_f632cfb2f9433bf506b59b1a5d5e8528.html">outer_loop</a></li><li class="navelem"><a class="el" href="dir_10ca32da59bbdee17edcca9d1d408127.html">include</a></li><li class="navelem"><a class="el" href="dir_545a6c83a601beae7bade0e9966910e1.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_cb044fc867eacaf6ed3dab28204c440c.html">benders</a></li><li class="navelem"><a class="el" href="dir_c611f409f6146f9612a550156503178a.html">outer_loop</a></li><li class="navelem"><b>OuterLoopBenders.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

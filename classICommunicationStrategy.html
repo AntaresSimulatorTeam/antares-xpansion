@@ -176,6 +176,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMaster</b> () const
 <tr class="separator:a883bf265f1f45c7804bf671fc920554f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1cf17611312f4b910fcd26f914494d9" id="r_ae1cf17611312f4b910fcd26f914494d9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1cf17611312f4b910fcd26f914494d9">ShouldParallelize</a> () const =0</td></tr>
 <tr class="separator:ae1cf17611312f4b910fcd26f914494d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1459c612fddc2f5cb49dbd096c51d791" id="r_a1459c612fddc2f5cb49dbd096c51d791"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1459c612fddc2f5cb49dbd096c51d791">BroadcastBool</a> (bool &amp;value) const =0</td></tr>
+<tr class="separator:a1459c612fddc2f5cb49dbd096c51d791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Strategy interface for communication operations in Benders decomposition. </p>
@@ -217,6 +219,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMaster</b> () const
 <p>Synchronization barrier across all processes (no-op for sequential) </p>
 
 <p>Implemented in <a class="el" href="classMpiCommunicationStrategy.html#aef2bc9a02ac440e7187b33f788de6741">MpiCommunicationStrategy</a>, and <a class="el" href="classSequentialCommunicationStrategy.html#aea5638ffd44c7cbc8c805d7e1bce1288">SequentialCommunicationStrategy</a>.</p>
+
+</div>
+</div>
+<a id="a1459c612fddc2f5cb49dbd096c51d791" name="a1459c612fddc2f5cb49dbd096c51d791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1459c612fddc2f5cb49dbd096c51d791">&#9670;&#160;</a></span>BroadcastBool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ICommunicationStrategy::BroadcastBool </td>
+          <td>(</td>
+          <td class="paramtype">bool &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Broadcast a boolean value from the master process (rank 0) to all other processes. No-op for sequential (single process). </p>
+
+<p>Implemented in <a class="el" href="classMpiCommunicationStrategy.html#a35789d3e5a05343c4a2603dfb49b9e5a">MpiCommunicationStrategy</a>, and <a class="el" href="classSequentialCommunicationStrategy.html#aa42f4779f7687c8a472eb9165959a75a">SequentialCommunicationStrategy</a>.</p>
 
 </div>
 </div>
