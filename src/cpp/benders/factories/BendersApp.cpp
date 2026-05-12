@@ -9,9 +9,9 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
-#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -188,7 +188,7 @@ int BendersApp::RunExternalLoop()
                                              master_updater,
                                              cuts_manager,
                                              benders_,
-                                             *pworld_);
+                                             benders_->GetCommunicationStrategy());
         StartMessage();
         ext_loop.Run();
         EndMessage(ext_loop.Runtime());

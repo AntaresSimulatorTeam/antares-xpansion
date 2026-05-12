@@ -2,10 +2,10 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/CutsManagement.h"
+#include "antares-xpansion/benders/benders_core/ICommunicationStrategy.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
-#include "common_mpi.h"
 
 namespace Outerloop
 {
@@ -23,7 +23,7 @@ public:
       std::shared_ptr<IMasterUpdate> master_updater,
       std::shared_ptr<ICutsManager> cuts_manager,
       pBendersBase benders,
-      mpi::communicator& world);
+      std::shared_ptr<ICommunicationStrategy> communication_strategy);
 
     void Run() override;
 
@@ -43,7 +43,7 @@ private:
     std::shared_ptr<ICutsManager> cuts_manager_;
     pBendersBase benders_;
     BendersLoggerBase loggers_;
-    mpi::communicator& world_;
+    std::shared_ptr<ICommunicationStrategy> communication_strategy_;
     bool is_bilevel_check_all_ = false;
     void InitExternalValues(bool is_bilevel_check_all, double lambda);
     OuterLoopBiLevel outer_loop_biLevel_;
