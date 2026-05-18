@@ -9,6 +9,8 @@
 #include <fstream>
 #include <sstream>
 #include <string_view>
+#include <thread>
+#include <chrono>
 
 #include <boost/tokenizer.hpp>
 
@@ -237,7 +239,6 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
     else
     {
         std::cerr << "unable to open : " << variable_names_path.string() << std::endl;
-        std::cout<<"after unable to open" <<std::endl ; 
         exit(EXIT_FAILURE);
     }
 }
@@ -249,11 +250,9 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
 
-    std::cout<<"on benders start "<<std::endl ;
     
     if (!options.MEMORY_OPTIMIZATION)
     {
-        std::cout<<"case no memory optimization "<<std::endl ; 
         BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
     }
     else 
@@ -307,6 +306,13 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
                                   options_.INPUTROOT);
 }
 
+
+void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector_2() 
+{
+    for (auto& [sub_name, constraint_reader_name] : )
+}   
+
+
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector(std::string sub_name)
 {
     // TODO: Get variables index in sub only once at benders start (need to iterate over all subs,
@@ -334,6 +340,7 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionStart()
 
 void Benders_MICRO_ITERS::OnBendersMicroIterationStart()
 {
+
     if (OnBendersMicroIterationStart_)
     {
         OnBendersMicroIterationStart_();
@@ -346,6 +353,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
                                                      int num_master_iter,
                                                      int num_micro_iter)
 {
+
     std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
     auto sub_constraints_manager = constraints_map_[constraints_manager_name];
 
@@ -354,7 +362,9 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
 
     std::vector<std::string> constraints_to_add_vec;
-    OnBendersMicroIterationEnd_(sub_name,
+    auto pos = sub_name.rfind('/');
+    auto new_sub_name = sub_name.substr(pos + 1) ; 
+    OnBendersMicroIterationEnd_(new_sub_name,
                                 added_rows,
                                 solving_time,
                                 sub_solution,
@@ -433,7 +443,6 @@ void Benders_MICRO_ITERS::BuildResourcesForMemOptim( const BendersBaseOptions& o
 {
 
 
-    std::cout<<"building constraints file reader from BuildResourcesForMemOptim"<<std::endl ; 
     constraints_file_reader_mem_optim_ptr_ =   std::make_shared<ConstraintsFileReaderMemOptim>(std::filesystem::path(options.INPUTROOT), options.SOLVER_NAME,
                                                                             solver_log_manager, _logger, options.LOG_LEVEL, options.PROBLEMS_FORMAT ) ; 
 }

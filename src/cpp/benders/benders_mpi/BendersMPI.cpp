@@ -58,6 +58,7 @@ void BendersMpi::InitializeProblems()
 
     else
     {
+        std::cout<<"not memory optim case "<<std::endl ; 
         if (_options.CACHE_PROBLEMS)
         {
             int current_problem_id = 0;
