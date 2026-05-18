@@ -47,7 +47,7 @@ public:
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-
+    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     // TODO rename to be consistent with data that it hold
@@ -59,9 +59,7 @@ public:
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
-    // for test
     void MasterGetRhs(double& rhs, int id_row) const;
-    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
 
     const VariableMap& MasterVariables() const
     {
@@ -146,6 +144,11 @@ public:
     std::once_flag variable_indice_once_flag;
     void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData& criterion_input_data);
+
+    [[nodiscard]] std::shared_ptr<ICommunicationStrategy> GetCommunicationStrategy() const
+    {
+        return communication_strategy_;
+    }
 
 protected:
     bool exception_raised_ = false;
@@ -353,11 +356,6 @@ private:
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const;
-
-    [[nodiscard]] const std::shared_ptr<ICommunicationStrategy>& GetCommunicationStrategy() const
-    {
-        return communication_strategy_;
-    }
 
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
