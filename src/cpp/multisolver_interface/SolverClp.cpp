@@ -114,6 +114,10 @@ void SolverClp::write_basis(const std::filesystem::path& filename)
     zero_status_check(status, "write basis", LOGLOCATION);
 }
 
+void SolverClp::write_sol(const std::filesystem::path& filename)
+{
+}
+
 void SolverClp::read_prob_mps(const std::filesystem::path& filename)
 {
     auto filename_to_use = filename;

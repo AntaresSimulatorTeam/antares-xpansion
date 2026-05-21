@@ -133,6 +133,7 @@ void BendersByBatch::Run()
         EndWritingInOutputFile();
         write_basis();
     }
+    writeLastIterationSubproblemsSolution();
 }
 
 void BendersByBatch::MasterLoop()

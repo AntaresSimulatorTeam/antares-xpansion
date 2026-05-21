@@ -49,6 +49,7 @@ std::string StringJoin(const std::vector<std::string>& vec)
 std::function<int(const char* path)> XPRSinit = nullptr;
 std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScopyprob = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis = nullptr;
+std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritesol = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadprob = nullptr;
 std::function<int(XPRSprob prob, int nr, int nc, const int mrow[], const int mcol[])>
   XPRSloadsecurevecs = nullptr;
@@ -179,6 +180,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSinit, "XPRSinit");
     xpress_dynamic_library->GetFunction(&XPRScopyprob, "XPRScopyprob");
     xpress_dynamic_library->GetFunction(&XPRSwritebasis, "XPRSwritebasis");
+    xpress_dynamic_library->GetFunction(&XPRSwritesol, "XPRSwritesol");
     xpress_dynamic_library->GetFunction(&XPRSreadprob, "XPRSreadprob");
     xpress_dynamic_library->GetFunction(&XPRSgetlasterror, "XPRSgetlasterror");
     xpress_dynamic_library->GetFunction(&XPRSsaveas, "XPRSsaveas");

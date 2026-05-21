@@ -1299,6 +1299,20 @@ void BendersBase::ChecksResumeMode()
     }
 }
 
+void BendersBase::writeLastIterationSubproblemsSolution() const
+{
+    const auto dirname(std::filesystem::path(_options.OUTPUTROOT));
+    const auto& sub_pblm_map = GetSubProblemMap();
+
+    for (const auto& [name, worker]: sub_pblm_map)
+    {
+        auto filename = std::filesystem::path(name).replace_extension();
+        auto filename_with_it_num = std::filesystem::path(filename.string() + "_"
+                                                          + std::to_string(_data.it));
+        worker->_solver->write_sol(dirname / filename_with_it_num);
+    }
+}
+
 void BendersBase::SaveCurrentBendersData()
 {
     LastIterationWriter last_iteration_writer(LastIterationFile());

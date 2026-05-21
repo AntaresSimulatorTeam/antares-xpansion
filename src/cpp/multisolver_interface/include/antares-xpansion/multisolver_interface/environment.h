@@ -440,6 +440,7 @@ extern std::function<int(const char* path)> XPRSinit;
 extern std::function<int(XPRSprob* p_prob)> XPRScreateprob;
 extern std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScopyprob;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis;
+extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritesol;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadprob;
 extern std::function<int(XPRSprob prob, int nr, int nc, const int mrow[], const int mcol[])> XPRSloadsecurevecs;
 extern std::function<int(XPRSprob prob, const char* msg)> XPRSgetlasterror;

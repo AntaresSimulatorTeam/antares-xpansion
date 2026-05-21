@@ -358,6 +358,11 @@ public:
         solver_abstract_->write_basis(filename);
     }
 
+    void write_sol(const std::filesystem::path& filename) override
+    {
+        solver_abstract_->write_sol(filename);
+    }
+
     void read_basis(const std::filesystem::path& filename) override
     {
         solver_abstract_->read_basis(filename);
