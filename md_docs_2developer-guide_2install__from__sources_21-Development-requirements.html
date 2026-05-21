@@ -148,21 +148,6 @@ C++ version</h1>
 <p>Note: CMake enforces GCC &gt;= 11. If a GNU compiler with version less than 11 is detected, configuration will fail with the following message (X is the detected version):</p>
 <div class="fragment"><div class="line">Xpansion requires GCC &gt;= 11, your version is X. GCC &gt;= 11 is required for compatibility with Intel TBB oneAPI</div>
 </div><!-- fragment --><p>=== "Windows" </p><pre class="fragment">Compilation is tested on Visual Studio 17 2022.
-</pre><p>=== "CentOS" :warning: CentOS is considered EoL (end of life) and is not supported anymore. We recommend using a more recent distribution like Oracle Linux 8 </p><pre class="fragment">By default, GCC version of Centos7 is 4.8.5. Some external repositories must be enabled:
-
-=== "Centos 7 (EPEL)"
-    ``` 
-    sudo yum install epel-release
-    sudo yum install centos-release-scl
-    ```
-
-You can then use a more recent version of GCC by enabling `devtoolset-11` (or a newer devtoolset) if available:
-```
-sudo yum install devtoolset-11
-# Launch a shell using the newer toolset:
-scl enable devtoolset-11 bash
-```
-If `devtoolset-11` is not available in your repositories, install a GCC &gt;= 11 from your distribution vendor or build it from source.
 </pre><p>=== "Ubuntu" </p><pre class="fragment">```
 sudo apt update
 sudo apt install build-essential gcc-11 g++-11
@@ -174,16 +159,6 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
 CMake version</h1>
 <p>CMake 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [CMake website](https://cmake.org/download/).
-</pre><p>=== "Centos" </p><pre class="fragment">```
-sudo yum install epel-release
-sudo yum install cmake3
-```
-
-Or
-
-```
-python -m pip install cmake
-```
 </pre><p>=== "Ubuntu" </p><pre class="fragment">```
 sudo apt install cmake
 ```
@@ -197,9 +172,6 @@ python -m pip install cmake
 Python version</h1>
 <p>Python 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Python website](https://www.python.org/downloads/windows/).
-</pre><p>=== "Centos" </p><pre class="fragment">```
-sudo yum install python3 python3-pip
-```
 </pre><p>=== "Ubuntu" </p><pre class="fragment">```
 sudo apt-get install python3 python3-pip
 ```
@@ -209,15 +181,6 @@ sudo apt-get install python3 python3-pip
 Git version</h1>
 <p>Git version must be above 2.15 for external dependencies build because <code>--ignore-whitespace</code> is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows ( see <a href="https://github.com/google/or-tools/issues/1193">https://github.com/google/or-tools/issues/1193</a>).</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Git website](https://gitforwindows.org/).
-</pre><p>=== "Centos" </p><pre class="fragment">```
-sudo yum install rh-git227-git
-sudo yum install git
-```
-
-Sometimes we need a 2.x version of git. To enable to git 2.27:
-```
-source /opt/rh/rh-git227/enable
-```
 </pre><p>=== "Ubuntu" </p><pre class="fragment">```
 sudo apt-get install git
 ```

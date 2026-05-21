@@ -140,12 +140,12 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2orchestrat
   <div class="headertitle"><div class="title">Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md281"></a></p>
-<h1><a class="anchor" id="autotoc_md282"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md280"></a></p>
+<h1><a class="anchor" id="autotoc_md281"></a>
 Usage</h1>
 <p>Usage of the launcher is :</p>
 <div class="fragment"><div class="line">-xpansion-launcher --trajectory --step &lt;step&gt; [-i &lt;path/to/input/root&gt;] [--input-file &lt;path/to/user/input/file&gt;] ...</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md283"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md282"></a>
 Mandatory arguments</h1>
 <ul>
 <li><code>--trajectory</code> : Tells the program to run in trajectory context.</li>
@@ -158,16 +158,16 @@ Mandatory arguments</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md284"></a>
+<h1><a class="anchor" id="autotoc_md283"></a>
 Optional arguments</h1>
-<h2><a class="anchor" id="autotoc_md285"></a>
+<h2><a class="anchor" id="autotoc_md284"></a>
 Input location</h2>
 <ul>
 <li><code>-i, --dataDir</code> : Path to the folder that contains each node's corresponding antaresXpansion study. If not specified, defaults to the current directory.</li>
 <li><code>--input-file</code> : Path to the <a href="user-input.md#user-input-file">user input file</a>. If not specified, the program will look for a file named <code>input-trajectory.yaml</code> in the <code>--dataDir</code> directory. If this file is not found, an error will be raised.</li>
 <li><code>--cache_problems</code> : If specified, tells the program to cache the generated optimization problems on disk during the benders step, instead of keeping them in memory. Prevents out of memory issue for large studies.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md286"></a>
+<h2><a class="anchor" id="autotoc_md285"></a>
 Execution options</h2>
 <ul>
 <li><code>--memory</code> : Tells the program wether to run the problem generation in memory mode. Only useful when <code>--step</code> is either <code>problem_generation</code> or <code>full</code>. <br  />
@@ -180,7 +180,7 @@ Execution options</h2>
 </div><!-- fragment --> and <code>resolution</code></li>
 </ul>
 <p>Note that this does not apply to the step <code>problem_generation</code>, where the solver and file format used in instead determined by the <code>solver</code> entry in <code>&lt;study&gt;/user/expansion/settings.ini</code>.</p>
-<h1><a class="anchor" id="autotoc_md287"></a>
+<h1><a class="anchor" id="autotoc_md286"></a>
 A note on intermediary files</h1>
 <p>As of now, most intermediary files will be written using a hardcoded default name in a folder name </p><div class="fragment"><div class="line">_files</div>
 </div><!-- fragment --><p> situated at : <code>&lt;INPUT_ROOT&gt;/intermediary_files</code>, and the drivers of the different steps will only look at those hardcoded locations when looking for those files. <br  />
