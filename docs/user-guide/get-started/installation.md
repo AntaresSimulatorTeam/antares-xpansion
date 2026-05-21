@@ -7,7 +7,6 @@ This software suite has been tested under:
 
 * Ubuntu 22.04 [![Status][ubuntu_system_svg]][ubuntu_system_link]
 * Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
-* Centos 7 [![Status][centos_system_svg]][centos_system_link]
 * Oracle Linux 8 [![Status][oracle_svg]][oracle_link]
 
 Antares-Xpansion is built using CMake.
@@ -42,10 +41,6 @@ See [Launch the optimization](launching-optimization.md) for more details on how
 [windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml/badge.svg?query=branch%3Adevelop
 
 [windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml?query=branch%3Adevelop
-
-[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_centos7.yml/badge.svg?query=branch%3Adevelop
-
-[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_centos7.yml?query=branch%3Adevelop
 
 [oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml/badge.svg?query=branch%3Adevelop
 
