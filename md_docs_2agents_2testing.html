@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Build</title>
+<title>Antares Xpansion: Testing Guide</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_23-Build.html',''); initResizable(true); });
+$(function(){initNavTree('md_docs_2agents_2testing.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,54 +137,148 @@ $(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_23-Bu
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Build</div></div>
+  <div class="headertitle"><div class="title">Testing Guide</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md158"></a></p>
-<h1><a class="anchor" id="autotoc_md159"></a>
-Configure build with CMake</h1>
-<p>Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.</p>
-<p>The first time vcpkg will download and compile all dependencies. This can take a long time. Especially openmpi. Unless some dependencies are updated, nothing will be done on the next build. VCPKG store sources in a cache folder, removing your build folder will only remove the compiled dependencies. Meaning later builds will be faster than the first one even if you remove your build folder</p>
-<p>=== "Windows" </p><pre class="fragment">```
-cmake -B _build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
-```
-</pre><p> === "Ubuntu" </p><pre class="fragment">```
-cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-release
-```
-</pre><p>Here is a list of available CMake configure options:</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md37"></a></p>
+<p>This document covers testing patterns for Antares-Xpansion.</p>
+<h1><a class="anchor" id="autotoc_md38"></a>
+Building Tests</h1>
+<p>Enable tests during CMake configuration:</p>
+<div class="fragment"><div class="line">cmake -B build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release</div>
+<div class="line">cmake --build build</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md39"></a>
+Running Tests</h1>
+<h2><a class="anchor" id="autotoc_md40"></a>
+All Tests</h2>
+<div class="fragment"><div class="line">ctest --test-dir build</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
+Unit Tests Only (C++ and Python)</h2>
+<div class="fragment"><div class="line">ctest --test-dir build -L unit</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md42"></a>
+C++ Unit Tests Only</h2>
+<div class="fragment"><div class="line">ctest --test-dir build -R &#39;^unit_&#39; -E unit_launcher</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md43"></a>
+Python Unit Tests Only</h2>
+<div class="fragment"><div class="line">ctest --test-dir build -R unit_launcher</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md44"></a>
+End-to-End Tests</h2>
+<div class="fragment"><div class="line">ctest --test-dir build -L end_to_end</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md45"></a>
+By Duration Label</h2>
+<div class="fragment"><div class="line">ctest --test-dir build -L short    # Fast tests</div>
+<div class="line">ctest --test-dir build -L medium    # Medium duration</div>
+<div class="line">ctest --test-dir build -L long      # Long running tests</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md46"></a>
+With Coverage</h2>
+<div class="fragment"><div class="line">cmake -B build -S . -DBUILD_TESTING=ON -DCODE_COVERAGE=ON</div>
+<div class="line">cmake --build build</div>
+<div class="line">ctest --test-dir build</div>
+<div class="line"># Coverage report in build/coverage/</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md47"></a>
+Test Organization</h1>
+<h2><a class="anchor" id="autotoc_md48"></a>
+Test Names</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft">Option   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<th class="markdownTableHeadNone">Test Pattern   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>CMAKE_BUILD_TYPE</code>   </td><td class="markdownTableBodyNone"><code>Release</code>   </td><td class="markdownTableBodyNone">Define build type. Available values are <code>Release</code> and <code>Debug</code>.    </td></tr>
+<td class="markdownTableBodyNone"><code>unit_*</code>   </td><td class="markdownTableBodyNone">C++ unit tests    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>DBUILD_antares_solver</code>   </td><td class="markdownTableBodyNone"><code>ON</code>   </td><td class="markdownTableBodyNone">Enable build of antares-solver.    </td></tr>
+<td class="markdownTableBodyNone"><code>unit_launcher</code>   </td><td class="markdownTableBodyNone">Python unit tests    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>BUILD_not_system</code>   </td><td class="markdownTableBodyNone"><code>ON</code>   </td><td class="markdownTableBodyNone">Enable build of external librairies not available on system package manager.    </td></tr>
+<td class="markdownTableBodyNone"><code>examples_*</code>   </td><td class="markdownTableBodyNone">Example-based integration tests    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>BUILD_ALL</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">Enable build of ALL external librairies.    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>BUILD_TESTING</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">Enable test build.   </td></tr>
+<td class="markdownTableBodyNone"><code>sequential</code>, <code>mpibenders</code>   </td><td class="markdownTableBodyNone">Benders integration tests   </td></tr>
 </table>
-<p>Additionnal vcpkg options:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadLeft">Option   </th><th class="markdownTableHeadNone">Description    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>CMAKE_TOOLCHAIN_FILE</code>   </td><td class="markdownTableBodyNone">Define <code>vcpkg</code> toolchain file.    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>VCPKG_TARGET_TRIPLET</code>   </td><td class="markdownTableBodyNone">Define <code>&lt;vcpkg-triplet&gt;</code>.   </td></tr>
-</table>
-<p>You may need to install lsb_release Example on Ubuntu: </p><div class="fragment"><div class="line">sudo apt install lsb-release</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md160"></a>
-Build</h1>
-<p>=== "Windows" </p><pre class="fragment">```
-cmake --build _build --config Release -j8
-```
-</pre><p> === "Ubuntu" </p><pre class="fragment">```
-cmake --build _build --config Release -j8
-```
-</pre><p> !!! Note Compilation can be done on several processor with the <code>-j</code> option. </p>
+<h2><a class="anchor" id="autotoc_md49"></a>
+Labels</h2>
+<ul>
+<li><code>unit</code> - Unit tests</li>
+<li><code>end_to_end</code> - Integration tests</li>
+<li><code>short</code>, <code>medium</code>, <code>long</code> - Duration categories</li>
+<li><code>benders</code>, <code>lpnamer</code>, <code>bdd</code> - Functional categories</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md50"></a>
+C++ Tests (Google Test)</h1>
+<h2><a class="anchor" id="autotoc_md51"></a>
+Location</h2>
+<div class="fragment"><div class="line">tests/cpp/</div>
+<div class="line">├── benders/</div>
+<div class="line">├── full_run/</div>
+<div class="line">├── helpers/</div>
+<div class="line">├── json_output_writer/</div>
+<div class="line">├── logger/</div>
+<div class="line">├── lp_namer/</div>
+<div class="line">├── merge_mps/</div>
+<div class="line">├── multisolver_interface/</div>
+<div class="line">├── outer_loop/</div>
+<div class="line">├── restart_benders/</div>
+<div class="line">├── sensitivity/</div>
+<div class="line">├── solvers_interface/</div>
+<div class="line">├── study_updater/</div>
+<div class="line">├── TestDoubles/</div>
+<div class="line">├── tests_utils/</div>
+<div class="line">└── zip_mps/</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md52"></a>
+Writing Tests</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">class </span>MyClassTest : <span class="keyword">public</span> ::testing::Test {</div>
+<div class="line"><span class="keyword">protected</span>:</div>
+<div class="line">    <span class="keywordtype">void</span> SetUp()<span class="keyword"> override </span>{</div>
+<div class="line">        <span class="comment">// Setup code</span></div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">TEST_F(MyClassTest, ShouldDoSomething) {</div>
+<div class="line">    MyClass obj;</div>
+<div class="line">    EXPECT_EQ(obj.compute(), expected_value);</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md53"></a>
+Assertions</h2>
+<ul>
+<li>Use <code>EXPECT_*</code> for non-fatal failures (test continues)</li>
+<li>Use <code>ASSERT_*</code> for fatal failures (stops test)</li>
+<li>Prefer clear failure messages:</li>
+</ul>
+<div class="fragment"><div class="line">EXPECT_EQ(actual, expected) &lt;&lt; <span class="stringliteral">&quot;Failed for input: &quot;</span> &lt;&lt; input;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md54"></a>
+Python Tests (pytest)</h1>
+<h2><a class="anchor" id="autotoc_md55"></a>
+Location</h2>
+<div class="fragment"><div class="line">tests/python/</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md56"></a>
+Writing Tests</h2>
+<div class="fragment"><div class="line"><span class="keyword">import</span> pytest</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">def </span>test_load_candidates(study_path):</div>
+<div class="line">    reader = CandidatesReader(study_path)</div>
+<div class="line">    candidates = reader.load()</div>
+<div class="line">    <span class="keyword">assert</span> len(candidates) == 5</div>
+<div class="line">    <span class="keyword">assert</span> <span class="stringliteral">&quot;candidate1&quot;</span> <span class="keywordflow">in</span> candidates</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">@pytest.fixture</span></div>
+<div class="line"><span class="keyword">def </span>study_path(tmp_path):</div>
+<div class="line">    <span class="comment"># Create test study</span></div>
+<div class="line">    <span class="keywordflow">return</span> tmp_path / <span class="stringliteral">&quot;test_study&quot;</span></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md57"></a>
+Markers</h2>
+<p>Available pytest markers (defined in <code>tests/python/pytest.ini</code> or conftest):</p><ul>
+<li><code>@pytest.mark.short_sequential</code></li>
+<li><code>@pytest.mark.short_mpi</code></li>
+<li><code>@pytest.mark.medium_*</code></li>
+<li><code>@pytest.mark.long_*</code></li>
+</ul>
+<p>Run specific markers:</p>
+<div class="fragment"><div class="line">pytest -m short_sequential tests/python/</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md58"></a>
+CI Requirements</h1>
+<ul>
+<li>All tests must pass before merging</li>
+<li>Code coverage must not decrease significantly</li>
+<li>Run full test suite locally before pushing </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

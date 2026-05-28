@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Introduction</title>
+<title>Antares Xpansion: C++ Conventions</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_20-INSTALL.html',''); initResizable(true); });
+$(function(){initNavTree('md_docs_2agents_2cpp-conventions.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,29 +137,120 @@ $(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_20-IN
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Introduction</div></div>
+  <div class="headertitle"><div class="title">C++ Conventions</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md142"></a></p>
-<p>Antares-Xpansion is developed mainly in <b>C++</b> and uses a <b>Python</b> runner to drive the execution of multiple executables.</p>
-<p>This software suite has been tested under:</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a></p>
+<p>This document covers C++ coding conventions for Antares-Xpansion.</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+Language Standard</h1>
 <ul>
-<li>Ubuntu 22.04 <a href="https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml?query=branch%3Adevelop"><img src="https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml/badge.svg?query=branch%3Adevelop" alt="Status" style="pointer-events: none;" class="inline"/></a></li>
-<li>Microsoft Windows with Visual Studio 2019 (64-bit) <a href="https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml?query=branch%3Adevelop"><img src="https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml/badge.svg?query=branch%3Adevelop" alt="Status" style="pointer-events: none;" class="inline"/></a></li>
+<li>C++20 is required</li>
+<li>GCC &gt;= 11 (required for Intel TBB compatibility)</li>
 </ul>
-<p>Antares-Xpansion is built using CMake.</p>
-<p>Follow this <a href="https://antaressimulatorteam.github.io/antares-xpansion/annotated.html">link</a> for Doxygen code documentation.</p>
-<h1><a class="anchor" id="autotoc_md143"></a>
-Build and installation details</h1>
+<h1><a class="anchor" id="autotoc_md12"></a>
+Code Style</h1>
+<h2><a class="anchor" id="autotoc_md13"></a>
+Formatting</h2>
+<p>Use <code>.clang-format</code> with Chromium-based style:</p>
+<div class="fragment"><div class="line">clang-format -i -style=file &lt;file&gt;.cpp</div>
+</div><!-- fragment --><p>Disable formatting for specific sections:</p>
+<div class="fragment"><div class="line"><span class="comment">// clang-format off</span></div>
+<div class="line"><span class="comment">// code here will not be reformatted</span></div>
+<div class="line"><span class="comment">// clang-format on</span></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
+Style Rules</h2>
 <ul>
-<li><a class="el" href="md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html">Development requirements</a></li>
-<li><a class="el" href="md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html">Dependencies</a></li>
-<li><a class="el" href="md_docs_2developer-guide_2install__from__sources_23-Build.html">Build</a></li>
-<li><a class="el" href="md_docs_2developer-guide_2install__from__sources_24-Tests.html">Tests</a></li>
-<li><a class="el" href="md_docs_2developer-guide_2install__from__sources_25-Installer-creation.html">Installer creation</a></li>
-<li><a class="el" href="md_docs_2developer-guide_2install__from__sources_26-Xpress.html">Xpress integration</a> </li>
+<li><b>No comments</b> unless explaining complex algorithms</li>
+<li>Use <code>nullptr</code> instead of <code>NULL</code></li>
+<li>Use <code>std::array</code> or <code>std::vector</code> instead of C-style arrays</li>
+<li>Use <code>const</code> wherever possible</li>
+<li>Use <code>[[nodiscard]]</code> attribute for functions that must return a value</li>
+<li>Use <code>override</code> keyword when overriding virtual functions</li>
 </ul>
-</div></div><!-- contents -->
+<h2><a class="anchor" id="autotoc_md15"></a>
+Naming</h2>
+<ul>
+<li>Classes: <code>PascalCase</code> (e.g., <code>BendersSolver</code>)</li>
+<li>Public member functions: <code>PascalCase</code> (e.g., <code>InitializeSolver</code>)</li>
+<li>Private member functions / helper functions: <code>snake_case</code> (e.g., <code>initialize_solver</code>)</li>
+<li>Variables: <code>snake_case</code> (e.g., <code>iteration_count</code>)</li>
+<li>Constants: <code>UPPER_SNAKE_CASE</code> (e.g., <code>MAX_ITERATIONS</code>)</li>
+<li>Private members: <code>snake_case_</code> (trailing underscore)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md16"></a>
+Include Order</h2>
+<ol type="1">
+<li>Project headers (quoted)</li>
+<li>Standard library</li>
+<li>External libraries (angled)</li>
+</ol>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;benders/benders_core/BendersOptions.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/ILogger.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;boost/mpi.hpp&gt;</span></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
+Project Structure</h1>
+<div class="fragment"><div class="line">src/cpp/</div>
+<div class="line">├── benders/                  # Benders decomposition algorithm</div>
+<div class="line">├── core/                     # Core shared utilities</div>
+<div class="line">├── exe/                      # Executable entry points</div>
+<div class="line">├── full_run/                 # Full run orchestration</div>
+<div class="line">├── helpers/                  # Shared helpers</div>
+<div class="line">├── lpnamer/                  # Generation of investment problems from simulation ones</div>
+<div class="line">├── merge_weights_trajectory/ # Trajectory weight merging</div>
+<div class="line">├── multisolver_interface/    # Solver abstraction layer</div>
+<div class="line">├── presolve/                 # Pre-solve logic</div>
+<div class="line">├── sensitivity/              # Sensitivity analysis</div>
+<div class="line">├── study-updater/            # Study updater</div>
+<div class="line">└── xpansion_interfaces/      # Public interfaces</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
+Header Organization</h2>
+<ul>
+<li>Each class in its own header file</li>
+<li>Use include guards (or <code>#pragma once</code>)</li>
+<li>Group related functionality into subdirectories</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md19"></a>
+Dependencies</h1>
+<h2><a class="anchor" id="autotoc_md20"></a>
+External Libraries</h2>
+<ul>
+<li><b>Boost</b>: MPI, serialization, program_options</li>
+<li><b>Coin-OR</b>: Clp, Cbc, Cgl, CoinUtils, Osi</li>
+<li><b>JSON</b>: jsoncpp</li>
+<li><b>MPI</b>: OpenMPI</li>
+<li><b>TBB</b>: Intel Threading Building Blocks</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md21"></a>
+Finding Dependencies</h2>
+<p>The project uses CMake with vcpkg. Most dependencies are handled automatically.</p>
+<h1><a class="anchor" id="autotoc_md22"></a>
+Error Handling</h1>
+<ul>
+<li>Use exceptions for unrecoverable errors</li>
+<li>Prefer <code>std::optional</code> for functions that may not return a value</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md23"></a>
+Performance</h1>
+<ul>
+<li>Avoid unnecessary copies (use const references)</li>
+<li>Use move semantics where appropriate</li>
+<li>Consider lazy evaluation for expensive operations</li>
+<li>Profile before optimizing</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md24"></a>
+Logging</h1>
+<p>Use the project's logging infrastructure:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/ILogger.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// In class constructor</span></div>
+<div class="line">ILogger::Ptr logger_ = ...;</div>
+<div class="line">logger_-&gt;log_at_initialization(<span class="stringliteral">&quot;message&quot;</span>);</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

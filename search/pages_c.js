@@ -6,5 +6,6 @@ var searchData=
   ['problem_20in_20antares_20xpansion_3',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
   ['problem_20retrieval_4',['Antares optimization problem retrieval',['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html',1,'']]],
   ['problems_20of_20annual_20xpansion_20studies_5',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
-  ['procedure_6',['Antares-Xpansion simulation procedure',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html',1,'']]]
+  ['procedure_6',['Antares-Xpansion simulation procedure',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html',1,'']]],
+  ['python_20conventions_7',['Python Conventions',['../md_docs_2agents_2python-conventions.html',1,'']]]
 ];
