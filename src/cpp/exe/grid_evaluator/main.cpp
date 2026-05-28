@@ -157,13 +157,6 @@ int main(int argc, char** argv)
                                                                  / "user/water_values/grid.csv",
                                                                logger);
 
-        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
-                                                dpcr.getPenaltyBottomRuleCurve(),
-                                                dpcr.getPenaltyUpperRuleCurve(),
-                                                dpcr.getPenaltyFinalLevel(),
-                                                dpcr.getForceFinalLevel(),
-                                                dpcr.getFinalLevel());
-
         auto problemManager = std::make_shared<ProblemManager>(solverName,
                                                                problemFormat,
                                                                writePbFiles,

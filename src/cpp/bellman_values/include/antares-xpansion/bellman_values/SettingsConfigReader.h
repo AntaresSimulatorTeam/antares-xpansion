@@ -21,27 +21,27 @@ public:
     // these getters are still useful to enforce types
     std::string getSolver() const
     {
-        return getValueFromKey<std::string>(solverKey);
+        return getValueFromKey<std::string>(solverKey, elements_);
     }
 
     bool getKeepMps() const
     {
-        return getValueFromKey<bool>(keepMpsKey);
+        return getValueFromKey<bool>(keepMpsKey, elements_);
     }
 
     std::string getProblemFormat() const
     {
-        return getValueFromKey<std::string>(problemFormatKey);
+        return getValueFromKey<std::string>(problemFormatKey, elements_);
     }
 
     std::string getVerbosity() const
     {
-        return getValueFromKey<std::string>(verbosityKey);
+        return getValueFromKey<std::string>(verbosityKey, elements_);
     }
 
     bool getCacheProblems() const
     {
-        return getValueFromKey<bool>(cacheProblemsKey);
+        return getValueFromKey<bool>(cacheProblemsKey, elements_);
     }
 
 private:

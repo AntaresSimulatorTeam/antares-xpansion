@@ -198,15 +198,6 @@ int main(int argc, char** argv)
         const std::filesystem::path settingsConfigFilePath(studyPath
                                                            / "user/water_values/settings.yaml");
 
-        // DynamicProgrammingConfigReader will check whether the dynamic_programming.yaml file
-        // exists and return default values if needed
-        DynamicProgrammingConfigReader dpcr(bellmanConfigFilePath);
-        int startWeek = dpcr.getStartWeek();
-        int endWeek = dpcr.getEndWeek();
-        int nbLevels = dpcr.getNbLevels();
-        bool antaresFormat = dpcr.getAntaresFormat();
-        bool useOptimalTrajectory = dpcr.getUseOptimalTrajectory();
-
         // SettingsConfigReader will check whether the settings.yaml file exists and
         // return default values if needed
         SettingsConfigReader scr(settingsConfigFilePath);
@@ -239,6 +230,31 @@ int main(int argc, char** argv)
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                  / "user/water_values/grid.csv",
                                                                logger);
+
+        // DynamicProgrammingConfigReader will check whether the dynamic_programming.yaml file
+        // exists and return default values if needed
+        // TODO: check that there aren't any zones in the file that aren't in grid.csv
+        DynamicProgrammingConfigReader dpcr(bellmanConfigFilePath);
+        int startWeek = dpcr.getStartWeek();
+        int endWeek = dpcr.getEndWeek();
+        int nbLevels = dpcr.getNbLevels();
+        bool antaresFormat = dpcr.getAntaresFormat();
+        bool useOptimalTrajectory = dpcr.getUseOptimalTrajectory();
+
+        // logger->display_message("Penalties:");
+        // for (auto& grid: gridCollection->gridDefinitions | std::views::values)
+        // {
+        //     logger->display_message("For area: " + grid.area);
+        //     logger->display_message(
+        //       std::to_string(dpcr.getPenaltyBottomRuleCurveForArea(grid.area)));
+        //     logger->display_message(
+        //       std::to_string(dpcr.getPenaltyUpperRuleCurveForArea(grid.area)));
+        //     logger->display_message(std::to_string(dpcr.getPenaltyFinalLevelForArea(grid.area)));
+        //     logger->display_message(std::to_string(dpcr.getForceFinalLevelForArea(grid.area)));
+        //     logger->display_message(
+        //       std::to_string(dpcr.getFinalLevelForArea(grid.area).value_or(-1.0)));
+        //     logger->display_message(std::to_string(dpcr.getCvarForArea(grid.area)));
+        // }
 
         auto problemManager = std::make_shared<ProblemManager>(solverName,
                                                                problemFormat,
@@ -289,13 +305,13 @@ int main(int argc, char** argv)
             // multistock here
             // update the reservoir in ReservoirManagement based on the considered area
             ReservoirManagement reservoirManagement(grid.reservoirs.at(grid.area),
-                                                    dpcr.getPenaltyBottomRuleCurve(),
-                                                    dpcr.getPenaltyUpperRuleCurve(),
-                                                    dpcr.getPenaltyFinalLevel(),
-                                                    dpcr.getForceFinalLevel(),
-                                                    dpcr.getFinalLevel(),
-                                                    dpcr.getCvar());
-            // this is also where we will update penalties if they need to be
+                                                    dpcr.getPenaltyBottomRuleCurveForArea(
+                                                      grid.area),
+                                                    dpcr.getPenaltyUpperRuleCurveForArea(grid.area),
+                                                    dpcr.getPenaltyFinalLevelForArea(grid.area),
+                                                    dpcr.getForceFinalLevelForArea(grid.area),
+                                                    dpcr.getFinalLevelForArea(grid.area),
+                                                    dpcr.getCvarForArea(grid.area));
 
             auto startProblemUpdate = std::chrono::system_clock::now();
             logger->display_message(

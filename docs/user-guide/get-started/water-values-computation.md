@@ -114,27 +114,39 @@ use_optimal_trajectory : false
 # and will be used when computing water values of all subsequent areas, in the order they are defined in grid.csv.
 # default: false
 
-penalty_bottom_rule_curve : 2000
-# default: 0
+# penalties are specified by area. If an area is present in grid.csv but in this file, default values will be used.
+penalties:
+  area1:
+    penalty_bottom_rule_curve : 2000
+    # default: 0
 
-penalty_upper_rule_curve : 2000
-# default: 0
+    penalty_upper_rule_curve : 2000
+    # default: 0
 
-penalty_final_level : 2000
-# default: 0
+    penalty_final_level : 2000
+    # default: 0
 
-force_final_level : true
-# default: false
+    force_final_level : true
+    # default: false
 
-final_level : ~
-# default: initial level
+    final_level : ~
+    # default: initial level
 
-cvar : 0.8
-# default: 1.0 (all scenarios taken into account for Bellman values)
-# will be restricted to [0.0 ; 1.0]
+    cvar : 0.8
+    # default: 1.0 (all scenarios taken into account for Bellman values)
+    # will be restricted to [0.0 ; 1.0]
+  area2:
+    penalty_bottom_rule_curve : 1000
+    # default: 0
+
+    cvar : 0.6
+    # default: 1.0 (all scenarios taken into account for Bellman values)
+    # will be restricted to [0.0 ; 1.0]
 ```
 
 This file is expected to be located at `<study_root>/user/water_values/dynamic_programming.yaml`. It is optional, however default values are hard-coded in the program.
+
+Values related to penalties are to be specified by area. If an area is present in grid.csv but not in this YAML file, or if some parameters are not present for a zone, default values will be used. The example above covers that case: all values are specified for `area1`, some of them for `area2`, and none for `area3`.
 
 ### Secondary input file: settings.yaml
 

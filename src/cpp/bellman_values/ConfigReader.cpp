@@ -51,7 +51,8 @@ void ConfigReader::YAMLElement::updateValue(const YAML::Node& config)
     }
     catch (const std::exception& e)
     {
-        std::throw_with_nested(std::runtime_error("Error parsing YAML file for key: " + key + "(" + e.what() + ")"));
+        std::throw_with_nested(
+          std::runtime_error("Error parsing YAML file for key: " + key + "(" + e.what() + ")"));
     }
 }
 
