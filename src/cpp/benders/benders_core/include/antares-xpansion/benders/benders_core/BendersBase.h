@@ -1,5 +1,6 @@
 #pragma once
 
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <execution>
 #include <filesystem>
 #include <mutex>
@@ -8,6 +9,7 @@
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
+#include "ICommunicationStrategy.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "Worker.h"
@@ -41,10 +43,11 @@ public:
     BendersBase(BendersBaseOptions options,
                 Logger logger,
                 std::shared_ptr<Output::OutputWriter> writer,
-                std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+                std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-
+    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     // TODO rename to be consistent with data that it hold
@@ -56,7 +59,6 @@ public:
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
-    // for test
     void MasterGetRhs(double& rhs, int id_row) const;
 
     const VariableMap& MasterVariables() const
@@ -114,6 +116,11 @@ public:
         return _data.criteria_current_iteration_data.benders_num_run;
     }
 
+    void IncrementBendersRunNumber()
+    {
+        ++_data.criteria_current_iteration_data.benders_num_run;
+    }
+
     CurrentIterationData GetCurrentIterationData() const;
 
     CriteriaCurrentIterationData GetOuterLoopData() const;
@@ -138,14 +145,23 @@ public:
     void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData& criterion_input_data);
 
+    [[nodiscard]] std::shared_ptr<ICommunicationStrategy> GetCommunicationStrategy() const
+    {
+        return communication_strategy_;
+    }
+
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
+    WorkerMasterPtr _master;
+    std::shared_ptr<BendersPlugin> benders_plugin_;
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
+    VariableMap _problem_to_id;
+
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;
@@ -154,10 +170,6 @@ protected:
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
-
-    std::vector<SubProblemNamesInCut> split_subproblem_data_pairs(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      int n_cuts) const;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -310,9 +322,9 @@ protected:
      suffix is different
      * ex variable at index = 0 is named in:
 
-    * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+    * subproblems-1-1  --> DirectFlow::link<area1$$area2>::hour<0>
                                       * subproblems-3-5  -->
-    NTCDirect::link<area1$$area2>::hour<672>
+    DirectFlow::link<area1$$area2>::hour<672>
      */
     // Search for variables in sub problems that satisfy patterns
     // var_indices is a vector(for each patterns p) of vector (var indices related
@@ -321,6 +333,10 @@ protected:
 
     void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
                                    const std::vector<SubProblemDataMap>& gathered_subproblem_map);
+
+    int SetAggregation(int max_aggregation) const;
+
+    std::map<int, double> GetSubCutTolerance() const;
 
 private:
     void print_master_and_cut(std::ostream& file,
@@ -331,7 +347,6 @@ private:
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
-    int SetAggregation(int max_aggregation) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;
@@ -340,14 +355,13 @@ private:
     void compute_cut(const SubProblemDataMap& subproblem_data_map);
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
-    [[nodiscard]] virtual bool shouldParallelize() const = 0;
+    [[nodiscard]] virtual bool shouldParallelize() const;
+
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    WorkerMasterPtr _master;
-    VariableMap _problem_to_id;
     StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
@@ -357,6 +371,7 @@ private:
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+    std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

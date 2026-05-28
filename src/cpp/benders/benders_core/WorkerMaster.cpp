@@ -1,6 +1,7 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
 #include "antares-xpansion/helpers/solver_utils.h"
+#include "iostream"
 
 /*!
  *  \brief Constructor of a Master Problem
@@ -24,11 +25,12 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
                            ProblemsFormat format,
                            IBendersProblemProvider* benders_problem_provider,
                            double master_solution_tolerance,
-                           double cut_coefficient_tolerance):
-    Worker(variable_map, std::move(logger), cut_coefficient_tolerance),
+                           const std::map<int, double>& subproblem_cut_coefficient_tolerance):
+    Worker(variable_map, std::move(logger)),
     subproblems_count{subproblems_count},
     _mps_has_alpha{mps_has_alpha},
-    _master_solution_tolerance{master_solution_tolerance}
+    _master_solution_tolerance{master_solution_tolerance},
+    _subproblem_tolerance{std::move(subproblem_cut_coefficient_tolerance)}
 {
     _is_master = true;
 
@@ -311,11 +313,10 @@ void WorkerMaster::addSubproblemCut(int i,
     std::vector<int> subproblem_ids = {i};
     define_matval_mclind_for_index(subproblem_ids, subgradient, matval, mclind);
 
-    // Round numerically small rhs to zero to get clean cuts and avoid numerical artifacts
-    // Cuts coefficients (obtained from subgradient) have already been rounded in
-    // SubproblemWorker::get_subgradient as it is best to round it as soon as possible (because
-    // subgradient information is also used as is to compute cut values : cf. compute_cut_val())
-    roundIfWithinTolerance(rowrhs, 0, rowrhs.size());
+    // Round numerically small rhs ant coefficients to zero to get clean cuts and avoid numerical
+    // artifacts
+    setToZeroIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
+    setToZeroIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -346,9 +347,20 @@ void WorkerMaster::addGroupSubproblemCut(std::vector<int> subproblem_ids,
 
     define_matval_mclind_for_index(subproblem_ids, s, matval, mclind);
 
-    roundIfWithinTolerance(rowrhs, 0, rowrhs.size());
+    // Round rhs and coefficients of the cut to clean it
+    setToZeroIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
+    setToZeroIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+}
+
+void WorkerMaster::add_row(std::vector<char>& row_type,
+                           std::vector<double>& row_rhs,
+                           std::vector<int>& mstart,
+                           std::vector<int>& mclind,
+                           std::vector<double>& matval)
+{
+    solver_addrows(*_solver, row_type, row_rhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::_set_upper_bounds() const
@@ -366,6 +378,37 @@ void WorkerMaster::_set_upper_bounds() const
         bounds[i] = std::min(bounds[i], 1e20);
     }
     _solver->chg_bounds(indices, bndTypes, bounds);
+}
+
+int WorkerMaster::get_col_index(std::string variable_id)
+{
+    return _solver->get_col_index(variable_id);
+}
+
+void WorkerMaster::addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cuts,
+                                              std::map<std::string, int>& problem_to_id)
+{
+    for (auto& names_in_cut: names_in_cuts)
+    {
+        auto alpha_0_pos = _id_single_subpb_costs_under_approx
+          [problem_to_id[names_in_cut[0].first]];
+        for (size_t j = 1; j < names_in_cut.size(); j++)
+        {
+            auto alpha_j_pos = _id_single_subpb_costs_under_approx
+              [problem_to_id[names_in_cut[j].first]];
+
+            std::vector<char> rowtype = {'E'};
+            std::vector<double> rowrhs = {0};
+            std::vector<int> mstart = {0, 2};
+            std::vector<double> matval(2);
+            matval[0] = 1;
+            matval[1] = -1;
+            std::vector<int> mclind(2);
+            mclind[0] = alpha_0_pos;
+            mclind[1] = alpha_j_pos;
+            add_row(rowtype, rowrhs, mstart, mclind, matval);
+        }
+    }
 }
 
 void WorkerMaster::_set_alpha_var()
@@ -515,4 +558,30 @@ void WorkerMaster::ActivateIntegrityConstraints() const
 {
     std::vector<char> col_types(_id_int_vars.size(), 'I');
     _solver->chg_col_type(_id_int_vars, col_types);
+}
+
+void WorkerMaster::setToZeroIfWithinTolerance(std::vector<double>& values,
+                                              int first,
+                                              int last,
+                                              const std::vector<int>& subproblem_ids) const
+{
+    double cut_coefficient_tolerance = 0.0;
+    for (int sb_id: subproblem_ids)
+    {
+        auto it = _subproblem_tolerance.find(sb_id);
+        if (it == _subproblem_tolerance.end())
+        {
+            throw std::runtime_error("sb_id not found in _subproblem_tolerance");
+        }
+        cut_coefficient_tolerance += it->second;
+    }
+
+    // When rounding coefficients cut, if the tolerance is greater than 1, this could remove alpha
+    // coefficient. This shouldn't happen as weights and cut_tolerance are less than 1.
+
+    std::transform(values.begin() + first,
+                   values.begin() + last,
+                   values.begin() + first,
+                   [cut_coefficient_tolerance](double value)
+                   { return std::abs(value) < cut_coefficient_tolerance ? 0.0 : value; });
 }

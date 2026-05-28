@@ -9,9 +9,9 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
-#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -22,7 +22,7 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
     {
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
-        math_log_driver_ = BuildMathLogger(benders_log_console);
+        math_log_driver_ = MathLoggerFactory::get_void_logger();
         writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
     }
     else
@@ -45,16 +45,21 @@ bool BendersApp::isCriterionListEmpty() const
                       criterion_input_holder_);
 }
 
-std::shared_ptr<MathLoggerDriver> BendersApp::BuildMathLogger(bool benders_log_console) const
+void BendersApp::SetupMathLogger(bool benders_log_console) const
 {
+    if (pworld_->rank() != 0)
+    {
+        return;
+    }
+
     const std::filesystem::path output_root(options_.OUTPUTROOT);
     auto math_logs_file = output_root / "benders_solver.log";
 
-    auto math_log_factory = MathLoggerFactory(method_, benders_log_console, math_logs_file);
-
-    auto math_log_driver = math_log_factory.get_logger();
-
-    return math_log_driver;
+    math_log_driver_->add_logger(std::make_shared<MathLoggerFile>(method_, math_logs_file));
+    if (benders_log_console)
+    {
+        math_log_driver_->add_logger(std::make_shared<MathLoggerOstream>(method_));
+    }
 }
 
 void BendersApp::AddCriterionOutputs()
@@ -75,37 +80,57 @@ void BendersApp::AddCriterionOutputs()
                                  &CriteriaCurrentIterationData::patterns_values);
 }
 
+void BendersApp::InitializeBendersEnvironment(bool outer_loop)
+{
+    // Reset all state that depends on a successful PrepareForExecution so that,
+    // whether this call returns early (study already achieved) or succeeds, no
+    // stale data from a previous invocation can be observed by the caller.
+    benders_ = nullptr;
+    criterion_input_holder_ = Benders::Criterion::CriterionInputData{};
+    method_ = BENDERSMETHOD::BENDERS;
+    context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
+    positive_unsupplied_file_.clear();
+
+    SetupLoggerAndOutputWriter(options_.get_benders_options());
+    BendersFactory factory(
+      options_,
+      pworld_,
+      BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
+    auto env = factory.PrepareForExecution(outer_loop);
+    if (!env)
+    {
+        if (outer_loop)
+        {
+            throw std::runtime_error(
+              "Could not initialize benders. Please see above messages for actual error.");
+        }
+        return;
+    }
+    auto&& environment = env.value();
+    benders_ = std::move(environment.benders);
+    criterion_input_holder_ = environment.criterion_input_data;
+    method_ = environment.method;
+    context_ = bendersmethod_to_string(method_);
+    if (pworld_->rank() == 0)
+    {
+        SetupMathLogger(options_.get_benders_options().LOG_LEVEL > 0);
+        if (!isCriterionListEmpty())
+        {
+            AddCriterionOutputs();
+        }
+    }
+}
+
 int BendersApp::RunBenders()
 {
     try
     {
-        SetupLoggerAndOutputWriter(options_.get_benders_options());
-        BendersFactory factory(
-          options_,
-          pworld_,
-          BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
-        auto env = factory.PrepareForExecution(false);
-        // context =
-        // method =
-        if (env)
+        InitializeBendersEnvironment(false);
+        if (benders_)
         {
-            auto&& environment = env.value();
-            benders_ = std::move(environment.benders);
-            criterion_input_holder_ = environment.criterion_input_data;
-            method_ = environment.method;
-            if (pworld_->rank() == 0)
-            {
-                if (!isCriterionListEmpty())
-                {
-                    AddCriterionOutputs();
-                }
-            }
-            if (benders_)
-            {
-                StartMessage();
-                benders_->launch();
-                EndMessage(benders_->execution_time());
-            }
+            StartMessage();
+            benders_->launch();
+            EndMessage(benders_->execution_time());
         }
     }
     catch (std::exception& e)
@@ -150,28 +175,7 @@ int BendersApp::RunExternalLoop()
 {
     try
     {
-        SetupLoggerAndOutputWriter(options_.get_benders_options());
-        BendersFactory factory(
-          options_,
-          pworld_,
-          BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
-        auto env = factory.PrepareForExecution(true);
-        if (!env)
-        {
-            throw std::runtime_error(
-              "Could not initialize benders. Please see above messages for actual error.");
-        }
-        auto&& environment = env.value();
-        benders_ = std::move(environment.benders);
-        criterion_input_holder_ = environment.criterion_input_data;
-        method_ = environment.method;
-        if (pworld_->rank() == 0)
-        {
-            if (!isCriterionListEmpty())
-            {
-                AddCriterionOutputs();
-            }
-        }
+        InitializeBendersEnvironment(true);
         double tau = 0.5;
         const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
           criterion_input_holder_);
@@ -184,7 +188,7 @@ int BendersApp::RunExternalLoop()
                                              master_updater,
                                              cuts_manager,
                                              benders_,
-                                             *pworld_);
+                                             benders_->GetCommunicationStrategy());
         StartMessage();
         ext_loop.Run();
         EndMessage(ext_loop.Runtime());

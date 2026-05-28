@@ -28,10 +28,12 @@ protected:
     void ComputeXCut() override;
     void UpdateStoppingCriterion() override;
     bool ShouldRelaxationStop() const override;
+    void BuildBatches();
 
 private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
                           const std::vector<std::string>& batch_sub_problems);
+    void BuildMasterProblem();
     double ComputeBatchContributionInGap(
       const std::vector<SubProblemDataMap>& gathered_subproblem_map,
       const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
@@ -41,7 +43,11 @@ private:
                                             PlainData::SubProblemData& subproblem_data);
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const std::vector<std::string>& batch_sub_problems);
+
+    void get_subs_per_cut_per_batch();
+
     BatchCollection batch_collection_;
+    BatchCollection batch_collection_full_for_cuts_;
     void MasterLoop();
     void SolveBatches();
     void SeparationLoop();

@@ -21,12 +21,9 @@ add_library(benders_mpi_core)
 
 target_sources(benders_mpi_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/BendersMpiOuterLoop.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBenders.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersMPI.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/OuterLoopBenders.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/common_mpi.h
 
 )

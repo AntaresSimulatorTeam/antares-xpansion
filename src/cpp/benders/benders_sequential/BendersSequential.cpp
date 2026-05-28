@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
+#include "antares-xpansion/benders/benders_core/SequentialCommunicationStrategy.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
@@ -21,7 +22,11 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                                      Logger logger,
                                      std::shared_ptr<Output::OutputWriter> writer,
                                      std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersBase(options, std::move(logger), std::move(writer), mathLoggerDriver)
+    BendersBase(options,
+                std::move(logger),
+                std::move(writer),
+                mathLoggerDriver,
+                std::make_shared<SequentialCommunicationStrategy>())
 {
 }
 
@@ -40,7 +45,7 @@ void BendersSequential::InitializeProblems()
                                Options().PROBLEMS_FORMAT,
                                benders_problem_provider.get(),
                                Options().MASTER_SOLUTION_TOLERANCE,
-                               Options().CUT_COEFFICIENT_TOLERANCE);
+                               GetSubCutTolerance());
     for (const auto& problem: coupling_map_)
     {
         const auto subProblemFilePath = GetSubproblemPath(problem.first);
