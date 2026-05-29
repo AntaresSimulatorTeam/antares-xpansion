@@ -18,8 +18,8 @@ class InputParser:
         self.parser.add_argument("--step",
                                  dest=LauncherOptionsKeys.step_key(),
                                  choices=["full", "antares", "problem_generation", "presolve",
-                                          "benders", "study_update", "sensitivity", "resume"],
-                                 help='Step to execute ("full", "antares", "problem_generation", "presolve", "benders", "study_update", "sensitivity", "resume")',
+                                          "benders", "gems", "study_update", "sensitivity", "resume"],
+                                 help='Step to execute ("full", "antares", "problem_generation", "presolve", "benders", "gems", "study_update", "sensitivity", "resume")',
                                  default=LauncherOptionsDefaultValues.DEFAULT_STEP())
         self.parser.add_argument("--simulationName",
                                  dest=LauncherOptionsKeys.simulationName_key(),

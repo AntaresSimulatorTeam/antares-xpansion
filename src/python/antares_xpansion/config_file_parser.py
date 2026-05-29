@@ -15,6 +15,7 @@ class ConfigFileParser:
         self.FULL_RUN_DEFAULT = "full_run"
         self.OUTER_LOOP_DEFAULT = "outer_loop"
         self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
+        self.ANTARES_PROBLEM_GENERATOR_DEFAULT = "antares-problem-generator"
         self.SENSITIVITY_DEFAULT = "sensitivity"
         self.MPIEXEC_DEFAULT = "mpiexec"
         self.AVAILABLE_SOLVERS_DEFAULT = []
@@ -43,6 +44,9 @@ class ConfigFileParser:
                 OUTER_LOOP=content.get("OUTER_LOOP", self.FULL_RUN_DEFAULT),
                 ANTARES_ARCHIVE_UPDATER=content.get(
                     "ANTARES_ARCHIVE_UPDATER", self.ANTARES_ARCHIVE_UPDATER_DEFAULT
+                ),
+                ANTARES_PROBLEM_GENERATOR=content.get(
+                    "ANTARES_PROBLEM_GENERATOR", self.ANTARES_PROBLEM_GENERATOR_DEFAULT
                 ),
                 SENSITIVITY_EXE=content.get("SENSITIVITY", self.SENSITIVITY_DEFAULT),
                 MPIEXEC=content.get("mpiexec", self.MPIEXEC_DEFAULT),

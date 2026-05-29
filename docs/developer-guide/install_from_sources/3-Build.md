@@ -1,14 +1,5 @@
 # Build
 
-## Environnement settings
-
-On Centos, enable `devtoolset-10` and `rh-git227` and load `mpi` module:
-```
-scl enable devtoolset-10 bash
-source /opt/rh/rh-git227/enable
-module load mpi
-```
-
 ## Configure build with CMake
 
 Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.
@@ -21,11 +12,6 @@ VCPKG store sources in a cache folder, removing your build folder will only remo
 
     ```
     cmake -B _build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
-    ```
-=== "Centos"
-
-    ```
-    cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-release
     ```
 === "Ubuntu"
 
@@ -42,7 +28,6 @@ Here is a list of available CMake configure options:
 |`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager.|
 |`BUILD_ALL`|`OFF`|Enable build of ALL external librairies.|
 |`BUILD_TESTING`|`OFF`|Enable test build.|
-|`ALLOW_RUN_AS_ROOT`|`OFF`|allow mpi to run as root for centOs docker.|
 
 Additionnal vcpkg options:
 
@@ -63,11 +48,6 @@ sudo apt install lsb-release
 
     ```
     cmake --build _build --config Release -j8
-    ```
-=== "Centos"
-
-    ```
-    cmake3 --build _build --config Release -j8
     ```
 === "Ubuntu"
 

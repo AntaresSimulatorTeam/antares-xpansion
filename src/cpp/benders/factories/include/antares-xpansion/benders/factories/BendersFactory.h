@@ -3,6 +3,8 @@
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
+#include <antares-xpansion/benders/factories/BendersPluginFactory.h>
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <memory>
 #include <optional>
 #include <variant>
@@ -52,6 +54,7 @@ public:
 private:
     auto ConfigureBenders(const BendersBaseOptions& benders_options,
                           const CouplingMap& coupling_map) -> BendersEnvironment;
+
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();
@@ -60,9 +63,10 @@ private:
     void ConfigureSolverLog(BendersBase* benders);
 
     const SimulationOptions& options_;
-    Dependencies dependencies_;
     boost::mpi::communicator* world_ = nullptr;
     int rank = 0;
+    Dependencies dependencies_;
+    std::shared_ptr<BendersPluginFactory> benders_plugin_factory_;
     BENDERSMETHOD method_;
     std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
     static constexpr const char* const LOLD_FILE = "LOLD.txt";
