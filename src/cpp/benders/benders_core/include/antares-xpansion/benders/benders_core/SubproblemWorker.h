@@ -23,8 +23,7 @@ public:
                      const SolverLogManager& solver_log_manager,
                      Logger logger,
                      ProblemsFormat format,
-                     IBendersProblemProvider* benders_problem_provider,
-                     double cut_coefficient_tolerance);
+                     IBendersProblemProvider* benders_problem_provider);
     // for GridSearch
     SubproblemWorker(const VariableMap& variable_map,
                      const double& slave_weight,

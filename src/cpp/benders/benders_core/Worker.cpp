@@ -187,12 +187,6 @@ Worker::Worker(VariableMap variable_map, Logger logger):
 {
 }
 
-Worker::Worker(VariableMap variable_map, Logger logger):
-    _name_to_id{std::move(variable_map)},
-    logger_{std::move(logger)}
-{
-}
-
 Worker::Worker(Logger logger):
     logger_{std::move(logger)}
 {
