@@ -26,6 +26,7 @@ target_link_libraries (logger_lib
         PUBLIC
         antaresXpansion::benders_core
         antaresXpansion::factories
+        antaresXpansion::benders_mpi_core
         )
 
 target_include_directories (logger_lib

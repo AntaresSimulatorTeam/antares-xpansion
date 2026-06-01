@@ -1,0 +1,53 @@
+#include <antares-xpansion/benders/plugins/NoOperationPlugin.h>
+
+NoOperationPlugin::NoOperationPlugin()
+{
+}
+
+void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
+                                       const Logger& logger,
+                                       const BendersBaseOptions& options,
+                                       const SolverLogManager& solver_log_manager)
+{
+}
+
+void NoOperationPlugin::OnBendersEnd()
+{
+}
+
+void NoOperationPlugin::OnBendersIterationStart()
+{
+}
+
+void NoOperationPlugin::OnBendersIterationEnd()
+{
+}
+
+void NoOperationPlugin::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
+                                                     int& num_iter)
+{
+}
+
+void NoOperationPlugin::OnBendersMasterResolutionStart()
+{
+}
+
+void NoOperationPlugin::OnBendersMicroIterationStart()
+{
+}
+
+void NoOperationPlugin::OnBendersMicroIterationEnd(std::string sub_name,
+                                                   bool& added_rows,
+                                                   std::string solve_time,
+                                                   int num_master_iter,
+                                                   int num_micro_iter)
+{
+}
+
+void NoOperationPlugin::OnBendersSubResolutionStart()
+{
+}
+
+void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
+{
+}

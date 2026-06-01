@@ -75,8 +75,4 @@ public:
 private:
     SolverIO solver_io_;
     void writeProb(const std::filesystem::path& out) const;
-    double cut_coefficient_tolerance_;
-
-protected:
-    void roundIfWithinTolerance(std::vector<double>& values, int first, int last) const;
 };

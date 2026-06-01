@@ -12,6 +12,7 @@ on:
       - release/*
       - doc/*
       - dependabot/**
+      - copilot/*
   release:
     types: [ created ]
 

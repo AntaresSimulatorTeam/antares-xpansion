@@ -11,6 +11,7 @@ on:
       - release/*
       - doc/*
       - dependabot/**
+      - copilot/*
 
 jobs:
   sonarcloud:
@@ -151,7 +152,7 @@ jobs:
           cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
 
       - name: Run sonar-scanner
-        uses: SonarSource/sonarqube-scan-action@v7
+        uses: SonarSource/sonarqube-scan-action@v8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}

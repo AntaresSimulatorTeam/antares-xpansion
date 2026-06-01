@@ -1,4 +1,5 @@
 #pragma once
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
 
@@ -8,4 +9,9 @@ public:
     static CouplingMap BuildInput(const std::filesystem::path& structure_path,
                                   ILoggerXpansion* logger,
                                   const std::string& context = "Benders");
+
+    static void BuildSubProblemConstraintMap(const CouplingMap& coupling_map,
+                                             SubProblemConstraintMap& subproblem_constraint_map,
+                                             CouplingMap& constraints_coupling_map,
+                                             const SimulationOptions& options);
 };

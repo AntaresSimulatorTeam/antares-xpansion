@@ -19,25 +19,6 @@ Xpansion requires GCC >= 11, your version is X. GCC >= 11 is required for compat
 
     Compilation is tested on Visual Studio 17 2022.
 
-=== "CentOS" :warning: CentOS is considered EoL (end of life) and is not supported anymore. We recommend using a more
-recent distribution like Oracle Linux 8
-
-    By default, GCC version of Centos7 is 4.8.5. Some external repositories must be enabled:
-
-    === "Centos 7 (EPEL)"
-        ``` 
-        sudo yum install epel-release
-        sudo yum install centos-release-scl
-        ```
-    
-    You can then use a more recent version of GCC by enabling `devtoolset-11` (or a newer devtoolset) if available:
-    ```
-    sudo yum install devtoolset-11
-    # Launch a shell using the newer toolset:
-    scl enable devtoolset-11 bash
-    ```
-    If `devtoolset-11` is not available in your repositories, install a GCC >= 11 from your distribution vendor or build it from source.
-
 === "Ubuntu"
 
     ```
@@ -55,19 +36,6 @@ CMake 3.x must be used.
 === "Windows"
 
     You can download latest Windows version directly from [CMake website](https://cmake.org/download/).
-
-=== "Centos"
-
-    ```
-    sudo yum install epel-release
-    sudo yum install cmake3
-    ```
-
-    Or
-
-    ```
-    python -m pip install cmake
-    ```
 
 === "Ubuntu"
 
@@ -88,12 +56,6 @@ Python 3.x must be used.
 === "Windows"
 
     You can download latest Windows version directly from [Python website](https://www.python.org/downloads/windows/).
-
-=== "Centos"
-
-    ```
-    sudo yum install python3 python3-pip
-    ```
 
 === "Ubuntu"
 
@@ -116,18 +78,6 @@ see [https://github.com/google/or-tools/issues/1193](https://github.com/google/o
 === "Windows"
 
     You can download latest Windows version directly from [Git website](https://gitforwindows.org/).
-
-=== "Centos"
-
-    ```
-    sudo yum install rh-git227-git
-    sudo yum install git
-    ```
-    
-    Sometimes we need a 2.x version of git. To enable to git 2.27:
-    ```
-    source /opt/rh/rh-git227/enable
-    ```
 
 === "Ubuntu"
 

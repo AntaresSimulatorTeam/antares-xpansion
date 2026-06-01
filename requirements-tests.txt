@@ -3,4 +3,4 @@ pytest
 numpy
 pytest-cov
 behave
-xpress~=9.8
+xpress~=9.8.0
