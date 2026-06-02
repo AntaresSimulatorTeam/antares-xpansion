@@ -91,9 +91,6 @@ that allows for the definition of investment candidates
 and create the `candidates.ini` and `settings.ini` files
 in the directory `study_path/user/expansion`.
 
-Since v0.6.0, Antares Xpansion includes an experimental graphical interface but it is optimally used as a command line
-prompt.
-
 ### Command-line usage
 
 1. Open a command prompt in your Antares Xpansion install directory. By default (on Windows) it is named
