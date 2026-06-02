@@ -31,6 +31,18 @@ ProblemManager::ProblemManager(const std::string& solverName,
     }
 }
 
+ProblemManager::~ProblemManager()
+{
+    // removing problems if they were not needed
+    if (cacheProblems_ && !writePbFiles_)
+    {
+        for (auto& path: std::filesystem::directory_iterator(problemsPath_.value()))
+        {
+            std::filesystem::remove_all(path);
+        }
+    }
+}
+
 void ProblemManager::setProblems(
   std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>& problems)
 {

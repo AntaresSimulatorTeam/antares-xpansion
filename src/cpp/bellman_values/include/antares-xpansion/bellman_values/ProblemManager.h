@@ -20,6 +20,8 @@ public:
                    bool cacheProblems = false,
                    std::optional<std::filesystem::path> problemsPath = std::nullopt);
 
+    ~ProblemManager();
+
     /**
      * @brief Get the Problems object, either read from disk or as stored in memory.
      *
