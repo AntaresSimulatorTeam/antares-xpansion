@@ -25,7 +25,17 @@
 var NAVTREE =
 [
   [ "Antares Xpansion", "index.html", [
-    [ "Antares-Xpansion", "index.html", "index" ],
+    [ "Introduction", "index.html#autotoc_md1", [
+      [ "Antares study", "index.html#autotoc_md2", null ],
+      [ "Antares Xpansion simulation", "index.html#autotoc_md3", null ],
+      [ "Links", "index.html#autotoc_md4", null ],
+      [ "Installation", "index.html#autotoc_md5", null ],
+      [ "Getting started", "index.html#autotoc_md6", [
+        [ "Command-line usage", "index.html#autotoc_md7", null ]
+      ] ],
+      [ "Technologies", "index.html#autotoc_md8", null ],
+      [ "Source Code Content", "index.html#autotoc_md9", null ]
+    ] ],
     [ "C++ Conventions", "md_docs_2agents_2cpp-conventions.html", [
       [ "Language Standard", "md_docs_2agents_2cpp-conventions.html#autotoc_md11", null ],
       [ "Code Style", "md_docs_2agents_2cpp-conventions.html#autotoc_md12", [
@@ -495,8 +505,8 @@ var NAVTREEINDEX =
 "classWorkerMaster.html#aba45491d5e583afcf336e9516d373827",
 "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1LPNamerExeError.html",
 "dir_7eb4e7fbb4a0a15fe1ed95a3425fb324.html",
-"md_docs_2changelog_2CHANGELOG.html#autotoc_md91",
-"namespacemembers_func.html"
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md92",
+"namespaces.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

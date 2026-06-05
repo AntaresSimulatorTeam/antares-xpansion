@@ -1,6 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"md_docs_2changelog_2CHANGELOG.html#autotoc_md91":[4,11,0],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md92":[4,11,1],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md93":[4,11,2],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md94":[4,12],
@@ -249,5 +248,6 @@ var NAVTREEINDEX7 =
 "namespacedriver__trajectory.html":[35,0,1],
 "namespacelaunch.html":[35,0,2],
 "namespacelaunch__trajectory.html":[35,0,3],
-"namespacemembers.html":[35,1,0]
+"namespacemembers.html":[35,1,0],
+"namespacemembers_func.html":[35,1,1]
 };
