@@ -241,21 +241,6 @@ int main(int argc, char** argv)
         bool antaresFormat = dpcr.getAntaresFormat();
         bool useOptimalTrajectory = dpcr.getUseOptimalTrajectory();
 
-        // logger->display_message("Penalties:");
-        // for (auto& grid: gridCollection->gridDefinitions | std::views::values)
-        // {
-        //     logger->display_message("For area: " + grid.area);
-        //     logger->display_message(
-        //       std::to_string(dpcr.getPenaltyBottomRuleCurveForArea(grid.area)));
-        //     logger->display_message(
-        //       std::to_string(dpcr.getPenaltyUpperRuleCurveForArea(grid.area)));
-        //     logger->display_message(std::to_string(dpcr.getPenaltyFinalLevelForArea(grid.area)));
-        //     logger->display_message(std::to_string(dpcr.getForceFinalLevelForArea(grid.area)));
-        //     logger->display_message(
-        //       std::to_string(dpcr.getFinalLevelForArea(grid.area).value_or(-1.0)));
-        //     logger->display_message(std::to_string(dpcr.getCvarForArea(grid.area)));
-        // }
-
         auto problemManager = std::make_shared<ProblemManager>(solverName,
                                                                problemFormat,
                                                                writePbFiles,
@@ -317,7 +302,7 @@ int main(int argc, char** argv)
             logger->display_message(
               "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
 
-            auto problems = pbg.updateProblems(grid, grid.area);
+            auto updatedProblemsManager = pbg.updateProblems(grid, grid.area);
 
             auto endProblemUpdate = std::chrono::system_clock::now();
             logger->display_message("Updated problems (end time: " + formatTime(endProblemUpdate)
@@ -332,7 +317,7 @@ int main(int argc, char** argv)
                                     LogUtils::LOGLEVEL::DEBUG,
                                     logger->CONTEXT);
             auto evaluator = GridEvaluator(logger,
-                                           problems,
+                                           updatedProblemsManager,
                                            grid,
                                            directories.simulation_dir,
                                            solverName,

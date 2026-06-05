@@ -23,6 +23,7 @@ target_sources(evaluator_lib PRIVATE
 target_link_libraries(evaluator_lib
         PUBLIC
         ${PROJECT_NAME}::benders_core
+        ${PROJECT_NAME}::bellman_values_lib
         ${PROJECT_NAME}::output_core
         Antares::solver_api
         ${PROJECT_NAME}::lp_namer_model

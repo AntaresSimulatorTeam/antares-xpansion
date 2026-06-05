@@ -22,7 +22,7 @@ class GridEvaluator: public Evaluator
 {
 public:
     GridEvaluator(Logger logger,
-                  std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
+                  std::shared_ptr<ProblemManager> problemManager,
                   GridDefinition& grid_definition,
                   std::filesystem::path studyDir,
                   std::string solverName,

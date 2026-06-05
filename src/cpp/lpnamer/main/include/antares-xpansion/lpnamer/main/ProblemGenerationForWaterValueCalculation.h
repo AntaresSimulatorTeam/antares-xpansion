@@ -29,12 +29,13 @@ public:
       ConfigurationManager::ConfigDirectories directories,
       Logger logger,
       std::shared_ptr<ProblemManager> problemManager,
-      const WaterValueComputationMode& computationMode = WaterValueComputationMode::
-        SEQUENTIAL_IGNORE_TRAJECTORY,
+      const WaterValueComputationMode&
+        computationMode = WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY,
       unsigned int startWeek = 1,
       unsigned int endWeek = 52);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
+    // std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+    std::shared_ptr<ProblemManager> updateProblems(
       const GridDefinition& gridDefinition,
       const std::optional<std::string>& areaName = std::nullopt);
     void initializeOptimalTrajectories(std::shared_ptr<GridCollection> gridCollection) const;
@@ -63,11 +64,12 @@ private:
     /// @param reservoirManagement an instance of ReservoirManagement holding all reservoirs
     /// @param areaName The optional name of the area, used only in a multistock context
     /// @return
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-    cleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
-                                        const std::filesystem::path& log_file_path,
-                                        const GridDefinition& gridDefinition,
-                                        const std::string& areaName);
+    // std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+    std::shared_ptr<ProblemManager> cleanProblemsForBellmanCalculations(
+      const std::filesystem::path& xpansion_output_dir,
+      const std::filesystem::path& log_file_path,
+      const GridDefinition& gridDefinition,
+      const std::string& areaName);
 
     void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                                             const GridDefinition& gridDefinition,

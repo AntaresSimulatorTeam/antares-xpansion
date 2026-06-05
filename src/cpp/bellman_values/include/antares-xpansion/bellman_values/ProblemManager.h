@@ -20,6 +20,8 @@ public:
                    bool cacheProblems = false,
                    std::optional<std::filesystem::path> problemsPath = std::nullopt);
 
+    ProblemManager(const ProblemManager& problemManagerToCopy);
+
     ~ProblemManager();
 
     /**
@@ -27,7 +29,7 @@ public:
      *
      * @return std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
      */
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> getProblems() const
+    const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>& getProblems() const
     {
         return problems_;
         // todo: read from disk
@@ -109,6 +111,11 @@ public:
             problems_[pbId] = pb;
             problemIds.emplace(pbId);
         }
+    }
+
+    void setProblemsPath(const std::filesystem::path& problemsPath)
+    {
+        problemsPath_ = problemsPath;
     }
 
     void saveProblemToFile(const Antares::Solver::WeeklyProblemId& pbId,

@@ -19,12 +19,12 @@ using namespace PlainData;
 /// @param solverName Name of the solver to use
 /// @param nbThreads Number of threads to use
 Evaluator::Evaluator(Logger logger,
-                     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
+                     std::shared_ptr<ProblemManager> problemManager,
                      std::filesystem::path studyDir,
                      std::string solverName,
                      int nbThreads):
     logger{std::move(logger)},
-    problems(problems),
+    problemManager(problemManager),
     solverName(solverName),
     studyDir(studyDir),
     nbThreads(nbThreads)
@@ -65,11 +65,12 @@ void Evaluator::Run()
     // Limiter TBB au nombre de cœurs physiques
     tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
 
-    tbb::parallel_for_each(problems.begin(),
-                           problems.end(),
-                           [this](auto& kv)
+    auto problemIds = problemManager->getProblemIds();
+    tbb::parallel_for_each(problemIds.begin(),
+                           problemIds.end(),
+                           [this](auto& yearWeekId)
                            {
-                               auto& [yearWeekId, subPb] = kv;
+                               //    auto& [yearWeekId, subPb] = kv;
                                logger->display_message((std::stringstream()
                                                         << "Processing subproblem : year "
                                                         << yearWeekId.year << " week "
@@ -77,6 +78,7 @@ void Evaluator::Run()
                                                          .str(),
                                                        LogUtils::LOGLEVEL::INFO,
                                                        EVALUATOR_LOGGER_CONTEXT);
+                               auto subPb = problemManager->getProblemFromId(yearWeekId);
                                ProcessSubproblem(yearWeekId, subPb);
                            });
 }

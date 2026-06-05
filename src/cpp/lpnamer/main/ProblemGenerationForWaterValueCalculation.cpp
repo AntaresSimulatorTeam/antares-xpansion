@@ -55,8 +55,8 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 /// @brief Update the problems for the water value calculation
 /// @param gridDefinition
 /// @return The modified problems
-std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-ProblemGenerationForWaterValueCalculation::updateProblems(
+// std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+std::shared_ptr<ProblemManager> ProblemGenerationForWaterValueCalculation::updateProblems(
   const GridDefinition& gridDefinition,
   const std::optional<std::string>& areaName)
 {
@@ -90,13 +90,13 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
             }
         }
     }
-    auto modifiedProblems = cleanProblemsForBellmanCalculations(directories.simulation_dir,
-                                                                log_file_path,
-                                                                gridDefinition,
-                                                                areaName.value_or(
-                                                                  gridDefinition.area));
+    auto modifiedProblemManager = cleanProblemsForBellmanCalculations(directories.simulation_dir,
+                                                                      log_file_path,
+                                                                      gridDefinition,
+                                                                      areaName.value_or(
+                                                                        gridDefinition.area));
 
-    return modifiedProblems;
+    return modifiedProblemManager;
 }
 
 /// @brief Clean the problems for the Bellman Values calculations
@@ -104,7 +104,8 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
 /// @param log_file_path The path to the log file
 /// @param gridDefinition The gridDefinition
 /// @return The modified problems
-std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+// std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+std::shared_ptr<ProblemManager>
 ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
   const std::filesystem::path& xpansion_output_dir,
   const std::filesystem::path& log_file_path,
@@ -112,12 +113,17 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
   const std::string& areaName)
 {
     logger->display_message("Cleaning problems for Bellman calculations");
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> modifiedProblems;
+    // std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> modifiedProblems;
+    std::shared_ptr<ProblemManager> modifiedProblemManager = std::make_shared<ProblemManager>(
+      *problemManager);
     std::mutex mapMutex;
 
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
     std::filesystem::create_directory(outputMpsPath);
+    // use it in modified problem manager
+    modifiedProblemManager->setProblemsPath(outputMpsPath);
+
     auto problems = problemManager->getProblemIds();
     tbb::parallel_for_each(
       problems.begin(),
@@ -142,7 +148,8 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
                                       logger->CONTEXT);
               {
                   std::lock_guard<std::mutex> lock(mapMutex);
-                  modifiedProblems[pbId] = problem;
+                  //   modifiedProblems[pbId] = problem;
+                  modifiedProblemManager->setProblem(pbId, problem);
               }
 
               if (problemManager->writePbFiles())
@@ -153,7 +160,8 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
           }
       });
 
-    return modifiedProblems;
+    // return modifiedProblems;
+    return modifiedProblemManager;
 }
 
 int checkedMapLookup(const std::unordered_map<std::string, int>& nameToIndex,

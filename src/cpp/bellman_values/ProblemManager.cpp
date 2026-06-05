@@ -31,6 +31,15 @@ ProblemManager::ProblemManager(const std::string& solverName,
     }
 }
 
+ProblemManager::ProblemManager(const ProblemManager& problemManagerToCopy):
+    ProblemManager(problemManagerToCopy.solverName_,
+                   "OPTIMIZED",
+                   problemManagerToCopy.writePbFiles_,
+                   problemManagerToCopy.cacheProblems_,
+                   problemManagerToCopy.problemsPath_)
+{
+}
+
 ProblemManager::~ProblemManager()
 {
     // removing problems if they were not needed
@@ -48,22 +57,27 @@ void ProblemManager::setProblems(
 {
     problems_.clear();
     problemIds.clear();
-    if (cacheProblems_)
+
+    for (auto& [pbId, problem]: problems)
     {
-        for (auto& [pbId, problem]: problems)
-        {
-            problemIds.emplace(pbId);
-            saveProblemToFile(pbId, problem, problemsPath_.value());
-        }
+        setProblem(pbId, problem);
     }
-    else
-    {
-        problems_ = std::move(problems);
-        for (auto& [pbId, problem]: problems)
-        {
-            problemIds.emplace(pbId);
-        }
-    }
+    // if (cacheProblems_)
+    // {
+    //     for (auto& [pbId, problem]: problems)
+    //     {
+    //         problemIds.emplace(pbId);
+    //         saveProblemToFile(pbId, problem, problemsPath_.value());
+    //     }
+    // }
+    // else
+    // {
+    //     problems_ = std::move(problems);
+    //     for (auto& [pbId, problem]: problems)
+    //     {
+    //         problemIds.emplace(pbId);
+    //     }
+    // }
 }
 
 std::shared_ptr<Problem> ProblemManager::readProblemFromDisk(const std::string& problemName) const
@@ -109,13 +123,9 @@ void ProblemManager::saveProblemToFile(const Antares::Solver::WeeklyProblemId& p
     {
     case ProblemsFormat::MPS_FILE:
         problem->write_prob_mps(folder / (getPbNameFromId(pbId) + ".mps"));
-        // std::cout << "Problem saved to " + folder.string() + "/" + getPbNameFromId(pbId)
-        //                + ".mps\n";
         break;
     case ProblemsFormat::OPTIMIZED:
         problem->save_prob(folder / (getPbNameFromId(pbId) + ".svf"));
-        // std::cout << "Problem saved to " + folder.string() + "/" + getPbNameFromId(pbId)
-        //                + ".svf\n";
         break;
         // potential errors are handled by
         // problemsFormatFromString in constructor
