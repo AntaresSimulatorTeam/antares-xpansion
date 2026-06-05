@@ -172,7 +172,6 @@ void MemOptimSubProblemBuilder::read_rhs()
     if (rhs_stream.is_open())
     {
         std::string line;
-        int j = 0;
 
         while (std::getline(rhs_stream, line))
         {
