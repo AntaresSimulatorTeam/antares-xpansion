@@ -5,10 +5,10 @@
 #include <utility>
 
 #include <boost/tokenizer.hpp>
-#include "antares-xpansion/benders/benders_core/ConstraintsFileReader.h"
 
 #include "IBendersProblemProvider.h"
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
+#include "antares-xpansion/benders/benders_core/ConstraintsFileReader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
@@ -46,7 +46,7 @@ private:
     std::filesystem::path inputRoot_;
 
     std::map<std::string, std::vector<double>> coeffs_;
-    std::map<std::string,std::vector<SolverRepresentedRows>> micro_iters_added_rows ; 
+    std::map<std::string, std::vector<SolverRepresentedRows>> micro_iters_added_rows;
     std::vector<std::string> coef_cols_;
     std::vector<std::string> coef_rows_;
     std::map<std::string, std::vector<double>> obj_coefs_;
@@ -61,6 +61,6 @@ private:
     std::vector<int> obj_col_indices_;
     SolverLogManager solver_log_manager_;
     SolverIO solver_IO_;
-    bool micro_iters_ ; 
-    bool warm_start_ ; 
+    bool micro_iters_;
+    bool warm_start_;
 };

@@ -26,8 +26,8 @@ MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path
     read_obj_cols();
     read_rhs();
     read_rhs_rows();
-    micro_iters_ = false ; 
-    warm_start_ = false ; 
+    micro_iters_ = false;
+    warm_start_ = false;
 }
 
 void MemOptimSubProblemBuilder::read_coef()
@@ -253,7 +253,7 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
     auto& coeffs_obj = obj_coefs_[sub_name];
     auto& rhs_values = rhs_[sub_name];
     int n_coefs = coeffs_sub.size();
-    std::shared_ptr<SolverAbstract> sub_solver(solver_->clone()) ; 
+    std::shared_ptr<SolverAbstract> sub_solver(solver_->clone());
 
     auto start = std::chrono::high_resolution_clock::now();
     sub_solver->chg_coefs(n_coefs,
