@@ -143,7 +143,7 @@ $(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_23-Bu
 <div class="textblock"><p><a class="anchor" id="autotoc_md158"></a></p>
 <h1><a class="anchor" id="autotoc_md159"></a>
 Configure build with CMake</h1>
-<p>Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.</p>
+<p>Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies, such as Simulator or or-tools (see <a href="2-Dependencies-install.md#using-pre-build-dependency">this section</a>).</p>
 <p>The first time vcpkg will download and compile all dependencies. This can take a long time. Especially openmpi. Unless some dependencies are updated, nothing will be done on the next build. VCPKG store sources in a cache folder, removing your build folder will only remove the compiled dependencies. Meaning later builds will be faster than the first one even if you remove your build folder</p>
 <p>=== "Windows" </p><pre class="fragment">```
 cmake -B _build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
