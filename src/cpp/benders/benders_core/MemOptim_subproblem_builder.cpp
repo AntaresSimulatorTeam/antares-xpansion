@@ -26,8 +26,8 @@ MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path
     read_obj_cols();
     read_rhs();
     read_rhs_rows();
-    micro_iters_ = false;
-    warm_start_ = false;
+    micro_iters_ = false ; 
+    warm_start_ = false ; 
 }
 
 void MemOptimSubProblemBuilder::read_coef()
@@ -39,7 +39,6 @@ void MemOptimSubProblemBuilder::read_coef()
     std::ifstream coef_csv_stream(coef_csv_path);
     if (coef_csv_stream.is_open())
     {
-        int j = 0;
         std::string line;
         while (std::getline(coef_csv_stream, line))
         {
@@ -234,8 +233,6 @@ void MemOptimSubProblemBuilder::build_sub_skeleton(std::string solver_name,
     solver_IO_.configure(solver_name, format);
 
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
-
-    int number_of_rows = solver_->get_nrows();
 }
 
 int MemOptimSubProblemBuilder::get_sub_number()
@@ -253,7 +250,7 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
     auto& coeffs_obj = obj_coefs_[sub_name];
     auto& rhs_values = rhs_[sub_name];
     int n_coefs = coeffs_sub.size();
-    std::shared_ptr<SolverAbstract> sub_solver(solver_->clone());
+    std::shared_ptr<SolverAbstract> sub_solver(solver_->clone()) ; 
 
     auto start = std::chrono::high_resolution_clock::now();
     sub_solver->chg_coefs(n_coefs,
