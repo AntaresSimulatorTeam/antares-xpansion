@@ -167,21 +167,11 @@ private:
                                               const BendersBaseOptions& options,
                                               const SolverLogManager& solver_log_manager);
 
-    /*
-        This function is used to check if a constraint key rendered by the julia cde
-        has been added or not to the subproblem worker.
-        @inputs
-            - key : constraint key to check
-            - sub_name : subproblem name
-    */
-    // bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
-
-    // BuildSubProblemConstraintMap()
     void read_micro_iteration_config_file();
 
     void read_variables_to_follow_ids();
     void read_variable_names_to_follow();
-    void build_variables_to_follow_indices_vector(std::string sub_name);
+    void build_variables_to_follow_indices_vector();
     const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
     mpi::communicator* _world;
@@ -201,7 +191,6 @@ private:
     on_Benders_micro_iteration_end OnBendersMicroIterationEnd_;
     on_Benders_sub_resolution_start OnBendersSubResolutionStart_;
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
-    std::map<std::string, bool> is_variable_names_indices_created_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
     std::filesystem::path input_root_;

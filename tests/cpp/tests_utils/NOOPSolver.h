@@ -221,6 +221,14 @@ public:
     {
     }
 
+    void chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals) override
+    {
+    }
+
+    void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) override
+    {
+    }
+
     void chg_row_name(int id_row, const std::string& name) override
     {
     }

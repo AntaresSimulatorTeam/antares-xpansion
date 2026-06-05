@@ -198,7 +198,7 @@ TEST_CASE("InvalidSetOptimatilityGap", "[exceptions][set_optimality_gap]")
 
 TEST_CASE("InvalidSolverNameException", "[exceptions][invalid_solver_name]")
 {
-    for (const std::string& solver_name: {"SIRIUS", "GUROBI"})
+    for (const std::string solver_name: {"SIRIUS", "GUROBI"})
     {
         SolverFactory factory;
         try
