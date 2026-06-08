@@ -2,6 +2,7 @@
 
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
+#include <fstream>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
@@ -482,6 +483,13 @@ void BendersMpi::Run()
         benders_plugin_->OnBendersMasterResolutionStart();
 
         step_1_solve_master();
+
+        {
+            std::ofstream master_out("master_out.txt");
+            for (const auto& [key, value] : _data.x_cut) {
+                master_out << key << " " << value << "\n";
+            }
+        }
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 

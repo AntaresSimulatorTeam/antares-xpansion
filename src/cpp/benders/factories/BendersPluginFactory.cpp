@@ -18,21 +18,18 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
 {
     if (micro_iter)
     {
-        int n_subs = coupling_map.size();
-        std::vector<const char*> subs_ids;
-        subs_ids.reserve(n_subs);
-        for (auto& [sub_name, sub_variables_map]: coupling_map)
+        std::vector<std::string> sub_names ;
+        for (auto& [sub_name, _]: coupling_map)
         {
             if (sub_name != "master")
             {
-                subs_ids.push_back(sub_name.c_str());
+                sub_names.push_back(sub_name);
             }
         }
 
         std::shared_ptr<Benders_MICRO_ITERS>
           plugin_micro_iters = std::make_shared<Benders_MICRO_ITERS>(options_, coupling_map, world);
-        plugin_micro_iters->SetSubProblemIDs(subs_ids.data(), subs_ids.size());
-
+          plugin_micro_iters->SetSubProblemIDs(sub_names) ; 
         std::shared_ptr<BendersPlugin> plugin = plugin_micro_iters;
 
         return plugin;

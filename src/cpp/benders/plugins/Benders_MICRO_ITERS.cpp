@@ -35,6 +35,8 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
+    std::cout<<"plugin_lib_path "<<plugin_lib_path<<std::endl ; 
+
     auto cpp_lib_absolute_path = input_root_ / plugin_lib_path;
 #ifdef _WIN32
     handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
@@ -135,7 +137,6 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
         _world->abort(EXIT_FAILURE);
     }
 }
-
 void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
@@ -213,10 +214,12 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
 
+
+    std::cout<<"on benders start "<<std::endl ; 
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
     build_variables_to_follow_indices_vector();
 
-    onBendersStartPlugin_(sub_pb_ids_,
+    onBendersStartPlugin_(sub_names_,
                           _world->rank(),
                           options.INPUTROOT,
                           options.OUTPUTROOT,
@@ -339,22 +342,9 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int nu
     }
 }
 
-void Benders_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
+void Benders_MICRO_ITERS::SetSubProblemIDs(std::vector<std::string>& sub_names)
 {
-    sub_ids_storage_.clear();
-    sub_ids_storage_.reserve(n_subs);
-    for (int i = 0; i < n_subs; i++)
-    {
-        sub_ids_storage_.push_back(subs_ids[i]);
-    }
-
-    sub_ids_ptrs_.resize(n_subs);
-    for (int i = 0; i < n_subs; i++)
-    {
-        sub_ids_ptrs_[i] = sub_ids_storage_[i].c_str();
-    }
-
-    sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
+    sub_names_ = sub_names ;
 }
 
 void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
