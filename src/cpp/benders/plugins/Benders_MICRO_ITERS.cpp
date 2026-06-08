@@ -219,6 +219,8 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
     build_variables_to_follow_indices_vector();
 
+    std::cout<<"just before the plugin call "<<std::endl ; 
+
     onBendersStartPlugin_(sub_names_,
                           _world->rank(),
                           options.INPUTROOT,
