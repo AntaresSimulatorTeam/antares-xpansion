@@ -10,6 +10,9 @@
 #include <sstream>
 #include <string_view>
 
+#include <exception>
+#include <stdexcept>
+
 #include <boost/tokenizer.hpp>
 
 #include "iostream"
@@ -217,6 +220,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 
     std::cout<<"on benders start "<<std::endl ; 
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    std::cout<<"BuildSubproblemConstraintsManagerMap built successfuly "<<std::endl ; 
     build_variables_to_follow_indices_vector();
 
     std::cout<<"just before the plugin call "<<std::endl ; 
@@ -252,8 +256,12 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
     {
         for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
         {
-            auto constraint_reader = constraints_map_[constraint_reader_name];
-            constraint_reader->delete_added_rows();
+            auto it = constraints_map_.find(constraint_reader_name);
+            if (it == constraints_map_.end())
+            {
+                continue;
+            }
+            it->second->delete_added_rows();
         }
     }
 }
@@ -270,10 +278,17 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
 
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
+    std::cout<<"subproblem_constraint_map_ size"<<subproblem_constraint_map_.size()<<std::endl ;
     for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
     {
+        auto it = constraints_map_.find(constraint_reader_name);
+        if (it == constraints_map_.end())
+        {
+            // This subproblem is handled by another MPI rank
+            continue;
+        }
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
-        auto constraint_reader = constraints_map_[constraint_reader_name];
+        auto constraint_reader = it->second;
         for (auto& variable: variables_to_follow_)
         {
             int variable_index = constraint_reader->get_variable_index_in_solution(variable);
@@ -354,20 +369,25 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
   const BendersBaseOptions& options,
   const SolverLogManager& solver_log_manager)
 {
+    std::cout<<"subproblem_map size "<<subproblem_map.size()<<std::endl ; 
     for (auto& [sub, sub_worker]: subproblem_map)
     {
-        added_constraints_per_sub_[sub] = std::vector<std::string>();
-        std::string constraints_file_name = subproblem_constraint_map_[sub];
-        auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
-                                     / constraints_file_name;
-        ConstraintsFileReader file_reader(constraints_file_path,
-                                          options.SOLVER_NAME,
-                                          solver_log_manager,
-                                          _logger,
-                                          options.LOG_LEVEL,
-                                          options.PROBLEMS_FORMAT);
-        constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
-          std::move(file_reader),
-          sub_worker);
-    }
+            added_constraints_per_sub_[sub] = std::vector<std::string>();
+            // std::cout<<"rank "<<_world->rank()<<" sub "<<sub<<std::endl ; 
+            std::string constraints_file_name = subproblem_constraint_map_[sub];
+            auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
+            / constraints_file_name;
+            std::cout<<"rank "<<_world->rank()<<std::endl ; 
+            ConstraintsFileReader file_reader(constraints_file_path,
+                options.SOLVER_NAME,
+                solver_log_manager,
+                _logger,
+                options.LOG_LEVEL,
+                options.PROBLEMS_FORMAT);
+                constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
+                    std::move(file_reader),
+                    sub_worker);
+    }   
+
+    std::cout<<"rank "<<_world->rank()<<" constraints_map_ size  "<<constraints_map_.size()<<std::endl ; 
 }
