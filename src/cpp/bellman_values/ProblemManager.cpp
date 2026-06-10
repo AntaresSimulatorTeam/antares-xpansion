@@ -6,26 +6,19 @@ ProblemManager::ProblemManager(const std::string& solverName,
                                bool cacheProblems,
                                std::optional<std::filesystem::path> problemsPath):
     solverName_(solverName),
-    problemFormat_(problemsFormatFromString(
-      "OPTIMIZED")), // here, can be updated to choose the file format for real
     writePbFiles_(writePbFiles),
     cacheProblems_(cacheProblems),
     problemsPath_(problemsPath),
     solverLogManager_(),
     solverFactory_()
 {
-    if (solverName != "xpress" && problemFormat_ == ProblemsFormat::OPTIMIZED)
-    {
-        std::cout << "The optimized problem format is only compatible with Xpress solver. MPS "
-                     "format will be used.\n";
-        problemFormat_ = ProblemsFormat::MPS_FILE;
-    }
+    setProblemFormat(problemsFormatFromString(problemFormat));
     if (cacheProblems && problemsPath == std::nullopt)
     {
         throw std::runtime_error(
           "Error: trying to stream problems from disk without specifying a folder.");
     }
-    if (cacheProblems && !std::filesystem::exists(problemsPath.value()))
+    if ((cacheProblems || writePbFiles) && !std::filesystem::exists(problemsPath.value()))
     {
         std::filesystem::create_directories(problemsPath.value());
     }
@@ -38,6 +31,7 @@ ProblemManager::ProblemManager(const ProblemManager& problemManagerToCopy):
                    problemManagerToCopy.cacheProblems_,
                    problemManagerToCopy.problemsPath_)
 {
+    setProblemFormat(problemManagerToCopy.problemFormat_);
 }
 
 ProblemManager::~ProblemManager()
@@ -62,22 +56,6 @@ void ProblemManager::setProblems(
     {
         setProblem(pbId, problem);
     }
-    // if (cacheProblems_)
-    // {
-    //     for (auto& [pbId, problem]: problems)
-    //     {
-    //         problemIds.emplace(pbId);
-    //         saveProblemToFile(pbId, problem, problemsPath_.value());
-    //     }
-    // }
-    // else
-    // {
-    //     problems_ = std::move(problems);
-    //     for (auto& [pbId, problem]: problems)
-    //     {
-    //         problemIds.emplace(pbId);
-    //     }
-    // }
 }
 
 std::shared_ptr<Problem> ProblemManager::readProblemFromDisk(const std::string& problemName) const
@@ -103,7 +81,7 @@ std::shared_ptr<Problem> ProblemManager::readProblemFromDisk(const std::string& 
             problem->restore_prob(problemsPath_.value() / (problemName + ".svf"));
             break;
             // potential errors are handled by
-            // problemsFormatFromString in constructor
+            // problemsFormatFromString called in constructor
         }
         return problem;
     }

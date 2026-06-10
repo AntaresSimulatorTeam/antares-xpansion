@@ -135,8 +135,6 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
           {
               // copy of the problem needed if gridCollection contains multiple
               // gridDefinitions, and for multistock
-              // make_shared will be wrong about the counter here, resulting in a memory leak
-              // use shared_ptr instead
               std::shared_ptr<Problem> problem = problemManager->getProblemCloneFromId(pbId);
               std::string pbName = problemManager->getPbNameFromId(pbId);
               logger->display_message("Modifying problem: " + pbName,
@@ -150,12 +148,6 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
                   std::lock_guard<std::mutex> lock(mapMutex);
                   //   modifiedProblems[pbId] = problem;
                   modifiedProblemManager->setProblem(pbId, problem);
-              }
-
-              if (problemManager->writePbFiles())
-              {
-                  logger->display_message("Writing problem " + pbName + " to disk...");
-                  problemManager->saveProblemToFile(pbId, problem, outputMpsPath);
               }
           }
       });

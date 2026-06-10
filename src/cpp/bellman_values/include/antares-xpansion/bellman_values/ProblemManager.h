@@ -101,15 +101,16 @@ public:
 
     void setProblem(const Antares::Solver::WeeklyProblemId& pbId, std::shared_ptr<Problem> pb)
     {
-        if (cacheProblems_)
+        problemIds.emplace(pbId);
+        if (cacheProblems_ || writePbFiles_)
         {
-            problemIds.emplace(pbId);
+            // problems are written to disk
             saveProblemToFile(pbId, pb, problemsPath_.value());
         }
-        else
+        if (!cacheProblems_)
         {
+            // problems are stored in memory
             problems_[pbId] = pb;
-            problemIds.emplace(pbId);
         }
     }
 
@@ -124,6 +125,26 @@ public:
 
 private:
     std::shared_ptr<Problem> readProblemFromDisk(const std::string& problemName) const;
+
+    void setProblemFormat(const ProblemsFormat& problemFormat)
+    {
+        if (solverName_ != "xpress" && problemFormat == ProblemsFormat::OPTIMIZED)
+        {
+            std::cout << "The optimized problem format is only compatible with Xpress solver. MPS "
+                         "format will be used.\n";
+            problemFormat_ = ProblemsFormat::MPS_FILE;
+        }
+        else if (!writePbFiles_)
+        {
+            std::cout << "Problem files are not required to be kept on disk - optimized svf files "
+                         "are used.\n";
+            problemFormat_ = ProblemsFormat::OPTIMIZED;
+        }
+        else
+        {
+            problemFormat_ = problemFormat;
+        }
+    }
 
     bool cacheProblems_ = false; // for optimization purposes, problems can be read
                                  // from/saved on disk instead of in memory
