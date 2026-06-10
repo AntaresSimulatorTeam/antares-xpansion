@@ -29,8 +29,8 @@ public:
       ConfigurationManager::ConfigDirectories directories,
       Logger logger,
       std::shared_ptr<ProblemManager> problemManager,
-      const WaterValueComputationMode&
-        computationMode = WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY,
+      const WaterValueComputationMode& computationMode = WaterValueComputationMode::
+        SEQUENTIAL_IGNORE_TRAJECTORY,
       unsigned int startWeek = 1,
       unsigned int endWeek = 52);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;

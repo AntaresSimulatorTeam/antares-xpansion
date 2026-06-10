@@ -27,7 +27,8 @@ public:
 protected:
     void Run();
     virtual void ProcessSubproblem(const Antares::Solver::WeeklyProblemId,
-                                   std::shared_ptr<Problem> subProblem) = 0;
+                                   std::shared_ptr<Problem> subProblem)
+      = 0;
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
                                  std::shared_ptr<Problem> subProblem);
     SubProblemData SolveSubproblem(std::shared_ptr<Problem> subProblem);

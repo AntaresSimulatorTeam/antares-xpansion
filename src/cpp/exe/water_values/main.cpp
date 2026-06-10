@@ -365,8 +365,8 @@ int main(int argc, char** argv)
             {
                 logger->display_message("Computing optimal trajectory...");
 
-                gridCollection->reservoirs.at(grid.area)
-                  .optimal_trajectory = bellmanValuesEvaluator.computeOptimalTrajectories();
+                gridCollection->reservoirs.at(grid.area).optimal_trajectory
+                  = bellmanValuesEvaluator.computeOptimalTrajectories();
 
                 logger->display_message("Computed optimal trajectory");
 
