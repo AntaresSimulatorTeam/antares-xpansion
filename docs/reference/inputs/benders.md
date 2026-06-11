@@ -1,11 +1,21 @@
 # Settings for launching Benders exec 
 
+It is possible to launch the Benders solver directly as a standalone application. 
+The solver is provided as an executable named Benders,
+which can be invoked from the command line without requiring any additional wrapper or interface.
 
-It is possible to launch the Benders solver directly as a standalone application. The solver is provided as an executable named Benders, which can be invoked from the command line without requiring any additional wrapper or interface.
+The execution of the solver is configured through an input file named `options.json`,
+which must be supplied at runtime. This JSON configuration file defines 
+all the parameters required to control the behavior of the solver. 
+It typically includes the solver’s operational settings, algorithmic options,
+and problem-specific configurations. By adjusting the attributes in this file,
+users can fine-tune aspects such as decomposition settings, convergence criteria,
+logging behavior, performance-related options, and input/output paths.
 
-The execution of the solver is configured through an input file named `options.json`, which must be supplied at runtime. This JSON configuration file defines all the parameters required to control the behavior of the solver. It typically includes the solver’s operational settings, algorithmic options, and problem-specific configurations. By adjusting the attributes in this file, users can fine-tune aspects such as decomposition settings, convergence criteria, logging behavior, performance-related options, and input/output paths.
-
-This design allows for a clear separation between the solver logic and its configuration, making the execution flexible, reproducible, and easy to automate within scripts or larger workflows. The following attributes are defined in the options.json file:
+This design allows for a clear separation between the solver logic 
+and its configuration, making the execution flexible, reproducible, 
+and easy to automate within scripts or larger workflows.
+The following attributes are defined in the `options.json` file:
 
 | Name | Default value | Description | Possible values |
 | -----| -------------| -------------|-------------|
