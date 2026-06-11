@@ -60,13 +60,13 @@ nav:
       - Merging annual problems: reference/trajectory-investment/merge-master.md
   - Developer guide:
     - Install from sources:
-      - Introduction: developer-guide/install_from_sources/0-INSTALL.md
-      - Development requirements: developer-guide/install_from_sources/1-Development-requirements.md
-      - Dependencies install: developer-guide/install_from_sources/2-Dependencies-install.md
-      - Build: developer-guide/install_from_sources/3-Build.md
-      - Tests: developer-guide/install_from_sources/4-Tests.md
-      - Installer creation: developer-guide/install_from_sources/5-Installer-creation.md
-      - Xpress: developer-guide/install_from_sources/6-Xpress.md
+      - Introduction: developer-guide/install_from_sources/install-from-source.md
+      - Development requirements: developer-guide/install_from_sources/development-requirements.md
+      - Dependencies install: developer-guide/install_from_sources/install-dependencies.md
+      - Build: developer-guide/install_from_sources/build.md
+      - Tests: developer-guide/install_from_sources/tests.md
+      - Installer creation: developer-guide/install_from_sources/installer-creation.md
+      - Xpress: developer-guide/install_from_sources/xpress.md
     - Antares-Xpansion simulation procedure:
       - Overview: developer-guide/xpansion_steps/0-overview.md
       - Antares optimization problem retrieval: developer-guide/xpansion_steps/1-antares-solver-problem.md

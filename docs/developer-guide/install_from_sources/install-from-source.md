@@ -14,12 +14,12 @@ Follow this [link][Doxygen_Code_Documentation] for Doxygen code documentation.
 
 ## Build and installation details
 
-- [Development requirements](1-Development-requirements.md)
-- [Dependencies](2-Dependencies-install.md)
-- [Build](3-Build.md)
-- [Tests](4-Tests.md)
-- [Installer creation](5-Installer-creation.md)
-- [Xpress integration](6-Xpress.md)
+- [Development requirements](development-requirements.md)
+- [Dependencies](install-dependencies.md)
+- [Build](build.md)
+- [Tests](tests.md)
+- [Installer creation](installer-creation.md)
+- [Xpress integration](xpress.md)
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml/badge.svg?query=branch%3Adevelop
 
