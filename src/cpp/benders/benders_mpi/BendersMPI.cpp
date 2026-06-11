@@ -484,12 +484,6 @@ void BendersMpi::Run()
 
         step_1_solve_master();
 
-        {
-            std::ofstream master_out("master_out.txt");
-            for (const auto& [key, value] : _data.x_cut) {
-                master_out << key << " " << value << "\n";
-            }
-        }
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 

@@ -38,8 +38,6 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
-    std::cout<<"plugin_lib_path "<<plugin_lib_path<<std::endl ; 
-
     auto cpp_lib_absolute_path = input_root_ / plugin_lib_path;
 #ifdef _WIN32
     handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
