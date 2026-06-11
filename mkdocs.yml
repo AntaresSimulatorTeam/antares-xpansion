@@ -12,7 +12,6 @@ theme:
   features:
     - navigation.instant
     - navigation.top
-    - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
@@ -60,18 +59,18 @@ nav:
       - Merged weights file generation : reference/trajectory-investment/merge-weights.md
       - Merging annual problems: reference/trajectory-investment/merge-master.md
   - Developer guide:
-    - Install from sources:
-      - Introduction: developer-guide/install_from_sources/install-from-source.md
-      - Development requirements: developer-guide/install_from_sources/development-requirements.md
-      - Dependencies install: developer-guide/install_from_sources/install-dependencies.md
-      - Build: developer-guide/install_from_sources/build.md
-      - Tests: developer-guide/install_from_sources/tests.md
-      - Installer creation: developer-guide/install_from_sources/installer-creation.md
-      - Xpress: developer-guide/install_from_sources/xpress.md
-    - Antares Xpansion simulation procedure:
-      - Overview: developer-guide/xpansion_steps/0-overview.md
-      - Antares optimization problem retrieval: developer-guide/xpansion_steps/1-antares-solver-problem.md
-      - Investment problem generation: developer-guide/xpansion_steps/2-problem-modification.md
+    - Install from source:
+      - developer-guide/install-from-source/index.md
+      - Development requirements: developer-guide/install-from-source/development-requirements.md
+      - Dependencies install: developer-guide/install-from-source/install-dependencies.md
+      - Build: developer-guide/install-from-source/build.md
+      - Tests: developer-guide/install-from-source/tests.md
+      - Installer creation: developer-guide/install-from-source/installer-creation.md
+      - Xpress: developer-guide/install-from-source/xpress.md
+    - Simulation procedure:
+      - developer-guide/xpansion-steps/index.md
+      - Antares optimization problem retrieval: developer-guide/xpansion-steps/antares-solver-problem.md
+      - Investment problem generation: developer-guide/xpansion-steps/problem-modification.md
     - Contributing: 
       - Documentation guidelines: developer-guide/contributing/doc-guidelines.md
 
