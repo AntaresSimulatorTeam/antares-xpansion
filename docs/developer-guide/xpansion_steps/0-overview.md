@@ -1,16 +1,16 @@
-# Antares-Xpansion simulation procedure
+# Antares Xpansion simulation procedure
 
-An Antares-Xpansion simulation is currently run in four separate steps, managed by a Python orchestrator.
+An Antares Xpansion simulation is currently run in four separate steps, managed by a Python orchestrator.
 
-The basic idea behind an Antares-Xpansion simulation is to let Antares-Simulator
+The basic idea behind an Antares Xpansion simulation is to let Antares-Simulator
 read the Antares study and build the initial supply-demand optimisation problem without knowledge of the 
-investment candidates. Then the investment optimization problem is built and solved within Antares-Xpansion.
+investment candidates. Then the investment optimization problem is built and solved within Antares Xpansion.
 
-There are four steps in a full Antares-Xpansion simulation. Each section title is followed by the corresponding value of the variable `--step` when launching `antares-xpansion-launcher` from the command line.
+There are four steps in a full Antares Xpansion simulation. Each section title is followed by the corresponding value of the variable `--step` when launching `antares-xpansion-launcher` from the command line.
 
 ## 1- Antares-Simulator optimization problems retrieval: `antares`
 
-The solver of Antares-Simulator, `antares-solver`, runs the Antares study with a specific configuration set by Antares-Xpansion, see [Antares optimization problem retrieval](1-antares-solver-problem.md) for more details. 
+The solver of Antares-Simulator, `antares-solver`, runs the Antares study with a specific configuration set by Antares Xpansion, see [Antares optimization problem retrieval](1-antares-solver-problem.md) for more details. 
 
 The weekly supply-demand optimization problems are written as `.mps` files. In this mode Antares-Simulator writes some additional files that add a business context of the linear problems (`variable.txt`, `area.txt` and `interco.txt`). These files allow to map the variable numbers in the `.mps` files to their physical meaning. For more details, see [Antares optimization problem retrieval](1-antares-solver-problem.md).
 
@@ -20,8 +20,8 @@ This stage is responsible for building the investment optimization problem, usin
 [Benders reformulation](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-theory/#benders-reformulation-and-decomposition-algorithm), which results in the creation of a _master problem_ and of _satellite problems_. The _master problem_ takes investment decisions whereas _satellite problems_ solve the Antares supply-demand problems once the investment decisions are taken.
 
 Using the data on investment candidates specified in the `user/expansion/candidates.ini` file,
-Antares-Xpansion modifies the `.mps` problems provided by
-Antares-Simulator in the previous step to add information on the candidates. These modified problems are the so-called _satellite problems_. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares-Xpansion optimization)
+Antares Xpansion modifies the `.mps` problems provided by
+Antares-Simulator in the previous step to add information on the candidates. These modified problems are the so-called _satellite problems_. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares Xpansion optimization)
 
 This stage is also responsible for building the initial _master problem_
 used for Benders decomposition. If there are additional constraints linking the investment candidates (defined in the `additional-constraints` field of the `user/expansion/settings.ini` file), then they are added to the _master problem_.
@@ -30,8 +30,8 @@ For more details on how the master and the satellite problems are generated, see
 
 ## 3- Resolution stage with Benders decomposition: `benders`
 
-The core step of Antares-Xpansion problem consists in solving the investment problem generated in the previous step.
-Antares-Xpansion uses a [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) algorithm as it is well-suited to the structure of the investment problem: the _satellite problems_ are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares-Xpansion). Details of the methodology are given in the [optimization principles](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-theory/) page.
+The core step of Antares Xpansion problem consists in solving the investment problem generated in the previous step.
+Antares Xpansion uses a [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) algorithm as it is well-suited to the structure of the investment problem: the _satellite problems_ are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares Xpansion). Details of the methodology are given in the [optimization principles](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-theory/) page.
 
 
 ## 4- Update of antares study: `study_update`
@@ -74,9 +74,9 @@ If this file exists, the gems workflow is automatically activated instead of the
 Needs an optim-config.yml in the antares study to specify investment problems.
 Needs a user/expansion/settings.ini in the antares study.
 
-## Antares-Xpansion package executables
+## Antares Xpansion package executables
 
-Antares-Xpansion consists in four executables and a Python orchestrator that is responsible for 
+Antares Xpansion consists in four executables and a Python orchestrator that is responsible for 
 calling these executables with the correct options for each step.
 
 

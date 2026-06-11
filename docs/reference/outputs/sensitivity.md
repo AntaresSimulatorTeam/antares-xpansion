@@ -104,8 +104,8 @@ In this example, we have performed the sensitivity analysis with the following i
 
 The output file gathers the following data:
 
-- The version of Antares and Antares-Xpansion that is used,
-- `best benders cost`: Best upper bound, that is the optimal overall cost, found in the Antares-Xpansion optimization that was executed beforehand,
+- The version of Antares and Antares Xpansion that is used,
+- `best benders cost`: Best upper bound, that is the optimal overall cost, found in the Antares Xpansion optimization that was executed beforehand,
 - `epsilon`: Maximum gap with the optimal solution that is allowed,
 - `sensitivity solutions`: An array containing data for each sensitivity problem that is solved:
 

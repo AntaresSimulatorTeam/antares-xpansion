@@ -1,6 +1,6 @@
 # Dependencies install
 
-Antares-Xpansion depends on several mandatory libraries:
+Antares Xpansion depends on several mandatory libraries:
 
 - [JsonCpp](https://github.com/open-source-parsers/jsoncpp),
 - [Google Test](https://github.com/google/googletest),
@@ -9,7 +9,7 @@ Antares-Xpansion depends on several mandatory libraries:
 - [GraphViz](https://graphviz.org/) for Doxygen use.
 - [Antares Simulator](https://github.com/AntaresSimulatorTeam/Antares_Simulator) for Antares simulation.
 
-This section describes the installation procedures for the third-party open source libraries used by Antares-Xpansion.
+This section describes the installation procedures for the third-party open source libraries used by Antares Xpansion.
 The installation procedure can be done:
 
 - By using a package manager,
@@ -49,7 +49,7 @@ cmake --build build
 
 #### Runtime dependency
 
-When running Antares-Xpansion in parallel, mpirun is used. It is installed through VCPKG but needs to be added to the PATH.
+When running Antares Xpansion in parallel, mpirun is used. It is installed through VCPKG but needs to be added to the PATH.
 
 ```
 export PATH=$PATH:<path_to_vcpkg>/installed/<triplet>/tools/openmpi/bin

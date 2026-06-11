@@ -68,7 +68,7 @@ nav:
       - Tests: developer-guide/install_from_sources/tests.md
       - Installer creation: developer-guide/install_from_sources/installer-creation.md
       - Xpress: developer-guide/install_from_sources/xpress.md
-    - Antares-Xpansion simulation procedure:
+    - Antares Xpansion simulation procedure:
       - Overview: developer-guide/xpansion_steps/0-overview.md
       - Antares optimization problem retrieval: developer-guide/xpansion_steps/1-antares-solver-problem.md
       - Investment problem generation: developer-guide/xpansion_steps/2-problem-modification.md

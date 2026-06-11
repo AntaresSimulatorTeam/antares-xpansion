@@ -4,9 +4,9 @@
 
 # Introduction
 
-The [Antares-Xpansion][xpansion-github] package, works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Check out the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
+The [Antares Xpansion][xpansion-github] package, works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares Xpansion aims at performing investment simulations for Antares studies. Check out the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
 
-Antares-Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses of Antares-Xpansion are for example:
+Antares Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses of Antares Xpansion are for example:
 
 - **long-term scenario building**: build an economically consistent long-term generation mix,
 - **transmission expansion planning** : compute the network development which maximizes social welfare.
@@ -23,7 +23,7 @@ time frames each.
 The goal of the Antares simulation is to minimize the
 **expected operation cost during one year**.
 
-## Antares-Xpansion simulation
+## Antares Xpansion simulation
 
 Given an Antares simulation the user can define some
 _investment candidates_ in the power network in order to:
@@ -37,10 +37,10 @@ of the power system, but induces an additional **investment annuity** that inclu
 - Annualized investment costs to physically build the facility,
 - Fixed operational costs and maintenance costs to sustain the operation.
 
-!!! info "Goal of Antares-Xpansion" 
-    Antares-Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected operation cost during one year** and the **investment annuity**.
+!!! info "Goal of Antares Xpansion" 
+    Antares Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected operation cost during one year** and the **investment annuity**.
 
-Antares-Xpansion is currently under development. Feel free to submit any issue.
+Antares Xpansion is currently under development. Feel free to submit any issue.
 
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml/badge.svg?query=branch%3Adevelop

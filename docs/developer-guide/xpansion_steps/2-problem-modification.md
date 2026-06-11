@@ -137,7 +137,7 @@ This translates into the following steps for the modification of `.mps` files:
 
 ### 3- Read additional candidate constraints
 
-The `additional-constraints` parameter, that specifies the path to file, may be defined in the `settings.ini`. This is used to define linear constraints between the invested capacities of investment candidates, and is read at this stage of Antares-Xpansion process. For more information on the file format, see the [corresponding part](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#additional-constraints).
+The `additional-constraints` parameter, that specifies the path to file, may be defined in the `settings.ini`. This is used to define linear constraints between the invested capacities of investment candidates, and is read at this stage of Antares Xpansion process. For more information on the file format, see the [corresponding part](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#additional-constraints).
 
 ### 4- Creation of master problem
 

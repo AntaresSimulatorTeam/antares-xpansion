@@ -1,4 +1,4 @@
-Antares-Xpansion changelog
+Antares Xpansion changelog
 =================
 v1.8.0 (01/2026)
 ------------------------------------------------
@@ -285,7 +285,7 @@ v1.0.0 (12/2022)
       information [here](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#separation-parameter)
     - Parallelization of the `problem_generation` step
 - Performance improvement in disk space consumption : in full run mode i.e with option `--step full` (default behavior),
-  Antares-Xpansion outputs are zipped within Antares study archive
+  Antares Xpansion outputs are zipped within Antares study archive
 - Change the default value of `relative_gap` from `1e-12` to `1e-6`
 
 ### Documentation
@@ -315,8 +315,8 @@ v0.7.0 (06/2022)
 ### Features
 
 - Add the possibility to perform sensitivity studies on optimal investment solutions
-- Antares-Xpansion outputs are written in the `expansion` directory instead of the `lp` directory
-- Add `timelimit` option as a stopping criterion for the Antares-Xpansion algorithm
+- Antares Xpansion outputs are written in the `expansion` directory instead of the `lp` directory
+- Add `timelimit` option as a stopping criterion for the Antares Xpansion algorithm
 - Add `log_level` option to choose the verbosity level of the solver
 - Add `resume` step, to provide the possibility to resume an unfinished study
 - Bump antares version used by Xpansion to 8.1.1
@@ -333,13 +333,13 @@ v0.6.0 (12/2021)
 
 ### Features
 
-- Antares-Xpansion is now compatible with Antares v8.1 studies
-- Add `relative_gap` option as a stopping criterion for the Antares-Xpansion algorithm
+- Antares Xpansion is now compatible with Antares v8.1 studies
+- Add `relative_gap` option as a stopping criterion for the Antares Xpansion algorithm
 - Add `--antares-n-cpu` option to use Antares-Simulator parallelism
-- Add `-v, --version` option to show Antares-Xpansion version
+- Add `-v, --version` option to show Antares Xpansion version
 - Add `--antares-version` option to show Antares-Simulator version
 - Add `mergeMPS` option to use a frontal resolution of the investment problem instead of Benders decomposition
-- Add `--installDir` option to be able to launch Antares-Xpansion from another directory than its own
+- Add `--installDir` option to be able to launch Antares Xpansion from another directory than its own
 - Set default value of `--simulationName` to `last` in order to use the last Antares simulation
 
 ### Bug fixes
@@ -350,7 +350,7 @@ v0.6.0 (12/2021)
 ### For developers
 
 - cpp `lpnamer` library is split into smaller and consistent libraries
-- Each Antares-Xpansion step has its own driver (python class) instead of the all-in driver
+- Each Antares Xpansion step has its own driver (python class) instead of the all-in driver
 - Upgrade to a new version of `antares-deps` (bug fix)
 
 v0.5.0 (10/2021)
@@ -404,7 +404,7 @@ v0.3.0 (05/2021)
 
 - Add `yearly-weights` file support to define a weight for each antares study MC years
 - Clean of intermediate result file after each simulation step
-- Creation of a Antares-Xpansion version with only one executable
+- Creation of a Antares Xpansion version with only one executable
 
 ### Bug fixes
 
@@ -423,14 +423,14 @@ v0.2.0 (04/2021)
 
 - Invalid best iteration display in logs
 - Rounding problem in writing MPS with OR-tools
-- Antares-Xpansion can't be launched twice at the same time
+- Antares Xpansion can't be launched twice at the same time
 - Windows: Add Microsoft Visual Studio needed redistribuable to installer
 - Linux: wrong `antares-solver` executable permission and install directory
 
 v0.1.0 (03/2021)
 -------------------- 
-We’re happy to announce the first open-source version v0.1.0 of Antares-Xpansion.
-Antares-Xpansion optimizes the installed capacities of an Antares study.
+We’re happy to announce the first open-source version v0.1.0 of Antares Xpansion.
+Antares Xpansion optimizes the installed capacities of an Antares study.
 
 The investment decisions are optimized by running Antares' simulations iteratively. At each iteration, the installed
 capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a
@@ -447,7 +447,7 @@ Investment candidates can be:
 ## Notes
 
 This version is only compatible with Antares v8.0 [Antares-Simulator](https://antares-simulator.org). The Antares
-binaries needed by Antares-Xpansion are available in the installation package of Antares-Xpansion.
+binaries needed by Antares Xpansion are available in the installation package of Antares Xpansion.
 
 An annual cost, a potential, a link-profile or an already-installed-capacity can be defined for each candidate. Linear
 constraints between the invested capacities of investment candidates can also be imposed.

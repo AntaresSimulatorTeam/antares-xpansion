@@ -1,6 +1,6 @@
 # Testing Guide
 
-This document covers testing patterns for Antares-Xpansion.
+This document covers testing patterns for Antares Xpansion.
 
 ## Building Tests
 

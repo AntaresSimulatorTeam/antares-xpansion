@@ -8,7 +8,7 @@ must be enriched with at least two new files:
   expandable? at what cost? with what limits? and so on),
 
 - A `settings.ini` file which contains the settings of the
-  Antares-Xpansion algorithm.
+  Antares Xpansion algorithm.
 
 And optionnaly an `option.json` file for [Benders solver configuration](./benders.md).
 

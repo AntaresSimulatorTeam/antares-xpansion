@@ -1,6 +1,6 @@
 # Introduction
 
-Antares-Xpansion is developed mainly in **C++** and uses a **Python** runner
+Antares Xpansion is developed mainly in **C++** and uses a **Python** runner
 to drive the execution of multiple executables.
 
 This software suite has been tested under:
@@ -8,7 +8,7 @@ This software suite has been tested under:
 * Ubuntu 22.04 [![Status][ubuntu_system_svg]][ubuntu_system_link]
 * Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
 
-Antares-Xpansion is built using CMake.
+Antares Xpansion is built using CMake.
 
 Follow this [link][Doxygen_Code_Documentation] for Doxygen code documentation.
 

@@ -1,6 +1,6 @@
 # Installation
 
-Antares-Xpansion is developed mainly in **C++** and uses a **Python** runner
+Antares Xpansion is developed mainly in **C++** and uses a **Python** runner
 to drive the execution of multiple executables.
 
 This software suite has been tested under:
@@ -9,11 +9,11 @@ This software suite has been tested under:
 * Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
 * Oracle Linux 8 [![Status][oracle_svg]][oracle_link]
 
-Antares-Xpansion is built using CMake.
+Antares Xpansion is built using CMake.
 
-## Download Antares-Xpansion
+## Download Antares Xpansion
 
-To download the latest version of Antares-Xpansion, visit [Antares-Xpansion repository][antares_xpansion_release_url]
+To download the latest version of Antares Xpansion, visit [Antares Xpansion repository][antares_xpansion_release_url]
 and download the binary that matches your platform. If you prefer to build the software from the source files, please
 refer to the [developer guide](../developer-guide/install_from_sources/install-from-source.md).
 
@@ -23,9 +23,9 @@ To properly run antares Xpansion on unix system you need mpi 4.x installed on yo
 4.x
 
 Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use
-Antares-Xpansion.
+Antares Xpansion.
 
-To check the installation, you can open a command prompt in the Antares-Xpansion install directory and run the following
+To check the installation, you can open a command prompt in the Antares Xpansion install directory and run the following
 command to execute one of the examples included in the package:
 
 ```
