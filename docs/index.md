@@ -22,7 +22,7 @@
     Xpansion: [input](./reference/inputs/index.md) and 
     [output](./reference/inputs/index.md) file formats, 
     developer guide, complete
-    [changelog](./changelog/CHANGELOG.md)... 
+    [changelog](./overview/CHANGELOG.md)... 
     Check out the [Antares user documentation][readthedocs-antares] for more insights on Antares. 
 
 ## Introduction
@@ -69,7 +69,7 @@ of the power system, but induces an additional **investment annuity** that inclu
 ## Contributing
 
 Antares Xpansion is currently under development. Feel free to submit any issue
-or [contribute to the documentation](./developer-guide/contributing/doc-guidelines.md).
+or [contribute to the documentation](./overview/doc-guidelines.md).
 
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml/badge.svg?query=branch%3Adevelop

@@ -2,7 +2,7 @@
 
 ## Usage of the master merger executable
 
-**All examples below are based on the tree example given in the [trajectory problem](./trajectory-problem.md) section**
+**All examples below are based on the tree example given in the [trajectory problem](./index.md) section**
 
 The underlying C++ code responsible for merging previously generated Xpansion studies master files needs
 

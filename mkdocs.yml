@@ -32,10 +32,11 @@ theme:
 nav:
   - Overview: 
     - Home: index.md
-    - Changelog:
-      - Changelog: changelog/CHANGELOG.md
-      - File format changes: changelog/format_changes.md
+    - Changelog: overview/CHANGELOG.md
+    - File format changes: overview/format_changes.md
+    - Documentation guidelines: overview/doc-guidelines.md
   - Reference:
+    - reference/index.md
     - Installation: reference/installation.md
     - Input files:
       - reference/inputs/index.md
@@ -51,7 +52,7 @@ nav:
       - Sensitivity analysis: reference/outputs/sensitivity.md
       - Adequacy criterion: reference/outputs/adequacy-criterion.md
     - Trajectory investment:
-      - Trajectory investment problem: reference/trajectory-investment/trajectory-problem.md
+      - reference/trajectory-investment/index.md
       - Full trajectory workflow: reference/trajectory-investment/trajectory-workflow.md
       - Launching the workflow: reference/trajectory-investment/orchestration.md
       - User input file parsing: reference/trajectory-investment/user-input.md
@@ -71,8 +72,6 @@ nav:
       - developer-guide/xpansion-steps/index.md
       - Antares optimization problem retrieval: developer-guide/xpansion-steps/antares-solver-problem.md
       - Investment problem generation: developer-guide/xpansion-steps/problem-modification.md
-    - Contributing: 
-      - Documentation guidelines: developer-guide/contributing/doc-guidelines.md
 
 
 plugins:
