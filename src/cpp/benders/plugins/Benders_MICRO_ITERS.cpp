@@ -35,7 +35,6 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
-
     auto cpp_lib_absolute_path = input_root_ / plugin_lib_path;
 #ifdef _WIN32
     handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
@@ -136,6 +135,7 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
         _world->abort(EXIT_FAILURE);
     }
 }
+
 void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
@@ -213,12 +213,10 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
 
-
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
     build_variables_to_follow_indices_vector();
 
-
-    onBendersStartPlugin_(sub_names_,
+    onBendersStartPlugin_(sub_pb_ids_,
                           _world->rank(),
                           options.INPUTROOT,
                           options.OUTPUTROOT,
@@ -249,12 +247,8 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
     {
         for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
         {
-            auto it = constraints_map_.find(constraint_reader_name);
-            if (it == constraints_map_.end())
-            {
-                continue;
-            }
-            it->second->delete_added_rows();
+            auto constraint_reader = constraints_map_[constraint_reader_name];
+            constraint_reader->delete_added_rows();
         }
     }
 }
@@ -273,14 +267,8 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
     for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
     {
-        auto it = constraints_map_.find(constraint_reader_name);
-        if (it == constraints_map_.end())
-        {
-            // This subproblem is handled by another MPI rank
-            continue;
-        }
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
-        auto constraint_reader = it->second;
+        auto constraint_reader = constraints_map_[constraint_reader_name];
         for (auto& variable: variables_to_follow_)
         {
             int variable_index = constraint_reader->get_variable_index_in_solution(variable);
@@ -351,9 +339,22 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int nu
     }
 }
 
-void Benders_MICRO_ITERS::SetSubProblemIDs(std::vector<std::string>& sub_names)
+void Benders_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
 {
-    sub_names_ = sub_names ;
+    sub_ids_storage_.clear();
+    sub_ids_storage_.reserve(n_subs);
+    for (int i = 0; i < n_subs; i++)
+    {
+        sub_ids_storage_.push_back(subs_ids[i]);
+    }
+
+    sub_ids_ptrs_.resize(n_subs);
+    for (int i = 0; i < n_subs; i++)
+    {
+        sub_ids_ptrs_[i] = sub_ids_storage_[i].c_str();
+    }
+
+    sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
 }
 
 void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
@@ -363,18 +364,18 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
 {
     for (auto& [sub, sub_worker]: subproblem_map)
     {
-            added_constraints_per_sub_[sub] = std::vector<std::string>();
-            std::string constraints_file_name = subproblem_constraint_map_[sub];
-            auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
-            / constraints_file_name;
-            ConstraintsFileReader file_reader(constraints_file_path,
-                options.SOLVER_NAME,
-                solver_log_manager,
-                _logger,
-                options.LOG_LEVEL,
-                options.PROBLEMS_FORMAT);
-                constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
-                    std::move(file_reader),
-                    sub_worker);
-    }   
+        added_constraints_per_sub_[sub] = std::vector<std::string>();
+        std::string constraints_file_name = subproblem_constraint_map_[sub];
+        auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
+                                     / constraints_file_name;
+        ConstraintsFileReader file_reader(constraints_file_path,
+                                          options.SOLVER_NAME,
+                                          solver_log_manager,
+                                          _logger,
+                                          options.LOG_LEVEL,
+                                          options.PROBLEMS_FORMAT);
+        constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
+          std::move(file_reader),
+          sub_worker);
+    }
 }
