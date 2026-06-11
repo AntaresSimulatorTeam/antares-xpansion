@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"namespaces.html":[35,0],
 "namespacetests_1_1end__to__end_1_1examples_1_1test.html":[35,0,4,0,0,0],
 "namespacetests_1_1python.html":[35,0,4,1],
 "pages.html":[],

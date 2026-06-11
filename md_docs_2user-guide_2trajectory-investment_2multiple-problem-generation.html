@@ -140,15 +140,15 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2multiple-p
   <div class="headertitle"><div class="title">Multiple problem generation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md324"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md323"></a></p>
 <p>The <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> executable will run the problem generation step for every study in the tree.</p>
-<h1><a class="anchor" id="autotoc_md325"></a>
+<h1><a class="anchor" id="autotoc_md324"></a>
 Usage</h1>
 <p>The most simple usage is : <br  />
  </p><div class="fragment"><div class="line">&lt;multiple_problem_gen_executable&gt; --study &lt;study_paths_file&gt; --weights &lt;weights_reference_file&gt; --nodal-file &lt;path/to/nodal-lp-info/output/file&gt;</div>
 </div><!-- fragment --><p>Note that this executable uses options that extend the simple <code><a class="el" href="classProblemGenerationExeOptions.html">ProblemGenerationExeOptions</a></code> parser used in the individual problem generation executable. Thus, every other option of the individual problem generation can be given to the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> executable and will be duplicated for each individual node's problem generation.</p>
 <p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
-<h1><a class="anchor" id="autotoc_md326"></a>
+<h1><a class="anchor" id="autotoc_md325"></a>
 Study paths / archives file</h1>
 <p>The study paths file (or archive paths file when called with <code>--archive &lt;archive_paths_file&gt;</code>) tells the executable where to find the relevant input for each node :</p>
 <ul>
@@ -161,7 +161,7 @@ Study paths / archives file</h1>
 <div class="line">2050_A ./node_2050_A_study</div>
 <div class="line">2050_B ./node_2050_B_study</div>
 </div><!-- fragment --><p>The full input files &amp; folders layout for this example is diplayed in <a href="./trajectory-workflow.md#file-structure">this section</a> for more clarity.</p>
-<h1><a class="anchor" id="autotoc_md327"></a>
+<h1><a class="anchor" id="autotoc_md326"></a>
 Weights / additional constraints reference file</h1>
 <p>The weights (resp. additional constraints) reference file gives the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> executable information about the potential custom weights file (resp. additional constraints file) given by the user.</p>
 <p>The reference file is a simple text file with two columns : The first column contains the node's name, and the second the path to the custom weights file (resp. additional constraints file). <b>Note</b> : the paths have to be given as relatives paths, relative to the <code>--dataDir</code></p>
@@ -176,7 +176,7 @@ Weights / additional constraints reference file</h1>
 </div><!-- fragment --><p> . <br  />
  And for node <code>2040</code>, the result will be the same as calling : <br  />
  </p><div class="fragment"><div class="line">&lt;single_problem_gen_executable&gt; --study ./node_2040_study</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md328"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md327"></a>
 Output : Nodal Lp Info file</h1>
 <p>We give an example of a corresponding <code>nodal_lp_info.json</code>. This file is written to the path given in the <code>--nodal-file</code> argument when calling the executable.</p>
 <div class="fragment"><div class="line">{</div>
