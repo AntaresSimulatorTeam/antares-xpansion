@@ -44,12 +44,13 @@ nav:
       - Settings: reference/inputs/settings.md
       - Benders: reference/inputs/benders.md
       - Sensitivity analysis: reference/inputs/sensitivity.md
+      - Adequacy criterion: reference/inputs/adequacy-criterion.md
     - Running Antares Xpansion: reference/cli.md
     - Output files:
       - reference/outputs/index.md
       - Logs: reference/outputs/logs.md
       - Sensitivity analysis: reference/outputs/sensitivity.md
-    - Adequacy criterion: reference/adequacy-criterion.md
+      - Adequacy criterion: reference/outputs/adequacy-criterion.md
     - Trajectory investment:
       - Trajectory investment problem: reference/trajectory-investment/trajectory-problem.md
       - Full trajectory workflow: reference/trajectory-investment/trajectory-workflow.md
