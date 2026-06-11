@@ -51,13 +51,13 @@ nav:
       - Sensitivity analysis: reference/outputs/sensitivity.md
     - Adequacy criterion: reference/adequacy-criterion.md
     - Trajectory investment:
-      - Trajectory investment problem: user-guide/trajectory-investment/trajectory-problem.md
-      - Full trajectory workflow: user-guide/trajectory-investment/trajectory-workflow.md
-      - Launching the workflow: user-guide/trajectory-investment/orchestration.md
-      - User input file parsing: user-guide/trajectory-investment/user-input.md
-      - Multiple problem generation: user-guide/trajectory-investment/multiple-problem-generation.md
-      - Merged weights file generation : user-guide/trajectory-investment/merge-weights.md
-      - Merging annual problems: user-guide/trajectory-investment/merge-master.md
+      - Trajectory investment problem: reference/trajectory-investment/trajectory-problem.md
+      - Full trajectory workflow: reference/trajectory-investment/trajectory-workflow.md
+      - Launching the workflow: reference/trajectory-investment/orchestration.md
+      - User input file parsing: reference/trajectory-investment/user-input.md
+      - Multiple problem generation: reference/trajectory-investment/multiple-problem-generation.md
+      - Merged weights file generation : reference/trajectory-investment/merge-weights.md
+      - Merging annual problems: reference/trajectory-investment/merge-master.md
   - Developer guide:
     - Install from sources:
       - Introduction: developer-guide/install_from_sources/0-INSTALL.md
@@ -81,8 +81,6 @@ plugins:
       execute: False
       show_input: False
       theme: dark
-  - bibtex:
-      bib_file: docs/user-guide/benders.bib
 
 extra_css:
   - stylesheets/extra.css
