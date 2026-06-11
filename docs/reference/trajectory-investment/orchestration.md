@@ -47,15 +47,15 @@ Usage of the launcher is :
   when running a part of the workflow that includes the problem generation.
 
 - ```--method``` : Similarly to
-  the [annual xpansion context](../get-started/launching-optimization.md#-m-method-benders-mergemps-adequacy_criterion),
+  the [annual xpansion context](https://antares-doc.readthedocs.io/en/latest/programmatic/antares-xpansion-cli/#-m-method-benders-mergemps-adequacy_criterion),
   sets the method used for the resolution.  
   **NOTE** : As of now, only ```benders``` and ```merge_mps``` resolutions are compatible with the trajectory context.
   The ```outer_loop``` (adequacy_criterion) method still requires adaptations and probably cannot be used as-is.
 
-- ```--np``` : See the eponymous [annual xpansion argument](../get-started/launching-optimization.md#-n-np).
+- ```--np``` : See the eponymous [annual xpansion argument](https://antares-doc.readthedocs.io/en/latest/programmatic/antares-xpansion-cli/#-n-np).
 
 - ```--problems-format``` : See the
-  eponymous [annual xpansion argument](../get-started/launching-optimization.md#-problem-format-mps-optimized).
+  eponymous [annual xpansion argument](https://antares-doc.readthedocs.io/en/latest/programmatic/antares-xpansion-cli/#-problem-format-mps-optimized).
 
 - ```--solver``` : Tells the program which solver to use when manipulating optimization problems in steps
   ```merge_master``` and ```resolution```

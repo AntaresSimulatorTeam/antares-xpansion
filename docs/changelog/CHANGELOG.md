@@ -102,9 +102,9 @@ v1.5.0 (07/2025)
 
 * New parameter `master_solution_tolerance` in `settings.ini` to define the tolerance in master solution sent to the
   subproblems, more
-  details [here](../user-guide/get-started/settings-definition.md#master_solution_tolerance)
+  details [here](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#master-solution-tolerance)
 * New parameter `cut_coefficient_tolerance` in `settings.ini` to define the tolerance in cuts coefficients and rhs, more
-  details [here](../user-guide/get-started/settings-definition.md#cut_coefficient_tolerance)
+  details [here](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#cut-coefficient-tolerance)
 * Simulator step:
     * Update Antares Simulator to [9.3.0](https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/tag/v9.3.0)
     * use the configured solver for first AND second optim
@@ -238,7 +238,7 @@ v1.1.0 (09/2023)
 
 - Implementation of the Benders by batch algorithm : performance improvements over the classical Benders algorithm
 - New parameter `batch_size` in `settings.ini` to tune the Benders by batch algorithm, more
-  details [here](../user-guide/get-started/settings-definition.md#batch_size)
+  details [here](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#batch-size)
 - Logs improvements:
     - Print user and hostname in the standard output and in `reportbenders.txt`
     - Print both walltime and cumulative CPU time for subproblems resolution
@@ -282,7 +282,7 @@ v1.0.0 (12/2022)
 - Performance improvement in execution time
     - In-out stabilisation of the Benders algorithm : new parameters `separation_parameter` and `relaxed_optimality_gap`
       to tune the stabilization, more
-      information [here](../user-guide/get-started/settings-definition.md#separation_parameter)
+      information [here](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-settings/#separation-parameter)
     - Parallelization of the `problem_generation` step
 - Performance improvement in disk space consumption : in full run mode i.e with option `--step full` (default behavior),
   Antares-Xpansion outputs are zipped within Antares study archive
@@ -290,7 +290,7 @@ v1.0.0 (12/2022)
 
 ### Documentation
 
-- Add new page for [performance history](../user-guide/performance-history/perf-graphs.ipynb)
+- Add new page for [performance history](https://antares-doc.readthedocs.io/en/latest/reference/performance-xpansion/)
 
 v0.8.0 (10/2022)
 --------------------
@@ -299,7 +299,7 @@ v0.8.0 (10/2022)
 
 - Use Antares-Simulator 8.2.2
 - Allow the use of different chronicles of link profile for each Monte-Carlo year. More
-  information [here](../user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
+  information [here](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-candidates/#using-different-profiles-depending-on-the-monte-carlo-year)
 - New directories to store additional constraints files and weights files:
     - Additional constraints files must be stored in `user/expansion/constraints`
     - Weights files must be stored in `user/expansion/weights`
