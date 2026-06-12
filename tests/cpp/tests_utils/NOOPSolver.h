@@ -225,7 +225,7 @@ public:
     {
     }
 
-    void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) override
+    void chg_coefs(const std::vector<int>& id_rows, const std::vector<int>& id_cols, const std::vector<double>& vals) override
     {
     }
 

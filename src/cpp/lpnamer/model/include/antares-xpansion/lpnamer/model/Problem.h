@@ -283,9 +283,11 @@ public:
         solver_abstract_->chg_rhs_values(id_cols, vals);
     }
 
-    void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals)
+    void chg_coefs(const std::vector<int>& id_rows,
+                   const std::vector<int>& id_cols,
+                   const std::vector<double>& vals) override
     {
-        solver_abstract_->chg_coefs(num_coefs, id_rows, id_cols, vals);
+        solver_abstract_->chg_coefs(id_rows, id_cols, vals);
     }
 
     void chg_row_name(int id_row, const std::string& name) override

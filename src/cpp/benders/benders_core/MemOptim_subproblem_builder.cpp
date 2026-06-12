@@ -1,7 +1,6 @@
 #include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
 
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
-#include <chrono>
 #include <fstream>
 #include <iostream>
 
@@ -19,198 +18,96 @@ MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path
 {
     logger_ = logger;
     build_sub_skeleton(solver_name, solver_log_manager_, log_level, format);
-    read_coef();
-    read_coef_cols();
-    read_coef_rows();
-    read_obj_coef();
-    read_obj_cols();
-    read_rhs();
-    read_rhs_rows();
+    read_coeffs_and_indices(CoeffType::constraints);
+    read_coeffs_and_indices(CoeffType::objective);
+    read_coeffs_and_indices(CoeffType::rhs);
     micro_iters_ = false;
     warm_start_ = false;
 }
 
-void MemOptimSubProblemBuilder::read_coef()
+void MemOptimSubProblemBuilder::read_keyed_coeffs_csv(
+  const std::filesystem::path& csv_path,
+  std::map<std::string, std::vector<double>>& dest)
 {
     boost::char_separator<char> sep(",");
     using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
 
-    auto coef_csv_path = inputRoot_ / "sub" / "coef.csv";
-    std::ifstream coef_csv_stream(coef_csv_path);
-    if (coef_csv_stream.is_open())
+    std::ifstream stream(csv_path);
+    if (!stream.is_open())
     {
-        std::string line;
-        while (std::getline(coef_csv_stream, line))
+        std::cerr << "Error: unable to open file " << csv_path << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    std::string line;
+    while (std::getline(stream, line))
+    {
+        Tokenizer tok(line, sep);
+        std::vector<std::string> tokens(tok.begin(), tok.end());
+        std::string key = tokens[0];
+        std::vector<double> values_double;
+        if (tokens.size() > 1)
         {
-            Tokenizer tok(line, sep);
-            std::vector<std::string> tokens(tok.begin(), tok.end());
-            std::string key = tokens[0];
-            std::vector<double> values_double;
-            if (tokens.size() > 1)
-            {
-                values_double.resize(tokens.size() - 1);
-                std::transform(tokens.begin() + 1,
-                               tokens.end(),
-                               values_double.begin(),
-                               [](const std::string& s) { return std::stod(s); });
-            }
-            coeffs_[key] = values_double;
+            values_double.resize(tokens.size() - 1);
+            std::transform(tokens.begin() + 1,
+                           tokens.end(),
+                           values_double.begin(),
+                           [](const std::string& s) { return std::stod(s); });
+        }
+        dest[key] = values_double;
+    }
+}
+
+void MemOptimSubProblemBuilder::read_indices_csv(const std::filesystem::path& csv_path,
+                                                 std::vector<int>& dest_indices,
+                                                 bool is_col)
+{
+    boost::char_separator<char> sep(",");
+    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
+
+    std::ifstream stream(csv_path);
+    if (!stream.is_open())
+    {
+        std::cerr << "Error: unable to open file " << csv_path << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    std::string line;
+    std::vector<std::string> names;
+    while (std::getline(stream, line))
+    {
+        Tokenizer tok(line, sep);
+        names.assign(tok.begin(), tok.end());
+    }
+    for (auto& name: names)
+    {
+        if (is_col)
+        {
+            dest_indices.push_back(solver_->get_col_index(name));
+        }
+        else
+        {
+            dest_indices.push_back(solver_->get_row_index(name));
         }
     }
 }
 
-void MemOptimSubProblemBuilder::read_coef_cols()
+void MemOptimSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
 {
-    boost::char_separator<char> sep(",");
-    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
-    auto coef_cols_path = inputRoot_ / "sub" / "coef_cols.csv";
-    std::ifstream coef_cols_stream(coef_cols_path);
-    if (coef_cols_stream.is_open())
+    auto sub_dir = inputRoot_ / "sub";
+    switch (coeff_type)
     {
-        std::string line;
-
-        while (std::getline(coef_cols_stream, line))
-        {
-            Tokenizer tok(line, sep);
-            coef_cols_.assign(tok.begin(), tok.end());
-        }
-        for (auto& col_name: coef_cols_)
-        {
-            constraints_col_indices_.push_back(solver_->get_col_index(col_name));
-        }
-    }
-}
-
-void MemOptimSubProblemBuilder::read_coef_rows()
-{
-    boost::char_separator<char> sep(",");
-    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
-    auto coef_rows_path = inputRoot_ / "sub" / "coef_rows.csv";
-    std::ifstream coef_rows_stream(coef_rows_path);
-    if (coef_rows_stream.is_open())
-    {
-        std::string line;
-        while (std::getline(coef_rows_stream, line))
-        {
-            Tokenizer tok(line, sep);
-            coef_rows_.assign(tok.begin(), tok.end());
-        }
-
-        for (auto& row_name: coef_rows_)
-        {
-            constraints_row_indices_.push_back(solver_->get_row_index(row_name));
-        }
-    }
-}
-
-void MemOptimSubProblemBuilder::read_obj_coef()
-{
-    boost::char_separator<char> sep(",");
-    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
-    auto obj_coef_path = inputRoot_ / "sub" / "obj_coef.csv";
-    std::ifstream obj_coef_stream(obj_coef_path);
-    if (obj_coef_stream.is_open())
-    {
-        std::string line;
-        int j = 0;
-        while (std::getline(obj_coef_stream, line))
-        {
-            Tokenizer tok(line, sep);
-            std::vector<std::string> tokens(tok.begin(), tok.end());
-            std::string key = tokens[0];
-            std::vector<double> values_double;
-            if (tokens.size() > 1)
-            {
-                values_double.resize(tokens.size() - 1);
-                std::transform(tokens.begin() + 1,
-                               tokens.end(),
-                               values_double.begin(),
-                               [](const std::string& s) { return std::stod(s); });
-            }
-            if (j < 2)
-            {
-                ++j;
-            }
-            obj_coefs_[key] = values_double;
-        }
-    }
-}
-
-void MemOptimSubProblemBuilder::read_obj_cols()
-{
-    boost::char_separator<char> sep(",");
-    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
-    auto obj_cols_path = inputRoot_ / "sub" / "obj_cols.csv";
-    std::ifstream obj_cols_stream(obj_cols_path);
-
-    if (obj_cols_stream.is_open())
-    {
-        std::string line;
-        while (std::getline(obj_cols_stream, line))
-        {
-            Tokenizer tok(line, sep);
-            obj_cols_.assign(tok.begin(), tok.end());
-        }
-        for (auto& obj_col: obj_cols_)
-        {
-            obj_col_indices_.push_back(solver_->get_col_index(obj_col));
-        }
-    }
-}
-
-void MemOptimSubProblemBuilder::read_rhs()
-{
-    boost::char_separator<char> sep(",");
-    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
-    auto rhs_path = inputRoot_ / "sub" / "rhs.csv";
-    std::ifstream rhs_stream(rhs_path);
-    if (rhs_stream.is_open())
-    {
-        std::string line;
-
-        while (std::getline(rhs_stream, line))
-        {
-            Tokenizer tok(line, sep);
-            std::vector<std::string> tokens(tok.begin(), tok.end());
-            std::string key = tokens[0];
-            std::vector<double> values_double;
-            if (tokens.size() > 1)
-            {
-                values_double.resize(tokens.size() - 1);
-                std::transform(tokens.begin() + 1,
-                               tokens.end(),
-                               values_double.begin(),
-                               [](const std::string& s) { return std::stod(s); });
-            }
-            rhs_[key] = values_double;
-        }
-    }
-}
-
-void MemOptimSubProblemBuilder::read_rhs_rows()
-{
-    boost::char_separator<char> sep(",");
-    using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
-
-    auto rhs_rows_path = inputRoot_ / "sub" / "rhs_rows.csv";
-    std::ifstream rhs_rows_stream(rhs_rows_path);
-    if (rhs_rows_stream.is_open())
-    {
-        std::string line;
-        while (std::getline(rhs_rows_stream, line))
-        {
-            Tokenizer tok(line, sep);
-            rhs_rows_.assign(tok.begin(), tok.end());
-        }
-        for (auto& rhs_row: rhs_rows_)
-        {
-            rhs_row_indices_.push_back(solver_->get_row_index(rhs_row));
-        }
+    case CoeffType::constraints:
+        read_keyed_coeffs_csv(sub_dir / "coef.csv", coeffs_);
+        read_indices_csv(sub_dir / "coef_cols.csv", constraints_col_indices_, true);
+        read_indices_csv(sub_dir / "coef_rows.csv", constraints_row_indices_, false);
+        break;
+    case CoeffType::objective:
+        read_keyed_coeffs_csv(sub_dir / "obj_coef.csv", obj_coeffs_);
+        read_indices_csv(sub_dir / "obj_cols.csv", obj_col_indices_, true);
+        break;
+    case CoeffType::rhs:
+        read_keyed_coeffs_csv(sub_dir / "rhs.csv", rhs_);
+        read_indices_csv(sub_dir / "rhs_rows.csv", rhs_row_indices_, false);
+        break;
     }
 }
 
@@ -246,20 +143,13 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
   double slave_weight)
 {
     auto& coeffs_sub = coeffs_[sub_name];
-    auto& coeffs_obj = obj_coefs_[sub_name];
+    auto& coeffs_obj = obj_coeffs_[sub_name];
     auto& rhs_values = rhs_[sub_name];
-    int n_coefs = coeffs_sub.size();
     std::shared_ptr<SolverAbstract> sub_solver(solver_->clone());
 
-    auto start = std::chrono::high_resolution_clock::now();
-    sub_solver->chg_coefs(n_coefs,
-                          constraints_row_indices_.data(),
-                          constraints_col_indices_.data(),
-                          coeffs_sub.data());
+    sub_solver->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs_sub);
     sub_solver->chg_obj(obj_col_indices_, coeffs_obj);
     sub_solver->chg_rhs_values(rhs_row_indices_, rhs_values);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
                                                                 sub_solver,

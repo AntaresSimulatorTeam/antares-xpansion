@@ -14,6 +14,13 @@
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
+enum class CoeffType
+{
+    constraints = 0,
+    objective,
+    rhs
+};
+
 class MemOptimSubProblemBuilder
 {
 public:
@@ -22,10 +29,7 @@ public:
                               std::string solver_name,
                               int log_level,
                               ProblemsFormat format);
-    void build_sub_skeleton(std::string solver_name,
-                            const SolverLogManager& solver_log_manager,
-                            int log_level,
-                            ProblemsFormat format);
+
     std::shared_ptr<SubproblemWorker> create_sub_solver_abstract(std::string sub_name,
                                                                  VariableMap& variable_map,
                                                                  double cut_coefficient_tolerance,
@@ -35,23 +39,25 @@ public:
 private:
     Logger logger_;
 
-    void read_coef();
-    void read_coef_cols();
-    void read_coef_rows();
-    void read_obj_coef();
-    void read_obj_cols();
-    void read_rhs();
-    void read_rhs_rows();
+    void read_coeffs_and_indices(CoeffType);
+
+    void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
+                               std::map<std::string, std::vector<double>>& dest);
+    void read_indices_csv(const std::filesystem::path& csv_path,
+                          std::vector<int>& dest_indices,
+                          bool is_col);
+
+    // reads the main mps file that will enable creating subproblems
+    void build_sub_skeleton(std::string solver_name,
+                            const SolverLogManager& solver_log_manager,
+                            int log_level,
+                            ProblemsFormat format);
 
     std::filesystem::path inputRoot_;
 
     std::map<std::string, std::vector<double>> coeffs_;
     std::map<std::string, std::vector<SolverRepresentedRows>> micro_iters_added_rows;
-    std::vector<std::string> coef_cols_;
-    std::vector<std::string> coef_rows_;
-    std::map<std::string, std::vector<double>> obj_coefs_;
-    std::vector<std::string> obj_cols_;
-    std::vector<std::string> rhs_rows_;
+    std::map<std::string, std::vector<double>> obj_coeffs_;
     std::vector<int> rhs_row_indices_;
     std::map<std::string, std::vector<double>> rhs_;
     std::shared_ptr<SolverAbstract> solver_;

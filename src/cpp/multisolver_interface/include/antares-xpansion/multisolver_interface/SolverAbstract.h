@@ -737,12 +737,14 @@ public:
     /**
      * @brief Change multiple coefficients in the matrix
      *
-     * @param num_coefs : number of coefficients to change
-     * @param id_rows   : array of row indices
-     * @param id_cols   : array of column indices
-     * @param vals      : array of new values to set in the matrix
+     * @param id_rows   : vector of row indices
+     * @param id_cols   : vector of column indices
+     * @param vals      : vector of new values to set in the matrix
      */
-    virtual void chg_coefs(int num_coefs, int* id_rows, int* id_cols, double* vals) = 0;
+    virtual void chg_coefs(const std::vector<int>& id_rows,
+                           const std::vector<int>& id_cols,
+                           const std::vector<double>& vals)
+      = 0;
 
     /**
      * @brief Change the name of a constraint
