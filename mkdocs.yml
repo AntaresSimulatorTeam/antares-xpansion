@@ -106,5 +106,11 @@ markdown_extensions:
   - footnotes
   - pymdownx.arithmatex:
       generic: true
+  
+validation:
+  omitted_files: warn
+  absolute_links: warn  # Or 'relative_to_docs' - new in MkDocs 1.6
+  unrecognized_links: warn
+  anchors: warn 
 
-copyright: Copyright &copy; 2007 - 2024 RTE
+copyright: Copyright &copy; 2007 - 2026 RTE
