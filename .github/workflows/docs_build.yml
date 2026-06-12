@@ -21,4 +21,4 @@ jobs:
 
       # Fail notably if an internal link is incorrect
       - name: Build MkDocs
-        run: uv run mkdocs build --strict
+        run: mkdocs build --strict
