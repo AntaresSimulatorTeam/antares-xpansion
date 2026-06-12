@@ -106,7 +106,10 @@ markdown_extensions:
   - footnotes
   - pymdownx.arithmatex:
       generic: true
-  
+
+exclude_docs: | 
+  /agents/
+       
 validation:
   omitted_files: warn
   absolute_links: warn  # Or 'relative_to_docs' - new in MkDocs 1.6
