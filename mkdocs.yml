@@ -86,9 +86,10 @@ extra_css:
   - stylesheets/extra.css
 
 extra_javascript:
+  # Mathjax integration https://squidfunk.github.io/mkdocs-material/reference/math/
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
   - https://code.jquery.com/jquery-3.6.0.min.js
-  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-
 
 markdown_extensions:
   - attr_list
