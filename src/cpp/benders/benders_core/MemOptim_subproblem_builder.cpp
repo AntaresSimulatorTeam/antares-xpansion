@@ -145,14 +145,13 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
     auto& coeffs_sub = coeffs_[sub_name];
     auto& coeffs_obj = obj_coeffs_[sub_name];
     auto& rhs_values = rhs_[sub_name];
-    std::shared_ptr<SolverAbstract> sub_solver(solver_->clone());
 
-    sub_solver->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs_sub);
-    sub_solver->chg_obj(obj_col_indices_, coeffs_obj);
-    sub_solver->chg_rhs_values(rhs_row_indices_, rhs_values);
+    solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs_sub);
+    solver_->chg_obj(obj_col_indices_, coeffs_obj);
+    solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
-                                                                sub_solver,
+                                                                solver_,
                                                                 logger_,
                                                                 slave_weight);
 
