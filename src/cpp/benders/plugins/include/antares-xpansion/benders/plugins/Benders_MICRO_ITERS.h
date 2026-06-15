@@ -195,7 +195,7 @@ private:
     const SimulationOptions& options_;
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;
-    std::vector<std::string> sub_names_ ; 
+    std::vector<std::string> sub_names_;
     std::map<std::string, std::string> binary_variables_ids_map_;
     std::vector<std::string> sub_ids_storage_;
     std::vector<const char*> sub_ids_ptrs_;

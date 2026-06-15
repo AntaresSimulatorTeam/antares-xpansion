@@ -6,12 +6,11 @@
 
 #include <cassert>
 #include <chrono>
+#include <exception>
 #include <fstream>
 #include <sstream>
-#include <string_view>
-
-#include <exception>
 #include <stdexcept>
+#include <string_view>
 
 #include <boost/tokenizer.hpp>
 
@@ -138,6 +137,7 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
         _world->abort(EXIT_FAILURE);
     }
 }
+
 void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
@@ -353,7 +353,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int nu
 
 void Benders_MICRO_ITERS::SetSubProblemIDs(std::vector<std::string>& sub_names)
 {
-    sub_names_ = sub_names ;
+    sub_names_ = sub_names;
 }
 
 void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
@@ -363,19 +363,18 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
 {
     for (auto& [sub, sub_worker]: subproblem_map)
     {
-            added_constraints_per_sub_[sub] = std::vector<std::string>();
-            std::string constraints_file_name = subproblem_constraint_map_[sub];
-            auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
-            / constraints_file_name;
-            ConstraintsFileReader file_reader(constraints_file_path,
-                options.SOLVER_NAME,
-                solver_log_manager,
-                _logger,
-                options.LOG_LEVEL,
-                options.PROBLEMS_FORMAT);
-                constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
-                    std::move(file_reader),
-                    sub_worker);
-    }   
-
+        added_constraints_per_sub_[sub] = std::vector<std::string>();
+        std::string constraints_file_name = subproblem_constraint_map_[sub];
+        auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
+                                     / constraints_file_name;
+        ConstraintsFileReader file_reader(constraints_file_path,
+                                          options.SOLVER_NAME,
+                                          solver_log_manager,
+                                          _logger,
+                                          options.LOG_LEVEL,
+                                          options.PROBLEMS_FORMAT);
+        constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
+          std::move(file_reader),
+          sub_worker);
+    }
 }

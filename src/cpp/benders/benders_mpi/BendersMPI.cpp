@@ -484,7 +484,6 @@ void BendersMpi::Run()
 
         step_1_solve_master();
 
-
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
         /*Gather cut from each subproblem in master thread and add them to Master
@@ -552,7 +551,7 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
-    
+
     Run();
 
     _world.barrier();
