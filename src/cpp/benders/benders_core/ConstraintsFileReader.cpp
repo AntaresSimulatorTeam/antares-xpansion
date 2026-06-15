@@ -15,11 +15,10 @@ ConstraintsFileReader::ConstraintsFileReader(const std::filesystem::path constra
 
     solver_->set_threads(1);
     solver_->set_output_log_level(log_level);
- 
+
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
     solver_IO_.configure(solver_name, format);
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
-
 }
 
 int ConstraintsFileReader::get_row_index(const std::string& name)

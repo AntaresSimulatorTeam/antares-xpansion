@@ -1,12 +1,11 @@
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 
 #include <filesystem>
+#include <iostream>
 #include <json/json.h>
 
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-
-#include <iostream>
 
 Json::Value SimulationOptions::get_value_from_json(const std::filesystem::path& file_name)
 {
@@ -203,7 +202,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.BOUND_ALPHA = BOUND_ALPHA;
     result.CACHE_PROBLEMS = CACHE_PROBLEMS;
 
-    std::cout<<"CACHE_PROBLEMS "<<CACHE_PROBLEMS<<std::endl ; 
+    std::cout << "CACHE_PROBLEMS " << CACHE_PROBLEMS << std::endl;
 
     if (MASTER_FORMULATION == "integer")
     {
