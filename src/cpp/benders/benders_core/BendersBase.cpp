@@ -478,20 +478,23 @@ void BendersBase::compute_ub()
  */
 void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 {
-    if (Options().CACHE_PROBLEMS)
+
+
+    switch (Options().CACHE_PROBLEMS) 
     {
-        GetSubproblemCutCache(subproblem_data_map);
-    }
-    else if (Options().MEMORY_OPTIMIZATION)
-    {
-        GetMemOptimCuts(subproblem_data_map);
-    }
-    else
-    {
-        GetSubproblemCutFast(subproblem_data_map);
+        case 0 :
+            GetSubproblemCutFast(subproblem_data_map);
+            break ; 
+        case 1 :
+            GetSubproblemCutCache(subproblem_data_map);
+            break ; 
+        case 2 : 
+            GetMemOptimCuts(subproblem_data_map);
+            break ; 
+        default : 
+            break ; 
     }
 }
-
 void BendersBase::set_rank(int rank)
 {
     rank_ = rank;

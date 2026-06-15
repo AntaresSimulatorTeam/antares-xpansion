@@ -36,29 +36,31 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.MEMORY_OPTIMIZATION)
+    switch (_options.CACHE_PROBLEMS)
     {
-        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
-          _options.INPUTROOT,
-          _logger,
-          _options.SOLVER_NAME,
-          _options.LOG_LEVEL,
-          _options.PROBLEMS_FORMAT);
-        int current_problem_id = 0;
-        subs_per_procs_mem_optim_.resize(_world.size());
-        for (auto it = coupling_map_.begin(); it != coupling_map_.end(); it++)
+        case 2:
         {
-            auto process_to_feed = current_problem_id % _world.size();
-            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first);
-            subs_per_proc.push_back(std::make_pair(it->first, process_to_feed));
 
-            current_problem_id++;
+            std::cout<<"case mem optim "<<std::endl ; 
+            memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
+              _options.INPUTROOT,
+              _logger,
+              _options.SOLVER_NAME,
+              _options.LOG_LEVEL,
+              _options.PROBLEMS_FORMAT);
+            int current_problem_id = 0;
+            subs_per_procs_mem_optim_.resize(_world.size());
+            for (auto it = coupling_map_.begin(); it != coupling_map_.end(); it++)
+            {
+                auto process_to_feed = current_problem_id % _world.size();
+                subs_per_procs_mem_optim_[process_to_feed].push_back(it->first);
+                subs_per_proc.push_back(std::make_pair(it->first, process_to_feed));
+
+                current_problem_id++;
+            }
+            break;
         }
-    }
-
-    else
-    {
-        if (_options.CACHE_PROBLEMS)
+        case 1:
         {
             int current_problem_id = 0;
             for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -68,7 +70,6 @@ void BendersMpi::InitializeProblems()
                 {
                     it = coupling_map_.erase(it);
                 }
-
                 else
                 {
                     subs_per_proc.emplace_back(it->first, process_to_feed);
@@ -76,8 +77,10 @@ void BendersMpi::InitializeProblems()
                 }
                 current_problem_id++;
             }
+            break;
         }
-        else
+        case 0:
+        default:
         {
             int current_problem_id = 0;
             // Dispatch subproblems to process
@@ -94,6 +97,7 @@ void BendersMpi::InitializeProblems()
                 }
                 current_problem_id++;
             }
+            break;
         }
     }
 
