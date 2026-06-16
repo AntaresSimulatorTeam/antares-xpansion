@@ -25,6 +25,20 @@ MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path
     warm_start_ = false;
 }
 
+MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                                     Logger& logger,
+                                                     std::shared_ptr<SolverAbstract> solver):
+    inputRoot_(inputRoot),
+    solver_(std::move(solver))
+{
+    logger_ = logger;
+    read_coeffs_and_indices(CoeffType::constraints);
+    read_coeffs_and_indices(CoeffType::objective);
+    read_coeffs_and_indices(CoeffType::rhs);
+    micro_iters_ = false;
+    warm_start_ = false;
+}
+
 void MemOptimSubProblemBuilder::read_keyed_coeffs_csv(
   const std::filesystem::path& csv_path,
   std::map<std::string, std::vector<double>>& dest)

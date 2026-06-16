@@ -30,6 +30,10 @@ public:
                               int log_level,
                               ProblemsFormat format);
 
+    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
+                              Logger& logger,
+                              std::shared_ptr<SolverAbstract> solver);
+
     std::shared_ptr<SubproblemWorker> create_sub_solver_abstract(std::string sub_name,
                                                                  VariableMap& variable_map,
                                                                  double cut_coefficient_tolerance,
