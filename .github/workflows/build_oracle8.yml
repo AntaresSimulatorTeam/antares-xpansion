@@ -90,7 +90,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install -r requirements-tests.txt
+          /github/home/miniconda3/envs/xpansion-tests/bin/pip install -r requirements-tests.txt
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
