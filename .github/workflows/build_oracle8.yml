@@ -88,6 +88,10 @@ jobs:
           use-only-tar-bz2: true
           channel-priority: strict
 
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements-tests.txt
+
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |

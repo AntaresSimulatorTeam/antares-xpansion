@@ -10,6 +10,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_
 #check if pytest and numpy are installed
 find_python_module(pytest)
 find_python_module(numpy)
+find_python_module(yaml)
 
 
 # for centos docker to run MPI tests as root
