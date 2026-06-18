@@ -37,7 +37,7 @@ def test_gems_end_to_end(install_dir, study_path, allow_run_as_root):
     ]
 
     if allow_run_as_root:
-        cmd.append("--allow_run_as_root")
+        cmd.append("--allow-run-as-root")
 
     result = subprocess.run(
         cmd,
