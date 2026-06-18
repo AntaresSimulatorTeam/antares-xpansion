@@ -212,12 +212,6 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - id: create-user-guide
-        name: user guide pdf creation
-        uses: ./.github/workflows/generate-userguide-pdf
-        with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
-
       - name: user guide upload
         id: userguide_upload
         uses: actions/upload-artifact@v7
