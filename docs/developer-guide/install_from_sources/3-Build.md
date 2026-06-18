@@ -2,7 +2,7 @@
 
 ## Configure build with CMake
 
-Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.
+Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies, such as Simulator or or-tools (see [this section](2-Dependencies-install.md#using-pre-build-dependency)).
 
 The first time vcpkg will download and compile all dependencies. This can take a long time. Especially openmpi.
 Unless some dependencies are updated, nothing will be done on the next build.

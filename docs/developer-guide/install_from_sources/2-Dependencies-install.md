@@ -23,7 +23,7 @@ Dependencies are described in the `vcpkg.json` file.
 ### Configure VCPKG
 
 ```
-git submodule update --init vcpkg
+git submodule update --init --remote vcpkg
 cd vcpkg
 ./bootstrap-vcpkg.sh -disableMetrics
 # Or for windows

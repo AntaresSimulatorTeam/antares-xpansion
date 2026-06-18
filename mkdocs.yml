@@ -68,6 +68,8 @@ nav:
           - "Overview": "developer-guide/xpansion_steps/0-overview.md"
           - "Antares optimization problem retrieval": "developer-guide/xpansion_steps/1-antares-solver-problem.md"
           - "Investment problem generation": "developer-guide/xpansion_steps/2-problem-modification.md"
+      - Contributing: 
+          - Documentation guidelines: developer-guide/contributing/doc-guidelines.md
   - "Changelog":
       - "Changelog": "changelog/CHANGELOG.md"
       - "File format changes": "changelog/format_changes.md"
@@ -86,7 +88,6 @@ extra_css:
 
 extra_javascript:
   - https://code.jquery.com/jquery-3.6.0.min.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 
 
