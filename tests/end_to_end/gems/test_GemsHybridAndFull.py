@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -29,7 +30,7 @@ def test_gems_end_to_end(install_dir, study_path, allow_run_as_root):
     launch_py = Path(__file__).parent.parent.parent.parent / "src" / "python" / "launch.py"
 
     cmd = [
-        "python3", str(launch_py),
+        sys.executable, str(launch_py),
         "-i", str(study_path),
         "--step", "gems",
         "--installDir", str(install_dir)
