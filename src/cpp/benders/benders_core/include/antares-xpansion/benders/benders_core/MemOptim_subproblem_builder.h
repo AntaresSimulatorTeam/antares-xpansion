@@ -11,6 +11,7 @@
 #include "antares-xpansion/benders/benders_core/ConstraintsFileReader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"
+#include "antares-xpansion/benders/benders_core/memoptim_utils.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
@@ -44,12 +45,6 @@ private:
     Logger logger_;
 
     void read_coeffs_and_indices(CoeffType);
-
-    void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
-                               std::map<std::string, std::vector<double>>& dest);
-    void read_indices_csv(const std::filesystem::path& csv_path,
-                          std::vector<int>& dest_indices,
-                          bool is_col);
 
     // reads the main mps file that will enable creating subproblems
     void build_sub_skeleton(std::string solver_name,

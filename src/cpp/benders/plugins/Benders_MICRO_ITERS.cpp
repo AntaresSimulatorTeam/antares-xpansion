@@ -211,9 +211,11 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                          const Logger& logger,
                                          const BendersBaseOptions& options,
-                                         const SolverLogManager& solver_log_manager)
+                                         const SolverLogManager& solver_log_manager,
+                                         int cache_problems)
 {
     _logger = logger;
+    cache_problems_ = cache_problems;
 
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
     build_variables_to_follow_indices_vector();

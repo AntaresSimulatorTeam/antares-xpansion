@@ -11,6 +11,8 @@ SubproblemConstraintsManager::SubproblemConstraintsManager(
 
 std::vector<double> SubproblemConstraintsManager::get_sub_solution()
 {
+    if (subproblem_worker_ == nullptr) 
+        std::cout<<"subproblem_worker_ is null "<<std::endl ; 
     return subproblem_worker_->get_solution();
 }
 

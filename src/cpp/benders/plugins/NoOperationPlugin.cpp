@@ -7,7 +7,8 @@ NoOperationPlugin::NoOperationPlugin()
 void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                        const Logger& logger,
                                        const BendersBaseOptions& options,
-                                       const SolverLogManager& solver_log_manager)
+                                       const SolverLogManager& solver_log_manager,
+                                       int cache_problems)
 {
 }
 

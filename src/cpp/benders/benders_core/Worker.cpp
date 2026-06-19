@@ -136,6 +136,7 @@ void Worker::set_id_to_name(VariableMap& variable_map)
 
 void Worker::init_for_mem_optim(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map)
 {
+    std::cout<<"doing init for memoptim "<<std::endl ; 
     _solver = solver;
     set_id_to_name(variable_map);
 }

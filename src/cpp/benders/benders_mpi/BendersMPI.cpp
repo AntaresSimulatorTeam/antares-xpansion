@@ -579,7 +579,7 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_, _options.CACHE_PROBLEMS);
 
     Run();
 
