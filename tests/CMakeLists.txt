@@ -10,6 +10,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_
 #check if pytest and numpy are installed
 find_python_module(pytest)
 find_python_module(numpy)
+find_python_module(yaml)
 
 
 # for centos docker to run MPI tests as root
@@ -187,6 +188,17 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             COMMAND_EXPAND_LISTS
     )
     set_property(TEST merge_mps PROPERTY LABELS benders merge-mps end_to_end)
+
+    # gems end to end tests
+    add_test(
+            NAME e2e_gems
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion;--cov-append;--cov-report;xml:coverage-reports/coverage-antares_xpansion.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_GemsHybridAndFull.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/gems
+            COMMAND_EXPAND_LISTS
+    )
+    set_property(TEST e2e_gems PROPERTY LABELS short gems e2e_gems end_to_end)
 
     add_test(
             NAME lpnamer_end_to_end
