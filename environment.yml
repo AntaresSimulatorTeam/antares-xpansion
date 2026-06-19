@@ -3,6 +3,7 @@ dependencies:
   - python=3.10
   - setuptools
   - pip
+  - pyyaml
   - pip:
       - -r requirements-tests.txt
   - fico-xpress::xpress=9.8

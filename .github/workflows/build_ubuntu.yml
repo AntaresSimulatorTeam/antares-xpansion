@@ -142,7 +142,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer|short"
 
       - name: Cache vcpkg binary dir
         if: always()
@@ -207,12 +207,6 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
-
-      - id: create-user-guide
-        name: user guide pdf creation
-        uses: ./.github/workflows/generate-userguide-pdf
-        with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: user guide upload
         id: userguide_upload

@@ -271,7 +271,6 @@ class XpansionDriver:
     def launch_gems_step(self):
         self.gems_driver.launch(
             Path(self.config_loader.data_dir()),
-            self.config_loader.is_full_gems(),
             self.config_loader.method(),
             self.config_loader.keep_mps(),
             self.config_loader.n_mpi(),
