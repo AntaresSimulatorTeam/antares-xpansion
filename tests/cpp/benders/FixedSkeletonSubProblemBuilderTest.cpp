@@ -8,14 +8,14 @@
 
 #include "LoggerStub.h"
 #include "NOOPSolver.h"
-#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
+#include "antares-xpansion/benders/benders_core/FixedSkeletonSubProblemBuilder.h"
 
-class MemOptimSubProblemBuilderTest: public ::testing::Test
+class FixedSkeletonSubProblemBuilderTest: public ::testing::Test
 {
 protected:
     void SetUp() override
     {
-        tmpDir_ = std::filesystem::temp_directory_path() / ("memoptim_test_" + std::to_string(::testing::UnitTest::GetInstance()->random_seed()));
+        tmpDir_ = std::filesystem::temp_directory_path() / ("fixed_skeleton_test_" + std::to_string(::testing::UnitTest::GetInstance()->random_seed()));
         subDir_ = tmpDir_ / "sub";
         std::filesystem::create_directories(subDir_);
     }
@@ -64,10 +64,10 @@ protected:
         writeFile(subDir_ / "rhs_rows.csv", "row1\n");
     }
 
-    std::unique_ptr<MemOptimSubProblemBuilder> buildWithNOOP()
+    std::unique_ptr<FixedSkeletonSubProblemBuilder> buildWithNOOP()
     {
         auto solver = std::make_shared<NOOPSolver>();
-        return std::make_unique<MemOptimSubProblemBuilder>(tmpDir_, logger_, solver);
+        return std::make_unique<FixedSkeletonSubProblemBuilder>(tmpDir_, logger_, solver);
     }
 
     Logger logger_ = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
@@ -77,27 +77,27 @@ protected:
 
 // ---------- Group 1: Construction & CSV parsing ----------
 
-TEST_F(MemOptimSubProblemBuilderTest, ConstructsWithValidFiles)
+TEST_F(FixedSkeletonSubProblemBuilderTest, ConstructsWithValidFiles)
 {
     writeTwoSubFixture();
     ASSERT_NO_THROW(buildWithNOOP());
 }
 
-TEST_F(MemOptimSubProblemBuilderTest, GetSubNumberReturnsRhsKeyCount)
+TEST_F(FixedSkeletonSubProblemBuilderTest, GetSubNumberReturnsRhsKeyCount)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
     EXPECT_EQ(builder->get_sub_number(), 2);
 }
 
-TEST_F(MemOptimSubProblemBuilderTest, GetSubNumberZeroWithEmptyRhs)
+TEST_F(FixedSkeletonSubProblemBuilderTest, GetSubNumberZeroWithEmptyRhs)
 {
     writeEmptyFixture();
     auto builder = buildWithNOOP();
     EXPECT_EQ(builder->get_sub_number(), 0);
 }
 
-TEST_F(MemOptimSubProblemBuilderTest, SingleSubproblem)
+TEST_F(FixedSkeletonSubProblemBuilderTest, SingleSubproblem)
 {
     writeSingleSubFixture();
     auto builder = buildWithNOOP();
@@ -106,7 +106,7 @@ TEST_F(MemOptimSubProblemBuilderTest, SingleSubproblem)
 
 // ---------- Group 2: create_sub_solver_abstract ----------
 
-TEST_F(MemOptimSubProblemBuilderTest, ReturnsNonNullWorker)
+TEST_F(FixedSkeletonSubProblemBuilderTest, ReturnsNonNullWorker)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
@@ -115,7 +115,7 @@ TEST_F(MemOptimSubProblemBuilderTest, ReturnsNonNullWorker)
     EXPECT_NE(worker, nullptr);
 }
 
-TEST_F(MemOptimSubProblemBuilderTest, DifferentSubsReturnDistinctWorkers)
+TEST_F(FixedSkeletonSubProblemBuilderTest, DifferentSubsReturnDistinctWorkers)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
@@ -127,7 +127,7 @@ TEST_F(MemOptimSubProblemBuilderTest, DifferentSubsReturnDistinctWorkers)
     EXPECT_NE(worker1, worker2);
 }
 
-TEST_F(MemOptimSubProblemBuilderTest, UnknownSubNameReturnsWorker)
+TEST_F(FixedSkeletonSubProblemBuilderTest, UnknownSubNameReturnsWorker)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
@@ -139,7 +139,7 @@ TEST_F(MemOptimSubProblemBuilderTest, UnknownSubNameReturnsWorker)
 
 // ---------- Group 3: Many subproblems ----------
 
-TEST_F(MemOptimSubProblemBuilderTest, ManySubproblems)
+TEST_F(FixedSkeletonSubProblemBuilderTest, ManySubproblems)
 {
     std::string coef_csv, obj_csv, rhs_csv;
     for (int i = 0; i < 100; ++i)
@@ -163,7 +163,7 @@ TEST_F(MemOptimSubProblemBuilderTest, ManySubproblems)
 
 // ---------- Group 4: CSV edge cases ----------
 
-TEST_F(MemOptimSubProblemBuilderTest, CsvWithKeyOnly)
+TEST_F(FixedSkeletonSubProblemBuilderTest, CsvWithKeyOnly)
 {
     // A key with no values — should result in an empty coefficient vector
     writeFile(subDir_ / "coef.csv", "sub1\n");
@@ -182,7 +182,7 @@ TEST_F(MemOptimSubProblemBuilderTest, CsvWithKeyOnly)
     EXPECT_NE(worker, nullptr);
 }
 
-TEST_F(MemOptimSubProblemBuilderTest, CsvWithWhitespaceInValues)
+TEST_F(FixedSkeletonSubProblemBuilderTest, CsvWithWhitespaceInValues)
 {
     // std::stod handles leading/trailing whitespace
     writeFile(subDir_ / "coef.csv", "sub1, 1.0 , 2.0 \n");

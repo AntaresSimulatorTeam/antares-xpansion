@@ -1,4 +1,4 @@
-#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
+#include "antares-xpansion/benders/benders_core/FixedSkeletonSubProblemBuilder.h"
 
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <fstream>
@@ -9,11 +9,11 @@
 
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
-MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
-                                                     Logger& logger,
-                                                     std::string solver_name,
-                                                     int log_level,
-                                                     ProblemsFormat format):
+FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                                               Logger& logger,
+                                                               std::string solver_name,
+                                                               int log_level,
+                                                               ProblemsFormat format):
     inputRoot_(inputRoot)
 {
     logger_ = logger;
@@ -25,9 +25,9 @@ MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path
     warm_start_ = false;
 }
 
-MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
-                                                     Logger& logger,
-                                                     std::shared_ptr<SolverAbstract> solver):
+FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                                               Logger& logger,
+                                                               std::shared_ptr<SolverAbstract> solver):
     inputRoot_(inputRoot),
     solver_(std::move(solver))
 {
@@ -39,7 +39,7 @@ MemOptimSubProblemBuilder::MemOptimSubProblemBuilder(const std::filesystem::path
     warm_start_ = false;
 }
 
-void MemOptimSubProblemBuilder::read_keyed_coeffs_csv(
+void FixedSkeletonSubProblemBuilder::read_keyed_coeffs_csv(
   const std::filesystem::path& csv_path,
   std::map<std::string, std::vector<double>>& dest)
 {
@@ -71,9 +71,9 @@ void MemOptimSubProblemBuilder::read_keyed_coeffs_csv(
     }
 }
 
-void MemOptimSubProblemBuilder::read_indices_csv(const std::filesystem::path& csv_path,
-                                                 std::vector<int>& dest_indices,
-                                                 bool is_col)
+void FixedSkeletonSubProblemBuilder::read_indices_csv(const std::filesystem::path& csv_path,
+                                                      std::vector<int>& dest_indices,
+                                                      bool is_col)
 {
     boost::char_separator<char> sep(",");
     using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
@@ -104,7 +104,7 @@ void MemOptimSubProblemBuilder::read_indices_csv(const std::filesystem::path& cs
     }
 }
 
-void MemOptimSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
+void FixedSkeletonSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
 {
     auto sub_dir = inputRoot_ / "sub";
     switch (coeff_type)
@@ -125,10 +125,10 @@ void MemOptimSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
     }
 }
 
-void MemOptimSubProblemBuilder::build_sub_skeleton(std::string solver_name,
-                                                   const SolverLogManager& solver_log_manager,
-                                                   int log_level,
-                                                   ProblemsFormat format)
+void FixedSkeletonSubProblemBuilder::build_sub_skeleton(std::string solver_name,
+                                                        const SolverLogManager& solver_log_manager,
+                                                        int log_level,
+                                                        ProblemsFormat format)
 {
     SolverFactory solver_factory(logger_);
     solver_ = solver_factory.create_solver(solver_name,
@@ -145,12 +145,12 @@ void MemOptimSubProblemBuilder::build_sub_skeleton(std::string solver_name,
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
 }
 
-int MemOptimSubProblemBuilder::get_sub_number()
+int FixedSkeletonSubProblemBuilder::get_sub_number()
 {
     return rhs_.size();
 }
 
-std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_abstract(
+std::shared_ptr<SubproblemWorker> FixedSkeletonSubProblemBuilder::create_sub_solver_abstract(
   std::string sub_name,
   VariableMap& variable_map,
   double cut_coefficient_tolerance,

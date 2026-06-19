@@ -31,7 +31,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CouplingMapGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ConstraintsFileReader.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/MemOptim_subproblem_builder.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/FixedSkeletonSubProblemBuilder.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
@@ -53,7 +53,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemWorker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/VariablesGroup.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/Worker.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/FixedSkeletonSubProblemBuilder.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/WorkerMaster.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/common.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ConstraintsFileReader.h

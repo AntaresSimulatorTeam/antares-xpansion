@@ -487,7 +487,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
         GetSubproblemCutCache(subproblem_data_map);
         break;
     case 2:
-        GetMemOptimCuts(subproblem_data_map);
+        GetFixedSkeletonCuts(subproblem_data_map);
         break;
     default:
         break;
@@ -630,15 +630,15 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
       shouldParallelize());
 }
 
-void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
+void BendersBase::GetFixedSkeletonCuts(SubProblemDataMap& subproblem_data_map)
 {
-    auto subs_on_proc = subs_per_procs_mem_optim_[rank_];
+    auto subs_on_proc = fixed_skeleton_subs_per_proc_[rank_];
 
     for (auto& sub: subs_on_proc)
     {
         auto variable_map = coupling_map_[sub];
-        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(), sub);
-        auto subproblem_worker = memoptim_subprob_builder_->create_sub_solver_abstract(
+        double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(), sub);
+        auto subproblem_worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
           sub,
           variable_map,
           _options.CUT_COEFFICIENT_TOLERANCE,

@@ -14,7 +14,7 @@
 #include "SubproblemWorker.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
-#include "antares-xpansion/benders/benders_core/MemOptim_subproblem_builder.h"
+#include "antares-xpansion/benders/benders_core/FixedSkeletonSubProblemBuilder.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
@@ -61,7 +61,7 @@ public:
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
-    void GetMemOptimCuts(SubProblemDataMap& subproblem_data_map);
+    void GetFixedSkeletonCuts(SubProblemDataMap& subproblem_data_map);
 
     const VariableMap& MasterVariables() const
     {
@@ -163,8 +163,8 @@ protected:
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
-    std::vector<std::vector<std::string>> subs_per_procs_mem_optim_;
-    std::shared_ptr<MemOptimSubProblemBuilder> memoptim_subprob_builder_;
+    std::vector<std::vector<std::string>> fixed_skeleton_subs_per_proc_;
+    std::shared_ptr<FixedSkeletonSubProblemBuilder> fixed_skeleton_subprob_builder_;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;

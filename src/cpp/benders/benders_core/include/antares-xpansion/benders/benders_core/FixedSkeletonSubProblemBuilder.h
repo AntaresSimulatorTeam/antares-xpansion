@@ -21,18 +21,18 @@ enum class CoeffType
     rhs
 };
 
-class MemOptimSubProblemBuilder
+class FixedSkeletonSubProblemBuilder
 {
 public:
-    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
-                              Logger& logger,
-                              std::string solver_name,
-                              int log_level,
-                              ProblemsFormat format);
+    FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                   Logger& logger,
+                                   std::string solver_name,
+                                   int log_level,
+                                   ProblemsFormat format);
 
-    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
-                              Logger& logger,
-                              std::shared_ptr<SolverAbstract> solver);
+    FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                   Logger& logger,
+                                   std::shared_ptr<SolverAbstract> solver);
 
     std::shared_ptr<SubproblemWorker> create_sub_solver_abstract(std::string sub_name,
                                                                  VariableMap& variable_map,

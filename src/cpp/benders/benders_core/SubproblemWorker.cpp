@@ -44,7 +44,7 @@ SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
                                    double slave_weight):
     Worker(variable_map, logger)
 {
-    init_for_mem_optim(solver, variable_map);
+    apply_per_subproblem_varying_coefficients(solver, variable_map);
     setup_obj(slave_weight);
 }
 

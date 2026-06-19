@@ -40,19 +40,19 @@ void BendersMpi::InitializeProblems()
     {
     case 2:
     {
-        std::cout << "case mem optim " << std::endl;
-        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
+        std::cout << "case fixed skeleton " << std::endl;
+        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
           _options.INPUTROOT,
           _logger,
           _options.SOLVER_NAME,
           _options.LOG_LEVEL,
           _options.PROBLEMS_FORMAT);
         int current_problem_id = 0;
-        subs_per_procs_mem_optim_.resize(_world.size());
+        fixed_skeleton_subs_per_proc_.resize(_world.size());
         for (auto it = coupling_map_.begin(); it != coupling_map_.end(); it++)
         {
             auto process_to_feed = current_problem_id % _world.size();
-            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first);
+            fixed_skeleton_subs_per_proc_[process_to_feed].push_back(it->first);
             subs_per_proc.push_back(std::make_pair(it->first, process_to_feed));
 
             current_problem_id++;

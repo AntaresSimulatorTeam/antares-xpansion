@@ -134,7 +134,7 @@ void Worker::set_id_to_name(VariableMap& variable_map)
     }
 }
 
-void Worker::init_for_mem_optim(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map)
+void Worker::apply_per_subproblem_varying_coefficients(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map)
 {
     _solver = solver;
     set_id_to_name(variable_map);

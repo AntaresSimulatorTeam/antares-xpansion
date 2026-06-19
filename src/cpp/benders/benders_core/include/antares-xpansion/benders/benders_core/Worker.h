@@ -27,7 +27,7 @@ public:
     virtual ~Worker() = default;
 
     void get_value(double& lb) const;
-    void init_for_mem_optim(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map);
+    void apply_per_subproblem_varying_coefficients(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map);
     void set_id_to_name(VariableMap& variable_map);
     void get_splex_num_of_ite_last(int& result) const;
 
