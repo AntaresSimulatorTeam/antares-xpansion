@@ -68,6 +68,8 @@ nav:
           - "Overview": "developer-guide/xpansion_steps/0-overview.md"
           - "Antares optimization problem retrieval": "developer-guide/xpansion_steps/1-antares-solver-problem.md"
           - "Investment problem generation": "developer-guide/xpansion_steps/2-problem-modification.md"
+      - Contributing: 
+          - Documentation guidelines: developer-guide/contributing/doc-guidelines.md
   - "Changelog":
       - "Changelog": "changelog/CHANGELOG.md"
       - "File format changes": "changelog/format_changes.md"
