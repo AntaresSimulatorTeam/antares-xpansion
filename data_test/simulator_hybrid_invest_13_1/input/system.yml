@@ -1,0 +1,51 @@
+# Copyright (c) 2024, RTE (https://www.rte-france.com)
+#
+# See AUTHORS.txt
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# SPDX-License-Identifier: MPL-2.0
+#
+# This file is part of the Antares project.
+
+# Study case 13_1 : to test investment problems
+# Simple generation expansion problem on one node, 3 weeks and one scenario with one candidate.
+
+# Demand = 400
+# Generator : P_max : 200, Cost : 45
+# Unsupplied energy : Cost : 501
+# Spillage cost : Cost : 1
+
+# -> 200 of unsupplied energy on 3 weeks : 3 x 168 time steps
+# -> Total cost without investment = 45 * 200 + 501 * 200 * 168 * 3 = 50_509_800
+
+# Continuous candidate  : Invest cost : 400 / MW; Prod cost : 10
+
+# Optimal investment : 400 MW
+
+# -> Optimal cost = 400 * 400 + 10 * 400 * 3 * 168 (Invest cost + prod cost of new generator)
+#                 =    160_000 +   2_016_000
+#                 = 2_176_000
+
+system:
+  id: case_13_1
+  components:
+
+    - id: continuous_generator_candidate
+      model: lib_example_13_1.generator_with_continuous_invest
+      parameters:
+        - id: op_cost
+          scenario-dependent: false
+          time-dependent: false
+          value: 10
+        - id: invest_cost
+          scenario-dependent: false
+          time-dependent: false
+          value: 400
+
+  area-connections:
+    - component: continuous_generator_candidate
+      port: balance_port
+      area: area
