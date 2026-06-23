@@ -39,7 +39,7 @@ struct SubProblemIds
     int n_subproblems;
 };
 
-using on_Benders_start_Func = void (*)(SubProblemIds,
+using on_Benders_start_Func = void (*)(std::vector<std::string>,
                                        int,
                                        std::filesystem::path,
                                        std::filesystem::path,
@@ -142,7 +142,7 @@ public:
             - subs_ids : a pointer to an array of c-style string which are the subproblem ids
             - n_subs : number of sub problem
     */
-    void SetSubProblemIDs(const char** subs_ids, int n_subs);
+    void SetSubProblemIDs(std::vector<std::string>&);
 
 private:
     /*
@@ -195,7 +195,7 @@ private:
     const SimulationOptions& options_;
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;
-    SubProblemIds sub_pb_ids_;
+    std::vector<std::string> sub_names_;
     std::map<std::string, std::string> binary_variables_ids_map_;
     std::vector<std::string> sub_ids_storage_;
     std::vector<const char*> sub_ids_ptrs_;
