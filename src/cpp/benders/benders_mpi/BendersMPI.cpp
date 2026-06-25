@@ -38,9 +38,8 @@ void BendersMpi::InitializeProblems()
     SubProblemNamesInCut subs_per_proc;
     switch (_options.CACHE_PROBLEMS)
     {
-    case 2:
+    case CacheProblemsMode::FIXED_SKELETON:
     {
-        std::cout << "case fixed skeleton " << std::endl;
         fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
           _options.INPUTROOT,
           _logger,
@@ -59,7 +58,7 @@ void BendersMpi::InitializeProblems()
         }
         break;
     }
-    case 1:
+    case CacheProblemsMode::CACHE:
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -78,7 +77,7 @@ void BendersMpi::InitializeProblems()
         }
         break;
     }
-    case 0:
+    case CacheProblemsMode::FAST:
     default:
     {
         int current_problem_id = 0;

@@ -480,16 +480,14 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 {
     switch (Options().CACHE_PROBLEMS)
     {
-    case 0:
+    case CacheProblemsMode::FAST:
         GetSubproblemCutFast(subproblem_data_map);
         break;
-    case 1:
+    case CacheProblemsMode::CACHE:
         GetSubproblemCutCache(subproblem_data_map);
         break;
-    case 2:
+    case CacheProblemsMode::FIXED_SKELETON:
         GetFixedSkeletonCuts(subproblem_data_map);
-        break;
-    default:
         break;
     }
 }

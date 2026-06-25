@@ -200,9 +200,22 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.NB_CUTS_PER_ITER = NB_CUTS_PER_ITER;
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;
-    result.CACHE_PROBLEMS = CACHE_PROBLEMS;
-
-    std::cout << "CACHE_PROBLEMS " << CACHE_PROBLEMS << std::endl;
+    switch (CACHE_PROBLEMS)
+    {
+    case 0:
+        result.CACHE_PROBLEMS = CacheProblemsMode::FAST;
+        break;
+    case 1:
+        result.CACHE_PROBLEMS = CacheProblemsMode::CACHE;
+        break;
+    case 2:
+        result.CACHE_PROBLEMS = CacheProblemsMode::FIXED_SKELETON;
+        break;
+    default:
+        std::cerr << LOGLOCATION << "Invalid value " << CACHE_PROBLEMS << " for option CACHE_PROBLEMS"
+                  << std::endl;
+        std::exit(1);
+    }
 
     if (MASTER_FORMULATION == "integer")
     {

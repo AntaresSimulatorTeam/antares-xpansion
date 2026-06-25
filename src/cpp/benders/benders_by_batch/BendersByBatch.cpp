@@ -52,7 +52,7 @@ void BendersByBatch::BuildBatches()
 
     for (auto& batch: batch_collection_.BatchCollections())
     {
-        if (_options.CACHE_PROBLEMS)
+        if (_options.CACHE_PROBLEMS == CacheProblemsMode::CACHE)
         {
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
             {
@@ -485,7 +485,7 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                                       const std::vector<std::string>& batch_sub_problems)
 {
-    if (Options().CACHE_PROBLEMS)
+    if (Options().CACHE_PROBLEMS == CacheProblemsMode::CACHE)
     {
         GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);
     }

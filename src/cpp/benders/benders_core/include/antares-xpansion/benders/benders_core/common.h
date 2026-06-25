@@ -30,6 +30,13 @@ enum class MasterFormulation
     RELAXED
 };
 
+enum class CacheProblemsMode
+{
+    FAST = 0,
+    CACHE = 1,
+    FIXED_SKELETON = 2
+};
+
 enum class SOLVER
 {
     BENDERS,
@@ -225,7 +232,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
-    int CACHE_PROBLEMS = 0;
+    CacheProblemsMode CACHE_PROBLEMS = CacheProblemsMode::FAST;
 
     MasterFormulation MASTER_FORMULATION;
 
