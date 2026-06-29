@@ -39,7 +39,7 @@ struct SubProblemIds
     int n_subproblems;
 };
 
-using on_Benders_start_Func = void (*)(SubProblemIds,
+using on_Benders_start_Func = void (*)(std::vector<std::string>,
                                        int,
                                        std::filesystem::path,
                                        std::filesystem::path,
@@ -142,7 +142,7 @@ public:
             - subs_ids : a pointer to an array of c-style string which are the subproblem ids
             - n_subs : number of sub problem
     */
-    void SetSubProblemIDs(const char** subs_ids, int n_subs);
+    void SetSubProblemIDs(std::vector<std::string>&);
 
 private:
     /*
@@ -167,21 +167,11 @@ private:
                                               const BendersBaseOptions& options,
                                               const SolverLogManager& solver_log_manager);
 
-    /*
-        This function is used to check if a constraint key rendered by the julia cde
-        has been added or not to the subproblem worker.
-        @inputs
-            - key : constraint key to check
-            - sub_name : subproblem name
-    */
-    // bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
-
-    // BuildSubProblemConstraintMap()
     void read_micro_iteration_config_file();
 
     void read_variables_to_follow_ids();
     void read_variable_names_to_follow();
-    void build_variables_to_follow_indices_vector(std::string sub_name);
+    void build_variables_to_follow_indices_vector();
     const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
 
     mpi::communicator* _world;
@@ -201,12 +191,11 @@ private:
     on_Benders_micro_iteration_end OnBendersMicroIterationEnd_;
     on_Benders_sub_resolution_start OnBendersSubResolutionStart_;
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
-    std::map<std::string, bool> is_variable_names_indices_created_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
     std::filesystem::path input_root_;
     std::filesystem::path variables_dictionary_path_;
-    SubProblemIds sub_pb_ids_;
+    std::vector<std::string> sub_names_;
     std::map<std::string, std::string> binary_variables_ids_map_;
     std::vector<std::string> sub_ids_storage_;
     std::vector<const char*> sub_ids_ptrs_;

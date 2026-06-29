@@ -6,8 +6,10 @@
 
 #include <cassert>
 #include <chrono>
+#include <exception>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #include <string_view>
 
 #include <boost/tokenizer.hpp>
@@ -30,10 +32,6 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     warm_start_ = true;
     _world = world;
 
-    for (auto& [sub_name, _]: coupling_map_)
-    {
-        is_variable_names_indices_created_[sub_name] = false;
-    }
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
 
@@ -218,8 +216,9 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     _logger = logger;
 
     BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    build_variables_to_follow_indices_vector();
 
-    onBendersStartPlugin_(sub_pb_ids_,
+    onBendersStartPlugin_(sub_names_,
                           _world->rank(),
                           options.INPUTROOT,
                           options.OUTPUTROOT,
@@ -250,8 +249,12 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
     {
         for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
         {
-            auto constraint_reader = constraints_map_[constraint_reader_name];
-            constraint_reader->delete_added_rows();
+            auto it = constraints_map_.find(constraint_reader_name);
+            if (it == constraints_map_.end())
+            {
+                continue;
+            }
+            it->second->delete_added_rows();
         }
     }
 }
@@ -266,15 +269,18 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
                                   options_.INPUTROOT);
 }
 
-void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector(std::string sub_name)
+void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
-    // TODO: Get variables index in sub only once at benders start (need to iterate over all subs,
-    // hard to do in Benders start maybe, the if is here to do this only at first iteration)
-    if (!is_variable_names_indices_created_[sub_name])
+    for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
     {
+        auto it = constraints_map_.find(constraint_reader_name);
+        if (it == constraints_map_.end())
+        {
+            // This subproblem is handled by another MPI rank
+            continue;
+        }
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
-        std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
-        auto constraint_reader = constraints_map_[constraint_reader_name];
+        auto constraint_reader = it->second;
         for (auto& variable: variables_to_follow_)
         {
             int variable_index = constraint_reader->get_variable_index_in_solution(variable);
@@ -309,7 +315,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     auto sub_constraints_manager = constraints_map_[constraints_manager_name];
 
     auto sub_solution = sub_constraints_manager->get_sub_solution();
-    build_variables_to_follow_indices_vector(sub_name);
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
 
     std::vector<std::string> constraints_to_add_vec;
@@ -346,22 +351,9 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int nu
     }
 }
 
-void Benders_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
+void Benders_MICRO_ITERS::SetSubProblemIDs(std::vector<std::string>& sub_names)
 {
-    sub_ids_storage_.clear();
-    sub_ids_storage_.reserve(n_subs);
-    for (int i = 0; i < n_subs; i++)
-    {
-        sub_ids_storage_.push_back(subs_ids[i]);
-    }
-
-    sub_ids_ptrs_.resize(n_subs);
-    for (int i = 0; i < n_subs; i++)
-    {
-        sub_ids_ptrs_[i] = sub_ids_storage_[i].c_str();
-    }
-
-    sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
+    sub_names_ = sub_names;
 }
 
 void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(

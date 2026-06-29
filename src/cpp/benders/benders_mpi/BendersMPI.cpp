@@ -2,6 +2,7 @@
 
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
+#include <fstream>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"

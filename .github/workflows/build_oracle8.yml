@@ -88,6 +88,10 @@ jobs:
           use-only-tar-bz2: true
           channel-priority: strict
 
+      - name: Install Python dependencies
+        run: |
+          /github/home/miniconda3/envs/xpansion-tests/bin/pip install -r requirements-tests.txt
+
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |
@@ -156,7 +160,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
           cd _build
-          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium|short"
 
       - name: Cache vcpkg binary dir
         if: always()
@@ -217,12 +221,6 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
-
-      - id: create-user-guide
-        name: user guide pdf creation
-        uses: ./.github/workflows/generate-userguide-pdf
-        with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: user guide upload
         id: userguide_upload
