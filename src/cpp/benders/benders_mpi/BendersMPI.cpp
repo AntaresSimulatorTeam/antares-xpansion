@@ -578,6 +578,8 @@ void BendersMpi::launch()
     {
         InitializeProblems();
     }
+
+    benders_plugin_->OnBendersStart();  
     _world.barrier();
 
     Run();

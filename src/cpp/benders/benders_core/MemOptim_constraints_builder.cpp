@@ -34,6 +34,11 @@ void MemOptimConstraintsBuilder::read_coeffs_and_indices()
     memoptim_utils::read_indices_csv(constraints_dir / "obj_cols.csv", obj_col_indices_, true, solver_);
     memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "rhs.csv", rhs_);
     memoptim_utils::read_indices_csv(constraints_dir / "rhs_rows.csv", rhs_row_indices_, false, solver_);
+
+    for (auto& [constraint_name,_] : coeffs_)
+    {
+        std::cout<<"constraint_name "<<constraint_name<<std::endl ; 
+    }
 }
 
 void MemOptimConstraintsBuilder::build_constraints_skeleton(std::string solver_name,

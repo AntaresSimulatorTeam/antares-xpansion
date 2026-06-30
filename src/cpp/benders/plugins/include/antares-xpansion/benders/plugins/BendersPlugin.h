@@ -26,8 +26,7 @@ public:
     virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                 const Logger& logger,
                                 const BendersBaseOptions& options,
-                                const SolverLogManager& solver_log_manager,
-                                int cache_problems)
+                                const SolverLogManager& solver_log_manager)
       = 0;
 
     /*
@@ -65,6 +64,7 @@ public:
       This method will be called before solving a subproblem (for each subproblem)
     */
     virtual void OnBendersMicroIterationStart(
+      int CACHE_PROBLEMS = 0,
       const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
       std::string sub_name = "") = 0;
 

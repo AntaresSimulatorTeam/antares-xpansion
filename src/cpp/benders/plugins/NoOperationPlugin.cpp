@@ -7,8 +7,7 @@ NoOperationPlugin::NoOperationPlugin()
 void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                        const Logger& logger,
                                        const BendersBaseOptions& options,
-                                       const SolverLogManager& solver_log_manager,
-                                       int cache_problems)
+                                       const SolverLogManager& solver_log_manager)
 {
 }
 
@@ -34,6 +33,7 @@ void NoOperationPlugin::OnBendersMasterResolutionStart()
 }
 
 void NoOperationPlugin::OnBendersMicroIterationStart(
+  int CACHE_PROBLEMS,
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {

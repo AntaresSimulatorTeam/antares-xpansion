@@ -9,6 +9,15 @@ SubproblemConstraintsManager::SubproblemConstraintsManager(
 {
 }
 
+SubproblemConstraintsManager::SubproblemConstraintsManager(
+  std::shared_ptr<SolverAbstract> solver,
+  const std::shared_ptr<SubproblemWorker>& subproblem_worker):
+    file_reader_(std::move(solver)),
+    subproblem_worker_(subproblem_worker),
+    initial_sub_size_(subproblem_worker->get_problem_row_num())
+{
+}
+
 std::vector<double> SubproblemConstraintsManager::get_sub_solution()
 {
     if (subproblem_worker_ == nullptr) 

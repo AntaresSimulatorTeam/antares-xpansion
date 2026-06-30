@@ -30,6 +30,8 @@ public:
                           int log_level,
                           ProblemsFormat format);
 
+    ConstraintsFileReader(std::shared_ptr<SolverAbstract> solver);
+
     SolverRepresentedRows get_row(const std::string& name);
 
 private:

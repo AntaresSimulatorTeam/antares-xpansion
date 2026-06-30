@@ -667,7 +667,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
         bool added_rows = true;
         while (added_rows)
         {
-            benders_plugin_->OnBendersMicroIterationStart(worker, name);
+            benders_plugin_->OnBendersMicroIterationStart(_options.CACHE_PROBLEMS, worker, name);
             auto t1 = std::chrono::high_resolution_clock::now();
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,

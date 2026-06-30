@@ -99,8 +99,7 @@ public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                         const Logger& logger,
                         const BendersBaseOptions& options,
-                        const SolverLogManager& solver_log_manager,
-                        int cache_problems) override;
+                        const SolverLogManager& solver_log_manager) override;
 
     void OnBendersIterationStart() override;
     void OnBendersIterationEnd() override;
@@ -125,6 +124,7 @@ public:
         Implementation of micro iteration start call back
     */
     void OnBendersMicroIterationStart(
+      int CACHE_PROBLEMS = 0,
       const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
       std::string sub_name = "") override;
 
@@ -199,7 +199,7 @@ private:
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
-    std::filesystem::path input_root_;
+
     std::filesystem::path variables_dictionary_path_;
     std::vector<std::string> sub_names_;
     std::map<std::string, std::string> binary_variables_ids_map_;
@@ -214,7 +214,6 @@ private:
     SubproblemConstraintsManagerPtrMap constraints_map_;
     Logger _logger;
     bool warm_start_;
-    int cache_problems_;
     std::shared_ptr<MemOptimConstraintsBuilder> memoptim_constraints_builder_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
 };

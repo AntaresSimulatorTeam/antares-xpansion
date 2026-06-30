@@ -21,6 +21,11 @@ ConstraintsFileReader::ConstraintsFileReader(const std::filesystem::path constra
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
 }
 
+ConstraintsFileReader::ConstraintsFileReader(std::shared_ptr<SolverAbstract> solver):
+    solver_(std::move(solver))
+{
+}
+
 int ConstraintsFileReader::get_row_index(const std::string& name)
 {
     return solver_->get_row_index(name);

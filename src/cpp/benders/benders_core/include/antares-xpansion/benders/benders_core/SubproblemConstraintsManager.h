@@ -14,6 +14,9 @@ public:
     SubproblemConstraintsManager(ConstraintsFileReader file_reader,
                                  const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
+    SubproblemConstraintsManager(std::shared_ptr<SolverAbstract> solver,
+                                 const std::shared_ptr<SubproblemWorker>& subproblem_worker);
+
     void add_rows(std::string& row_name);
     std::vector<double> get_sub_solution();
     int get_variable_index_in_solution(std::string variable_id);
