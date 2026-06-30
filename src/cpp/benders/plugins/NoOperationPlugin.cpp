@@ -33,7 +33,9 @@ void NoOperationPlugin::OnBendersMasterResolutionStart()
 {
 }
 
-void NoOperationPlugin::OnBendersMicroIterationStart()
+void NoOperationPlugin::OnBendersMicroIterationStart(
+  const std::shared_ptr<SubproblemWorker>& sub_worker,
+  std::string sub_name)
 {
 }
 

@@ -306,7 +306,9 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionStart()
     }
 }
 
-void Benders_MICRO_ITERS::OnBendersMicroIterationStart()
+void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
+  const std::shared_ptr<SubproblemWorker>& sub_worker,
+  std::string sub_name)
 {
     if (OnBendersMicroIterationStart_)
     {

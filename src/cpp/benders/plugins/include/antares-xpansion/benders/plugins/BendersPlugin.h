@@ -64,7 +64,9 @@ public:
     /*
       This method will be called before solving a subproblem (for each subproblem)
     */
-    virtual void OnBendersMicroIterationStart() = 0;
+    virtual void OnBendersMicroIterationStart(
+      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+      std::string sub_name = "") = 0;
 
     /*
       This method will be called after solving a subproblem (for each subproblem)

@@ -124,7 +124,9 @@ public:
     /*
         Implementation of micro iteration start call back
     */
-    void OnBendersMicroIterationStart() override;
+    void OnBendersMicroIterationStart(
+      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+      std::string sub_name = "") override;
 
     /*
         Implementation of micro iteration end callback
@@ -214,4 +216,5 @@ private:
     bool warm_start_;
     int cache_problems_;
     std::shared_ptr<MemOptimConstraintsBuilder> memoptim_constraints_builder_;
+    SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
 };
