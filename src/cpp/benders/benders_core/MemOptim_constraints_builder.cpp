@@ -30,6 +30,10 @@ void MemOptimConstraintsBuilder::read_coeffs_and_indices()
     memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "coef.csv", coeffs_);
     memoptim_utils::read_indices_csv(constraints_dir / "coef_cols.csv", constraints_col_indices_, true, solver_);
     memoptim_utils::read_indices_csv(constraints_dir / "coef_rows.csv", constraints_row_indices_, false, solver_);
+    memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "obj_coef.csv", obj_coeffs_);
+    memoptim_utils::read_indices_csv(constraints_dir / "obj_cols.csv", obj_col_indices_, true, solver_);
+    memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "rhs.csv", rhs_);
+    memoptim_utils::read_indices_csv(constraints_dir / "rhs_rows.csv", rhs_row_indices_, false, solver_);
 }
 
 void MemOptimConstraintsBuilder::build_constraints_skeleton(std::string solver_name,
@@ -61,8 +65,12 @@ std::shared_ptr<SolverAbstract> MemOptimConstraintsBuilder::create_constraints_r
   const std::string& constraints_name)
 {
     auto& coeffs = coeffs_[constraints_name];
+    auto& coeffs_obj = obj_coeffs_[constraints_name];
+    auto& rhs_values = rhs_[constraints_name];
 
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs);
+    solver_->chg_obj(obj_col_indices_, coeffs_obj);
+    solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
 
     return solver_;
 }

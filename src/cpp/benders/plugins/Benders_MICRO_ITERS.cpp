@@ -34,6 +34,11 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
+    std::cout<<"subproblem constraints map "<<std::endl ; 
+    for (auto& [sub,constraint] :subproblem_constraint_map_ ) 
+    {
+        std::cout<<"sub "<<sub<<" constraints "<<constraint<<std::endl ; 
+    }
 
     std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
@@ -216,8 +221,10 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 {
     _logger = logger;
     cache_problems_ = cache_problems;
-
-    BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    if (options.CACHE_PROBLEMS < 2)
+        BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    else
+        BuildMemOptimConstraintsSkeleton(options);
     build_variables_to_follow_indices_vector();
 
     onBendersStartPlugin_(sub_names_,
@@ -379,4 +386,14 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
           std::move(file_reader),
           sub_worker);
     }
+}
+
+void Benders_MICRO_ITERS::BuildMemOptimConstraintsSkeleton(const BendersBaseOptions& options)
+{
+    memoptim_constraints_builder_ = std::make_shared<MemOptimConstraintsBuilder>(
+      options.INPUTROOT,
+      _logger,
+      options.SOLVER_NAME,
+      options.LOG_LEVEL,
+      options.PROBLEMS_FORMAT);
 }

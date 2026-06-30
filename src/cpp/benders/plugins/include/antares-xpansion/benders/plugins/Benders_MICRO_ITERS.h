@@ -22,6 +22,7 @@ Benders_MICRO_ITERS class.
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/MemOptim_constraints_builder.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
@@ -168,6 +169,8 @@ private:
                                               const BendersBaseOptions& options,
                                               const SolverLogManager& solver_log_manager);
 
+    void BuildMemOptimConstraintsSkeleton(const BendersBaseOptions& options);
+
     void read_micro_iteration_config_file();
 
     void read_variables_to_follow_ids();
@@ -210,4 +213,5 @@ private:
     Logger _logger;
     bool warm_start_;
     int cache_problems_;
+    std::shared_ptr<MemOptimConstraintsBuilder> memoptim_constraints_builder_;
 };

@@ -46,6 +46,10 @@ private:
     std::map<std::string, std::vector<double>> coeffs_;
     std::vector<int> constraints_col_indices_;
     std::vector<int> constraints_row_indices_;
+    std::map<std::string, std::vector<double>> obj_coeffs_;
+    std::vector<int> obj_col_indices_;
+    std::map<std::string, std::vector<double>> rhs_;
+    std::vector<int> rhs_row_indices_;
     std::shared_ptr<SolverAbstract> solver_;
     std::shared_ptr<BendersProblemFromFile> benders_problem_provider_;
     SolverLogManager solver_log_manager_;

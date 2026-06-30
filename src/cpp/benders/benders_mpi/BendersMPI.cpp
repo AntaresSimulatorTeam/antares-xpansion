@@ -573,13 +573,12 @@ void BendersMpi::PreRunInitialization()
 
 void BendersMpi::launch()
 {
+    
     if (init_problems_)
     {
         InitializeProblems();
     }
     _world.barrier();
-
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_, _options.CACHE_PROBLEMS);
 
     Run();
 
