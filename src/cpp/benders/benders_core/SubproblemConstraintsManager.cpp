@@ -54,5 +54,7 @@ int SubproblemConstraintsManager::size_of_subproblem()
 
 void SubproblemConstraintsManager::delete_added_rows()
 {
+    std::cout<<"currecnt size "<<subproblem_worker_->get_problem_row_num()<<std::endl ; 
+    std::cout<<"initial size "<<initial_sub_size_<<std::endl ; 
     subproblem_worker_->delete_rows(initial_sub_size_);
 }
