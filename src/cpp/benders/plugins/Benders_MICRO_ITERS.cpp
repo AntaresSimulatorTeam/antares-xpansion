@@ -134,6 +134,7 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     {
         std::cerr << "failed to open the plugin given on path " << cpp_lib_absolute_path
                   << std::endl;
+        std::cerr<<"error "<<dlerror()<<std::endl ; 
         _world->abort(EXIT_FAILURE);
     }
 }
