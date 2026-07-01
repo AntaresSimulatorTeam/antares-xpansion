@@ -73,14 +73,20 @@ std::shared_ptr<SolverAbstract> MemOptimConstraintsBuilder::create_constraints_r
     std::cout<<"from create constraintes reader constraints filename "<<constraints_name<<std::endl ; 
     auto& coeffs = coeffs_[constraints_name];
     auto& rhs_values = rhs_[constraints_name];
-
+    
     std::cout<<"found the coeffs "<<std::endl ; 
-
+    
     std::cout<<"coreffs size "<<coeffs.size()<<std::endl ; 
     std::cout<<"constraints_row_indices_ size "<<constraints_row_indices_.size()<<std::endl ; 
     std::cout<<"constraints_col_indices_ size "<<constraints_col_indices_.size()<<std::endl ; 
+    
+    std::cout<<"rhs size "<<rhs_values.size()<<std::endl ; 
+    std::cout<<"rhs_row_indices_ "<<rhs_row_indices_.size()<<std::endl ;  
 
+    if (solver_) 
+        std::cout<<"solver object is not null !!!!"<<std::endl ; 
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs);
+    std::cout<<"chg coefs correctly "<<std::endl ; 
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
 
     std::cout<<"solver is set correctly "<<std::endl ; 
