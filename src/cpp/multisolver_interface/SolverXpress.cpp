@@ -582,15 +582,18 @@ void SolverXpress::chg_coefs(const std::vector<int>& id_rows,
                              const std::vector<int>& id_cols,
                              const std::vector<double>& vals)
 {
-    std::cout<<"chg coeff from xpess start "<<std::endl ; 
-    int status = XPRSchgmcoef(_xprs,
-                              static_cast<int>(id_rows.size()),
-                              const_cast<int*>(id_rows.data()),
-                              const_cast<int*>(id_cols.data()),
-                              const_cast<double*>(vals.data()));
-    zero_status_check(status, "change matrix coefficient", LOGLOCATION);
-    std::cout<<"chg coeff from xpess end "<<std::endl ; 
-
+    try {
+        std::cout<<"chg coeff from xpess start "<<std::endl ;
+        int status = XPRSchgmcoef(_xprs,
+                                  static_cast<int>(id_rows.size()),
+                                  const_cast<int*>(id_rows.data()),
+                                  const_cast<int*>(id_cols.data()),
+                                  const_cast<double*>(vals.data()));
+        zero_status_check(status, "change matrix coefficient", LOGLOCATION);
+        std::cout<<"chg coeff from xpess end "<<std::endl ;
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void SolverXpress::chg_rhs(int id_row, double val)

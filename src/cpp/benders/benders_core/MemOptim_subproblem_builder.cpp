@@ -94,6 +94,16 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
     auto& rhs_values = rhs_[sub_name];
 
     std::cout<<"creating sub problem for "<<sub_name<<std::endl ; 
+
+    std::cout<<"€€€€€€€ for sub subproblem "<<std::endl ; 
+    std::cout<<"constraints_row_indices_ "<<constraints_row_indices_.size()<<std::endl ; 
+    std::cout<<"constraints_col_indices_ "<<constraints_col_indices_.size()<<std::endl ; 
+    std::cout<<"coeffs_sub "<<coeffs_sub.size()<<std::endl ;
+    
+    std::cout<<"rhs_row_indices_ "<<rhs_row_indices_.size()<<std::endl ; 
+    std::cout<<"rhs_values "<<rhs_values.size()<<std::endl ; 
+
+    
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs_sub);
     solver_->chg_obj(obj_col_indices_, coeffs_obj);
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
