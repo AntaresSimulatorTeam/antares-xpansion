@@ -41,7 +41,6 @@ void BendersMpi::InitializeProblems()
     {
     case 2:
     {
-        std::cout << "case mem optim " << std::endl;
         memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
           _options.INPUTROOT,
           _logger,
@@ -573,13 +572,11 @@ void BendersMpi::PreRunInitialization()
 
 void BendersMpi::launch()
 {
-    
     if (init_problems_)
     {
         InitializeProblems();
     }
-    
-    
+
     _world.barrier();
     benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
 

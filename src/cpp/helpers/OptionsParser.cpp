@@ -19,7 +19,6 @@ void OptionsParser::Parse(unsigned int argc, const char* const* argv)
 
     if (opts.count("help"))
     {
-        std::cout << desc_ << std::endl;
         std::exit(0);
     }
 

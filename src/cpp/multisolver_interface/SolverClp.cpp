@@ -639,7 +639,6 @@ int SolverClp::solve_lp()
     else
     {
         lp_status = UNKNOWN;
-        std::cout << "Error : UNKNOWN CLP STATUS IS : " << clp_status << std::endl;
     }
     return lp_status;
 }
@@ -665,7 +664,6 @@ int SolverClp::solve_mip()
     else
     {
         lp_status = UNKNOWN;
-        std::cout << "Error : UNKNOWN CLP STATUS IS : " << clp_status << std::endl;
     }
     return lp_status;
 }

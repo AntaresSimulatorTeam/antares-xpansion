@@ -66,7 +66,8 @@ public:
     virtual void OnBendersMicroIterationStart(
       int CACHE_PROBLEMS = 0,
       const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-      std::string sub_name = "") = 0;
+      std::string sub_name = "")
+      = 0;
 
     /*
       This method will be called after solving a subproblem (for each subproblem)

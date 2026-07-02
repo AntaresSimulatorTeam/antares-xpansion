@@ -44,8 +44,14 @@ void MemOptimSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
     {
     case CoeffType::constraints:
         memoptim_utils::read_keyed_coeffs_csv(sub_dir / "coef.csv", coeffs_);
-        memoptim_utils::read_indices_csv(sub_dir / "coef_cols.csv", constraints_col_indices_, true, solver_);
-        memoptim_utils::read_indices_csv(sub_dir / "coef_rows.csv", constraints_row_indices_, false, solver_);
+        memoptim_utils::read_indices_csv(sub_dir / "coef_cols.csv",
+                                         constraints_col_indices_,
+                                         true,
+                                         solver_);
+        memoptim_utils::read_indices_csv(sub_dir / "coef_rows.csv",
+                                         constraints_row_indices_,
+                                         false,
+                                         solver_);
         break;
     case CoeffType::objective:
         memoptim_utils::read_keyed_coeffs_csv(sub_dir / "obj_coef.csv", obj_coeffs_);
@@ -53,7 +59,10 @@ void MemOptimSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
         break;
     case CoeffType::rhs:
         memoptim_utils::read_keyed_coeffs_csv(sub_dir / "rhs.csv", rhs_);
-        memoptim_utils::read_indices_csv(sub_dir / "rhs_rows.csv", rhs_row_indices_, false, solver_);
+        memoptim_utils::read_indices_csv(sub_dir / "rhs_rows.csv",
+                                         rhs_row_indices_,
+                                         false,
+                                         solver_);
         break;
     }
 }
@@ -93,17 +102,6 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
     auto& coeffs_obj = obj_coeffs_[sub_name];
     auto& rhs_values = rhs_[sub_name];
 
-    std::cout<<"creating sub problem for "<<sub_name<<std::endl ; 
-
-    std::cout<<"€€€€€€€ for sub subproblem "<<std::endl ; 
-    std::cout<<"constraints_row_indices_ "<<constraints_row_indices_.size()<<std::endl ; 
-    std::cout<<"constraints_col_indices_ "<<constraints_col_indices_.size()<<std::endl ; 
-    std::cout<<"coeffs_sub "<<coeffs_sub.size()<<std::endl ;
-    
-    std::cout<<"rhs_row_indices_ "<<rhs_row_indices_.size()<<std::endl ; 
-    std::cout<<"rhs_values "<<rhs_values.size()<<std::endl ; 
-
-    
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs_sub);
     solver_->chg_obj(obj_col_indices_, coeffs_obj);
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);

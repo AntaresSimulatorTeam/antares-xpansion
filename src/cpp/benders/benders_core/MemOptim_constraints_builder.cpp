@@ -28,21 +28,30 @@ void MemOptimConstraintsBuilder::read_coeffs_and_indices()
 {
     auto constraints_dir = inputRoot_ / "constraints";
     memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "coef.csv", coeffs_);
-    memoptim_utils::read_indices_csv(constraints_dir / "coef_cols.csv", constraints_col_indices_, true, solver_);
-    memoptim_utils::read_indices_csv(constraints_dir / "coef_rows.csv", constraints_row_indices_, false, solver_);
+    memoptim_utils::read_indices_csv(constraints_dir / "coef_cols.csv",
+                                     constraints_col_indices_,
+                                     true,
+                                     solver_);
+    memoptim_utils::read_indices_csv(constraints_dir / "coef_rows.csv",
+                                     constraints_row_indices_,
+                                     false,
+                                     solver_);
     memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "rhs.csv", rhs_);
-    memoptim_utils::read_indices_csv(constraints_dir / "rhs_rows.csv", rhs_row_indices_, false, solver_);
+    memoptim_utils::read_indices_csv(constraints_dir / "rhs_rows.csv",
+                                     rhs_row_indices_,
+                                     false,
+                                     solver_);
 
-    for (auto& [constraint_name,_] : coeffs_)
+    for (auto& [constraint_name, _]: coeffs_)
     {
-        std::cout<<"constraint_name "<<constraint_name<<std::endl ; 
     }
 }
 
-void MemOptimConstraintsBuilder::build_constraints_skeleton(std::string solver_name,
-                                                            const SolverLogManager& solver_log_manager,
-                                                            int log_level,
-                                                            ProblemsFormat format)
+void MemOptimConstraintsBuilder::build_constraints_skeleton(
+  std::string solver_name,
+  const SolverLogManager& solver_log_manager,
+  int log_level,
+  ProblemsFormat format)
 {
     SolverFactory solver_factory(logger_);
     solver_ = solver_factory.create_solver(solver_name,
@@ -53,12 +62,10 @@ void MemOptimConstraintsBuilder::build_constraints_skeleton(std::string solver_n
     solver_->set_output_log_level(log_level);
     std::filesystem::path skeleton_constraints = inputRoot_ / "constraints" / "constraints.mps";
 
-    
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(skeleton_constraints);
     solver_IO_.configure(solver_name, format);
-    
+
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
-    std::cout<<"n rows of the sekeleton constraintes solver "<<solver_->get_nrows()<<std::endl ; 
 }
 
 int MemOptimConstraintsBuilder::get_constraints_number()
@@ -69,27 +76,11 @@ int MemOptimConstraintsBuilder::get_constraints_number()
 std::shared_ptr<SolverAbstract> MemOptimConstraintsBuilder::create_constraints_reader(
   const std::string& constraints_name)
 {
-
-    std::cout<<"from create constraintes reader constraints filename "<<constraints_name<<std::endl ; 
     auto& coeffs = coeffs_[constraints_name];
     auto& rhs_values = rhs_[constraints_name];
-    
-    std::cout<<"found the coeffs "<<std::endl ; 
-    
-    std::cout<<"coreffs size "<<coeffs.size()<<std::endl ; 
-    std::cout<<"constraints_row_indices_ size "<<constraints_row_indices_.size()<<std::endl ; 
-    std::cout<<"constraints_col_indices_ size "<<constraints_col_indices_.size()<<std::endl ; 
-    
-    std::cout<<"rhs size "<<rhs_values.size()<<std::endl ; 
-    std::cout<<"rhs_row_indices_ "<<rhs_row_indices_.size()<<std::endl ;  
 
-    if (solver_) 
-        std::cout<<"solver object is not null !!!!"<<std::endl ; 
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs);
-    std::cout<<"chg coefs correctly "<<std::endl ; 
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
-
-    std::cout<<"solver is set correctly "<<std::endl ; 
 
     return solver_;
 }

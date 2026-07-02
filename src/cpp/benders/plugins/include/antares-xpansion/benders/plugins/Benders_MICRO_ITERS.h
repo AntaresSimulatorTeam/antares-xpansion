@@ -21,8 +21,8 @@ Benders_MICRO_ITERS class.
 #include <boost/serialization/string.hpp>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
-#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/MemOptim_constraints_builder.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
@@ -123,10 +123,9 @@ public:
     /*
         Implementation of micro iteration start call back
     */
-    void OnBendersMicroIterationStart(
-      int CACHE_PROBLEMS = 0,
-      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-      std::string sub_name = "") override;
+    void OnBendersMicroIterationStart(int CACHE_PROBLEMS = 0,
+                                      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+                                      std::string sub_name = "") override;
 
     /*
         Implementation of micro iteration end callback

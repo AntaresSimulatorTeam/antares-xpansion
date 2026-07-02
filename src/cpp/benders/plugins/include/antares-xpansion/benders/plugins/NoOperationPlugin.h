@@ -25,10 +25,9 @@ public:
     void OnBendersSubResolutionStart() override;
     void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
 
-    void OnBendersMicroIterationStart(
-      int CACHE_PROBLEMS = 0,
-      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-      std::string sub_name = "") override;
+    void OnBendersMicroIterationStart(int CACHE_PROBLEMS = 0,
+                                      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+                                      std::string sub_name = "") override;
     void OnBendersMicroIterationEnd(std::string sub_name,
                                     bool& added_rows,
                                     std::string solve_time,

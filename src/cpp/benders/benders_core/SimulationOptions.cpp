@@ -94,7 +94,6 @@ void SimulationOptions::set_weights()
 
         if (!file)
         {
-            std::cout << "Cannot open file " << filename << std::endl;
         }
         double weights_sum = -1;
         while (std::getline(file, line))
@@ -201,8 +200,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;
     result.CACHE_PROBLEMS = CACHE_PROBLEMS;
-
-    std::cout << "CACHE_PROBLEMS " << CACHE_PROBLEMS << std::endl;
 
     if (MASTER_FORMULATION == "integer")
     {

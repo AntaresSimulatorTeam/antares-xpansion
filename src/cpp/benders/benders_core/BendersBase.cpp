@@ -644,10 +644,6 @@ void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
           _options.CUT_COEFFICIENT_TOLERANCE,
           slave_weights);
         PlainData::SubProblemData subproblem_data;
-        if (subproblem_worker == nullptr)
-            std::cout<<"subproblem_worker is null "<<std::endl ;
-        else 
-            std::cout<<"subproblem_worker not null "<<std::endl ; 
         SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
         subproblem_data_map[sub] = subproblem_data;
@@ -661,36 +657,27 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
 
     worker->fix_to(_data.x_cut);
-    std::cout<<"###### solve subproblem "<<std::endl ; 
 
     benders_plugin_->OnBendersSubResolutionStart();
 
     int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)
     {
-        
         bool added_rows = true;
         while (added_rows)
         {
             benders_plugin_->OnBendersMicroIterationStart(_options.CACHE_PROBLEMS, worker, name);
             auto t1 = std::chrono::high_resolution_clock::now();
-            std::cout<<"start solving problem "<<std::endl ; 
-            if (worker == nullptr)
-                std::cout<<"worker is null pinter "<<std::endl ; 
-            else 
-                std::cout<<"worker is good !!"<<std::endl ; 
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
                           _options.LAST_MASTER_MPS + MPS_SUFFIX,
                           _writer);
-            std::cout<<"worker ended "<<std::endl ; 
             auto t2 = std::chrono::high_resolution_clock::now();
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2
                                                                                               - t1)
                                           .count();
 
             num_micro_iter++;
-            std::cout<<"entering in OnBendersMicroIterationEnd from bendersbase "<<std::endl ; 
             benders_plugin_->OnBendersMicroIterationEnd(name,
                                                         added_rows,
                                                         std::to_string(elapsed_microseconds),

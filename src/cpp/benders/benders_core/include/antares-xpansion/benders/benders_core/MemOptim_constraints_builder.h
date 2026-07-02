@@ -1,12 +1,11 @@
 #pragma once
 
+#include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <filesystem>
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
-
-#include <antares-xpansion/benders/benders_core/SolverIO.h>
 
 #include "IBendersProblemProvider.h"
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"

@@ -34,6 +34,6 @@ int AntaresVersionProvider::getAntaresVersion(const std::filesystem::path& study
     }
 
     // default
-    std::cout << "AntaresVersionProvider::getAntaresVersion : default version 710 returned.\n";
+
     return version;
 }

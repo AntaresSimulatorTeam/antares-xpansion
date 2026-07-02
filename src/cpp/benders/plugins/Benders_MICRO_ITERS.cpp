@@ -28,18 +28,11 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                                        constraints_coupling_map_,
                                                        options_);
 
-
     warm_start_ = true;
     _world = world;
 
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
-    std::cout<<"subproblem constraints map "<<std::endl ; 
-    for (auto& [sub,constraint] :subproblem_constraint_map_ ) 
-    {
-        std::cout<<"sub "<<sub<<" constraints "<<constraint<<std::endl ; 
-    }
-
     std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
     auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path;
@@ -191,7 +184,8 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 void Benders_MICRO_ITERS::read_variable_names_to_follow()
 {
     // Reading variable names from text file
-    std::filesystem::path variable_names_path = std::filesystem::path(options_.INPUTROOT) / "variable_names.txt";
+    std::filesystem::path variable_names_path = std::filesystem::path(options_.INPUTROOT)
+                                                / "variable_names.txt";
     std::ifstream variable_names_stream(variable_names_path.string());
 
     if (variable_names_stream.is_open())
@@ -219,19 +213,15 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
                                          const SolverLogManager& solver_log_manager)
 {
     _logger = logger;
-    std::cout<<"################## OnBendersStart"<<std::endl ; 
-    std::cout<<"options.CACHE_PROBLEMS "<<options.CACHE_PROBLEMS<<std::endl ; 
     if (options.CACHE_PROBLEMS < 2)
+    {
         BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+    }
     else
     {
-        std::cout<<"from benders start building the skeleton !!!!!"<<std::endl ; 
         BuildMemOptimConstraintsSkeleton(options);
     }
-    
 
-    if (memoptim_constraints_builder_) 
-        std::cout<<"memoptim_constraints_builder_ is not null !!!!"<<std::endl ; 
     build_variables_to_follow_indices_vector();
 
     onBendersStartPlugin_(sub_names_,
@@ -255,16 +245,11 @@ void Benders_MICRO_ITERS::OnBendersEnd()
 
 void Benders_MICRO_ITERS::OnBendersIterationStart()
 {
-    if (memoptim_constraints_builder_) 
-        std::cout<<"from iteration start memoptim_constraints_builder_ is not null "<<std::endl ; 
-    else 
-        std::cout<<"from iteration start memoptim_constraints_builder_ is  null"<<std::endl ; 
     OnBendersIterationStart_();
 }
 
 void Benders_MICRO_ITERS::OnBendersIterationEnd()
 {
-    std::cout<<"OnBendersIterationEnd ######"<<std::endl ; 
     OnBendersIterationEnd_();
     if (!warm_start_)
     {
@@ -282,8 +267,6 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
         }
         else
         {
-            if (subproblem_constraints_manager_ == nullptr) 
-                std::cout<<"subproblem_constraints_manager_ is null "<<std::endl ;     
             subproblem_constraints_manager_->delete_added_rows();
         }
     }
@@ -292,10 +275,6 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
 void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
                                                        int& num_iter)
 {
-    std::cout<<"master out size "<<master_out.size()<<std::endl; 
-    std::cout<<"num iters "<<num_iter<<std::endl ; 
-    if (memoptim_constraints_builder_)
-        std::cout<<"memoptim_constraints_builder_ not null "<<std::endl ; 
     // OnBendersMasterResolutionEnd_(master_out,
     //                               num_iter,
     //                               _world,
@@ -307,7 +286,6 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
     for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
     {
-
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
         if (options_.CACHE_PROBLEMS < 2)
         {
@@ -323,7 +301,6 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }
-        
     }
 }
 
@@ -340,23 +317,20 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {
-     if (memoptim_constraints_builder_ )
-            std::cout<<"At the beginning of memoptim_constraints_builder_ is not null !!"<<std::endl ;
     if (CACHE_PROBLEMS >= 2)
     {
-        std::cout<<"!!!!!! OnBendersMicroIterationStart "<<std::endl ; 
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        std::cout<<"constraints_file_name "<<constraints_file_name<<std::endl ;
-        auto solver = memoptim_constraints_builder_->create_constraints_reader(constraints_file_name);
-        std::cout<<"memoptim constraints builder created the sub constraints correctly "<<std::endl ; 
-        subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(solver, sub_worker);
-        if (subproblem_constraints_manager_)
-            std::cout<<"subproblem_constraints_manager_ is not null 666666"<<std::endl ; 
+        auto solver = memoptim_constraints_builder_->create_constraints_reader(
+          constraints_file_name);
+        subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(
+          solver,
+          sub_worker);
         if (variables_to_follow_indices_per_sub_[sub_name].empty())
         {
             for (auto& variable: variables_to_follow_)
             {
-                int variable_index = subproblem_constraints_manager_->get_variable_index_in_solution(variable);
+                int variable_index = subproblem_constraints_manager_
+                                       ->get_variable_index_in_solution(variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }
@@ -373,8 +347,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
                                                      int num_master_iter,
                                                      int num_micro_iter)
 {
-
-    std::cout<<"222222 OnBendersMicroIterationEnd"<<std::endl ; 
     std::vector<double> sub_solution;
     if (options_.CACHE_PROBLEMS < 2)
     {
@@ -384,9 +356,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     }
     else
     {
-        std::cout<<"from the else in micro iteration end "<<std::endl ; 
-        if (subproblem_constraints_manager_) 
-            std::cout<<"subproblem_constraints_manager_ is not null "<<std::endl ; 
         sub_solution = subproblem_constraints_manager_->get_sub_solution();
     }
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
@@ -470,9 +439,4 @@ void Benders_MICRO_ITERS::BuildMemOptimConstraintsSkeleton(const BendersBaseOpti
       options.SOLVER_NAME,
       options.LOG_LEVEL,
       options.PROBLEMS_FORMAT);
-    if (memoptim_constraints_builder_)
-        std::cout<<"memoptim_constraints_builder_ build correctly !!!"<<std::endl ; 
-    else 
-        std::cout<<"memoptim_constraints_builder_ build not  !!!"<<std::endl ; 
-        
 }
