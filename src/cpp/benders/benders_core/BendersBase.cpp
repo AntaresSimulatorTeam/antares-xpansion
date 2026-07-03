@@ -634,8 +634,6 @@ void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
 {
     auto subs_on_proc = subs_per_procs_mem_optim_[rank_];
 
-    std::cout<<"passed through GetMemOptimCuts "<<std::endl; 
-
     for (auto& sub: subs_on_proc)
     {
         auto variable_map = coupling_map_[sub];

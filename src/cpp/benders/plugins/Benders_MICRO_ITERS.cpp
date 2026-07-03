@@ -190,20 +190,15 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 
     if (variable_names_stream.is_open())
     {
-        std::cout<<"variable names file is opened "<<std::endl ; 
-        int num_elems(0) ; 
         std::string line;
         while (std::getline(variable_names_stream, line))
         {
             // Skip empty lines
             if (!line.empty())
             {
-                num_elems++ ; 
                 variables_to_follow_.push_back(line);
             }
         }
-        std::cout<<"num elemens "<<num_elems<<std::endl ; 
-        std::cout<<"variables_to_follow_  size "<<variables_to_follow_.size()<<std::endl ; 
     }
     else
     {
@@ -280,11 +275,11 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
 void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
                                                        int& num_iter)
 {
-    // OnBendersMasterResolutionEnd_(master_out,
-    //                               num_iter,
-    //                               _world,
-    //                               added_constraints_per_sub_,
-    //                               options_.INPUTROOT);
+    OnBendersMasterResolutionEnd_(master_out,
+                                  num_iter,
+                                  _world,
+                                  added_constraints_per_sub_,
+                                  options_.INPUTROOT);
 }
 
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
@@ -332,7 +327,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
           sub_worker);
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
         {
-            std::cout<<"variables_to_follow_ size "<<variables_to_follow_.size()<<std::endl ; 
             for (auto& variable: variables_to_follow_)
             {
                 int variable_index = subproblem_constraints_manager_
@@ -363,16 +357,8 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     else
     {
         sub_solution = subproblem_constraints_manager_->get_sub_solution();
-        for (auto i=0; i<9; i++)
-        {
-            std::cout<<"sub sol "<<sub_solution[i]<<std::endl ; 
-        }
-
-        std::cout<<"constraints sub solution size "<<sub_solution.size()<<std::endl ; 
     }
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
-    std::cout<<"variables to follow "<<variables_indices.size()<<std::endl ; 
-
     std::vector<std::string> constraints_to_add_vec;
     OnBendersMicroIterationEnd_(sub_name,
                                 added_rows,
@@ -385,7 +371,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
                                 num_master_iter,
                                 num_micro_iter);
     added_rows = constraints_to_add_vec.size();
-    std::cout<<"added rows "<<added_rows<<std::endl ; 
     for (auto& constraint_to_add: constraints_to_add_vec)
     {
         if (options_.CACHE_PROBLEMS < 2)

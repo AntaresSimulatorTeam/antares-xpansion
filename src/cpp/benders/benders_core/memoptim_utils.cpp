@@ -60,32 +60,30 @@ void read_indices_csv(const std::filesystem::path& csv_path,
         Tokenizer tok(line, sep);
         names.assign(tok.begin(), tok.end());
     }
-    int error_cols(0) ;
-    int error_rows(0) ;  
-    
+    int error_cols(0);
+    int error_rows(0);
+
     for (auto& name: names)
     {
         if (is_col)
         {
-            auto col_pos = solver->get_col_index(name) ; 
-            if (col_pos <0) 
+            auto col_pos = solver->get_col_index(name);
+            if (col_pos < 0)
             {
-                error_cols++ ;
+                error_cols++;
             }
             dest_indices.push_back(solver->get_col_index(name));
-
         }
         else
         {
-            auto row_pos = solver->get_row_index(name) ; 
+            auto row_pos = solver->get_row_index(name);
             if (row_pos < 0)
             {
-                error_rows++ ;
-            } 
+                error_rows++;
+            }
             dest_indices.push_back(solver->get_row_index(name));
         }
     }
-
 }
 
 } // namespace memoptim_utils
