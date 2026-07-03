@@ -573,6 +573,7 @@ void SolverXpress::chg_col_type(const std::vector<int>& mindex, const std::vecto
 
 void SolverXpress::chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals)
 {
+
     int status = XPRSchgrhs(_xprs, id_rows.size(), id_rows.data(), vals.data());
 
     zero_status_check(status, "change rhs", LOGLOCATION);
