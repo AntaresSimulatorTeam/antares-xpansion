@@ -121,7 +121,12 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+
     MasterLoop();
+
+    benders_plugin_->OnBendersEnd();
+
     if (Rank() == rank_0)
     {
         compute_ub();
@@ -146,6 +151,8 @@ void BendersByBatch::MasterLoop()
     first_unsolved_batch_ = 0;
     while (!_data.stop)
     {
+        benders_plugin_->OnBendersIterationStart();
+
         if (Rank() == rank_0)
         {
             if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
@@ -163,6 +170,8 @@ void BendersByBatch::MasterLoop()
         if (Rank() == rank_0)
         {
             _logger->PrintIterationSeparatorBegin();
+
+            benders_plugin_->OnBendersMasterResolutionStart();
 
             _logger->display_message("\tSolving master...");
             get_master_value();
@@ -191,6 +200,8 @@ void BendersByBatch::MasterLoop()
         _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
         _logger->PrintIterationSeparatorEnd();
         mathLoggerDriver_->Print(_data);
+
+        benders_plugin_->OnBendersIterationEnd();
     }
 }
 
@@ -210,6 +221,8 @@ void BendersByBatch::SeparationLoop()
             ComputeXCut();
         }
         BroadcastXCut();
+
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
         UpdateRemainingEpsilon();
         _data.number_of_subproblem_solved = 0;
