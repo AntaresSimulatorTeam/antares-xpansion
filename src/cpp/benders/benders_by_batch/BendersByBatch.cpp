@@ -50,9 +50,41 @@ void BendersByBatch::BuildBatches()
     // Dispatch subproblems to process: only add those assigned to this rank
     auto problem_count = 0;
 
+    if (_options.CACHE_PROBLEMS == 2)
+    {
+        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
+          _options.INPUTROOT,
+          _logger,
+          _options.SOLVER_NAME,
+          _options.LOG_LEVEL,
+          _options.PROBLEMS_FORMAT);
+        subs_per_procs_mem_optim_.resize(WorldSize());
+    }
+
     for (auto& batch: batch_collection_.BatchCollections())
     {
-        if (_options.CACHE_PROBLEMS)
+        switch (_options.CACHE_PROBLEMS)
+        {
+        case 2:
+        {
+            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
+            {
+                auto process_to_feed = problem_count % WorldSize();
+                subs_per_procs_mem_optim_[process_to_feed].push_back(*it);
+                if (process_to_feed != Rank())
+                {
+                    it = batch.sub_problem_names.erase(it);
+                }
+                else
+                {
+                    ++it;
+                }
+                ++problem_count;
+            }
+            batch.sub_problem_names.shrink_to_fit();
+            break;
+        }
+        case 1:
         {
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
             {
@@ -68,8 +100,10 @@ void BendersByBatch::BuildBatches()
                 ++problem_count;
             }
             batch.sub_problem_names.shrink_to_fit();
+            break;
         }
-        else
+        case 0:
+        default:
         {
             for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
             {
@@ -83,6 +117,8 @@ void BendersByBatch::BuildBatches()
                 }
                 ++problem_count;
             }
+            break;
+        }
         }
     }
 
@@ -495,16 +531,41 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
  *
  * \param subproblem_data_map Map storing for each subproblem its cut
  */
+void BendersByBatch::GetSubproblemCutMemOptim(SubProblemDataMap& subproblem_data_map,
+                                              const std::vector<std::string>& batch_sub_problems)
+{
+    for (const auto& name: batch_sub_problems)
+    {
+        auto variable_map = coupling_map_[name];
+        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(), name);
+        auto worker = memoptim_subprob_builder_->create_sub_solver_abstract(
+          name,
+          variable_map,
+          _options.CUT_COEFFICIENT_TOLERANCE,
+          slave_weights);
+        PlainData::SubProblemData subproblem_data{};
+        SolveSubproblem(subproblem_data, name, worker);
+        auto timer = calculate_subproblem_contribution(name, subproblem_data);
+        subproblem_data.subproblem_timer += timer.elapsed();
+        subproblem_data_map[name] = subproblem_data;
+    }
+}
+
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                                       const std::vector<std::string>& batch_sub_problems)
 {
-    if (Options().CACHE_PROBLEMS)
+    switch (Options().CACHE_PROBLEMS)
     {
+    case 2:
+        GetSubproblemCutMemOptim(subproblem_data_map, batch_sub_problems);
+        break;
+    case 1:
         GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);
-    }
-    else
-    {
+        break;
+    case 0:
+    default:
         GetSubproblemCutFast(subproblem_data_map, batch_sub_problems);
+        break;
     }
 }
 
