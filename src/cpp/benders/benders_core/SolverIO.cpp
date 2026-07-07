@@ -28,7 +28,6 @@ void SolverIO::read(SolverAbstract* solver, const std::filesystem::path& path) c
         solver->read_prob_mps(path);
         break;
     case ProblemsFormat::OPTIMIZED:
-        std::cout<<"!!! restore prob "<<path<<std::endl ;
         solver->restore_prob(path);
         break;
     default:

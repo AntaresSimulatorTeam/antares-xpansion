@@ -1,6 +1,6 @@
 #include "antares-xpansion/benders/benders_core/ConstraintsFileReader.h"
 
-ConstraintsFileReader::ConstraintsFileReader(const std::filesystem::path constraint_file_path,
+ConstraintsFileReader::ConstraintsFileReader(std::filesystem::path constraint_file_path,
                                              const std::string& solver_name,
                                              const SolverLogManager& solver_log_manager,
                                              Logger& logger,
@@ -8,21 +8,18 @@ ConstraintsFileReader::ConstraintsFileReader(const std::filesystem::path constra
                                              ProblemsFormat format):
     logger_(logger)
 {
+
+    solver_IO_.configure(solver_name, format);
     SolverFactory solver_factory(logger_);
     solver_ = solver_factory.create_solver(solver_name,
                                            SOLVER_TYPE::CONTINUOUS,
                                            solver_log_manager);
 
+    benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
+    benders_problem_provider_->provide_problem(solver_IO_, solver_);
+
     solver_->set_threads(1);
     solver_->set_output_log_level(log_level);
-
-
-    std::cout<<"constraint_file_path "<<std::endl ; 
-    std::cout<<"number of rows "<<solver_->get_nrows()<<std::endl ; 
-
-    benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
-    solver_IO_.configure(solver_name, format);
-    benders_problem_provider_->provide_problem(solver_IO_, solver_);
 }
 
 ConstraintsFileReader::ConstraintsFileReader(std::shared_ptr<SolverAbstract> solver):

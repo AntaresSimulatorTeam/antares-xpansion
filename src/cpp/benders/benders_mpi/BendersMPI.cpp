@@ -81,7 +81,6 @@ void BendersMpi::InitializeProblems()
     case 0:
     default:
     {
-        std::cout<<"####### initializing 0 case "<<std::endl ; 
         int current_problem_id = 0;
         // Dispatch subproblems to process
         for (const auto& problem: coupling_map_)

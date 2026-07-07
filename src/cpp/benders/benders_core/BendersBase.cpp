@@ -655,8 +655,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::shared_ptr<SubproblemWorker>& worker)
 {
     Timer subproblem_timer;
-    std::cout<<"entered in solve subproblem "<<std::endl ; 
-
     worker->fix_to(_data.x_cut);
 
     benders_plugin_->OnBendersSubResolutionStart();

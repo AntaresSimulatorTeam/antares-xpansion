@@ -104,7 +104,6 @@ void CouplingMapGenerator::BuildSubProblemConstraintMap(
         }
         else
         {
-            std::cout<<"building the svf case !!!! "<<std::endl ; 
             size_t underscore_pos = subProblemName.find('_');
             std::string subproblem_num = subProblemName.substr(underscore_pos + 1);
 

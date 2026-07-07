@@ -38,8 +38,6 @@ BatchCollection::BatchCollection(const std::vector<std::string>& sub_problem_nam
 
 void BatchCollection::BuildBatches(int n_procs)
 {
-    std::cout << "from build batches sub problem names size " << sub_problem_names_.size()
-              << std::endl;
     if (batch_size_ > sub_problems_number_)
     {
         logger_->display_message(std::string("batch_size(") + std::to_string(batch_size_)
