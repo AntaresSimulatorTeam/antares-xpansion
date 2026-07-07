@@ -58,8 +58,10 @@ void Worker::init(const std::string& solver_name,
     else
     {
         _solver = factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
+        std::cout<<"sub solver created successfuly "<<std::endl ;  
     }
     benders_problem_provider->provide_problem(solver_io_, _solver);
+    std::cout<<"problem provided successfully "<<std::endl ; 
     _base_filename = benders_problem_provider->provide_file_path();
 
     // Always set solver parameters after reading problems, as restore (used by Xpress writing .svf

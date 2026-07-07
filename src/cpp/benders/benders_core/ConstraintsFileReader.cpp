@@ -16,6 +16,10 @@ ConstraintsFileReader::ConstraintsFileReader(const std::filesystem::path constra
     solver_->set_threads(1);
     solver_->set_output_log_level(log_level);
 
+
+    std::cout<<"constraint_file_path "<<std::endl ; 
+    std::cout<<"number of rows "<<solver_->get_nrows()<<std::endl ; 
+
     benders_problem_provider_ = std::make_shared<BendersProblemFromFile>(constraint_file_path);
     solver_IO_.configure(solver_name, format);
     benders_problem_provider_->provide_problem(solver_IO_, solver_);

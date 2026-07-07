@@ -24,6 +24,7 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
 {
     init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
     int mps_ncols(_solver->get_ncols());
+    std::cout<<"number of rows on solver "<<_solver->get_nrows()<<std::endl ; 
     DblVector obj_func_coeffs(mps_ncols);
     IntVector sequence(mps_ncols);
     for (int i = 0; i < mps_ncols; ++i)
@@ -36,6 +37,7 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
         c *= slave_weight;
     }
     _solver->chg_obj(sequence, obj_func_coeffs);
+    std::cout<<"build subproblem successfuly "<<std::endl ; 
 }
 
 SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
