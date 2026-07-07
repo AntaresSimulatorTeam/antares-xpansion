@@ -671,6 +671,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                           _options.OUTPUTROOT,
                           _options.LAST_MASTER_MPS + MPS_SUFFIX,
                           _writer);
+            std::cout<<"adding constraints for  "<<name<<std::endl ; 
             auto t2 = std::chrono::high_resolution_clock::now();
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2
                                                                                               - t1)

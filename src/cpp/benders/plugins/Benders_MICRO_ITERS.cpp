@@ -160,6 +160,22 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
                         warm_start_ = false;
                     }
                 }
+                else if (key == "max_constraints_per_micro_it")
+                {
+                    max_constraints_per_micro_it_ = std::stoi(value);
+                }
+                else if (key == "add_N_constraint_first")
+                {
+                    add_N_constraint_first_ = (value == "1" || value == "true");
+                }
+                else if (key == "tol_N_K")
+                {
+                    tol_N_K_ = std::stod(value);
+                }
+                else if (key == "tol_N")
+                {
+                    tol_N_ = std::stod(value);
+                }
                 else
                 {
                     micro_iterations_config_[key] = value;

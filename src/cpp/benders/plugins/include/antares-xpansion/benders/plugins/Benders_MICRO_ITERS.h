@@ -213,6 +213,10 @@ private:
     SubproblemConstraintsManagerPtrMap constraints_map_;
     Logger _logger;
     bool warm_start_;
+    int max_constraints_per_micro_it_ = 0;
+    bool add_N_constraint_first_ = false;
+    double tol_N_K_ = 1.001;
+    double tol_N_ = 1.0;
     std::shared_ptr<MemOptimConstraintsBuilder> memoptim_constraints_builder_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
 };
