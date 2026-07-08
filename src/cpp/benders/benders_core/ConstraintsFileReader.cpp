@@ -20,6 +20,10 @@ ConstraintsFileReader::ConstraintsFileReader(std::filesystem::path constraint_fi
 
     solver_->set_threads(1);
     solver_->set_output_log_level(log_level);
+
+    auto mps_path = constraint_file_path;
+    mps_path.replace_extension(".mps");
+    solver_->write_prob_mps(mps_path);
 }
 
 ConstraintsFileReader::ConstraintsFileReader(std::shared_ptr<SolverAbstract> solver):

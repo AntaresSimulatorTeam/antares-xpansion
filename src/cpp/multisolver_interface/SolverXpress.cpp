@@ -7,6 +7,7 @@
 #include <numeric>
 #include <set>
 #include <utility>
+#include <iostream>
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 

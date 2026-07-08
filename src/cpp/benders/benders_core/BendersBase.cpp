@@ -632,6 +632,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
 void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
 {
+
     auto subs_on_proc = subs_per_procs_mem_optim_[rank_];
 
     for (auto& sub: subs_on_proc)
@@ -663,15 +664,14 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     if (_options.MICRO_ITERATIONS)
     {
         bool added_rows = true;
+        benders_plugin_->OnBendersMicroIterationStart(_options.CACHE_PROBLEMS, worker, name);
         while (added_rows)
         {
-            benders_plugin_->OnBendersMicroIterationStart(_options.CACHE_PROBLEMS, worker, name);
             auto t1 = std::chrono::high_resolution_clock::now();
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
                           _options.LAST_MASTER_MPS + MPS_SUFFIX,
                           _writer);
-            std::cout<<"adding constraints for  "<<name<<std::endl ; 
             auto t2 = std::chrono::high_resolution_clock::now();
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2
                                                                                               - t1)

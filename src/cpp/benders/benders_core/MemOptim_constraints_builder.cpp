@@ -81,6 +81,5 @@ std::shared_ptr<SolverAbstract> MemOptimConstraintsBuilder::create_constraints_r
 
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs);
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
-
     return solver_;
 }

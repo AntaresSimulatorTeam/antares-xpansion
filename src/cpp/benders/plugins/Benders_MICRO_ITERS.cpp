@@ -148,6 +148,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
         std::string line;
         while (std::getline(micro_iterations_options_stream, line))
         {
+
             std::istringstream iss(line);
             std::string key, value;
 
@@ -159,24 +160,9 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
                     {
                         warm_start_ = false;
                     }
+                   
                 }
-                else if (key == "max_constraints_per_micro_it")
-                {
-                    max_constraints_per_micro_it_ = std::stoi(value);
-                }
-                else if (key == "add_N_constraint_first")
-                {
-                    add_N_constraint_first_ = (value == "1" || value == "true");
-                }
-                else if (key == "tol_N_K")
-                {
-                    tol_N_K_ = std::stod(value);
-                }
-                else if (key == "tol_N")
-                {
-                    tol_N_ = std::stod(value);
-                }
-                else
+                 else
                 {
                     micro_iterations_config_[key] = value;
                 }
@@ -333,6 +319,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {
+
     if (CACHE_PROBLEMS >= 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
@@ -341,6 +328,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
         subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(
           solver,
           sub_worker);
+
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
         {
             for (auto& variable: variables_to_follow_)
@@ -354,6 +342,23 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
     if (OnBendersMicroIterationStart_)
     {
         OnBendersMicroIterationStart_();
+    }
+}
+
+static void dump_sub_solution(const std::string& filename,
+                              const std::vector<double>& sub_solution)
+{
+    std::ofstream ofs(filename);
+    if (ofs.is_open())
+    {
+        for (const auto& val: sub_solution)
+        {
+            ofs << val << "\n";
+        }
+    }
+    else
+    {
+        std::cerr << "Failed to open " << filename << " for writing" << std::endl;
     }
 }
 
@@ -373,6 +378,11 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     else
     {
         sub_solution = subproblem_constraints_manager_->get_sub_solution();
+    }
+    if (sub_name == "sub/sub_0" && num_master_iter == 1 && num_micro_iter == 1)
+    {
+           
+        dump_sub_solution("sub_solution_sub0.txt", sub_solution);
     }
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
     std::vector<std::string> constraints_to_add_vec;
@@ -396,7 +406,8 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
             sub_constraints_manager->add_rows(constraint_to_add);
         }
         else
-        {
+        {   
+
             subproblem_constraints_manager_->add_rows(constraint_to_add);
         }
     }
@@ -427,7 +438,7 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
   const SubproblemsMapPtr& subproblem_map,
   const BendersBaseOptions& options,
   const SolverLogManager& solver_log_manager)
-{
+{   
     for (auto& [sub, sub_worker]: subproblem_map)
     {
         added_constraints_per_sub_[sub] = std::vector<std::string>();
