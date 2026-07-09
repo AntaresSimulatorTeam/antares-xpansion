@@ -68,10 +68,6 @@ void Worker::init(const std::string& solver_name,
     _solver->set_threads(1);
     _solver->set_output_log_level(log_level);
 
-    auto mps_path = _base_filename;
-    mps_path.replace_extension(".mps");
-    _solver->write_prob_mps(mps_path);
-
     for (const auto& kvp: _name_to_id)
     {
         _id_to_name[kvp.second] = kvp.first;
