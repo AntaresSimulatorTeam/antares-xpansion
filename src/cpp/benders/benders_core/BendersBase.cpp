@@ -657,7 +657,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 {
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
-
     benders_plugin_->OnBendersSubResolutionStart();
 
     int num_micro_iter(0);
@@ -700,7 +699,12 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
+    std::vector<SolverRepresentedRows> added_constraints;
+    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter, added_constraints);
+    if (_options.CACHE_PROBLEMS)
+    {
+        memoptim_subprob_builder_->set_added_constraints(name,added_constraints) ; 
+    }
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)

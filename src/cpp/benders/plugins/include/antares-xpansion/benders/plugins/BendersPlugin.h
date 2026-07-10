@@ -41,7 +41,7 @@ public:
     virtual void OnBendersIterationEnd() = 0;
 
     virtual void OnBendersSubResolutionStart() = 0;
-    virtual void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) = 0;
+    virtual void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter, std::vector<SolverRepresentedRows>& added_constraints) = 0;
     /*
   This method will be called at the start of the master iteration after solving subprolems
   @inputs :

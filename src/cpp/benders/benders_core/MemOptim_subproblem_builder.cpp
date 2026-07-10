@@ -87,6 +87,13 @@ void MemOptimSubProblemBuilder::build_sub_skeleton(std::string solver_name,
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
 }
 
+void MemOptimSubProblemBuilder::set_added_constraints(std::string sub_name, std::vector<SolverRepresentedRows>& added_constraints) 
+{
+    added_constraints_per_sub_[sub_name].insert(added_constraints_per_sub_[sub_name].end(),
+    std::make_move_iterator(added_constraints.begin()),std::make_move_iterator(added_constraints.end())) ;
+} 
+
+
 int MemOptimSubProblemBuilder::get_sub_number()
 {
     return rhs_.size();
@@ -110,6 +117,17 @@ std::shared_ptr<SubproblemWorker> MemOptimSubProblemBuilder::create_sub_solver_a
                                                                 solver_,
                                                                 logger_,
                                                                 slave_weight);
+
+    for (auto& solver_row : added_constraints_per_sub_[sub_name])
+    {
+        subproblem_worker->AddRows(solver_row.qrtype_p,
+                                solver_row.rhs,
+                                solver_row.range_p,
+                                solver_row.mstart,
+                                solver_row.mclind,
+                                solver_row.dmatval,
+                                solver_row.row_names) ; 
+    }
 
     return subproblem_worker;
 }

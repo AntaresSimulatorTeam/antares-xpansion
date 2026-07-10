@@ -39,10 +39,11 @@ void SubproblemConstraintsManager::add_rows_to_subproblem(SolverRepresentedRows&
                                 new_row.row_names);
 }
 
-void SubproblemConstraintsManager::add_rows(std::string& row_name)
+SolverRepresentedRows SubproblemConstraintsManager::add_rows(std::string& row_name)
 {
     auto constraint_row = file_reader_.get_row(row_name);
     add_rows_to_subproblem(constraint_row);
+    return constraint_row ; 
 }
 
 int SubproblemConstraintsManager::size_of_subproblem()

@@ -253,9 +253,10 @@ void Benders_MICRO_ITERS::OnBendersIterationStart()
 void Benders_MICRO_ITERS::OnBendersIterationEnd()
 {
     OnBendersIterationEnd_();
-    if (!warm_start_)
+    if (options_.CACHE_PROBLEMS < 2)
     {
-        if (options_.CACHE_PROBLEMS < 2)
+        if (!warm_start_)
+
         {
             for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
             {
@@ -267,11 +268,12 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
                 it->second->delete_added_rows();
             }
         }
-        else
-        {
-            subproblem_constraints_manager_->delete_added_rows();
-        }
     }
+    else
+    {
+            subproblem_constraints_manager_->delete_added_rows();
+    }
+    
 }
 
 void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
@@ -408,9 +410,11 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
         else
         {   
 
-            subproblem_constraints_manager_->add_rows(constraint_to_add);
+            constraints_to_add_vec_at_master_iteration_.push_back(std::move(subproblem_constraints_manager_->add_rows(constraint_to_add)));
         }
     }
+
+
 }
 
 void Benders_MICRO_ITERS::OnBendersSubResolutionStart()
@@ -421,11 +425,13 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart()
     }
 }
 
-void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
+void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter, std::vector<SolverRepresentedRows>& added_constraints)
 {
+    added_constraints = std::move(constraints_to_add_vec_at_master_iteration_); 
+    constraints_to_add_vec_at_master_iteration_.clear(); 
     if (OnBendersSubResolutionEnd_)
     {
-        OnBendersSubResolutionEnd_(sub_name, num_micro_iter);
+        OnBendersSubResolutionEnd_(sub_name, num_micro_iter, added_constraints);
     }
 }
 
