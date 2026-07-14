@@ -26,7 +26,7 @@ jobs:
       antares-version: ${{steps.antares-version.outputs.result}}
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -75,7 +75,7 @@ jobs:
       - run: |
           dnf install -y cmake
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
@@ -213,7 +213,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
