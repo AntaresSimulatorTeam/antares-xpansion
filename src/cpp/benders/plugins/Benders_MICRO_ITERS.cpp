@@ -258,7 +258,6 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
         if (!warm_start_)
 
         {
-<<<<<<< HEAD
             for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
             {
                 auto it = constraints_map_.find(constraint_reader_name);
@@ -268,14 +267,8 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
                 }
                 it->second->delete_added_rows();
             }
-=======
-            auto it = constraints_map_.find(constraint_reader_name);
-            if (it == constraints_map_.end())
-            {
-                continue;
-            }
-            it->second->delete_added_rows();
->>>>>>> develop
+
+
         }
     }
     else
@@ -306,12 +299,8 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
             continue;
         }
         variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
-<<<<<<< HEAD
+
         if (options_.CACHE_PROBLEMS < 2)
-=======
-        auto constraint_reader = it->second;
-        for (auto& variable: variables_to_follow_)
->>>>>>> develop
         {
             auto it = constraints_map_.find(constraint_reader_name);
             if (it == constraints_map_.end())
@@ -429,8 +418,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
         }
         else
         {   
-
-            constraints_to_add_vec_at_master_iteration_.push_back(std::move(subproblem_constraints_manager_->add_rows(constraint_to_add)));
+            constraints_to_add_vec_at_master_iteration_.push_back(subproblem_constraints_manager_->add_rows(constraint_to_add));
         }
     }
 
