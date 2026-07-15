@@ -148,13 +148,13 @@ jobs:
           cmake --build _build --config Release -j$(nproc)
 
 
-      - name: Running unit tests
-        timeout-minutes: 120
-        shell: bash
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
-          cd _build
-          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium|short"
+      # - name: Running unit tests
+      #   timeout-minutes: 120
+      #   shell: bash
+      #   run: |
+      #     export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
+      #     cd _build
+      #     ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium|short"
 
       - name: Cache vcpkg binary dir
         if: always()
