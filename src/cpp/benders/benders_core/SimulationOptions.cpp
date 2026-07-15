@@ -196,6 +196,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
 
     result.RESUME = RESUME;
     result.MICRO_ITERATIONS = MICRO_ITERATIONS;
+    result.BESTUB = BESTUB ; 
     result.NB_CUTS_PER_ITER = NB_CUTS_PER_ITER;
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;

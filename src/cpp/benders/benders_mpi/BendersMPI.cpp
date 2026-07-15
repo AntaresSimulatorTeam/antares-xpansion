@@ -582,7 +582,8 @@ void BendersMpi::launch()
     _world.barrier();
     benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
 
-    sub_best_ub_files_ = std::make_unique<Sub_best_ub_files>(std::filesystem::path(_options.INPUTROOT)/"sub_variables_to_save.csv",_options.OUTPUTROOT);
+    if(_options.BESTUB)
+        sub_best_ub_files_ = std::make_unique<Sub_best_ub_files>(std::filesystem::path(_options.INPUTROOT)/"sub_variables_to_save.csv",_options.OUTPUTROOT);
 
     Run();
     if (_world.rank() == rank_0 && _options.BESTUB) 

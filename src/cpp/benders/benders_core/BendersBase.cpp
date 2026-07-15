@@ -692,7 +692,8 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                       _writer);
     }
 
-    sub_best_ub_files_->set_variables_values(name,worker,_data.it) ; 
+    if (_options.BESTUB)
+        sub_best_ub_files_->set_variables_values(name,worker,_data.it) ; 
 
     worker->get_value(subproblem_data.subproblem_cost);
 
