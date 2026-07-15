@@ -4,6 +4,9 @@ BENDERS_OPTIONS_MACRO(LOG_LEVEL, int, 0, asInt())
 // Maximum number of iterations accepted
 BENDERS_OPTIONS_MACRO(MAX_ITERATIONS, int, -1, asInt())
 
+// Maximum number of iterations accepted
+BENDERS_OPTIONS_MACRO(BESTUB, bool, false, asBool())
+
 // Absolute required level of precision
 BENDERS_OPTIONS_MACRO(ABSOLUTE_GAP, double, 1, asDouble())
 

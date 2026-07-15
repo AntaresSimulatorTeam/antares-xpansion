@@ -512,7 +512,8 @@ void BendersMpi::Run()
 
         step_1_solve_master();
         
-        sub_best_ub_files_->set_best_ub_solution_(_data.best_ub,_data.it) ;   
+        if (_options.BESTUB) 
+            sub_best_ub_files_->set_best_ub_solution_(_data.best_ub,_data.it) ;   
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
         /*Gather cut from each subproblem in master thread and add them to Master
@@ -584,7 +585,7 @@ void BendersMpi::launch()
     sub_best_ub_files_ = std::make_unique<Sub_best_ub_files>(std::filesystem::path(_options.INPUTROOT)/"sub_variables_to_save.csv",_options.OUTPUTROOT);
 
     Run();
-    if (_world.rank() == rank_0) 
+    if (_world.rank() == rank_0 && _options.BESTUB) 
         sub_best_ub_files_->dump_values() ; 
     _world.barrier();
 
