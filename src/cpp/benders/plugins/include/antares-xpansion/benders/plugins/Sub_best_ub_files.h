@@ -3,6 +3,7 @@
 
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -22,13 +23,14 @@
 class Sub_best_ub_files
 {
 public:
-    explicit Sub_best_ub_files(const std::filesystem::path& file_path, const std::string& output_root="./");
+    explicit Sub_best_ub_files(mpi::communicator* world, const std::filesystem::path& file_path, const std::string& output_root="./");
     ~Sub_best_ub_files() = default;
     void set_best_ub_solution_(double new_best_ub, int iter) ; 
     void set_variables_values(std::string sub_name,const std::shared_ptr<SubproblemWorker>& worker, int iter) ; 
     void dump_values() ; 
 
 private:
+    mpi::communicator* _world ; 
     std::ifstream file_stream_;
     std::filesystem::path output_file_ ; 
     std::vector<std::string> variables_to_follow_;

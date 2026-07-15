@@ -4,8 +4,8 @@
 #include "iostream"
 
 
-Sub_best_ub_files::Sub_best_ub_files(const std::filesystem::path& file_path, const std::string& output_root)
-    : file_stream_(file_path)
+Sub_best_ub_files::Sub_best_ub_files(mpi::communicator* world,const std::filesystem::path& file_path, const std::string& output_root)
+    : file_stream_(file_path), _world(world)
 {
     output_file_ = std::filesystem::path(output_root) / "sub_best_ub_variables.csv" ; 
     if (!file_stream_.is_open()) {
@@ -59,6 +59,33 @@ void Sub_best_ub_files::set_variables_values(std::string sub_name,const std::sha
    
 void Sub_best_ub_files::dump_values()
 {
+    // Gather values_per_sub_ from all ranks to rank 0
+    std::vector<std::map<std::string, std::vector<double>>> gathered_values;
+    
+    mpi::gather(*_world, values_per_sub_, gathered_values, 0);
+
+    if (_world->rank() != 0) {
+        return;
+    }
+
+    // Merge all gathered maps into values_per_sub_
+    for (const auto& rank_values : gathered_values) {
+        for (const auto& [sub_name, values] : rank_values) {
+            values_per_sub_[sub_name] = values;
+        }
+    }
+
+    // Also gather indices so rank 0 has indices for all subproblems
+    std::vector<std::map<std::string, std::vector<int>>> gathered_indices;
+    if (_world->rank() != 0)
+        mpi::gather(*_world, variables_to_follow_indices_per_sub_, gathered_indices, 0);
+
+    for (const auto& rank_indices : gathered_indices) {
+        for (const auto& [sub_name, indices] : rank_indices) {
+            variables_to_follow_indices_per_sub_[sub_name] = indices;
+        }
+    }
+
     std::ofstream out(output_file_);
     if (!out.is_open()) {
         std::cerr << "unable to open sub_best_ub_variables.csv for writing" << std::endl;
