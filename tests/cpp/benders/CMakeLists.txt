@@ -7,6 +7,7 @@ target_sources(benders_sequential_test
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
         MemOptimSubProblemBuilderTest.cpp
+        BendersMicroIterationsTest.cpp
 )
 
 target_link_libraries(benders_sequential_test
@@ -14,6 +15,7 @@ target_link_libraries(benders_sequential_test
         antaresXpansion::benders_sequential_core
         antaresXpansion::benders_by_batch_core
         antaresXpansion::benders_core
+        antaresXpansion::plugins
         antaresXpansion::output_core
         antaresXpansion::logger_lib
         merge_master_mps_core
