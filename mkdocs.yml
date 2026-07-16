@@ -37,13 +37,16 @@ nav:
           - "The optimal investment problem in Antares-Xpansion": "user-guide/optimization-principles/investment-problem.md"
           - "Mathematical aspects of the investment problem": "user-guide/optimization-principles/problem-formalization.md"
           - "Performance history": "user-guide/performance-history/perf-graphs.ipynb"
+      - "Benders Executable":
+          - "Settings of benders executable": "user-guide/get-started/options-definition.md"
+          - "Micro Iterations": "user-guide/get-started/micro-iterations.md"
+          - "Compact Memory Subproblem Inputs": "user-guide/get-started/memory-optimization.md"
       - "Getting started":
           - "Installation": "user-guide/get-started/installation.md"
           - "Set up an Antares-Xpansion study":
               - "Prepare the Antares study": "user-guide/get-started/prepare-a-simulation.md"
               - "Define the candidates": "user-guide/get-started/candidate-definition.md"
               - "Settings of the algorithm": "user-guide/get-started/settings-definition.md"
-              - "Settings of benders executable": "user-guide/get-started/options-definition.md"
           - "Launch the optimization": "user-guide/get-started/launching-optimization.md"
           - "Adequacy criterion": "user-guide/get-started/adequacy-criterion.md"
           - "Sensitivity analysis": "user-guide/get-started/sensitivity-analysis.md"
