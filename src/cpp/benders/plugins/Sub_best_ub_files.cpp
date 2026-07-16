@@ -64,6 +64,10 @@ void Sub_best_ub_files::dump_values()
     
     mpi::gather(*_world, values_per_sub_, gathered_values, 0);
 
+    // Also gather indices so rank 0 has indices for all subproblems
+    std::vector<std::map<std::string, std::vector<int>>> gathered_indices;
+    mpi::gather(*_world, variables_to_follow_indices_per_sub_, gathered_indices, 0);
+
     if (_world->rank() != 0) {
         return;
     }
@@ -74,11 +78,6 @@ void Sub_best_ub_files::dump_values()
             values_per_sub_[sub_name] = values;
         }
     }
-
-    // Also gather indices so rank 0 has indices for all subproblems
-    std::vector<std::map<std::string, std::vector<int>>> gathered_indices;
-    if (_world->rank() != 0)
-        mpi::gather(*_world, variables_to_follow_indices_per_sub_, gathered_indices, 0);
 
     for (const auto& rank_indices : gathered_indices) {
         for (const auto& [sub_name, indices] : rank_indices) {
@@ -95,7 +94,7 @@ void Sub_best_ub_files::dump_values()
     // header: first column is sub name, then the followed variables
     out << "sub_name";
     for (const auto& var : variables_to_follow_) {
-        out << "," << var;
+        out << "," << "\""<<var<<"\"";
     }
     out << "\n";
 
