@@ -37,7 +37,7 @@ jobs:
       SINGLE_FILE_NAME: ${{ steps.export_output.outputs.SINGLE_FILE_NAME }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
@@ -142,7 +142,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer|short"
 
       - name: Cache vcpkg binary dir
         if: always()

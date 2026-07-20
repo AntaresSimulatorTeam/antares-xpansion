@@ -40,7 +40,7 @@ jobs:
       version: ${{ steps.antares-xpansion-version.outputs.result }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -150,7 +150,7 @@ jobs:
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
           cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer|short"
 
       ##############
       - name: install
