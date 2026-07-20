@@ -21,7 +21,7 @@
     "LAST_ITERATION_JSON_FILE": "results_benders/last_iteration.json",
     "RELAXED_GAP": 0.001,
     "SEPARATION_PARAM": 1,
-    "SOLVER_NAME": "XPRESS",
+    "SOLVER_NAME": "COIN",
     "LOG_LEVEL": 2,
     "MAX_ITERATIONS": -1,
     "AGGREGATION": 0,
