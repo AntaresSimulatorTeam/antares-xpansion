@@ -22,25 +22,26 @@ enum class CoeffType
     rhs
 };
 
-class MemOptimSubProblemBuilder
+class FixedSkeletonSubProblemBuilder
 {
 public:
-    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
-                              Logger& logger,
-                              std::string solver_name,
-                              int log_level,
-                              ProblemsFormat format);
+    FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                   Logger& logger,
+                                   std::string solver_name,
+                                   int log_level,
+                                   ProblemsFormat format);
 
-    MemOptimSubProblemBuilder(const std::filesystem::path& inputRoot,
-                              Logger& logger,
-                              std::shared_ptr<SolverAbstract> solver);
+    FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
+                                   Logger& logger,
+                                   std::shared_ptr<SolverAbstract> solver);
 
     std::shared_ptr<SubproblemWorker> create_sub_solver_abstract(std::string sub_name,
                                                                  VariableMap& variable_map,
                                                                  double cut_coefficient_tolerance,
                                                                  double slave_weight);
 
-    void set_added_constraints(std::string sub_name, std::vector<SolverRepresentedRows>& added_constraints ) ; 
+    void set_added_constraints(std::string sub_name,
+                               std::vector<SolverRepresentedRows>& added_constraints);
     int get_sub_number();
 
 private:
@@ -67,11 +68,11 @@ private:
     std::vector<int> constraints_row_indices_;
     std::vector<int> obj_col_indices_;
     /*
-    as we build all subproblems on the same solverAbstract object, when we are in warm start case 
-    we need to keep track of the added constraints, so we add them into the subproblem 
+    as we build all subproblems on the same solverAbstract object, when we are in warm start case
+    we need to keep track of the added constraints, so we add them into the subproblem
     worker when we solve it on the next master iteration
     */
-    std::map<std::string, std::vector<SolverRepresentedRows>> added_constraints_per_sub_ ; 
+    std::map<std::string, std::vector<SolverRepresentedRows>> added_constraints_per_sub_;
     SolverLogManager solver_log_manager_;
     SolverIO solver_IO_;
     bool micro_iters_;

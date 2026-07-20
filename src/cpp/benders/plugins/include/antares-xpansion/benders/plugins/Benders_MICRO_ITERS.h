@@ -21,7 +21,7 @@ Benders_MICRO_ITERS class.
 #include <boost/serialization/string.hpp>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
-#include "antares-xpansion/benders/benders_core/MemOptim_constraints_builder.h"
+#include "antares-xpansion/benders/benders_core/FixedSkeletonConstraintsBuilder.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
@@ -69,7 +69,7 @@ using on_Benders_micro_iteration_end = void (*)(std::string sub_name,
                                                 int,
                                                 int);
 using on_Benders_sub_resolution_start = void (*)();
-using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_micro_iter, std::vector<SolverRepresentedRows>& added_constraints);
+using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_micro_iter);
 
 /*
     Implementation of BendersPlugin to manage the microiterations workflow
@@ -137,7 +137,9 @@ public:
                                     int num_micro_iter) override;
 
     void OnBendersSubResolutionStart() override;
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter, std::vector<SolverRepresentedRows>& added_constraints) override;
+    void OnBendersSubResolutionEnd(std::string sub_name,
+                                   int num_micro_iter,
+                                   std::vector<SolverRepresentedRows>& added_constraints) override;
 
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
@@ -207,7 +209,7 @@ private:
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     std::map<std::string, std::string> micro_iterations_config_;
     std::vector<std::string> variables_to_follow_;
-    std::vector<SolverRepresentedRows> constraints_to_add_vec_at_master_iteration_  ;  
+    std::vector<SolverRepresentedRows> constraints_to_add_vec_at_master_iteration_;
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
@@ -218,6 +220,6 @@ private:
     bool add_N_constraint_first_ = false;
     double tol_N_K_ = 1.001;
     double tol_N_ = 1.0;
-    std::shared_ptr<MemOptimConstraintsBuilder> memoptim_constraints_builder_;
+    std::shared_ptr<FixedSkeletonConstraintsBuilder> fixed_skeleton_constraints_builder_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
 };

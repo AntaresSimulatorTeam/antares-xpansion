@@ -23,7 +23,9 @@ public:
     void OnBendersMasterResolutionStart() override;
 
     void OnBendersSubResolutionStart() override;
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter, std::vector<SolverRepresentedRows>& added_constraints) override;
+    void OnBendersSubResolutionEnd(std::string sub_name,
+                                   int num_micro_iter,
+                                   std::vector<SolverRepresentedRows>& added_constraints) override;
 
     void OnBendersMicroIterationStart(int CACHE_PROBLEMS = 0,
                                       const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,

@@ -1,12 +1,13 @@
-#include "antares-xpansion/benders/benders_core/MemOptim_constraints_builder.h"
+#include "antares-xpansion/benders/benders_core/FixedSkeletonConstraintsBuilder.h"
 
 #include <iostream>
 
-MemOptimConstraintsBuilder::MemOptimConstraintsBuilder(const std::filesystem::path& inputRoot,
-                                                       Logger& logger,
-                                                       std::string solver_name,
-                                                       int log_level,
-                                                       ProblemsFormat format):
+FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
+  const std::filesystem::path& inputRoot,
+  Logger& logger,
+  std::string solver_name,
+  int log_level,
+  ProblemsFormat format):
     inputRoot_(inputRoot)
 {
     logger_ = logger;
@@ -14,9 +15,10 @@ MemOptimConstraintsBuilder::MemOptimConstraintsBuilder(const std::filesystem::pa
     read_coeffs_and_indices();
 }
 
-MemOptimConstraintsBuilder::MemOptimConstraintsBuilder(const std::filesystem::path& inputRoot,
-                                                       Logger& logger,
-                                                       std::shared_ptr<SolverAbstract> solver):
+FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
+  const std::filesystem::path& inputRoot,
+  Logger& logger,
+  std::shared_ptr<SolverAbstract> solver):
     inputRoot_(inputRoot),
     solver_(std::move(solver))
 {
@@ -24,7 +26,7 @@ MemOptimConstraintsBuilder::MemOptimConstraintsBuilder(const std::filesystem::pa
     read_coeffs_and_indices();
 }
 
-void MemOptimConstraintsBuilder::read_coeffs_and_indices()
+void FixedSkeletonConstraintsBuilder::read_coeffs_and_indices()
 {
     auto constraints_dir = inputRoot_ / "constraints";
     memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "coef.csv", coeffs_);
@@ -47,7 +49,7 @@ void MemOptimConstraintsBuilder::read_coeffs_and_indices()
     }
 }
 
-void MemOptimConstraintsBuilder::build_constraints_skeleton(
+void FixedSkeletonConstraintsBuilder::build_constraints_skeleton(
   std::string solver_name,
   const SolverLogManager& solver_log_manager,
   int log_level,
@@ -68,12 +70,12 @@ void MemOptimConstraintsBuilder::build_constraints_skeleton(
     benders_problem_provider_->provide_problem(solver_IO_, solver_);
 }
 
-int MemOptimConstraintsBuilder::get_constraints_number()
+int FixedSkeletonConstraintsBuilder::get_constraints_number()
 {
     return coeffs_.size();
 }
 
-std::shared_ptr<SolverAbstract> MemOptimConstraintsBuilder::create_constraints_reader(
+std::shared_ptr<SolverAbstract> FixedSkeletonConstraintsBuilder::create_constraints_reader(
   const std::string& constraints_name)
 {
     auto& coeffs = coeffs_[constraints_name];

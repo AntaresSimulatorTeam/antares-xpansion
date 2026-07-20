@@ -43,7 +43,7 @@ SolverRepresentedRows SubproblemConstraintsManager::add_rows(std::string& row_na
 {
     auto constraint_row = file_reader_.get_row(row_name);
     add_rows_to_subproblem(constraint_row);
-    return constraint_row ; 
+    return constraint_row;
 }
 
 int SubproblemConstraintsManager::size_of_subproblem()

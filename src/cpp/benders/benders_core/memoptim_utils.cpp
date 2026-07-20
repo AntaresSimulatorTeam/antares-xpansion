@@ -40,11 +40,10 @@ void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
     }
 }
 
-void dump_not_found(const std::vector<std::string>& names,
-                    const std::string& filename)
+void dump_not_found(const std::vector<std::string>& names, const std::string& filename)
 {
     std::ofstream out(filename);
-    for (const auto& name : names)
+    for (const auto& name: names)
     {
         out << name << "\n";
     }
@@ -73,8 +72,8 @@ void read_indices_csv(const std::filesystem::path& csv_path,
     }
     int error_cols(0);
     int error_rows(0);
-    std::vector<std::string> cols_not_found ; 
-    std::vector<std::string> rows_not_found ; 
+    std::vector<std::string> cols_not_found;
+    std::vector<std::string> rows_not_found;
 
     for (auto& name: names)
     {
@@ -84,7 +83,7 @@ void read_indices_csv(const std::filesystem::path& csv_path,
             if (col_pos < 0)
             {
                 error_cols++;
-                cols_not_found.push_back(name) ; 
+                cols_not_found.push_back(name);
             }
             dest_indices.push_back(solver->get_col_index(name));
         }
@@ -94,7 +93,7 @@ void read_indices_csv(const std::filesystem::path& csv_path,
             if (row_pos < 0)
             {
                 error_rows++;
-                rows_not_found.push_back(name) ; 
+                rows_not_found.push_back(name);
             }
             dest_indices.push_back(solver->get_row_index(name));
         }
@@ -103,16 +102,16 @@ void read_indices_csv(const std::filesystem::path& csv_path,
     if (error_cols > 0)
     {
         dump_not_found(cols_not_found, "cols_not_found.txt");
-        throw std::runtime_error("Error: " + std::to_string(error_cols) +
-            " column(s) not found while reading " + csv_path.string() +
-            " (see cols_not_found.txt)");
+        throw std::runtime_error("Error: " + std::to_string(error_cols)
+                                 + " column(s) not found while reading " + csv_path.string()
+                                 + " (see cols_not_found.txt)");
     }
     if (error_rows > 0)
     {
         dump_not_found(rows_not_found, "rows_not_found.txt");
-        throw std::runtime_error("Error: " + std::to_string(error_rows) +
-            " row(s) not found while reading " + csv_path.string() +
-            " (see rows_not_found.txt)");
+        throw std::runtime_error("Error: " + std::to_string(error_rows)
+                                 + " row(s) not found while reading " + csv_path.string()
+                                 + " (see rows_not_found.txt)");
     }
 }
 

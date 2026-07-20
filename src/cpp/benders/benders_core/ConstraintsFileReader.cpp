@@ -8,7 +8,6 @@ ConstraintsFileReader::ConstraintsFileReader(std::filesystem::path constraint_fi
                                              ProblemsFormat format):
     logger_(logger)
 {
-
     solver_IO_.configure(solver_name, format);
     SolverFactory solver_factory(logger_);
     solver_ = solver_factory.create_solver(solver_name,

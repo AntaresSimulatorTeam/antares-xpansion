@@ -6,7 +6,7 @@ target_sources(benders_sequential_test
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
-        MemOptimSubProblemBuilderTest.cpp
+        FixedSkeletonSubProblemBuilderTest.cpp
         BendersMicroIterationsTest.cpp
 )
 

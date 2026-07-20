@@ -632,14 +632,14 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
 void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
 {
-
     auto subs_on_proc = subs_per_procs_mem_optim_[rank_];
 
     for (auto& sub: subs_on_proc)
     {
         auto variable_map = coupling_map_[sub];
-        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(), sub);
-        auto subproblem_worker = memoptim_subprob_builder_->create_sub_solver_abstract(
+        double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
+                                                sub);
+        auto subproblem_worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
           sub,
           variable_map,
           _options.CUT_COEFFICIENT_TOLERANCE,
@@ -701,9 +701,9 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     std::vector<SolverRepresentedRows> added_constraints;
     benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter, added_constraints);
-    if (_options.CACHE_PROBLEMS)
+    if (_options.CACHE_PROBLEMS >= 2)
     {
-        memoptim_subprob_builder_->set_added_constraints(name,added_constraints) ; 
+        fixed_skeleton_subprob_builder_->set_added_constraints(name, added_constraints);
     }
 }
 

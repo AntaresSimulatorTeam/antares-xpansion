@@ -41,7 +41,7 @@ void BendersMpi::InitializeProblems()
     {
     case 2:
     {
-        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
+        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
           _options.INPUTROOT,
           _logger,
           _options.SOLVER_NAME,
@@ -541,8 +541,8 @@ void BendersMpi::Run()
     if (_world.rank() == rank_0)
     {
         CloseCsvFile();
-        // EndWritingInOutputFile();
-        // write_basis();
+        EndWritingInOutputFile();
+        write_basis();
     }
     _world.barrier();
 }

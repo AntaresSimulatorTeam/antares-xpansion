@@ -13,18 +13,18 @@
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-class MemOptimConstraintsBuilder
+class FixedSkeletonConstraintsBuilder
 {
 public:
-    MemOptimConstraintsBuilder(const std::filesystem::path& inputRoot,
-                               Logger& logger,
-                               std::string solver_name,
-                               int log_level,
-                               ProblemsFormat format);
+    FixedSkeletonConstraintsBuilder(const std::filesystem::path& inputRoot,
+                                    Logger& logger,
+                                    std::string solver_name,
+                                    int log_level,
+                                    ProblemsFormat format);
 
-    MemOptimConstraintsBuilder(const std::filesystem::path& inputRoot,
-                               Logger& logger,
-                               std::shared_ptr<SolverAbstract> solver);
+    FixedSkeletonConstraintsBuilder(const std::filesystem::path& inputRoot,
+                                    Logger& logger,
+                                    std::shared_ptr<SolverAbstract> solver);
 
     std::shared_ptr<SolverAbstract> create_constraints_reader(const std::string& constraints_name);
 

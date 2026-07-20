@@ -52,7 +52,7 @@ void BendersByBatch::BuildBatches()
 
     if (_options.CACHE_PROBLEMS == 2)
     {
-        memoptim_subprob_builder_ = std::make_shared<MemOptimSubProblemBuilder>(
+        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
           _options.INPUTROOT,
           _logger,
           _options.SOLVER_NAME,
@@ -537,8 +537,9 @@ void BendersByBatch::GetSubproblemCutMemOptim(SubProblemDataMap& subproblem_data
     for (const auto& name: batch_sub_problems)
     {
         auto variable_map = coupling_map_[name];
-        double slave_weights = SubproblemWeight(memoptim_subprob_builder_->get_sub_number(), name);
-        auto worker = memoptim_subprob_builder_->create_sub_solver_abstract(
+        double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
+                                                name);
+        auto worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
           name,
           variable_map,
           _options.CUT_COEFFICIENT_TOLERANCE,

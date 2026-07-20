@@ -3,11 +3,11 @@
 #include <atomic>
 #include <cassert>
 #include <cstring>
+#include <iostream>
 #include <map>
 #include <numeric>
 #include <set>
 #include <utility>
-#include <iostream>
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
