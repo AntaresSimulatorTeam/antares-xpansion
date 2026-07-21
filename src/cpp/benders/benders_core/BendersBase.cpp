@@ -686,10 +686,14 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     }
     else
     {
+        auto t1 = std::chrono::steady_clock::now();
         worker->solve(subproblem_data.lpstatus,
                       _options.OUTPUTROOT,
                       _options.LAST_MASTER_MPS + MPS_SUFFIX,
                       _writer);
+        auto t2 = std::chrono::steady_clock::now();
+        auto elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+        sub_resolution_per_iter_[name].push_back(elapsed_milliseconds);
     }
 
     worker->get_value(subproblem_data.subproblem_cost);
