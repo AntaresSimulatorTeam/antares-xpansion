@@ -12,7 +12,14 @@ For each iteration:
 5. The resolution time for the subproblems and the master problem.
 
 There is also information on the iteration number which has led to the best solution.
+
+!!! warning
+    The last iteration of the optimization is not necessarily the best solution.
+
 The file `out.json` also gives the parameters that are used by the optimization 
 algorithm (some of them are defined by the user in `settings.ini`).
+
+You can also find the **best and last iteration** of the algorithm in the 
+`last_iteration.json`.
 
 

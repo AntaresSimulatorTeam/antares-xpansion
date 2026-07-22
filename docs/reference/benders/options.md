@@ -1,4 +1,4 @@
-# Settings for launching Benders exec 
+# Settings for launching Benders executable
 
 It is possible to launch the Benders solver directly as a standalone application. 
 The solver is provided as an executable named Benders,

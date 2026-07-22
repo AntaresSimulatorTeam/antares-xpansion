@@ -10,12 +10,11 @@ must be enriched with at least two new files:
 - A `settings.ini` file which contains the settings of the
   Antares Xpansion algorithm.
 
-And optionnaly an `option.json` file for [Benders solver configuration](./benders.md).
 
 These two files must be located in the `user/expansion/` directory of
-the Antares study. The data they contain
-are neither visible nor modifiable in the Antares Web, which is Antares user
-interface. These two files must therefore be handcrafted.
+the Antares study. The data they contain are neither visible nor modifiable
+in Antares Web, which is Antares user interface. These two files must therefore 
+be handcrafted or manipulated with [Antares Craft](https://antares-craft.readthedocs.io/en/latest/).
 
 ```
 antares-study

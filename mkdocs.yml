@@ -42,15 +42,18 @@ nav:
       - reference/inputs/index.md
       - Candidates: reference/inputs/candidates.md
       - Settings: reference/inputs/settings.md
-      - Benders: reference/inputs/benders.md
       - Sensitivity analysis: reference/inputs/sensitivity.md
       - Adequacy criterion: reference/inputs/adequacy-criterion.md
     - Running Antares Xpansion: reference/cli.md
     - Output files:
       - reference/outputs/index.md
       - Optimization output: reference/outputs/optimization-output.md
-      - Logs: reference/outputs/logs.md
+      - Others: reference/outputs/others.md
       - Sensitivity analysis: reference/outputs/sensitivity.md
+      - Benders output trace: reference/outputs/benders-output-trace.md
+    - Benders:
+      - reference/benders/index.md
+      - Options: reference/benders/options.md
     - Trajectory investment:
       - reference/trajectory-investment/index.md
       - Full trajectory workflow: reference/trajectory-investment/trajectory-workflow.md
