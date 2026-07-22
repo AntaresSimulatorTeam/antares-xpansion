@@ -7,11 +7,11 @@
 #include <boost/tokenizer.hpp>
 
 #include "IBendersProblemProvider.h"
-#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
-#include "antares-xpansion/benders/benders_core/ConstraintsFileReader.h"
-#include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
-#include "antares-xpansion/benders/benders_core/Worker.h"
-#include "antares-xpansion/benders/benders_core/memoptim_utils.h"
+#include "BendersProblemFromFile.h"
+#include "ConstraintsFileReader.h"
+#include "SubproblemWorker.h"
+#include "Worker.h"
+#include "memoptim_utils.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 

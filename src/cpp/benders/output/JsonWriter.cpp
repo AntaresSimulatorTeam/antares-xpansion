@@ -31,6 +31,7 @@ void JsonWriter::_open_file()
     _jsonOut_l.open(_filename, std::ofstream::out | std::ofstream::trunc);
     if (_jsonOut_l.fail())
     {
+        std::cout << "Could not open json file: " << _filename << std::endl;
     }
 }
 

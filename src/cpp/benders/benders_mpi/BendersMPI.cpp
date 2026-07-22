@@ -48,13 +48,18 @@ void BendersMpi::InitializeProblems()
           _options.LOG_LEVEL,
           _options.PROBLEMS_FORMAT);
         int current_problem_id = 0;
-        subs_per_procs_mem_optim_.resize(_world.size());
-        for (auto it = coupling_map_.begin(); it != coupling_map_.end(); it++)
+        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
         {
             auto process_to_feed = current_problem_id % _world.size();
-            subs_per_procs_mem_optim_[process_to_feed].push_back(it->first);
-            subs_per_proc.push_back(std::make_pair(it->first, process_to_feed));
-
+            if (process_to_feed != _world.rank())
+            {
+                it = coupling_map_.erase(it);
+            }
+            else
+            {
+                subs_per_proc.emplace_back(it->first, process_to_feed);
+                ++it;
+            }
             current_problem_id++;
         }
         break;

@@ -39,7 +39,7 @@ private:
       const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                const std::vector<std::string>& batch_sub_problems);
-    void GetSubproblemCutMemOptim(SubProblemDataMap& subproblem_data_map,
+    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
                                   const std::vector<std::string>& batch_sub_problems);
     Timer calculate_subproblem_contribution(const std::string& name,
                                             PlainData::SubProblemData& subproblem_data);

@@ -20,6 +20,7 @@ void dump(const Json::Value& output, const std::filesystem::path& file_name)
     }
     else
     {
+        std::cout << "Impossible d'ouvrir le fichier json " << file_name << std::endl;
     }
 }
 

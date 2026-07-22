@@ -183,6 +183,9 @@ void MultipleProblemGeneration::run_generation()
         }
 
         node_to_lp_info_.emplace(std::make_pair(node, node_lp_location));
+        // TODO Output to logger
+        std::cout << "Successfully generated lp_folder and files for problem : " << node
+                  << std::endl;
     }
 }
 

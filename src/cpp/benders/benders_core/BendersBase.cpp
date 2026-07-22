@@ -487,7 +487,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
         GetSubproblemCutCache(subproblem_data_map);
         break;
     case 2:
-        GetMemOptimCuts(subproblem_data_map);
+        GetCompactInMemCuts(subproblem_data_map);
         break;
     default:
         break;
@@ -630,25 +630,37 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
       shouldParallelize());
 }
 
-void BendersBase::GetMemOptimCuts(SubProblemDataMap& subproblem_data_map)
+void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
 {
-    auto subs_on_proc = subs_per_procs_mem_optim_[rank_];
+    auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
+    std::mutex m;
+    selectPolicy(
+      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
+      {
+          std::for_each(policy,
+                        nameAndVariableMap.begin(),
+                        nameAndVariableMap.end(),
+                        [this, &m, &subproblem_data_map](
+                          const std::pair<std::string, VariableMap>& kvp)
+                        {
+                            const auto& [sub, variables] = kvp;
+                            auto variable_map = coupling_map_[sub];
+                            std::cout<<"printing sub name "<<sub<<std::endl ; 
+                            double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
+                                                                    sub);
+                            auto subproblem_worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
+                                    sub,
+                                    variable_map,
+                                    _options.CUT_COEFFICIENT_TOLERANCE,
+                                    slave_weights);
+                            PlainData::SubProblemData subproblem_data;
+                            SolveSubproblem(subproblem_data, sub, subproblem_worker);   
+                            subproblem_data_map[sub] = subproblem_data;
 
-    for (auto& sub: subs_on_proc)
-    {
-        auto variable_map = coupling_map_[sub];
-        double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
-                                                sub);
-        auto subproblem_worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
-          sub,
-          variable_map,
-          _options.CUT_COEFFICIENT_TOLERANCE,
-          slave_weights);
-        PlainData::SubProblemData subproblem_data;
-        SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-        subproblem_data_map[sub] = subproblem_data;
-    }
+                        });
+      },
+      shouldParallelize());
 }
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,

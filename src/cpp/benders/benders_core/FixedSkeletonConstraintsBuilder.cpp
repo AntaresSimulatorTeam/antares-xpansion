@@ -1,6 +1,5 @@
 #include "antares-xpansion/benders/benders_core/FixedSkeletonConstraintsBuilder.h"
 
-#include <iostream>
 
 FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
   const std::filesystem::path& inputRoot,
@@ -11,7 +10,7 @@ FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
     inputRoot_(inputRoot)
 {
     logger_ = logger;
-    build_constraints_skeleton(solver_name, solver_log_manager_, log_level, format);
+    build(solver_name, solver_log_manager_, log_level, format);
     read_coeffs_and_indices();
 }
 
@@ -49,7 +48,7 @@ void FixedSkeletonConstraintsBuilder::read_coeffs_and_indices()
     }
 }
 
-void FixedSkeletonConstraintsBuilder::build_constraints_skeleton(
+void FixedSkeletonConstraintsBuilder::build(
   std::string solver_name,
   const SolverLogManager& solver_log_manager,
   int log_level,
@@ -75,7 +74,7 @@ int FixedSkeletonConstraintsBuilder::get_constraints_number()
     return coeffs_.size();
 }
 
-std::shared_ptr<SolverAbstract> FixedSkeletonConstraintsBuilder::create_constraints_reader(
+std::shared_ptr<SolverAbstract> FixedSkeletonConstraintsBuilder::update_constraints_reader(
   const std::string& constraints_name)
 {
     auto& coeffs = coeffs_[constraints_name];

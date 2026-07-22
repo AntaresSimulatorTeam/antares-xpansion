@@ -58,7 +58,6 @@ void BendersByBatch::BuildBatches()
           _options.SOLVER_NAME,
           _options.LOG_LEVEL,
           _options.PROBLEMS_FORMAT);
-        subs_per_procs_mem_optim_.resize(WorldSize());
     }
 
     for (auto& batch: batch_collection_.BatchCollections())
@@ -70,7 +69,6 @@ void BendersByBatch::BuildBatches()
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
             {
                 auto process_to_feed = problem_count % WorldSize();
-                subs_per_procs_mem_optim_[process_to_feed].push_back(*it);
                 if (process_to_feed != Rank())
                 {
                     it = batch.sub_problem_names.erase(it);
@@ -524,31 +522,45 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
 }
 
 /*!
- * \brief Solve and store optimal variables of all Subproblem Problems
+ * \brief Solve and store optimal variables of all Subproblem Problems 
+ * in compact memory case 
  *
  * Method to solve and store optimal variables of all Subproblem Problems
  * after fixing trial values.
  *
  * \param subproblem_data_map Map storing for each subproblem its cut
+ * \param batch_sub_problems list of subproblems contained in the Benders cut
  */
-void BendersByBatch::GetSubproblemCutMemOptim(SubProblemDataMap& subproblem_data_map,
+void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
                                               const std::vector<std::string>& batch_sub_problems)
 {
+
+
+    std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
+    nameAndVariableMap.reserve(batch_sub_problems.size());
     for (const auto& name: batch_sub_problems)
     {
-        auto variable_map = coupling_map_[name];
+        const auto it = coupling_map_.find(name);
+        nameAndVariableMap.emplace_back(it->first, it->second);
+    }
+
+    for (const auto& kvp: nameAndVariableMap)
+    {
+        auto name = kvp.first ;
+        auto variable_map = kvp.second ; 
         double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
                                                 name);
         auto worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
-          name,
-          variable_map,
-          _options.CUT_COEFFICIENT_TOLERANCE,
-          slave_weights);
+                                            name,
+                                            variable_map,
+                                            _options.CUT_COEFFICIENT_TOLERANCE,
+                                            slave_weights);
         PlainData::SubProblemData subproblem_data{};
         SolveSubproblem(subproblem_data, name, worker);
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
         subproblem_data_map[name] = subproblem_data;
+        
     }
 }
 
@@ -558,7 +570,7 @@ void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
     switch (Options().CACHE_PROBLEMS)
     {
     case 2:
-        GetSubproblemCutMemOptim(subproblem_data_map, batch_sub_problems);
+        GetCompactInMemCuts(subproblem_data_map, batch_sub_problems);
         break;
     case 1:
         GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);

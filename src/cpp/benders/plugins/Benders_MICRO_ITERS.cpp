@@ -328,7 +328,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
     if (CACHE_PROBLEMS >= 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        auto solver = fixed_skeleton_constraints_builder_->create_constraints_reader(
+        auto solver = fixed_skeleton_constraints_builder_->update_constraints_reader(
           constraints_file_name);
         subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(
           solver,

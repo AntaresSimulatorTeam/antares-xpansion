@@ -118,9 +118,9 @@ std::shared_ptr<SubproblemWorker> FixedSkeletonSubProblemBuilder::create_sub_sol
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
+                                                                slave_weight,
                                                                 solver_,
-                                                                logger_,
-                                                                slave_weight);
+                                                                logger_);
 
     for (auto& solver_row: added_constraints_per_sub_[sub_name])
     {

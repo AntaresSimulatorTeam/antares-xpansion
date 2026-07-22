@@ -771,6 +771,7 @@ int SolverCbc::solve_lp()
     else
     {
         lp_status = UNKNOWN;
+        std::cout << "Error : UNKNOWN CBC STATUS after initial solve." << std::endl;
     }
 
     return lp_status;
@@ -807,6 +808,8 @@ int SolverCbc::solve_mip()
     else
     {
         lp_status = UNKNOWN;
+        std::cout << "Error : UNKNOWN CBC STATUS after branch and bound complete search."
+                  << std::endl;
     }
 
     return lp_status;

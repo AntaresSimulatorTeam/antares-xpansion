@@ -25,9 +25,10 @@ public:
                      ProblemsFormat format,
                      IBendersProblemProvider* benders_problem_provider);
     SubproblemWorker(VariableMap& variable_map,
-                     std::shared_ptr<SolverAbstract> solver,
-                     Logger logger,
-                     double slave_weight);
+                    double slave_weight,              
+                    std::shared_ptr<SolverAbstract> solver,
+                     Logger logger
+                     );
     void setup_obj(double slave_weight);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;

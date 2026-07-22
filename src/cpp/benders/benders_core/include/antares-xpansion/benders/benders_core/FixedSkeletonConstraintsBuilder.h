@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "IBendersProblemProvider.h"
-#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
-#include "antares-xpansion/benders/benders_core/memoptim_utils.h"
+#include "BendersProblemFromFile.h"
+#include "memoptim_utils.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
@@ -26,7 +26,7 @@ public:
                                     Logger& logger,
                                     std::shared_ptr<SolverAbstract> solver);
 
-    std::shared_ptr<SolverAbstract> create_constraints_reader(const std::string& constraints_name);
+    std::shared_ptr<SolverAbstract> update_constraints_reader(const std::string& constraints_name);
 
     int get_constraints_number();
 
@@ -35,7 +35,7 @@ private:
 
     void read_coeffs_and_indices();
 
-    void build_constraints_skeleton(std::string solver_name,
+    void build(std::string solver_name,
                                     const SolverLogManager& solver_log_manager,
                                     int log_level,
                                     ProblemsFormat format);

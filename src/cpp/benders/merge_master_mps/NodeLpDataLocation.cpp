@@ -89,4 +89,5 @@ void LpDataLocationManager::write_nodal_lp_location_file(
     std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
     std::ofstream outputFileStream(filepath);
     writer->write(output, &outputFileStream);
+    std::cout << "Successfully written lp_paths to file : " << filepath.string() << std::endl;
 }

@@ -64,6 +64,7 @@ int32_t AntaresArchiveUpdater::MinizipErase(void* reader, void* writer)
 
     if (err != MZ_OK && err != MZ_END_OF_LIST)
     {
+        std::cout << "Error " << err << " going to first entry in archive\n";
     }
 
     while (err == MZ_OK)
@@ -71,6 +72,7 @@ int32_t AntaresArchiveUpdater::MinizipErase(void* reader, void* writer)
         err = mz_zip_reader_entry_get_info(reader, &file_info);
         if (err != MZ_OK)
         {
+            std::cout << "Error " << err << " getting info from archive\n";
             break;
         }
 
@@ -85,6 +87,8 @@ int32_t AntaresArchiveUpdater::MinizipErase(void* reader, void* writer)
 
             if (err != MZ_OK)
             {
+
+                std::cout << "Error " << err << " copying entry into new zip\n";
                 break;
             }
         }
@@ -93,6 +97,7 @@ int32_t AntaresArchiveUpdater::MinizipErase(void* reader, void* writer)
 
         if (err != MZ_OK && err != MZ_END_OF_LIST)
         {
+            std::cout << "Error " << err << " going to next entry in archive\n";
         }
     }
 
