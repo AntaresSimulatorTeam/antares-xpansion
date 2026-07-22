@@ -1,5 +1,7 @@
 # Tests
 
+## CTests
+
 Tests compilation  can be enabled at configure time using the option `-DBUILD_TESTING=ON` (`OFF` by default). After build, tests can be run with `ctest`:
 
 ```
@@ -52,3 +54,79 @@ To run all test, don't indicate any label or name:
 ```
 ctest -C Release --output-on-failure
 ```
+
+## Cucumber Tests (BDD)
+
+### Overview
+
+Cucumber tests use the [behave](https://behave.readthedocs.io/) framework (Python BDD testing) to run end-to-end feature tests. These tests validate high-level functionality through human-readable scenarios.
+
+### Location
+
+```
+tests/end_to_end/cucumber/
+├── features/
+│   ├── *.feature          # Feature files with Gherkin syntax
+│   ├── environment.py     # Setup/teardown hooks
+│   └── steps/             # Step implementations
+│       ├── given.py
+│       ├── when.py
+│       ├── then.py
+│       └── steps.py
+```
+
+### Running Tests
+
+```bash
+# Install dependencies
+pip install -r requirements-tests.txt
+
+# Run all cucumber tests
+cd tests/end_to_end
+behave cucumber/features/ --no-capture --no-capture-stderr
+
+# Run specific feature file
+behave cucumber/features/Benders.feature --no-capture
+
+# Run with tags (skip flaky or CI-excluded tests)
+behave cucumber/features/ --tags "not @flaky and not @noci" --no-capture
+
+# Run specific scenario by name
+behave cucumber/features/ -n "Benders_handle_mixed_order_of_var"
+```
+
+### Writing Tests
+
+**Feature file** (`*.feature`):
+
+```gherkin
+Feature: Benders tests
+
+  @fast @short @Benders
+  Scenario: Test benders with specific study
+    Given the study path is "data_test/Benders_handle_mixed_order_of_var"
+    When I run benders with 1 proc(s)
+    Then the simulation succeeds
+    And the simulation takes less than 5 seconds
+```
+
+**Step implementations** are in the `steps/` directory. Each step definition maps Gherkin steps to Python code.
+
+### Common Tags
+
+| Tag | Description |
+|-----|-------------|
+| `@fast` | Quick tests |
+| `@short` | Short duration |
+| `@Benders` | Benders-related tests |
+| `@flaky` | Unstable tests (skipped by default in CI) |
+| `@noci` | Tests not run in CI |
+| `@xpress` | Xpress solver-specific tests |
+
+### GitHub Action
+
+The workflow uses the action at `.github/workflows/cucumber-tests/action.yml` which:
+- Accepts `feature` (specific feature file/folder, default: `features`)
+- Accepts `tags` (tag expression, default: `"not @flaky and not @noci"`)
+- Requires `mpi_path` for MPI support
+- Runs `behave` with pretty formatting and no output capture
