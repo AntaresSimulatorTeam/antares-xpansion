@@ -111,8 +111,8 @@ The output file gathers the following data:
 
     - `objective`: Value of the objective of the sensitivity problem:
     
-        - For a CAPEX minimization (resp. maximization) problem, this the value of the mimimum (resp. maximum) CAPEX that is found over the \\(\varepsilon\\)-optimal solutions. 
-        - For the minimization (resp. maximization) projection problem of candidate \\(i\\), this is the minimum (resp. maximum) invested capacity of candidate \\(i\\) over the \\(\varepsilon\\)-optimal solutions.
+        - For a CAPEX minimization (resp. maximization) problem, this the value of the mimimum (resp. maximum) CAPEX that is found over the $\varepsilon$-optimal solutions. 
+        - For the minimization (resp. maximization) projection problem of candidate $i$, this is the minimum (resp. maximum) invested capacity of candidate $i$ over the $\varepsilon$-optimal solutions.
     
     - `optimization direction`: The direction of the sensitivity problem i.e. minimization or maximization,
     - `problem type`: The type of sensitivity problem that is solved,
@@ -122,13 +122,13 @@ The output file gathers the following data:
         - 1: infeasible,
         - 2: unbounded.
 
-    - `candidates` : An array describing an \\(\varepsilon\\)-optimal investment combination that satisfies the bound found in the sensitivity problem:
-        - For a CAPEX minimization (resp. maximization) problem, this is an \\(\varepsilon\\)-optimal investment combination that minimizes (resp. maximizes) the CAPEX.
-        - For the minimization (resp. maximization) projection problem of candidate \\(i\\), this is an \\(\varepsilon\\)-optimal investment combination that minimizes (resp. maximizes) the capacity of candidate \\(i\\).
+    - `candidates` : An array describing an $\varepsilon$-optimal investment combination that satisfies the bound found in the sensitivity problem:
+        - For a CAPEX minimization (resp. maximization) problem, this is an $\varepsilon$-optimal investment combination that minimizes (resp. maximizes) the CAPEX.
+        - For the minimization (resp. maximization) projection problem of candidate $i$, this is an $\varepsilon$-optimal investment combination that minimizes (resp. maximizes) the capacity of candidate $i$.
 
     - `system cost`: Value of the overall system cost obtained with the investment combination given in `candidates`.
 
 !!! Remarks
-    - For the projection problem on candidate \\(i\\), we logically retrieve that the `objective` is equal to the invested capacity in candiate \\(i\\) from the `candidates` section.
+    - For the projection problem on candidate $i$, we logically retrieve that the `objective` is equal to the invested capacity in candiate $i$ from the `candidates` section.
     - For all sensitivity problems, we must have `system cost <= best benders cost + epsilon` as this is the constraint that is enforced. As the solutions of a linear program are on the boundary of the domain, it is often the case (but not always) that this constraint is saturated for the sensitivity solutions, so that we have `system cost = best benders cost + epsilon`.
  
