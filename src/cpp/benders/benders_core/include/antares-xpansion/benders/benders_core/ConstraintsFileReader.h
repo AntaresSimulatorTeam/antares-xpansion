@@ -23,7 +23,7 @@ struct SolverRepresentedRows
 class ConstraintsFileReader
 {
 public:
-    ConstraintsFileReader(const std::filesystem::path& constraint_file_path ,
+    ConstraintsFileReader(const std::filesystem::path& constraint_file_path,
                           const std::string& solver_name,
                           const SolverLogManager& solver_log_manager,
                           Logger& logger,

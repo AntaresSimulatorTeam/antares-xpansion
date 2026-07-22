@@ -7,11 +7,11 @@
 #include <string>
 #include <vector>
 
-#include "IBendersProblemProvider.h"
 #include "BendersProblemFromFile.h"
-#include "memoptim_utils.h"
+#include "IBendersProblemProvider.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "memoptim_utils.h"
 
 class FixedSkeletonConstraintsBuilder
 {
@@ -36,9 +36,9 @@ private:
     void read_coeffs_and_indices();
 
     void build(std::string solver_name,
-                                    const SolverLogManager& solver_log_manager,
-                                    int log_level,
-                                    ProblemsFormat format);
+               const SolverLogManager& solver_log_manager,
+               int log_level,
+               ProblemsFormat format);
 
     std::filesystem::path inputRoot_;
 

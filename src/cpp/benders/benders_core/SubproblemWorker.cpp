@@ -39,11 +39,10 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
 }
 
 SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
-                                   double slave_weight,              
+                                   double slave_weight,
                                    std::shared_ptr<SolverAbstract> solver,
-                                   Logger logger
-                                ):
-    Worker(variable_map, std::move(logger)) 
+                                   Logger logger):
+    Worker(variable_map, std::move(logger))
 {
     init_for_compact_in_mem(solver, variable_map);
     setup_obj(slave_weight);

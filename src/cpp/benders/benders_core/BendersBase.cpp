@@ -645,19 +645,19 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                         {
                             const auto& [sub, variables] = kvp;
                             auto variable_map = coupling_map_[sub];
-                            std::cout<<"printing sub name "<<sub<<std::endl ; 
-                            double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
-                                                                    sub);
-                            auto subproblem_worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
-                                    sub,
-                                    variable_map,
-                                    _options.CUT_COEFFICIENT_TOLERANCE,
-                                    slave_weights);
+                            std::cout << "printing sub name " << sub << std::endl;
+                            double slave_weights = SubproblemWeight(
+                              fixed_skeleton_subprob_builder_->get_sub_number(),
+                              sub);
+                            auto subproblem_worker = fixed_skeleton_subprob_builder_
+                                                       ->create_sub_solver_abstract(
+                                                         sub,
+                                                         variable_map,
+                                                         _options.CUT_COEFFICIENT_TOLERANCE,
+                                                         slave_weights);
                             PlainData::SubProblemData subproblem_data;
-                            SolveSubproblem(subproblem_data, sub, subproblem_worker);   
+                            SolveSubproblem(subproblem_data, sub, subproblem_worker);
                             subproblem_data_map[sub] = subproblem_data;
-
-
                         });
       },
       shouldParallelize());
@@ -704,7 +704,8 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                       _options.LAST_MASTER_MPS + MPS_SUFFIX,
                       _writer);
         auto t2 = std::chrono::steady_clock::now();
-        auto elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+        auto elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+                                      .count();
         sub_resolution_per_iter_[name].push_back(elapsed_milliseconds);
     }
 

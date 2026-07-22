@@ -600,10 +600,10 @@ void BendersMpi::launch()
 
     if (_world.rank() == rank_0)
     {
-        for (const auto& [name, times] : sub_resolution_per_iter_)
+        for (const auto& [name, times]: sub_resolution_per_iter_)
         {
             std::ofstream file(name + "_solve_times.txt");
-            for (const auto& t : times)
+            for (const auto& t: times)
             {
                 file << t << "\n";
             }

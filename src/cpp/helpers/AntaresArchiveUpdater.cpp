@@ -87,7 +87,6 @@ int32_t AntaresArchiveUpdater::MinizipErase(void* reader, void* writer)
 
             if (err != MZ_OK)
             {
-
                 std::cout << "Error " << err << " copying entry into new zip\n";
                 break;
             }
