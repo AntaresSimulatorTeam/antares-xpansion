@@ -191,13 +191,13 @@ class TestSettingsFileOverrides:
             tmp_path, settings_content="master = relaxed\n"
         )
         assert config_loader.get_master_formulation() == "relaxed"
-        assert config_loader.is_relaxed() is True
+        assert config_loader.is_relaxed()
 
     def test_uc_type_override(self, tmp_path):
         config_loader = _make_config_loader(
             tmp_path, settings_content="uc_type = expansion_accurate\n"
         )
-        assert config_loader.is_accurate() is True
+        assert config_loader.is_accurate()
 
     def test_infinite_max_iteration_override(self, tmp_path):
         config_loader = _make_config_loader(
@@ -221,7 +221,7 @@ class TestSettingsFileOverrides:
 class TestGemsCandidates:
     def test_gems_candidates_detected(self, tmp_path):
         config_loader = _make_config_loader(tmp_path, gems_candidates=True)
-        assert config_loader.gems_candidates() is True
+        assert config_loader.gems_candidates()
 
     def test_additional_constraints_not_supported_with_gems_candidates(self, tmp_path):
         data_dir = _make_study_dir(
@@ -239,6 +239,67 @@ class TestGemsCandidates:
             ConfigLoader.AdditionalConstraintsNotSupportedWithGemsCandidates
         ):
             ConfigLoader(config)
+
+
+class TestLauncherOptionsSaveAndRestore:
+    def test_save_launcher_options_then_restore_does_not_raise_on_resume(
+        self, tmp_path
+    ):
+        # save_launcher_options() must write every key that
+        # _restore_launcher_options() later reads back (e.g. "memory"), since
+        # a resume run restores its options from a launcher_options.json
+        # produced by an earlier full/benders run.
+        data_dir = _make_study_dir(tmp_path, settings_content="")
+        install_dir = tmp_path / "install"
+        install_dir.mkdir()
+
+        xpansion_output_dir = data_dir / "output" / "myoutput-Xpansion"
+        (xpansion_output_dir / "lp").mkdir(parents=True)
+
+        full_config = XpansionConfig(
+            InputParameters(
+                step="full",
+                simulation_name="myoutput-Xpansion",
+                data_dir=str(data_dir),
+                install_dir=str(install_dir),
+                method="benders_decomposition",
+                n_mpi=1,
+                antares_n_cpu=1,
+                keep_mps=False,
+                oversubscribe=False,
+                allow_run_as_root=False,
+                memory=True,
+                run_presolve=False,
+                cache_problems=False,
+                problem_format="OPTIMIZED",
+            ),
+            _make_config_parameters(),
+        )
+        ConfigLoader(full_config).save_launcher_options()
+
+        resume_config = XpansionConfig(
+            InputParameters(
+                step="resume",
+                simulation_name="",
+                data_dir=str(data_dir),
+                install_dir=str(install_dir),
+                method="benders_decomposition",
+                n_mpi=1,
+                antares_n_cpu=1,
+                keep_mps=False,
+                oversubscribe=False,
+                allow_run_as_root=False,
+                memory=False,
+                run_presolve=False,
+                cache_problems=False,
+                problem_format="OPTIMIZED",
+            ),
+            _make_config_parameters(),
+        )
+
+        # ConfigLoader.__init__ calls _restore_launcher_options() itself when
+        # step == "resume", so simply constructing it must not raise.
+        ConfigLoader(resume_config)
 
 
 class TestSimulationName:
