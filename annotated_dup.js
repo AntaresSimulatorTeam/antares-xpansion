@@ -208,10 +208,6 @@ var annotated_dup =
       [ "SolutionData", "structOutput_1_1SolutionData.html", null ],
       [ "VoidWriter", "classOutput_1_1VoidWriter.html", "classOutput_1_1VoidWriter" ]
     ] ],
-    [ "performance", null, [
-      [ "JsonFileProcessor", "classperformance_1_1JsonFileProcessor.html", null ],
-      [ "PerfPlotsGenerator", "classperformance_1_1PerfPlotsGenerator.html", null ]
-    ] ],
     [ "PlainData", null, [
       [ "SubProblemData", "structPlainData_1_1SubProblemData.html", null ]
     ] ],

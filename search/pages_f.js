@@ -1,17 +1,13 @@
 var searchData=
 [
   ['testing_20guide_0',['Testing Guide',['../md_docs_2agents_2testing.html',1,'']]],
-  ['tests_1',['Tests',['../md_docs_2developer-guide_2install__from__sources_24-Tests.html',1,'']]],
-  ['the_20algorithm_2',['Settings of the algorithm',['../md_docs_2user-guide_2get-started_2settings-definition.html',1,'']]],
-  ['the_20candidates_3',['Define the candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html',1,'']]],
-  ['the_20investment_20problem_4',['Mathematical aspects of the investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'']]],
-  ['the_20master_20problems_20of_20annual_20xpansion_20studies_5',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
-  ['the_20optimal_20investment_20problem_20in_20antares_20xpansion_6',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
-  ['the_20optimization_7',['Launch the optimization',['../md_docs_2user-guide_2get-started_2launching-optimization.html',1,'']]],
-  ['the_20workflow_20_3a_20tt_20xpansion_20trajectory_20tt_8',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
-  ['trajectory_20investment_20problem_9',['Trajectory investment problem',['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html',1,'']]],
-  ['trajectory_20investment_20workflow_10',['Trajectory investment workflow',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html',1,'']]],
-  ['trajectory_20tt_11',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
-  ['tt_12',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
-  ['tt_20xpansion_20trajectory_20tt_13',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]]
+  ['tests_1',['Tests',['../md_docs_2developer-guide_2install-from-source_2tests.html',1,'']]],
+  ['the_20master_20problems_20of_20annual_20xpansion_20studies_2',['Merging the master problems of annual Xpansion studies',['../md_docs_2reference_2trajectory-investment_2merge-master.html',1,'']]],
+  ['the_20workflow_20_3a_20tt_20xpansion_20trajectory_20tt_3',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2reference_2trajectory-investment_2orchestration.html',1,'']]],
+  ['trace_4',['Benders output trace',['../md_docs_2reference_2outputs_2benders-output-trace.html',1,'']]],
+  ['trajectory_20investment_20problem_5',['Trajectory investment problem',['../md_docs_2reference_2trajectory-investment_2index.html',1,'']]],
+  ['trajectory_20investment_20workflow_6',['Trajectory investment workflow',['../md_docs_2reference_2trajectory-investment_2trajectory-workflow.html',1,'']]],
+  ['trajectory_20tt_7',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2reference_2trajectory-investment_2orchestration.html',1,'']]],
+  ['tt_8',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2reference_2trajectory-investment_2orchestration.html',1,'']]],
+  ['tt_20xpansion_20trajectory_20tt_9',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2reference_2trajectory-investment_2orchestration.html',1,'']]]
 ];

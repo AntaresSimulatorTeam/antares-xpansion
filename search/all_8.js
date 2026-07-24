@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['7_200_2006_202022_0',['v0.7.0 (06/2022)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md116',1,'']]],
-  ['7_200_2011_202025_1',['v1.7.0 (11/2025)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md66',1,'']]],
-  ['7_201_2012_202025_2',['v1.7.1 (12/2025)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md63',1,'']]]
+  ['8_200_2001_202026_0',['v1.8.0 (01/2026)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md131',1,'']]],
+  ['8_200_2010_202022_1',['v0.8.0 (10/2022)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md185',1,'']]]
 ];

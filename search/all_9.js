@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['8_200_2001_202026_0',['v1.8.0 (01/2026)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md59',1,'']]],
-  ['8_200_2010_202022_1',['v0.8.0 (10/2022)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md113',1,'']]]
+  ['_3a_20nodal_20lp_20info_20file_0',['Output : Nodal Lp Info file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md258',1,'']]],
+  ['_3a_20tt_20xpansion_20trajectory_20tt_1',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2reference_2trajectory-investment_2orchestration.html',1,'']]]
 ];

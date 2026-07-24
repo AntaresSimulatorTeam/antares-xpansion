@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: User input file parsing</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('md_docs_2reference_2trajectory-investment_2user-input.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">User input file parsing</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="autotoc_md269"></a></p>
+<h1><a class="anchor" id="autotoc_md270"></a>
+User input file</h1>
+<p>We give here an example of a user input file corresponding with the illustration given in the problem presentation. <br  />
+ <b>input-trajectory.yaml</b> :</p>
+<div class="fragment"><div class="line"># Global trajectory data</div>
+<div class="line">global:</div>
+<div class="line">  formulation: relaxed # If set to &#39;integer&#39;, capacity is built in steps of unit-size</div>
+<div class="line">  discount_rate: 0.064</div>
+<div class="line">  first_investment_year: 2030</div>
+<div class="line">  end_of_horizon: 2060</div>
+<div class="line">  scaling: 1e3 # e.g. if 1e6, objective function will be expressed in M€</div>
+<div class="line">  #forbid_retirement: true</div>
+<div class="line">  studies:</div>
+<div class="line">    &quot;2030&quot;: ./node_2030_study</div>
+<div class="line">    &quot;2040&quot;: ./node_2040_study</div>
+<div class="line">    &quot;2050_A&quot;: ./node_2050_A_study</div>
+<div class="line">    &quot;2050_B&quot;: ./node_2050_B_study</div>
+<div class="line"> </div>
+<div class="line"># Represents the tree&#39;s structure</div>
+<div class="line">tree:</div>
+<div class="line">  node: &quot;2030&quot;</div>
+<div class="line">  children:</div>
+<div class="line">    - node: &quot;2040&quot;</div>
+<div class="line">      probability: 1.0</div>
+<div class="line">      children:</div>
+<div class="line">        - node: &quot;2050_A&quot;</div>
+<div class="line">          probability: 0.8</div>
+<div class="line">        - node: &quot;2050_B&quot;</div>
+<div class="line">          probability: 0.2</div>
+<div class="line"> </div>
+<div class="line">constraints:</div>
+<div class="line">  - name: add_max_1_GW_semibase</div>
+<div class="line">    nodes: [ &quot;2030&quot;, &quot;2040&quot;, &quot;2050_A&quot;, &quot;2050_B&quot; ]</div>
+<div class="line">    candidates: [ semibase ]</div>
+<div class="line">    type: max_investment_per_node_per_candidate</div>
+<div class="line">    value: 1000</div>
+<div class="line">  - name: add_max_1.5GW_peak</div>
+<div class="line">    nodes: [ &quot;2030&quot;, &quot;2040&quot;, &quot;2050_A&quot;, &quot;2050_B&quot; ]</div>
+<div class="line">    candidates: [ peak ]</div>
+<div class="line">    type: max_investment_per_node_per_candidate</div>
+<div class="line">    value: 1500</div>
+<div class="line">  - name: add_cum_2GW</div>
+<div class="line">    nodes: [ &quot;2030&quot;, &quot;2040&quot; ]</div>
+<div class="line">    candidates: [ peak, semibase ]</div>
+<div class="line">    type: max_cumulative_investment_per_node</div>
+<div class="line">    value: 2000</div>
+<div class="line">  - name: forbid_retirement</div>
+<div class="line">    nodes: all</div>
+<div class="line">    candidates: all</div>
+<div class="line">    type: max_retirement_per_node_per_candidate</div>
+<div class="line">    value: 0</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"># Nodes&#39; individual data</div>
+<div class="line">nodes:</div>
+<div class="line">  &quot;2030&quot;:</div>
+<div class="line">    investment_date: 2030</div>
+<div class="line">    candidate_to_type:</div>
+<div class="line">      semibase: semibase_type</div>
+<div class="line">      peak: peak_type</div>
+<div class="line">  &quot;2040&quot;:</div>
+<div class="line">    investment_date: 2040</div>
+<div class="line">    candidate_to_type:</div>
+<div class="line">      semibase: semibase_type</div>
+<div class="line">      peak: peak_type</div>
+<div class="line">  &quot;2050_A&quot;:</div>
+<div class="line">    investment_date: 2050</div>
+<div class="line">    candidate_to_type:</div>
+<div class="line">      semibase: semibase_type</div>
+<div class="line">      peak: peak_type</div>
+<div class="line">  &quot;2050_B&quot;:</div>
+<div class="line">    investment_date: 2050</div>
+<div class="line">    candidate_to_type:</div>
+<div class="line">      semibase: semibase_type</div>
+<div class="line">      peak: peak_type</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"># Candidates costs structures</div>
+<div class="line">candidates_types:</div>
+<div class="line">  semibase_type:</div>
+<div class="line">    investment: 5000</div>
+<div class="line">    operation_maintenance: 100</div>
+<div class="line">    retirement: 0</div>
+<div class="line">  peak_type:</div>
+<div class="line">    investment: 3500</div>
+<div class="line">    operation_maintenance: 100</div>
+<div class="line">    retirement: 0</div>
+<div class="line"> </div>
+<div class="line"># Initial conditions</div>
+<div class="line">initial_capacities:</div>
+<div class="line">  default: 0</div>
+<div class="line">  semibase: 250</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md271"></a>
+Input file parser &amp; translator</h1>
+<ul>
+<li>Parses the user input file and verifies that the data given in the file matches with the studies (To be implemented : check that every candidate is present in both the study and the node's info).</li>
+<li>Computes the relevant data :<ul>
+<li>Node duration</li>
+<li>Node complete probability</li>
+<li>Node weight</li>
+<li>Discounted investment, retirement and operational costs</li>
+</ul>
+</li>
+<li>Translates the constraints to their mathematical formulation (see the <a href="./merge-master.md#trajectory-constraints">trajectory constraints section</a> of the master merger.)</li>
+<li>Formats and outputs the <code>master_merger_info_file.json</code> used as input in both the <a class="el" href="md_docs_2reference_2trajectory-investment_2merge-master.html">merged master problem generator</a> and <a class="el" href="md_docs_2reference_2trajectory-investment_2merge-weights.html">merged weights file generator</a>.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md272"></a>
+A note on candidates</h1>
+<p>We recommand that each candidate is defined in all of the studies and adding the necessary constraints to restrict the investment / divestment behaviour for this candidate to the desired feasible space. <br  />
+ However, it is still possible to have candidates not present in all of the nodes of the tree. A candidate can either :</p>
+<ul>
+<li>Appear only in later studies, to represent a cluster that might only enter into service later. In this case, when the candidate $i$ first appear in node $n$, the constraint will be : $\text{initial_capacities}_i + dx_{i,n}^+ - dx_{i,n}^- = x_{i,n}$, regardless of wether $n$ is the root node. ( Though as noted above, the recommanded modelisation would be to add the candidate in all the nodes and impose its installed capacity to be $0$ during the construction period)</li>
+<li>Disappear in the final studies, to represent a cluster that is assuredly decommissioned at this point. In this case, when the candidate $i$ disappears at node $n$, the constraint will be : $x_{i, \text{parent}(n)} + dx_{i,n}^+ - dx_{i,n}^- = 0$.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md273"></a>
+Trajectory constraints translation</h1>
+<p>The trajectory constraints translator implements 3 types of constraints for now. <br  />
+ We implement the <code>all</code> keyword for ease of readability. <code>all</code> will be expanded to a list containing all of the nodes or all of the candidates depending on the context.</p>
+<h2><a class="anchor" id="autotoc_md274"></a>
+<code>type: max_investment_per_node_per_candidate</code></h2>
+<p>Example :</p>
+<div class="fragment"><div class="line">- name: add_max_1_GW_semibase</div>
+<div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot;, &quot;2050_A&quot;, &quot;2050_B&quot; ]</div>
+<div class="line">  candidates: [ semibase ]</div>
+<div class="line">  type: max_investment_per_node_per_candidate</div>
+<div class="line">  value: 1000</div>
+</div><!-- fragment --><p>This entry will result in 4 (4 = |<code>nodes</code>| $\times$ |<code>candidates</code>|) constraints in the merged problem :</p>
+<ul>
+<li>$dx_{2030, semibase}^+ \leq 1000$,</li>
+<li>$dx_{2040, semibase}^+ \leq 1000$,</li>
+<li>$dx_{2050_A, semibase}^+ \leq 1000$,</li>
+<li>$dx_{2050_B, semibase}^+ \leq 1000$</li>
+</ul>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^+ \leq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md275"></a>
+<code>type: max_cumulative_investment_per_node</code></h2>
+<p>Example :</p>
+<div class="fragment"><div class="line">- name: add_cum_2GW</div>
+<div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot; ]</div>
+<div class="line">  candidates: [ peak, semibase ]</div>
+<div class="line">  type: max_cumulative_investment_per_node</div>
+<div class="line">  value: 2000</div>
+</div><!-- fragment --><p>This entry will result in 2 (2 = |<code>nodes</code>|) constraints in the merged problem :</p>
+<ul>
+<li>$dx_{2030, semibase}^+ + dx_{2030, peak}^+ \leq 2000$,</li>
+<li>$dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$</li>
+</ul>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^+ \leq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md276"></a>
+<code>type: max_retirement_per_node_per_candidate</code></h2>
+<p>Example :</p>
+<div class="fragment"><div class="line">- name: forbid_retirement</div>
+<div class="line">  nodes: all</div>
+<div class="line">  candidates: all</div>
+<div class="line">  type: max_retirement_per_node_per_candidate</div>
+<div class="line">  value: 0</div>
+</div><!-- fragment --><p>This entry will result in 8 (8 = |<code>nodes</code>| $\times$ |<code>candidates</code>|) constraints in the merged problem :</p>
+<ul>
+<li>$dx_{2030, semibase}^- \leq 0, \quad dx_{2030, peak}^- \leq 0$,</li>
+<li>$dx_{2040, semibase}^- \leq 0, \quad dx_{2040, peak}^- \leq 0$,</li>
+<li>$dx_{2050_A, semibase}^- \leq 0, \quad dx_{2050_A, peak}^- \leq 0$,</li>
+<li>$dx_{2050_B, semibase}^- \leq 0, \quad dx_{2050_B, peak}^- \leq 0$</li>
+</ul>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^- \leq \text{value} $$</p>
+<p><b>Note :</b> as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.</p>
+<h2><a class="anchor" id="autotoc_md277"></a>
+<code>type: max_cumulative_retirement_per_node</code></h2>
+<p>Example :</p>
+<div class="fragment"><div class="line">- name: decom_cum_2GW</div>
+<div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot; ]</div>
+<div class="line">  candidates: [ peak, semibase ]</div>
+<div class="line">  type: max_cumulative_retirement_per_node</div>
+<div class="line">  value: 2000</div>
+</div><!-- fragment --><p>This entry would result in 2 (2 = |<code>nodes</code>|) constraints in the merged problem :</p>
+<ul>
+<li>$dx_{2030, semibase}^- + dx_{2030, peak}^- \leq 2000$,</li>
+<li>$dx_{2040, semibase}^- + dx_{2040, peak}^- \leq 2000$</li>
+</ul>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md278"></a>
+<code>type: min_investment_per_candidate_per_node</code></h2>
+<p>Example :</p>
+<div class="fragment"><div class="line">- name: min_invest_1_5GW</div>
+<div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot;, &quot;2050_A&quot; ]</div>
+<div class="line">  candidates: [ semibase ]</div>
+<div class="line">  type: min_investment_per_candidate_per_node</div>
+<div class="line">  value: 1500</div>
+</div><!-- fragment --><p>This entry would result in 3 (3 = |<code>nodes</code>|) constraints in the merged problem :</p>
+<ul>
+<li>$dx_{2030, semibase}^+ \geq 1500$,</li>
+<li>$dx_{2040, semibase}^+ \geq 1500$,</li>
+<li>$dx_{2040_A, semibase}^+ \geq 1500$,</li>
+</ul>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^+ \geq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md279"></a>
+<code>type: min_retirement_per_candidate_per_node</code></h2>
+<p>Example :</p>
+<div class="fragment"><div class="line">- name: min_decom_1GW</div>
+<div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot; ]</div>
+<div class="line">  candidates: [ peak ]</div>
+<div class="line">  type: min_retirement_per_candidate_per_node</div>
+<div class="line">  value: 1000</div>
+</div><!-- fragment --><p>This entry would result in 2 (2 = |<code>nodes</code>|) constraints in the merged problem :</p>
+<ul>
+<li>$dx_{2030, peak}^- \geq 1000$,</li>
+<li>$dx_{2040, peak}^- \geq 1000$</li>
+</ul>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value} $$</p>
+<h1><a class="anchor" id="autotoc_md280"></a>
+Input data of local study or input data from <code>input-trajectory.yaml</code> ?</h1>
+<p>Each yearly study defines some input data from either <code>candidates.ini</code> and <code>settings.ini</code>. Some of this data are overriden by <code>input-trajectory.yaml</code> whereas some are reused:</p>
+<ul>
+<li><b>Master formulation</b>: The parameter of each individual study (integer or relaxed given in <code>settings.ini</code>) is overriden by the <code>formulation</code> given in the <code>input-trajectory.yaml</code> so that the same master formulation is applied at each node of the tree.</li>
+<li><b>Investment costs</b>: In each individual study, investment costs are given in <code>candidates.ini</code>. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore <b>candidate costs given in <code>input-trajectory.yaml</code> override the local study ones</b>. The candidate costs are given in <b>euros</b> in the <code>candidates_types</code> section, for each candidate type and each case (investment, operation_maintenance and retirement). !!! Note For each node, the list of candidates present in <code>candidate_to_type</code> must exactly match the candidates of the <code>candidates.ini</code> file of the corresponding study.</li>
+<li><b>Investment bounds</b>: For each candidate, three variables are used to define the capacity, namely $x_{i,n}$ (overall capacity), $dx_{i,n}^+$ and $dx_{i,n}^-$, respectively added and removed capacity for candidate $i$ at node $n$. Bounds on the overall capacity $x_{i,n}$ come from each individual <code>candidates.ini</code> file (section <code>max-investment</code> or <code>max-units</code> combined with <code>unit-size</code>), whereas bounds on $dx$ variables come from the <code>constraints</code> section in <code>input-trajectory.yaml</code>.</li>
+<li><b>Solver parameters</b>:<ul>
+<li>The solver to use for resolution is given in the command line, see <a href="../trajectory-investment/orchestration.md#execution-options">Execution options</a>.</li>
+<li>The following solver parameters are set from the <code>settings.ini</code> of the root study: absolute gap, relative gap, relaxed gap, separation parameter, max iterations, log level, batch size and time limit, cut coefficient tolerance, master solution tolerance. </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

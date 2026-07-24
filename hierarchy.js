@@ -323,7 +323,6 @@ var hierarchy =
       [ "XpansionProblemsFromAntaresProvider", "classXpansionProblemsFromAntaresProvider.html", null ],
       [ "ZipProblemsProviderAdapter", "classZipProblemsProviderAdapter.html", null ]
     ] ],
-    [ "performance.JsonFileProcessor", "classperformance_1_1JsonFileProcessor.html", null ],
     [ "JsonXpansionReader", "classJsonXpansionReader.html", null ],
     [ "LastIterationPrinter", "classLastIterationPrinter.html", null ],
     [ "LastIterationReader", "classLastIterationReader.html", null ],
@@ -386,7 +385,6 @@ var hierarchy =
         [ "WriterMockStatus", "classWriterMockStatus.html", null ]
       ] ]
     ] ],
-    [ "performance.PerfPlotsGenerator", "classperformance_1_1PerfPlotsGenerator.html", null ],
     [ "Predicate", "structPredicate.html", null ],
     [ "Presolve", "classPresolve.html", null ],
     [ "antares_xpansion.presolve_driver.PresolveData", "classantares__xpansion_1_1presolve__driver_1_1PresolveData.html", null ],

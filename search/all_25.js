@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['zero_5fstatus_5fcheck_0',['zero_status_check',['../classSolverAbstract.html#ae2d21c2332ee116fa91975c27410d627',1,'SolverAbstract']]],
-  ['zipproblemprovideradapter_1',['ZipProblemProviderAdapter',['../classZipProblemProviderAdapter.html',1,'']]],
-  ['zipproblemsprovideradapter_2',['ZipProblemsProviderAdapter',['../classZipProblemsProviderAdapter.html',1,'']]]
+  [' switching_20to_20a_20pluriannual_20vision_0',[' Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md242',1,'']]]
 ];
