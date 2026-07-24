@@ -609,15 +609,15 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
     std::mutex m;
     std::filesystem::create_directories("CACHEPROBLEMS");
-    // std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) + ".txt");
+    std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) + ".txt");
 
     selectPolicy(
-      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
+      [this, &nameAndVariableMap, &m, &subproblem_data_map,&ofs](auto& policy)
       {
           std::for_each(policy,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map](
+                        [this, &m, &subproblem_data_map,&ofs](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
 
@@ -634,7 +634,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                             auto t2 = std::chrono::steady_clock::now() ;
                             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
                             // std::cout<<"all solution time "<<duration<<std::endl ;
-                            // ofs << name << " " << duration << std::endl;
+                            ofs << name << " " << duration << std::endl;
                             
                             std::call_once(
                               variable_indice_once_flag,
@@ -652,19 +652,24 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
 
     std::cout<<"master iteration "<<_data.it<<std::endl ;
 
+    std::ofstream ofs ; 
+    #ifndef NDEBUG
     std::filesystem::create_directories("memoptim");
-    // std::ofstream ofs("memoptim/memoptim_sub_solution_" + std::to_string(_data.it) + ".txt");
+    std::ofstream ofs.open("memoptim/memoptim_sub_solution_" + std::to_string(_data.it) + ".txt");
+    #endif 
 
     std::for_each(std::execution::seq,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &subproblem_data_map](
+                        [this, &subproblem_data_map,&ofs](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
+                            #ifndef NDEBUG
                             auto t1 = std::chrono::steady_clock::now() ;
+                            #endif 
+
                             const auto& [sub, variables] = kvp;
                             auto variable_map = coupling_map_[sub];
-                            std::cout << "printing sub name " << sub << std::endl;
                             double slave_weights = SubproblemWeight(
                               fixed_skeleton_subprob_builder_->get_sub_number(),
                               sub);
@@ -679,12 +684,13 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                             PlainData::SubProblemData subproblem_data;
                             SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-                            fixed_skeleton_subprob_builder_->set_basis(sub) ;
                             subproblem_data_map[sub] = subproblem_data;
+                            
+                            #ifndef NDEBUG
                             auto t2 = std::chrono::steady_clock::now() ;
                             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
-                            std::cout<<"all solution time "<<duration<<std::endl ;
-                            // ofs << sub << " " << duration << std::endl;
+                            ofs << sub << " " << duration << std::endl;
+                            #endif 
                         });
 
 }
@@ -724,15 +730,26 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     }
     else
     {
+        #ifndef NDEBUG
+        std::filesystem::path txt_path(name);
+        txt_path.replace_extension(".txt");
+        std::cout<<"txt_path "<<txt_path<<std::endl ; 
+        std::ofstream ofs(txt_path);
+
         auto t1 = std::chrono::steady_clock::now();
+        #endif 
+
         worker->solve(subproblem_data.lpstatus,
                       _options.OUTPUTROOT,
                       _options.LAST_MASTER_MPS + MPS_SUFFIX,
                       _writer);
+        
+        #ifndef NDEBUG
         auto t2 = std::chrono::steady_clock::now();
         auto elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                                       .count();
-        sub_resolution_per_iter_[name].push_back(elapsed_milliseconds);
+        ofs<<elapsed_milliseconds<<std::endl ; 
+        #endif 
     }
 
     worker->get_value(subproblem_data.subproblem_cost);
