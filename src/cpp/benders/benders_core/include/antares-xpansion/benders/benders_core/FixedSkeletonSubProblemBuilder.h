@@ -3,6 +3,7 @@
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <filesystem>
 #include <utility>
+#include <unordered_map>
 
 #include <boost/tokenizer.hpp>
 
@@ -38,11 +39,13 @@ public:
     std::shared_ptr<SubproblemWorker> create_sub_solver_abstract(std::string sub_name,
                                                                  VariableMap& variable_map,
                                                                  double cut_coefficient_tolerance,
-                                                                 double slave_weight);
+                                                                 double slave_weight); 
 
     void set_added_constraints(std::string sub_name,
                                std::vector<SolverRepresentedRows>& added_constraints);
     int get_sub_number();
+
+    void set_basis(std::string sub_name) ;
 
 private:
     Logger logger_;
@@ -56,7 +59,7 @@ private:
                             ProblemsFormat format);
 
     std::filesystem::path inputRoot_;
-
+    mpi::communicator* _world ; 
     std::map<std::string, std::vector<double>> coeffs_;
     std::map<std::string, std::vector<SolverRepresentedRows>> micro_iters_added_rows;
     std::map<std::string, std::vector<double>> obj_coeffs_;
@@ -67,6 +70,8 @@ private:
     std::vector<int> constraints_col_indices_;
     std::vector<int> constraints_row_indices_;
     std::vector<int> obj_col_indices_;
+    //at each benders iteration we keep the final solution 
+    std::unordered_map<std::string,std::pair<std::vector<int>,std::vector<int>>> subpb_basis_ ;
     /*
     as we build all subproblems on the same solverAbstract object, when we are in warm start case
     we need to keep track of the added constraints, so we add them into the subproblem

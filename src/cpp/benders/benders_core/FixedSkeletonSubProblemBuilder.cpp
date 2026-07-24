@@ -12,9 +12,11 @@ FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
   Logger& logger,
   std::string solver_name,
   int log_level,
-  ProblemsFormat format):
+  ProblemsFormat format, 
+  mpi::communicator* world):
     inputRoot_(inputRoot)
 {
+    _world = world ; 
     logger_ = logger;
     build_sub_skeleton(solver_name, solver_log_manager_, log_level, format);
     read_coeffs_and_indices(CoeffType::constraints);
@@ -37,6 +39,18 @@ FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
     read_coeffs_and_indices(CoeffType::rhs);
     micro_iters_ = false;
     warm_start_ = false;
+}
+
+void FixedSkeletonSubProblemBuilder::set_basis(std::string sub_name)
+{
+    int row_number = solver_->get_nrows() ; 
+    int col_number = solver_->get_ncols() ; 
+    std::vector<int> rstatus(row_number) ; 
+    std::vector<int> cstatus(col_number) ; 
+
+    solver_->get_basis(rstatus.data(), cstatus.data()) ; 
+
+    subpb_basis_[sub_name] = std::make_pair(std::move(rstatus), std::move(cstatus)) ;
 }
 
 void FixedSkeletonSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_type)
@@ -116,6 +130,13 @@ std::shared_ptr<SubproblemWorker> FixedSkeletonSubProblemBuilder::create_sub_sol
     solver_->chg_coefs(constraints_row_indices_, constraints_col_indices_, coeffs_sub);
     solver_->chg_obj(obj_col_indices_, coeffs_obj);
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
+
+    //for warm start 
+    if (subpb_basis_[sub_name].first.size()>0) [[likely]] 
+    {
+        std::cout<<"using warm start "<<std::endl ; 
+        solver_->set_basis(subpb_basis_[sub_name].first,subpb_basis_[sub_name].second) ;
+    }
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
                                                                 slave_weight,
