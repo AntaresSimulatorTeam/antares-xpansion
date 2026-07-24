@@ -41,12 +41,6 @@ void BendersMpi::InitializeProblems()
     {
     case 2:
     {
-        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
-          _options.INPUTROOT,
-          _logger,
-          _options.SOLVER_NAME,
-          _options.LOG_LEVEL,
-          _options.PROBLEMS_FORMAT);
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
         {
@@ -57,11 +51,22 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
+                AddSubproblemName(it->first) ; 
                 subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
             current_problem_id++;
         }
+
+        std::cout<<"fixed skeleton subproblem builder start ....."<<std::endl;
+        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
+          _options.INPUTROOT,
+          _logger,
+          _options.SOLVER_NAME,
+          _options.LOG_LEVEL,
+          _options.PROBLEMS_FORMAT,
+          &_world,
+          GetSubProblemNames());
         break;
     }
     case 1:
@@ -542,6 +547,9 @@ void BendersMpi::Run()
         }
 
         benders_plugin_->OnBendersIterationEnd();
+
+        auto subproblem_names =  GetSubProblemNames() ;
+        std::cout<<"rank "<<_world.rank()<<" coupling map size "<<subproblem_names.size()<<std::endl ; 
     }
     if (_world.rank() == rank_0)
     {

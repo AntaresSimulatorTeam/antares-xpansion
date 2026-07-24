@@ -483,6 +483,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     switch (Options().CACHE_PROBLEMS)
     {
     case 0:
+        
         GetSubproblemCutFast(subproblem_data_map);
         break;
     case 1:

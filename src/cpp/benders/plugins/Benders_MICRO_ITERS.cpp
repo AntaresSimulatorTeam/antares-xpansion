@@ -456,5 +456,6 @@ void Benders_MICRO_ITERS::BuildMemOptimConstraintsSkeleton(const BendersBaseOpti
       _logger,
       options.SOLVER_NAME,
       options.LOG_LEVEL,
-      options.PROBLEMS_FORMAT);
+      options.PROBLEMS_FORMAT,
+      _world);
 }

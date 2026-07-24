@@ -64,10 +64,12 @@ protected:
         writeFile(subDir_ / "rhs_rows.csv", "row1\n");
     }
 
-    std::unique_ptr<FixedSkeletonSubProblemBuilder> buildWithNOOP()
+    std::unique_ptr<FixedSkeletonSubProblemBuilder> buildWithNOOP(
+      std::vector<std::string> sub_names = {"sub1", "sub2"})
     {
         auto solver = std::make_shared<NOOPSolver>();
-        return std::make_unique<FixedSkeletonSubProblemBuilder>(tmpDir_, logger_, solver);
+        return std::make_unique<FixedSkeletonSubProblemBuilder>(
+          tmpDir_, logger_, solver, std::move(sub_names));
     }
 
     Logger logger_ = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
@@ -157,7 +159,12 @@ TEST_F(FixedSkeletonSubProblemBuilderTest, ManySubproblems)
     writeFile(subDir_ / "rhs.csv", rhs_csv);
     writeFile(subDir_ / "rhs_rows.csv", "row1\n");
 
-    auto builder = buildWithNOOP();
+    std::vector<std::string> names;
+    for (int i = 0; i < 100; ++i)
+    {
+        names.push_back("sub" + std::to_string(i));
+    }
+    auto builder = buildWithNOOP(std::move(names));
     EXPECT_EQ(builder->get_sub_number(), 100);
 }
 

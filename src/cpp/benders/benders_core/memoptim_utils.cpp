@@ -6,11 +6,14 @@
 
 #include <boost/tokenizer.hpp>
 
-namespace memoptim_utils
+MemoptimUtils::MemoptimUtils(std::vector<std::string> sub_problem_names):
+    my_subs_(std::make_move_iterator(sub_problem_names.begin()),
+             std::make_move_iterator(sub_problem_names.end()))
 {
+}
 
-void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
-                           std::map<std::string, std::vector<double>>& dest)
+void MemoptimUtils::read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
+                                          std::map<std::string, std::vector<double>>& dest)
 {
     boost::escaped_list_separator<char> sep('\\', ',', '\"');
     using Tokenizer = boost::tokenizer<boost::escaped_list_separator<char>>;
@@ -25,18 +28,24 @@ void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
     while (std::getline(stream, line))
     {
         Tokenizer tok(line, sep);
-        std::vector<std::string> tokens(tok.begin(), tok.end());
-        std::string key = tokens[0];
-        std::vector<double> values_double;
-        if (tokens.size() > 1)
+        auto it = tok.begin();
+        std::string key = *it;
+        if (!my_subs_.count(key))
         {
-            values_double.resize(tokens.size() - 1);
-            std::transform(tokens.begin() + 1,
-                           tokens.end(),
+            continue;
+        }
+        std::vector<double> values_double;
+        ++it;
+        if (it != tok.end())
+        {
+            std::vector<std::string> value_tokens(it, tok.end());
+            values_double.resize(value_tokens.size());
+            std::transform(value_tokens.begin(),
+                           value_tokens.end(),
                            values_double.begin(),
                            [](const std::string& s) { return std::stod(s); });
         }
-        dest[key] = values_double;
+        dest[key] = std::move(values_double);
     }
 }
 
@@ -49,10 +58,10 @@ void dump_not_found(const std::vector<std::string>& names, const std::string& fi
     }
 }
 
-void read_indices_csv(const std::filesystem::path& csv_path,
-                      std::vector<int>& dest_indices,
-                      bool is_col,
-                      const std::shared_ptr<SolverAbstract>& solver)
+void MemoptimUtils::read_indices_csv(const std::filesystem::path& csv_path,
+                                     std::vector<int>& dest_indices,
+                                     bool is_col,
+                                     const std::shared_ptr<SolverAbstract>& solver)
 {
     boost::escaped_list_separator<char> sep('\\', ',', '\"');
     using Tokenizer = boost::tokenizer<boost::escaped_list_separator<char>>;
@@ -114,5 +123,3 @@ void read_indices_csv(const std::filesystem::path& csv_path,
                                  + " (see rows_not_found.txt)");
     }
 }
-
-} // namespace memoptim_utils

@@ -7,6 +7,8 @@
 
 #include <boost/tokenizer.hpp>
 
+#include <boost/mpi.hpp>
+
 #include "BendersProblemFromFile.h"
 #include "ConstraintsFileReader.h"
 #include "IBendersProblemProvider.h"
@@ -15,6 +17,9 @@
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "memoptim_utils.h"
+
+
+namespace mpi = boost::mpi ; 
 
 enum class CoeffType
 {
@@ -30,11 +35,14 @@ public:
                                    Logger& logger,
                                    std::string solver_name,
                                    int log_level,
-                                   ProblemsFormat format);
+                                   ProblemsFormat format,
+                                   mpi::communicator* world,
+                                   std::vector<std::string> sub_problem_names);
 
     FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
                                    Logger& logger,
-                                   std::shared_ptr<SolverAbstract> solver);
+                                   std::shared_ptr<SolverAbstract> solver,
+                                   std::vector<std::string> sub_problem_names);
 
     std::shared_ptr<SubproblemWorker> create_sub_solver_abstract(std::string sub_name,
                                                                  VariableMap& variable_map,
@@ -82,4 +90,5 @@ private:
     SolverIO solver_IO_;
     bool micro_iters_;
     bool warm_start_;
+    MemoptimUtils memoptim_utils_;
 };

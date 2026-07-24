@@ -5,8 +5,10 @@ FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
   Logger& logger,
   std::string solver_name,
   int log_level,
-  ProblemsFormat format):
-    inputRoot_(inputRoot)
+  ProblemsFormat format,
+  mpi::communicator* world):
+    inputRoot_(inputRoot),
+    memoptim_utils_({})
 {
     logger_ = logger;
     build(solver_name, solver_log_manager_, log_level, format);
@@ -16,9 +18,11 @@ FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
 FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
   const std::filesystem::path& inputRoot,
   Logger& logger,
-  std::shared_ptr<SolverAbstract> solver):
+  std::shared_ptr<SolverAbstract> solver,
+  mpi::communicator* world):
     inputRoot_(inputRoot),
-    solver_(std::move(solver))
+    solver_(std::move(solver)),
+    memoptim_utils_({})
 {
     logger_ = logger;
     read_coeffs_and_indices();
@@ -27,17 +31,17 @@ FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
 void FixedSkeletonConstraintsBuilder::read_coeffs_and_indices()
 {
     auto constraints_dir = inputRoot_ / "constraints";
-    memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "coef.csv", coeffs_);
-    memoptim_utils::read_indices_csv(constraints_dir / "coef_cols.csv",
+    memoptim_utils_.read_keyed_coeffs_csv(constraints_dir / "coef.csv", coeffs_);
+    memoptim_utils_.read_indices_csv(constraints_dir / "coef_cols.csv",
                                      constraints_col_indices_,
                                      true,
                                      solver_);
-    memoptim_utils::read_indices_csv(constraints_dir / "coef_rows.csv",
+    memoptim_utils_.read_indices_csv(constraints_dir / "coef_rows.csv",
                                      constraints_row_indices_,
                                      false,
                                      solver_);
-    memoptim_utils::read_keyed_coeffs_csv(constraints_dir / "rhs.csv", rhs_);
-    memoptim_utils::read_indices_csv(constraints_dir / "rhs_rows.csv",
+    memoptim_utils_.read_keyed_coeffs_csv(constraints_dir / "rhs.csv", rhs_);
+    memoptim_utils_.read_indices_csv(constraints_dir / "rhs_rows.csv",
                                      rhs_row_indices_,
                                      false,
                                      solver_);

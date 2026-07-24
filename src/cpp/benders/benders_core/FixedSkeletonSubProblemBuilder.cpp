@@ -3,7 +3,6 @@
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <iostream>
 
-#include <boost/mpi.hpp>
 
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
@@ -12,11 +11,13 @@ FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
   Logger& logger,
   std::string solver_name,
   int log_level,
-  ProblemsFormat format, 
-  mpi::communicator* world):
-    inputRoot_(inputRoot)
+  ProblemsFormat format,
+  mpi::communicator* world,
+  std::vector<std::string> sub_problem_names):
+    inputRoot_(inputRoot),
+    memoptim_utils_(std::move(sub_problem_names))
 {
-    _world = world ; 
+    _world = world ;
     logger_ = logger;
     build_sub_skeleton(solver_name, solver_log_manager_, log_level, format);
     read_coeffs_and_indices(CoeffType::constraints);
@@ -29,9 +30,11 @@ FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
 FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
   const std::filesystem::path& inputRoot,
   Logger& logger,
-  std::shared_ptr<SolverAbstract> solver):
+  std::shared_ptr<SolverAbstract> solver,
+  std::vector<std::string> sub_problem_names):
     inputRoot_(inputRoot),
-    solver_(std::move(solver))
+    solver_(std::move(solver)),
+    memoptim_utils_(std::move(sub_problem_names))
 {
     logger_ = logger;
     read_coeffs_and_indices(CoeffType::constraints);
@@ -59,23 +62,26 @@ void FixedSkeletonSubProblemBuilder::read_coeffs_and_indices(CoeffType coeff_typ
     switch (coeff_type)
     {
     case CoeffType::constraints:
-        memoptim_utils::read_keyed_coeffs_csv(sub_dir / "coef.csv", coeffs_);
-        memoptim_utils::read_indices_csv(sub_dir / "coef_cols.csv",
+        memoptim_utils_.read_keyed_coeffs_csv(sub_dir / "coef.csv", coeffs_);
+        std::cout<<"constraints map size "<<coeffs_.size()<<std::endl ; 
+        memoptim_utils_.read_indices_csv(sub_dir / "coef_cols.csv",
                                          constraints_col_indices_,
                                          true,
                                          solver_);
-        memoptim_utils::read_indices_csv(sub_dir / "coef_rows.csv",
+        memoptim_utils_.read_indices_csv(sub_dir / "coef_rows.csv",
                                          constraints_row_indices_,
                                          false,
                                          solver_);
         break;
     case CoeffType::objective:
-        memoptim_utils::read_keyed_coeffs_csv(sub_dir / "obj_coef.csv", obj_coeffs_);
-        memoptim_utils::read_indices_csv(sub_dir / "obj_cols.csv", obj_col_indices_, true, solver_);
+        memoptim_utils_.read_keyed_coeffs_csv(sub_dir / "obj_coef.csv", obj_coeffs_);
+        std::cout<<"objective map size "<<obj_coeffs_.size()<<std::endl ; 
+        memoptim_utils_.read_indices_csv(sub_dir / "obj_cols.csv", obj_col_indices_, true, solver_);
         break;
     case CoeffType::rhs:
-        memoptim_utils::read_keyed_coeffs_csv(sub_dir / "rhs.csv", rhs_);
-        memoptim_utils::read_indices_csv(sub_dir / "rhs_rows.csv",
+        memoptim_utils_.read_keyed_coeffs_csv(sub_dir / "rhs.csv", rhs_);
+        std::cout<<"rhs map size "<<rhs_.size()<<std::endl ; 
+        memoptim_utils_.read_indices_csv(sub_dir / "rhs_rows.csv",
                                          rhs_row_indices_,
                                          false,
                                          solver_);

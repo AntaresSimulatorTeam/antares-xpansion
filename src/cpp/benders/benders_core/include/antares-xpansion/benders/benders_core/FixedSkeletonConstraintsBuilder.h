@@ -7,11 +7,15 @@
 #include <string>
 #include <vector>
 
+#include <boost/mpi.hpp>
+
 #include "BendersProblemFromFile.h"
 #include "IBendersProblemProvider.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "memoptim_utils.h"
+
+namespace mpi = boost::mpi;
 
 class FixedSkeletonConstraintsBuilder
 {
@@ -20,11 +24,13 @@ public:
                                     Logger& logger,
                                     std::string solver_name,
                                     int log_level,
-                                    ProblemsFormat format);
+                                    ProblemsFormat format,
+                                    mpi::communicator* world);
 
     FixedSkeletonConstraintsBuilder(const std::filesystem::path& inputRoot,
                                     Logger& logger,
-                                    std::shared_ptr<SolverAbstract> solver);
+                                    std::shared_ptr<SolverAbstract> solver,
+                                    mpi::communicator* world);
 
     std::shared_ptr<SolverAbstract> update_constraints_reader(const std::string& constraints_name);
 
@@ -51,4 +57,6 @@ private:
     std::shared_ptr<BendersProblemFromFile> benders_problem_provider_;
     SolverLogManager solver_log_manager_;
     SolverIO solver_IO_;
+    MemoptimUtils memoptim_utils_;
+
 };
