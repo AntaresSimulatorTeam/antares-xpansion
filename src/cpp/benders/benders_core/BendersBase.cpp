@@ -609,15 +609,15 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
     std::mutex m;
     std::filesystem::create_directories("CACHEPROBLEMS");
-    std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) + ".txt");
+    // std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) + ".txt");
 
     selectPolicy(
-      [this, &nameAndVariableMap, &m, &subproblem_data_map,&ofs](auto& policy)
+      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
       {
           std::for_each(policy,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map,&ofs](
+                        [this, &m, &subproblem_data_map](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
 
@@ -633,8 +633,8 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                             SetBasisForSubproblem(name, rstatus, cstatus);
                             auto t2 = std::chrono::steady_clock::now() ;
                             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
-                            std::cout<<"all solution time "<<duration<<std::endl ;
-                            ofs << name << " " << duration << std::endl;
+                            // std::cout<<"all solution time "<<duration<<std::endl ;
+                            // ofs << name << " " << duration << std::endl;
                             
                             std::call_once(
                               variable_indice_once_flag,
@@ -653,12 +653,12 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
     std::cout<<"master iteration "<<_data.it<<std::endl ;
 
     std::filesystem::create_directories("memoptim");
-    std::ofstream ofs("memoptim/memoptim_sub_solution_" + std::to_string(_data.it) + ".txt");
+    // std::ofstream ofs("memoptim/memoptim_sub_solution_" + std::to_string(_data.it) + ".txt");
 
     std::for_each(std::execution::seq,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &subproblem_data_map, &ofs](
+                        [this, &subproblem_data_map](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
                             auto t1 = std::chrono::steady_clock::now() ;
@@ -684,7 +684,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                             auto t2 = std::chrono::steady_clock::now() ;
                             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
                             std::cout<<"all solution time "<<duration<<std::endl ;
-                            ofs << sub << " " << duration << std::endl;
+                            // ofs << sub << " " << duration << std::endl;
                         });
 
 }

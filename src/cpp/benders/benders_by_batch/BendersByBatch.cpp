@@ -52,12 +52,27 @@ void BendersByBatch::BuildBatches()
 
     if (_options.CACHE_PROBLEMS == 2)
     {
+        std::vector<std::string> my_sub_names;
+        int count = 0;
+        for (const auto& batch: batch_collection_.BatchCollections())
+        {
+            for (const auto& name: batch.sub_problem_names)
+            {
+                if (count % WorldSize() == Rank())
+                {
+                    my_sub_names.push_back(name);
+                }
+                ++count;
+            }
+        }
         fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
           _options.INPUTROOT,
           _logger,
           _options.SOLVER_NAME,
           _options.LOG_LEVEL,
-          _options.PROBLEMS_FORMAT);
+          _options.PROBLEMS_FORMAT,
+          &_world,
+          std::move(my_sub_names));
     }
 
     for (auto& batch: batch_collection_.BatchCollections())
@@ -522,8 +537,8 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
 }
 
 /*!
- * \brief Solve and store optimal variables of all Subproblem Problems 
- * in compact memory case 
+ * \brief Solve and store optimal variables of all Subproblem Problems
+ * in compact memory case
  *
  * Method to solve and store optimal variables of all Subproblem Problems
  * after fixing trial values.
@@ -532,10 +547,8 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
  * \param batch_sub_problems list of subproblems contained in the Benders cut
  */
 void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
-                                              const std::vector<std::string>& batch_sub_problems)
+                                         const std::vector<std::string>& batch_sub_problems)
 {
-
-
     std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
     nameAndVariableMap.reserve(batch_sub_problems.size());
     for (const auto& name: batch_sub_problems)
@@ -546,21 +559,20 @@ void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
 
     for (const auto& kvp: nameAndVariableMap)
     {
-        auto name = kvp.first ;
-        auto variable_map = kvp.second ; 
+        auto name = kvp.first;
+        auto variable_map = kvp.second;
         double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
                                                 name);
         auto worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
-                                            name,
-                                            variable_map,
-                                            _options.CUT_COEFFICIENT_TOLERANCE,
-                                            slave_weights);
+          name,
+          variable_map,
+          _options.CUT_COEFFICIENT_TOLERANCE,
+          slave_weights);
         PlainData::SubProblemData subproblem_data{};
         SolveSubproblem(subproblem_data, name, worker);
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
         subproblem_data_map[name] = subproblem_data;
-        
     }
 }
 
