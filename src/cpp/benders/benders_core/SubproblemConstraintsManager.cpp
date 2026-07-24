@@ -21,7 +21,11 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromConstraintsFil
   const std::shared_ptr<SubproblemWorker>& subproblem_worker)
 {
     SkeletonSolverLoader loader(logger);
-    auto solver = loader.Load(constraint_file_path, solver_name, solver_log_manager, log_level, format);
+    auto solver = loader.Load(constraint_file_path,
+                              solver_name,
+                              solver_log_manager,
+                              log_level,
+                              format);
     return SubproblemConstraintsManagerPtr(
       new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
 }

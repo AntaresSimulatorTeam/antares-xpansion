@@ -51,14 +51,14 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
-                AddSubproblemName(it->first) ; 
+                AddSubproblemName(it->first);
                 subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
             current_problem_id++;
         }
 
-        std::cout<<"fixed skeleton subproblem builder start ....."<<std::endl;
+        std::cout << "fixed skeleton subproblem builder start ....." << std::endl;
         subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
           _options.INPUTROOT,
           _logger,
@@ -547,8 +547,9 @@ void BendersMpi::Run()
 
         benders_plugin_->OnBendersIterationEnd();
 
-        auto subproblem_names =  GetSubProblemNames() ;
-        std::cout<<"rank "<<_world.rank()<<" coupling map size "<<subproblem_names.size()<<std::endl ; 
+        auto subproblem_names = GetSubProblemNames();
+        std::cout << "rank " << _world.rank() << " coupling map size " << subproblem_names.size()
+                  << std::endl;
     }
     if (_world.rank() == rank_0)
     {

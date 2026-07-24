@@ -328,8 +328,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
     if (CACHE_PROBLEMS >= 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        auto solver = skeleton_constraint_coefficients_->ApplyConstraintSet(
-          constraints_file_name);
+        auto solver = skeleton_constraint_coefficients_->ApplyConstraintSet(constraints_file_name);
         subproblem_constraints_manager_ = SubproblemConstraintsManager::FromSharedSolver(
           solver,
           sub_worker);
@@ -338,8 +337,8 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
         {
             for (auto& variable: variables_to_follow_)
             {
-                int variable_index = subproblem_constraints_manager_
-                                       ->GetVariableIndexInSolution(variable);
+                int variable_index = subproblem_constraints_manager_->GetVariableIndexInSolution(
+                  variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }

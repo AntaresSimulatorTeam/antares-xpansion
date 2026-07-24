@@ -483,13 +483,13 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     switch (Options().CACHE_PROBLEMS)
     {
     case 0:
-        
+
         GetSubproblemCutFast(subproblem_data_map);
         break;
     case 1:
         GetSubproblemCutCache(subproblem_data_map);
         break;
-    case 2:    
+    case 2:
         GetCompactInMemCuts(subproblem_data_map);
         break;
     default:
@@ -609,39 +609,39 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
     std::mutex m;
     std::filesystem::create_directories("CACHEPROBLEMS");
-    // std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) + ".txt");
+    // std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) +
+    // ".txt");
 
     selectPolicy(
       [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
       {
-          std::for_each(policy,
-                        nameAndVariableMap.begin(),
-                        nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map](
-                          const std::pair<std::string, VariableMap>& kvp)
-                        {
+          std::for_each(
+            policy,
+            nameAndVariableMap.begin(),
+            nameAndVariableMap.end(),
+            [this, &m, &subproblem_data_map](const std::pair<std::string, VariableMap>& kvp)
+            {
+                auto t1 = std::chrono::steady_clock::now();
 
-                            auto t1 = std::chrono::steady_clock::now() ;
+                const auto& [name, variables] = kvp;
+                std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+                PlainData::SubProblemData subproblem_data;
+                SolveSubproblem(subproblem_data, name, worker);
+                auto [rstatus, cstatus] = GetProblemBasis(worker);
+                std::lock_guard guard(m);
+                subproblem_data_map[name] = subproblem_data;
+                SetBasisForSubproblem(name, rstatus, cstatus);
+                auto t2 = std::chrono::steady_clock::now();
+                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+                                  .count();
+                // std::cout<<"all solution time "<<duration<<std::endl ;
+                // ofs << name << " " << duration << std::endl;
 
-                            const auto& [name, variables] = kvp;
-                            std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
-                            PlainData::SubProblemData subproblem_data;
-                            SolveSubproblem(subproblem_data, name, worker);
-                            auto [rstatus, cstatus] = GetProblemBasis(worker);
-                            std::lock_guard guard(m) ; 
-                            subproblem_data_map[name] = subproblem_data;
-                            SetBasisForSubproblem(name, rstatus, cstatus);
-                            auto t2 = std::chrono::steady_clock::now() ;
-                            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
-                            // std::cout<<"all solution time "<<duration<<std::endl ;
-                            // ofs << name << " " << duration << std::endl;
-                            
-                            std::call_once(
-                              variable_indice_once_flag,
-                              [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
-                              *worker);
-                        });
-                        
+                std::call_once(
+                  variable_indice_once_flag,
+                  [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+                  *worker);
+            });
       },
       shouldParallelize());
 }
@@ -650,43 +650,39 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
 {
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
 
-    std::cout<<"master iteration "<<_data.it<<std::endl ;
+    std::cout << "master iteration " << _data.it << std::endl;
 
     std::filesystem::create_directories("memoptim");
     // std::ofstream ofs("memoptim/memoptim_sub_solution_" + std::to_string(_data.it) + ".txt");
 
-    std::for_each(std::execution::seq,
-                        nameAndVariableMap.begin(),
-                        nameAndVariableMap.end(),
-                        [this, &subproblem_data_map](
-                          const std::pair<std::string, VariableMap>& kvp)
-                        {
-                            auto t1 = std::chrono::steady_clock::now() ;
-                            const auto& [sub, variables] = kvp;
-                            auto variable_map = coupling_map_[sub];
-                            std::cout << "printing sub name " << sub << std::endl;
-                            double slave_weights = SubproblemWeight(
-                              subproblem_worker_factory_->GetSubNumber(),
-                              sub);
+    std::for_each(
+      std::execution::seq,
+      nameAndVariableMap.begin(),
+      nameAndVariableMap.end(),
+      [this, &subproblem_data_map](const std::pair<std::string, VariableMap>& kvp)
+      {
+          auto t1 = std::chrono::steady_clock::now();
+          const auto& [sub, variables] = kvp;
+          auto variable_map = coupling_map_[sub];
+          std::cout << "printing sub name " << sub << std::endl;
+          double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), sub);
 
-                            auto subproblem_worker = subproblem_worker_factory_
-                                                       ->CreateSubSolverAbstract(
-                                                         sub,
-                                                         variable_map,
-                                                         _options.CUT_COEFFICIENT_TOLERANCE,
-                                                         slave_weights);
+          auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(
+            sub,
+            variable_map,
+            _options.CUT_COEFFICIENT_TOLERANCE,
+            slave_weights);
 
-                            PlainData::SubProblemData subproblem_data;
-                            SolveSubproblem(subproblem_data, sub, subproblem_worker);
+          PlainData::SubProblemData subproblem_data;
+          SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-                            subproblem_worker_factory_->SetBasis(sub) ;
-                            subproblem_data_map[sub] = subproblem_data;
-                            auto t2 = std::chrono::steady_clock::now() ;
-                            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
-                            std::cout<<"all solution time "<<duration<<std::endl ;
-                            // ofs << sub << " " << duration << std::endl;
-                        });
-
+          subproblem_worker_factory_->SetBasis(sub);
+          subproblem_data_map[sub] = subproblem_data;
+          auto t2 = std::chrono::steady_clock::now();
+          auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+          std::cout << "all solution time " << duration << std::endl;
+          // ofs << sub << " " << duration << std::endl;
+      });
 }
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,

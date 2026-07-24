@@ -38,7 +38,11 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
 void SkeletonConstraintCoefficients::read_coeffs_and_indices()
 {
     auto dir = input_root_ / "constraints";
-    coef_set_.Load(memoptim_utils_, dir / "coef.csv", dir / "coef_cols.csv", dir / "coef_rows.csv", solver_);
+    coef_set_.Load(memoptim_utils_,
+                   dir / "coef.csv",
+                   dir / "coef_cols.csv",
+                   dir / "coef_rows.csv",
+                   solver_);
     rhs_set_.Load(memoptim_utils_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
 }
 
@@ -50,7 +54,9 @@ int SkeletonConstraintCoefficients::GetConstraintsNumber()
 std::shared_ptr<SolverAbstract> SkeletonConstraintCoefficients::ApplyConstraintSet(
   const std::string& constraints_name)
 {
-    solver_->chg_coefs(coef_set_.RowIndices(), coef_set_.ColIndices(), coef_set_.CoefficientsFor(constraints_name));
+    solver_->chg_coefs(coef_set_.RowIndices(),
+                       coef_set_.ColIndices(),
+                       coef_set_.CoefficientsFor(constraints_name));
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(constraints_name));
     return solver_;
 }

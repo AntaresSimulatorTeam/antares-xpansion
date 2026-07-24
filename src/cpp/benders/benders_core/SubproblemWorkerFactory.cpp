@@ -6,13 +6,12 @@
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
-SubproblemWorkerFactory::SubproblemWorkerFactory(
-  const std::filesystem::path& input_root,
-  Logger& logger,
-  std::string solver_name,
-  int log_level,
-  ProblemsFormat format,
-  std::vector<std::string> sub_problem_names):
+SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
+                                                 Logger& logger,
+                                                 std::string solver_name,
+                                                 int log_level,
+                                                 ProblemsFormat format,
+                                                 std::vector<std::string> sub_problem_names):
     input_root_(input_root),
     memoptim_utils_(std::move(sub_problem_names))
 {
@@ -26,11 +25,10 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(
     load_coefficient_sets();
 }
 
-SubproblemWorkerFactory::SubproblemWorkerFactory(
-  const std::filesystem::path& input_root,
-  Logger& logger,
-  std::shared_ptr<SolverAbstract> solver,
-  std::vector<std::string> sub_problem_names):
+SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
+                                                 Logger& logger,
+                                                 std::shared_ptr<SolverAbstract> solver,
+                                                 std::vector<std::string> sub_problem_names):
     input_root_(input_root),
     solver_(std::move(solver)),
     memoptim_utils_(std::move(sub_problem_names))
@@ -41,21 +39,29 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(
 
 void SubproblemWorkerFactory::SetBasis(std::string sub_name)
 {
-    int row_number = solver_->get_nrows() ;
-    int col_number = solver_->get_ncols() ;
-    std::vector<int> rstatus(row_number) ;
-    std::vector<int> cstatus(col_number) ;
+    int row_number = solver_->get_nrows();
+    int col_number = solver_->get_ncols();
+    std::vector<int> rstatus(row_number);
+    std::vector<int> cstatus(col_number);
 
-    solver_->get_basis(rstatus.data(), cstatus.data()) ;
+    solver_->get_basis(rstatus.data(), cstatus.data());
 
-    subpb_basis_[sub_name] = std::make_pair(std::move(rstatus), std::move(cstatus)) ;
+    subpb_basis_[sub_name] = std::make_pair(std::move(rstatus), std::move(cstatus));
 }
 
 void SubproblemWorkerFactory::load_coefficient_sets()
 {
     auto dir = input_root_ / "sub";
-    coef_set_.Load(memoptim_utils_, dir / "coef.csv", dir / "coef_cols.csv", dir / "coef_rows.csv", solver_);
-    obj_set_.Load(memoptim_utils_, dir / "obj_coef.csv", dir / "obj_cols.csv", std::nullopt, solver_);
+    coef_set_.Load(memoptim_utils_,
+                   dir / "coef.csv",
+                   dir / "coef_cols.csv",
+                   dir / "coef_rows.csv",
+                   solver_);
+    obj_set_.Load(memoptim_utils_,
+                  dir / "obj_coef.csv",
+                  dir / "obj_cols.csv",
+                  std::nullopt,
+                  solver_);
     rhs_set_.Load(memoptim_utils_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
 }
 
@@ -79,16 +85,17 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
   double cut_coefficient_tolerance,
   double slave_weight)
 {
-    solver_->chg_coefs(coef_set_.RowIndices(), coef_set_.ColIndices(), coef_set_.
-    CoefficientsFor(sub_name));
+    solver_->chg_coefs(coef_set_.RowIndices(),
+                       coef_set_.ColIndices(),
+                       coef_set_.CoefficientsFor(sub_name));
     solver_->chg_obj(obj_set_.ColIndices(), obj_set_.CoefficientsFor(sub_name));
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
 
-    //for warm start
-    if (subpb_basis_[sub_name].first.size()>0) [[likely]]
+    // for warm start
+    if (subpb_basis_[sub_name].first.size() > 0) [[likely]]
     {
-        std::cout<<"using warm start "<<std::endl ;
-        solver_->set_basis(subpb_basis_[sub_name].first,subpb_basis_[sub_name].second) ;
+        std::cout << "using warm start " << std::endl;
+        solver_->set_basis(subpb_basis_[sub_name].first, subpb_basis_[sub_name].second);
     }
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,

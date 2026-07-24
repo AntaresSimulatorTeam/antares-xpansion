@@ -7,10 +7,10 @@
 
 #include <boost/mpi.hpp>
 
+#include "SkeletonCoefficientSet.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "memoptim_utils.h"
-#include "SkeletonCoefficientSet.h"
 
 namespace mpi = boost::mpi;
 
@@ -45,5 +45,4 @@ private:
     std::shared_ptr<SolverAbstract> solver_;
     SolverLogManager solver_log_manager_;
     MemoptimUtils memoptim_utils_;
-
 };

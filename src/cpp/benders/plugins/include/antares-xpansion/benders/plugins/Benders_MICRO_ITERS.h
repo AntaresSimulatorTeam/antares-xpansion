@@ -21,8 +21,8 @@ Benders_MICRO_ITERS class.
 #include <boost/serialization/string.hpp>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
-#include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
