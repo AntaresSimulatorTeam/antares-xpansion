@@ -1,6 +1,6 @@
 # Python Conventions
 
-This document covers Python coding conventions for Antares-Xpansion.
+This document covers Python coding conventions for Antares Xpansion.
 
 ## Language Version
 

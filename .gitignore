@@ -50,11 +50,6 @@ build_config.yaml
 .coverage
 coverage-reports
 
-# Doc pdf file
-antaresxpansionuserguide.pdf
-include/google/protobuf/message.h
-xwiki_source
-
 # vscode
 .vscode
 

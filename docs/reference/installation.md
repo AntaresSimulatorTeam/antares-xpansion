@@ -1,0 +1,49 @@
+# Installation
+
+Antares Xpansion is developed mainly in **C++** and uses a **Python** runner
+to drive the execution of multiple executables.
+
+This software suite has been tested under:
+
+* Ubuntu 22.04 [![Status][ubuntu_system_svg]][ubuntu_system_link]
+* Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
+* Oracle Linux 8 [![Status][oracle_svg]][oracle_link]
+
+Antares Xpansion is built using CMake.
+
+## Download Antares Xpansion
+
+To download the latest version of Antares Xpansion, visit [Antares Xpansion repository][antares_xpansion_release_url]
+and download the binary that matches your platform. If you prefer to build the software from the source files, please
+refer to the [developer guide](../developer-guide/install-from-source/index.md).
+
+## Installation instruction
+
+To properly run antares Xpansion on unix system you need mpi 4.x installed on your system. One way is to install openmpi
+4.x
+
+Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use
+Antares Xpansion.
+
+To check the installation, you can open a command prompt in the Antares Xpansion install directory and run the following
+command to execute one of the examples included in the package:
+
+```
+antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates
+```
+
+See [Launch the optimization](./cli.md) for more details on how to launch the software.
+
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml/badge.svg?query=branch%3Adevelop
+
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml?query=branch%3Adevelop
+
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml/badge.svg?query=branch%3Adevelop
+
+[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml?query=branch%3Adevelop
+
+[oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml/badge.svg?query=branch%3Adevelop
+
+[oracle_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml?query=branch%3Adevelop
+
+[antares_xpansion_release_url]: https://github.com/AntaresSimulatorTeam/antares-xpansion/releases
