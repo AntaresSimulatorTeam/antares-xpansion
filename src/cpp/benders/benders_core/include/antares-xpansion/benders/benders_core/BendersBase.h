@@ -9,7 +9,7 @@
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
-#include "FixedSkeletonSubProblemBuilder.h"
+#include "SubproblemWorkerFactory.h"
 #include "ICommunicationStrategy.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
@@ -163,7 +163,7 @@ protected:
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
-    std::shared_ptr<FixedSkeletonSubProblemBuilder> fixed_skeleton_subprob_builder_;
+    std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;

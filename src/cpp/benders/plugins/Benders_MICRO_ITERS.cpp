@@ -215,11 +215,11 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     _logger = logger;
     if (options.CACHE_PROBLEMS < 2)
     {
-        BuildSubproblemConstraintsManagerMap(subproblem_map, options, solver_log_manager);
+        build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);
     }
     else
     {
-        BuildMemOptimConstraintsSkeleton(options);
+        build_mem_optim_constraints_skeleton(options);
     }
 
     build_variables_to_follow_indices_vector();
@@ -263,13 +263,13 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
                 {
                     continue;
                 }
-                it->second->delete_added_rows();
+                it->second->DeleteAddedRows();
             }
         }
     }
     else
     {
-        subproblem_constraints_manager_->delete_added_rows();
+        subproblem_constraints_manager_->DeleteAddedRows();
     }
 }
 
@@ -305,7 +305,7 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
             auto constraint_reader = it->second;
             for (auto& variable: variables_to_follow_)
             {
-                int variable_index = constraint_reader->get_variable_index_in_solution(variable);
+                int variable_index = constraint_reader->GetVariableIndexInSolution(variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }
@@ -328,9 +328,9 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
     if (CACHE_PROBLEMS >= 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        auto solver = fixed_skeleton_constraints_builder_->update_constraints_reader(
+        auto solver = skeleton_constraint_coefficients_->ApplyConstraintSet(
           constraints_file_name);
-        subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(
+        subproblem_constraints_manager_ = SubproblemConstraintsManager::FromSharedSolver(
           solver,
           sub_worker);
 
@@ -339,7 +339,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
             for (auto& variable: variables_to_follow_)
             {
                 int variable_index = subproblem_constraints_manager_
-                                       ->get_variable_index_in_solution(variable);
+                                       ->GetVariableIndexInSolution(variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }
@@ -361,11 +361,11 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     {
         std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
         auto sub_constraints_manager = constraints_map_[constraints_manager_name];
-        sub_solution = sub_constraints_manager->get_sub_solution();
+        sub_solution = sub_constraints_manager->GetSubSolution();
     }
     else
     {
-        sub_solution = subproblem_constraints_manager_->get_sub_solution();
+        sub_solution = subproblem_constraints_manager_->GetSubSolution();
     }
 
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
@@ -387,12 +387,12 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
         {
             std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
             auto sub_constraints_manager = constraints_map_[constraints_manager_name];
-            sub_constraints_manager->add_rows(constraint_to_add);
+            sub_constraints_manager->AddRows(constraint_to_add);
         }
         else
         {
             constraints_to_add_vec_at_master_iteration_.push_back(
-              subproblem_constraints_manager_->add_rows(constraint_to_add));
+              subproblem_constraints_manager_->AddRows(constraint_to_add));
         }
     }
 }
@@ -423,7 +423,7 @@ void Benders_MICRO_ITERS::SetSubProblemIDs(std::vector<std::string>& sub_names)
     sub_names_ = sub_names;
 }
 
-void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
+void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
   const SubproblemsMapPtr& subproblem_map,
   const BendersBaseOptions& options,
   const SolverLogManager& solver_log_manager)
@@ -434,14 +434,13 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
         std::string constraints_file_name = subproblem_constraint_map_[sub];
         auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
                                      / constraints_file_name;
-        ConstraintsFileReader file_reader(constraints_file_path,
-                                          options.SOLVER_NAME,
-                                          solver_log_manager,
-                                          _logger,
-                                          options.LOG_LEVEL,
-                                          options.PROBLEMS_FORMAT);
-        constraints_map_[constraints_file_name] = std::make_shared<SubproblemConstraintsManager>(
-          std::move(file_reader),
+        constraints_map_[constraints_file_name] = SubproblemConstraintsManager::FromConstraintsFile(
+          constraints_file_path,
+          options.SOLVER_NAME,
+          solver_log_manager,
+          _logger,
+          options.LOG_LEVEL,
+          options.PROBLEMS_FORMAT,
           sub_worker);
     }
 }
@@ -449,9 +448,9 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
 /*
 Building the constraint handler for mem optim input format
 */
-void Benders_MICRO_ITERS::BuildMemOptimConstraintsSkeleton(const BendersBaseOptions& options)
+void Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(const BendersBaseOptions& options)
 {
-    fixed_skeleton_constraints_builder_ = std::make_shared<FixedSkeletonConstraintsBuilder>(
+    skeleton_constraint_coefficients_ = std::make_shared<SkeletonConstraintCoefficients>(
       options.INPUTROOT,
       _logger,
       options.SOLVER_NAME,

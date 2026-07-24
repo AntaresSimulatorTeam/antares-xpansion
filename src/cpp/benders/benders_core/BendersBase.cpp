@@ -666,11 +666,11 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                             auto variable_map = coupling_map_[sub];
                             std::cout << "printing sub name " << sub << std::endl;
                             double slave_weights = SubproblemWeight(
-                              fixed_skeleton_subprob_builder_->get_sub_number(),
+                              subproblem_worker_factory_->GetSubNumber(),
                               sub);
 
-                            auto subproblem_worker = fixed_skeleton_subprob_builder_
-                                                       ->create_sub_solver_abstract(
+                            auto subproblem_worker = subproblem_worker_factory_
+                                                       ->CreateSubSolverAbstract(
                                                          sub,
                                                          variable_map,
                                                          _options.CUT_COEFFICIENT_TOLERANCE,
@@ -679,7 +679,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                             PlainData::SubProblemData subproblem_data;
                             SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-                            fixed_skeleton_subprob_builder_->set_basis(sub) ;
+                            subproblem_worker_factory_->SetBasis(sub) ;
                             subproblem_data_map[sub] = subproblem_data;
                             auto t2 = std::chrono::steady_clock::now() ;
                             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() ;
@@ -746,7 +746,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter, added_constraints);
     if (_options.CACHE_PROBLEMS >= 2)
     {
-        fixed_skeleton_subprob_builder_->set_added_constraints(name, added_constraints);
+        subproblem_worker_factory_->SetAddedConstraints(name, added_constraints);
     }
 }
 

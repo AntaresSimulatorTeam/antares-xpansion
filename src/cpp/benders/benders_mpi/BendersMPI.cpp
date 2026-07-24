@@ -59,13 +59,12 @@ void BendersMpi::InitializeProblems()
         }
 
         std::cout<<"fixed skeleton subproblem builder start ....."<<std::endl;
-        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
+        subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
           _options.INPUTROOT,
           _logger,
           _options.SOLVER_NAME,
           _options.LOG_LEVEL,
           _options.PROBLEMS_FORMAT,
-          &_world,
           GetSubProblemNames());
         break;
     }

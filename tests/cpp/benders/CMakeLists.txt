@@ -6,8 +6,11 @@ target_sources(benders_sequential_test
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
-        FixedSkeletonSubProblemBuilderTest.cpp
+        SubproblemWorkerFactoryTest.cpp
         BendersMicroIterationsTest.cpp
+        SolverRowExtractorTest.cpp
+        SkeletonConstraintCoefficientsTest.cpp
+        SubproblemConstraintsManagerTest.cpp
 )
 
 target_link_libraries(benders_sequential_test

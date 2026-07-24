@@ -1,0 +1,49 @@
+#pragma once
+
+#include <antares-xpansion/benders/benders_core/SolverIO.h>
+#include <filesystem>
+#include <memory>
+#include <string>
+
+#include <boost/mpi.hpp>
+
+#include "antares-xpansion/multisolver_interface/Solver.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "memoptim_utils.h"
+#include "SkeletonCoefficientSet.h"
+
+namespace mpi = boost::mpi;
+
+class SkeletonConstraintCoefficients
+{
+public:
+    SkeletonConstraintCoefficients(const std::filesystem::path& input_root,
+                                   Logger& logger,
+                                   std::string solver_name,
+                                   int log_level,
+                                   ProblemsFormat format,
+                                   mpi::communicator* world);
+
+    SkeletonConstraintCoefficients(const std::filesystem::path& input_root,
+                                   Logger& logger,
+                                   std::shared_ptr<SolverAbstract> solver,
+                                   mpi::communicator* world);
+
+    std::shared_ptr<SolverAbstract> ApplyConstraintSet(const std::string& constraints_name);
+
+    int GetConstraintsNumber();
+
+private:
+    Logger logger_;
+
+    void read_coeffs_and_indices();
+
+    std::filesystem::path input_root_;
+
+    SkeletonCoefficientSet coef_set_;
+    SkeletonCoefficientSet rhs_set_;
+    std::shared_ptr<SolverAbstract> solver_;
+    SolverLogManager solver_log_manager_;
+    MemoptimUtils memoptim_utils_;
+
+};

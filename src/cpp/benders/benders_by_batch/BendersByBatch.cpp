@@ -65,13 +65,12 @@ void BendersByBatch::BuildBatches()
                 ++count;
             }
         }
-        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
+        subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
           _options.INPUTROOT,
           _logger,
           _options.SOLVER_NAME,
           _options.LOG_LEVEL,
           _options.PROBLEMS_FORMAT,
-          &_world,
           std::move(my_sub_names));
     }
 
@@ -561,9 +560,9 @@ void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
     {
         auto name = kvp.first;
         auto variable_map = kvp.second;
-        double slave_weights = SubproblemWeight(fixed_skeleton_subprob_builder_->get_sub_number(),
+        double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(),
                                                 name);
-        auto worker = fixed_skeleton_subprob_builder_->create_sub_solver_abstract(
+        auto worker = subproblem_worker_factory_->CreateSubSolverAbstract(
           name,
           variable_map,
           _options.CUT_COEFFICIENT_TOLERANCE,

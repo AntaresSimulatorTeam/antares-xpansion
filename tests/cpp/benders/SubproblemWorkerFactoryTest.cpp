@@ -8,9 +8,9 @@
 
 #include "LoggerStub.h"
 #include "NOOPSolver.h"
-#include "antares-xpansion/benders/benders_core/FixedSkeletonSubProblemBuilder.h"
+#include "antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h"
 
-class FixedSkeletonSubProblemBuilderTest: public ::testing::Test
+class SubproblemWorkerFactoryTest: public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -64,11 +64,11 @@ protected:
         writeFile(subDir_ / "rhs_rows.csv", "row1\n");
     }
 
-    std::unique_ptr<FixedSkeletonSubProblemBuilder> buildWithNOOP(
+    std::unique_ptr<SubproblemWorkerFactory> buildWithNOOP(
       std::vector<std::string> sub_names = {"sub1", "sub2"})
     {
         auto solver = std::make_shared<NOOPSolver>();
-        return std::make_unique<FixedSkeletonSubProblemBuilder>(
+        return std::make_unique<SubproblemWorkerFactory>(
           tmpDir_, logger_, solver, std::move(sub_names));
     }
 
@@ -79,69 +79,69 @@ protected:
 
 // ---------- Group 1: Construction & CSV parsing ----------
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, ConstructsWithValidFiles)
+TEST_F(SubproblemWorkerFactoryTest, ConstructsWithValidFiles)
 {
     writeTwoSubFixture();
     ASSERT_NO_THROW(buildWithNOOP());
 }
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, GetSubNumberReturnsRhsKeyCount)
+TEST_F(SubproblemWorkerFactoryTest, GetSubNumberReturnsRhsKeyCount)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->get_sub_number(), 2);
+    EXPECT_EQ(builder->GetSubNumber(), 2);
 }
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, GetSubNumberZeroWithEmptyRhs)
+TEST_F(SubproblemWorkerFactoryTest, GetSubNumberZeroWithEmptyRhs)
 {
     writeEmptyFixture();
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->get_sub_number(), 0);
+    EXPECT_EQ(builder->GetSubNumber(), 0);
 }
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, SingleSubproblem)
+TEST_F(SubproblemWorkerFactoryTest, SingleSubproblem)
 {
     writeSingleSubFixture();
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->get_sub_number(), 1);
+    EXPECT_EQ(builder->GetSubNumber(), 1);
 }
 
-// ---------- Group 2: create_sub_solver_abstract ----------
+// ---------- Group 2: CreateSubSolverAbstract ----------
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, ReturnsNonNullWorker)
+TEST_F(SubproblemWorkerFactoryTest, ReturnsNonNullWorker)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
     VariableMap variable_map;
-    auto worker = builder->create_sub_solver_abstract("sub1", variable_map, 1e-6, 1.0);
+    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1e-6, 1.0);
     EXPECT_NE(worker, nullptr);
 }
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, DifferentSubsReturnDistinctWorkers)
+TEST_F(SubproblemWorkerFactoryTest, DifferentSubsReturnDistinctWorkers)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
     VariableMap vm1, vm2;
-    auto worker1 = builder->create_sub_solver_abstract("sub1", vm1, 1e-6, 1.0);
-    auto worker2 = builder->create_sub_solver_abstract("sub2", vm2, 1e-6, 1.0);
+    auto worker1 = builder->CreateSubSolverAbstract("sub1", vm1, 1e-6, 1.0);
+    auto worker2 = builder->CreateSubSolverAbstract("sub2", vm2, 1e-6, 1.0);
     EXPECT_NE(worker1, nullptr);
     EXPECT_NE(worker2, nullptr);
     EXPECT_NE(worker1, worker2);
 }
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, UnknownSubNameReturnsWorker)
+TEST_F(SubproblemWorkerFactoryTest, UnknownSubNameReturnsWorker)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
     VariableMap variable_map;
     // operator[] inserts empty vectors for unknown keys; NOOPSolver accepts empty vectors
-    auto worker = builder->create_sub_solver_abstract("nonexistent", variable_map, 1e-6, 1.0);
+    auto worker = builder->CreateSubSolverAbstract("nonexistent", variable_map, 1e-6, 1.0);
     EXPECT_NE(worker, nullptr);
 }
 
 // ---------- Group 3: Many subproblems ----------
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, ManySubproblems)
+TEST_F(SubproblemWorkerFactoryTest, ManySubproblems)
 {
     std::string coef_csv, obj_csv, rhs_csv;
     for (int i = 0; i < 100; ++i)
@@ -165,12 +165,12 @@ TEST_F(FixedSkeletonSubProblemBuilderTest, ManySubproblems)
         names.push_back("sub" + std::to_string(i));
     }
     auto builder = buildWithNOOP(std::move(names));
-    EXPECT_EQ(builder->get_sub_number(), 100);
+    EXPECT_EQ(builder->GetSubNumber(), 100);
 }
 
 // ---------- Group 4: CSV edge cases ----------
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, CsvWithKeyOnly)
+TEST_F(SubproblemWorkerFactoryTest, CsvWithKeyOnly)
 {
     // A key with no values — should result in an empty coefficient vector
     writeFile(subDir_ / "coef.csv", "sub1\n");
@@ -182,14 +182,14 @@ TEST_F(FixedSkeletonSubProblemBuilderTest, CsvWithKeyOnly)
     writeFile(subDir_ / "rhs_rows.csv", "\n");
 
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->get_sub_number(), 1);
+    EXPECT_EQ(builder->GetSubNumber(), 1);
 
     VariableMap variable_map;
-    auto worker = builder->create_sub_solver_abstract("sub1", variable_map, 1e-6, 1.0);
+    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1e-6, 1.0);
     EXPECT_NE(worker, nullptr);
 }
 
-TEST_F(FixedSkeletonSubProblemBuilderTest, CsvWithWhitespaceInValues)
+TEST_F(SubproblemWorkerFactoryTest, CsvWithWhitespaceInValues)
 {
     // std::stod handles leading/trailing whitespace
     writeFile(subDir_ / "coef.csv", "sub1, 1.0 , 2.0 \n");

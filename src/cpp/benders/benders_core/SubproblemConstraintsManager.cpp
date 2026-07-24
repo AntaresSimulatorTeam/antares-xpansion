@@ -1,29 +1,45 @@
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 
-SubproblemConstraintsManager::SubproblemConstraintsManager(
-  ConstraintsFileReader file_reader,
-  const std::shared_ptr<SubproblemWorker>& subproblem_worker):
-    file_reader_(std::move(file_reader)),
-    subproblem_worker_(subproblem_worker),
-    initial_sub_size_(subproblem_worker->get_problem_row_num())
-{
-}
+#include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
 
 SubproblemConstraintsManager::SubproblemConstraintsManager(
   std::shared_ptr<SolverAbstract> solver,
   const std::shared_ptr<SubproblemWorker>& subproblem_worker):
-    file_reader_(std::move(solver)),
+    row_extractor_(std::move(solver)),
     subproblem_worker_(subproblem_worker),
     initial_sub_size_(subproblem_worker->get_problem_row_num())
 {
 }
 
-std::vector<double> SubproblemConstraintsManager::get_sub_solution()
+SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromConstraintsFile(
+  const std::filesystem::path& constraint_file_path,
+  const std::string& solver_name,
+  const SolverLogManager& solver_log_manager,
+  Logger& logger,
+  int log_level,
+  ProblemsFormat format,
+  const std::shared_ptr<SubproblemWorker>& subproblem_worker)
+{
+    SkeletonSolverLoader loader(logger);
+    auto solver = loader.Load(constraint_file_path, solver_name, solver_log_manager, log_level, format);
+    return SubproblemConstraintsManagerPtr(
+      new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
+}
+
+SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromSharedSolver(
+  std::shared_ptr<SolverAbstract> solver,
+  const std::shared_ptr<SubproblemWorker>& subproblem_worker)
+{
+    return SubproblemConstraintsManagerPtr(
+      new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
+}
+
+std::vector<double> SubproblemConstraintsManager::GetSubSolution()
 {
     return subproblem_worker_->get_solution();
 }
 
-int SubproblemConstraintsManager::get_variable_index_in_solution(std::string variable_name)
+int SubproblemConstraintsManager::GetVariableIndexInSolution(std::string variable_name)
 {
     return subproblem_worker_->get_variable_index(variable_name);
 }
@@ -39,19 +55,14 @@ void SubproblemConstraintsManager::add_rows_to_subproblem(SolverRepresentedRows&
                                 new_row.row_names);
 }
 
-SolverRepresentedRows SubproblemConstraintsManager::add_rows(std::string& row_name)
+SolverRepresentedRows SubproblemConstraintsManager::AddRows(std::string& row_name)
 {
-    auto constraint_row = file_reader_.get_row(row_name);
+    auto constraint_row = row_extractor_.GetRow(row_name);
     add_rows_to_subproblem(constraint_row);
     return constraint_row;
 }
 
-int SubproblemConstraintsManager::size_of_subproblem()
-{
-    return subproblem_worker_->get_problem_row_num();
-}
-
-void SubproblemConstraintsManager::delete_added_rows()
+void SubproblemConstraintsManager::DeleteAddedRows()
 {
     subproblem_worker_->delete_rows(initial_sub_size_);
 }
