@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
+#include "antares-xpansion/benders/benders_core/SubproblemConstraintRepository.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 

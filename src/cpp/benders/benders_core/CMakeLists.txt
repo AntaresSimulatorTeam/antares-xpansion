@@ -37,7 +37,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonConstraintCoefficients.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemBasisCache.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorkerFactory.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintRepository.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersProblemFromFile.h
@@ -67,7 +67,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/common.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SolverRowExtractor.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonSolverLoader.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemConstraintRepository.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ICommunicationStrategy.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SequentialCommunicationStrategy.h
 )

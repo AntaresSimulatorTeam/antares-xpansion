@@ -23,7 +23,7 @@ Benders_MICRO_ITERS class.
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
-#include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
+#include "antares-xpansion/benders/benders_core/SubproblemConstraintRepository.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
@@ -161,14 +161,14 @@ private:
     //                                                 std::string sub_name);
 
     /*
-        This function is used to build the SubproblemConstraintsManager objects associated to each
+        This function is used to build the SubproblemConstraintRepository objects associated to each
        subproblem
         @inputs :
             - subproblem_map : the map to the subproblem workers
             - options : study options
             - solver_log_manager : solver log manger
     */
-    void build_subproblem_constraints_manager_map(const SubproblemsMapPtr& subproblem_map,
+    void build_subproblem_constraint_repository_map(const SubproblemsMapPtr& subproblem_map,
                                                   const BendersBaseOptions& options,
                                                   const SolverLogManager& solver_log_manager);
 
@@ -213,7 +213,7 @@ private:
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
-    SubproblemConstraintsManagerPtrMap constraints_map_;
+    SubproblemConstraintRepositoryPtrMap constraint_repositories_;
     Logger _logger;
     bool warm_start_;
     int max_constraints_per_micro_it_ = 0;
@@ -221,5 +221,5 @@ private:
     double tol_N_K_ = 1.001;
     double tol_N_ = 1.0;
     std::shared_ptr<SkeletonConstraintCoefficients> skeleton_constraint_coefficients_;
-    SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
+    SubproblemConstraintRepositoryPtr subproblem_constraint_repository_;
 };

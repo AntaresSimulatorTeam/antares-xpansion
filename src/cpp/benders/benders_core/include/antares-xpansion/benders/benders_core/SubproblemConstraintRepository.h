@@ -10,14 +10,14 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-class SubproblemConstraintsManager;
-typedef std::shared_ptr<SubproblemConstraintsManager> SubproblemConstraintsManagerPtr;
+class SubproblemConstraintRepository;
+typedef std::shared_ptr<SubproblemConstraintRepository> SubproblemConstraintRepositoryPtr;
 
-class SubproblemConstraintsManager
+class SubproblemConstraintRepository
 {
 public:
     // CACHE_PROBLEMS < 2: dedicated MPS file per subproblem.
-    static SubproblemConstraintsManagerPtr FromConstraintsFile(
+    static SubproblemConstraintRepositoryPtr FromConstraintsFile(
       const std::filesystem::path& constraint_file_path,
       const std::string& solver_name,
       const SolverLogManager& solver_log_manager,
@@ -28,17 +28,17 @@ public:
 
     // CACHE_PROBLEMS >= 2: shared skeleton solver, already mutated by
     // SkeletonConstraintCoefficients::ApplyConstraintSet for this constraint set.
-    static SubproblemConstraintsManagerPtr FromSharedSolver(
+    static SubproblemConstraintRepositoryPtr FromSharedSolver(
       std::shared_ptr<SolverAbstract> solver,
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
-    SolverRepresentedRows AddRows(std::string& row_name);
-    void DeleteAddedRows();
+    SolverRepresentedRows AppendConstraint(std::string& row_name);
+    void RemoveAppendedConstraints();
 
     const std::shared_ptr<SubproblemWorker>& worker() const;
 
 private:
-    SubproblemConstraintsManager(std::shared_ptr<SolverAbstract> solver,
+    SubproblemConstraintRepository(std::shared_ptr<SolverAbstract> solver,
                                  const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     SolverRowExtractor row_extractor_;
@@ -46,4 +46,4 @@ private:
     int initial_sub_size_;
 };
 
-typedef std::map<std::string, SubproblemConstraintsManagerPtr> SubproblemConstraintsManagerPtrMap;
+typedef std::map<std::string, SubproblemConstraintRepositoryPtr> SubproblemConstraintRepositoryPtrMap;
