@@ -38,25 +38,15 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromSharedSolver(
       new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
 }
 
-std::vector<double> SubproblemConstraintsManager::GetSubSolution()
+const std::shared_ptr<SubproblemWorker>& SubproblemConstraintsManager::worker() const
 {
-    return subproblem_worker_->get_solution();
-}
-
-int SubproblemConstraintsManager::GetVariableIndexInSolution(std::string variable_name)
-{
-    return subproblem_worker_->get_variable_index(variable_name);
-}
-
-void SubproblemConstraintsManager::add_rows_to_subproblem(SolverRepresentedRows& new_row)
-{
-    subproblem_worker_->AddRow(new_row);
+    return subproblem_worker_;
 }
 
 SolverRepresentedRows SubproblemConstraintsManager::AddRows(std::string& row_name)
 {
     auto constraint_row = row_extractor_.GetRow(row_name);
-    add_rows_to_subproblem(constraint_row);
+    subproblem_worker_->AddRow(constraint_row);
     return constraint_row;
 }
 

@@ -33,14 +33,13 @@ public:
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     SolverRepresentedRows AddRows(std::string& row_name);
-    std::vector<double> GetSubSolution();
-    int GetVariableIndexInSolution(std::string variable_id);
     void DeleteAddedRows();
+
+    const std::shared_ptr<SubproblemWorker>& worker() const;
 
 private:
     SubproblemConstraintsManager(std::shared_ptr<SolverAbstract> solver,
                                  const std::shared_ptr<SubproblemWorker>& subproblem_worker);
-    void add_rows_to_subproblem(SolverRepresentedRows& new_row);
 
     SolverRowExtractor row_extractor_;
     std::shared_ptr<SubproblemWorker> subproblem_worker_;
