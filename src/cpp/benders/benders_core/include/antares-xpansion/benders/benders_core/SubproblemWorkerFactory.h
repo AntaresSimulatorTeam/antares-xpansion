@@ -31,7 +31,7 @@ public:
                             std::shared_ptr<SolverAbstract> solver,
                             std::vector<std::string> sub_problem_names);
 
-    std::shared_ptr<SubproblemWorker> CreateSubSolverAbstract(std::string sub_name,
+    std::shared_ptr<SubproblemWorker> CreateSubproblemWorker(std::string sub_name,
                                                               VariableMap& variable_map,
                                                               double cut_coefficient_tolerance,
                                                               double slave_weight);
@@ -40,7 +40,7 @@ public:
                              std::vector<SolverRepresentedRows>& added_constraints);
     int GetSubNumber();
 
-    void SetBasis(std::string sub_name);
+    void StoreBasis(std::string sub_name);
 
 private:
     Logger logger_;

@@ -106,14 +106,14 @@ TEST_F(SubproblemWorkerFactoryTest, SingleSubproblem)
     EXPECT_EQ(builder->GetSubNumber(), 1);
 }
 
-// ---------- Group 2: CreateSubSolverAbstract ----------
+// ---------- Group 2: CreateSubproblemWorker ----------
 
 TEST_F(SubproblemWorkerFactoryTest, ReturnsNonNullWorker)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
     VariableMap variable_map;
-    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1e-6, 1.0);
+    auto worker = builder->CreateSubproblemWorker("sub1", variable_map, 1e-6, 1.0);
     EXPECT_NE(worker, nullptr);
 }
 
@@ -122,8 +122,8 @@ TEST_F(SubproblemWorkerFactoryTest, DifferentSubsReturnDistinctWorkers)
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
     VariableMap vm1, vm2;
-    auto worker1 = builder->CreateSubSolverAbstract("sub1", vm1, 1e-6, 1.0);
-    auto worker2 = builder->CreateSubSolverAbstract("sub2", vm2, 1e-6, 1.0);
+    auto worker1 = builder->CreateSubproblemWorker("sub1", vm1, 1e-6, 1.0);
+    auto worker2 = builder->CreateSubproblemWorker("sub2", vm2, 1e-6, 1.0);
     EXPECT_NE(worker1, nullptr);
     EXPECT_NE(worker2, nullptr);
     EXPECT_NE(worker1, worker2);
@@ -135,7 +135,7 @@ TEST_F(SubproblemWorkerFactoryTest, UnknownSubNameReturnsWorker)
     auto builder = buildWithNOOP();
     VariableMap variable_map;
     // operator[] inserts empty vectors for unknown keys; NOOPSolver accepts empty vectors
-    auto worker = builder->CreateSubSolverAbstract("nonexistent", variable_map, 1e-6, 1.0);
+    auto worker = builder->CreateSubproblemWorker("nonexistent", variable_map, 1e-6, 1.0);
     EXPECT_NE(worker, nullptr);
 }
 
@@ -185,7 +185,7 @@ TEST_F(SubproblemWorkerFactoryTest, CsvWithKeyOnly)
     EXPECT_EQ(builder->GetSubNumber(), 1);
 
     VariableMap variable_map;
-    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1e-6, 1.0);
+    auto worker = builder->CreateSubproblemWorker("sub1", variable_map, 1e-6, 1.0);
     EXPECT_NE(worker, nullptr);
 }
 

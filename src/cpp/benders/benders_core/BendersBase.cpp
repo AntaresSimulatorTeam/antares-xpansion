@@ -650,7 +650,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
           std::cout << "printing sub name " << sub << std::endl;
           double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), sub);
 
-          auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(
+          auto subproblem_worker = subproblem_worker_factory_->CreateSubproblemWorker(
             sub,
             variable_map,
             _options.CUT_COEFFICIENT_TOLERANCE,
@@ -659,7 +659,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
           PlainData::SubProblemData subproblem_data;
           SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-          subproblem_worker_factory_->SetBasis(sub);
+          subproblem_worker_factory_->StoreBasis(sub);
           subproblem_data_map[sub] = subproblem_data;
           auto t2 = std::chrono::steady_clock::now();
           auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();

@@ -37,7 +37,7 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
     load_coefficient_sets();
 }
 
-void SubproblemWorkerFactory::SetBasis(std::string sub_name)
+void SubproblemWorkerFactory::StoreBasis(std::string sub_name)
 {
     basis_cache_.Store(sub_name, *solver_);
 }
@@ -72,7 +72,7 @@ int SubproblemWorkerFactory::GetSubNumber()
     return rhs_set_.Count();
 }
 
-std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstract(
+std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubproblemWorker(
   std::string sub_name,
   VariableMap& variable_map,
   double cut_coefficient_tolerance,
