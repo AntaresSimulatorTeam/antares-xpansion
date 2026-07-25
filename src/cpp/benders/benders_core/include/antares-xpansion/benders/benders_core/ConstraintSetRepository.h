@@ -14,17 +14,17 @@
 
 namespace mpi = boost::mpi;
 
-class SkeletonConstraintCoefficients
+class ConstraintSetRepository
 {
 public:
-    SkeletonConstraintCoefficients(const std::filesystem::path& input_root,
+    ConstraintSetRepository(const std::filesystem::path& input_root,
                                    Logger& logger,
                                    std::string solver_name,
                                    int log_level,
                                    ProblemsFormat format,
                                    mpi::communicator* world);
 
-    SkeletonConstraintCoefficients(const std::filesystem::path& input_root,
+    ConstraintSetRepository(const std::filesystem::path& input_root,
                                    Logger& logger,
                                    std::shared_ptr<SolverAbstract> solver,
                                    mpi::communicator* world);

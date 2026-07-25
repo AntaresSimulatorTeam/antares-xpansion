@@ -10,7 +10,7 @@
 // Test-only solver double that returns configurable, deterministic values for
 // row-marshalling queries and records the arguments of mutating calls, so
 // tests can assert on data flowing through SolverRowExtractor and
-// SkeletonConstraintCoefficients without relying on NOOPSolver's no-op
+// ConstraintSetRepository without relying on NOOPSolver's no-op
 // (and, for get_row_type, uninitialized-buffer) behavior.
 class RecordingSolver: public NOOPSolver
 {

@@ -9,7 +9,7 @@ target_sources(benders_sequential_test
         SubproblemWorkerFactoryTest.cpp
         BendersMicroIterationsTest.cpp
         SolverRowExtractorTest.cpp
-        SkeletonConstraintCoefficientsTest.cpp
+        ConstraintSetRepositoryTest.cpp
         SubproblemConstraintRepositoryTest.cpp
         SubproblemBasisCacheTest.cpp
 )

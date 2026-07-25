@@ -27,7 +27,7 @@ public:
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     // CACHE_PROBLEMS >= 2: shared skeleton solver, already mutated by
-    // SkeletonConstraintCoefficients::ApplyConstraintSet for this constraint set.
+    // ConstraintSetRepository::ApplyConstraintSet for this constraint set.
     static SubproblemConstraintRepositoryPtr FromSharedSolver(
       std::shared_ptr<SolverAbstract> solver,
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);

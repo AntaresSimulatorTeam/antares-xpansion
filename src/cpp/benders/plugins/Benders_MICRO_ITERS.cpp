@@ -219,7 +219,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     }
     else
     {
-        build_mem_optim_constraints_skeleton(options);
+        build_constraint_set_repository(options);
     }
 
     build_variables_to_follow_indices_vector();
@@ -328,7 +328,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
     if (CACHE_PROBLEMS >= 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        auto solver = skeleton_constraint_coefficients_->ApplyConstraintSet(constraints_file_name);
+        auto solver = constraint_set_repository_->ApplyConstraintSet(constraints_file_name);
         subproblem_constraint_repository_ = SubproblemConstraintRepository::FromSharedSolver(
           solver,
           sub_worker);
@@ -447,9 +447,9 @@ void Benders_MICRO_ITERS::build_subproblem_constraint_repository_map(
 /*
 Building the constraint handler for mem optim input format
 */
-void Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(const BendersBaseOptions& options)
+void Benders_MICRO_ITERS::build_constraint_set_repository(const BendersBaseOptions& options)
 {
-    skeleton_constraint_coefficients_ = std::make_shared<SkeletonConstraintCoefficients>(
+    constraint_set_repository_ = std::make_shared<ConstraintSetRepository>(
       options.INPUTROOT,
       _logger,
       options.SOLVER_NAME,
