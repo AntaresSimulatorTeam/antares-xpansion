@@ -2,8 +2,6 @@
 
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <filesystem>
-#include <unordered_map>
-#include <utility>
 
 #include <boost/tokenizer.hpp>
 
@@ -11,6 +9,7 @@
 #include "IBendersProblemProvider.h"
 #include "SkeletonCoefficientSet.h"
 #include "SolverRowExtractor.h"
+#include "SubproblemBasisCache.h"
 #include "SubproblemWorker.h"
 #include "Worker.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
@@ -53,8 +52,7 @@ private:
     SkeletonCoefficientSet obj_set_;
     SkeletonCoefficientSet rhs_set_;
     std::shared_ptr<SolverAbstract> solver_;
-    // at each benders iteration we keep the final solution
-    std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> subpb_basis_;
+    SubproblemBasisCache basis_cache_;
     /*
     as we build all subproblems on the same solverAbstract object, when we are in warm start case
     we need to keep track of the added constraints, so we add them into the subproblem

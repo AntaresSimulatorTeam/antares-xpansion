@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/SolverRowExtractor.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -180,6 +181,11 @@ void Worker::AddRows(const std::vector<char>& qrtype_p,
                      const std::vector<std::string>& row_names) const
 {
     solver_addrows(*_solver, qrtype_p, rhs_p, {}, mstart_p, mclind_p, dmatval_p, row_names);
+}
+
+void Worker::AddRow(const SolverRepresentedRows& row) const
+{
+    AddRows(row.qrtype_p, row.rhs, row.range_p, row.mstart, row.mclind, row.dmatval, row.row_names);
 }
 
 int Worker::Getnrows() const

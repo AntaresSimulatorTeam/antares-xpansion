@@ -11,6 +11,7 @@ target_sources(benders_sequential_test
         SolverRowExtractorTest.cpp
         SkeletonConstraintCoefficientsTest.cpp
         SubproblemConstraintsManagerTest.cpp
+        SubproblemBasisCacheTest.cpp
 )
 
 target_link_libraries(benders_sequential_test

@@ -39,14 +39,7 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
 
 void SubproblemWorkerFactory::SetBasis(std::string sub_name)
 {
-    int row_number = solver_->get_nrows();
-    int col_number = solver_->get_ncols();
-    std::vector<int> rstatus(row_number);
-    std::vector<int> cstatus(col_number);
-
-    solver_->get_basis(rstatus.data(), cstatus.data());
-
-    subpb_basis_[sub_name] = std::make_pair(std::move(rstatus), std::move(cstatus));
+    basis_cache_.Store(sub_name, *solver_);
 }
 
 void SubproblemWorkerFactory::load_coefficient_sets()
@@ -92,10 +85,9 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
 
     // for warm start
-    if (subpb_basis_[sub_name].first.size() > 0) [[likely]]
+    if (basis_cache_.TryRestore(sub_name, *solver_))
     {
         std::cout << "using warm start " << std::endl;
-        solver_->set_basis(subpb_basis_[sub_name].first, subpb_basis_[sub_name].second);
     }
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
@@ -105,13 +97,7 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
 
     for (auto& solver_row: added_constraints_per_sub_[sub_name])
     {
-        subproblem_worker->AddRows(solver_row.qrtype_p,
-                                   solver_row.rhs,
-                                   solver_row.range_p,
-                                   solver_row.mstart,
-                                   solver_row.mclind,
-                                   solver_row.dmatval,
-                                   solver_row.row_names);
+        subproblem_worker->AddRow(solver_row);
     }
 
     return subproblem_worker;

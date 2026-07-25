@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -117,5 +119,25 @@ public:
                   const std::vector<std::string>& /*row_names*/) override
     {
         ++add_rows_calls;
+    }
+
+    std::vector<int> basis_rstatus_out = {1, 2};
+    std::vector<int> basis_cstatus_out = {3, 4};
+
+    void get_basis(int* rstatus, int* cstatus) const override
+    {
+        std::copy(basis_rstatus_out.begin(), basis_rstatus_out.end(), rstatus);
+        std::copy(basis_cstatus_out.begin(), basis_cstatus_out.end(), cstatus);
+    }
+
+    std::vector<int> set_basis_rstatus;
+    std::vector<int> set_basis_cstatus;
+    int set_basis_calls = 0;
+
+    void set_basis(std::span<int> rstatus, std::span<int> cstatus) override
+    {
+        set_basis_rstatus.assign(rstatus.begin(), rstatus.end());
+        set_basis_cstatus.assign(cstatus.begin(), cstatus.end());
+        ++set_basis_calls;
     }
 };

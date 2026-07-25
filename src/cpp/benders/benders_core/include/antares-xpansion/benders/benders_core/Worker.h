@@ -9,6 +9,8 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
 
+struct SolverRepresentedRows;
+
 /*!
  * \class Worker
  * \brief Mother-class Worker
@@ -55,6 +57,7 @@ public:
                  const std::vector<int>& mclind_p,
                  const std::vector<double>& dmatval_p,
                  const std::vector<std::string>& row_names) const;
+    void AddRow(const SolverRepresentedRows& row) const;
 
     /**
      * @brief Returns the number of rows (constraints)

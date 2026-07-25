@@ -50,13 +50,7 @@ int SubproblemConstraintsManager::GetVariableIndexInSolution(std::string variabl
 
 void SubproblemConstraintsManager::add_rows_to_subproblem(SolverRepresentedRows& new_row)
 {
-    subproblem_worker_->AddRows(new_row.qrtype_p,
-                                new_row.rhs,
-                                new_row.range_p,
-                                new_row.mstart,
-                                new_row.mclind,
-                                new_row.dmatval,
-                                new_row.row_names);
+    subproblem_worker_->AddRow(new_row);
 }
 
 SolverRepresentedRows SubproblemConstraintsManager::AddRows(std::string& row_name)

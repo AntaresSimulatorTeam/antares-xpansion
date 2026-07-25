@@ -548,17 +548,6 @@ std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, 
 }
 } // namespace
 
-std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
-  const std::shared_ptr<SubproblemWorker>& worker) const
-{
-    int row_number = worker->_solver->get_nrows();
-    int col_number = worker->_solver->get_ncols();
-    std::vector<int> rstatus(row_number);
-    std::vector<int> cstatus(col_number);
-    worker->_solver->get_basis(rstatus.data(), cstatus.data());
-    return {std::move(rstatus), std::move(cstatus)};
-}
-
 /**
  * Create a worker on a problem and reuse the basis to speed up solving
  *
@@ -572,12 +561,14 @@ std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
   const std::string& name)
 {
     auto worker = makeSubproblemWorker(kvp);
-    if (basiss_.contains(name))
-    {
-        auto& [rstatus, cstatus] = basiss_[name];
-        worker->_solver->set_basis(rstatus, cstatus);
-    }
+    subproblem_basis_cache_.TryRestore(name, *worker->_solver);
     return worker;
+}
+
+void BendersBase::StoreSubproblemBasis(const std::string& name,
+                                       const std::shared_ptr<SubproblemWorker>& worker)
+{
+    subproblem_basis_cache_.Store(name, *worker->_solver);
 }
 
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
@@ -594,13 +585,6 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               _logger,
                                               _options.PROBLEMS_FORMAT,
                                               benders_problem_provider.get());
-}
-
-void BendersBase::SetBasisForSubproblem(const std::string& name,
-                                        const std::vector<int>& rstatus,
-                                        const std::vector<int>& cstatus)
-{
-    basiss_[name] = std::make_pair(rstatus, cstatus);
 }
 
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
@@ -627,10 +611,9 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                 std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
                 PlainData::SubProblemData subproblem_data;
                 SolveSubproblem(subproblem_data, name, worker);
-                auto [rstatus, cstatus] = GetProblemBasis(worker);
                 std::lock_guard guard(m);
                 subproblem_data_map[name] = subproblem_data;
-                SetBasisForSubproblem(name, rstatus, cstatus);
+                StoreSubproblemBasis(name, worker);
                 auto t2 = std::chrono::steady_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
                                   .count();

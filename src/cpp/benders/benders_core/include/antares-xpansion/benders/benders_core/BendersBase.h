@@ -10,6 +10,7 @@
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
 #include "ICommunicationStrategy.h"
+#include "SubproblemBasisCache.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "SubproblemWorkerFactory.h"
@@ -188,15 +189,12 @@ protected:
     virtual void get_master_value();
     void GetSubproblemCut(SubProblemDataMap& subproblem_data_map);
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map);
-    std::pair<std::vector<int>, std::vector<int>> GetProblemBasis(
-      const std::shared_ptr<SubproblemWorker>& worker) const;
     std::shared_ptr<SubproblemWorker> BuildProblem(const std::pair<std::string, VariableMap>& kvp,
                                                    const std::string& name);
     std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap>& kvp) const;
-    void SetBasisForSubproblem(const std::string& name,
-                               const std::vector<int>& rstatus,
-                               const std::vector<int>& cstatus);
+    void StoreSubproblemBasis(const std::string& name,
+                              const std::shared_ptr<SubproblemWorker>& worker);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
@@ -374,7 +372,7 @@ private:
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
-    std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+    SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 
     int rank_;
