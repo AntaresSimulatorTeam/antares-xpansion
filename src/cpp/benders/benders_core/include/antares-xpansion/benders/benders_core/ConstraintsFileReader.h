@@ -33,6 +33,7 @@ public:
     ConstraintsFileReader(std::shared_ptr<SolverAbstract> solver);
 
     SolverRepresentedRows get_row(const std::string& name);
+    static SolverRepresentedRows get_row(std::shared_ptr<SolverAbstract> solver, int row_pos) ; 
 
 private:
     int get_row_index(const std::string& name);

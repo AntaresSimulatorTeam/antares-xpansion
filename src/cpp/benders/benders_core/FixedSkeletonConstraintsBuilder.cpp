@@ -6,9 +6,10 @@ FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
   std::string solver_name,
   int log_level,
   ProblemsFormat format,
-  mpi::communicator* world):
+  mpi::communicator* world,
+  const std::vector<std::string>& constraints_names):
     inputRoot_(inputRoot),
-    memoptim_utils_({})
+    memoptim_utils_(constraints_names)
 {
     logger_ = logger;
     build(solver_name, solver_log_manager_, log_level, format);
@@ -31,7 +32,9 @@ FixedSkeletonConstraintsBuilder::FixedSkeletonConstraintsBuilder(
 void FixedSkeletonConstraintsBuilder::read_coeffs_and_indices()
 {
     auto constraints_dir = inputRoot_ / "constraints";
+
     memoptim_utils_.read_keyed_coeffs_csv(constraints_dir / "coef.csv", coeffs_);
+    
     memoptim_utils_.read_indices_csv(constraints_dir / "coef_cols.csv",
                                      constraints_col_indices_,
                                      true,
@@ -41,14 +44,11 @@ void FixedSkeletonConstraintsBuilder::read_coeffs_and_indices()
                                      false,
                                      solver_);
     memoptim_utils_.read_keyed_coeffs_csv(constraints_dir / "rhs.csv", rhs_);
+    
     memoptim_utils_.read_indices_csv(constraints_dir / "rhs_rows.csv",
                                      rhs_row_indices_,
                                      false,
                                      solver_);
-
-    for (auto& [constraint_name, _]: coeffs_)
-    {
-    }
 }
 
 void FixedSkeletonConstraintsBuilder::build(std::string solver_name,
@@ -86,3 +86,9 @@ std::shared_ptr<SolverAbstract> FixedSkeletonConstraintsBuilder::update_constrai
     solver_->chg_rhs_values(rhs_row_indices_, rhs_values);
     return solver_;
 }
+
+std::shared_ptr<SolverAbstract> FixedSkeletonConstraintsBuilder::get_solver() 
+{
+    return solver_ ; 
+}
+

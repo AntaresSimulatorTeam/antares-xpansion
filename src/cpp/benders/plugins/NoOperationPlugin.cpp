@@ -7,7 +7,9 @@ NoOperationPlugin::NoOperationPlugin()
 void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                        const Logger& logger,
                                        const BendersBaseOptions& options,
-                                       const SolverLogManager& solver_log_manager)
+                                       const SolverLogManager& solver_log_manager,
+                                       std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
+
 {
 }
 
@@ -54,6 +56,6 @@ void NoOperationPlugin::OnBendersSubResolutionStart()
 void NoOperationPlugin::OnBendersSubResolutionEnd(
   std::string sub_name,
   int num_micro_iter,
-  std::vector<SolverRepresentedRows>& added_constraints)
+  std::vector<std::string>& added_constraints)
 {
 }

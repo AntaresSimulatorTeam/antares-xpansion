@@ -53,6 +53,8 @@ private:
 
     SubProblemDataMap get_subproblem_cut_package();
 
+    void BuildSubProblemSkeleton(std::shared_ptr<SolverAbstract> constraintSkeletonSolver) ; 
+
     void solve_master_and_create_trace();
 
     void do_solve_master_create_trace_and_update_cuts();

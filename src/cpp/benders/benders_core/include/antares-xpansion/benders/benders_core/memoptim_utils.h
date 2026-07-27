@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <map>
 #include <string>
-#include <unordered_set>
 #include <vector>
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
@@ -22,5 +21,5 @@ public:
                           const std::shared_ptr<SolverAbstract>& solver);
 
 private:
-    std::unordered_set<std::string> my_subs_;
+    std::vector<std::string> my_subs_;
 };

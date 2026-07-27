@@ -58,15 +58,7 @@ void BendersMpi::InitializeProblems()
             current_problem_id++;
         }
 
-        std::cout<<"fixed skeleton subproblem builder start ....."<<std::endl;
-        fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
-          _options.INPUTROOT,
-          _logger,
-          _options.SOLVER_NAME,
-          _options.LOG_LEVEL,
-          _options.PROBLEMS_FORMAT,
-          &_world,
-          GetSubProblemNames());
+        
         break;
     }
     case 1:
@@ -549,7 +541,6 @@ void BendersMpi::Run()
         benders_plugin_->OnBendersIterationEnd();
 
         auto subproblem_names =  GetSubProblemNames() ;
-        std::cout<<"rank "<<_world.rank()<<" coupling map size "<<subproblem_names.size()<<std::endl ; 
     }
     if (_world.rank() == rank_0)
     {
@@ -583,6 +574,31 @@ void BendersMpi::PreRunInitialization()
     init_data_ = false;
 }
 
+
+
+/*When we are in the memoptim + micro iterations mode 
+we need to have the hand on the constraint skeleon solver, in order 
+to get to be able to fetch the constraints from the constraint optimization problem 
+by their in the object that handle the subproblem optimization problem. 
+For design choices, we decided to keep everything related to constraint built in 
+the micro iteration plugin object, This is why we need to fetch for the constraints solver 
+object and set it on subproblem object.
+*/
+void BendersMpi::BuildSubProblemSkeleton(std::shared_ptr<SolverAbstract> constraintSkeletonSolver) 
+{
+    fixed_skeleton_subprob_builder_ = std::make_shared<FixedSkeletonSubProblemBuilder>(
+          _options.INPUTROOT,
+          _logger,
+          _options.SOLVER_NAME,
+          _options.LOG_LEVEL,
+          _options.PROBLEMS_FORMAT,
+          &_world,
+          GetSubProblemNames(), 
+         constraintSkeletonSolver);
+
+}
+
+
 void BendersMpi::launch()
 {
     if (init_problems_)
@@ -591,8 +607,15 @@ void BendersMpi::launch()
     }
 
     _world.barrier();
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
 
+    std::shared_ptr<SolverAbstract> constraints_solverAbstract; 
+    
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_,constraints_solverAbstract);
+
+    if (_options.CACHE_PROBLEMS == 2) 
+        BuildSubProblemSkeleton(constraints_solverAbstract) ; 
+        
+    
     Run();
 
     _world.barrier();
@@ -606,17 +629,6 @@ void BendersMpi::launch()
         free();
     }
 
-    if (_world.rank() == rank_0)
-    {
-        for (const auto& [name, times]: sub_resolution_per_iter_)
-        {
-            std::ofstream file(name + "_solve_times.txt");
-            for (const auto& t: times)
-            {
-                file << t << "\n";
-            }
-        }
-    }
-
+    
     _world.barrier();
 }

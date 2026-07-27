@@ -3,12 +3,12 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 #include <boost/tokenizer.hpp>
 
-MemoptimUtils::MemoptimUtils(std::vector<std::string> sub_problem_names):
-    my_subs_(std::make_move_iterator(sub_problem_names.begin()),
-             std::make_move_iterator(sub_problem_names.end()))
+MemoptimUtils::MemoptimUtils(std::vector<std::string> sub_problem_names)
+: my_subs_(std::move(sub_problem_names)) 
 {
 }
 
@@ -30,10 +30,6 @@ void MemoptimUtils::read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
         Tokenizer tok(line, sep);
         auto it = tok.begin();
         std::string key = *it;
-        if (!my_subs_.count(key))
-        {
-            continue;
-        }
         std::vector<double> values_double;
         ++it;
         if (it != tok.end())
@@ -46,6 +42,7 @@ void MemoptimUtils::read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
                            [](const std::string& s) { return std::stod(s); });
         }
         dest[key] = std::move(values_double);
+
     }
 }
 

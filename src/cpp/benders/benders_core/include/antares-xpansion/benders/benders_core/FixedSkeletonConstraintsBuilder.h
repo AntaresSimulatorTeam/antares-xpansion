@@ -25,7 +25,8 @@ public:
                                     std::string solver_name,
                                     int log_level,
                                     ProblemsFormat format,
-                                    mpi::communicator* world);
+                                    mpi::communicator* world,
+                                    const std::vector<std::string>& constraints_names);
 
     FixedSkeletonConstraintsBuilder(const std::filesystem::path& inputRoot,
                                     Logger& logger,
@@ -35,6 +36,8 @@ public:
     std::shared_ptr<SolverAbstract> update_constraints_reader(const std::string& constraints_name);
 
     int get_constraints_number();
+    std::shared_ptr<SolverAbstract> get_solver() ; 
+
 
 private:
     Logger logger_;

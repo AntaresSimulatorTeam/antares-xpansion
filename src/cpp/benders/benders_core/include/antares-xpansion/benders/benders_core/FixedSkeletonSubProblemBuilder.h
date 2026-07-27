@@ -37,7 +37,8 @@ public:
                                    int log_level,
                                    ProblemsFormat format,
                                    mpi::communicator* world,
-                                   std::vector<std::string> sub_problem_names);
+                                   std::vector<std::string> sub_problem_names, 
+                                   std::shared_ptr<SolverAbstract> constraints_SolverAbstract = nullptr);
 
     FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
                                    Logger& logger,
@@ -50,10 +51,9 @@ public:
                                                                  double slave_weight); 
 
     void set_added_constraints(std::string sub_name,
-                               std::vector<SolverRepresentedRows>& added_constraints);
+                               std::vector<std::string>& added_constraints);
     int get_sub_number();
 
-    void set_basis(std::string sub_name) ;
 
 private:
     Logger logger_;
@@ -85,10 +85,12 @@ private:
     we need to keep track of the added constraints, so we add them into the subproblem
     worker when we solve it on the next master iteration
     */
-    std::map<std::string, std::vector<SolverRepresentedRows>> added_constraints_per_sub_;
+    std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     SolverLogManager solver_log_manager_;
     SolverIO solver_IO_;
     bool micro_iters_;
     bool warm_start_;
+    int skeleton_initial_size_ ; 
+    std::shared_ptr<SolverAbstract> constraints_SolverAbstract_ ; 
     MemoptimUtils memoptim_utils_;
 };

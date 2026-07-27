@@ -210,7 +210,8 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                          const Logger& logger,
                                          const BendersBaseOptions& options,
-                                         const SolverLogManager& solver_log_manager)
+                                         const SolverLogManager& solver_log_manager, 
+                                         std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
 {
     _logger = logger;
     if (options.CACHE_PROBLEMS < 2)
@@ -219,7 +220,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     }
     else
     {
-        BuildMemOptimConstraintsSkeleton(options);
+        constraints_skeleon_solver = BuildMemOptimConstraintsSkeleton(options);
     }
 
     build_variables_to_follow_indices_vector();
@@ -391,8 +392,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
         }
         else
         {
-            constraints_to_add_vec_at_master_iteration_.push_back(
-              subproblem_constraints_manager_->add_rows(constraint_to_add));
+            constraints_to_add_vec_at_master_iteration_.push_back(constraint_to_add);
         }
     }
 }
@@ -408,7 +408,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart()
 void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(
   std::string sub_name,
   int num_micro_iter,
-  std::vector<SolverRepresentedRows>& added_constraints)
+  std::vector<std::string>& added_constraints)
 {
     added_constraints = std::move(constraints_to_add_vec_at_master_iteration_);
     constraints_to_add_vec_at_master_iteration_.clear();
@@ -449,13 +449,25 @@ void Benders_MICRO_ITERS::BuildSubproblemConstraintsManagerMap(
 /*
 Building the constraint handler for mem optim input format
 */
-void Benders_MICRO_ITERS::BuildMemOptimConstraintsSkeleton(const BendersBaseOptions& options)
+std::shared_ptr<SolverAbstract> Benders_MICRO_ITERS::BuildMemOptimConstraintsSkeleton(const BendersBaseOptions& options)
 {
+    const std::string prefix = "sub/sub_";
+    const std::string suffix = ".mps";
+    std::vector<std::string> constraints_names;
+    for (const auto& [sub_key, _] : subproblem_constraint_map_)
+    {
+        auto number_str = sub_key.substr(prefix.size(),
+                                         sub_key.size() - prefix.size() - suffix.size());
+        constraints_names.push_back("constraints/constraints_" + number_str + ".mps");
+    }
+
     fixed_skeleton_constraints_builder_ = std::make_shared<FixedSkeletonConstraintsBuilder>(
       options.INPUTROOT,
       _logger,
       options.SOLVER_NAME,
       options.LOG_LEVEL,
       options.PROBLEMS_FORMAT,
-      _world);
+      _world,
+      std::move(constraints_names));
+    return fixed_skeleton_constraints_builder_->get_solver() ; 
 }

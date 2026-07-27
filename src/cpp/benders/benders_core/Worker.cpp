@@ -100,8 +100,8 @@ void Worker::solve(int& lp_status,
         error_file_path = std::filesystem::path(outputroot)
                           / (_base_filename.filename().string() + "_lp_status_" + problem_status
                              + MPS_SUFFIX);
+
         std::ostringstream msg;
-        msg << "lp_status is : " << problem_status << std::endl;
 
         msg << "written in " << error_file_path.string() << std::endl;
         logger_->display_message(msg.str());
@@ -140,7 +140,7 @@ void Worker::init_for_compact_in_mem(std::shared_ptr<SolverAbstract> solver,
     _solver = solver;
     set_id_to_name(variable_map);
 }
-
+ 
 /*!
  *  \brief Get the number of iteration needed to solve a problem
  *

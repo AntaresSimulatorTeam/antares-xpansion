@@ -170,7 +170,9 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+
+    std::shared_ptr<SolverAbstract> constraints_SolverAstract ; 
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_,constraints_SolverAstract);
 
     MasterLoop();
 
