@@ -38,6 +38,7 @@ public:
                                    ProblemsFormat format,
                                    mpi::communicator* world,
                                    std::vector<std::string> sub_problem_names, 
+                                   SolverLogManager& solver_log_manager, 
                                    std::shared_ptr<SolverAbstract> constraints_SolverAbstract = nullptr);
 
     FixedSkeletonSubProblemBuilder(const std::filesystem::path& inputRoot,
@@ -86,7 +87,6 @@ private:
     worker when we solve it on the next master iteration
     */
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
-    SolverLogManager solver_log_manager_;
     SolverIO solver_IO_;
     bool micro_iters_;
     bool warm_start_;

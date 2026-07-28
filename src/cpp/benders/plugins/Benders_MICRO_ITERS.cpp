@@ -326,25 +326,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationStart(
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {
-    if (CACHE_PROBLEMS >= 2)
-    {
-        auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        auto solver = fixed_skeleton_constraints_builder_->update_constraints_reader(
-          constraints_file_name);
-        subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(
-          solver,
-          sub_worker);
-
-        if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
-        {
-            for (auto& variable: variables_to_follow_)
-            {
-                int variable_index = subproblem_constraints_manager_
-                                       ->get_variable_index_in_solution(variable);
-                variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
-            }
-        }
-    }
+ 
     if (OnBendersMicroIterationStart_)
     {
         OnBendersMicroIterationStart_();
@@ -399,6 +381,27 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
 
 void Benders_MICRO_ITERS::OnBendersSubResolutionStart()
 {
+
+    if (CACHE_PROBLEMS >= 2)
+    {
+        auto constraints_file_name = subproblem_constraint_map_[sub_name];
+        auto solver = fixed_skeleton_constraints_builder_->update_constraints_reader(
+          constraints_file_name);
+        subproblem_constraints_manager_ = std::make_shared<SubproblemConstraintsManager>(
+          solver,
+          sub_worker);
+
+        if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
+        {
+            for (auto& variable: variables_to_follow_)
+            {
+                int variable_index = subproblem_constraints_manager_
+                                       ->get_variable_index_in_solution(variable);
+                variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
+            }
+        }
+    }
+    
     if (OnBendersSubResolutionStart_)
     {
         OnBendersSubResolutionStart_();

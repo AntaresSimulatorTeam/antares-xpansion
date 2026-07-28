@@ -72,7 +72,9 @@ void BendersByBatch::BuildBatches()
           _options.LOG_LEVEL,
           _options.PROBLEMS_FORMAT,
           &_world,
-          std::move(my_sub_names));
+          std::move(my_sub_names), 
+          solver_log_manager_
+        );
     }
 
     for (auto& batch: batch_collection_.BatchCollections())

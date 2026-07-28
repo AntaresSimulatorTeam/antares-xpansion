@@ -4,6 +4,9 @@
 
 
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
+#include <iostream>
+
+
 
 FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
   const std::filesystem::path& inputRoot,
@@ -13,19 +16,21 @@ FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
   ProblemsFormat format,
   mpi::communicator* world,
   std::vector<std::string> sub_problem_names, 
+  SolverLogManager& solver_log_manager,  
   std::shared_ptr<SolverAbstract> constraints_SolverAbstract):
     inputRoot_(inputRoot),
-    memoptim_utils_(std::move(sub_problem_names)), 
+    memoptim_utils_(std::move(sub_problem_names)),
     constraints_SolverAbstract_(constraints_SolverAbstract)
 {
     _world = world ;
     logger_ = logger;
-    build_sub_skeleton(solver_name, solver_log_manager_, log_level, format);
+    build_sub_skeleton(solver_name, solver_log_manager, log_level, format);
     read_coeffs_and_indices(CoeffType::constraints);
     read_coeffs_and_indices(CoeffType::objective);
     read_coeffs_and_indices(CoeffType::rhs);
     micro_iters_ = false;
     warm_start_ = false;
+    std::cout<<"file path of solver log "<<solver_log_manager.log_file_path.c_str()<<std::endl ; 
 }
 
 FixedSkeletonSubProblemBuilder::FixedSkeletonSubProblemBuilder(
@@ -139,12 +144,12 @@ std::shared_ptr<SubproblemWorker> FixedSkeletonSubProblemBuilder::create_sub_sol
                                                                 solver_,
                                                                 logger_);
     
-    for (auto& solver_row: added_constraints_per_sub_[sub_name])
+    for (auto& solver_row_name: added_constraints_per_sub_[sub_name])
     {
-
-        auto row_index = constraints_SolverAbstract_->get_row_index(solver_row) ; 
+        std::cout<<"adding constraints "<<std::endl ; 
+        auto row_index = constraints_SolverAbstract_->get_row_index(solver_row_name) ; 
         if (row_index<0) [[unlikely]]
-            std::cerr<<"can't find "<<solver_row<<" in contraints solver "<<std::endl ; 
+            std::cerr<<"can't find "<<solver_row_name<<" in contraints solver "<<std::endl ; 
         else 
         {
             auto row_representation = ConstraintsFileReader::get_row(constraints_SolverAbstract_,row_index) ;

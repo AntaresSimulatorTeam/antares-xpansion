@@ -669,7 +669,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
     benders_plugin_->OnBendersSubResolutionStart();
-
     int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)
     {

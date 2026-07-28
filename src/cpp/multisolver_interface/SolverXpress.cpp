@@ -7,6 +7,7 @@
 #include <numeric>
 #include <set>
 #include <utility>
+#include <iostream>
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
@@ -859,7 +860,7 @@ void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLe
     case 3: /* warning */
     case 2: /* dialogue */
     case 1: /* information */
-        if (ptr != nullptr)
+    if (ptr != nullptr)
         {
             for (const auto& stream: *ptr)
             {

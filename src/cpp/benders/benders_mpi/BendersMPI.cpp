@@ -594,6 +594,7 @@ void BendersMpi::BuildSubProblemSkeleton(std::shared_ptr<SolverAbstract> constra
           _options.PROBLEMS_FORMAT,
           &_world,
           GetSubProblemNames(), 
+          solver_log_manager_,
          constraintSkeletonSolver);
 
 }
