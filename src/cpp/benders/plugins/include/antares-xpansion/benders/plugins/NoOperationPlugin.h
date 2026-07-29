@@ -12,7 +12,7 @@ public:
                         const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
-                        std::shared_ptr<SolverAbstract>& constraints_skeleon_solver) override;
+                        std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr) override;
 
     void OnBendersEnd() override;
 
@@ -26,8 +26,7 @@ public:
     void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
                                      std::string sub_name = "") override;
     void OnBendersSubResolutionEnd(std::string sub_name,
-                                   int num_micro_iter,
-                                   std::vector<std::string>& added_constraints) override;
+                                   int num_micro_iter) override;
 
     void OnBendersMicroIterationStart() override;
     void OnBendersMicroIterationEnd(std::string sub_name,

@@ -8,7 +8,7 @@ void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                        const Logger& logger,
                                        const BendersBaseOptions& options,
                                        const SolverLogManager& solver_log_manager,
-                                       std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
+                                       std::shared_ptr<SolverAbstract> sub_problem_solver)
 {
 }
 
@@ -52,7 +52,6 @@ void NoOperationPlugin::OnBendersSubResolutionStart(
 }
 
 void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name,
-                                                  int num_micro_iter,
-                                                  std::vector<std::string>& added_constraints)
+                                                  int num_micro_iter)
 {
 }

@@ -8,9 +8,9 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
   std::string solver_name,
   int log_level,
   ProblemsFormat format,
-  mpi::communicator* world):
+  std::vector<std::string>&& constraints_names):
     input_root_(input_root),
-    memoptim_utils_({})
+    memoptim_utils_(std::move(constraints_names))
 {
     logger_ = logger;
     SkeletonSolverLoader loader(logger_);
@@ -25,8 +25,7 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
 SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
   const std::filesystem::path& input_root,
   Logger& logger,
-  std::shared_ptr<SolverAbstract> solver,
-  mpi::communicator* world):
+  std::shared_ptr<SolverAbstract> solver):
     input_root_(input_root),
     solver_(std::move(solver)),
     memoptim_utils_({})

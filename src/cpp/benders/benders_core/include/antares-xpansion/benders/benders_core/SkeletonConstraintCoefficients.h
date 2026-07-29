@@ -12,8 +12,6 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "memoptim_utils.h"
 
-namespace mpi = boost::mpi;
-
 class SkeletonConstraintCoefficients
 {
 public:
@@ -22,12 +20,11 @@ public:
                                    std::string solver_name,
                                    int log_level,
                                    ProblemsFormat format,
-                                   mpi::communicator* world);
+                                   std::vector<std::string>&& constraints_names);
 
     SkeletonConstraintCoefficients(const std::filesystem::path& input_root,
                                    Logger& logger,
-                                   std::shared_ptr<SolverAbstract> solver,
-                                   mpi::communicator* world);
+                                   std::shared_ptr<SolverAbstract> solver);
 
     std::shared_ptr<SolverAbstract> ApplyConstraintSet(const std::string& constraints_name);
 

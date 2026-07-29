@@ -170,7 +170,6 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-    std::unordered_map<std::string, std::vector<long long>> sub_resolution_per_iter_;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;

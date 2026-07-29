@@ -48,7 +48,7 @@ protected:
 TEST_F(SkeletonConstraintCoefficientsTest, ConstructsWithValidFiles)
 {
     write_constraints_fixture();
-    ASSERT_NO_THROW((SkeletonConstraintCoefficients(tmp_dir_, logger_, solver_, nullptr)));
+    ASSERT_NO_THROW((SkeletonConstraintCoefficients(tmp_dir_, logger_, solver_)));
 }
 
 // SkeletonConstraintCoefficients currently constructs its MemoptimUtils with an
@@ -60,14 +60,14 @@ TEST_F(SkeletonConstraintCoefficientsTest, ConstructsWithValidFiles)
 TEST_F(SkeletonConstraintCoefficientsTest, GetConstraintsNumberIsZeroDueToEmptyMemoptimFilter)
 {
     write_constraints_fixture();
-    SkeletonConstraintCoefficients builder(tmp_dir_, logger_, solver_, nullptr);
+    SkeletonConstraintCoefficients builder(tmp_dir_, logger_, solver_);
     EXPECT_EQ(builder.GetConstraintsNumber(), 0);
 }
 
 TEST_F(SkeletonConstraintCoefficientsTest, ApplyConstraintSetAppliesEmptyVectorsGivenCurrentFilter)
 {
     write_constraints_fixture();
-    SkeletonConstraintCoefficients builder(tmp_dir_, logger_, solver_, nullptr);
+    SkeletonConstraintCoefficients builder(tmp_dir_, logger_, solver_);
 
     auto returned_solver = builder.ApplyConstraintSet("myconstraints");
 

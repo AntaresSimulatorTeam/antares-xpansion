@@ -27,7 +27,7 @@ public:
                                 const Logger& logger,
                                 const BendersBaseOptions& options,
                                 const SolverLogManager& solver_log_manager,
-                                std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
+                                std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr)
       = 0;
 
     /*
@@ -46,8 +46,7 @@ public:
       std::string sub_name = "")
       = 0;
     virtual void OnBendersSubResolutionEnd(std::string sub_name,
-                                           int num_micro_iter,
-                                           std::vector<std::string>& added_constraints)
+                                           int num_micro_iter)
       = 0;
     /*
   This method will be called at the start of the master iteration after solving subprolems

@@ -212,8 +212,11 @@ void Benders_MICRO_ITERS::OnBendersStart(
   const Logger& logger,
   const BendersBaseOptions& options,
   const SolverLogManager& solver_log_manager,
-  std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
+  std::shared_ptr<SolverAbstract> sub_problem_solver)
 {
+
+    sub_problem_solver_ = sub_problem_solver; 
+    InitialSubProblemSolverSize_ = sub_problem_solver_->get_nrows() ; 
     _logger = logger;
     if (options.CACHE_PROBLEMS < 2)
     {
@@ -221,7 +224,7 @@ void Benders_MICRO_ITERS::OnBendersStart(
     }
     else
     {
-        constraints_skeleon_solver = build_mem_optim_constraints_skeleton(options);
+        build_mem_optim_constraints_skeleton(options);
     }
 
     build_variables_to_follow_indices_vector();
@@ -371,7 +374,7 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
         }
         else
         {
-            constraints_to_add_vec_at_master_iteration_.push_back(constraint_to_add);
+            AddedConstraintsPerSub_[sub_name].push_back(constraint_to_add);
         }
     }
 }
@@ -397,6 +400,31 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }
+
+        auto num_rows = sub_problem_solver_->get_nrows();
+        if (num_rows != InitialSubProblemSolverSize_) [[likely]]
+        {
+            num_rows--;
+            sub_problem_solver_->del_rows(InitialSubProblemSolverSize_, num_rows);
+        }
+
+        auto ContraintsSolver = skeleton_constraint_coefficients_->GetSolver() ; 
+        for (auto constraintName : AddedConstraintsPerSub_[sub_name]) 
+        {
+            int pos =  ContraintsSolver->get_row_index(constraintName) ; 
+            auto SolverRow = SolverRowExtractor::GetRow(ContraintsSolver,pos) ; 
+            sub_problem_solver_->add_rows(1,static_cast<int>(SolverRow.dmatval.size()), 
+                                         SolverRow.qrtype_p.data(), 
+                                         SolverRow.rhs.data(), 
+                                         SolverRow.range_p.data(),
+                                         SolverRow.mstart.data(), 
+                                         SolverRow.mclind.data(), 
+                                         SolverRow.dmatval.data(),
+                                         SolverRow.row_names); 
+
+
+        }
+
     }
 
     if (OnBendersSubResolutionStart_)
@@ -406,11 +434,8 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
 }
 
 void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name,
-                                                    int num_micro_iter,
-                                                    std::vector<std::string>& added_constraints)
+                                                    int num_micro_iter)
 {
-    added_constraints = std::move(constraints_to_add_vec_at_master_iteration_);
-    constraints_to_add_vec_at_master_iteration_.clear();
     if (OnBendersSubResolutionEnd_)
     {
         OnBendersSubResolutionEnd_(sub_name, num_micro_iter);
@@ -444,18 +469,28 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
     }
 }
 
-/*
+/*<
 Building the constraint handler for mem optim input format
 */
-std::shared_ptr<SolverAbstract> Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(
+void Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(
   const BendersBaseOptions& options)
 {
+
+    const std::string prefix = "sub/sub_";
+    const std::string suffix = ".mps";
+    std::vector<std::string> constraints_names;
+    for (const auto& [sub_key, _] : subproblem_constraint_map_)
+    {
+        auto number_str = sub_key.substr(prefix.size(),
+                                         sub_key.size() - prefix.size() - suffix.size());
+        constraints_names.push_back("constraints/constraints_" + number_str + ".mps");
+    }
+
     skeleton_constraint_coefficients_ = std::make_shared<SkeletonConstraintCoefficients>(
       options.INPUTROOT,
       _logger,
       options.SOLVER_NAME,
       options.LOG_LEVEL,
       options.PROBLEMS_FORMAT,
-      _world);
-    return skeleton_constraint_coefficients_->GetSolver();
+      std::move(constraints_names));
 }

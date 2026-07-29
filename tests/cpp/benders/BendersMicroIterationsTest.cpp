@@ -15,7 +15,7 @@ public:
                         const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
-                        std::shared_ptr<SolverAbstract>& constraints_skeleon_solver) override
+                        std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr) override
     {
     }
 
@@ -36,7 +36,7 @@ public:
     {
     }
 
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter, std::vector<std::string>& added_constraints) override
+    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override
     {
     }
 
@@ -99,8 +99,7 @@ public:
     void Run() override
     {
         // OnBendersStart
-        std::shared_ptr<SolverAbstract> constraints_SolverAbstract ; 
-        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_,constraints_SolverAbstract);
+        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();
@@ -118,8 +117,7 @@ public:
         benders_plugin_->OnBendersMicroIterationEnd(sub_name, added_rows, solve_time,
                                                      num_master_iter, num_micro_iter);
 
-        std::vector<std::string> added_constraints;
-        benders_plugin_->OnBendersSubResolutionEnd(sub_name, num_micro_iter, added_constraints);
+        benders_plugin_->OnBendersSubResolutionEnd(sub_name, num_micro_iter);
 
         // Master resolution
         benders_plugin_->OnBendersMasterResolutionStart();

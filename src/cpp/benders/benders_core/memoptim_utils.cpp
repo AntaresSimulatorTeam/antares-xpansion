@@ -6,7 +6,7 @@
 
 #include <boost/tokenizer.hpp>
 
-MemoptimUtils::MemoptimUtils(std::vector<std::string> sub_problem_names):
+MemoptimUtils::MemoptimUtils(std::vector<std::string>&& sub_problem_names):
     my_subs_(std::make_move_iterator(sub_problem_names.begin()),
              std::make_move_iterator(sub_problem_names.end()))
 {

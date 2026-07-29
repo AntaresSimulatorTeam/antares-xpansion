@@ -162,17 +162,17 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
-    std::shared_ptr<SolverAbstract> constraintsSolverAbstract;
+    std::shared_ptr<SolverAbstract> subProblemFactorSolver;
+    if (_options.CACHE_PROBLEMS == 2)
+    {
+        subProblemFactorSolver = build_sub_problem_skeleton();
+    }
+
     benders_plugin_->OnBendersStart(subproblem_map,
                                     _logger,
                                     _options,
                                     solver_log_manager_,
-                                    constraintsSolverAbstract);
-
-    if (_options.CACHE_PROBLEMS == 2)
-    {
-        build_sub_problem_sekeleton(constraintsSolverAbstract);
-    }
+                                    subProblemFactorSolver);
 
     MasterLoop();
 

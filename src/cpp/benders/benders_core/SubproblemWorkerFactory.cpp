@@ -14,11 +14,9 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(
   ProblemsFormat format,
   std::vector<std::string> sub_problem_names,
   const SolverLogManager& solver_log_manager,
-  std::shared_ptr<SolverAbstract> constraints_SolverAbstact):
+  boost::mpi::communicator* world):
     input_root_(input_root),
-    memoptim_utils_(std::move(sub_problem_names)),
-    constraintsSolverAbstract_(constraints_SolverAbstact)
-
+    memoptim_utils_(std::move(sub_problem_names))
 {
     logger_ = logger;
     SkeletonSolverLoader loader(logger_);
@@ -31,10 +29,21 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(
     SubProblemSolverInitialSize_ = solver_->get_nrows();
 }
 
+void SubproblemWorkerFactory::GetBasis(std::string sub_name)
+{
+    int row_number = solver_->get_nrows();
+    int col_number = solver_->get_ncols(); 
+    std::vector<int> cstatus(col_number), rstatus(row_number) ;
+    solver_->get_basis(rstatus.data(),cstatus.data());  
+    subProblemBasis_[sub_name] = {std::move(rstatus), std::move(cstatus)};
+}
+
+
 SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
                                                  Logger& logger,
                                                  std::shared_ptr<SolverAbstract> solver,
-                                                 std::vector<std::string> sub_problem_names):
+                                                 std::vector<std::string> sub_problem_names,
+                                                 boost::mpi::communicator* world):
     input_root_(input_root),
     solver_(std::move(solver)),
     memoptim_utils_(std::move(sub_problem_names))
@@ -42,6 +51,12 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
     logger_ = logger;
     load_coefficient_sets();
 }
+
+
+std::shared_ptr<SolverAbstract> SubproblemWorkerFactory::GetSolver()
+{
+    return solver_ ; 
+} 
 
 void SubproblemWorkerFactory::load_coefficient_sets()
 {
@@ -59,14 +74,6 @@ void SubproblemWorkerFactory::load_coefficient_sets()
     rhs_set_.Load(memoptim_utils_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
 }
 
-void SubproblemWorkerFactory::SetAddedConstraints(std::string sub_name,
-                                                  std::vector<std::string>& added_constraints)
-{
-    added_constraints_per_sub_[sub_name].insert(added_constraints_per_sub_[sub_name].end(),
-                                                std::make_move_iterator(added_constraints.begin()),
-                                                std::make_move_iterator(added_constraints.end()));
-}
-
 int SubproblemWorkerFactory::GetSubNumber()
 {
     return rhs_set_.Count();
@@ -78,42 +85,23 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
   double cut_coefficient_tolerance,
   double slave_weight)
 {
-    auto num_rows = solver_->get_nrows();
-    if (num_rows != SubProblemSolverInitialSize_) [[likely]]
+
+    //setting basis on the solver  
+    if (subProblemBasis_.find(sub_name) != subProblemBasis_.end()) 
     {
-        num_rows--;
-        solver_->del_rows(SubProblemSolverInitialSize_, num_rows);
+        solver_->set_basis(subProblemBasis_[sub_name].first,subProblemBasis_[sub_name].second) ; 
     }
+    
     solver_->chg_coefs(coef_set_.RowIndices(),
                        coef_set_.ColIndices(),
                        coef_set_.CoefficientsFor(sub_name));
     solver_->chg_obj(obj_set_.ColIndices(), obj_set_.CoefficientsFor(sub_name));
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
 
-    // for warm start
-    if (basis_cache_.TryRestore(sub_name, *solver_))
-    {
-        std::cout << "using warm start " << std::endl;
-    }
-
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
                                                                 slave_weight,
                                                                 solver_,
                                                                 logger_);
-
-    for (auto& solver_row_name: added_constraints_per_sub_[sub_name])
-    {
-        auto row_index = constraintsSolverAbstract_->get_row_index(solver_row_name);
-        if (row_index < 0) [[inlikely]]
-        {
-            std::cerr << "can't find " << solver_row_name << " in constraints solver" << std::endl;
-        }
-        else
-        {
-            auto solver_row = SolverRowExtractor::GetRow(constraintsSolverAbstract_, row_index);
-            subproblem_worker->AddRow(solver_row);
-        }
-    }
 
     return subproblem_worker;
 }

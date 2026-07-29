@@ -508,10 +508,10 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
     // so with project it in a vector
     std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
     nameAndWorkers.reserve(subproblem_map.size());
-    for (const auto& [name, worker]: subproblem_map)
+    for (const auto& [name , worker]: subproblem_map)
     {
         nameAndWorkers.emplace_back(name, worker);
-    }
+    } 
 
     std::mutex m;
     selectPolicy(
@@ -592,9 +592,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
 
     std::mutex m;
-    std::filesystem::create_directories("CACHEPROBLEMS");
-    // std::ofstream ofs("CACHEPROBLEMS/cacheprob_sub_solution_" + std::to_string(_data.it) +
-    // ".txt");
+
 
     selectPolicy(
       [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
@@ -605,7 +603,6 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
             nameAndVariableMap.end(),
             [this, &m, &subproblem_data_map](const std::pair<std::string, VariableMap>& kvp)
             {
-                auto t1 = std::chrono::steady_clock::now();
 
                 const auto& [name, variables] = kvp;
                 std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
@@ -614,11 +611,6 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                 std::lock_guard guard(m);
                 subproblem_data_map[name] = subproblem_data;
                 StoreSubproblemBasis(name, worker);
-                auto t2 = std::chrono::steady_clock::now();
-                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
-                                  .count();
-                // std::cout<<"all solution time "<<duration<<std::endl ;
-                // ofs << name << " " << duration << std::endl;
 
                 std::call_once(
                   variable_indice_once_flag,
@@ -647,6 +639,8 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
         PlainData::SubProblemData subproblem_data;
         SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
+        subproblem_worker_factory_->GetBasis(sub) ; 
+
         subproblem_data_map[sub] = subproblem_data;
     }
 }
@@ -666,12 +660,12 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
         benders_plugin_->OnBendersMicroIterationStart();
         while (added_rows)
         {
-            auto t1 = std::chrono::high_resolution_clock::now();
+            auto t1 = std::chrono::steady_clock::now();
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
                           _options.LAST_MASTER_MPS + MPS_SUFFIX,
                           _writer);
-            auto t2 = std::chrono::high_resolution_clock::now();
+            auto t2 = std::chrono::steady_clock::now();
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2
                                                                                               - t1)
                                           .count();
@@ -686,15 +680,10 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     }
     else
     {
-        auto t1 = std::chrono::steady_clock::now();
         worker->solve(subproblem_data.lpstatus,
                       _options.OUTPUTROOT,
                       _options.LAST_MASTER_MPS + MPS_SUFFIX,
                       _writer);
-        auto t2 = std::chrono::steady_clock::now();
-        auto elapsed_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
-                                      .count();
-        sub_resolution_per_iter_[name].push_back(elapsed_milliseconds);
     }
 
     worker->get_value(subproblem_data.subproblem_cost);
@@ -704,12 +693,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    std::vector<std::string> added_constraints;
-    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter, added_constraints);
-    if (_options.CACHE_PROBLEMS >= 2)
-    {
-        subproblem_worker_factory_->SetAddedConstraints(name, added_constraints);
-    }
+    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)

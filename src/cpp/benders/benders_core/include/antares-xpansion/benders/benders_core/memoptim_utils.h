@@ -5,13 +5,12 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 class MemoptimUtils
 {
 public:
-    MemoptimUtils(std::vector<std::string> sub_problem_names);
+    MemoptimUtils(std::vector<std::string>&& sub_problem_names);
 
     void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
                                std::map<std::string, std::vector<double>>& dest);

@@ -487,8 +487,7 @@ For design choices, we decided to keep everything related to constraint built in
 the micro iteration plugin object, This is why we need to fetch for the constraints solver
 object and set it on subproblem object.
 */
-void BendersMpi::build_sub_problem_sekeleton(
-  const std::shared_ptr<SolverAbstract>& constraintsSolverAbstract)
+std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
 {
     subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
       _options.INPUTROOT,
@@ -498,7 +497,8 @@ void BendersMpi::build_sub_problem_sekeleton(
       _options.PROBLEMS_FORMAT,
       GetSubProblemNames(),
       solver_log_manager_,
-      constraintsSolverAbstract);
+      &_world);
+    return subproblem_worker_factory_->GetSolver();
 }
 
 /*!
@@ -605,17 +605,19 @@ void BendersMpi::launch()
 
     _world.barrier();
 
-    std::shared_ptr<SolverAbstract> constraintsSolverAbstract;
+
+    std::shared_ptr<SolverAbstract> subProblemFactorSolver ; 
+    if (_options.CACHE_PROBLEMS == 2)
+    {
+        subProblemFactorSolver = build_sub_problem_skeleton();
+    }
+
     benders_plugin_->OnBendersStart(subproblem_map,
                                     _logger,
                                     _options,
                                     solver_log_manager_,
-                                    constraintsSolverAbstract);
+                                    subProblemFactorSolver);
 
-    if (_options.CACHE_PROBLEMS == 2)
-    {
-        build_sub_problem_sekeleton(constraintsSolverAbstract);
-    }
 
     Run();
 
@@ -628,18 +630,6 @@ void BendersMpi::launch()
     if (free_problems_)
     {
         free();
-    }
-
-    if (_world.rank() == rank_0)
-    {
-        for (const auto& [name, times]: sub_resolution_per_iter_)
-        {
-            std::ofstream file(name + "_solve_times.txt");
-            for (const auto& t: times)
-            {
-                file << t << "\n";
-            }
-        }
     }
 
     _world.barrier();

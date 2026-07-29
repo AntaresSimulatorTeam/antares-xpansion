@@ -100,7 +100,7 @@ public:
                         const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
-                        std::shared_ptr<SolverAbstract>& constraints_skeleon_solver) override;
+                        std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr) override;
 
     void OnBendersIterationStart() override;
     void OnBendersIterationEnd() override;
@@ -138,8 +138,7 @@ public:
     void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
                                      std::string sub_name = "") override;
     void OnBendersSubResolutionEnd(std::string sub_name,
-                                   int num_micro_iter,
-                                   std::vector<std::string>& added_constraints) override;
+                                   int num_micro_iter) override;
 
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
@@ -172,7 +171,7 @@ private:
                                                   const BendersBaseOptions& options,
                                                   const SolverLogManager& solver_log_manager);
 
-    std::shared_ptr<SolverAbstract> build_mem_optim_constraints_skeleton(
+    void build_mem_optim_constraints_skeleton(
       const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
@@ -202,6 +201,7 @@ private:
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
 
+    std::shared_ptr<SolverAbstract> SubProblemFactorySolver_ ; 
     std::filesystem::path variables_dictionary_path_;
     std::vector<std::string> sub_names_;
     std::map<std::string, std::string> binary_variables_ids_map_;
@@ -223,4 +223,8 @@ private:
     double tol_N_ = 1.0;
     std::shared_ptr<SkeletonConstraintCoefficients> skeleton_constraint_coefficients_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
+    std::shared_ptr<SolverAbstract> sub_problem_solver_ ;
+    int InitialSubProblemSolverSize_ ;
+    std::map<std::string, std::vector<std::string>> AddedConstraintsPerSub_;
+ 
 };
