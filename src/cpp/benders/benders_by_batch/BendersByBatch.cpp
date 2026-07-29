@@ -65,13 +65,6 @@ void BendersByBatch::BuildBatches()
                 ++count;
             }
         }
-        subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
-          _options.INPUTROOT,
-          _logger,
-          _options.SOLVER_NAME,
-          _options.LOG_LEVEL,
-          _options.PROBLEMS_FORMAT,
-          std::move(my_sub_names));
     }
 
     for (auto& batch: batch_collection_.BatchCollections())
@@ -169,7 +162,17 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+    std::shared_ptr<SolverAbstract> constraintsSolverAbstract;
+    benders_plugin_->OnBendersStart(subproblem_map,
+                                    _logger,
+                                    _options,
+                                    solver_log_manager_,
+                                    constraintsSolverAbstract);
+
+    if (_options.CACHE_PROBLEMS == 2)
+    {
+        build_sub_problem_sekeleton(constraintsSolverAbstract);
+    }
 
     MasterLoop();
 

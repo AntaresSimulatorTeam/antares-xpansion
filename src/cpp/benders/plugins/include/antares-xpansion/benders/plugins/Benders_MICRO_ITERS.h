@@ -99,7 +99,8 @@ public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                         const Logger& logger,
                         const BendersBaseOptions& options,
-                        const SolverLogManager& solver_log_manager) override;
+                        const SolverLogManager& solver_log_manager,
+                        std::shared_ptr<SolverAbstract>& constraints_skeleon_solver) override;
 
     void OnBendersIterationStart() override;
     void OnBendersIterationEnd() override;
@@ -123,9 +124,7 @@ public:
     /*
         Implementation of micro iteration start call back
     */
-    void OnBendersMicroIterationStart(int CACHE_PROBLEMS = 0,
-                                      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-                                      std::string sub_name = "") override;
+    void OnBendersMicroIterationStart() override;
 
     /*
         Implementation of micro iteration end callback
@@ -136,10 +135,11 @@ public:
                                     int num_master_iter,
                                     int num_micro_iter) override;
 
-    void OnBendersSubResolutionStart() override;
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+                                     std::string sub_name = "") override;
     void OnBendersSubResolutionEnd(std::string sub_name,
                                    int num_micro_iter,
-                                   std::vector<SolverRepresentedRows>& added_constraints) override;
+                                   std::vector<std::string>& added_constraints) override;
 
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
@@ -172,7 +172,8 @@ private:
                                                   const BendersBaseOptions& options,
                                                   const SolverLogManager& solver_log_manager);
 
-    void build_mem_optim_constraints_skeleton(const BendersBaseOptions& options);
+    std::shared_ptr<SolverAbstract> build_mem_optim_constraints_skeleton(
+      const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
 
@@ -209,7 +210,7 @@ private:
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     std::map<std::string, std::string> micro_iterations_config_;
     std::vector<std::string> variables_to_follow_;
-    std::vector<SolverRepresentedRows> constraints_to_add_vec_at_master_iteration_;
+    std::vector<std::string> constraints_to_add_vec_at_master_iteration_;
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;

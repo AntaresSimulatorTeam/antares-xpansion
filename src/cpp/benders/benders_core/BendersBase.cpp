@@ -633,39 +633,22 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
 {
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
 
-    std::cout << "master iteration " << _data.it << std::endl;
+    for (const auto& [sub, variables]: nameAndVariableMap)
+    {
+        auto variable_map = coupling_map_[sub];
+        double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), sub);
 
-    std::filesystem::create_directories("memoptim");
-    // std::ofstream ofs("memoptim/memoptim_sub_solution_" + std::to_string(_data.it) + ".txt");
+        auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(
+          sub,
+          variable_map,
+          _options.CUT_COEFFICIENT_TOLERANCE,
+          slave_weights);
 
-    std::for_each(
-      std::execution::seq,
-      nameAndVariableMap.begin(),
-      nameAndVariableMap.end(),
-      [this, &subproblem_data_map](const std::pair<std::string, VariableMap>& kvp)
-      {
-          auto t1 = std::chrono::steady_clock::now();
-          const auto& [sub, variables] = kvp;
-          auto variable_map = coupling_map_[sub];
-          std::cout << "printing sub name " << sub << std::endl;
-          double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), sub);
+        PlainData::SubProblemData subproblem_data;
+        SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-          auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(
-            sub,
-            variable_map,
-            _options.CUT_COEFFICIENT_TOLERANCE,
-            slave_weights);
-
-          PlainData::SubProblemData subproblem_data;
-          SolveSubproblem(subproblem_data, sub, subproblem_worker);
-
-          subproblem_worker_factory_->SetBasis(sub);
-          subproblem_data_map[sub] = subproblem_data;
-          auto t2 = std::chrono::steady_clock::now();
-          auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-          std::cout << "all solution time " << duration << std::endl;
-          // ofs << sub << " " << duration << std::endl;
-      });
+        subproblem_data_map[sub] = subproblem_data;
+    }
 }
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
@@ -674,13 +657,13 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 {
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
-    benders_plugin_->OnBendersSubResolutionStart();
+    benders_plugin_->OnBendersSubResolutionStart(worker, name);
 
     int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)
     {
         bool added_rows = true;
-        benders_plugin_->OnBendersMicroIterationStart(_options.CACHE_PROBLEMS, worker, name);
+        benders_plugin_->OnBendersMicroIterationStart();
         while (added_rows)
         {
             auto t1 = std::chrono::high_resolution_clock::now();
@@ -721,7 +704,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    std::vector<SolverRepresentedRows> added_constraints;
+    std::vector<std::string> added_constraints;
     benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter, added_constraints);
     if (_options.CACHE_PROBLEMS >= 2)
     {

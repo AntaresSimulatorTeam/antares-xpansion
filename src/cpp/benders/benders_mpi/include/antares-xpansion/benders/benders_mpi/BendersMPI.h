@@ -77,6 +77,9 @@ protected:
 
     void PreRunInitialization();
 
+    void build_sub_problem_sekeleton(
+      const std::shared_ptr<SolverAbstract>& constraintsSolverAbstract);
+
     int Rank() const
     {
         return _world.rank();

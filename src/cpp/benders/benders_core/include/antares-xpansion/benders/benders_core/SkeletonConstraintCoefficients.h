@@ -32,6 +32,7 @@ public:
     std::shared_ptr<SolverAbstract> ApplyConstraintSet(const std::string& constraints_name);
 
     int GetConstraintsNumber();
+    std::shared_ptr<SolverAbstract> GetSolver();
 
 private:
     Logger logger_;

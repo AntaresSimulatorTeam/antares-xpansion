@@ -57,15 +57,6 @@ void BendersMpi::InitializeProblems()
             }
             current_problem_id++;
         }
-
-        std::cout << "fixed skeleton subproblem builder start ....." << std::endl;
-        subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
-          _options.INPUTROOT,
-          _logger,
-          _options.SOLVER_NAME,
-          _options.LOG_LEVEL,
-          _options.PROBLEMS_FORMAT,
-          GetSubProblemNames());
         break;
     }
     case 1:
@@ -488,6 +479,28 @@ void BendersMpi::free()
     _world.barrier();
 }
 
+/*When we are in the memoptim + micro iterations mode
+we need to have the hand on the constraint skeleon solver, in order
+to get to be able to fetch the constraints from the constraint optimization problem
+by their in the object that handle the subproblem optimization problem.
+For design choices, we decided to keep everything related to constraint built in
+the micro iteration plugin object, This is why we need to fetch for the constraints solver
+object and set it on subproblem object.
+*/
+void BendersMpi::build_sub_problem_sekeleton(
+  const std::shared_ptr<SolverAbstract>& constraintsSolverAbstract)
+{
+    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
+      _options.INPUTROOT,
+      _logger,
+      _options.SOLVER_NAME,
+      _options.LOG_LEVEL,
+      _options.PROBLEMS_FORMAT,
+      GetSubProblemNames(),
+      solver_log_manager_,
+      constraintsSolverAbstract);
+}
+
 /*!
  *  \brief Run Benders algorithm in parallel
  *
@@ -591,7 +604,18 @@ void BendersMpi::launch()
     }
 
     _world.barrier();
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+
+    std::shared_ptr<SolverAbstract> constraintsSolverAbstract;
+    benders_plugin_->OnBendersStart(subproblem_map,
+                                    _logger,
+                                    _options,
+                                    solver_log_manager_,
+                                    constraintsSolverAbstract);
+
+    if (_options.CACHE_PROBLEMS == 2)
+    {
+        build_sub_problem_sekeleton(constraintsSolverAbstract);
+    }
 
     Run();
 

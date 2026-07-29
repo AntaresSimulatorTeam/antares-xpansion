@@ -11,7 +11,8 @@ public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                         const Logger& logger,
                         const BendersBaseOptions& options,
-                        const SolverLogManager& solver_log_manager) override;
+                        const SolverLogManager& solver_log_manager,
+                        std::shared_ptr<SolverAbstract>& constraints_skeleon_solver) override;
 
     void OnBendersEnd() override;
 
@@ -22,14 +23,13 @@ public:
                                       int& num_iter) override;
     void OnBendersMasterResolutionStart() override;
 
-    void OnBendersSubResolutionStart() override;
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+                                     std::string sub_name = "") override;
     void OnBendersSubResolutionEnd(std::string sub_name,
                                    int num_micro_iter,
-                                   std::vector<SolverRepresentedRows>& added_constraints) override;
+                                   std::vector<std::string>& added_constraints) override;
 
-    void OnBendersMicroIterationStart(int CACHE_PROBLEMS = 0,
-                                      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-                                      std::string sub_name = "") override;
+    void OnBendersMicroIterationStart() override;
     void OnBendersMicroIterationEnd(std::string sub_name,
                                     bool& added_rows,
                                     std::string solve_time,

@@ -24,7 +24,9 @@ public:
                             std::string solver_name,
                             int log_level,
                             ProblemsFormat format,
-                            std::vector<std::string> sub_problem_names);
+                            std::vector<std::string> sub_problem_names,
+                            const SolverLogManager& solver_log_manager,
+                            std::shared_ptr<SolverAbstract> constraints_SolverAbstact = nullptr);
 
     SubproblemWorkerFactory(const std::filesystem::path& input_root,
                             Logger& logger,
@@ -36,11 +38,8 @@ public:
                                                               double cut_coefficient_tolerance,
                                                               double slave_weight);
 
-    void SetAddedConstraints(std::string sub_name,
-                             std::vector<SolverRepresentedRows>& added_constraints);
+    void SetAddedConstraints(std::string sub_name, std::vector<std::string>& added_constraints);
     int GetSubNumber();
-
-    void SetBasis(std::string sub_name);
 
 private:
     Logger logger_;
@@ -58,7 +57,8 @@ private:
     we need to keep track of the added constraints, so we add them into the subproblem
     worker when we solve it on the next master iteration
     */
-    std::map<std::string, std::vector<SolverRepresentedRows>> added_constraints_per_sub_;
-    SolverLogManager solver_log_manager_;
+    std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     MemoptimUtils memoptim_utils_;
+    std::shared_ptr<SolverAbstract> constraintsSolverAbstract_;
+    int SubProblemSolverInitialSize_;
 };

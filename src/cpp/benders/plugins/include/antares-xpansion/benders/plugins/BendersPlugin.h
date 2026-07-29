@@ -26,7 +26,8 @@ public:
     virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                 const Logger& logger,
                                 const BendersBaseOptions& options,
-                                const SolverLogManager& solver_log_manager)
+                                const SolverLogManager& solver_log_manager,
+                                std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
       = 0;
 
     /*
@@ -40,10 +41,13 @@ public:
 
     virtual void OnBendersIterationEnd() = 0;
 
-    virtual void OnBendersSubResolutionStart() = 0;
+    virtual void OnBendersSubResolutionStart(
+      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
+      std::string sub_name = "")
+      = 0;
     virtual void OnBendersSubResolutionEnd(std::string sub_name,
                                            int num_micro_iter,
-                                           std::vector<SolverRepresentedRows>& added_constraints)
+                                           std::vector<std::string>& added_constraints)
       = 0;
     /*
   This method will be called at the start of the master iteration after solving subprolems
@@ -66,11 +70,7 @@ public:
     /*
       This method will be called before solving a subproblem (for each subproblem)
     */
-    virtual void OnBendersMicroIterationStart(
-      int CACHE_PROBLEMS = 0,
-      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-      std::string sub_name = "")
-      = 0;
+    virtual void OnBendersMicroIterationStart() = 0;
 
     /*
       This method will be called after solving a subproblem (for each subproblem)

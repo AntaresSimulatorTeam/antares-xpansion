@@ -23,6 +23,7 @@ public:
     explicit SolverRowExtractor(std::shared_ptr<SolverAbstract> solver);
 
     SolverRepresentedRows GetRow(const std::string& name);
+    static SolverRepresentedRows GetRow(std::shared_ptr<SolverAbstract> solver, int row_pos);
 
 private:
     int get_row_index(const std::string& name);

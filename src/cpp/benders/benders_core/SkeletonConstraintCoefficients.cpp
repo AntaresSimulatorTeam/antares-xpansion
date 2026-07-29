@@ -51,6 +51,11 @@ int SkeletonConstraintCoefficients::GetConstraintsNumber()
     return coef_set_.Count();
 }
 
+std::shared_ptr<SolverAbstract> SkeletonConstraintCoefficients::GetSolver()
+{
+    return solver_;
+}
+
 std::shared_ptr<SolverAbstract> SkeletonConstraintCoefficients::ApplyConstraintSet(
   const std::string& constraints_name)
 {

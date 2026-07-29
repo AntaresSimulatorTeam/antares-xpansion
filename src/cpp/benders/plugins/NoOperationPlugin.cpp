@@ -7,7 +7,8 @@ NoOperationPlugin::NoOperationPlugin()
 void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                        const Logger& logger,
                                        const BendersBaseOptions& options,
-                                       const SolverLogManager& solver_log_manager)
+                                       const SolverLogManager& solver_log_manager,
+                                       std::shared_ptr<SolverAbstract>& constraints_skeleon_solver)
 {
 }
 
@@ -32,10 +33,7 @@ void NoOperationPlugin::OnBendersMasterResolutionStart()
 {
 }
 
-void NoOperationPlugin::OnBendersMicroIterationStart(
-  int CACHE_PROBLEMS,
-  const std::shared_ptr<SubproblemWorker>& sub_worker,
-  std::string sub_name)
+void NoOperationPlugin::OnBendersMicroIterationStart()
 {
 }
 
@@ -47,13 +45,14 @@ void NoOperationPlugin::OnBendersMicroIterationEnd(std::string sub_name,
 {
 }
 
-void NoOperationPlugin::OnBendersSubResolutionStart()
+void NoOperationPlugin::OnBendersSubResolutionStart(
+  const std::shared_ptr<SubproblemWorker>& sub_worker,
+  std::string sub_name)
 {
 }
 
-void NoOperationPlugin::OnBendersSubResolutionEnd(
-  std::string sub_name,
-  int num_micro_iter,
-  std::vector<SolverRepresentedRows>& added_constraints)
+void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name,
+                                                  int num_micro_iter,
+                                                  std::vector<std::string>& added_constraints)
 {
 }
