@@ -56,9 +56,8 @@ SolverRepresentedRows SolverRowExtractor::GetRow(std::shared_ptr<SolverAbstract>
 
 SolverRepresentedRows SolverRowExtractor::GetRow(const std::string& name)
 {
-    SolverRepresentedRows result;
-    result.range_p = {};
-    result.row_names = {name};
     int constraint_pos = get_row_index(name);
-    return GetRow(solver_, constraint_pos);
+    auto result = GetRow(solver_, constraint_pos);
+    result.row_names = {name};
+    return result;
 }
