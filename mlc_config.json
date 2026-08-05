@@ -1,0 +1,20 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://stackoverflow\\.com/",
+      "_comment": "stackoverflow.com returns 403 to markdown-link-check's non-browser requests (anti-bot protection); links are valid when opened in a browser."
+    },
+    {
+      "pattern": "^https://en\\.cppreference\\.com/",
+      "_comment": "cppreference.com blocks/redirects non-browser requests, causing false 403s; links are valid when opened in a browser."
+    },
+    {
+      "pattern": "^https://www\\.intel\\.com/",
+      "_comment": "intel.com refuses connections from CI IP ranges; links are valid when opened in a browser."
+    },
+    {
+      "pattern": "^URL$",
+      "_comment": "Literal placeholder used in conception/DependencyManagment/Dependency_Upgrade_Log_–_Template.md, not a real link."
+    }
+  ]
+}
