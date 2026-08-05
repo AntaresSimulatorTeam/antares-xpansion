@@ -508,10 +508,10 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
     // so with project it in a vector
     std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
     nameAndWorkers.reserve(subproblem_map.size());
-    for (const auto& [name , worker]: subproblem_map)
+    for (const auto& [name, worker]: subproblem_map)
     {
         nameAndWorkers.emplace_back(name, worker);
-    } 
+    }
 
     std::mutex m;
     selectPolicy(
@@ -593,30 +593,28 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
     std::mutex m;
 
-
     selectPolicy(
       [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
       {
-          std::for_each(
-            policy,
-            nameAndVariableMap.begin(),
-            nameAndVariableMap.end(),
-            [this, &m, &subproblem_data_map](const std::pair<std::string, VariableMap>& kvp)
-            {
+          std::for_each(policy,
+                        nameAndVariableMap.begin(),
+                        nameAndVariableMap.end(),
+                        [this, &m, &subproblem_data_map](
+                          const std::pair<std::string, VariableMap>& kvp)
+                        {
+                            const auto& [name, variables] = kvp;
+                            std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+                            PlainData::SubProblemData subproblem_data;
+                            SolveSubproblem(subproblem_data, name, worker);
+                            std::lock_guard guard(m);
+                            subproblem_data_map[name] = subproblem_data;
+                            StoreSubproblemBasis(name, worker);
 
-                const auto& [name, variables] = kvp;
-                std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
-                PlainData::SubProblemData subproblem_data;
-                SolveSubproblem(subproblem_data, name, worker);
-                std::lock_guard guard(m);
-                subproblem_data_map[name] = subproblem_data;
-                StoreSubproblemBasis(name, worker);
-
-                std::call_once(
-                  variable_indice_once_flag,
-                  [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
-                  *worker);
-            });
+                            std::call_once(
+                              variable_indice_once_flag,
+                              [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+                              *worker);
+                        });
       },
       shouldParallelize());
 }
@@ -639,7 +637,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
         PlainData::SubProblemData subproblem_data;
         SolveSubproblem(subproblem_data, sub, subproblem_worker);
 
-        subproblem_worker_factory_->GetBasis(sub) ; 
+        subproblem_worker_factory_->GetBasis(sub);
 
         subproblem_data_map[sub] = subproblem_data;
     }

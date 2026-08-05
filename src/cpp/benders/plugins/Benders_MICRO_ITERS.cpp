@@ -207,16 +207,14 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
     }
 }
 
-void Benders_MICRO_ITERS::OnBendersStart(
-  const SubproblemsMapPtr& subproblem_map,
-  const Logger& logger,
-  const BendersBaseOptions& options,
-  const SolverLogManager& solver_log_manager,
-  std::shared_ptr<SolverAbstract> sub_problem_solver)
+void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
+                                         const Logger& logger,
+                                         const BendersBaseOptions& options,
+                                         const SolverLogManager& solver_log_manager,
+                                         std::shared_ptr<SolverAbstract> sub_problem_solver)
 {
-
-    sub_problem_solver_ = sub_problem_solver; 
-    InitialSubProblemSolverSize_ = sub_problem_solver_->get_nrows() ; 
+    sub_problem_solver_ = sub_problem_solver;
+    InitialSubProblemSolverSize_ = sub_problem_solver_->get_nrows();
     _logger = logger;
     if (options.CACHE_PROBLEMS < 2)
     {
@@ -408,23 +406,21 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
             sub_problem_solver_->del_rows(InitialSubProblemSolverSize_, num_rows);
         }
 
-        auto ContraintsSolver = skeleton_constraint_coefficients_->GetSolver() ; 
-        for (auto constraintName : AddedConstraintsPerSub_[sub_name]) 
+        auto ContraintsSolver = skeleton_constraint_coefficients_->GetSolver();
+        for (auto constraintName: AddedConstraintsPerSub_[sub_name])
         {
-            int pos =  ContraintsSolver->get_row_index(constraintName) ; 
-            auto SolverRow = SolverRowExtractor::GetRow(ContraintsSolver,pos) ; 
-            sub_problem_solver_->add_rows(1,static_cast<int>(SolverRow.dmatval.size()), 
-                                         SolverRow.qrtype_p.data(), 
-                                         SolverRow.rhs.data(), 
-                                         SolverRow.range_p.data(),
-                                         SolverRow.mstart.data(), 
-                                         SolverRow.mclind.data(), 
-                                         SolverRow.dmatval.data(),
-                                         SolverRow.row_names); 
-
-
+            int pos = ContraintsSolver->get_row_index(constraintName);
+            auto SolverRow = SolverRowExtractor::GetRow(ContraintsSolver, pos);
+            sub_problem_solver_->add_rows(1,
+                                          static_cast<int>(SolverRow.dmatval.size()),
+                                          SolverRow.qrtype_p.data(),
+                                          SolverRow.rhs.data(),
+                                          SolverRow.range_p.data(),
+                                          SolverRow.mstart.data(),
+                                          SolverRow.mclind.data(),
+                                          SolverRow.dmatval.data(),
+                                          SolverRow.row_names);
         }
-
     }
 
     if (OnBendersSubResolutionStart_)
@@ -433,8 +429,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
     }
 }
 
-void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name,
-                                                    int num_micro_iter)
+void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
 {
     if (OnBendersSubResolutionEnd_)
     {
@@ -472,14 +467,12 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
 /*<
 Building the constraint handler for mem optim input format
 */
-void Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(
-  const BendersBaseOptions& options)
+void Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(const BendersBaseOptions& options)
 {
-
     const std::string prefix = "sub/sub_";
     const std::string suffix = ".mps";
     std::vector<std::string> constraints_names;
-    for (const auto& [sub_key, _] : subproblem_constraint_map_)
+    for (const auto& [sub_key, _]: subproblem_constraint_map_)
     {
         auto number_str = sub_key.substr(prefix.size(),
                                          sub_key.size() - prefix.size() - suffix.size());

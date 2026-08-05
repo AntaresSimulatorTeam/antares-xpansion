@@ -6,15 +6,14 @@
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
-SubproblemWorkerFactory::SubproblemWorkerFactory(
-  const std::filesystem::path& input_root,
-  Logger& logger,
-  std::string solver_name,
-  int log_level,
-  ProblemsFormat format,
-  std::vector<std::string> sub_problem_names,
-  const SolverLogManager& solver_log_manager,
-  boost::mpi::communicator* world):
+SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
+                                                 Logger& logger,
+                                                 std::string solver_name,
+                                                 int log_level,
+                                                 ProblemsFormat format,
+                                                 std::vector<std::string> sub_problem_names,
+                                                 const SolverLogManager& solver_log_manager,
+                                                 boost::mpi::communicator* world):
     input_root_(input_root),
     memoptim_utils_(std::move(sub_problem_names))
 {
@@ -32,12 +31,11 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(
 void SubproblemWorkerFactory::GetBasis(std::string sub_name)
 {
     int row_number = solver_->get_nrows();
-    int col_number = solver_->get_ncols(); 
-    std::vector<int> cstatus(col_number), rstatus(row_number) ;
-    solver_->get_basis(rstatus.data(),cstatus.data());  
+    int col_number = solver_->get_ncols();
+    std::vector<int> cstatus(col_number), rstatus(row_number);
+    solver_->get_basis(rstatus.data(), cstatus.data());
     subProblemBasis_[sub_name] = {std::move(rstatus), std::move(cstatus)};
 }
-
 
 SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
                                                  Logger& logger,
@@ -52,11 +50,10 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
     load_coefficient_sets();
 }
 
-
 std::shared_ptr<SolverAbstract> SubproblemWorkerFactory::GetSolver()
 {
-    return solver_ ; 
-} 
+    return solver_;
+}
 
 void SubproblemWorkerFactory::load_coefficient_sets()
 {
@@ -85,13 +82,12 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
   double cut_coefficient_tolerance,
   double slave_weight)
 {
-
-    //setting basis on the solver  
-    if (subProblemBasis_.find(sub_name) != subProblemBasis_.end()) 
+    // setting basis on the solver
+    if (subProblemBasis_.find(sub_name) != subProblemBasis_.end())
     {
-        solver_->set_basis(subProblemBasis_[sub_name].first,subProblemBasis_[sub_name].second) ; 
+        solver_->set_basis(subProblemBasis_[sub_name].first, subProblemBasis_[sub_name].second);
     }
-    
+
     solver_->chg_coefs(coef_set_.RowIndices(),
                        coef_set_.ColIndices(),
                        coef_set_.CoefficientsFor(sub_name));

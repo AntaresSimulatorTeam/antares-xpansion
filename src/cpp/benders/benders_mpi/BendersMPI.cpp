@@ -489,15 +489,14 @@ object and set it on subproblem object.
 */
 std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
 {
-    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
-      _options.INPUTROOT,
-      _logger,
-      _options.SOLVER_NAME,
-      _options.LOG_LEVEL,
-      _options.PROBLEMS_FORMAT,
-      GetSubProblemNames(),
-      solver_log_manager_,
-      &_world);
+    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(_options.INPUTROOT,
+                                                                           _logger,
+                                                                           _options.SOLVER_NAME,
+                                                                           _options.LOG_LEVEL,
+                                                                           _options.PROBLEMS_FORMAT,
+                                                                           GetSubProblemNames(),
+                                                                           solver_log_manager_,
+                                                                           &_world);
     return subproblem_worker_factory_->GetSolver();
 }
 
@@ -605,8 +604,7 @@ void BendersMpi::launch()
 
     _world.barrier();
 
-
-    std::shared_ptr<SolverAbstract> subProblemFactorSolver ; 
+    std::shared_ptr<SolverAbstract> subProblemFactorSolver;
     if (_options.CACHE_PROBLEMS == 2)
     {
         subProblemFactorSolver = build_sub_problem_skeleton();
@@ -617,7 +615,6 @@ void BendersMpi::launch()
                                     _options,
                                     solver_log_manager_,
                                     subProblemFactorSolver);
-
 
     Run();
 

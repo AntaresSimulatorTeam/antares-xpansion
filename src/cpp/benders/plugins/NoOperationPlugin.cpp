@@ -51,7 +51,6 @@ void NoOperationPlugin::OnBendersSubResolutionStart(
 {
 }
 
-void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name,
-                                                  int num_micro_iter)
+void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
 {
 }

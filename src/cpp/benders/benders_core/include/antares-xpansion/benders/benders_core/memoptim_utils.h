@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
+
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 class MemoptimUtils
