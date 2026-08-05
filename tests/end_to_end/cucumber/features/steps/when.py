@@ -75,7 +75,7 @@ def build_launch_command(study_dir: Path, step: str = None, nproc: int = 2, in_m
 
 
 def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
-    """Common function to run an Antares-Xpansion step with error handling"""
+    """Common function to run an Antares Xpansion step with error handling"""
     context.allow_run_as_root = get_conf("allow_run_as_root")
 
     # Parse memory mode

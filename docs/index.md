@@ -1,15 +1,44 @@
+<div style="display: flex; align-items: center; margin-bottom: 30px; justify-content: center;">
+  <img
+    src="assets/antares.svg"
+    alt="Antares Logo"
+    style="height: 150px; width: 150px; margin-right: 30px;"
+  />
+  <div>
+    <h1 style="margin: 0;">Antares Xpansion</h1>
+    <p style="margin: 5px 0 0 0; font-size: 1.2em; color: #666;">
+      Antares investment package
+    </p>
+  </div>
+</div>
+
 [![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![OL8 CI Status][oracle_svg]][oracle_link] [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AntaresSimulatorTeam_antares-xpansion&metric=alert_status)][sonarcloud_link]
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-# Introduction
+!!! note "Role of this documentation"
 
-The [Antares-Xpansion][xpansion-github] package, works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Check out the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
+    This documentation corresponds to the technical documentation of Antares
+    Xpansion: [input](./reference/inputs/index.md) and 
+    [output](./reference/inputs/index.md) file formats, 
+    developer guide, complete
+    [changelog](./overview/CHANGELOG.md)... 
+    Check out the [Antares user documentation][readthedocs-antares] for more insights on Antares. 
 
-Antares-Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses of Antares-Xpansion are for example:
+## Introduction
+
+The [Antares Xpansion][xpansion-github] package, works along with RTE's adequacy software 
+[Antares][antareswebsite] that is also [hosted on github][antares-github].
+Antares Xpansion aims at performing investment simulations for Antares studies.
+
+Antares Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses of Antares Xpansion are for example:
 
 - **long-term scenario building**: build an economically consistent long-term generation mix,
 - **transmission expansion planning** : compute the network development which maximizes social welfare.
+
+!!! info "Goal of Antares Xpansion" 
+
+    Antares Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected operation cost during one year** and the **investment annuity**.
 
 ## Antares study
 
@@ -23,13 +52,13 @@ time frames each.
 The goal of the Antares simulation is to minimize the
 **expected operation cost during one year**.
 
-## Antares-Xpansion simulation
+## Antares Xpansion simulation
 
 Given an Antares simulation the user can define some
 _investment candidates_ in the power network in order to:
 
-- (increase or create) the transfer capacity between areas,
-- (increase or create) the maximum power of a generation facility.
+- increase or create the transfer capacity between areas,
+- increase or create the maximum power of a generation facility.
 
 Each _investment candidate_ can potentially decrease the variable operational cost
 of the power system, but induces an additional **investment annuity** that includes:
@@ -37,10 +66,10 @@ of the power system, but induces an additional **investment annuity** that inclu
 - Annualized investment costs to physically build the facility,
 - Fixed operational costs and maintenance costs to sustain the operation.
 
-!!! info "Goal of Antares-Xpansion" 
-    Antares-Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected operation cost during one year** and the **investment annuity**.
+## Contributing
 
-Antares-Xpansion is currently under development. Feel free to submit any issue.
+Antares Xpansion is currently under development. Feel free to submit any issue
+or [contribute to the documentation](./overview/doc-guidelines.md).
 
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml/badge.svg?query=branch%3Adevelop
