@@ -15,7 +15,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
   the [Multiple Problem Generation](./multiple-problem-generation.md) step).
 
 Usage is :
-```path/to/exectubale <options_file>.json <master_merger_info_file>.json```
+`path/to/exectubale <options_file>.json <master_merger_info_file>.json`
 
 **Note** : the C++ executable has to be launched at the ```--dataDir```. (The python driver takes care of this, this
 should not be a concern to most users).
@@ -337,7 +337,7 @@ We give below what the folder given as ```INPUTROOT``` in the options file shoul
 
 Each of the subfolder is the output of ```antares -i <study> --step problem_generation```.
 For example, the structure file of a given node should be found at :
-```<INPUTROOT>/<lp_folder>/<structure_file>```
+`<INPUTROOT>/<lp_folder>/<structure_file>`
 
 Note that the subfolders as presented in this example do not have to be inside the the full study structure and could
 have been generated and copied from elsewhere in the ```<INPUTROOT>``` folder.
