@@ -1,2 +1,0 @@
-plugin_lib_path=plugin_inputs/dummy_micro_iterations_plugin.so
-warm_start=1
