@@ -72,15 +72,14 @@ Antares Xpansion is currently under development. Feel free to submit any issue
 or [contribute to the documentation](./overview/doc-guidelines.md).
 
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml/badge.svg?query=branch%3Adevelop
-[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml?query=branch%3Adevelop
-[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg.yml/badge.svg?query=branch%3Adevelop
-[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg.yml?query=branch%3Adevelop
-[oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ol8-release.yml/badge.svg?query=branch%3Adevelop
-[oracle_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ol8-release.yml?query=branch%3Adevelop
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml/badge.svg?query=branch%3Adevelop
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml?query=branch%3Adevelop
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml/badge.svg?query=branch%3Adevelop
+[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml?query=branch%3Adevelop
+[oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml/badge.svg?query=branch%3Adevelop
+[oracle_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml?query=branch%3Adevelop
 [sonarcloud_link]: https://sonarcloud.io/dashboard?id=AntaresSimulatorTeam_antares-xpansion
 
 [xpansion-github]: https://github.com/AntaresSimulatorTeam/antares-xpansion
 [antares-github]: https://github.com/AntaresSimulatorTeam/Antares_Simulator
-[readthedocs-antares]: https://antares-doc.readthedocs.io/
 [antareswebsite]: https://antares-simulator.org
