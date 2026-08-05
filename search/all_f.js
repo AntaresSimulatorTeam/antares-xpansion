@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['each_20annual_20study_0',['Input files from each annual study',['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md248',1,'']]],
+  ['each_20annual_20study_0',['Input files from each annual study',['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md263',1,'']]],
   ['each_20tt_20mps_20tt_20file_1',['&lt;tt&gt;variables.txt&lt;/tt&gt; file for each &lt;tt&gt;.mps&lt;/tt&gt; file',['../md_docs_2developer-guide_2xpansion-steps_2antares-solver-problem.html#autotoc_md105',1,'']]],
   ['em_2',['Modifications for &lt;em&gt;satellite problems&lt;/em&gt;',['../md_docs_2developer-guide_2xpansion-steps_2problem-modification.html#autotoc_md123',1,'']]],
   ['em_20satellite_20problems_20em_3',['Modifications for &lt;em&gt;satellite problems&lt;/em&gt;',['../md_docs_2developer-guide_2xpansion-steps_2problem-modification.html#autotoc_md123',1,'']]],
@@ -15,11 +15,11 @@ var searchData=
   ['error_20handling_12',['Error Handling',['../md_docs_2agents_2cpp-conventions.html#autotoc_md22',1,'Error Handling'],['../md_docs_2agents_2python-conventions.html#autotoc_md33',1,'Error Handling']]],
   ['errorwithareafile_13',['ErrorWithAreaFile',['../classLpFilesExtractor_1_1ErrorWithAreaFile.html',1,'LpFilesExtractor']]],
   ['errorwithintercosfile_14',['ErrorWithIntercosFile',['../classLpFilesExtractor_1_1ErrorWithIntercosFile.html',1,'LpFilesExtractor']]],
-  ['example_15',['Example',['../md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md231',1,'']]],
+  ['example_15',['Example',['../md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md246',1,'']]],
   ['exe_5fpath_16',['exe_path',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a497a4f9701fda8abcd718e34f2cd7339',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['executable_17',['executable',['../md_docs_2reference_2benders_2options.html',1,'Settings for launching Benders executable'],['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md244',1,'Usage of the master merger executable']]],
+  ['executable_17',['executable',['../md_docs_2reference_2benders_2options.html',1,'Settings for launching Benders executable'],['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md259',1,'Usage of the master merger executable']]],
   ['executables_18',['Antares Xpansion package executables',['../md_docs_2developer-guide_2xpansion-steps_2index.html#autotoc_md116',1,'']]],
-  ['execution_20options_19',['Execution options',['../md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md264',1,'']]],
+  ['execution_20options_19',['Execution options',['../md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md279',1,'']]],
   ['expertlogsvalueerror_20',['ExpertLogsValueError',['../classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html',1,'antares_xpansion::input_checker']]],
   ['export_5fproblem_21',['export_problem',['../classAbstractMergeMPS.html#a44c25e6a5c9514ceff04b6fe9abb7730',1,'AbstractMergeMPS']]],
   ['external_20libraries_22',['External Libraries',['../md_docs_2agents_2cpp-conventions.html#autotoc_md20',1,'']]],

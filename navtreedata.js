@@ -298,7 +298,25 @@ var NAVTREE =
     ] ],
     [ "Benders overview", "md_docs_2reference_2benders_2index.html", null ],
     [ "Settings for launching Benders executable", "md_docs_2reference_2benders_2options.html", null ],
-    [ "Running Xpansion", "md_docs_2reference_2cli.html", null ],
+    [ "Antares Xpansion launcher", "md_docs_2reference_2cli.html", [
+      [ "Quick start", "md_docs_2reference_2cli.html#autotoc_md219", null ],
+      [ "Command line parameters", "md_docs_2reference_2cli.html#autotoc_md220", [
+        [ "-h, --help", "md_docs_2reference_2cli.html#autotoc_md221", null ],
+        [ "--step {full, antares, problem_generation, benders, gems, study_update, sensitivity,...", "md_docs_2reference_2cli.html#autotoc_md222", null ],
+        [ "-i, --dataDir", "md_docs_2reference_2cli.html#autotoc_md223", null ],
+        [ "--simulationName {last, your-antares-output-directory}", "md_docs_2reference_2cli.html#autotoc_md224", null ],
+        [ "-m, --method {benders, mergeMPS, adequacy_criterion}", "md_docs_2reference_2cli.html#autotoc_md225", null ],
+        [ "--problem-format {MPS, OPTIMIZED}", "md_docs_2reference_2cli.html#autotoc_md226", [
+          [ "-n, --np", "md_docs_2reference_2cli.html#autotoc_md227", null ]
+        ] ],
+        [ "--antares-n-cpu", "md_docs_2reference_2cli.html#autotoc_md228", null ],
+        [ "--keepMps", "md_docs_2reference_2cli.html#autotoc_md229", null ],
+        [ "--presolve", "md_docs_2reference_2cli.html#autotoc_md230", null ],
+        [ "-v, --version", "md_docs_2reference_2cli.html#autotoc_md231", null ],
+        [ "--antares-version", "md_docs_2reference_2cli.html#autotoc_md232", null ],
+        [ "--cache_problems", "md_docs_2reference_2cli.html#autotoc_md233", null ]
+      ] ]
+    ] ],
     [ "Reference", "md_docs_2reference_2index.html", null ],
     [ "Adequacy criterion", "md_docs_2reference_2inputs_2adequacy-criterion.html", null ],
     [ "Candidates", "md_docs_2reference_2inputs_2candidates.html", null ],
@@ -306,72 +324,72 @@ var NAVTREE =
     [ "Sensitivity analysis inputs", "md_docs_2reference_2inputs_2sensitivity.html", null ],
     [ "Settings", "md_docs_2reference_2inputs_2settings.html", null ],
     [ "Installation", "md_docs_2reference_2installation.html", [
-      [ "Download Antares Xpansion", "md_docs_2reference_2installation.html#autotoc_md226", null ],
-      [ "Installation instruction", "md_docs_2reference_2installation.html#autotoc_md227", null ]
+      [ "Download Antares Xpansion", "md_docs_2reference_2installation.html#autotoc_md241", null ],
+      [ "Installation instruction", "md_docs_2reference_2installation.html#autotoc_md242", null ]
     ] ],
     [ "Benders output trace", "md_docs_2reference_2outputs_2benders-output-trace.html", [
-      [ "File structure", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md229", null ],
-      [ "Columns", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md230", null ],
-      [ "Example", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md231", null ],
-      [ "Notes", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md232", null ]
+      [ "File structure", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md244", null ],
+      [ "Columns", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md245", null ],
+      [ "Example", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md246", null ],
+      [ "Notes", "md_docs_2reference_2outputs_2benders-output-trace.html#autotoc_md247", null ]
     ] ],
     [ "Outputs", "md_docs_2reference_2outputs_2index.html", null ],
     [ "Optimization output", "md_docs_2reference_2outputs_2optimization-output.html", null ],
     [ "Other generated files", "md_docs_2reference_2outputs_2others.html", [
-      [ "Logs", "md_docs_2reference_2outputs_2others.html#autotoc_md236", null ],
-      [ "Benders related files", "md_docs_2reference_2outputs_2others.html#autotoc_md237", null ],
-      [ "Master problem formulation", "md_docs_2reference_2outputs_2others.html#autotoc_md238", null ]
+      [ "Logs", "md_docs_2reference_2outputs_2others.html#autotoc_md251", null ],
+      [ "Benders related files", "md_docs_2reference_2outputs_2others.html#autotoc_md252", null ],
+      [ "Master problem formulation", "md_docs_2reference_2outputs_2others.html#autotoc_md253", null ]
     ] ],
     [ "Sensitivity analysis outputs", "md_docs_2reference_2outputs_2sensitivity.html", null ],
     [ "Trajectory investment problem", "md_docs_2reference_2trajectory-investment_2index.html", [
-      [ "General description", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md241", null ],
-      [ " Switching to a pluriannual vision", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md242", null ]
+      [ "General description", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md256", null ],
+      [ " Switching to a pluriannual vision", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md257", null ]
     ] ],
     [ "Merging the master problems of annual Xpansion studies", "md_docs_2reference_2trajectory-investment_2merge-master.html", [
-      [ "Usage of the master merger executable", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md244", null ],
-      [ "Options file", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md245", null ],
-      [ "Master merger info file", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md246", null ],
-      [ "Nodal lp info file", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md247", null ],
-      [ "Input files from each annual study", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md248", null ],
-      [ "Trajectory constraints", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md249", null ]
+      [ "Usage of the master merger executable", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md259", null ],
+      [ "Options file", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md260", null ],
+      [ "Master merger info file", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md261", null ],
+      [ "Nodal lp info file", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md262", null ],
+      [ "Input files from each annual study", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md263", null ],
+      [ "Trajectory constraints", "md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md264", null ]
     ] ],
     [ "Weights", "md_docs_2reference_2trajectory-investment_2merge-weights.html", [
-      [ "Why we need custom weights", "md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md251", null ],
-      [ "Usage", "md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md252", null ],
-      [ "Output", "md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md253", null ]
+      [ "Why we need custom weights", "md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md266", null ],
+      [ "Usage", "md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md267", null ],
+      [ "Output", "md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md268", null ]
     ] ],
     [ "Multiple problem generation", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html", [
-      [ "Usage", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md255", null ],
-      [ "Study paths / archives file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md256", null ],
-      [ "Weights / additional constraints reference file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md257", null ],
-      [ "Output : Nodal Lp Info file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md258", null ]
+      [ "Usage", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md270", null ],
+      [ "Study paths / archives file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md271", null ],
+      [ "Weights / additional constraints reference file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md272", null ],
+      [ "Output : Nodal Lp Info file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md273", null ]
     ] ],
     [ "Launching the workflow : <tt>xpansion trajectory</tt>", "md_docs_2reference_2trajectory-investment_2orchestration.html", [
-      [ "Usage", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md260", null ],
-      [ "Mandatory arguments", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md261", null ],
-      [ "Optional arguments", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md262", [
-        [ "Input location", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md263", null ],
-        [ "Execution options", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md264", null ]
+      [ "Usage", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md275", null ],
+      [ "Mandatory arguments", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md276", null ],
+      [ "Optional arguments", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md277", [
+        [ "Input location", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md278", null ],
+        [ "Execution options", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md279", null ]
       ] ],
-      [ "A note on intermediary files", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md265", null ]
+      [ "A note on intermediary files", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md280", null ]
     ] ],
     [ "Trajectory investment workflow", "md_docs_2reference_2trajectory-investment_2trajectory-workflow.html", [
-      [ "Workflow", "md_docs_2reference_2trajectory-investment_2trajectory-workflow.html#autotoc_md267", null ],
-      [ "File structure", "md_docs_2reference_2trajectory-investment_2trajectory-workflow.html#autotoc_md268", null ]
+      [ "Workflow", "md_docs_2reference_2trajectory-investment_2trajectory-workflow.html#autotoc_md282", null ],
+      [ "File structure", "md_docs_2reference_2trajectory-investment_2trajectory-workflow.html#autotoc_md283", null ]
     ] ],
     [ "User input file parsing", "md_docs_2reference_2trajectory-investment_2user-input.html", [
-      [ "User input file", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md270", null ],
-      [ "Input file parser & translator", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md271", null ],
-      [ "A note on candidates", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md272", null ],
-      [ "Trajectory constraints translation", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md273", [
-        [ "type: max_investment_per_node_per_candidate", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md274", null ],
-        [ "type: max_cumulative_investment_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md275", null ],
-        [ "type: max_retirement_per_node_per_candidate", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md276", null ],
-        [ "type: max_cumulative_retirement_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md277", null ],
-        [ "type: min_investment_per_candidate_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md278", null ],
-        [ "type: min_retirement_per_candidate_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md279", null ]
+      [ "User input file", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md285", null ],
+      [ "Input file parser & translator", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md286", null ],
+      [ "A note on candidates", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md287", null ],
+      [ "Trajectory constraints translation", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md288", [
+        [ "type: max_investment_per_node_per_candidate", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md289", null ],
+        [ "type: max_cumulative_investment_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md290", null ],
+        [ "type: max_retirement_per_node_per_candidate", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md291", null ],
+        [ "type: max_cumulative_retirement_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md292", null ],
+        [ "type: min_investment_per_candidate_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md293", null ],
+        [ "type: min_retirement_per_candidate_per_node", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md294", null ]
       ] ],
-      [ "Input data of local study or input data from input-trajectory.yaml ?", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md280", null ]
+      [ "Input data of local study or input data from input-trajectory.yaml ?", "md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md295", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -407,7 +425,7 @@ var NAVTREEINDEX =
 "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1LPNamerExeError.html",
 "dir_8937f2415760ed5dcb3b74c0a31b943a.html",
 "md_docs_2overview_2CHANGELOG.html#autotoc_md137",
-"structPredicate.html"
+"structMathLoggerBendersByBatchExternalLoop.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

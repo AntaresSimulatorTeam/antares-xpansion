@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2reference_2trajectory-investment_2merge-maste
   <div class="headertitle"><div class="title">Merging the master problems of annual Xpansion studies</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md243"></a></p>
-<h1><a class="anchor" id="autotoc_md244"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md258"></a></p>
+<h1><a class="anchor" id="autotoc_md259"></a>
 Usage of the master merger executable</h1>
 <p><b>All examples below are based on the tree example given in the <a class="el" href="md_docs_2reference_2trajectory-investment_2index.html">trajectory problem</a> section</b></p>
 <p>The underlying C++ code responsible for merging previously generated Xpansion studies master files needs</p>
@@ -151,9 +151,9 @@ Usage of the master merger executable</h1>
 <li>A lp info file that tells the program where to find the <code>lp</code> folders and files of each node.</li>
 <li>Access to the <code>structure.txt</code> and <code>master.mps</code> files previously generated using <code>antares-xpansion-launcher -i &lt;study&gt; --step problem_generation</code> (or rather using the <a class="el" href="md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html">Multiple Problem Generation</a> step).</li>
 </ul>
-<p>Usage is : </p><div class="fragment"><div class="line">/to/exectubale &lt;options_file&gt;.json &lt;master_merger_info_file&gt;.json</div>
-</div><!-- fragment --><p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
-<h1><a class="anchor" id="autotoc_md245"></a>
+<p>Usage is : <code>path/to/exectubale &lt;options_file&gt;.json &lt;master_merger_info_file&gt;.json</code></p>
+<p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
+<h1><a class="anchor" id="autotoc_md260"></a>
 Options file</h1>
 <p>Only few of the <code><a class="el" href="structBaseOptions.html">BaseOptions</a></code> from the <code>&lt;options_file&gt;.json</code> are used. An option file for the master merger can be :</p>
 <div class="fragment"><div class="line">{</div>
@@ -166,7 +166,7 @@ Options file</h1>
 <div class="line">    &quot;STRUCTURE_FILE&quot; : &quot;&lt;relative/path/to/structure/file&gt;&quot;</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>This means that the merged master file will be written to : <code>&lt;INPUT_ROOT&gt;/&lt;MASTER_NAME&gt;.&lt;mps|svf&gt;</code>, and the merged structure file to : <code>&lt;INPUT_ROOT&gt;/&lt;STRUCTURE_FILE&gt;</code>.</p>
-<h1><a class="anchor" id="autotoc_md246"></a>
+<h1><a class="anchor" id="autotoc_md261"></a>
 Master merger info file</h1>
 <p>The program expects <code>&lt;master_merger_info&gt;.json</code> to have the following structure :</p>
 <p><b>master_merger_info.json</b> : Example of a master structure file :</p>
@@ -274,7 +274,7 @@ Master merger info file</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md247"></a>
+<h1><a class="anchor" id="autotoc_md262"></a>
 Nodal lp info file</h1>
 <p>To access the <code>lp</code> data of each node, the executable expects to be passed the <a href="./multiple-problem-generation.md#output-nodal-lp-info-file">nodal lp info file</a> that references the location &amp; filenames of the ouput of the <code>problem_generation</code> step for each node.</p>
 <div class="fragment"><div class="line">{</div>
@@ -304,7 +304,7 @@ Nodal lp info file</h1>
 <div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
 <div class="line">   }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md248"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md263"></a>
 Input files from each annual study</h1>
 <p>We give below what the folder given as <code>INPUTROOT</code> in the options file should look like in the present example :</p>
 <div class="fragment"><div class="line">.</div>
@@ -444,9 +444,9 @@ Input files from each annual study</h1>
 <div class="line">            ├── settings.ini</div>
 <div class="line">            └── weights</div>
 <div class="line">                └── weights.txt</div>
-</div><!-- fragment --><p>Each of the subfolder is the output of <code>antares -i &lt;study&gt; --step problem_generation</code>. For example, the structure file of a given node should be found at : </p><div class="fragment"><div class="line">&lt;INPUTROOT&gt;/&lt;lp_folder&gt;/&lt;structure_file&gt;</div>
-</div><!-- fragment --><p>Note that the subfolders as presented in this example do not have to be inside the the full study structure and could have been generated and copied from elsewhere in the <code>&lt;INPUTROOT&gt;</code> folder.</p>
-<h1><a class="anchor" id="autotoc_md249"></a>
+</div><!-- fragment --><p>Each of the subfolder is the output of <code>antares -i &lt;study&gt; --step problem_generation</code>. For example, the structure file of a given node should be found at : <code>&lt;INPUTROOT&gt;/&lt;lp_folder&gt;/&lt;structure_file&gt;</code></p>
+<p>Note that the subfolders as presented in this example do not have to be inside the the full study structure and could have been generated and copied from elsewhere in the <code>&lt;INPUTROOT&gt;</code> folder.</p>
+<h1><a class="anchor" id="autotoc_md264"></a>
 Trajectory constraints</h1>
 <p>In the <code>constraints</code> section of the <code>master_merger_info.json</code> file, we expect the constraints to be given in the following manner:</p>
 <ul>

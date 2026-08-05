@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Running Xpansion</title>
+<title>Antares Xpansion: Antares Xpansion launcher</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -137,14 +137,110 @@ $(function(){initNavTree('md_docs_2reference_2cli.html',''); initResizable(true)
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Running Xpansion</div></div>
+  <div class="headertitle"><div class="title">Antares Xpansion launcher</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md218"></a></p>
-<p>!!! info </p><pre class="fragment">You can find examples on how to run Xpansion in the command line interface 
-on the user documentation dedicated to the
-[`antares-xpansion-launcher`](https://antares-doc.readthedocs.io/en/latest/programmatic/antares-xpansion-cli/).
-</pre> </div></div><!-- contents -->
+<h1><a class="anchor" id="autotoc_md219"></a>
+Quick start</h1>
+<ol type="1">
+<li>Open a command prompt in your Antares Xpansion install directory (by default it is named <code>antaresXpansion-x.y.z-win64</code> where <code>x.y.z</code> is the version number).</li>
+<li>Run <code>antares-xpansion-launcher.exe</code> and choose the path to the Antares study with the <code>-i</code> parameter: <div class="fragment"><div class="line">antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates</div>
+</div><!-- fragment --></li>
+</ol>
+<blockquote class="doxtable">
+<p>&zwj;The <code>-i</code> parameter can also be replaced by <code>--dataDir</code>. </p>
+</blockquote>
+<h1><a class="anchor" id="autotoc_md220"></a>
+Command line parameters</h1>
+<h2><a class="anchor" id="autotoc_md221"></a>
+<code>-h, --help</code></h2>
+<p>Show a help message and exit.</p>
+<h2><a class="anchor" id="autotoc_md222"></a>
+<code>--step {full, antares, problem_generation, benders, gems, study_update, sensitivity, presolve, resume}</code></h2>
+<p>Default value: <code>full</code>.</p>
+<p>The execution of Antares Xpansion consists of several steps that can be run separately. The <code>--step</code> parameter allows to select the steps to execute:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Step   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>antares</code>   </td><td class="markdownTableBodyNone">Launch Antares-Simulator once to get the Antares problem.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><code>problem_generation</code>   </td><td class="markdownTableBodyNone">Generate the full Antares Xpansion problem using the user input and the output of the Antares-Simulator run.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>benders</code>   </td><td class="markdownTableBodyNone">Solve the investment optimization problem of Antares Xpansion, using the benders decomposition.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><code>gems</code>   </td><td class="markdownTableBodyNone">Combined step: runs <code>antares-problem-generator</code> followed by <code>benders</code>. antares-problem-generator creates problems files using GEMS optim-config    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>study_update</code>   </td><td class="markdownTableBodyNone">Update the Antares study with the solution returned by the benders decomposition algorithm.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><code>full</code>   </td><td class="markdownTableBodyNone">Launch all steps in order: <code>antares</code> &gt; <code>problem_generation</code> &gt; <code>benders</code> &gt; <code>study_update</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>sensitivity</code>   </td><td class="markdownTableBodyNone">Launch sensitivity analysis.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><code>presolve</code>   </td><td class="markdownTableBodyNone">Launch a presolver on the decomposed problem (only available with Xpress solver).    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>resume</code>   </td><td class="markdownTableBodyNone">resume benders step of a study in accordance with <code>--simulationName</code>, by default <code>last</code> study is resumed.   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md223"></a>
+<code>-i, --dataDir</code></h2>
+<p>Specify the Antares study folder path. Use quotes <code>“antares study path”</code> in case of a space in the path.</p>
+<h2><a class="anchor" id="autotoc_md224"></a>
+<code>--simulationName {last, your-antares-output-directory}</code></h2>
+<p>Default value: <code>last</code>.</p>
+<p>Define the name of the Antares-Simulator output archive that Antares Xpansion uses to generate the expansion problem. If the value is <code>last</code>, the most recent run will be used. This option only has an effect when <code>--step</code> is among <code>{problem_generation, benders, study_update, sensitivity}</code>. In a step by step workflow keep both <em>.zip</em> file and <em>-Xpansion</em> corresponding folder.</p>
+<h2><a class="anchor" id="autotoc_md225"></a>
+<code>-m, --method {benders, mergeMPS, adequacy_criterion}</code></h2>
+<p>Default value: <code>benders</code>.</p>
+<p>Set the optimization method used by Antares Xpansion.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Option   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>benders</code>   </td><td class="markdownTableBodyNone">Launch the classical Benders decomposition or the Benders by batch algorithm depending on <code>batch_size</code>.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>mergeMPS</code>   </td><td class="markdownTableBodyNone">Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>adequacy_criterion</code>   </td><td class="markdownTableBodyNone">Launch Antares Xpansion with reliability constraints, see adequacy criterion.   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md226"></a>
+<code>--problem-format {MPS, OPTIMIZED}</code></h2>
+<p>Default value: <code>OPTIMIZED</code>.</p>
+<p>Select the storage format of the generated mathematical problems (master + subproblems):</p>
+<ul>
+<li><code>OPTIMIZED</code> (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and I/O time. The underlying format depends on the solver used.<ul>
+<li><em>XPRESS</em> : <code>svf</code> format: compressed binary format.</li>
+<li><em>COIN</em> : unsupported. Falls back to <code>MPS</code>.</li>
+</ul>
+</li>
+<li><code>MPS</code> : write the problems in MPS format, which is a standard format for mathematical programming problems.</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md227"></a>
+<code>-n, --np</code></h3>
+<p>Default value: 2.</p>
+<p>Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when <code>-m</code> is set to <code>benders</code>.</p>
+<h2><a class="anchor" id="autotoc_md228"></a>
+<code>--antares-n-cpu</code></h2>
+<p>Default value: 1.</p>
+<p>Sets the number of threads to use for Antares-Simulator in the initial <code>antares</code> step.</p>
+<h2><a class="anchor" id="autotoc_md229"></a>
+<code>--keepMps</code></h2>
+<p>Default value: <code>False</code>.</p>
+<p>If set to <code>True</code>, keeps <code>mps</code> files that encodes the problems solved by the optimizer. This option must be set to <code>True</code> if the user intends to launch the optimization several times on the same study (<code>--step benders</code>) without doing the other steps of Antares Xpansion.</p>
+<h2><a class="anchor" id="autotoc_md230"></a>
+<code>--presolve</code></h2>
+<p>Default value: <code>False</code>.</p>
+<p>If set to <code>True</code>, runs the <code>presolve</code> step before calling the <code>benders</code> step</p>
+<h2><a class="anchor" id="autotoc_md231"></a>
+<code>-v, --version</code></h2>
+<p>Show the Antares Xpansion version.</p>
+<h2><a class="anchor" id="autotoc_md232"></a>
+<code>--antares-version</code></h2>
+<p>Show the Antares-Simulator version (used in the <code>antares</code> step).</p>
+<h2><a class="anchor" id="autotoc_md233"></a>
+<code>--cache_problems</code></h2>
+<p>Enable "cache mode" for benders. Problems are not preloaded but loaded on demand. This is useful when hitting memory limitation during benders at the cost of some processing time. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

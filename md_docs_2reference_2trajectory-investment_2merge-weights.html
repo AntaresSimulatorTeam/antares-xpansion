@@ -140,12 +140,12 @@ $(function(){initNavTree('md_docs_2reference_2trajectory-investment_2merge-weigh
   <div class="headertitle"><div class="title">Weights</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md250"></a></p>
-<h1><a class="anchor" id="autotoc_md251"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md265"></a></p>
+<h1><a class="anchor" id="autotoc_md266"></a>
 Why we need custom weights</h1>
 <p>The weights given by the user in the <code>master_merger_info_file</code> are only applied to the merged master problem's objective. This means that the user must take care to also specify the correct corresponding yearly weights to each subproblem for each annual Xpansion study using <code>SLAVE_WEIGHTS</code> parameter when solving the merged master problem. <br  />
  Thus, if the Monte Carlo years of node $n \in G$ had respective weights $(\omega_{i,n})_{\forall i \in [|1, N|]}$, we must set the new weights of each subproblem of the merged master problem as : $(\omega^{merged}_{i,n} = w(n) \times \omega_{i,n})_{\forall n \in G, \forall i \in [|1, N|]}$.</p>
-<h1><a class="anchor" id="autotoc_md252"></a>
+<h1><a class="anchor" id="autotoc_md267"></a>
 Usage</h1>
 <p>Usage is <code>&lt;merge_weights_executable&gt; &lt;master_merger_info.json&gt; &lt;nodal_lp_info.json&gt; &lt;path/to/output/weights/file&gt;</code></p>
 <ul>
@@ -154,7 +154,7 @@ Usage</h1>
 </ul>
 <p>Note that in the <code>&lt;nodal_lp_info.json&gt;</code> file, if the <code>weights_file</code> parameter does not appear or points to a non existant file, the weights of this node are assumed to be uniform.</p>
 <p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md268"></a>
 Output</h1>
 <p>The output <code>weights_merged.txt</code> file will be a file with two columns. <br  />
  The first column is the path to the subproblem, and the second is the corresponding weight:</p>
