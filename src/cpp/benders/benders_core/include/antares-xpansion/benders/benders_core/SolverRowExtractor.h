@@ -11,7 +11,6 @@ struct SolverRepresentedRows
     std::vector<int> mstart;
     std::vector<int> mclind;
     std::vector<double> dmatval;
-    std::vector<double> range_p;
     std::vector<char> qrtype_p;
     std::vector<double> rhs;
     std::vector<std::string> row_names;

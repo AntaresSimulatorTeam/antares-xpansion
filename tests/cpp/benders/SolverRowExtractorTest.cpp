@@ -22,7 +22,6 @@ TEST(SolverRowExtractorTest, GetRowMarshalsSolverDataWithoutTouchingDisk)
     EXPECT_EQ(row.mclind, std::vector<int>({0, 2}));
     EXPECT_EQ(row.dmatval, std::vector<double>({1.5, 2.5}));
     EXPECT_EQ(row.rhs, std::vector<double>({10.0}));
-    EXPECT_EQ(row.range_p, std::vector<double>({4.0}));
     ASSERT_EQ(row.qrtype_p.size(), 1u);
     EXPECT_EQ(row.qrtype_p[0], 'L');
 }

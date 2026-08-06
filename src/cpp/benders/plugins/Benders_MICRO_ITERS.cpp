@@ -213,8 +213,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
                                          const SolverLogManager& solver_log_manager,
                                          std::shared_ptr<SolverAbstract> sub_problem_solver)
 {
-    
-    if (sub_problem_solver != nullptr) 
+    if (sub_problem_solver != nullptr)
     {
         sub_problem_solver_ = sub_problem_solver;
         InitialSubProblemSolverSize_ = sub_problem_solver_->get_nrows();
@@ -376,9 +375,9 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
         }
         else
         {
-            //we add the constaint for the next microiteration 
-            subproblem_constraints_manager_->AddRows(constraint_to_add) ;
-            //We keep the constraint in a list to reset at the future benders iteration    
+            // we add the constaint for the next microiteration
+            subproblem_constraints_manager_->AddRows(constraint_to_add);
+            // We keep the constraint in a list to reset at the future benders iteration
             AddedConstraintsPerSub_[sub_name].push_back(constraint_to_add);
         }
     }
@@ -409,7 +408,6 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
         auto num_rows = sub_problem_solver_->get_nrows();
         if (num_rows != InitialSubProblemSolverSize_) [[likely]]
         {
-        
             num_rows--;
             sub_problem_solver_->del_rows(InitialSubProblemSolverSize_, num_rows);
         }
@@ -423,7 +421,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                                           static_cast<int>(SolverRow.dmatval.size()),
                                           SolverRow.qrtype_p.data(),
                                           SolverRow.rhs.data(),
-                                          SolverRow.range_p.data(),
+                                          NULL,
                                           SolverRow.mstart.data(),
                                           SolverRow.mclind.data(),
                                           SolverRow.dmatval.data(),

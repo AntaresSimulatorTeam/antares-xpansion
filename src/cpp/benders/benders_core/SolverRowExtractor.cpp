@@ -27,7 +27,6 @@ SolverRepresentedRows SolverRowExtractor::GetRow(std::shared_ptr<SolverAbstract>
                      &nels,
                      row_pos,
                      row_pos);
-
     result.mclind.resize(nels);
     result.dmatval.resize(nels);
     result.mstart.resize(1);
@@ -35,10 +34,6 @@ SolverRepresentedRows SolverRowExtractor::GetRow(std::shared_ptr<SolverAbstract>
     double rhs(0.);
     solver->get_rhs(&rhs, row_pos, row_pos);
     result.rhs = {rhs};
-
-    double range_p(0.);
-    solver->get_rhs_range(&range_p, row_pos, row_pos);
-    result.range_p = {range_p};
 
     const int MAX_LEN = 10;
     char buffer[MAX_LEN];

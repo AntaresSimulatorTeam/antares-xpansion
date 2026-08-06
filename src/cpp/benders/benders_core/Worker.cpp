@@ -185,7 +185,7 @@ void Worker::AddRows(const std::vector<char>& qrtype_p,
 
 void Worker::AddRow(const SolverRepresentedRows& row) const
 {
-    AddRows(row.qrtype_p, row.rhs, row.range_p, row.mstart, row.mclind, row.dmatval, row.row_names);
+    AddRows(row.qrtype_p, row.rhs, {}, row.mstart, row.mclind, row.dmatval, row.row_names);
 }
 
 int Worker::Getnrows() const

@@ -1,5 +1,7 @@
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 
+#include <iostream>
+
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
 
 SubproblemConstraintsManager::SubproblemConstraintsManager(
