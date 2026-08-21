@@ -42,11 +42,11 @@ def set_batch_size(context, batch_size):
 
 
     
-@given('we are in cache mode')
-def run_benders(context):
+@given("the cache problems level is {level}")
+def set_cache_problems_level(context, level):
     with open(str(context.tmp_study / "options.json"), "r") as file:
         options_content = json.load(file)
-    options_content["CACHE_PROBLEMS"] = True  
+    options_content["CACHE_PROBLEMS"] = int(level)
     with open(str(context.tmp_study / "options.json"), "w") as file:
         json.dump(options_content, file, indent=4)
 

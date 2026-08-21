@@ -12,5 +12,8 @@ set_target_properties(dummy_micro_iterations_plugin PROPERTIES
 add_custom_command(TARGET dummy_micro_iterations_plugin POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:dummy_micro_iterations_plugin>
-        ${CMAKE_SOURCE_DIR}/data_test/micro_it_mem_optim_study/plugin_inputs/
+        ${CMAKE_SOURCE_DIR}/data_test/ieee96_micro_it_mem_optim_study/plugin_inputs/
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:dummy_micro_iterations_plugin>
+        ${CMAKE_SOURCE_DIR}/data_test/ieee96_micro_it/plugin_inputs/
 )
