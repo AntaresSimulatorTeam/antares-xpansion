@@ -213,6 +213,7 @@ private:
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
     SubproblemConstraintsManagerPtrMap constraints_map_;
+    const SolverLogManager* solver_log_manager_ = nullptr;
     Logger _logger;
     bool warm_start_;
     int max_constraints_per_micro_it_ = 0;

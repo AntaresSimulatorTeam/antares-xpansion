@@ -219,6 +219,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
         InitialSubProblemSolverSize_ = sub_problem_solver_->get_nrows();
     }
     _logger = logger;
+    solver_log_manager_ = &solver_log_manager;
     if (options.CACHE_PROBLEMS < 2)
     {
         build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);
@@ -432,6 +433,35 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                                           SolverRow.mclind.data(),
                                           SolverRow.dmatval.data(),
                                           SolverRow.row_names);
+        }
+    }
+    else if (options_.CACHE_PROBLEMS == 1)
+    {
+        // Case 1 rebuilds a fresh SubproblemWorker from disk every iteration
+        // (see BendersBase::GetSubproblemCutCache), so the constraints manager
+        // built once in OnBendersStart (from the never-populated subproblem_map
+        // for this cache level) must instead be rebuilt here, per subproblem,
+        // every time a fresh worker is handed to us.
+        std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
+        auto constraints_file_path = std::filesystem::path(options_.INPUTROOT) /
+                                     constraints_manager_name;
+        constraints_map_[constraints_manager_name] = SubproblemConstraintsManager::FromConstraintsFile(
+          constraints_file_path,
+          options_.SOLVER_NAME,
+          *solver_log_manager_,
+          _logger,
+          options_.LOG_LEVEL,
+          options_.PROBLEMS_FORMAT,
+          sub_worker);
+
+        if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
+        {
+            for (auto& variable: variables_to_follow_)
+            {
+                int variable_index = constraints_map_[constraints_manager_name]->GetVariableIndexInSolution(
+                  variable);
+                variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
+            }
         }
     }
 
