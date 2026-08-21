@@ -4,11 +4,20 @@
 #include <string>
 #include <vector>
 
+namespace boost
+{
+namespace mpi
+{
+class communicator;
+}
+}  // namespace boost
+namespace mpi = boost::mpi;
+
 extern "C"
 {
     void OnBendersStart(std::vector<std::string> sub_problems, int rank,
                         std::filesystem::path input_root, std::filesystem::path output_root,
-                        bool warm_start, int log_level)
+                        bool warm_start, mpi::communicator* world, int log_level)
     {
     }
 
@@ -32,7 +41,7 @@ extern "C"
                                     bool& added_rows,
                                     std::string solving_time,
                                     std::vector<double> sub_solution,
-                                    std::vector<int>& variables_indices_vector,
+                                    std::vector<int> variables_indices_vector,
                                     std::vector<std::string>& variables_names_vector,
                                     std::filesystem::path input_root,
                                     std::vector<std::string>& constraints_to_add_vec,
@@ -55,7 +64,10 @@ extern "C"
     }
 
     void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                      int& num_iter)
+                                      int& num_iter,
+                                      mpi::communicator* world,
+                                      std::map<std::string, std::vector<std::string>>& sub_to_vars,
+                                      std::filesystem::path input_root)
     {
     }
 

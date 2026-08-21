@@ -7,6 +7,7 @@ set_target_properties(dummy_micro_iterations_plugin PROPERTIES
     PREFIX ""
     SUFFIX ".so"
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
 
 add_custom_command(TARGET dummy_micro_iterations_plugin POST_BUILD
