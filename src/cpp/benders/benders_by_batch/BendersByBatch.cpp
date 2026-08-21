@@ -479,7 +479,7 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
     for (const auto& kvp: nameAndVariableMap)
     {
         const auto& name = kvp.first;
-        std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+        std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(kvp);
         PlainData::SubProblemData subproblem_data{};
         SolveSubproblem(subproblem_data,
                         name,

@@ -548,21 +548,6 @@ std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, 
 }
 } // namespace
 
-/**
- * Create a worker on a problem
- *
- * @param kvp Problem data
- * @param name Name of the problem
- * @return Worker on the problem
- *
- */
-std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
-  const std::pair<std::string, VariableMap>& kvp,
-  const std::string& name)
-{
-    return makeSubproblemWorker(kvp);
-}
-
 void BendersBase::StoreSubproblemBasis(const std::string& name,
                                        const std::shared_ptr<SubproblemWorker>& worker)
 {
@@ -607,7 +592,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                           const std::pair<std::string, VariableMap>& kvp)
                         {
                             const auto& [name, variables] = kvp;
-                            std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+                            std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(kvp);
                             PlainData::SubProblemData subproblem_data;
                             SolveSubproblem(subproblem_data,
                                             name,

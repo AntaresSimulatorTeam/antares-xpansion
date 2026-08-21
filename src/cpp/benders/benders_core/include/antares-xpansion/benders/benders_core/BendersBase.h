@@ -189,8 +189,6 @@ protected:
     virtual void get_master_value();
     void GetSubproblemCut(SubProblemDataMap& subproblem_data_map);
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map);
-    std::shared_ptr<SubproblemWorker> BuildProblem(const std::pair<std::string, VariableMap>& kvp,
-                                                   const std::string& name);
     std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap>& kvp) const;
     void StoreSubproblemBasis(const std::string& name,
