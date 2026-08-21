@@ -572,10 +572,14 @@ void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
           _options.CUT_COEFFICIENT_TOLERANCE,
           slave_weights);
         PlainData::SubProblemData subproblem_data{};
-        SolveSubproblem(subproblem_data, name, worker);
+        SolveSubproblem(subproblem_data,
+                        name,
+                        worker,
+                        [this, &name] { subproblem_worker_factory_->ApplyBasis(name); });
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
         subproblem_data_map[name] = subproblem_data;
+        subproblem_worker_factory_->GetBasis(name);
     }
 }
 
