@@ -30,11 +30,7 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
 
 void SubproblemWorkerFactory::GetBasis(std::string sub_name)
 {
-    int row_number = solver_->get_nrows();
-    int col_number = solver_->get_ncols();
-    std::vector<int> cstatus(col_number), rstatus(row_number);
-    solver_->get_basis(rstatus.data(), cstatus.data());
-    subProblemBasis_[sub_name] = {std::move(rstatus), std::move(cstatus)};
+    subproblem_basis_cache_.Store(sub_name, *solver_);
 }
 
 SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
@@ -83,11 +79,7 @@ void SubproblemWorkerFactory::ApplyBasis(const std::string& sub_name)
     // the solver instance can be shared/reused across subproblems (memoptim
     // mode), so applying a cached basis before that reset can mismatch a
     // stale row/column count left over from a different subproblem.
-    auto it = subProblemBasis_.find(sub_name);
-    if (it != subProblemBasis_.end())
-    {
-        solver_->set_basis(it->second.first, it->second.second);
-    }
+    subproblem_basis_cache_.TryRestore(sub_name, *solver_);
 }
 
 std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstract(

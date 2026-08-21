@@ -57,7 +57,7 @@ private:
     SkeletonCoefficientSet obj_set_;
     SkeletonCoefficientSet rhs_set_;
     std::shared_ptr<SolverAbstract> solver_;
-    std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> subProblemBasis_;
+    SubproblemBasisCache subproblem_basis_cache_;
 
     MemoptimUtils memoptim_utils_;
     boost::mpi::communicator* world_ = nullptr;
