@@ -50,27 +50,11 @@ void BendersByBatch::BuildBatches()
     // Dispatch subproblems to process: only add those assigned to this rank
     auto problem_count = 0;
 
-    if (_options.CACHE_PROBLEMS == 2)
-    {
-        std::vector<std::string> my_sub_names;
-        int count = 0;
-        for (const auto& batch: batch_collection_.BatchCollections())
-        {
-            for (const auto& name: batch.sub_problem_names)
-            {
-                if (count % WorldSize() == Rank())
-                {
-                    my_sub_names.push_back(name);
-                }
-                ++count;
-            }
-        }
-    }
-
     for (auto& batch: batch_collection_.BatchCollections())
     {
         switch (_options.CACHE_PROBLEMS)
         {
+        case 1:
         case 2:
         {
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
@@ -82,24 +66,7 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        case 1:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
+                    AddSubproblemName(*it);
                     ++it;
                 }
                 ++problem_count;
