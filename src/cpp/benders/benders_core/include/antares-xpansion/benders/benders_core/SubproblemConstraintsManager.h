@@ -34,7 +34,7 @@ public:
 
     SolverRepresentedRows AddRows(std::string& row_name);
     std::vector<double> GetSubSolution();
-    int GetVariableIndexInSolution(std::string variable_id);
+    int GetVariableIndexInSub(std::string variable_id);
     void DeleteAddedRows();
 
 private:

@@ -45,7 +45,7 @@ std::vector<double> SubproblemConstraintsManager::GetSubSolution()
     return subproblem_worker_->get_solution();
 }
 
-int SubproblemConstraintsManager::GetVariableIndexInSolution(std::string variable_name)
+int SubproblemConstraintsManager::GetVariableIndexInSub(std::string variable_name)
 {
     return subproblem_worker_->get_variable_index(variable_name);
 }

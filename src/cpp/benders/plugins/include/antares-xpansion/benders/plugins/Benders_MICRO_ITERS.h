@@ -28,18 +28,6 @@ Benders_MICRO_ITERS class.
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-/*
-    This structure will be used to set the subproblems ids on the Julia side
-    @members :
-        - subProblems_ids : a pointer to an array of c-style string
-        - n_subproblems : number of subproblems
-*/
-struct SubProblemIds
-{
-    const char** subProblems_ids;
-    int n_subproblems;
-};
-
 using on_Benders_start_Func = void (*)(std::vector<std::string>,
                                        int,
                                        std::filesystem::path,
@@ -174,10 +162,33 @@ private:
 
     void read_micro_iteration_config_file();
 
-    void read_variables_to_follow_ids();
     void read_variable_names_to_follow();
     void build_variables_to_follow_indices_vector();
-    const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
+
+    /*
+        Returns the SubproblemConstraintsManager currently representing sub_name's added
+        constraints, regardless of which CACHE_PROBLEMS storage strategy is in use.
+    */
+    SubproblemConstraintsManagerPtr GetActiveManager(const std::string& sub_name);
+
+    /*
+        Records constraint as added for sub_name so it can be replayed on a future Benders
+        iteration. A no-op unless warm_start_ is set (CACHE_PROBLEMS==0 never needs tracking,
+        since its manager is never rebuilt/reset).
+    */
+    void TrackAddedConstraint(const std::string& sub_name, const std::string& constraint);
+
+    /*
+        Re-applies the constraints tracked for sub_name onto its currently active manager.
+        A no-op unless warm_start_ is set.
+    */
+    void ReplayPersistedConstraints(const std::string& sub_name);
+
+    /*
+        Clears the tracked added-constraints list for every subproblem, so nothing gets
+        replayed on the next Benders iteration.
+    */
+    void ClearPersistedConstraintsTracking();
 
     mpi::communicator* _world;
 #ifdef _WIN32
@@ -199,16 +210,10 @@ private:
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
 
-    std::shared_ptr<SolverAbstract> SubProblemFactorySolver_;
-    std::filesystem::path variables_dictionary_path_;
     std::vector<std::string> sub_names_;
-    std::map<std::string, std::string> binary_variables_ids_map_;
-    std::vector<std::string> sub_ids_storage_;
-    std::vector<const char*> sub_ids_ptrs_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     std::map<std::string, std::string> micro_iterations_config_;
     std::vector<std::string> variables_to_follow_;
-    std::vector<std::string> constraints_to_add_vec_at_master_iteration_;
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
@@ -224,5 +229,4 @@ private:
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
     std::shared_ptr<SolverAbstract> sub_problem_solver_;
     int InitialSubProblemSolverSize_;
-    std::map<std::string, std::vector<std::string>> AddedConstraintsPerSub_;
 };

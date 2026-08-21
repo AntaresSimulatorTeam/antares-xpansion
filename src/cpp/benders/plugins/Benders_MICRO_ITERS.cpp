@@ -261,28 +261,39 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
     if (options_.CACHE_PROBLEMS < 2)
     {
         if (!warm_start_)
-
         {
-            for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
+            if (options_.CACHE_PROBLEMS == 0)
             {
-                auto it = constraints_map_.find(constraint_reader_name);
-                if (it == constraints_map_.end())
+                // Only CACHE_PROBLEMS==0 keeps the same manager alive across iterations, so
+                // it is the only mode where added rows must be physically removed here.
+                // CACHE_PROBLEMS==1 rebuilds a fresh manager from disk on the next
+                // OnBendersSubResolutionStart, making this step moot for that mode.
+                for (auto& [sub_name, constraint_mgr_name]: subproblem_constraint_map_)
                 {
-                    continue;
+                    auto it = constraints_map_.find(constraint_mgr_name);
+                    if (it != constraints_map_.end())
+                    {
+                        it->second->DeleteAddedRows();
+                    }
                 }
-                it->second->DeleteAddedRows();
-                added_constraints_per_sub_[sub_name].clear();
             }
+            ClearPersistedConstraintsTracking();
         }
     }
     else
     {
         // subproblem_constraints_manager_ is only set by OnBendersSubResolutionStart, which a
         // rank may not have called this iteration (e.g. it owns no subproblem in the current
-        // batch under BendersByBatch).
+        // batch under BendersByBatch). This reset is unconditional: several subproblems can
+        // share this skeleton solver on the same rank, so it must always be returned to its
+        // base structure regardless of warm_start_.
         if (subproblem_constraints_manager_)
         {
             subproblem_constraints_manager_->DeleteAddedRows();
+        }
+        if (!warm_start_)
+        {
+            ClearPersistedConstraintsTracking();
         }
     }
 }
@@ -299,30 +310,89 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
 
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 {
-    for (auto& [sub_name, constraint_reader_name]: subproblem_constraint_map_)
+    // Only meaningful for CACHE_PROBLEMS<2: constraints_map_ stays empty for >=2, whose
+    // per-subproblem manager is instead built (and its indices filled in) on demand in
+    // OnBendersSubResolutionStart.
+    for (auto& [sub_name, constraint_mgr_name]: subproblem_constraint_map_)
     {
-        auto it = constraints_map_.find(constraint_reader_name);
+        variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
+
+        auto it = constraints_map_.find(constraint_mgr_name);
         if (it == constraints_map_.end())
         {
             // This subproblem is handled by another MPI rank
             continue;
         }
-        variables_to_follow_indices_per_sub_[sub_name] = std::vector<int>();
-
-        if (options_.CACHE_PROBLEMS < 2)
+        auto constraint_manager = it->second;
+        for (auto& variable: variables_to_follow_)
         {
-            auto it = constraints_map_.find(constraint_reader_name);
-            if (it == constraints_map_.end())
-            {
-                continue;
-            }
-            auto constraint_reader = it->second;
-            for (auto& variable: variables_to_follow_)
-            {
-                int variable_index = constraint_reader->GetVariableIndexInSolution(variable);
-                variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
-            }
+            int variable_index = constraint_manager->GetVariableIndexInSub(variable);
+            variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
         }
+    }
+}
+
+SubproblemConstraintsManagerPtr Benders_MICRO_ITERS::GetActiveManager(const std::string& sub_name)
+{
+    if (options_.CACHE_PROBLEMS < 2)
+    {
+        std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
+        return constraints_map_[constraints_manager_name];
+    }
+    return subproblem_constraints_manager_;
+}
+
+void Benders_MICRO_ITERS::TrackAddedConstraint(const std::string& sub_name,
+                                               const std::string& constraint)
+{
+    // CACHE_PROBLEMS==0 keeps the same manager alive for the whole run, so its added rows
+    // already persist on their own; nothing needs tracking for replay there.
+    if (options_.CACHE_PROBLEMS == 0 || !warm_start_)
+    {
+        return;
+    }
+    added_constraints_per_sub_[sub_name].push_back(constraint);
+}
+
+void Benders_MICRO_ITERS::ReplayPersistedConstraints(const std::string& sub_name)
+{
+    if (!warm_start_)
+    {
+        return;
+    }
+    if (options_.CACHE_PROBLEMS == 1)
+    {
+        std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
+        for (auto& constraint_name: added_constraints_per_sub_[sub_name])
+        {
+            constraints_map_[constraints_manager_name]->AddRows(constraint_name);
+        }
+    }
+    else if (options_.CACHE_PROBLEMS >= 2)
+    {
+        auto ContraintsSolver = skeleton_constraint_coefficients_->GetSolver();
+        for (auto& constraint_name: added_constraints_per_sub_[sub_name])
+        {
+            int pos = ContraintsSolver->get_row_index(constraint_name);
+            auto SolverRow = SolverRowExtractor::GetRow(ContraintsSolver, pos);
+            sub_problem_solver_->add_rows(1,
+                                          static_cast<int>(SolverRow.dmatval.size()),
+                                          SolverRow.qrtype_p.data(),
+                                          SolverRow.rhs.data(),
+                                          NULL,
+                                          SolverRow.mstart.data(),
+                                          SolverRow.mclind.data(),
+                                          SolverRow.dmatval.data(),
+                                          SolverRow.row_names);
+        }
+    }
+}
+
+void Benders_MICRO_ITERS::ClearPersistedConstraintsTracking()
+{
+    for (auto& [sub_name, constraint_mgr_name]: subproblem_constraint_map_)
+    {
+        added_constraints_per_sub_[sub_name].clear();
     }
 }
 
@@ -348,17 +418,8 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
                                                      int num_master_iter,
                                                      int num_micro_iter)
 {
-    std::vector<double> sub_solution;
-    if (options_.CACHE_PROBLEMS < 2)
-    {
-        std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
-        auto sub_constraints_manager = constraints_map_[constraints_manager_name];
-        sub_solution = sub_constraints_manager->GetSubSolution();
-    }
-    else
-    {
-        sub_solution = subproblem_constraints_manager_->GetSubSolution();
-    }
+    auto sub_constraints_manager = GetActiveManager(sub_name);
+    std::vector<double> sub_solution = sub_constraints_manager->GetSubSolution();
 
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
     std::vector<std::string> constraints_to_add_vec;
@@ -375,23 +436,11 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     added_rows = constraints_to_add_vec.size();
     for (auto& constraint_to_add: constraints_to_add_vec)
     {
-        if (options_.CACHE_PROBLEMS < 2)
-        {
-            std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
-            auto sub_constraints_manager = constraints_map_[constraints_manager_name];
-            sub_constraints_manager->AddRows(constraint_to_add);
-            if (options_.CACHE_PROBLEMS == 1)
-            {
-                added_constraints_per_sub_[sub_name].push_back(constraint_to_add);
-            }
-        }
-        else
-        {
-            // we add the constaint for the next microiteration
-            subproblem_constraints_manager_->AddRows(constraint_to_add);
-            // We keep the constraint in a list to reset at the future benders iteration
-            AddedConstraintsPerSub_[sub_name].push_back(constraint_to_add);
-        }
+        // we add the constraint for the next microiteration
+        sub_constraints_manager->AddRows(constraint_to_add);
+        // We keep the constraint in a list to replay at a future Benders iteration, if
+        // warm_start_ says it should persist
+        TrackAddedConstraint(sub_name, constraint_to_add);
     }
 }
 
@@ -411,7 +460,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
         {
             for (auto& variable: variables_to_follow_)
             {
-                int variable_index = subproblem_constraints_manager_->GetVariableIndexInSolution(
+                int variable_index = subproblem_constraints_manager_->GetVariableIndexInSub(
                   variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
@@ -424,21 +473,10 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
             sub_problem_solver_->del_rows(InitialSubProblemSolverSize_, num_rows);
         }
 
-        auto ContraintsSolver = skeleton_constraint_coefficients_->GetSolver();
-        for (auto constraintName: AddedConstraintsPerSub_[sub_name])
-        {
-            int pos = ContraintsSolver->get_row_index(constraintName);
-            auto SolverRow = SolverRowExtractor::GetRow(ContraintsSolver, pos);
-            sub_problem_solver_->add_rows(1,
-                                          static_cast<int>(SolverRow.dmatval.size()),
-                                          SolverRow.qrtype_p.data(),
-                                          SolverRow.rhs.data(),
-                                          NULL,
-                                          SolverRow.mstart.data(),
-                                          SolverRow.mclind.data(),
-                                          SolverRow.dmatval.data(),
-                                          SolverRow.row_names);
-        }
+        // Replay the rows persisted for this subproblem (if warm_start_), so the solver's
+        // row count matches what a cached warm-start basis expects (see SubproblemBasisCache),
+        // and rows temporarily stripped by sharing this skeleton solver come back.
+        ReplayPersistedConstraints(sub_name);
     }
     else if (options_.CACHE_PROBLEMS == 1)
     {
@@ -464,7 +502,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
             for (auto& variable: variables_to_follow_)
             {
                 int variable_index = constraints_map_[constraints_manager_name]
-                                       ->GetVariableIndexInSolution(variable);
+                                       ->GetVariableIndexInSub(variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }
@@ -472,10 +510,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
         // Replay the rows micro-iterations added for this subproblem in previous
         // Benders iterations, so the freshly-rebuilt worker's row count matches
         // what a cached warm-start basis expects (see SubproblemBasisCache).
-        for (auto& constraint_name: added_constraints_per_sub_[sub_name])
-        {
-            constraints_map_[constraints_manager_name]->AddRows(constraint_name);
-        }
+        ReplayPersistedConstraints(sub_name);
     }
 
     if (OnBendersSubResolutionStart_)
