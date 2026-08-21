@@ -514,24 +514,43 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
     }
 
     std::mutex m;
+    std::exception_ptr first_exception;
     selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_data_map](auto& policy)
+      [this, &nameAndWorkers, &m, &subproblem_data_map, &first_exception](auto& policy)
       {
           std::for_each(policy,
                         nameAndWorkers.begin(),
                         nameAndWorkers.end(),
-                        [this, &m, &subproblem_data_map](
+                        [this, &m, &subproblem_data_map, &first_exception](
                           const std::pair<std::string, SubproblemWorkerPtr>& kvp)
                         {
-                            PlainData::SubProblemData subproblem_data;
-                            const auto& [name, worker] = kvp;
-                            SolveSubproblem(subproblem_data, name, worker);
+                            // A parallel execution policy calls std::terminate if an
+                            // exception escapes this callable, so any solve failure
+                            // must be caught here and rethrown after the loop instead.
+                            try
+                            {
+                                PlainData::SubProblemData subproblem_data;
+                                const auto& [name, worker] = kvp;
+                                SolveSubproblem(subproblem_data, name, worker);
 
-                            std::lock_guard guard(m);
-                            subproblem_data_map[name] = subproblem_data;
+                                std::lock_guard guard(m);
+                                subproblem_data_map[name] = subproblem_data;
+                            }
+                            catch (...)
+                            {
+                                std::lock_guard guard(m);
+                                if (!first_exception)
+                                {
+                                    first_exception = std::current_exception();
+                                }
+                            }
                         });
       },
       shouldParallelize());
+    if (first_exception)
+    {
+        std::rethrow_exception(first_exception);
+    }
 }
 
 namespace
@@ -581,35 +600,56 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
 
     std::mutex m;
+    std::exception_ptr first_exception;
 
     selectPolicy(
-      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
+      [this, &nameAndVariableMap, &m, &subproblem_data_map, &first_exception](auto& policy)
       {
           std::for_each(policy,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map](
+                        [this, &m, &subproblem_data_map, &first_exception](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
-                            const auto& [name, variables] = kvp;
-                            std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(kvp);
-                            PlainData::SubProblemData subproblem_data;
-                            SolveSubproblem(subproblem_data,
-                                            name,
-                                            worker,
-                                            [this, &name, &worker]
-                                            { TryRestoreSubproblemBasis(name, worker); });
-                            std::lock_guard guard(m);
-                            subproblem_data_map[name] = subproblem_data;
-                            StoreSubproblemBasis(name, worker);
+                            // A parallel execution policy calls std::terminate if an
+                            // exception escapes this callable, so any solve failure
+                            // must be caught here and rethrown after the loop instead.
+                            try
+                            {
+                                const auto& [name, variables] = kvp;
+                                std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(
+                                  kvp);
+                                PlainData::SubProblemData subproblem_data;
+                                SolveSubproblem(subproblem_data,
+                                                name,
+                                                worker,
+                                                [this, &name, &worker]
+                                                { TryRestoreSubproblemBasis(name, worker); });
+                                std::lock_guard guard(m);
+                                subproblem_data_map[name] = subproblem_data;
+                                StoreSubproblemBasis(name, worker);
 
-                            std::call_once(
-                              variable_indice_once_flag,
-                              [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
-                              *worker);
+                                std::call_once(
+                                  variable_indice_once_flag,
+                                  [&](const auto& worker_)
+                                  { SetSubproblemVariablesIndices(worker_); },
+                                  *worker);
+                            }
+                            catch (...)
+                            {
+                                std::lock_guard guard(m);
+                                if (!first_exception)
+                                {
+                                    first_exception = std::current_exception();
+                                }
+                            }
                         });
       },
       shouldParallelize());
+    if (first_exception)
+    {
+        std::rethrow_exception(first_exception);
+    }
 }
 
 void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
