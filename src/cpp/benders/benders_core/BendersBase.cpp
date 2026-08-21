@@ -650,7 +650,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     if (post_reset_hook)
     {
         // Must run after OnBendersSubResolutionStart has reset the (possibly
-        // shared, memoptim-cached) solver's rows back to this subproblem's own
+        // shared, skeleton-cached) solver's rows back to this subproblem's own
         // structure, otherwise a warm-start basis sized for a different
         // subproblem's row count can be applied to the solver.
         post_reset_hook();

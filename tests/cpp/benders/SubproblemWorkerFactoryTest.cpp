@@ -15,7 +15,7 @@ class SubproblemWorkerFactoryTest: public ::testing::Test
 protected:
     void SetUp() override
     {
-        tmpDir_ = std::filesystem::temp_directory_path() / ("memoptim_test_" + std::to_string(::testing::UnitTest::GetInstance()->random_seed()));
+        tmpDir_ = std::filesystem::temp_directory_path() / ("skeleton_test_" + std::to_string(::testing::UnitTest::GetInstance()->random_seed()));
         subDir_ = tmpDir_ / "sub";
         std::filesystem::create_directories(subDir_);
     }

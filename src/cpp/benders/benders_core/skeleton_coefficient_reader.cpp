@@ -1,4 +1,4 @@
-#include "antares-xpansion/benders/benders_core/memoptim_utils.h"
+#include "antares-xpansion/benders/benders_core/skeleton_coefficient_reader.h"
 
 #include <fstream>
 #include <iostream>
@@ -6,13 +6,13 @@
 
 #include <boost/tokenizer.hpp>
 
-MemoptimUtils::MemoptimUtils(std::vector<std::string>&& sub_problem_names):
+SkeletonCoefficientReader::SkeletonCoefficientReader(std::vector<std::string>&& sub_problem_names):
     my_subs_(std::make_move_iterator(sub_problem_names.begin()),
              std::make_move_iterator(sub_problem_names.end()))
 {
 }
 
-void MemoptimUtils::read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
+void SkeletonCoefficientReader::read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
                                           std::map<std::string, std::vector<double>>& dest)
 {
     boost::escaped_list_separator<char> sep('\\', ',', '\"');
@@ -58,7 +58,7 @@ void dump_not_found(const std::vector<std::string>& names, const std::string& fi
     }
 }
 
-void MemoptimUtils::read_indices_csv(const std::filesystem::path& csv_path,
+void SkeletonCoefficientReader::read_indices_csv(const std::filesystem::path& csv_path,
                                      std::vector<int>& dest_indices,
                                      bool is_col,
                                      const std::shared_ptr<SolverAbstract>& solver)

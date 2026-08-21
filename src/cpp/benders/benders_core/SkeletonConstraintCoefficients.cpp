@@ -10,7 +10,7 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
   ProblemsFormat format,
   std::vector<std::string>&& constraints_names):
     input_root_(input_root),
-    memoptim_utils_(std::move(constraints_names))
+    skeleton_coefficient_reader_(std::move(constraints_names))
 {
     logger_ = logger;
     SkeletonSolverLoader loader(logger_);
@@ -28,7 +28,7 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
   std::shared_ptr<SolverAbstract> solver):
     input_root_(input_root),
     solver_(std::move(solver)),
-    memoptim_utils_({})
+    skeleton_coefficient_reader_({})
 {
     logger_ = logger;
     read_coeffs_and_indices();
@@ -37,12 +37,12 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
 void SkeletonConstraintCoefficients::read_coeffs_and_indices()
 {
     auto dir = input_root_ / "constraints";
-    coef_set_.Load(memoptim_utils_,
+    coef_set_.Load(skeleton_coefficient_reader_,
                    dir / "coef.csv",
                    dir / "coef_cols.csv",
                    dir / "coef_rows.csv",
                    solver_);
-    rhs_set_.Load(memoptim_utils_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
+    rhs_set_.Load(skeleton_coefficient_reader_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
 }
 
 int SkeletonConstraintCoefficients::GetConstraintsNumber()

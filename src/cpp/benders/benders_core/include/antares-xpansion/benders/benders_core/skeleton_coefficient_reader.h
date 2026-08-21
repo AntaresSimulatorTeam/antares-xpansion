@@ -8,10 +8,10 @@
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
-class MemoptimUtils
+class SkeletonCoefficientReader
 {
 public:
-    MemoptimUtils(std::vector<std::string>&& sub_problem_names);
+    SkeletonCoefficientReader(std::vector<std::string>&& sub_problem_names);
 
     void read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
                                std::map<std::string, std::vector<double>>& dest);

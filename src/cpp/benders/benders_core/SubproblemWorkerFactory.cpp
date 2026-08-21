@@ -15,7 +15,7 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                                                  const SolverLogManager& solver_log_manager,
                                                  boost::mpi::communicator* world):
     input_root_(input_root),
-    memoptim_utils_(std::move(sub_problem_names))
+    skeleton_coefficient_reader_(std::move(sub_problem_names))
 {
     logger_ = logger;
     SkeletonSolverLoader loader(logger_);
@@ -40,7 +40,7 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                                                  boost::mpi::communicator* world):
     input_root_(input_root),
     solver_(std::move(solver)),
-    memoptim_utils_(std::move(sub_problem_names))
+    skeleton_coefficient_reader_(std::move(sub_problem_names))
 {
     logger_ = logger;
     load_coefficient_sets();
@@ -54,17 +54,17 @@ std::shared_ptr<SolverAbstract> SubproblemWorkerFactory::GetSolver()
 void SubproblemWorkerFactory::load_coefficient_sets()
 {
     auto dir = input_root_ / "sub";
-    coef_set_.Load(memoptim_utils_,
+    coef_set_.Load(skeleton_coefficient_reader_,
                    dir / "coef.csv",
                    dir / "coef_cols.csv",
                    dir / "coef_rows.csv",
                    solver_);
-    obj_set_.Load(memoptim_utils_,
+    obj_set_.Load(skeleton_coefficient_reader_,
                   dir / "obj_coef.csv",
                   dir / "obj_cols.csv",
                   std::nullopt,
                   solver_);
-    rhs_set_.Load(memoptim_utils_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
+    rhs_set_.Load(skeleton_coefficient_reader_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
 }
 
 int SubproblemWorkerFactory::GetSubNumber()
@@ -76,7 +76,7 @@ void SubproblemWorkerFactory::ApplyBasis(const std::string& sub_name)
 {
     // Must be called once the solver's row/column structure has been reset to
     // sub_name's own shape (see Benders_MICRO_ITERS::OnBendersSubResolutionStart):
-    // the solver instance can be shared/reused across subproblems (memoptim
+    // the solver instance can be shared/reused across subproblems (skeleton
     // mode), so applying a cached basis before that reset can mismatch a
     // stale row/column count left over from a different subproblem.
     subproblem_basis_cache_.TryRestore(sub_name, *solver_);

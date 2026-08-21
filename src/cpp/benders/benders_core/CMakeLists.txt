@@ -32,7 +32,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/CouplingMapGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SolverRowExtractor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonSolverLoader.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/memoptim_utils.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/skeleton_coefficient_reader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonCoefficientSet.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonConstraintCoefficients.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemBasisCache.cpp
@@ -58,7 +58,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemWorker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/VariablesGroup.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/Worker.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/memoptim_utils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/skeleton_coefficient_reader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonCoefficientSet.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemBasisCache.h

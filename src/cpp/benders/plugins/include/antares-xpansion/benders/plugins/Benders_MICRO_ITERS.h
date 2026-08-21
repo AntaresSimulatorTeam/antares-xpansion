@@ -170,7 +170,7 @@ private:
                                                   const BendersBaseOptions& options,
                                                   const SolverLogManager& solver_log_manager);
 
-    void build_mem_optim_constraints_skeleton(const BendersBaseOptions& options);
+    void build_skeleton_constraint_coefficients(const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
 

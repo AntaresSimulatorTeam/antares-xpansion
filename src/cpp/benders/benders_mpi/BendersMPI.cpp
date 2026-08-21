@@ -480,7 +480,7 @@ void BendersMpi::free()
     _world.barrier();
 }
 
-/*When we are in the memoptim + micro iterations mode
+/*When we are in the skeleton + micro iterations mode
 we need to have the hand on the constraint skeleon solver, in order
 to get to be able to fetch the constraints from the constraint optimization problem
 by their in the object that handle the subproblem optimization problem.

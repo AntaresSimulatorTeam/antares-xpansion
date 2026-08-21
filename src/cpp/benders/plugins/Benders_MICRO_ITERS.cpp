@@ -226,7 +226,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     }
     else
     {
-        build_mem_optim_constraints_skeleton(options);
+        build_skeleton_constraint_coefficients(options);
     }
 
     build_variables_to_follow_indices_vector();
@@ -507,9 +507,9 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
 }
 
 /*<
-Building the constraint handler for mem optim input format
+Building the constraint handler for the compact skeleton input format
 */
-void Benders_MICRO_ITERS::build_mem_optim_constraints_skeleton(const BendersBaseOptions& options)
+void Benders_MICRO_ITERS::build_skeleton_constraint_coefficients(const BendersBaseOptions& options)
 {
     const std::string prefix = "sub/sub_";
     const std::string suffix = ".mps";

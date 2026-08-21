@@ -15,7 +15,7 @@
 #include "Worker.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "memoptim_utils.h"
+#include "skeleton_coefficient_reader.h"
 
 namespace mpi = boost::mpi;
 
@@ -59,7 +59,7 @@ private:
     std::shared_ptr<SolverAbstract> solver_;
     SubproblemBasisCache subproblem_basis_cache_;
 
-    MemoptimUtils memoptim_utils_;
+    SkeletonCoefficientReader skeleton_coefficient_reader_;
     boost::mpi::communicator* world_ = nullptr;
     int SubProblemSolverInitialSize_;
 };

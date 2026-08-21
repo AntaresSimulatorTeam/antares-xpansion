@@ -10,7 +10,7 @@
 #include "SkeletonCoefficientSet.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "memoptim_utils.h"
+#include "skeleton_coefficient_reader.h"
 
 class SkeletonConstraintCoefficients
 {
@@ -42,5 +42,5 @@ private:
     SkeletonCoefficientSet rhs_set_;
     std::shared_ptr<SolverAbstract> solver_;
     SolverLogManager solver_log_manager_;
-    MemoptimUtils memoptim_utils_;
+    SkeletonCoefficientReader skeleton_coefficient_reader_;
 };

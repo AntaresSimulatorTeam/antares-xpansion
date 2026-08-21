@@ -21,15 +21,15 @@ Scenario Outline: Benders solves the ieee96 study to the same solution
 
     Examples:
       | study_path                                | cache_level | batch_size | procs |
-      | data_test/ieee96_base                     | 0           | 0          | 1     |
-      | data_test/ieee96_base                     | 0           | 1          | 3     |
-      | data_test/ieee96_base                     | 1           | 0          | 1     |
-      | data_test/ieee96_base                     | 1           | 1          | 3     |
-      | data_test/ieee96_micro_it                 | 0           | 0          | 1     |
-      | data_test/ieee96_micro_it                 | 0           | 1          | 3     |
-      | data_test/ieee96_micro_it                 | 1           | 0          | 1     |
-      | data_test/ieee96_micro_it                 | 1           | 1          | 3     |
-      | data_test/ieee96_mem_optim                | 2           | 0          | 1     |
-      | data_test/ieee96_mem_optim                | 2           | 1          | 3     |
-      | data_test/ieee96_micro_it_mem_optim_study | 2           | 0          | 1     |
-      | data_test/ieee96_micro_it_mem_optim_study | 2           | 1          | 3     |
+      | data_test/ieee96_base                      | 0           | 0          | 1     |
+      | data_test/ieee96_base                      | 0           | 1          | 3     |
+      | data_test/ieee96_base                      | 1           | 0          | 1     |
+      | data_test/ieee96_base                      | 1           | 1          | 3     |
+      | data_test/ieee96_micro_it                   | 0           | 0          | 1     |
+      | data_test/ieee96_micro_it                   | 0           | 1          | 3     |
+      | data_test/ieee96_micro_it                   | 1           | 0          | 1     |
+      | data_test/ieee96_micro_it                   | 1           | 1          | 3     |
+      | data_test/ieee96_skeleton                   | 2           | 0          | 1     |
+      | data_test/ieee96_skeleton                   | 2           | 1          | 3     |
+      | data_test/ieee96_micro_it_skeleton_study    | 2           | 0          | 1     |
+      | data_test/ieee96_micro_it_skeleton_study    | 2           | 1          | 3     |

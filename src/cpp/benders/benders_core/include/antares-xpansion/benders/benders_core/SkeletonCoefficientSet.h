@@ -8,14 +8,14 @@
 #include <vector>
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
-#include "memoptim_utils.h"
+#include "skeleton_coefficient_reader.h"
 
 class SkeletonCoefficientSet
 {
 public:
     SkeletonCoefficientSet() = default;
 
-    void Load(MemoptimUtils& memoptim_utils,
+    void Load(SkeletonCoefficientReader& skeleton_coefficient_reader,
               const std::filesystem::path& coeffs_csv,
               std::optional<std::filesystem::path> col_indices_csv,
               std::optional<std::filesystem::path> row_indices_csv,
