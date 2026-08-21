@@ -271,6 +271,7 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
                     continue;
                 }
                 it->second->DeleteAddedRows();
+                added_constraints_per_sub_[sub_name].clear();
             }
         }
     }
@@ -379,6 +380,10 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
             std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
             auto sub_constraints_manager = constraints_map_[constraints_manager_name];
             sub_constraints_manager->AddRows(constraint_to_add);
+            if (options_.CACHE_PROBLEMS == 1)
+            {
+                added_constraints_per_sub_[sub_name].push_back(constraint_to_add);
+            }
         }
         else
         {
@@ -462,6 +467,14 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                                        ->GetVariableIndexInSolution(variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
+        }
+
+        // Replay the rows micro-iterations added for this subproblem in previous
+        // Benders iterations, so the freshly-rebuilt worker's row count matches
+        // what a cached warm-start basis expects (see SubproblemBasisCache).
+        for (auto& constraint_name: added_constraints_per_sub_[sub_name])
+        {
+            constraints_map_[constraints_manager_name]->AddRows(constraint_name);
         }
     }
 
