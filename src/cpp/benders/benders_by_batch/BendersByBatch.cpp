@@ -481,7 +481,10 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
         const auto& name = kvp.first;
         std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
         PlainData::SubProblemData subproblem_data{};
-        SolveSubproblem(subproblem_data, name, worker);
+        SolveSubproblem(subproblem_data,
+                        name,
+                        worker,
+                        [this, &name, &worker] { TryRestoreSubproblemBasis(name, worker); });
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
         subproblem_data_map[name] = subproblem_data;

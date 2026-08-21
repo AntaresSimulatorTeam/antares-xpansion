@@ -195,6 +195,8 @@ protected:
       const std::pair<std::string, VariableMap>& kvp) const;
     void StoreSubproblemBasis(const std::string& name,
                               const std::shared_ptr<SubproblemWorker>& worker);
+    void TryRestoreSubproblemBasis(const std::string& name,
+                                   const std::shared_ptr<SubproblemWorker>& worker);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);

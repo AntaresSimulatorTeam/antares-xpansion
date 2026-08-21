@@ -549,7 +549,7 @@ std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, 
 } // namespace
 
 /**
- * Create a worker on a problem and reuse the basis to speed up solving
+ * Create a worker on a problem
  *
  * @param kvp Problem data
  * @param name Name of the problem
@@ -560,15 +560,19 @@ std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
   const std::pair<std::string, VariableMap>& kvp,
   const std::string& name)
 {
-    auto worker = makeSubproblemWorker(kvp);
-    subproblem_basis_cache_.TryRestore(name, *worker->_solver);
-    return worker;
+    return makeSubproblemWorker(kvp);
 }
 
 void BendersBase::StoreSubproblemBasis(const std::string& name,
                                        const std::shared_ptr<SubproblemWorker>& worker)
 {
     subproblem_basis_cache_.Store(name, *worker->_solver);
+}
+
+void BendersBase::TryRestoreSubproblemBasis(const std::string& name,
+                                            const std::shared_ptr<SubproblemWorker>& worker)
+{
+    subproblem_basis_cache_.TryRestore(name, *worker->_solver);
 }
 
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
@@ -605,7 +609,11 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                             const auto& [name, variables] = kvp;
                             std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
                             PlainData::SubProblemData subproblem_data;
-                            SolveSubproblem(subproblem_data, name, worker);
+                            SolveSubproblem(subproblem_data,
+                                            name,
+                                            worker,
+                                            [this, &name, &worker]
+                                            { TryRestoreSubproblemBasis(name, worker); });
                             std::lock_guard guard(m);
                             subproblem_data_map[name] = subproblem_data;
                             StoreSubproblemBasis(name, worker);
