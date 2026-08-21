@@ -114,12 +114,15 @@ def process_command(context, n, option_file: str, command_builder):
         context.tmp_study)
 
     os.chdir(lp_path)
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    process.communicate()
-    context.return_code = process.returncode
-    options = read_json_file(option_file)
-    output_file_path = options["JSON_FILE"]
-    context.outputs = read_json_file(output_file_path)
+    try:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        process.communicate()
+        context.return_code = process.returncode
+        options = read_json_file(option_file)
+        output_file_path = options["JSON_FILE"]
+        context.outputs = read_json_file(output_file_path)
+    finally:
+        os.chdir(old_cwd)
     return old_cwd, options
 
 
