@@ -17,6 +17,8 @@ TEST(SubproblemBasisCacheTest, StoreThenTryRestoreRoundTripsTheBasis)
     cache.Store("sub1", source_solver);
 
     RecordingSolver target_solver;
+    target_solver.nrows = 2;
+    target_solver.ncols = 2;
     EXPECT_TRUE(cache.TryRestore("sub1", target_solver));
 
     EXPECT_EQ(target_solver.set_basis_calls, 1);
