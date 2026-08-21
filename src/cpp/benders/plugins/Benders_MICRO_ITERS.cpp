@@ -443,23 +443,23 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
         // for this cache level) must instead be rebuilt here, per subproblem,
         // every time a fresh worker is handed to us.
         std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
-        auto constraints_file_path = std::filesystem::path(options_.INPUTROOT) /
-                                     constraints_manager_name;
-        constraints_map_[constraints_manager_name] = SubproblemConstraintsManager::FromConstraintsFile(
-          constraints_file_path,
-          options_.SOLVER_NAME,
-          *solver_log_manager_,
-          _logger,
-          options_.LOG_LEVEL,
-          options_.PROBLEMS_FORMAT,
-          sub_worker);
+        auto constraints_file_path = std::filesystem::path(options_.INPUTROOT)
+                                     / constraints_manager_name;
+        constraints_map_[constraints_manager_name] = SubproblemConstraintsManager::
+          FromConstraintsFile(constraints_file_path,
+                              options_.SOLVER_NAME,
+                              *solver_log_manager_,
+                              _logger,
+                              options_.LOG_LEVEL,
+                              options_.PROBLEMS_FORMAT,
+                              sub_worker);
 
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
         {
             for (auto& variable: variables_to_follow_)
             {
-                int variable_index = constraints_map_[constraints_manager_name]->GetVariableIndexInSolution(
-                  variable);
+                int variable_index = constraints_map_[constraints_manager_name]
+                                       ->GetVariableIndexInSolution(variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
         }

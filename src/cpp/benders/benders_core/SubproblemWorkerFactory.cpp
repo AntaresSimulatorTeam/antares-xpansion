@@ -64,7 +64,11 @@ void SubproblemWorkerFactory::load_coefficient_sets()
                   dir / "obj_cols.csv",
                   std::nullopt,
                   solver_);
-    rhs_set_.Load(skeleton_coefficient_reader_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
+    rhs_set_.Load(skeleton_coefficient_reader_,
+                  dir / "rhs.csv",
+                  std::nullopt,
+                  dir / "rhs_rows.csv",
+                  solver_);
 }
 
 int SubproblemWorkerFactory::GetSubNumber()

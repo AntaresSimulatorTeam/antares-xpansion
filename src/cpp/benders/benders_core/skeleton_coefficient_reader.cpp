@@ -12,8 +12,9 @@ SkeletonCoefficientReader::SkeletonCoefficientReader(std::vector<std::string>&& 
 {
 }
 
-void SkeletonCoefficientReader::read_keyed_coeffs_csv(const std::filesystem::path& csv_path,
-                                          std::map<std::string, std::vector<double>>& dest)
+void SkeletonCoefficientReader::read_keyed_coeffs_csv(
+  const std::filesystem::path& csv_path,
+  std::map<std::string, std::vector<double>>& dest)
 {
     boost::escaped_list_separator<char> sep('\\', ',', '\"');
     using Tokenizer = boost::tokenizer<boost::escaped_list_separator<char>>;
@@ -59,9 +60,9 @@ void dump_not_found(const std::vector<std::string>& names, const std::string& fi
 }
 
 void SkeletonCoefficientReader::read_indices_csv(const std::filesystem::path& csv_path,
-                                     std::vector<int>& dest_indices,
-                                     bool is_col,
-                                     const std::shared_ptr<SolverAbstract>& solver)
+                                                 std::vector<int>& dest_indices,
+                                                 bool is_col,
+                                                 const std::shared_ptr<SolverAbstract>& solver)
 {
     boost::escaped_list_separator<char> sep('\\', ',', '\"');
     using Tokenizer = boost::tokenizer<boost::escaped_list_separator<char>>;

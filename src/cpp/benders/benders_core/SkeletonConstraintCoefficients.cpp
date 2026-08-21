@@ -42,7 +42,11 @@ void SkeletonConstraintCoefficients::read_coeffs_and_indices()
                    dir / "coef_cols.csv",
                    dir / "coef_rows.csv",
                    solver_);
-    rhs_set_.Load(skeleton_coefficient_reader_, dir / "rhs.csv", std::nullopt, dir / "rhs_rows.csv", solver_);
+    rhs_set_.Load(skeleton_coefficient_reader_,
+                  dir / "rhs.csv",
+                  std::nullopt,
+                  dir / "rhs_rows.csv",
+                  solver_);
 }
 
 int SkeletonConstraintCoefficients::GetConstraintsNumber()
