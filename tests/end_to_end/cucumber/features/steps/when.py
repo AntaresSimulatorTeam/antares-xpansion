@@ -123,15 +123,15 @@ def process_command(context, n, option_file: str, command_builder):
         context.outputs = read_json_file(output_file_path)
     finally:
         os.chdir(old_cwd)
-    return old_cwd, options
+    return old_cwd, options, lp_path
 
 
 @when('I run outer loop with {n:d} proc(s) and "{option_file}" as option file')
 @when('I run outer loop with {n:d} proc(s)')
 def run_outer_loop(context, n, option_file: str = "options.json"):
-    old_cwd, options = process_command(context, n, option_file, build_outer_loop_command)
-    context.loss_of_load_file = (Path(options["OUTPUTROOT"]) / "LOLD.txt").absolute()
-    context.unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "UnsuppliedEnergy.txt").absolute()
+    old_cwd, options, lp_path = process_command(context, n, option_file, build_outer_loop_command)
+    context.loss_of_load_file = (lp_path / options["OUTPUTROOT"] / "LOLD.txt").resolve()
+    context.unsupplied_energy_file = (lp_path / options["OUTPUTROOT"] / "UnsuppliedEnergy.txt").resolve()
 
     os.chdir(old_cwd)
 
@@ -139,7 +139,7 @@ def run_outer_loop(context, n, option_file: str = "options.json"):
 @when('I run benders with {n:d} proc(s) and "{option_file}" as option file')
 @when('I run benders with {n:d} proc(s)')
 def run_benders(context, n, option_file: str = "options.json"):
-    old_cwd, _ = process_command(context, n, option_file, build_benders_command)
+    old_cwd, _, _ = process_command(context, n, option_file, build_benders_command)
     os.chdir(old_cwd)
 
 
