@@ -332,9 +332,10 @@ void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const 
 
 void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker)
+                                 const std::shared_ptr<SubproblemWorker>& worker,
+                                 const std::function<void()>& post_reset_hook)
 {
-    BendersBase::SolveSubproblem(subproblem_data, name, worker);
+    BendersBase::SolveSubproblem(subproblem_data, name, worker, post_reset_hook);
 
     std::vector<double> solution = worker->get_solution();
     criterion_computation_.ComputeCriterion(SubproblemWeight(_data.nsubproblem, name),

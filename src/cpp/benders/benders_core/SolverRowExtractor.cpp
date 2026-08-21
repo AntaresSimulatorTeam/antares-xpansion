@@ -29,7 +29,6 @@ SolverRepresentedRows SolverRowExtractor::GetRow(std::shared_ptr<SolverAbstract>
                      row_pos);
     result.mclind.resize(nels);
     result.dmatval.resize(nels);
-    result.mstart.resize(1);
 
     double rhs(0.);
     solver->get_rhs(&rhs, row_pos, row_pos);

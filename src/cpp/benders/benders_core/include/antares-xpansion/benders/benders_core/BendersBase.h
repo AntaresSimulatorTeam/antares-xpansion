@@ -3,6 +3,7 @@
 #include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <execution>
 #include <filesystem>
+#include <functional>
 #include <mutex>
 #include <tbb/tbb.h>
 
@@ -314,7 +315,8 @@ protected:
 
     virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker);
+                                 const std::shared_ptr<SubproblemWorker>& worker,
+                                 const std::function<void()>& post_reset_hook = nullptr);
     void SetSubproblemVariablesIndices(const SubproblemWorker& subproblem);
 
     Benders::Criterion::CriterionComputation criterion_computation_;

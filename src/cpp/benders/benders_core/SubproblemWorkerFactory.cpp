@@ -76,18 +76,26 @@ int SubproblemWorkerFactory::GetSubNumber()
     return rhs_set_.Count();
 }
 
+void SubproblemWorkerFactory::ApplyBasis(const std::string& sub_name)
+{
+    // Must be called once the solver's row/column structure has been reset to
+    // sub_name's own shape (see Benders_MICRO_ITERS::OnBendersSubResolutionStart):
+    // the solver instance can be shared/reused across subproblems (memoptim
+    // mode), so applying a cached basis before that reset can mismatch a
+    // stale row/column count left over from a different subproblem.
+    auto it = subProblemBasis_.find(sub_name);
+    if (it != subProblemBasis_.end())
+    {
+        solver_->set_basis(it->second.first, it->second.second);
+    }
+}
+
 std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstract(
   std::string sub_name,
   VariableMap& variable_map,
   double cut_coefficient_tolerance,
   double slave_weight)
 {
-    // setting basis on the solver
-    if (subProblemBasis_.find(sub_name) != subProblemBasis_.end())
-    {
-        solver_->set_basis(subProblemBasis_[sub_name].first, subProblemBasis_[sub_name].second);
-    }
-
     solver_->chg_coefs(coef_set_.RowIndices(),
                        coef_set_.ColIndices(),
                        coef_set_.CoefficientsFor(sub_name));

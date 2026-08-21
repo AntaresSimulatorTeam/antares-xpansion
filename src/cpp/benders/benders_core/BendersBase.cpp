@@ -635,7 +635,10 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
           slave_weights);
 
         PlainData::SubProblemData subproblem_data;
-        SolveSubproblem(subproblem_data, sub, subproblem_worker);
+        SolveSubproblem(subproblem_data,
+                        sub,
+                        subproblem_worker,
+                        [this, &sub] { subproblem_worker_factory_->ApplyBasis(sub); });
 
         subproblem_worker_factory_->GetBasis(sub);
 
@@ -645,11 +648,20 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::string& name,
-                                  const std::shared_ptr<SubproblemWorker>& worker)
+                                  const std::shared_ptr<SubproblemWorker>& worker,
+                                  const std::function<void()>& post_reset_hook)
 {
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
     benders_plugin_->OnBendersSubResolutionStart(worker, name);
+    if (post_reset_hook)
+    {
+        // Must run after OnBendersSubResolutionStart has reset the (possibly
+        // shared, memoptim-cached) solver's rows back to this subproblem's own
+        // structure, otherwise a warm-start basis sized for a different
+        // subproblem's row count can be applied to the solver.
+        post_reset_hook();
+    }
 
     int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)

@@ -43,6 +43,7 @@ public:
                                                               double slave_weight);
 
     void GetBasis(std::string sub_name);
+    void ApplyBasis(const std::string& sub_name);
     int GetSubNumber();
     std::shared_ptr<SolverAbstract> GetSolver();
 
