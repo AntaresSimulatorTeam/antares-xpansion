@@ -275,7 +275,13 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
     }
     else
     {
-        subproblem_constraints_manager_->DeleteAddedRows();
+        // subproblem_constraints_manager_ is only set by OnBendersSubResolutionStart, which a
+        // rank may not have called this iteration (e.g. it owns no subproblem in the current
+        // batch under BendersByBatch).
+        if (subproblem_constraints_manager_)
+        {
+            subproblem_constraints_manager_->DeleteAddedRows();
+        }
     }
 }
 
