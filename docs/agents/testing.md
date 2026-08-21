@@ -169,6 +169,66 @@ Run specific markers:
 pytest -m short_sequential tests/python/
 ```
 
+## Cucumber / BDD Tests (behave)
+
+End-to-end functional tests for the Benders solver live under
+`tests/end_to_end/cucumber/`, using [behave](https://behave.readthedocs.io/)
+(Gherkin).
+
+### Location
+
+```
+tests/end_to_end/cucumber/features/
+├── *.feature            # Scenario definitions
+└── steps/
+    ├── given.py          # Given steps (study path, batch size, cache problems level, ...)
+    ├── when.py           # When steps (run benders / outer_loop / antares-xpansion)
+    ├── then.py           # Then steps (assertions: cost, solution values, ...)
+    └── environment.py    # before/after hooks
+```
+
+### Running
+
+Always run `behave` from `tests/end_to_end/` (not from inside `cucumber/`) —
+the `Given the study path is "..."` step resolves paths relative to that
+directory:
+
+```bash
+cd tests/end_to_end
+behave cucumber/features                                     # full suite
+behave --tags '@short' cucumber/features/<file>.feature       # one file, tagged subset
+```
+
+This matches how CI invokes it (`.github/workflows/cucumber-tests/action.yml`),
+which by default skips `@flaky` and `@noci`.
+
+Requires a built `benders`/`outer_loop` executable and, for `MICRO_ITERATIONS`
+studies, the `dummy_micro_iterations_plugin` target (see
+`tests/cpp/plugins/CMakeLists.txt`, which copies it into the relevant
+`data_test/*/plugin_inputs/` directories via a `POST_BUILD` step).
+
+### Writing scenarios
+
+Prefer a single `Scenario Outline` with an `Examples:` table over many
+near-duplicate `Scenario`s when several scenarios share the same `Then`
+assertions and only differ in a few `Given`/`When` parameters (study path,
+cache level, batch size, proc count, ...) — see
+`benders_memory_and_micro_iterations.feature` and `benders_aggreg_cuts.feature`.
+Keep every `Examples` row's step sequence identical: `Scenario Outline` can't
+conditionally add or remove a step per row, so use a parametrized step with a
+harmless default value (e.g. `And the batch size is 0`) instead of omitting a
+step for rows where it doesn't apply.
+
+### Key `Given` steps (`steps/given.py`)
+
+- `the study path is "<path>"` — copies the study into a temp dir; all later
+  steps operate on that copy
+- `the batch size is <n>` — sets `BATCH_SIZE` in `options.json`
+- `the cache problems level is <n>` — sets `CACHE_PROBLEMS` in `options.json`
+  (0 = resident subproblems, 1 = reload-from-disk with basis caching, 2 =
+  compact skeleton representation — the last requires the study's `sub/`
+  layout to actually be in the compact CSV format, not per-subproblem MPS)
+
 ## CI Requirements
 
 - All tests must pass before merging
