@@ -137,11 +137,34 @@ jobs:
           cmake --build _build --config Release -j4
 
 
+      # Temporary diagnostics for the BendersByBatch MPI crash investigation (PR #1267):
+      # forces every heap allocation in benders.exe onto its own page, with an
+      # inaccessible guard page immediately after, so an out-of-bounds heap write
+      # faults immediately at the culprit instruction instead of silently corrupting
+      # nearby memory (which is what let the earlier plain-crash investigation only
+      # find the corrupted *read*, not the write that caused it). Scoped to just the
+      # Cucumber step - see the matching cleanup step right after. Not for permanent
+      # use - remove once the crash is diagnosed.
+      - name: Enable Page Heap for benders.exe
+        shell: pwsh
+        run: |
+          $key = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\benders.exe"
+          New-Item -Path $key -Force | Out-Null
+          New-ItemProperty -Path $key -Name "GlobalFlag" -PropertyType DWord -Value 0x02000000 -Force | Out-Null
+          New-ItemProperty -Path $key -Name "PageHeapFlags" -PropertyType DWord -Value 0x3 -Force | Out-Null
+          Get-ItemProperty -Path $key | Format-List
+
       - name: Tests with Cucumber
         uses: ./.github/workflows/cucumber-tests
         with:
           #          feature: "features/outer_loop_tests.feature"
           mpi_path: /c/Program Files/Microsoft MPI/Bin
+
+      - name: Disable Page Heap for benders.exe
+        if: always()
+        shell: pwsh
+        run: |
+          Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\benders.exe" -Recurse -Force -ErrorAction SilentlyContinue
 
       # Temporary diagnostics for the BendersByBatch MPI crash investigation (PR #1267):
       # main.cpp installs a SetUnhandledExceptionFilter handler that writes a full
