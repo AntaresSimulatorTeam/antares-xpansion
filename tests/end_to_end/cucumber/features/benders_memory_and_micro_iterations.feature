@@ -62,3 +62,23 @@ Scenario Outline: Benders solves the ieee96 study to the same solution with micr
       | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 1     | 1          |
       | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 3     | 0          |
       | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 3     | 1          |
+
+    # Diagnostic rows for the Windows BendersByBatch crash investigation (PR #1267):
+    # every row above pairs batch_size=0 with procs=1 and batch_size=1 with procs=3,
+    # so batch algorithm and process count have never been varied independently.
+    # These rows decouple them: batch_size=1/procs=1 exercises BendersByBatch on a
+    # single process, and batch_size=0/procs=3 exercises plain BendersMpi across 3
+    # processes. Either combination failing on Windows narrows the root cause to that
+    # one variable. Not for permanent use - remove once the crash is diagnosed.
+      | data_test/ieee96_micro_it                  | 0           | 1          | 1     | 0          |
+      | data_test/ieee96_micro_it                  | 0           | 1          | 1     | 1          |
+      | data_test/ieee96_micro_it                  | 0           | 0          | 3     | 0          |
+      | data_test/ieee96_micro_it                  | 0           | 0          | 3     | 1          |
+      | data_test/ieee96_micro_it                  | 1           | 1          | 1     | 0          |
+      | data_test/ieee96_micro_it                  | 1           | 1          | 1     | 1          |
+      | data_test/ieee96_micro_it                  | 1           | 0          | 3     | 0          |
+      | data_test/ieee96_micro_it                  | 1           | 0          | 3     | 1          |
+      | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 1     | 0          |
+      | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 1     | 1          |
+      | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 3     | 0          |
+      | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 3     | 1          |
