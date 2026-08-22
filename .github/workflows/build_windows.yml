@@ -146,15 +146,18 @@ jobs:
         if: failure()
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path crash_dumps | Out-Null
           $dumps = Get-ChildItem -Path "$env:TEMP", "$env:RUNNER_TEMP", "${{ github.workspace }}" `
             -Filter "benders_crash_pid_*.dmp" -Recurse -ErrorAction SilentlyContinue
           if ($dumps) {
-            New-Item -ItemType Directory -Force -Path crash_dumps | Out-Null
             $dumps | Copy-Item -Destination crash_dumps
             Write-Host "Collected $($dumps.Count) crash dump(s)."
           } else {
             Write-Host "No crash dumps found."
           }
+          # Grab the matching PDB (and exe) so the dumps can be symbolized offline.
+          Copy-Item "_build/Release/benders.pdb" -Destination crash_dumps -ErrorAction SilentlyContinue
+          Copy-Item "_build/Release/benders.exe" -Destination crash_dumps -ErrorAction SilentlyContinue
 
       - name: Upload crash dumps
         if: failure()
