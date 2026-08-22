@@ -115,9 +115,18 @@ def process_command(context, n, option_file: str, command_builder):
 
     os.chdir(lp_path)
     try:
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-        process.communicate()
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = process.communicate()
         context.return_code = process.returncode
+        context.stdout = out.replace(b'\r\n', b'\n').decode('utf-8', errors='replace')
+        context.stderr = err.replace(b'\r\n', b'\n').decode('utf-8', errors='replace')
+        if context.return_code != 0:
+            print("*********************** Begin stdout ***********************")
+            print(context.stdout)
+            print("*********************** End stdout ***********************")
+            print("*********************** Begin stderr ***********************")
+            print(context.stderr)
+            print("*********************** End stderr ***********************")
         options = read_json_file(option_file)
         output_file_path = options["JSON_FILE"]
         context.outputs = read_json_file(output_file_path)
