@@ -124,6 +124,9 @@ jobs:
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
           -DCMAKE_INSTALL_PREFIX=_install
           -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
+          -DCMAKE_CXX_FLAGS="/Zi"
+          -DCMAKE_EXE_LINKER_FLAGS="/DEBUG"
+          -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG"
 
       - name: Build
         run: |
