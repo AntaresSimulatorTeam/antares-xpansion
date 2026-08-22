@@ -136,6 +136,34 @@ jobs:
           #          feature: "features/outer_loop_tests.feature"
           mpi_path: /c/Program Files/Microsoft MPI/Bin
 
+      # Temporary diagnostics for the BendersByBatch MPI crash investigation (PR #1267):
+      # main.cpp installs a SetUnhandledExceptionFilter handler that writes a full
+      # minidump on any crash. Cucumber runs benders.exe from a per-scenario temp
+      # study directory under the system temp dir, so search broadly for any dumps
+      # it left behind and upload them for offline analysis in WinDbg. Not for
+      # permanent use - remove once the crash is diagnosed.
+      - name: Collect crash dumps
+        if: failure()
+        shell: pwsh
+        run: |
+          $dumps = Get-ChildItem -Path "$env:TEMP", "$env:RUNNER_TEMP", "${{ github.workspace }}" `
+            -Filter "benders_crash_pid_*.dmp" -Recurse -ErrorAction SilentlyContinue
+          if ($dumps) {
+            New-Item -ItemType Directory -Force -Path crash_dumps | Out-Null
+            $dumps | Copy-Item -Destination crash_dumps
+            Write-Host "Collected $($dumps.Count) crash dump(s)."
+          } else {
+            Write-Host "No crash dumps found."
+          }
+
+      - name: Upload crash dumps
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: crash-dumps-${{ matrix.os }}
+          path: crash_dumps
+          if-no-files-found: ignore
+
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
