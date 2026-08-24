@@ -687,7 +687,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
     benders_plugin_->OnBendersSubResolutionStart(worker, name);
-    if (post_reset_hook)
+    if (post_reset_hook && benders_plugin_->ShouldRestoreSubproblemBasis())
     {
         // Must run after OnBendersSubResolutionStart has reset the (possibly
         // shared, skeleton-cached) solver's rows back to this subproblem's own

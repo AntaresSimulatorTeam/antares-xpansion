@@ -126,6 +126,8 @@ public:
                                      std::string sub_name = "") override;
     void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
 
+    bool ShouldRestoreSubproblemBasis() const override;
+
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
         @inputs

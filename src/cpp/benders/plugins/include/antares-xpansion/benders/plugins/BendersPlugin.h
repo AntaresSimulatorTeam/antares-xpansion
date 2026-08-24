@@ -84,4 +84,13 @@ public:
                                             int num_master_iter,
                                             int num_micro_iter)
       = 0;
+
+    /*
+      Whether a subproblem's cached basis should be restored onto its solver just before it is
+      (re)solved. Plugins whose subproblem structure can change between resolutions (e.g.
+      micro-iterations adding rows) must return false here when warm starting is disabled,
+      since restoring a basis cached from a differently-sized subproblem would only trigger a
+      size-mismatch fallback.
+    */
+    virtual bool ShouldRestoreSubproblemBasis() const = 0;
 };

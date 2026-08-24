@@ -60,6 +60,11 @@ public:
                                     int num_micro_iter) override
     {
     }
+
+    bool ShouldRestoreSubproblemBasis() const override
+    {
+        return true;
+    }
 };
 
 class BendersMicroIterationsDouble : public BendersBase

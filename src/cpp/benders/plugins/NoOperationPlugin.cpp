@@ -54,3 +54,8 @@ void NoOperationPlugin::OnBendersSubResolutionStart(
 void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
 {
 }
+
+bool NoOperationPlugin::ShouldRestoreSubproblemBasis() const
+{
+    return true;
+}

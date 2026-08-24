@@ -266,6 +266,11 @@ void Benders_MICRO_ITERS::OnBendersEnd()
 #endif
 }
 
+bool Benders_MICRO_ITERS::ShouldRestoreSubproblemBasis() const
+{
+    return warm_start_;
+}
+
 void Benders_MICRO_ITERS::OnBendersIterationStart()
 {
     OnBendersIterationStart_();

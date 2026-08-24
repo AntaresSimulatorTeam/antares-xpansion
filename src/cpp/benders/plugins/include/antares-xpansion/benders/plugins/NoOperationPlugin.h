@@ -33,4 +33,6 @@ public:
                                     std::string solve_time,
                                     int num_master_iter,
                                     int num_micro_iter) override;
+
+    bool ShouldRestoreSubproblemBasis() const override;
 };
