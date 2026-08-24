@@ -1,6 +1,6 @@
 diff -ruN a/Clp/src/ClpModel.cpp b/Clp/src/ClpModel.cpp
---- a/Clp/src/ClpModel.cpp	2026-08-24 19:04:19.277320028 +0200
-+++ b/Clp/src/ClpModel.cpp	2026-08-24 19:04:19.297320155 +0200
+--- a/Clp/src/ClpModel.cpp	2026-08-24 20:27:36.146488338 +0200
++++ b/Clp/src/ClpModel.cpp	2026-08-24 20:27:36.154488397 +0200
 @@ -1402,6 +1402,11 @@
  {
    if (!number)
@@ -26,8 +26,8 @@ diff -ruN a/Clp/src/ClpModel.cpp b/Clp/src/ClpModel.cpp
      double *lower = rowLower_ + numberRowsNow;
      double *upper = rowUpper_ + numberRowsNow;
 diff -ruN a/Clp/src/ClpNonLinearCost.cpp b/Clp/src/ClpNonLinearCost.cpp
---- a/Clp/src/ClpNonLinearCost.cpp	2026-08-24 19:04:19.201319546 +0200
-+++ b/Clp/src/ClpNonLinearCost.cpp	2026-08-24 19:04:19.217319647 +0200
+--- a/Clp/src/ClpNonLinearCost.cpp	2026-08-24 20:27:36.110488070 +0200
++++ b/Clp/src/ClpNonLinearCost.cpp	2026-08-24 20:27:36.118488129 +0200
 @@ -67,6 +67,11 @@
    //model_->setMaximumIterations(30000);
    //}
@@ -61,8 +61,8 @@ diff -ruN a/Clp/src/ClpNonLinearCost.cpp b/Clp/src/ClpNonLinearCost.cpp
    // difference in cost
    double difference = 0.0;
 diff -ruN a/Clp/src/ClpSimplex.cpp b/Clp/src/ClpSimplex.cpp
---- a/Clp/src/ClpSimplex.cpp	2026-08-24 19:04:19.237319775 +0200
-+++ b/Clp/src/ClpSimplex.cpp	2026-08-24 19:04:19.257319901 +0200
+--- a/Clp/src/ClpSimplex.cpp	2026-08-24 20:27:36.130488219 +0200
++++ b/Clp/src/ClpSimplex.cpp	2026-08-24 20:27:36.138488278 +0200
 @@ -3359,6 +3359,12 @@
    }
    int numberRows2 = numberRows_ + numberExtraRows_;
@@ -102,3 +102,21 @@ diff -ruN a/Clp/src/ClpSimplex.cpp b/Clp/src/ClpSimplex.cpp
    ClpModel::resize(newNumberRows, newNumberColumns);
    delete[] perturbationArray_;
    perturbationArray_ = NULL;
+diff -ruN a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2026-08-24 20:27:36.162488456 +0200
++++ b/CMakeLists.txt	2026-08-24 20:27:36.170488516 +0200
+@@ -91,6 +91,14 @@
+   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
+ endif()
+ 
++# Temporary diagnostics for the BendersByBatch CLP crash investigation
++# (PR #1267). Added via add_definitions() rather than -DCMAKE_CXX_FLAGS on
++# the configure command line, since the latter overrides (rather than
++# appends to) the compiler flags vcpkg's toolchain injects per-triplet
++# (e.g. /MD for VCPKG_CRT_LINKAGE=dynamic), which caused a CRT/ABI mismatch
++# and crashed every scenario, not just the target bug. Not for permanent use.
++add_definitions(-DCLP_DIAG_INSTRUMENTATION)
++
+ # ZLIB
+ if(NOT TARGET ZLIB::ZLIB)
+   find_package(ZLIB)

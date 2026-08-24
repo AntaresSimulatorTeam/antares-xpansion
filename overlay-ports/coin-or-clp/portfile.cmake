@@ -20,8 +20,6 @@ if (VCPKG_TARGET_IS_WINDOWS)
 endif()
 vcpkg_cmake_configure(
         SOURCE_PATH "${SOURCE_PATH}"
-        OPTIONS
-                -DCMAKE_CXX_FLAGS=-DCLP_DIAG_INSTRUMENTATION
 )
 
 vcpkg_cmake_install()
