@@ -37,9 +37,10 @@ public:
     int GetVariableIndexInSub(std::string variable_id);
     void DeleteAddedRows(int base_size);
 
-private:
     SubproblemConstraintsManager(std::shared_ptr<SolverAbstract> solver,
                                  const std::shared_ptr<SubproblemWorker>& subproblem_worker);
+
+private:
     void add_rows_to_subproblem(SolverRepresentedRows& new_row);
 
     SolverRowExtractor row_extractor_;

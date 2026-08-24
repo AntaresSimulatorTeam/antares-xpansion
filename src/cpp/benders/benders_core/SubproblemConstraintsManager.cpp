@@ -27,16 +27,14 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromConstraintsFil
                               solver_log_manager,
                               log_level,
                               format);
-    return SubproblemConstraintsManagerPtr(
-      new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
+    return std::make_shared<SubproblemConstraintsManager>(std::move(solver), subproblem_worker);
 }
 
 SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromSharedSolver(
   std::shared_ptr<SolverAbstract> solver,
   const std::shared_ptr<SubproblemWorker>& subproblem_worker)
 {
-    return SubproblemConstraintsManagerPtr(
-      new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
+    return std::make_shared<SubproblemConstraintsManager>(std::move(solver), subproblem_worker);
 }
 
 std::vector<double> SubproblemConstraintsManager::GetSubSolution()
