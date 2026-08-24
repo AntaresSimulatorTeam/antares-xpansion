@@ -115,6 +115,10 @@ jobs:
 
       - name: Configure
         shell: bash
+        env:
+          # Without this, Git Bash's MSYS path-conversion mangles the MSVC-style
+          # /Zi, /DEBUG flags below into paths like "C:/Program Files/Git/Zi".
+          MSYS_NO_PATHCONV: "1"
         run: >
           cmake -B _build -S .
           -DCMAKE_PREFIX_PATH="${{github.workspace}}/antares-${{steps.antares-version.outputs.result}}-win64;${{env.ORTOOLS_DIR}}/install;${{github.workspace}}/windows-latest_sirius-solver-install"
@@ -124,17 +128,74 @@ jobs:
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
           -DCMAKE_INSTALL_PREFIX=_install
           -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
+          -DCMAKE_CXX_FLAGS="/Zi"
+          -DCMAKE_EXE_LINKER_FLAGS="/DEBUG"
+          -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG"
 
       - name: Build
         run: |
           cmake --build _build --config Release -j4
 
 
+      # Temporary diagnostics for the BendersByBatch MPI crash investigation (PR #1267):
+      # forces every heap allocation in benders.exe onto its own page, with an
+      # inaccessible guard page immediately after, so an out-of-bounds heap write
+      # faults immediately at the culprit instruction instead of silently corrupting
+      # nearby memory (which is what let the earlier plain-crash investigation only
+      # find the corrupted *read*, not the write that caused it). Scoped to just the
+      # Cucumber step - see the matching cleanup step right after. Not for permanent
+      # use - remove once the crash is diagnosed.
+      - name: Enable Page Heap for benders.exe
+        shell: pwsh
+        run: |
+          $key = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\benders.exe"
+          New-Item -Path $key -Force | Out-Null
+          New-ItemProperty -Path $key -Name "GlobalFlag" -PropertyType DWord -Value 0x02000000 -Force | Out-Null
+          New-ItemProperty -Path $key -Name "PageHeapFlags" -PropertyType DWord -Value 0x3 -Force | Out-Null
+          Get-ItemProperty -Path $key | Format-List
+
       - name: Tests with Cucumber
         uses: ./.github/workflows/cucumber-tests
         with:
           #          feature: "features/outer_loop_tests.feature"
           mpi_path: /c/Program Files/Microsoft MPI/Bin
+
+      - name: Disable Page Heap for benders.exe
+        if: always()
+        shell: pwsh
+        run: |
+          Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\benders.exe" -Recurse -Force -ErrorAction SilentlyContinue
+
+      # Temporary diagnostics for the BendersByBatch MPI crash investigation (PR #1267):
+      # main.cpp installs a SetUnhandledExceptionFilter handler that writes a full
+      # minidump on any crash. Cucumber runs benders.exe from a per-scenario temp
+      # study directory under the system temp dir, so search broadly for any dumps
+      # it left behind and upload them for offline analysis in WinDbg. Not for
+      # permanent use - remove once the crash is diagnosed.
+      - name: Collect crash dumps
+        if: failure()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path crash_dumps | Out-Null
+          $dumps = Get-ChildItem -Path "$env:TEMP", "$env:RUNNER_TEMP", "${{ github.workspace }}" `
+            -Filter "benders_crash_pid_*.dmp" -Recurse -ErrorAction SilentlyContinue
+          if ($dumps) {
+            $dumps | Copy-Item -Destination crash_dumps
+            Write-Host "Collected $($dumps.Count) crash dump(s)."
+          } else {
+            Write-Host "No crash dumps found."
+          }
+          # Grab the matching PDB (and exe) so the dumps can be symbolized offline.
+          Copy-Item "_build/Release/benders.pdb" -Destination crash_dumps -ErrorAction SilentlyContinue
+          Copy-Item "_build/Release/benders.exe" -Destination crash_dumps -ErrorAction SilentlyContinue
+
+      - name: Upload crash dumps
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: crash-dumps-${{ matrix.os }}
+          path: crash_dumps
+          if-no-files-found: ignore
 
       - name: Cache vcpkg binary dir
         if: always()
