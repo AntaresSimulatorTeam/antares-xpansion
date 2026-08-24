@@ -304,7 +304,6 @@ void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, dou
     OnBendersMasterResolutionEnd_(master_out,
                                   num_iter,
                                   _world,
-                                  added_constraints_per_sub_,
                                   options_.INPUTROOT);
 }
 

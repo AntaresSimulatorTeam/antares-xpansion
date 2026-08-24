@@ -42,7 +42,6 @@ using on_Benders_master_resolution_start = void (*)();
 using on_Benders_master_resolution_end = void (*)(std::map<std::string, double>&,
                                                   int&,
                                                   mpi::communicator*,
-                                                  std::map<std::string, std::vector<std::string>>&,
                                                   std::filesystem::path input_root);
 
 using on_Benders_micro_iteration_start = void (*)();
