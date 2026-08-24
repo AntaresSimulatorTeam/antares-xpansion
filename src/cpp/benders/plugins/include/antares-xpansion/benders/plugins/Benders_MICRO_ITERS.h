@@ -22,7 +22,7 @@ Benders_MICRO_ITERS class.
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
-#include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
+#include "antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
@@ -157,7 +157,7 @@ private:
                                                   const BendersBaseOptions& options,
                                                   const SolverLogManager& solver_log_manager);
 
-    void build_skeleton_constraint_coefficients(const BendersBaseOptions& options);
+    void build_skeleton_constraint_set_loader(const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
 
@@ -232,7 +232,7 @@ private:
     bool add_N_constraint_first_ = false;
     double tol_N_K_ = 1.001;
     double tol_N_ = 1.0;
-    std::shared_ptr<SkeletonConstraintCoefficients> skeleton_constraint_coefficients_;
+    std::shared_ptr<SkeletonConstraintSetLoader> constraint_set_loader_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
     std::shared_ptr<SolverAbstract> sub_problem_solver_;
     int InitialSubProblemSolverSize_;

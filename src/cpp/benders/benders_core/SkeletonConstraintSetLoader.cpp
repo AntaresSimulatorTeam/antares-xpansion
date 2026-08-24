@@ -1,8 +1,8 @@
-#include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
+#include "antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h"
 
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
 
-SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
+SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
   const std::filesystem::path& input_root,
   Logger& logger,
   std::string solver_name,
@@ -22,10 +22,9 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
     read_coeffs_and_indices();
 }
 
-SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
-  const std::filesystem::path& input_root,
-  Logger& logger,
-  std::shared_ptr<SolverAbstract> solver):
+SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
+                                                         Logger& logger,
+                                                         std::shared_ptr<SolverAbstract> solver):
     input_root_(input_root),
     solver_(std::move(solver)),
     skeleton_coefficient_reader_({})
@@ -34,7 +33,7 @@ SkeletonConstraintCoefficients::SkeletonConstraintCoefficients(
     read_coeffs_and_indices();
 }
 
-void SkeletonConstraintCoefficients::read_coeffs_and_indices()
+void SkeletonConstraintSetLoader::read_coeffs_and_indices()
 {
     auto dir = input_root_ / "constraints";
     coef_set_.Load(skeleton_coefficient_reader_,
@@ -49,17 +48,17 @@ void SkeletonConstraintCoefficients::read_coeffs_and_indices()
                   solver_);
 }
 
-int SkeletonConstraintCoefficients::GetConstraintsNumber()
+int SkeletonConstraintSetLoader::GetConstraintsNumber()
 {
     return coef_set_.Count();
 }
 
-std::shared_ptr<SolverAbstract> SkeletonConstraintCoefficients::GetSolver()
+std::shared_ptr<SolverAbstract> SkeletonConstraintSetLoader::GetSolver()
 {
     return solver_;
 }
 
-std::shared_ptr<SolverAbstract> SkeletonConstraintCoefficients::ApplyConstraintSet(
+std::shared_ptr<SolverAbstract> SkeletonConstraintSetLoader::LoadConstraintSet(
   const std::string& constraints_name)
 {
     solver_->chg_coefs(coef_set_.RowIndices(),
