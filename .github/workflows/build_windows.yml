@@ -126,6 +126,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+          -DVCPKG_OVERLAY_PORTS="${{github.workspace}}/overlay-ports"
           -DCMAKE_INSTALL_PREFIX=_install
           -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
           -DCMAKE_CXX_FLAGS="/Zi"
