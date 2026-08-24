@@ -189,6 +189,14 @@ private:
     */
     void ClearPersistedConstraintsTracking();
 
+    /*
+        CACHE_PROBLEMS>=2 only: strips sub_problem_solver_ back down to
+        InitialSubProblemSolverSize_ rows, removing whatever rows were added for
+        whichever subproblem last used this shared skeleton solver on this rank.
+        A no-op if it is already at that size.
+    */
+    void ResetSharedSolverToBase();
+
     mpi::communicator* _world;
 #ifdef _WIN32
     HMODULE handle_;

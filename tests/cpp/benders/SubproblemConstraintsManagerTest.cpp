@@ -41,13 +41,13 @@ TEST_F(SubproblemConstraintsManagerTest, AddRowsReturnsRowFetchedFromReader)
     EXPECT_EQ(worker_solver_->add_rows_calls, 1);
 }
 
-TEST_F(SubproblemConstraintsManagerTest, DeleteAddedRowsRollsBackToSizeCapturedAtConstruction)
+TEST_F(SubproblemConstraintsManagerTest, DeleteAddedRowsRollsBackToGivenSize)
 {
     auto worker = make_worker(/*initial_nrows=*/5);
     auto manager = SubproblemConstraintsManager::FromSharedSolver(reader_solver_, worker);
 
-    manager->DeleteAddedRows();
+    manager->DeleteAddedRows(3);
 
     EXPECT_EQ(worker_solver_->del_rows_calls, 1);
-    EXPECT_EQ(worker_solver_->del_rows_first, 5);
+    EXPECT_EQ(worker_solver_->del_rows_first, 3);
 }

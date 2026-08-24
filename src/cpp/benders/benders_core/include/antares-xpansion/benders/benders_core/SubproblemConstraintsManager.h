@@ -35,7 +35,7 @@ public:
     SolverRepresentedRows AddRows(std::string& row_name);
     std::vector<double> GetSubSolution();
     int GetVariableIndexInSub(std::string variable_id);
-    void DeleteAddedRows();
+    void DeleteAddedRows(int base_size);
 
 private:
     SubproblemConstraintsManager(std::shared_ptr<SolverAbstract> solver,
@@ -44,7 +44,6 @@ private:
 
     SolverRowExtractor row_extractor_;
     std::shared_ptr<SubproblemWorker> subproblem_worker_;
-    int initial_sub_size_;
 };
 
 typedef std::map<std::string, SubproblemConstraintsManagerPtr> SubproblemConstraintsManagerPtrMap;
