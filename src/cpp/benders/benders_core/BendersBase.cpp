@@ -531,7 +531,7 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
                             {
                                 PlainData::SubProblemData subproblem_data;
                                 const auto& [name, worker] = kvp;
-                                SolveSubproblem(subproblem_data, name, worker);
+                                SolveSubproblem(subproblem_data, name, worker, nullptr);
 
                                 std::lock_guard guard(m);
                                 subproblem_data_map[name] = subproblem_data;
@@ -631,7 +631,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
                                 std::call_once(
                                   variable_indice_once_flag,
-                                  [&](const auto& worker_)
+                                  [this](const auto& worker_)
                                   { SetSubproblemVariablesIndices(worker_); },
                                   *worker);
                             }
@@ -661,11 +661,9 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
         auto variable_map = coupling_map_[sub];
         double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), sub);
 
-        auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(
-          sub,
-          variable_map,
-          _options.CUT_COEFFICIENT_TOLERANCE,
-          slave_weights);
+        auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(sub,
+                                                                                     variable_map,
+                                                                                     slave_weights);
 
         PlainData::SubProblemData subproblem_data;
         SolveSubproblem(subproblem_data,

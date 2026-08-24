@@ -94,6 +94,9 @@ void SimulationOptions::set_weights()
 
         if (!file)
         {
+            std::cerr << LOGLOCATION << "ERROR : Unable to open weight file " << filename
+                      << std::endl;
+            std::exit(1);
         }
         double weights_sum = -1;
         while (std::getline(file, line))

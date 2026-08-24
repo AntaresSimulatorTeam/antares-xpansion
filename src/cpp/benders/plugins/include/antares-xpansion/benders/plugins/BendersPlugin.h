@@ -27,7 +27,7 @@ public:
                                 const Logger& logger,
                                 const BendersBaseOptions& options,
                                 const SolverLogManager& solver_log_manager,
-                                std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr)
+                                std::shared_ptr<SolverAbstract> sub_problem_solver)
       = 0;
 
     /*
@@ -41,9 +41,8 @@ public:
 
     virtual void OnBendersIterationEnd() = 0;
 
-    virtual void OnBendersSubResolutionStart(
-      const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-      std::string sub_name = "")
+    virtual void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
+                                             std::string sub_name)
       = 0;
     virtual void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) = 0;
     /*

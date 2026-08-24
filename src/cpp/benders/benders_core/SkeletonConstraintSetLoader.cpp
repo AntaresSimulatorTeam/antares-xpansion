@@ -9,10 +9,10 @@ SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
   int log_level,
   ProblemsFormat format,
   std::vector<std::string>&& constraints_names):
+    logger_(logger),
     input_root_(input_root),
     skeleton_coefficient_reader_(std::move(constraints_names))
 {
-    logger_ = logger;
     SkeletonSolverLoader loader(logger_);
     solver_ = loader.Load(input_root_ / "constraints" / "constraints.mps",
                           solver_name,
@@ -25,11 +25,11 @@ SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
 SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
                                                          Logger& logger,
                                                          std::shared_ptr<SolverAbstract> solver):
+    logger_(logger),
     input_root_(input_root),
     solver_(std::move(solver)),
     skeleton_coefficient_reader_({})
 {
-    logger_ = logger;
     read_coeffs_and_indices();
 }
 

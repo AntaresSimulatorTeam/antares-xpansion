@@ -28,18 +28,15 @@ public:
                             int log_level,
                             ProblemsFormat format,
                             std::vector<std::string> sub_problem_names,
-                            const SolverLogManager& solver_log_manager,
-                            mpi::communicator* world = nullptr);
+                            const SolverLogManager& solver_log_manager);
 
     SubproblemWorkerFactory(const std::filesystem::path& input_root,
                             Logger& logger,
                             std::shared_ptr<SolverAbstract> solver,
-                            std::vector<std::string> sub_problem_names,
-                            boost::mpi::communicator* world = nullptr);
+                            std::vector<std::string> sub_problem_names);
 
     std::shared_ptr<SubproblemWorker> CreateSubSolverAbstract(std::string sub_name,
                                                               VariableMap& variable_map,
-                                                              double cut_coefficient_tolerance,
                                                               double slave_weight);
 
     void GetBasis(std::string sub_name);
@@ -60,6 +57,5 @@ private:
     SubproblemBasisCache subproblem_basis_cache_;
 
     SkeletonCoefficientReader skeleton_coefficient_reader_;
-    boost::mpi::communicator* world_ = nullptr;
     int SubProblemSolverInitialSize_;
 };

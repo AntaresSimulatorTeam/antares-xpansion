@@ -584,9 +584,9 @@ void SolverXpress::chg_coefs(const std::vector<int>& id_rows,
 {
     int status = XPRSchgmcoef(_xprs,
                               static_cast<int>(id_rows.size()),
-                              const_cast<int*>(id_rows.data()),
-                              const_cast<int*>(id_cols.data()),
-                              const_cast<double*>(vals.data()));
+                              id_rows.data(),
+                              id_cols.data(),
+                              vals.data());
     zero_status_check(status, "change matrix coefficient", LOGLOCATION);
 }
 

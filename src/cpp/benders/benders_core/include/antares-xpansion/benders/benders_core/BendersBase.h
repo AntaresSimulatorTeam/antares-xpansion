@@ -316,7 +316,7 @@ protected:
     virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
                                  const std::shared_ptr<SubproblemWorker>& worker,
-                                 const std::function<void()>& post_reset_hook = nullptr);
+                                 const std::function<void()>& post_reset_hook);
     void SetSubproblemVariablesIndices(const SubproblemWorker& subproblem);
 
     Benders::Criterion::CriterionComputation criterion_computation_;

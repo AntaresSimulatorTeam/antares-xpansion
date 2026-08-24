@@ -87,7 +87,7 @@ public:
                         const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
-                        std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr) override;
+                        std::shared_ptr<SolverAbstract> sub_problem_solver) override;
 
     void OnBendersIterationStart() override;
     void OnBendersIterationEnd() override;
@@ -122,8 +122,8 @@ public:
                                     int num_master_iter,
                                     int num_micro_iter) override;
 
-    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-                                     std::string sub_name = "") override;
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
+                                     std::string sub_name) override;
     void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
 
     bool ShouldRestoreSubproblemBasis() const override;
@@ -230,10 +230,6 @@ private:
     const SolverLogManager* solver_log_manager_ = nullptr;
     Logger _logger;
     bool warm_start_;
-    int max_constraints_per_micro_it_ = 0;
-    bool add_N_constraint_first_ = false;
-    double tol_N_K_ = 1.001;
-    double tol_N_ = 1.0;
     std::shared_ptr<SkeletonConstraintSetLoader> constraint_set_loader_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
     std::shared_ptr<SolverAbstract> sub_problem_solver_;

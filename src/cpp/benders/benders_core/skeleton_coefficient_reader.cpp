@@ -112,15 +112,15 @@ void SkeletonCoefficientReader::read_indices_csv(const std::filesystem::path& cs
     if (error_cols > 0)
     {
         dump_not_found(cols_not_found, "cols_not_found.txt");
-        throw std::runtime_error("Error: " + std::to_string(error_cols)
-                                 + " column(s) not found while reading " + csv_path.string()
-                                 + " (see cols_not_found.txt)");
+        throw NamesNotFoundException("Error: " + std::to_string(error_cols)
+                                     + " column(s) not found while reading " + csv_path.string()
+                                     + " (see cols_not_found.txt)");
     }
     if (error_rows > 0)
     {
         dump_not_found(rows_not_found, "rows_not_found.txt");
-        throw std::runtime_error("Error: " + std::to_string(error_rows)
-                                 + " row(s) not found while reading " + csv_path.string()
-                                 + " (see rows_not_found.txt)");
+        throw NamesNotFoundException("Error: " + std::to_string(error_rows)
+                                     + " row(s) not found while reading " + csv_path.string()
+                                     + " (see rows_not_found.txt)");
     }
 }

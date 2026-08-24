@@ -15,7 +15,7 @@ public:
                         const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
-                        std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr) override
+                        std::shared_ptr<SolverAbstract> sub_problem_solver) override
     {
     }
 
@@ -104,7 +104,7 @@ public:
     void Run() override
     {
         // OnBendersStart
-        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_, nullptr);
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();
