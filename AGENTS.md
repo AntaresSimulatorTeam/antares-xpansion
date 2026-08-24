@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Quick reference for working on Antares-Xpansion. See [docs/agents/](docs/agents/) for detailed guides.
+Quick reference for working on Antares Xpansion. See [docs/agents/](docs/agents/) for detailed guides.
 
 ## Project
 

@@ -7,13 +7,13 @@
 
 ## 2. Previous Version
 
-* python@3.8
-* pyinstaller@4.6
+* `python@3.8`
+* `pyinstaller@4.6`
 
 ## 3. New Version
 
-* python@3.10  <!-- Minimum working version -->
-* pyinstaller@6.15  <!-- Latest and working version -->
+* `python@3.10`  <!-- Minimum working version -->
+* `pyinstaller@6.15`  <!-- Latest and working version -->
 
 ## 4. Date of Upgrade
 
@@ -55,4 +55,3 @@ There were limited search results on this error, but it appeared to stem from us
 ## 10. Related Links
 
 - [GitHub PR #1075](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/1075)
-- [Jira Ticket ANT-3693](https://gopro-tickets.rte-france.com/browse/ANT-3693)

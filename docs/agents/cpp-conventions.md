@@ -1,6 +1,6 @@
 # C++ Conventions
 
-This document covers C++ coding conventions for Antares-Xpansion.
+This document covers C++ coding conventions for Antares Xpansion.
 
 ## Language Standard
 

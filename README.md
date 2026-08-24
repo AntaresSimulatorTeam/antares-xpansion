@@ -158,12 +158,8 @@ For build instructions, please visit the [developer guide][developer-guide].
 
 [readthedocs]: https://antares-xpansion.readthedocs.io/
 
-[readthedocs-antares]: https://antares-doc.readthedocs.io/
-
 [antareswebsite]: https://antares-doc.readthedocs.io/en/latest/
 
-[developer-guide]: https://antares-xpansion.readthedocs.io/en/stable/developer-guide/install_from_sources/0-INSTALL/
+[developer-guide]: https://antares-xpansion.readthedocs.io/en/latest/developer-guide/
 
 [user-guide]: https://antares-xpansion.readthedocs.io/en/stable/user-guide/optimization-principles/investment-problem/
-
-[benders]: https://antares-xpansion.readthedocs.io/en/latest/user-guide/optimization-principles/investment-problem/

@@ -7,7 +7,7 @@
 Launcher (python components) is becoming more and more complex.
 Given that Launcher is used for the Xpansion business case
 (by opposition to R&D) and
-that [the nominal case is to use Antares as a lib](%5B012%5D%20Change_xpansion_nomila_case_to_use_simulator_lib.md)
+that [the nominal case is to use Antares as a lib](%5B012%5D%20Change_xpansion_nominal_case_to_use_simulator_lib.md)
 it is not necessary to support archive mode in Launcher
 
 ## Decision
