@@ -37,10 +37,6 @@ nav:
           - "The optimal investment problem in Antares-Xpansion": "user-guide/optimization-principles/investment-problem.md"
           - "Mathematical aspects of the investment problem": "user-guide/optimization-principles/problem-formalization.md"
           - "Performance history": "user-guide/performance-history/perf-graphs.ipynb"
-      - "Benders Executable":
-          - "Settings of benders executable": "user-guide/get-started/options-definition.md"
-          - "Micro Iterations": "user-guide/get-started/micro-iterations.md"
-          - "Compact Memory Subproblem Inputs": "user-guide/get-started/memory-optimization.md"
       - "Getting started":
           - "Installation": "user-guide/get-started/installation.md"
           - "Set up an Antares-Xpansion study":
@@ -58,6 +54,10 @@ nav:
           - "Multiple problem generation": "user-guide/trajectory-investment/multiple-problem-generation.md"
           - "Merged weights file generation ": "user-guide/trajectory-investment/merge-weights.md"
           - "Merging annual problems": "user-guide/trajectory-investment/merge-master.md"
+      - "Benders Executable":
+          - "Settings of benders executable": "user-guide/get-started/options-definition.md"
+          - "Micro Iterations": "user-guide/get-started/micro-iterations.md"
+          - "In-memory compact subproblems": "user-guide/get-started/in-memory-compact-subproblems.md"
   - "Developer guide":
       - "Install from sources":
           - "Introduction": "developer-guide/install_from_sources/0-INSTALL.md"
