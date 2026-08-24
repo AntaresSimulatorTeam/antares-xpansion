@@ -66,6 +66,45 @@ violation. Compared to a standard study, the following elements must be added:
   violated constraints are injected into the subproblems at each
   micro-iteration.
 
+    To make the role of these files concrete, consider a subproblem with
+    objective $O$ and three constraints $C_1$, $C_2$ and $C_3$. With the
+    classical scheme, the subproblem is written as a single optimization
+    problem:
+
+    $$
+    \begin{aligned}
+        \min_{x} \quad & O(x) \\
+        \text{s.t.} \quad & {\scriptstyle C_1(x), \; C_2(x), \; C_3(x)}
+    \end{aligned}
+    $$
+
+    In micro-iterations mode, this problem is split into the initial relaxed
+    subproblem — which only carries $C_1$ — and the constraints removed from
+    it, $C_2$ and $C_3$, described in separate MPS/SVF files:
+
+    $$
+    \underbrace{
+    \begin{aligned}
+        \min_{x} \quad & O(x) \\
+        \text{s.t.} \quad & {\scriptstyle C_1(x)}
+    \end{aligned}
+    }_{\text{initial minimal subproblem}}
+    \qquad\qquad\Big|\qquad\qquad
+    \underbrace{
+    \begin{aligned}
+        & {\scriptstyle C_2(x), \; C_3(x)}
+    \end{aligned}
+    }_{\text{constraints file with null objective function}}
+    $$
+
+    The files on the left represent the initial subproblem, while the files on
+    the right are the "removed constraints" files required here: they are not
+    part of the initial relaxation, but they form the pool from which the
+    verification mechanism selects the violated constraints to re-inject into
+    the relaxed subproblem at each micro-iteration. Solving the left-hand
+    problem enriched with every constraint from the right-hand side is
+    equivalent to solving the original complete problem.
+
 - **A `plugin_inputs` folder** — this folder contains the artefacts needed to
   determine, from a subproblem solution, which of the removed constraints are
   violated. In particular, it can contain an external library that is

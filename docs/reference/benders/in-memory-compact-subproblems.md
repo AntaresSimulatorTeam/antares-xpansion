@@ -121,8 +121,8 @@ the positions designated by the name files.
 
 Providing the study in the format described above is not sufficient on its own:
 the memory optimization mode must also be explicitly enabled in the simulation
-settings by setting the variable:
-`CACHE_PROBLEMS: 3` 
+settings by setting :
+`CACHE_PROBLEMS: 3` in the `options.json` file, see [Settings of benders executable](./options.md)
 
 With this value, the solver expects the skeleton MPS/SVF file together with the
 CSV coefficient files, and builds each subproblem at resolution time by
