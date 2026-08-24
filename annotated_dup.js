@@ -269,6 +269,14 @@ var annotated_dup =
         [ "test_config_file_parser", null, [
           [ "TestConfigFileParser", "classtests_1_1python_1_1test__config__file__parser_1_1TestConfigFileParser.html", null ]
         ] ],
+        [ "test_config_loader", null, [
+          [ "TestGemsCandidates", "classtests_1_1python_1_1test__config__loader_1_1TestGemsCandidates.html", null ],
+          [ "TestLauncherOptionsSaveAndRestore", "classtests_1_1python_1_1test__config__loader_1_1TestLauncherOptionsSaveAndRestore.html", null ],
+          [ "TestSettingsFileDefaultsWhenKeyIsMissing", "classtests_1_1python_1_1test__config__loader_1_1TestSettingsFileDefaultsWhenKeyIsMissing.html", null ],
+          [ "TestSettingsFileLoading", "classtests_1_1python_1_1test__config__loader_1_1TestSettingsFileLoading.html", null ],
+          [ "TestSettingsFileOverrides", "classtests_1_1python_1_1test__config__loader_1_1TestSettingsFileOverrides.html", null ],
+          [ "TestSimulationName", "classtests_1_1python_1_1test__config__loader_1_1TestSimulationName.html", null ]
+        ] ],
         [ "test_full_run_driver", null, [
           [ "TestFullRunDriver", "classtests_1_1python_1_1test__full__run__driver_1_1TestFullRunDriver.html", null ]
         ] ],

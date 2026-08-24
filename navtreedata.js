@@ -423,9 +423,9 @@ var NAVTREEINDEX =
 "classSolverCbc.html#a2c07fe273207425db12c46b7dbf6a036",
 "classWorkerMaster.html#aba45491d5e583afcf336e9516d373827",
 "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1LPNamerExeError.html",
-"dir_8937f2415760ed5dcb3b74c0a31b943a.html",
-"md_docs_2overview_2CHANGELOG.html#autotoc_md137",
-"structMathLoggerBendersByBatchExternalLoop.html"
+"dir_76c80d903fc76077645ae6a10fd2a97a.html",
+"md_docs_2overview_2CHANGELOG.html#autotoc_md131",
+"structMathLogger.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,11 @@
 var NAVTREEINDEX7 =
 {
+"md_docs_2overview_2CHANGELOG.html#autotoc_md131":[16,0],
+"md_docs_2overview_2CHANGELOG.html#autotoc_md132":[16,0,0],
+"md_docs_2overview_2CHANGELOG.html#autotoc_md133":[16,0,1],
+"md_docs_2overview_2CHANGELOG.html#autotoc_md134":[16,0,2],
+"md_docs_2overview_2CHANGELOG.html#autotoc_md135":[16,1],
+"md_docs_2overview_2CHANGELOG.html#autotoc_md136":[16,1,0],
 "md_docs_2overview_2CHANGELOG.html#autotoc_md137":[16,1,1],
 "md_docs_2overview_2CHANGELOG.html#autotoc_md138":[16,2],
 "md_docs_2overview_2CHANGELOG.html#autotoc_md139":[16,2,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX7 =
 "structLinkdataRecord_1_1FileColumns.html#ac1c6534362074e573d6a052f0432a111":[43,0,149,0,0],
 "structLinkdataRecord_1_1FileColumns.html#ad65a0ad193fd24591ac5d17f074a419b":[43,0,149,0,1],
 "structLinkdataRecord_1_1FileColumns.html#adfed6f095294c0bb8db291926594dd40":[43,0,149,0,3],
-"structLogData.html":[43,0,156],
-"structMathLogger.html":[43,0,165],
-"structMathLogger.html#a80aab68d65d4ea91c5151d8b3d575209":[43,0,165,0],
-"structMathLoggerBase.html":[43,0,166],
-"structMathLoggerBaseExternalLoop.html":[43,0,167],
-"structMathLoggerBehaviour.html":[43,0,168],
-"structMathLoggerBendersByBatch.html":[43,0,169]
+"structLogData.html":[43,0,156]
 };

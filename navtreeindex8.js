@@ -1,5 +1,11 @@
 var NAVTREEINDEX8 =
 {
+"structMathLogger.html":[43,0,165],
+"structMathLogger.html#a80aab68d65d4ea91c5151d8b3d575209":[43,0,165,0],
+"structMathLoggerBase.html":[43,0,166],
+"structMathLoggerBaseExternalLoop.html":[43,0,167],
+"structMathLoggerBehaviour.html":[43,0,168],
+"structMathLoggerBendersByBatch.html":[43,0,169],
 "structMathLoggerBendersByBatchExternalLoop.html":[43,0,170],
 "structMathLoggerExternalLoopSpecific.html":[43,0,172],
 "structMathLoggerExternalLoopSpecific.html#a8a9621b528cb90afd087a4e9b1d5ae5f":[43,0,172,0],
