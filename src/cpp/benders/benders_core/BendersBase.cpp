@@ -659,7 +659,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
     for (const auto& [sub, variables]: nameAndVariableMap)
     {
         auto variable_map = coupling_map_[sub];
-        double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), sub);
+        double slave_weights = SubproblemWeight(_data.nsubproblem, sub);
 
         auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(sub,
                                                                                      variable_map,
