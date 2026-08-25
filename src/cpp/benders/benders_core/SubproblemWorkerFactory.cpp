@@ -1,7 +1,6 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h"
 
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
-
 #include <iostream>
 
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
