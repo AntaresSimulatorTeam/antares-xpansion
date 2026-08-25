@@ -312,11 +312,11 @@ TEST_F(SubproblemWorkerFactoryTest, subForResolutioncreationSlaveWeights)
     EXPECT_DOUBLE_EQ(obj[1], 2.25);
 
     VariableMap variable_map2 = {{"x1", 0}, {"x2", 1}};
-    auto worker2 = dummyFactory->CreateSubSolverAbstract("sub2", variable_map2, 0.5);
+    auto worker2 = dummyFactory->CreateSubSolverAbstract("sub2", variable_map2, 0.1);
     EXPECT_NE(worker2, nullptr);
 
     solver->get_obj(obj, 0, 1);
 
-    EXPECT_DOUBLE_EQ(obj[0], 1.5);
-    EXPECT_DOUBLE_EQ(obj[1], 2.25);
+    EXPECT_DOUBLE_EQ(obj[0], 0.3);
+    EXPECT_DOUBLE_EQ(obj[1], 0.45);
 }
