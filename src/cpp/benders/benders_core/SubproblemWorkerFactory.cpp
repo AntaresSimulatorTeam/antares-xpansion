@@ -1,8 +1,7 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h"
 
-#include <antares-xpansion/benders/benders_core/SolverIO.h>
-
 #include <algorithm>
+#include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <iostream>
 
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
@@ -95,8 +94,7 @@ void SubproblemWorkerFactory::ApplyBasis(const std::string& sub_name)
 std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstract(
   std::string sub_name,
   VariableMap& variable_map,
-  double slave_weights
-)
+  double slave_weights)
 
 {
     std::vector<double> weighted_obj(skeletonObjCoeffs_.size());
@@ -120,9 +118,7 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
 
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
 
-    auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
-                                                                solver_,
-                                                                logger_);
+    auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map, solver_, logger_);
 
     return subproblem_worker;
 }

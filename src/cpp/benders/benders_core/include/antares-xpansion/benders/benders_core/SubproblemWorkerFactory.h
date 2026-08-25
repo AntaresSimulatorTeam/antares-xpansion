@@ -58,5 +58,5 @@ private:
 
     SkeletonCoefficientReader skeleton_coefficient_reader_;
     int SubProblemSolverInitialSize_;
-    std::vector<double> skeletonObjCoeffs_ ; 
+    std::vector<double> skeletonObjCoeffs_;
 };
