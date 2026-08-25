@@ -64,6 +64,14 @@ protected:
         writeFile(subDir_ / "rhs_rows.csv", "row1\n");
     }
 
+    std::unique_ptr<SubproblemWorkerFactory> buildWithNOOP(
+      std::vector<std::string> sub_names = {"sub1", "sub2"})
+    {
+        auto solver = std::make_shared<NOOPSolver>();
+        return std::make_unique<SubproblemWorkerFactory>(
+          tmpDir_, logger_, solver, std::move(sub_names));
+    }
+
     std::unique_ptr<SubproblemWorkerFactory> buildDummyFactory()
     {
         std::vector<std::string> sub_names = {"sub1", "sub2"};

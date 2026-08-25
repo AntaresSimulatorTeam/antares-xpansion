@@ -45,12 +45,10 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
     solver_(std::move(solver)),
     skeleton_coefficient_reader_(std::move(sub_problem_names))
 {
-<<<<<<< HEAD
     logger_ = logger;
     skeletonObjCoeffs_.resize(solver_->get_ncols());
     solver_->get_obj(skeletonObjCoeffs_.data(), 0, solver_->get_ncols() - 1);
-=======
->>>>>>> da92900d7bdcc94d4ca7af01da998fd74f163b26
+
     load_coefficient_sets();
 }
 
