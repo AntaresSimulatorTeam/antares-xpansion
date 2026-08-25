@@ -218,6 +218,12 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
         sub_problem_solver_ = sub_problem_solver;
         InitialSubProblemSolverSize_ = sub_problem_solver_->get_nrows();
     }
+    else if (!subproblem_map.empty())
+    {
+        // Assumption that every subproblem has the same base structure (rows/cols; only
+        // coefficients differ)
+        InitialSubProblemSolverSize_ = subproblem_map.begin()->second->get_problem_row_num();
+    }
     _logger = logger;
     solver_log_manager_ = &solver_log_manager;
     if (options.CACHE_PROBLEMS < 2)
@@ -226,7 +232,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     }
     else
     {
-        build_skeleton_constraint_coefficients(options);
+        build_skeleton_constraint_set_loader(options);
     }
 
     build_variables_to_follow_indices_vector();
@@ -240,6 +246,16 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
                           options.LOG_LEVEL);
 }
 
+void Benders_MICRO_ITERS::ResetSharedSolverToBase()
+{
+    auto num_rows = sub_problem_solver_->get_nrows();
+    if (num_rows != InitialSubProblemSolverSize_) [[likely]]
+    {
+        num_rows--;
+        sub_problem_solver_->del_rows(InitialSubProblemSolverSize_, num_rows);
+    }
+}
+
 void Benders_MICRO_ITERS::OnBendersEnd()
 {
     OnBendersEndPlugin_();
@@ -248,6 +264,11 @@ void Benders_MICRO_ITERS::OnBendersEnd()
 #else
     dlclose(handle_);
 #endif
+}
+
+bool Benders_MICRO_ITERS::ShouldRestoreSubproblemBasis() const
+{
+    return warm_start_;
 }
 
 void Benders_MICRO_ITERS::OnBendersIterationStart()
@@ -273,7 +294,7 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
                     auto it = constraints_map_.find(constraint_mgr_name);
                     if (it != constraints_map_.end())
                     {
-                        it->second->DeleteAddedRows();
+                        it->second->DeleteAddedRows(InitialSubProblemSolverSize_);
                     }
                 }
             }
@@ -282,15 +303,6 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
     }
     else
     {
-        // subproblem_constraints_manager_ is only set by OnBendersSubResolutionStart, which a
-        // rank may not have called this iteration (e.g. it owns no subproblem in the current
-        // batch under BendersByBatch). This reset is unconditional: several subproblems can
-        // share this skeleton solver on the same rank, so it must always be returned to its
-        // base structure regardless of warm_start_.
-        if (subproblem_constraints_manager_)
-        {
-            subproblem_constraints_manager_->DeleteAddedRows();
-        }
         if (!warm_start_)
         {
             ClearPersistedConstraintsTracking();
@@ -301,10 +313,7 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
 void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
                                                        int& num_iter)
 {
-    OnBendersMasterResolutionEnd_(master_out,
-                                  num_iter,
-                                  _world,
-                                  options_.INPUTROOT);
+    OnBendersMasterResolutionEnd_(master_out, num_iter, _world, options_.INPUTROOT);
 }
 
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
@@ -369,7 +378,7 @@ void Benders_MICRO_ITERS::ReplayPersistedConstraints(const std::string& sub_name
     }
     else if (options_.CACHE_PROBLEMS >= 2)
     {
-        auto ContraintsSolver = skeleton_constraint_coefficients_->GetSolver();
+        auto ContraintsSolver = constraint_set_loader_->GetSolver();
         for (auto& constraint_name: added_constraints_per_sub_[sub_name])
         {
             int pos = ContraintsSolver->get_row_index(constraint_name);
@@ -450,9 +459,15 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
     if (options_.CACHE_PROBLEMS >= 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
-        auto solver = skeleton_constraint_coefficients_->ApplyConstraintSet(constraints_file_name);
+        auto skeleton_solver = constraint_set_loader_->LoadConstraintSet(constraints_file_name);
+
+        // Several subproblems share this skeleton solver on the same rank, so it may
+        // still carry rows left over from whichever subproblem was solved here last.
+        // Reset it back to its base structure before building this subproblem's manager.
+        ResetSharedSolverToBase();
+
         subproblem_constraints_manager_ = SubproblemConstraintsManager::FromSharedSolver(
-          solver,
+          skeleton_solver,
           sub_worker);
 
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
@@ -463,13 +478,6 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                   variable);
                 variables_to_follow_indices_per_sub_[sub_name].push_back(variable_index);
             }
-        }
-
-        auto num_rows = sub_problem_solver_->get_nrows();
-        if (num_rows != InitialSubProblemSolverSize_) [[likely]]
-        {
-            num_rows--;
-            sub_problem_solver_->del_rows(InitialSubProblemSolverSize_, num_rows);
         }
 
         // Replay the rows persisted for this subproblem (if warm_start_), so the solver's
@@ -556,7 +564,7 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
 /*<
 Building the constraint handler for the compact skeleton input format
 */
-void Benders_MICRO_ITERS::build_skeleton_constraint_coefficients(const BendersBaseOptions& options)
+void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBaseOptions& options)
 {
     const std::string prefix = "sub/sub_";
     const std::string suffix = ".mps";
@@ -568,11 +576,11 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_coefficients(const BendersBa
         constraints_names.push_back("constraints/constraints_" + number_str + ".mps");
     }
 
-    skeleton_constraint_coefficients_ = std::make_shared<SkeletonConstraintCoefficients>(
-      options.INPUTROOT,
-      _logger,
-      options.SOLVER_NAME,
-      options.LOG_LEVEL,
-      options.PROBLEMS_FORMAT,
-      std::move(constraints_names));
+    constraint_set_loader_ = std::make_shared<SkeletonConstraintSetLoader>(options.INPUTROOT,
+                                                                           _logger,
+                                                                           options.SOLVER_NAME,
+                                                                           options.LOG_LEVEL,
+                                                                           options.PROBLEMS_FORMAT,
+                                                                           std::move(
+                                                                             constraints_names));
 }

@@ -458,7 +458,7 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
         StoreSubproblemBasis(name, worker);
         std::call_once(
           variable_indice_once_flag,
-          [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+          [this](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
           *worker);
     }
 }
@@ -497,7 +497,7 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
             != batch_sub_problems.cend())
         {
             PlainData::SubProblemData subproblem_data{};
-            SolveSubproblem(subproblem_data, name, worker);
+            SolveSubproblem(subproblem_data, name, worker, nullptr);
             Timer subproblem_timer = calculate_subproblem_contribution(name, subproblem_data);
 
             // subproblem_timer already set time, we add the remaining computation time

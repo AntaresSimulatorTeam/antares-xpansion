@@ -27,7 +27,7 @@ public:
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     // CACHE_PROBLEMS >= 2: shared skeleton solver, already mutated by
-    // SkeletonConstraintCoefficients::ApplyConstraintSet for this constraint set.
+    // SkeletonConstraintSetLoader::LoadConstraintSet for this constraint set.
     static SubproblemConstraintsManagerPtr FromSharedSolver(
       std::shared_ptr<SolverAbstract> solver,
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
@@ -35,16 +35,16 @@ public:
     SolverRepresentedRows AddRows(std::string& row_name);
     std::vector<double> GetSubSolution();
     int GetVariableIndexInSub(std::string variable_id);
-    void DeleteAddedRows();
+    void DeleteAddedRows(int base_size);
 
-private:
     SubproblemConstraintsManager(std::shared_ptr<SolverAbstract> solver,
                                  const std::shared_ptr<SubproblemWorker>& subproblem_worker);
+
+private:
     void add_rows_to_subproblem(SolverRepresentedRows& new_row);
 
     SolverRowExtractor row_extractor_;
     std::shared_ptr<SubproblemWorker> subproblem_worker_;
-    int initial_sub_size_;
 };
 
 typedef std::map<std::string, SubproblemConstraintsManagerPtr> SubproblemConstraintsManagerPtrMap;

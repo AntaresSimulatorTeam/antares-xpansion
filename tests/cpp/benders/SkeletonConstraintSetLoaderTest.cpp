@@ -7,9 +7,9 @@
 
 #include "LoggerStub.h"
 #include "RecordingSolver.h"
-#include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
+#include "antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h"
 
-class SkeletonConstraintCoefficientsTest: public ::testing::Test
+class SkeletonConstraintSetLoaderTest: public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -45,31 +45,31 @@ protected:
     std::filesystem::path constraints_dir_;
 };
 
-TEST_F(SkeletonConstraintCoefficientsTest, ConstructsWithValidFiles)
+TEST_F(SkeletonConstraintSetLoaderTest, ConstructsWithValidFiles)
 {
     write_constraints_fixture();
-    ASSERT_NO_THROW((SkeletonConstraintCoefficients(tmp_dir_, logger_, solver_)));
+    ASSERT_NO_THROW((SkeletonConstraintSetLoader(tmp_dir_, logger_, solver_)));
 }
 
-// SkeletonConstraintCoefficients currently constructs its MemoptimUtils with an
+// SkeletonConstraintSetLoader currently constructs its MemoptimUtils with an
 // empty subproblem-name filter set (both constructors), and
 // MemoptimUtils::read_keyed_coeffs_csv skips any CSV row whose key isn't in
 // that set. This test documents the resulting current behavior: even with a
 // non-empty coef.csv/rhs.csv, no coefficients end up loaded. See the "Flagged,
 // not fixed" section of the refactor plan.
-TEST_F(SkeletonConstraintCoefficientsTest, GetConstraintsNumberIsZeroDueToEmptyMemoptimFilter)
+TEST_F(SkeletonConstraintSetLoaderTest, GetConstraintsNumberIsZeroDueToEmptyMemoptimFilter)
 {
     write_constraints_fixture();
-    SkeletonConstraintCoefficients builder(tmp_dir_, logger_, solver_);
+    SkeletonConstraintSetLoader builder(tmp_dir_, logger_, solver_);
     EXPECT_EQ(builder.GetConstraintsNumber(), 0);
 }
 
-TEST_F(SkeletonConstraintCoefficientsTest, ApplyConstraintSetAppliesEmptyVectorsGivenCurrentFilter)
+TEST_F(SkeletonConstraintSetLoaderTest, LoadConstraintSetAppliesEmptyVectorsGivenCurrentFilter)
 {
     write_constraints_fixture();
-    SkeletonConstraintCoefficients builder(tmp_dir_, logger_, solver_);
+    SkeletonConstraintSetLoader builder(tmp_dir_, logger_, solver_);
 
-    auto returned_solver = builder.ApplyConstraintSet("myconstraints");
+    auto returned_solver = builder.LoadConstraintSet("myconstraints");
 
     EXPECT_EQ(returned_solver, solver_);
     EXPECT_EQ(solver_->chg_coefs_calls, 1);

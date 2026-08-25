@@ -22,7 +22,7 @@ Benders_MICRO_ITERS class.
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
-#include "antares-xpansion/benders/benders_core/SkeletonConstraintCoefficients.h"
+#include "antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
@@ -87,7 +87,7 @@ public:
                         const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
-                        std::shared_ptr<SolverAbstract> sub_problem_solver = nullptr) override;
+                        std::shared_ptr<SolverAbstract> sub_problem_solver) override;
 
     void OnBendersIterationStart() override;
     void OnBendersIterationEnd() override;
@@ -122,9 +122,11 @@ public:
                                     int num_master_iter,
                                     int num_micro_iter) override;
 
-    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker = nullptr,
-                                     std::string sub_name = "") override;
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
+                                     std::string sub_name) override;
     void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
+
+    bool ShouldRestoreSubproblemBasis() const override;
 
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
@@ -157,7 +159,7 @@ private:
                                                   const BendersBaseOptions& options,
                                                   const SolverLogManager& solver_log_manager);
 
-    void build_skeleton_constraint_coefficients(const BendersBaseOptions& options);
+    void build_skeleton_constraint_set_loader(const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
 
@@ -188,6 +190,14 @@ private:
         replayed on the next Benders iteration.
     */
     void ClearPersistedConstraintsTracking();
+
+    /*
+        CACHE_PROBLEMS>=2 only: strips sub_problem_solver_ back down to
+        InitialSubProblemSolverSize_ rows, removing whatever rows were added for
+        whichever subproblem last used this shared skeleton solver on this rank.
+        A no-op if it is already at that size.
+    */
+    void ResetSharedSolverToBase();
 
     mpi::communicator* _world;
 #ifdef _WIN32
@@ -220,11 +230,7 @@ private:
     const SolverLogManager* solver_log_manager_ = nullptr;
     Logger _logger;
     bool warm_start_;
-    int max_constraints_per_micro_it_ = 0;
-    bool add_N_constraint_first_ = false;
-    double tol_N_K_ = 1.001;
-    double tol_N_ = 1.0;
-    std::shared_ptr<SkeletonConstraintCoefficients> skeleton_constraint_coefficients_;
+    std::shared_ptr<SkeletonConstraintSetLoader> constraint_set_loader_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
     std::shared_ptr<SolverAbstract> sub_problem_solver_;
     int InitialSubProblemSolverSize_;

@@ -520,6 +520,7 @@ class ConfigLoader(XpansionSettingsReader):
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.allow_run_as_root_key()] = self.allow_run_as_root()
+        options[LauncherOptionsKeys.memory_key()] = self.memory()
 
         with open(self.launcher_options_file_path(), "w") as launcher_options:
             json.dump(options, launcher_options, indent=4)

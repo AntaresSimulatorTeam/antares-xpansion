@@ -66,7 +66,6 @@ extern "C"
     void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
                                       int& num_iter,
                                       mpi::communicator* world,
-                                      std::map<std::string, std::vector<std::string>>& sub_to_vars,
                                       std::filesystem::path input_root)
     {
     }

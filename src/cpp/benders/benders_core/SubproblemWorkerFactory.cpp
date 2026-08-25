@@ -14,12 +14,11 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                                                  int log_level,
                                                  ProblemsFormat format,
                                                  std::vector<std::string> sub_problem_names,
-                                                 const SolverLogManager& solver_log_manager,
-                                                 boost::mpi::communicator* world):
+                                                 const SolverLogManager& solver_log_manager):
+    logger_(logger),
     input_root_(input_root),
     skeleton_coefficient_reader_(std::move(sub_problem_names))
 {
-    logger_ = logger;
     SkeletonSolverLoader loader(logger_);
     solver_ = loader.Load(input_root_ / "sub" / "sub.mps",
                           solver_name,
@@ -40,15 +39,18 @@ void SubproblemWorkerFactory::GetBasis(std::string sub_name)
 SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,
                                                  Logger& logger,
                                                  std::shared_ptr<SolverAbstract> solver,
-                                                 std::vector<std::string> sub_problem_names,
-                                                 boost::mpi::communicator* world):
+                                                 std::vector<std::string> sub_problem_names):
+    logger_(logger),
     input_root_(input_root),
     solver_(std::move(solver)),
     skeleton_coefficient_reader_(std::move(sub_problem_names))
 {
+<<<<<<< HEAD
     logger_ = logger;
     skeletonObjCoeffs_.resize(solver_->get_ncols());
     solver_->get_obj(skeletonObjCoeffs_.data(), 0, solver_->get_ncols() - 1);
+=======
+>>>>>>> da92900d7bdcc94d4ca7af01da998fd74f163b26
     load_coefficient_sets();
 }
 
@@ -97,6 +99,7 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
   VariableMap& variable_map,
   double slave_weights
 )
+
 {
     std::vector<double> weighted_obj(skeletonObjCoeffs_.size());
     std::ranges::transform(skeletonObjCoeffs_,

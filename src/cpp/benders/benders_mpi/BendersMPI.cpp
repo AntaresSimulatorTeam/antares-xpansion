@@ -496,8 +496,7 @@ std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
                                                                            _options.LOG_LEVEL,
                                                                            _options.PROBLEMS_FORMAT,
                                                                            GetSubProblemNames(),
-                                                                           solver_log_manager_,
-                                                                           &_world);
+                                                                           solver_log_manager_);
     return subproblem_worker_factory_->GetSolver();
 }
 
@@ -559,10 +558,6 @@ void BendersMpi::Run()
         }
 
         benders_plugin_->OnBendersIterationEnd();
-
-        auto subproblem_names = GetSubProblemNames();
-        std::cout << "rank " << _world.rank() << " coupling map size " << subproblem_names.size()
-                  << std::endl;
     }
     if (_world.rank() == rank_0)
     {

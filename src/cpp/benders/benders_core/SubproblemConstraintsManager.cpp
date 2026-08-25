@@ -8,8 +8,7 @@ SubproblemConstraintsManager::SubproblemConstraintsManager(
   std::shared_ptr<SolverAbstract> solver,
   const std::shared_ptr<SubproblemWorker>& subproblem_worker):
     row_extractor_(std::move(solver)),
-    subproblem_worker_(subproblem_worker),
-    initial_sub_size_(subproblem_worker->get_problem_row_num())
+    subproblem_worker_(subproblem_worker)
 {
 }
 
@@ -28,16 +27,14 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromConstraintsFil
                               solver_log_manager,
                               log_level,
                               format);
-    return SubproblemConstraintsManagerPtr(
-      new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
+    return std::make_shared<SubproblemConstraintsManager>(std::move(solver), subproblem_worker);
 }
 
 SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromSharedSolver(
   std::shared_ptr<SolverAbstract> solver,
   const std::shared_ptr<SubproblemWorker>& subproblem_worker)
 {
-    return SubproblemConstraintsManagerPtr(
-      new SubproblemConstraintsManager(std::move(solver), subproblem_worker));
+    return std::make_shared<SubproblemConstraintsManager>(std::move(solver), subproblem_worker);
 }
 
 std::vector<double> SubproblemConstraintsManager::GetSubSolution()
@@ -62,7 +59,7 @@ SolverRepresentedRows SubproblemConstraintsManager::AddRows(std::string& row_nam
     return constraint_row;
 }
 
-void SubproblemConstraintsManager::DeleteAddedRows()
+void SubproblemConstraintsManager::DeleteAddedRows(int base_size)
 {
-    subproblem_worker_->delete_rows(initial_sub_size_);
+    subproblem_worker_->delete_rows(base_size);
 }

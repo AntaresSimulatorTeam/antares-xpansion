@@ -531,7 +531,7 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
                             {
                                 PlainData::SubProblemData subproblem_data;
                                 const auto& [name, worker] = kvp;
-                                SolveSubproblem(subproblem_data, name, worker);
+                                SolveSubproblem(subproblem_data, name, worker, nullptr);
 
                                 std::lock_guard guard(m);
                                 subproblem_data_map[name] = subproblem_data;
@@ -631,7 +631,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 
                                 std::call_once(
                                   variable_indice_once_flag,
-                                  [&](const auto& worker_)
+                                  [this](const auto& worker_)
                                   { SetSubproblemVariablesIndices(worker_); },
                                   *worker);
                             }
@@ -686,7 +686,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
     benders_plugin_->OnBendersSubResolutionStart(worker, name);
-    if (post_reset_hook)
+    if (post_reset_hook && benders_plugin_->ShouldRestoreSubproblemBasis())
     {
         // Must run after OnBendersSubResolutionStart has reset the (possibly
         // shared, skeleton-cached) solver's rows back to this subproblem's own

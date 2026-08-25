@@ -133,7 +133,7 @@ protected:
     void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                          const std::string& name,
                          const std::shared_ptr<SubproblemWorker>& worker,
-                         const std::function<void()>& post_reset_hook = nullptr) override;
+                         const std::function<void()>& post_reset_hook) override;
     void UpdateMaxCriterionArea();
 };
 
