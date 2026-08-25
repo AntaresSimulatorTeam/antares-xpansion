@@ -14,7 +14,7 @@ protected:
     {
         worker_solver_->nrows = initial_nrows;
         VariableMap variable_map;
-        return std::make_shared<SubproblemWorker>(variable_map, 1.0, worker_solver_, logger_);
+        return std::make_shared<SubproblemWorker>(variable_map, worker_solver_, logger_);
     }
 
     std::shared_ptr<RecordingSolver> worker_solver_ = std::make_shared<RecordingSolver>();

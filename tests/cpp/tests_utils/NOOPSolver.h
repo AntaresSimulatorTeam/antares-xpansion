@@ -7,6 +7,10 @@
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
+#include <algorithm>
+#include <vector>
+#include <map>
+
 class NOOPSolver: public SolverAbstract
 {
 public:
@@ -349,4 +353,134 @@ protected:
     std::vector<char> col_types;
     std::vector<double> lbs;
     std::vector<double> ubs;
+};
+
+class NOOPSolverForSubProblemFactory: public NOOPSolver
+{
+public:
+    NOOPSolverForSubProblemFactory() 
+    {
+        col_name_index_map_["x1"] = 0 ; 
+        col_name_index_map_["x2"] = 1 ; 
+        row_name_index_map_["row1"] = 0 ; 
+        row_name_index_map_["row2"] = 1 ; 
+
+
+    }
+    int get_ncols() const override
+    {
+        return ncols_;
+    }
+
+    void set_ncols(int ncols)
+    {
+        ncols_ = ncols;
+        obj_coeffs_.resize(ncols);
+    }
+
+    int get_nrows() const override
+    {
+        return nrows_;
+    }
+
+    void set_nrows(int nrows)
+    {
+        nrows_ = nrows;
+        rhs_coeffs_.resize(nrows);
+        constraints_coeffs_.resize(nrows);
+    }
+
+    void set_obj(const double* obj, int first, int last) override
+    {
+        std::copy(obj, obj + (last - first + 1), obj_coeffs_.begin() + first);
+    }
+
+    void set_rhs(const std::vector<double>& rhs)
+    {
+        rhs_coeffs_ = rhs;
+    }
+
+    void set_constraints(const std::vector<std::vector<double>>& constraints)
+    {
+        constraints_coeffs_ = constraints;
+    }
+
+    void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) override
+    {
+        for (size_t i = 0; i < obj.size(); ++i)
+        {
+            obj_coeffs_[mindex[i]] = obj[i];
+        }
+    }
+
+    void chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals) override
+    {
+        for (size_t i = 0; i < vals.size(); ++i)
+        {
+            rhs_coeffs_[id_rows[i]] = vals[i];
+        }
+    }
+
+    void chg_coefs(const std::vector<int>& id_rows,
+                   const std::vector<int>& id_cols,
+                   const std::vector<double>& vals) override
+    {
+        for (size_t i = 0; i < vals.size(); ++i)
+        {
+            constraints_coeffs_[id_rows[i]][id_cols[i]] = vals[i];
+        }
+    }
+
+    void get_obj(double* obj, int first, int last) const override
+    {
+        std::copy(obj_coeffs_.begin() + first, obj_coeffs_.begin() + last + 1, obj);
+    }
+
+    void get_rhs(double* rhs, int first, int last) const override
+    {
+        std::copy(rhs_coeffs_.begin() + first, rhs_coeffs_.begin() + last + 1, rhs);
+    }
+
+    int get_col_index(const std::string& name) override
+    {
+        auto it = col_name_index_map_.find(name);
+        return it == col_name_index_map_.end() ? -1 : it->second;
+    }
+
+    int get_row_index(const std::string& name) override
+    {
+        auto it = row_name_index_map_.find(name);
+        return it == row_name_index_map_.end() ? -1 : it->second;
+    }
+
+    void get_rows(int* mstart,
+                  int* mclind,
+                  double* dmatval,
+                  int /*size*/,
+                  int* nels,
+                  int first,
+                  int last) const override
+    {
+        int nz = 0;
+        for (int r = first; r <= last; ++r)
+        {
+            mstart[r - first] = nz;
+            const auto& row = constraints_coeffs_[r];
+            for (size_t c = 0; c < row.size(); ++c)
+            {
+                mclind[nz] = static_cast<int>(c);
+                dmatval[nz] = row[c];
+                ++nz;
+            }
+            nels[r - first] = static_cast<int>(row.size());
+        }
+    }
+
+    int ncols_ = 0;
+    int nrows_ = 0;
+    std::vector<double> obj_coeffs_;
+    std::vector<double> rhs_coeffs_;
+    std::vector<std::vector<double>> constraints_coeffs_;
+    std::map<std::string,int> col_name_index_map_ ; 
+    std::map<std::string,int> row_name_index_map_ ; 
 };

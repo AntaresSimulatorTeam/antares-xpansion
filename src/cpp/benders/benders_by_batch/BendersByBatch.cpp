@@ -536,7 +536,6 @@ void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
         auto worker = subproblem_worker_factory_->CreateSubSolverAbstract(
           name,
           variable_map,
-          _options.CUT_COEFFICIENT_TOLERANCE,
           slave_weights);
         PlainData::SubProblemData subproblem_data{};
         SolveSubproblem(subproblem_data,

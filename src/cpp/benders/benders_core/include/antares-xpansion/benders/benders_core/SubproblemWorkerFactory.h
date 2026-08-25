@@ -39,8 +39,7 @@ public:
 
     std::shared_ptr<SubproblemWorker> CreateSubSolverAbstract(std::string sub_name,
                                                               VariableMap& variable_map,
-                                                              double cut_coefficient_tolerance,
-                                                              double slave_weight);
+                                                              double slave_weights);
 
     void GetBasis(std::string sub_name);
     void ApplyBasis(const std::string& sub_name);
@@ -62,4 +61,5 @@ private:
     SkeletonCoefficientReader skeleton_coefficient_reader_;
     boost::mpi::communicator* world_ = nullptr;
     int SubProblemSolverInitialSize_;
+    std::vector<double> skeletonObjCoeffs_ ; 
 };

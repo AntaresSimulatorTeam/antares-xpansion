@@ -24,10 +24,15 @@ public:
                      Logger logger,
                      ProblemsFormat format,
                      IBendersProblemProvider* benders_problem_provider);
+    /**
+     * Constructor used inSubproblemWorkerFactory 
+     * used in compact memroy mode where we already set up the solver abstract from  
+     * the correspondant mps (and set up the slave weigts)
+     */
     SubproblemWorker(VariableMap& variable_map,
-                     double slave_weight,
                      std::shared_ptr<SolverAbstract> solver,
                      Logger logger);
+    
     void setup_obj(double slave_weight);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
