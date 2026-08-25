@@ -23,10 +23,12 @@ public:
                      const SolverLogManager& solver_log_manager,
                      Logger logger,
                      ProblemsFormat format,
-                     IBendersProblemProvider* benders_problem_provider,
-                     double cut_coefficient_tolerance);
+                     IBendersProblemProvider* benders_problem_provider);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
+    int get_variable_index(const std::string& variable_name);
+    void delete_rows(int start_pos);
+    int get_problem_row_num();
 
 public:
     void fix_to(const Point& x0) const;

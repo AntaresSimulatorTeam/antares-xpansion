@@ -8,6 +8,7 @@
 
 #include <antares/api/singleProblemGetter.h>
 #include <antares/api/solver.h>
+#include "antares/file-tree-study-loader/FileTreeStudyLoader.h"
 
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -81,13 +82,13 @@ std::string solverXpansionToSimulator(const SolverConfig& in)
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& simulation_dir)
 {
-    Solver::Optimization::OptimizationOptions optOptions;
+    Antares::Solver::Optimization::OptimizationOptions optOptions;
 
     auto solver_name = solverXpansionToSimulator(solver_config_);
     optOptions.firstOptimOptions.solverName = solver_name;
     optOptions.firstOptimOptions.solverUsesBasis = true;
     optOptions.firstOptimOptions.solverExportsBasis = true;
-    optOptions.exportBehavior = Solver::Optimization::ExportBehavior::Always;
+    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
 
     optOptions.secondOptimOptions.solverName = solver_name;
     optOptions.secondOptimOptions.solverUsesBasis = true;
@@ -98,7 +99,9 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
         optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
         optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
     }
-    auto results = API::PerformSimulation(options_.StudyPath(), simulation_dir, optOptions);
+    auto results = Antares::API::PerformSimulation(options_.StudyPath(),
+                                                   simulation_dir,
+                                                   optOptions);
 
     /**
      * Antares simulator allocate a lot of memory
@@ -123,7 +126,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
     lps_ = std::move(results.antares_problems);
 }
 
-void ProblemGeneration::generate_antares_problems(Antares::Solver::SingleProblemGetter& spg,
+void ProblemGeneration::generate_antares_problems(const std::filesystem::path& study_dir,
                                                   const std::filesystem::path& output_dir)
 {
     lps_.setConstantData(spg.getConstantData());
@@ -160,12 +163,12 @@ void ProblemGeneration::loadProblemsFromAntares(
   const std::filesystem::path& simulation_dir,
   ProblemGenerationLog::ProblemGenerationLogger* logger)
 {
-    Solver::SingleProblemGetter spg(study_dir);
+    Antares::Solver::SingleProblemGetter spg(study_dir);
     if (spg.areWeeksIndependent())
     {
         (*logger)(LogUtils::LOGLEVEL::INFO)
           << "Weeks are independent, using optimized problem generation" << std::endl;
-        generate_antares_problems(spg, simulation_dir);
+        generate_antares_problems(study_dir, simulation_dir);
     }
     else
     {

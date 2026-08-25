@@ -50,11 +50,6 @@ build_config.yaml
 .coverage
 coverage-reports
 
-# Doc pdf file
-antaresxpansionuserguide.pdf
-include/google/protobuf/message.h
-xwiki_source
-
 # vscode
 .vscode
 
@@ -62,3 +57,6 @@ xwiki_source
 .venv
 vcpkg_installed
 CMakeUserPresets.json
+
+# Jupyter cache
+.cache

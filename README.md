@@ -1,4 +1,4 @@
-# Antares-Xpansion
+# Antares Xpansion
 
 > Investment simulations for [Antares][antareswebsite] studies
 
@@ -8,22 +8,23 @@
 
 # Introduction
 
-The [Antares-Xpansion][xpansion-github] package, works along with RTE's adequacy software [Antares][antareswebsite] that
-is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares
+The [Antares Xpansion][xpansion-github] package, works along with RTE's adequacy software [Antares][antareswebsite] that
+is also [hosted on github][antares-github]. Antares Xpansion aims at performing investment simulations for Antares
 studies.
 
-Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
-and a full user guide.
+You can find an [introduction on Antares Xpansion](https://antares-doc.readthedocs.io/en/latest/reference/xpansion-intro/) 
+and a guide in the Antares user documentation.
+Other more technical documentation is hosted [here](https://antares-xpansion.readthedocs.io/en/latest/).
 
-For developers: [here][xpansion-doxygen] you can find doxygen code documentation.
+For developers, you also have [doxygen code documentation][xpansion-doxygen].
 
-Check out the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares.
+Check out the [Antares website][antareswebsite] for more insights on Antares.
 
-Antares-Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses
-of Antares-Xpansion are for example:
+Antares Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses
+of Antares Xpansion are for example:
 
 - **long-term scenario building**: build an economically consistent long-term generation mix,
-- **transmission expansion planning** : compute the network development which maximizes social welfare.
+- **transmission expansion planning**: compute the network development which maximizes social welfare.
 
 ## Antares study
 
@@ -37,7 +38,7 @@ time frames each.
 The goal of the Antares simulation is to minimize the
 **expected operation cost during one year**.
 
-## Antares-Xpansion simulation
+## Antares Xpansion simulation
 
 Given an Antares simulation the user can define some
 _investment candidates_ in the power network in order to:
@@ -51,32 +52,31 @@ of the power system, but induces an additional **investment annuity** that inclu
 - Annualized investment costs to physically build the facility,
 - Fixed operational costs and maintenance costs to sustain the operation.
 
-Antares-Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected
+Antares Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected
 operation cost during one year** and the **investment annuity**.
 
-Antares-Xpansion is currently under development. Feel free to submit any issue.
+Antares Xpansion is currently under active development. Feel free to submit any issue.
 
 ## Links
 
-- [Official Documentation][readthedocs]
-- [Antares website][antareswebsite]
+- [Antares website and documentation (including Antares Xpansion)][antareswebsite]
+- [Technical documentation for Antares Xpansion][readthedocs]
 - [Antares github][antares-github]
-- [Antares documentation][readthedocs-antares]
 
 ## Installation
 
-Antares-Xpansion is currently released as standalone-portable solution.
+Antares Xpansion is currently released as standalone-portable solution.
 It can be run either using the single file executable or
 an archive including multiple binaries called by a driver.
 
-To download the latest version of Antares-Xpansion, visit the [release page][antares_xpansion_release_url] of
-Antares-Xpansion repository and download the binary that matches your platform. If you prefer to build the software from
+To download the latest version of Antares Xpansion, visit the [release page][antares_xpansion_release_url] of
+Antares Xpansion repository and download the binary that matches your platform. If you prefer to build the software from
 the source files, please refer to the [developer guide][developer-guide].
 
 Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use
-Antares-Xpansion.
+Antares Xpansion.
 
-To check the installation, you can open a command prompt in the Antares-Xpansion install directory and run the following
+To check the installation, you can open a command prompt in the Antares Xpansion install directory and run the following
 command to execute one of the examples included in the package:
 
 ```shell
@@ -91,12 +91,9 @@ that allows for the definition of investment candidates
 and create the `candidates.ini` and `settings.ini` files
 in the directory `study_path/user/expansion`.
 
-Since v0.6.0, Antares-Xpansion includes an experimental graphical interface but it is optimally used as a command line
-prompt.
-
 ### Command-line usage
 
-1. Open a command prompt in your Antares-Xpansion install directory. By default (on Windows) it is named
+1. Open a command prompt in your Antares Xpansion install directory. By default (on Windows) it is named
    `antaresXpansion-x.y.z-win64`
    where `x.y.z` is the version number.
 
@@ -109,7 +106,7 @@ prompt.
 
 ## Technologies
 
-Antares-Xpansion is developed mainly in **C++** and uses a **Python** runner
+Antares Xpansion is developed mainly in **C++** and uses a **Python** runner
 to drive the execution of multiple executables.
 
 This software suite has been tested under:
@@ -119,7 +116,7 @@ This software suite has been tested under:
 * Centos 7 [![Status][centos_system_svg]][centos_system_link]
 * Oracle Linux 8 [![Status][oracle_svg]][oracle_link]
 
-Antares-Xpansion is built using CMake.
+Antares Xpansion is built using CMake.
 For build instructions, please visit the [developer guide][developer-guide].
 
 ## Source Code Content
@@ -131,7 +128,7 @@ For build instructions, please visit the [developer guide][developer-guide].
 * [data_test/](data_test)     - Free sample data sets.
 * [src/cpp/](src/cpp)      - Source code for cpp application (lpnamer, benders with MPI, benders without MPI, mergeMPS,
   study updater)
-* [src/python/](src/python)       - Python script for Antares-Xpansion launch.
+* [src/python/](src/python)       - Python script for Antares Xpansion launch.
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml/badge.svg?query=branch%3Adevelop
 
@@ -161,12 +158,8 @@ For build instructions, please visit the [developer guide][developer-guide].
 
 [readthedocs]: https://antares-xpansion.readthedocs.io/
 
-[readthedocs-antares]: https://antares-doc.readthedocs.io/
+[antareswebsite]: https://antares-doc.readthedocs.io/en/latest/
 
-[antareswebsite]: https://antares-simulator.org
-
-[developer-guide]: https://antares-xpansion.readthedocs.io/en/stable/developer-guide/install_from_sources/0-INSTALL/
+[developer-guide]: https://antares-xpansion.readthedocs.io/en/latest/developer-guide/
 
 [user-guide]: https://antares-xpansion.readthedocs.io/en/stable/user-guide/optimization-principles/investment-problem/
-
-[benders]: https://antares-xpansion.readthedocs.io/en/latest/user-guide/optimization-principles/investment-problem/

@@ -3,4 +3,5 @@ pytest
 numpy
 pytest-cov
 behave
-xpress==9.2.12
+xpress~=9.8.0
+pyyaml~=6.0.0

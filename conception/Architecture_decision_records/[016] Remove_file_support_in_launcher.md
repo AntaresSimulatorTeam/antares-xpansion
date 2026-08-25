@@ -5,7 +5,7 @@
 ## Context
 
 Launcher (Python components) is becoming increasingly complex. Although it is used for the Xpansion business case and the
-[the nominal case is to use Antares as a lib](%5B012%5D%20Change_xpansion_nomila_case_to_use_simulator_lib.md)
+[the nominal case is to use Antares as a lib](%5B012%5D%20Change_xpansion_nominal_case_to_use_simulator_lib.md)
 , for development and R&D, it is useful to work step-by-step and see/edit files between steps.
 ## Decision
 

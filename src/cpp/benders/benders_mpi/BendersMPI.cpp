@@ -2,6 +2,7 @@
 
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
+#include <fstream>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
@@ -14,7 +15,11 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<Output::OutputWriter> writer,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
+    BendersBase(options,
+                std::move(logger),
+                std::move(writer),
+                std::move(mathLoggerDriver),
+                std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world)
 {
 }
@@ -29,7 +34,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
-    BuildMasterProblem();
+    SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;
@@ -42,6 +47,7 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
+                subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
             current_problem_id++;
@@ -57,16 +63,74 @@ void BendersMpi::InitializeProblems()
             if (auto process_to_feed = current_problem_id % _world.size();
                 process_to_feed == _world.rank())
             { // Assign  [problemNumber % processCount] to processID
-
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
             }
             current_problem_id++;
         }
     }
+
+    std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
+    mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
+    if (_world.rank() == rank_0)
+    {
+        subproblem_per_cut_indices_ = get_subs_per_cut(gathered_subs_per_proc, _data.nsubproblem);
+    }
+    BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
+}
+
+std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(
+  const std::vector<SubProblemNamesInCut>& gathered_sub_per_proc,
+  int max_aggregation)
+{
+    int n_cuts = SetAggregation(max_aggregation);
+
+    std::vector<Entry> ordered(_data.nsubproblem);
+
+    for (auto& proc_subs_vec: gathered_sub_per_proc)
+    {
+        for (auto& sub: proc_subs_vec)
+        {
+            auto it = _problem_to_id.find(sub.first);
+            if (it == _problem_to_id.end())
+            {
+                continue;
+            }
+            ordered[it->second] = {&sub.first, sub.second};
+        }
+    }
+
+    std::vector<SubProblemNamesInCut> cuts;
+    cuts.reserve(n_cuts);
+
+    SubProblemNamesInCut cut;
+    cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
+
+    for (const auto& e: ordered)
+    {
+        if (!e.name)
+        {
+            continue;
+        }
+
+        cut.emplace_back(*e.name, e.vecPos);
+        if (cut.size() == static_cast<size_t>((_data.nsubproblem + n_cuts - 1) / n_cuts))
+        {
+            cuts.emplace_back(std::move(cut));
+            cut.clear();
+            cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
+        }
+    }
+
+    if (!cut.empty())
+    {
+        cuts.emplace_back(std::move(cut));
+    }
+    return cuts;
 }
 
 void BendersMpi::BroadCastVariablesIndices()
@@ -78,7 +142,7 @@ void BendersMpi::BroadCastVariablesIndices()
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
-void BendersMpi::BuildMasterProblem()
+void BendersMpi::InitializeMaster()
 {
     if (_world.rank() == rank_0)
     {
@@ -94,7 +158,16 @@ void BendersMpi::BuildMasterProblem()
                                    Options().PROBLEMS_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
-                                   Options().CUT_COEFFICIENT_TOLERANCE);
+                                   GetSubCutTolerance());
+    }
+}
+
+void BendersMpi::BuildMasterProblem()
+{
+    InitializeMaster();
+    if (_world.rank() == rank_0)
+    {
+        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
     }
 }
 
@@ -150,6 +223,7 @@ void BendersMpi::solve_master_and_create_trace()
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
+
     _logger->log_master_solving_duration(_data.timer_master);
 
     ComputeXCut();
@@ -301,11 +375,7 @@ void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathere
 
     if (_world.rank() == rank_0)
     {
-        // TODO: In Benders MPI the subproblem split can be done once as it is the same at each
-        // iteration
-        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
-                                                                      _data.nsubproblem);
-        build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);
+        build_all_aggregated_cuts(subproblem_per_cut_indices_, gathered_subproblem_map);
     }
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
@@ -402,12 +472,19 @@ void BendersMpi::Run()
 
     while (!_data.stop)
     {
+        benders_plugin_->OnBendersIterationStart();
+
         ++_data.it;
         ResetSimplexIterationsBounds();
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
+
+        benders_plugin_->OnBendersMasterResolutionStart();
+
         step_1_solve_master();
+
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
@@ -430,6 +507,8 @@ void BendersMpi::Run()
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
         }
+
+        benders_plugin_->OnBendersIterationEnd();
     }
     if (_world.rank() == rank_0)
     {
@@ -471,8 +550,13 @@ void BendersMpi::launch()
     }
     _world.barrier();
 
+    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+
     Run();
+
     _world.barrier();
+
+    benders_plugin_->OnBendersEnd();
 
     post_run_actions();
 

@@ -5,7 +5,6 @@ target_sources(benders_sequential_test
         BendersBaseTest.cpp
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
-        SubproblemWorkerTest.cpp
         MergeMasterTest.cpp
 )
 

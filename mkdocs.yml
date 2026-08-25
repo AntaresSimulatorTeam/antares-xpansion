@@ -1,7 +1,8 @@
 docs_dir: docs
+repo_name: antares-xpansion
 site_name: Antares Xpansion Documentation
 repo_url: https://github.com/AntaresSimulatorTeam/antares-xpansion
-edit_uri: edit/doc/docs/
+edit_uri: edit/develop/docs
 
 theme:
   name: material
@@ -11,12 +12,11 @@ theme:
   features:
     - navigation.instant
     - navigation.top
-    - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
-  #  - navigation.sections
-  #   - header.autohide
-  #   - toc.separate
+    - navigation.indexes
+    - content.action.edit
+    - content.action.view
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: antares
@@ -30,47 +30,53 @@ theme:
         name: Switch to light mode
 
 nav:
-  - Home: index.md
-  - "Antares ecosystem": "https://antares-doc.readthedocs.io"
-  - "User guide":
-      - "How does Antares-Xpansion work ?":
-          - "The optimal investment problem in Antares-Xpansion": "user-guide/optimization-principles/investment-problem.md"
-          - "Mathematical aspects of the investment problem": "user-guide/optimization-principles/problem-formalization.md"
-          - "Performance history": "user-guide/performance-history/perf-graphs.ipynb"
-      - "Getting started":
-          - "Installation": "user-guide/get-started/installation.md"
-          - "Set up an Antares-Xpansion study":
-              - "Prepare the Antares study": "user-guide/get-started/prepare-a-simulation.md"
-              - "Define the candidates": "user-guide/get-started/candidate-definition.md"
-              - "Settings of the algorithm": "user-guide/get-started/settings-definition.md"
-              - "Settings of benders executable": "user-guide/get-started/options-definition.md"
-          - "Launch the optimization": "user-guide/get-started/launching-optimization.md"
-          - "Adequacy criterion": "user-guide/get-started/adequacy-criterion.md"
-          - "Sensitivity analysis": "user-guide/get-started/sensitivity-analysis.md"
-      - "Trajectory investment":
-          - "Trajectory investment problem": "user-guide/trajectory-investment/trajectory-problem.md"
-          - "Full trajectory workflow": "user-guide/trajectory-investment/trajectory-workflow.md"
-          - "Launching the workflow": "user-guide/trajectory-investment/orchestration.md"
-          - "User input file parsing": "user-guide/trajectory-investment/user-input.md"
-          - "Multiple problem generation": "user-guide/trajectory-investment/multiple-problem-generation.md"
-          - "Merged weights file generation ": "user-guide/trajectory-investment/merge-weights.md"
-          - "Merging annual problems": "user-guide/trajectory-investment/merge-master.md"
-  - "Developer guide":
-      - "Install from sources":
-          - "Introduction": "developer-guide/install_from_sources/0-INSTALL.md"
-          - "Development requirements": "developer-guide/install_from_sources/1-Development-requirements.md"
-          - "Dependencies install": "developer-guide/install_from_sources/2-Dependencies-install.md"
-          - "Build": "developer-guide/install_from_sources/3-Build.md"
-          - "Tests": "developer-guide/install_from_sources/4-Tests.md"
-          - "Installer creation": "developer-guide/install_from_sources/5-Installer-creation.md"
-          - "Xpress": "developer-guide/install_from_sources/6-Xpress.md"
-      - "Antares-Xpansion simulation procedure":
-          - "Overview": "developer-guide/xpansion_steps/0-overview.md"
-          - "Antares optimization problem retrieval": "developer-guide/xpansion_steps/1-antares-solver-problem.md"
-          - "Investment problem generation": "developer-guide/xpansion_steps/2-problem-modification.md"
-  - "Changelog":
-      - "Changelog": "changelog/CHANGELOG.md"
-      - "File format changes": "changelog/format_changes.md"
+  - Overview: 
+    - Home: index.md
+    - Changelog: overview/CHANGELOG.md
+    - File format changes: overview/format_changes.md
+    - Documentation guidelines: overview/doc-guidelines.md
+  - Reference:
+    - reference/index.md
+    - Installation: reference/installation.md
+    - Input files:
+      - reference/inputs/index.md
+      - Candidates: reference/inputs/candidates.md
+      - Settings: reference/inputs/settings.md
+      - Sensitivity analysis: reference/inputs/sensitivity.md
+      - Adequacy criterion: reference/inputs/adequacy-criterion.md
+    - Running Antares Xpansion: reference/cli.md
+    - Output files:
+      - reference/outputs/index.md
+      - Optimization output: reference/outputs/optimization-output.md
+      - Others: reference/outputs/others.md
+      - Sensitivity analysis: reference/outputs/sensitivity.md
+      - Benders output trace: reference/outputs/benders-output-trace.md
+    - Benders:
+      - reference/benders/index.md
+      - Options: reference/benders/options.md
+    - Trajectory investment:
+      - reference/trajectory-investment/index.md
+      - Full trajectory workflow: reference/trajectory-investment/trajectory-workflow.md
+      - Launching the workflow: reference/trajectory-investment/orchestration.md
+      - User input file parsing: reference/trajectory-investment/user-input.md
+      - Multiple problem generation: reference/trajectory-investment/multiple-problem-generation.md
+      - Merged weights file generation : reference/trajectory-investment/merge-weights.md
+      - Merging annual problems: reference/trajectory-investment/merge-master.md
+  - Developer guide:
+    - developer-guide/index.md
+    - Install from source:
+      - developer-guide/install-from-source/index.md
+      - Development requirements: developer-guide/install-from-source/development-requirements.md
+      - Dependencies install: developer-guide/install-from-source/install-dependencies.md
+      - Build: developer-guide/install-from-source/build.md
+      - Tests: developer-guide/install-from-source/tests.md
+      - Installer creation: developer-guide/install-from-source/installer-creation.md
+      - Xpress: developer-guide/install-from-source/xpress.md
+    - Simulation procedure:
+      - developer-guide/xpansion-steps/index.md
+      - Antares optimization problem retrieval: developer-guide/xpansion-steps/antares-solver-problem.md
+      - Investment problem generation: developer-guide/xpansion-steps/problem-modification.md
+
 
 plugins:
   - search
@@ -78,17 +84,15 @@ plugins:
       execute: False
       show_input: False
       theme: dark
-  - bibtex:
-      bib_file: "docs/user-guide/benders.bib"
 
 extra_css:
   - stylesheets/extra.css
 
 extra_javascript:
+  # Mathjax integration https://squidfunk.github.io/mkdocs-material/reference/math/
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
   - https://code.jquery.com/jquery-3.6.0.min.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
-  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-
 
 markdown_extensions:
   - attr_list
@@ -106,4 +110,13 @@ markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
 
-copyright: Copyright &copy; 2007 - 2024 RTE
+exclude_docs: | 
+  /agents/
+       
+validation:
+  omitted_files: warn
+  absolute_links: warn  # Or 'relative_to_docs' - new in MkDocs 1.6
+  unrecognized_links: warn
+  anchors: warn 
+
+copyright: Copyright &copy; 2007 - 2026 RTE

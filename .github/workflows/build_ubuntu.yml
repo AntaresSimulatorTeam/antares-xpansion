@@ -12,6 +12,7 @@ on:
       - release/*
       - doc/*
       - dependabot/**
+      - copilot/*
   release:
     types: [ created ]
 
@@ -36,7 +37,7 @@ jobs:
       SINGLE_FILE_NAME: ${{ steps.export_output.outputs.SINGLE_FILE_NAME }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
@@ -53,7 +54,7 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         id: python-setup
         with:
           cache: 'pip'
@@ -67,12 +68,12 @@ jobs:
       - name: Set-up Xpress with pip for Ubuntu
         shell: bash
         run: |
-          python -m pip install "xpress==9.2.12"
+          python -m pip install "xpress~=9.8"
           XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpresslibs
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
-          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
+          ln -s $XPRESS_DIR/lib/libxprs.so.46 $XPRESS_DIR/lib/libxprs.so
 
       - name: Read antares-solver version
         id: antares-version
@@ -106,7 +107,7 @@ jobs:
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -141,12 +142,12 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer|short"
 
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
@@ -173,13 +174,13 @@ jobs:
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
@@ -190,42 +191,12 @@ jobs:
           echo "TGZ_NAME=${{env.TGZ_NAME}}" >> $GITHUB_OUTPUT
           echo "SINGLE_FILE_NAME=${{ steps.create-single-file.outputs.archive-name }}" >> $GITHUB_OUTPUT
 
-      #######################
-  userguide:
-    if: github.event_name == 'release' && github.event.action == 'created'
-    runs-on: ubuntu-latest
-    outputs:
-      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Read antares-xpansion version
-        id: antares-xpansion-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_xpansion_version'
-
-      - id: create-user-guide
-        name: user guide pdf creation
-        uses: ./.github/workflows/generate-userguide-pdf
-        with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
-
-      - name: user guide upload
-        id: userguide_upload
-        uses: actions/upload-artifact@v6
-        with:
-          name: user-guide
-          path: ${{ steps.create-user-guide.outputs.pdf-path }}
-
   test_assets:
     runs-on: ubuntu-latest
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
       - name: setup
@@ -247,7 +218,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: setup
@@ -265,23 +236,18 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: [ build, userguide ]
+    needs: [ build ]
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
-      - name: Download userguide
-        uses: actions/download-artifact@v7
-        with:
-          name: user-guide
-          path: docs/
 
       - name: Download build assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
       - name: Download build assets single file
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .

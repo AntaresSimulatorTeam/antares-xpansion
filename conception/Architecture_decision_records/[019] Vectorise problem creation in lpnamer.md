@@ -15,7 +15,3 @@ Build problems in the loop processing them
 ## Consequence
 
 * LPNamer memory peak is reduced
-
-## Reference
-
-* [ANT-2210](https://gopro-tickets.rte-france.com/browse/ANT-2210)
