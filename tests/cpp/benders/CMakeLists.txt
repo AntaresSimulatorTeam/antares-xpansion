@@ -14,6 +14,33 @@ target_sources(benders_sequential_test
         SubproblemBasisCacheTest.cpp
 )
 
+add_executable(benders_mem_compact_micro_iters_test)
+target_sources(benders_mem_compact_micro_iters_test
+        PRIVATE
+        SkeletonConstraintSetLoaderTest.cpp
+        SubproblemConstraintsManagerTest.cpp
+        SolverRowExtractorTest.cpp
+        BendersMicroIterationsTest.cpp
+        SubproblemWorkerFactoryTest.cpp
+)
+
+target_link_libraries(benders_mem_compact_micro_iters_test
+        PRIVATE
+        antaresXpansion::benders_core
+        antaresXpansion::plugins
+        antaresXpansion::output_core
+        antaresXpansion::logger_lib
+        tests_utils
+        GTest::Main)
+
+target_include_directories(benders_mem_compact_micro_iters_test
+        PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../TestDoubles/
+)
+
+add_test(NAME unit_benders_mem_compact_micro_iters COMMAND benders_mem_compact_micro_iters_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_property(TEST unit_benders_mem_compact_micro_iters PROPERTY LABELS unit)
+
 target_link_libraries(benders_sequential_test
         PRIVATE
         antaresXpansion::benders_sequential_core
