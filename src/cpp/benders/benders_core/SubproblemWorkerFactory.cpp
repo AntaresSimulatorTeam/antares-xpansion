@@ -68,19 +68,25 @@ void SubproblemWorkerFactory::load_coefficient_sets()
                    dir / "coef_cols.csv",
                    dir / "coef_rows.csv",
                    solver_,
-                   world_);
+                   logger_,
+                   world_
+                   );
     obj_set_.Load(skeleton_coefficient_reader_,
                   dir / "obj_coef.csv",
                   dir / "obj_cols.csv",
                   std::nullopt,
                   solver_,
-                  world_);
+                  logger_,
+                  world_
+                  );
     rhs_set_.Load(skeleton_coefficient_reader_,
                   dir / "rhs.csv",
                   std::nullopt,
                   dir / "rhs_rows.csv",
                   solver_,
-                  world_);
+                  logger_,
+                  world_
+                  );
 }
 
 int SubproblemWorkerFactory::GetSubNumber()
