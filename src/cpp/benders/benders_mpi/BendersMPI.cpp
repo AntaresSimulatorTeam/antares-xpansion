@@ -37,9 +37,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    switch (_options.CACHE_PROBLEMS)
-    {
-    case 2:
+    if (_options.CACHE_PROBLEMS > 0)
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -57,29 +55,8 @@ void BendersMpi::InitializeProblems()
             }
             current_problem_id++;
         }
-        break;
     }
-    case 1:
-    {
-        int current_problem_id = 0;
-        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
-        {
-            auto process_to_feed = current_problem_id % _world.size();
-            if (process_to_feed != _world.rank())
-            {
-                it = coupling_map_.erase(it);
-            }
-            else
-            {
-                subs_per_proc.emplace_back(it->first, process_to_feed);
-                ++it;
-            }
-            current_problem_id++;
-        }
-        break;
-    }
-    case 0:
-    default:
+    else
     {
         int current_problem_id = 0;
         // Dispatch subproblems to process
@@ -96,8 +73,6 @@ void BendersMpi::InitializeProblems()
             }
             current_problem_id++;
         }
-        break;
-    }
     }
 
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;

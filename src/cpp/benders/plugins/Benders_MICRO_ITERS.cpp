@@ -30,6 +30,7 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     warm_start_ = true;
     _world = world;
+    InitialSubProblemSolverSize_ = 0; 
 
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
