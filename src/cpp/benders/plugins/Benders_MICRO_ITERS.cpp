@@ -582,5 +582,6 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBase
                                                                            options.LOG_LEVEL,
                                                                            options.PROBLEMS_FORMAT,
                                                                            std::move(
-                                                                             constraints_names));
+                                                                             constraints_names),
+                                                                           _world);
 }

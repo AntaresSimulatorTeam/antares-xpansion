@@ -30,23 +30,26 @@ void SkeletonCoefficientReader::read_keyed_coeffs_csv(
     {
         Tokenizer tok(line, sep);
         auto it = tok.begin();
-        std::string key = *it;
-        if (!my_subs_.count(key))
-        {
-            continue;
-        }
-        std::vector<double> values_double;
-        ++it;
         if (it != tok.end())
         {
-            std::vector<std::string> value_tokens(it, tok.end());
-            values_double.resize(value_tokens.size());
-            std::transform(value_tokens.begin(),
+            std::string key = *it;
+            if (!my_subs_.count(key))
+            {
+                continue;
+            }
+            std::vector<double> values_double;
+            ++it;
+            if (it != tok.end())
+            {
+                std::vector<std::string> value_tokens(it, tok.end());
+                values_double.resize(value_tokens.size());
+                std::transform(value_tokens.begin(),
                            value_tokens.end(),
                            values_double.begin(),
                            [](const std::string& s) { return std::stod(s); });
+            }
+            dest[key] = std::move(values_double);
         }
-        dest[key] = std::move(values_double);
     }
 }
 

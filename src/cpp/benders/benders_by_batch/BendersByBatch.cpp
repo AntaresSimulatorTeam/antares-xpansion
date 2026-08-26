@@ -135,15 +135,9 @@ void BendersByBatch::Run()
         subProblemFactorSolver = build_sub_problem_skeleton();
     }
 
-    benders_plugin_->OnBendersStart(subproblem_map,
-                                    _logger,
-                                    _options,
-                                    solver_log_manager_,
-                                    subProblemFactorSolver);
 
     MasterLoop();
 
-    benders_plugin_->OnBendersEnd();
 
     if (Rank() == rank_0)
     {

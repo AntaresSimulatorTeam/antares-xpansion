@@ -14,10 +14,12 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                                                  int log_level,
                                                  ProblemsFormat format,
                                                  std::vector<std::string> sub_problem_names,
-                                                 const SolverLogManager& solver_log_manager):
+                                                 const SolverLogManager& solver_log_manager,
+                                                 boost::mpi::communicator* world):
     logger_(logger),
     input_root_(input_root),
-    skeleton_coefficient_reader_(std::move(sub_problem_names))
+    skeleton_coefficient_reader_(std::move(sub_problem_names)),
+    world_(world)
 {
     SkeletonSolverLoader loader(logger_);
     solver_ = loader.Load(input_root_ / "sub" / "sub.mps",
@@ -65,17 +67,20 @@ void SubproblemWorkerFactory::load_coefficient_sets()
                    dir / "coef.csv",
                    dir / "coef_cols.csv",
                    dir / "coef_rows.csv",
-                   solver_);
+                   solver_,
+                   world_);
     obj_set_.Load(skeleton_coefficient_reader_,
                   dir / "obj_coef.csv",
                   dir / "obj_cols.csv",
                   std::nullopt,
-                  solver_);
+                  solver_,
+                  world_);
     rhs_set_.Load(skeleton_coefficient_reader_,
                   dir / "rhs.csv",
                   std::nullopt,
                   dir / "rhs_rows.csv",
-                  solver_);
+                  solver_,
+                  world_);
 }
 
 int SubproblemWorkerFactory::GetSubNumber()

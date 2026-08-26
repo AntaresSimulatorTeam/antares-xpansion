@@ -20,7 +20,8 @@ public:
                                 std::string solver_name,
                                 int log_level,
                                 ProblemsFormat format,
-                                std::vector<std::string>&& constraints_names);
+                                std::vector<std::string>&& constraints_names,
+                                boost::mpi::communicator* world = nullptr);
 
     SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
                                 Logger& logger,
@@ -43,4 +44,5 @@ private:
     std::shared_ptr<SolverAbstract> solver_;
     SolverLogManager solver_log_manager_;
     SkeletonCoefficientReader skeleton_coefficient_reader_;
+    boost::mpi::communicator* world_ = nullptr;
 };

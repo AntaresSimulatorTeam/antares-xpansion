@@ -28,7 +28,8 @@ public:
                             int log_level,
                             ProblemsFormat format,
                             std::vector<std::string> sub_problem_names,
-                            const SolverLogManager& solver_log_manager);
+                            const SolverLogManager& solver_log_manager,
+                            boost::mpi::communicator* world = nullptr);
 
     SubproblemWorkerFactory(const std::filesystem::path& input_root,
                             Logger& logger,
@@ -59,4 +60,5 @@ private:
     SkeletonCoefficientReader skeleton_coefficient_reader_;
     int SubProblemSolverInitialSize_;
     std::vector<double> skeletonObjCoeffs_;
+    boost::mpi::communicator* world_ = nullptr;
 };

@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/mpi.hpp>
+
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "skeleton_coefficient_reader.h"
 
@@ -19,7 +21,8 @@ public:
               const std::filesystem::path& coeffs_csv,
               std::optional<std::filesystem::path> col_indices_csv,
               std::optional<std::filesystem::path> row_indices_csv,
-              const std::shared_ptr<SolverAbstract>& solver);
+              const std::shared_ptr<SolverAbstract>& solver,
+              boost::mpi::communicator* world = nullptr);
 
     std::vector<double>& CoefficientsFor(const std::string& name);
     std::vector<int>& RowIndices();
@@ -30,4 +33,5 @@ private:
     std::map<std::string, std::vector<double>> coeffs_;
     std::vector<int> row_indices_;
     std::vector<int> col_indices_;
+    boost::mpi::communicator* world_ = nullptr;
 };
