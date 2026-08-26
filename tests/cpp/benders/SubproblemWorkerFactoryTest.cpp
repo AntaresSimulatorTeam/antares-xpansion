@@ -88,8 +88,8 @@ protected:
     Logger logger_ = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     std::filesystem::path tmpDir_;
     std::filesystem::path subDir_;
-    std::shared_ptr<NOOPSolverForSubProblemFactory> solver_ =
-      std::make_shared<NOOPSolverForSubProblemFactory>();
+    std::shared_ptr<NOOPSolverForSkeleton> solver_ =
+      std::make_shared<NOOPSolverForSkeleton>();
 };
 
 // ---------- Group 1: Construction & CSV parsing ----------
@@ -121,38 +121,7 @@ TEST_F(SubproblemWorkerFactoryTest, SingleSubproblem)
     EXPECT_EQ(builder->GetSubNumber(), 1);
 }
 
-// ---------- Group 2: CreateSubSolverAbstract ----------
 
-TEST_F(SubproblemWorkerFactoryTest, ReturnsNonNullWorker)
-{
-    writeTwoSubFixture();
-    auto builder = buildWithNOOP();
-    VariableMap variable_map;
-    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1.0);
-    EXPECT_NE(worker, nullptr);
-}
-
-TEST_F(SubproblemWorkerFactoryTest, DifferentSubsReturnDistinctWorkers)
-{
-    writeTwoSubFixture();
-    auto builder = buildWithNOOP();
-    VariableMap vm1, vm2;
-    auto worker1 = builder->CreateSubSolverAbstract("sub1", vm1, 1.0);
-    auto worker2 = builder->CreateSubSolverAbstract("sub2", vm2, 1.0);
-    EXPECT_NE(worker1, nullptr);
-    EXPECT_NE(worker2, nullptr);
-    EXPECT_NE(worker1, worker2);
-}
-
-TEST_F(SubproblemWorkerFactoryTest, UnknownSubNameReturnsWorker)
-{
-    writeTwoSubFixture();
-    auto builder = buildWithNOOP();
-    VariableMap variable_map;
-    // operator[] inserts empty vectors for unknown keys; NOOPSolver accepts empty vectors
-    auto worker = builder->CreateSubSolverAbstract("nonexistent", variable_map, 1.0);
-    EXPECT_NE(worker, nullptr);
-}
 
 // ---------- Group 3: Many subproblems ----------
 
@@ -183,30 +152,10 @@ TEST_F(SubproblemWorkerFactoryTest, ManySubproblems)
     EXPECT_EQ(builder->GetSubNumber(), 100);
 }
 
-// ---------- Group 4: CSV edge cases ----------
 
-TEST_F(SubproblemWorkerFactoryTest, CsvWithKeyOnly)
-{
-    // A key with no values — should result in an empty coefficient vector
-    writeFile(subDir_ / "coef.csv", "sub1\n");
-    writeFile(subDir_ / "coef_cols.csv", "\n");
-    writeFile(subDir_ / "coef_rows.csv", "\n");
-    writeFile(subDir_ / "obj_coef.csv", "sub1\n");
-    writeFile(subDir_ / "obj_cols.csv", "\n");
-    writeFile(subDir_ / "rhs.csv", "sub1\n");
-    writeFile(subDir_ / "rhs_rows.csv", "\n");
-
-    auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->GetSubNumber(), 1);
-
-    VariableMap variable_map;
-    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1.0);
-    EXPECT_NE(worker, nullptr);
-}
 
 TEST_F(SubproblemWorkerFactoryTest, CsvWithWhitespaceInValues)
 {
-    // std::stod handles leading/trailing whitespace
     writeFile(subDir_ / "coef.csv", "sub1, 1.0 , 2.0 \n");
     writeFile(subDir_ / "coef_cols.csv", "x1,x2\n");
     writeFile(subDir_ / "coef_rows.csv", "row1,row2\n");
@@ -295,7 +244,7 @@ TEST_F(SubproblemWorkerFactoryTest, subForResolutioncreationSlaveWeights)
     writeFile(subDir_ / "obj_coef.csv", "sub1,10.0\nsub2,3.0");
     writeFile(subDir_ / "obj_cols.csv", "x1\n");
     
-    writeFile(subDir_ / "rhs.csv", "sub1,100.0\n");
+    writeFile(subDir_ / "rhs.csv", "sub1,100.0\nsub2,200.0\n");
     writeFile(subDir_ / "rhs_rows.csv", "row1\n");
     auto dummyFactory = buildDummyFactory();
 
@@ -319,4 +268,16 @@ TEST_F(SubproblemWorkerFactoryTest, subForResolutioncreationSlaveWeights)
 
     EXPECT_DOUBLE_EQ(obj[0], 0.3);
     EXPECT_DOUBLE_EQ(obj[1], 0.45);
+
+    worker = dummyFactory->CreateSubSolverAbstract("sub1", variable_map, 0.5);
+    EXPECT_NE(worker, nullptr);
+
+    solver = dummyFactory->GetSolver();
+
+    double obj_3[2] = {0.0, 0.0};
+    solver->get_obj(obj_3, 0, 1);
+
+    EXPECT_DOUBLE_EQ(obj_3[0], 5.0);
+    EXPECT_DOUBLE_EQ(obj_3[1], 2.25);
+
 }

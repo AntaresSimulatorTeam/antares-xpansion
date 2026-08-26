@@ -355,10 +355,12 @@ protected:
     std::vector<double> ubs;
 };
 
-class NOOPSolverForSubProblemFactory: public NOOPSolver
+
+ 
+class NOOPSolverForSkeleton: public NOOPSolver
 {
 public:
-    NOOPSolverForSubProblemFactory() 
+    NOOPSolverForSkeleton() 
     {
         col_name_index_map_["x1"] = 0 ; 
         col_name_index_map_["x2"] = 1 ; 

@@ -117,7 +117,7 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
     {
         indices.push_back(i) ;   
     }
-    solver_->chg_obj(indices,weighted_obj) ; 
+    solver_->chg_obj(indices,weighted_obj) ;
 
     solver_->chg_coefs(coef_set_.RowIndices(),
                        coef_set_.ColIndices(),
