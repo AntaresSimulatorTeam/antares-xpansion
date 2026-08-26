@@ -24,7 +24,7 @@ one full problem per subproblem, and the per-subproblem memory footprint is redu
 lightweight specialization data.
 
 
-![Memory compact subproblem](../../assets/media/memory_compaction_illustration.png)
+![Memory compact subproblem](../../assets/media/mem_optim_data_flow.png)
 
 
 ## Study format
