@@ -105,40 +105,34 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
 )
 
 {
-    
-    std::vector<int> obj_all_cols ; 
-    std::vector<double> scaled_initial_obj_coefs ; 
-    for (auto i=0; i<solver_->get_ncols(); i++) 
-    {
-        obj_all_cols.push_back(i) ; 
-        scaled_initial_obj_coefs.push_back(slave_weights * skeletonObjCoeffs_[i]); 
-    }
 
-    //the objective function is reset with the skeleton coeff scaled
-    solver_->chg_obj(obj_all_cols,scaled_initial_obj_coefs) ; 
-
-    //Now we start overriding the common coeffs between subs to construct the subproblem
-    solver_->chg_coefs(coef_set_.RowIndices(),
-        coef_set_.ColIndices(),
-        coef_set_.CoefficientsFor(sub_name));
-
-    const auto& obj_coeffs = obj_set_.CoefficientsFor(sub_name);
-    
-    std::vector<double> scaled_obj_coeffs ; 
-    scaled_obj_coeffs.reserve(obj_coeffs.size()) ; 
-
-    std::ranges::transform(obj_coeffs,
-                           scaled_obj_coeffs.begin(),
+    std::vector<double> weighted_obj(skeletonObjCoeffs_.size());
+    std::ranges::transform(skeletonObjCoeffs_,
+                           weighted_obj.begin(),
                            [slave_weights](double coefficient)
                            { return coefficient * slave_weights; });
+    
+    std::vector<int> indices ; 
+    for (auto i=0; i<skeletonObjCoeffs_.size(); i++)
+    {
+        indices.push_back(i) ;   
+    }
+    solver_->chg_obj(indices,weighted_obj) ; 
 
-   
-    solver_->chg_obj(obj_set_.ColIndices(), scaled_obj_coeffs);
-        
+    solver_->chg_coefs(coef_set_.RowIndices(),
+                       coef_set_.ColIndices(),
+                       coef_set_.CoefficientsFor(sub_name));
+
+    const auto& obj_coeffs = obj_set_.CoefficientsFor(sub_name);
+    std::vector<double> weighted_obj_coeffs(obj_coeffs.size());
+    std::ranges::transform(obj_coeffs,
+                           weighted_obj_coeffs.begin(),
+                           [slave_weights](double coefficient)
+                           { return coefficient * slave_weights; });
+    solver_->chg_obj(obj_set_.ColIndices(), weighted_obj_coeffs);
+
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
-        
-    std::vector<double> weighted_obj(skeletonObjCoeffs_.size());
-   
+ 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
                                                                 solver_,
                                                                 logger_);

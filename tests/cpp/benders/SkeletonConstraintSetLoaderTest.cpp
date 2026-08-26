@@ -39,6 +39,11 @@ protected:
         write_file(constraints_dir_ / "rhs_rows.csv", "row1\n");
     }
 
+    std::vector<std::string> constraints_names() const
+    {
+        return {"myconstraints"};
+    }
+
     std::shared_ptr<RecordingSolver> solver_ = std::make_shared<RecordingSolver>();
     Logger logger_ = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     std::filesystem::path tmp_dir_;
@@ -48,34 +53,26 @@ protected:
 TEST_F(SkeletonConstraintSetLoaderTest, ConstructsWithValidFiles)
 {
     write_constraints_fixture();
-    ASSERT_NO_THROW((SkeletonConstraintSetLoader(tmp_dir_, logger_, solver_)));
+    ASSERT_NO_THROW((SkeletonConstraintSetLoader(tmp_dir_, logger_, solver_, constraints_names())));
 }
 
-// SkeletonConstraintSetLoader currently constructs its MemoptimUtils with an
-// empty subproblem-name filter set (both constructors), and
-// MemoptimUtils::read_keyed_coeffs_csv skips any CSV row whose key isn't in
-// that set. This test documents the resulting current behavior: even with a
-// non-empty coef.csv/rhs.csv, no coefficients end up loaded. See the "Flagged,
-// not fixed" section of the refactor plan.
-TEST_F(SkeletonConstraintSetLoaderTest, GetConstraintsNumberIsZeroDueToEmptyMemoptimFilter)
+TEST_F(SkeletonConstraintSetLoaderTest, GetConstraintsNumberCountsLoadedCoefficientSets)
 {
     write_constraints_fixture();
-    SkeletonConstraintSetLoader builder(tmp_dir_, logger_, solver_);
-    EXPECT_EQ(builder.GetConstraintsNumber(), 0);
+    SkeletonConstraintSetLoader builder(tmp_dir_, logger_, solver_, constraints_names());
+    EXPECT_EQ(builder.GetConstraintsNumber(), 1);
 }
 
-TEST_F(SkeletonConstraintSetLoaderTest, LoadConstraintSetAppliesEmptyVectorsGivenCurrentFilter)
+TEST_F(SkeletonConstraintSetLoaderTest, LoadConstraintSetAppliesLoadedCoefficients)
 {
     write_constraints_fixture();
-    SkeletonConstraintSetLoader builder(tmp_dir_, logger_, solver_);
+    SkeletonConstraintSetLoader builder(tmp_dir_, logger_, solver_, constraints_names());
 
     auto returned_solver = builder.LoadConstraintSet("myconstraints");
 
     EXPECT_EQ(returned_solver, solver_);
     EXPECT_EQ(solver_->chg_coefs_calls, 1);
     EXPECT_EQ(solver_->chg_rhs_values_calls, 1);
-    // operator[] on the unpopulated coeffs_/rhs_ maps inserts empty vectors,
-    // consistent with GetConstraintsNumberIsZeroDueToEmptyMemoptimFilter above.
-    EXPECT_TRUE(solver_->chg_coefs_vals.empty());
-    EXPECT_TRUE(solver_->chg_rhs_vals.empty());
+    EXPECT_EQ(solver_->chg_coefs_vals, (std::vector<double>{1.0, 2.0}));
+    EXPECT_EQ(solver_->chg_rhs_vals, (std::vector<double>{100.0}));
 }

@@ -26,11 +26,12 @@ SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
 
 SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
                                                          Logger& logger,
-                                                         std::shared_ptr<SolverAbstract> solver):
+                                                         std::shared_ptr<SolverAbstract> solver,
+                                                         std::vector<std::string>&& constraints_names):
     logger_(logger),
     input_root_(input_root),
     solver_(std::move(solver)),
-    skeleton_coefficient_reader_({})
+    skeleton_coefficient_reader_(std::move(constraints_names))
 {
     read_coeffs_and_indices();
 }

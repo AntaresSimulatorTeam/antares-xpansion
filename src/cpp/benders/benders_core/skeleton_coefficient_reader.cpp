@@ -78,11 +78,12 @@ void SkeletonCoefficientReader::read_indices_csv(const std::filesystem::path& cs
     }
     std::string line;
     std::vector<std::string> names;
-    while (std::getline(stream, line))
-    {
-        Tokenizer tok(line, sep);
-        names.assign(tok.begin(), tok.end());
-    }
+    
+    //csv that contains indices has one line 
+    std::getline(stream, line) ; 
+    Tokenizer tok(line, sep);
+    names.assign(tok.begin(), tok.end());
+    
     int error_cols(0);
     int error_rows(0);
     std::vector<std::string> cols_not_found;

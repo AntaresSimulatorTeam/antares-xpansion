@@ -25,7 +25,8 @@ public:
 
     SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
                                 Logger& logger,
-                                std::shared_ptr<SolverAbstract> solver);
+                                std::shared_ptr<SolverAbstract> solver,
+                                std::vector<std::string>&& constraints_names);
 
     std::shared_ptr<SolverAbstract> LoadConstraintSet(const std::string& constraints_name);
 
