@@ -126,10 +126,9 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
     lps_ = std::move(results.antares_problems);
 }
 
-void ProblemGeneration::generate_antares_problems(const std::filesystem::path& study_dir,
+void ProblemGeneration::generate_antares_problems(Antares::Solver::SingleProblemGetter& spg,
                                                   const std::filesystem::path& output_dir)
 {
-    Antares::Solver::SingleProblemGetter spg(study_dir);
     lps_.setConstantData(spg.getConstantData());
 
     // For now we need NTC timeseries and "structure" files (areas & link descriptions)
@@ -142,7 +141,7 @@ void ProblemGeneration::generate_antares_problems(const std::filesystem::path& s
     {
         // By convention, year indices start at 1 for indexing
         // Input week index already starts at 1 in `problem_id`, so no need to change it
-        Antares::Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
+        Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
         lps_.addWeeklyData(fixed, spg.getWeeklyData(problem_id));
     }
 
@@ -169,7 +168,7 @@ void ProblemGeneration::loadProblemsFromAntares(
     {
         (*logger)(LogUtils::LOGLEVEL::INFO)
           << "Weeks are independent, using optimized problem generation" << std::endl;
-        generate_antares_problems(study_dir, simulation_dir);
+        generate_antares_problems(spg, simulation_dir);
     }
     else
     {
@@ -423,9 +422,7 @@ void ProblemGeneration::RunProblemGeneration(
 
         // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies
-        std::vector<
-          std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
-          weekly_data;
+        std::vector<std::pair<Solver::WeeklyProblemId, Solver::WeeklyDataFromAntares&>> weekly_data;
         std::ranges::for_each(lps_.weeklyProblems,
                               [&weekly_data](auto& pair)
                               { weekly_data.emplace_back(pair.first, pair.second); });
