@@ -226,13 +226,18 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
     }
     _logger = logger;
     solver_log_manager_ = &solver_log_manager;
-    if (options.CACHE_PROBLEMS < 2)
+
+    switch (options.CACHE_PROBLEMS) 
     {
-        build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);
-    }
-    else
-    {
-        build_skeleton_constraint_set_loader(options);
+        //as in case 0 we have nothing to build initially , we load the constraint file in BendersSubResolutionstart
+        case 2 : 
+            build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);
+            break;  
+        case 0 : 
+            build_skeleton_constraint_set_loader(options);
+            break; 
+        default : 
+            break ; 
     }
 
     build_variables_to_follow_indices_vector();
@@ -456,7 +461,8 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {
-    if (options_.CACHE_PROBLEMS >= 2)
+
+    if (options_.CACHE_PROBLEMS == 2)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
         auto skeleton_solver = constraint_set_loader_->LoadConstraintSet(constraints_file_name);
@@ -487,6 +493,9 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
     }
     else if (options_.CACHE_PROBLEMS == 1)
     {
+
+        //In this case we are supposed to have One mps loaded on RAM
+        constraints_map_.clear()  ;
         // Case 1 rebuilds a fresh SubproblemWorker from disk every iteration
         // (see BendersBase::GetSubproblemCutCache), so the constraints manager
         // built once in OnBendersStart (from the never-populated subproblem_map
