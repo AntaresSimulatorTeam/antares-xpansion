@@ -59,7 +59,7 @@ private:
 
     Antares::Solver::LpsFromAntares lps_;
     std::optional<SimulationInputMode> mode_;
-    virtual void generate_antares_problems(const std::filesystem::path& study_dir,
+    virtual void generate_antares_problems(Antares::Solver::SingleProblemGetter& spg,
                                            const std::filesystem::path& output_dir);
     SolverConfig solver_config_{"Coin"};
 

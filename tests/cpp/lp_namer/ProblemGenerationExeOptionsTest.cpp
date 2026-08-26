@@ -53,7 +53,7 @@ public:
     }
 
 private:
-    void generate_antares_problems(const std::filesystem::path&,
+    void generate_antares_problems(Antares::Solver::SingleProblemGetter&,
                                    const std::filesystem::path&) override
     {
     }

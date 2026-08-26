@@ -126,7 +126,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& si
     lps_ = std::move(results.antares_problems);
 }
 
-void ProblemGeneration::generate_antares_problems(const std::filesystem::path& study_dir,
+void ProblemGeneration::generate_antares_problems(Antares::Solver::SingleProblemGetter& spg,
                                                   const std::filesystem::path& output_dir)
 {
     lps_.setConstantData(spg.getConstantData());
@@ -168,7 +168,7 @@ void ProblemGeneration::loadProblemsFromAntares(
     {
         (*logger)(LogUtils::LOGLEVEL::INFO)
           << "Weeks are independent, using optimized problem generation" << std::endl;
-        generate_antares_problems(study_dir, simulation_dir);
+        generate_antares_problems(spg, simulation_dir);
     }
     else
     {
