@@ -227,7 +227,7 @@ TEST_F(SubproblemWorkerFactoryTest, subForResolutioncreation)
     writeFile(subDir_ / "obj_coef.csv", "sub1,10.0\nsub2,3.0");
     writeFile(subDir_ / "obj_cols.csv", "x1\n");
     
-    writeFile(subDir_ / "rhs.csv", "sub1,100.0\n");
+    writeFile(subDir_ / "rhs.csv", "sub1,100.0\nsub2,200.0\n");
     writeFile(subDir_ / "rhs_rows.csv", "row1\n");
     auto dummyFactory = buildDummyFactory();
 
