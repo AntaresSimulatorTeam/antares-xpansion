@@ -33,7 +33,6 @@ public:
                      std::shared_ptr<SolverAbstract> solver,
                      Logger logger);
 
-    void setup_obj(double slave_weight);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
     int get_variable_index(const std::string& variable_name);
