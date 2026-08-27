@@ -129,11 +129,7 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
-    std::shared_ptr<SolverAbstract> subProblemFactorSolver;
-    if (_options.CACHE_PROBLEMS == 2)
-    {
-        subProblemFactorSolver = build_sub_problem_skeleton();
-    }
+
 
 
     MasterLoop();
@@ -179,11 +175,11 @@ void BendersByBatch::MasterLoop()
         SetSubproblemCost(0);
         remaining_epsilon_ = Gap();
 
+        benders_plugin_->OnBendersMasterResolutionStart();
         if (Rank() == rank_0)
         {
             _logger->PrintIterationSeparatorBegin();
 
-            benders_plugin_->OnBendersMasterResolutionStart();
 
             _logger->display_message("\tSolving master...");
             get_master_value();
@@ -526,7 +522,7 @@ void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
     {
         auto name = kvp.first;
         auto variable_map = kvp.second;
-        double slave_weights = SubproblemWeight(subproblem_worker_factory_->GetSubNumber(), name);
+        double slave_weights = SubproblemWeight(_data.nsubproblem, name);
         auto worker = subproblem_worker_factory_->CreateSubSolverAbstract(name,
                                                                           variable_map,
                                                                           slave_weights);

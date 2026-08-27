@@ -24,7 +24,7 @@ public:
               std::optional<std::filesystem::path> row_indices_csv,
               const std::shared_ptr<SolverAbstract>& solver,
               Logger& logger, 
-              boost::mpi::communicator* world = nullptr);
+              boost::mpi::communicator* world );
 
     std::vector<double>& CoefficientsFor(const std::string& name);
     std::vector<int>& RowIndices();
