@@ -735,7 +735,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
+    benders_plugin_->OnBendersSubResolutionEnd();
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)

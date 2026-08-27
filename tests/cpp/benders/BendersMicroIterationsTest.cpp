@@ -36,7 +36,7 @@ public:
     {
     }
 
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override
+    void OnBendersSubResolutionEnd() override
     {
     }
 
@@ -122,7 +122,7 @@ public:
         benders_plugin_->OnBendersMicroIterationEnd(sub_name, added_rows, solve_time,
                                                      num_master_iter, num_micro_iter);
 
-        benders_plugin_->OnBendersSubResolutionEnd(sub_name, num_micro_iter);
+        benders_plugin_->OnBendersSubResolutionEnd();
 
         // Master resolution
         benders_plugin_->OnBendersMasterResolutionStart();

@@ -28,9 +28,7 @@ Benders_MICRO_ITERS class.
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-using on_Benders_start_Func = void (*)(std::vector<std::string>,
-                                       int,
-                                       std::filesystem::path,
+using on_Benders_start_Func = void (*)(std::filesystem::path,
                                        std::filesystem::path,
                                        bool,
                                        mpi::communicator*,
@@ -46,17 +44,16 @@ using on_Benders_master_resolution_end = void (*)(std::map<std::string, double>&
 
 using on_Benders_micro_iteration_start = void (*)();
 using on_Benders_micro_iteration_end = void (*)(std::string sub_name,
-                                                bool& added_rows,
                                                 std::string solving_time,
                                                 std::vector<double> sub_solution,
-                                                std::vector<int> variables_indices_vector,
+                                                std::vector<int>& variables_indices_vector,
                                                 std::vector<std::string>& variables_names_vector,
                                                 std::filesystem::path input_root,
                                                 std::vector<std::string>& contraints_to_add_vec,
                                                 int,
                                                 int);
 using on_Benders_sub_resolution_start = void (*)();
-using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_micro_iter);
+using on_Benders_sub_resolution_end = void (*)();
 
 /*
     Implementation of BendersPlugin to manage the microiterations workflow
@@ -124,7 +121,7 @@ public:
 
     void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
                                      std::string sub_name) override;
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
+    void OnBendersSubResolutionEnd() override;
 
     bool ShouldRestoreSubproblemBasis() const override;
 

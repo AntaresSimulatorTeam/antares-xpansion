@@ -243,9 +243,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 
     build_variables_to_follow_indices_vector();
 
-    onBendersStartPlugin_(sub_names_,
-                          _world->rank(),
-                          options.INPUTROOT,
+    onBendersStartPlugin_(options.INPUTROOT,
                           options.OUTPUTROOT,
                           warm_start_,
                           _world,
@@ -438,7 +436,6 @@ void Benders_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name,
     std::vector<int> variables_indices = variables_to_follow_indices_per_sub_[sub_name];
     std::vector<std::string> constraints_to_add_vec;
     OnBendersMicroIterationEnd_(sub_name,
-                                added_rows,
                                 solving_time,
                                 sub_solution,
                                 variables_indices,
@@ -536,11 +533,11 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
     }
 }
 
-void Benders_MICRO_ITERS::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
+void Benders_MICRO_ITERS::OnBendersSubResolutionEnd()
 {
     if (OnBendersSubResolutionEnd_)
     {
-        OnBendersSubResolutionEnd_(sub_name, num_micro_iter);
+        OnBendersSubResolutionEnd_();
     }
 }
 

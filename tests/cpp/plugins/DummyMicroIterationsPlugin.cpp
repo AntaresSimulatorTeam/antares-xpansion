@@ -74,7 +74,7 @@ extern "C"
     {
     }
 
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
+    void OnBendersSubResolutionEnd()
     {
     }
 }

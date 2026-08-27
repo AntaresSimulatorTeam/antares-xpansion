@@ -25,7 +25,7 @@ public:
 
     void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
                                      std::string sub_name) override;
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
+    void OnBendersSubResolutionEnd() override;
 
     void OnBendersMicroIterationStart() override;
     void OnBendersMicroIterationEnd(std::string sub_name,

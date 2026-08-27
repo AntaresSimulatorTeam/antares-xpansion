@@ -44,7 +44,7 @@ public:
     virtual void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
                                              std::string sub_name)
       = 0;
-    virtual void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) = 0;
+    virtual void OnBendersSubResolutionEnd() = 0;
     /*
   This method will be called at the start of the master iteration after solving subprolems
   @inputs :
