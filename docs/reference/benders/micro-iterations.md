@@ -28,7 +28,7 @@ successive relaxations remain far smaller than the full problem.
 
 ![Micro Iterations](../../assets/media/micro_iterations.png)
 
-**`Warm start`**
+## Warm start
 
 Because Benders decomposition solves the subproblems repeatedly across
 successive iterations, the micro-iterations scheme can carry its learning over
@@ -73,29 +73,33 @@ violation. Compared to a standard study, the following elements must be added:
 
     $$
     \begin{aligned}
-        \min_{x} \quad & O(x) \\
-        \text{s.t.} \quad & {\scriptstyle C_1(x), \; C_2(x), \; C_3(x)}
+        \min_{x} \quad & c^\top x \\
+        \text{s.t.} \quad & a_1^\top x=b_1\\
+        & a_2^\top x = b_2\\
+        & a_3^\top x = b_3
     \end{aligned}
     $$
 
     In micro-iterations mode, this problem is split into the initial relaxed
-    subproblem — which only carries $C_1$ — and the constraints removed from
-    it, $C_2$ and $C_3$, described in separate MPS/SVF files:
+    subproblem — which only carries $a_1$ — and the constraints removed from
+    it, $a_2$ and $a_3$, described in separate MPS/SVF files:
 
     $$
     \underbrace{
     \begin{aligned}
-        \min_{x} \quad & O(x) \\
-        \text{s.t.} \quad & {\scriptstyle C_1(x)}
+        \min_{x} \quad & c^\top x \\
+        \text{s.t.} \quad & a_1^\top x = b_1
     \end{aligned}
     }_{\text{initial minimal subproblem}}
     \qquad\qquad\Big|\qquad\qquad
     \underbrace{
     \begin{aligned}
-        & {\scriptstyle C_2(x), \; C_3(x)}
+        & a_2^\top x =b_2 \\ 
+        & a_3^\top x = b_3
     \end{aligned}
     }_{\text{constraints file with null objective function}}
     $$
+
 
     The files on the left represent the initial subproblem, while the files on
     the right are the "removed constraints" files required here: they are not

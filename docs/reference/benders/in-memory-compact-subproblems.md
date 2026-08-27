@@ -1,15 +1,19 @@
-# In-Memory Compact Subproblems
+# Using disk-efficient subproblem storage 
 
 ## Motivation
 
+
+#### CACHE_PROBLEMS = 0
 In the Benders decomposition framework, the resolution starts by loading the
 MPS/SVF files of all the subproblems, so that each of them is held in memory as
-a fully instantiated optimization problem for the whole duration of the run.
+a fully instantiated optimization problem for the whole duration of the run. 
 
-The memory footprint of this loading is proportional to the number of
-subproblems times the size of each problem. As the number of subproblems
-grows, the RAM consumption increases linearly and quickly becomes the limiting
-factor well before computation time does.
+
+#### CACHE_PROBLEMS = 1
+A first RAM usage optimization has been implemented by loading the optimization problem from disk just before solving it.
+
+#### CACHE_PROBLEMS = 2
+However, the disk footprint of the input data remains drastically high and can become problematic as the number and size of subproblems increase, potentially becoming the bottleneck before computation even starts.
 
 Yet this cost is largely redundant: the subproblems share a huge part of their columns and rows — the
 same variables, the same constraint structure — differing only on certain coeffecient values.
@@ -21,7 +25,8 @@ complemented by a set of much lighter files, one per subproblem, containing
 only the subproblem-specific data needed to instantiate the actual problem at
 resolution time. Memory then holds one copy of the shared structure instead of
 one full problem per subproblem, and the per-subproblem memory footprint is reduced to its
-lightweight specialization data.
+lightweight specialization data. 
+
 
 
 ![Memory compact subproblem](../../assets/media/mem_optim_data_flow.png)
@@ -117,17 +122,6 @@ skeleton and applying its line of `coef.csv`, `obj_coef.csv` and `rhs.csv` at
 the positions designated by the name files.
 
 
-## Activating the memory optimization mode
+## Memory optimization Resolution process  
 
-Providing the study in the format described above is not sufficient on its own:
-the memory optimization mode must also be explicitly enabled in the simulation
-settings by setting :
-`CACHE_PROBLEMS: 3` in the `options.json` file, see [Settings of benders executable](./options.md)
-
-With this value, the solver expects the skeleton MPS/SVF file together with the
-CSV coefficient files, and builds each subproblem at resolution time by
-applying the corresponding per-subproblem data to the shared skeleton, instead
-of loading one fully instantiated problem per subproblem.
-
-
-
+![disk optimization workflow](../../assets/media/disk_optim_workflow.png)
