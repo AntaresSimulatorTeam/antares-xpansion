@@ -15,8 +15,7 @@ namespace mpi = boost::mpi;
 
 extern "C"
 {
-    void OnBendersStart(std::vector<std::string> sub_problems, int rank,
-                        std::filesystem::path input_root, std::filesystem::path output_root,
+    void OnBendersStart(std::filesystem::path input_root, std::filesystem::path output_root,
                         bool warm_start, mpi::communicator* world, int log_level)
     {
     }
@@ -38,10 +37,9 @@ extern "C"
     }
 
     void OnBendersMicroIterationEnd(std::string sub_name,
-                                    bool& added_rows,
                                     std::string solving_time,
                                     std::vector<double> sub_solution,
-                                    std::vector<int> variables_indices_vector,
+                                    std::vector<int>& variables_indices_vector,
                                     std::vector<std::string>& variables_names_vector,
                                     std::filesystem::path input_root,
                                     std::vector<std::string>& constraints_to_add_vec,

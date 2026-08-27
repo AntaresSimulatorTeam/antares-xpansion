@@ -28,7 +28,7 @@ void SkeletonCoefficientSet::Load(SkeletonCoefficientReader& skeleton_coefficien
 
 std::vector<double>& SkeletonCoefficientSet::CoefficientsFor(const std::string& name)
 {
-    if (coeffs_.find(name) != coeffs_.end())
+    if (coeffs_.find(name) == coeffs_.end())
     {
         logger_->display_message("from SkeletonCoefficientSet couldn't find key");
         if (world_)
@@ -37,6 +37,7 @@ std::vector<double>& SkeletonCoefficientSet::CoefficientsFor(const std::string& 
         }
     }
     return coeffs_[name];
+
 }
 
 std::vector<int>& SkeletonCoefficientSet::RowIndices()
