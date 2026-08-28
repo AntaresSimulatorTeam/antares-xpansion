@@ -96,7 +96,7 @@ void SubproblemWorkerFactory::ApplyBasis(const std::string& sub_name)
     // the solver instance can be shared/reused across subproblems (skeleton
     // mode), so applying a cached basis before that reset can mismatch a
     // stale row/column count left over from a different subproblem.
-    subproblem_basis_cache_.TryRestore(sub_name, *solver_);
+    subproblem_basis_cache_.TryRestore(sub_name, *solver_, logger_);
 }
 
 std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstract(
@@ -111,11 +111,9 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
                            [slave_weights](double coefficient)
                            { return coefficient * slave_weights; });
 
-    std::vector<int> indices;
-    for (auto i = 0; i < skeletonObjCoeffs_.size(); i++)
-    {
-        indices.push_back(i);
-    }
+    std::vector<int> indices(skeletonObjCoeffs_.size());
+    std::iota(indices.begin(), indices.end(), 0); 
+
     solver_->chg_obj(indices, weighted_obj);
 
     solver_->chg_coefs(coef_set_.RowIndices(),

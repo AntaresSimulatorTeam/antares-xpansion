@@ -1,6 +1,6 @@
 #include "antares-xpansion/benders/benders_core/SubproblemBasisCache.h"
 
-#include <iostream>
+#include <sstream>
 
 void SubproblemBasisCache::Store(const std::string& name, SolverAbstract& solver)
 {
@@ -14,7 +14,9 @@ void SubproblemBasisCache::Store(const std::string& name, SolverAbstract& solver
     basis_per_name_[name] = std::make_pair(std::move(rstatus), std::move(cstatus));
 }
 
-bool SubproblemBasisCache::TryRestore(const std::string& name, SolverAbstract& solver)
+bool SubproblemBasisCache::TryRestore(const std::string& name,
+                                      SolverAbstract& solver,
+                                      const Logger& logger)
 {
     auto it = basis_per_name_.find(name);
     if (it == basis_per_name_.end())
@@ -32,13 +34,13 @@ bool SubproblemBasisCache::TryRestore(const std::string& name, SolverAbstract& s
     if (static_cast<int>(it->second.first.size()) != solver.get_nrows()
         || static_cast<int>(it->second.second.size()) != solver.get_ncols())
     {
-        std::cerr
-          << "Warning: cached basis for subproblem '" << name
-          << "' does not match the solver's current size (" << it->second.first.size() << " vs "
-          << solver.get_nrows() << " rows, " << it->second.second.size() << " vs "
-          << solver.get_ncols()
-          << " cols) - skipping basis restore, warm start will not work for this subproblem."
-          << std::endl;
+        std::ostringstream msg;
+        msg << "Warning: cached basis for subproblem '" << name
+            << "' does not match the solver's current size (" << it->second.first.size() << " vs "
+            << solver.get_nrows() << " rows, " << it->second.second.size() << " vs "
+            << solver.get_ncols()
+            << " cols) - skipping basis restore, warm start will not work for this subproblem.";
+        logger->display_message(msg.str());
         return false;
     }
     solver.set_basis(it->second.first, it->second.second);

@@ -230,7 +230,7 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 
     switch (options.CACHE_PROBLEMS)
     {
-    // as in case 0 we have nothing to build initially , we load the constraint file in
+    // as in case 1 we have nothing to build initially , we load the constraint file in
     // BendersSubResolutionstart
     case 0:
         build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);

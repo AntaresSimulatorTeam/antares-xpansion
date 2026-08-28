@@ -576,7 +576,7 @@ void BendersBase::StoreSubproblemBasis(const std::string& name,
 void BendersBase::TryRestoreSubproblemBasis(const std::string& name,
                                             const std::shared_ptr<SubproblemWorker>& worker)
 {
-    subproblem_basis_cache_.TryRestore(name, *worker->_solver);
+    subproblem_basis_cache_.TryRestore(name, *worker->_solver, _logger);
 }
 
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(

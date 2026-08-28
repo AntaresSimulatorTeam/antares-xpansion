@@ -2,8 +2,16 @@
 
 #include <gtest/gtest.h>
 
+#include "LoggerStub.h"
 #include "RecordingSolver.h"
 #include "antares-xpansion/benders/benders_core/SubproblemBasisCache.h"
+
+namespace {
+Logger MakeLogger()
+{
+    return std::make_shared<Xpansion::Test::LoggerNOOPStub>();
+}
+}  // namespace
 
 TEST(SubproblemBasisCacheTest, StoreThenTryRestoreRoundTripsTheBasis)
 {
@@ -19,7 +27,7 @@ TEST(SubproblemBasisCacheTest, StoreThenTryRestoreRoundTripsTheBasis)
     RecordingSolver target_solver;
     target_solver.nrows = 2;
     target_solver.ncols = 2;
-    EXPECT_TRUE(cache.TryRestore("sub1", target_solver));
+    EXPECT_TRUE(cache.TryRestore("sub1", target_solver, MakeLogger()));
 
     EXPECT_EQ(target_solver.set_basis_calls, 1);
     EXPECT_EQ(target_solver.set_basis_rstatus, std::vector<int>({1, 2}));
@@ -31,6 +39,6 @@ TEST(SubproblemBasisCacheTest, TryRestoreOnUnknownNameReturnsFalseAndDoesNotCall
     SubproblemBasisCache cache;
     RecordingSolver solver;
 
-    EXPECT_FALSE(cache.TryRestore("never_stored", solver));
+    EXPECT_FALSE(cache.TryRestore("never_stored", solver, MakeLogger()));
     EXPECT_EQ(solver.set_basis_calls, 0);
 }
