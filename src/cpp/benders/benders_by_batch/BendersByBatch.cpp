@@ -130,10 +130,7 @@ void BendersByBatch::Run()
         _data.stop = false;
     }
 
-
-
     MasterLoop();
-
 
     if (Rank() == rank_0)
     {
@@ -179,7 +176,6 @@ void BendersByBatch::MasterLoop()
         if (Rank() == rank_0)
         {
             _logger->PrintIterationSeparatorBegin();
-
 
             _logger->display_message("\tSolving master...");
             get_master_value();

@@ -24,10 +24,11 @@ SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
     read_coeffs_and_indices();
 }
 
-SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
-                                                         Logger& logger,
-                                                         std::shared_ptr<SolverAbstract> solver,
-                                                         std::vector<std::string>&& constraints_names):
+SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
+  const std::filesystem::path& input_root,
+  Logger& logger,
+  std::shared_ptr<SolverAbstract> solver,
+  std::vector<std::string>&& constraints_names):
     logger_(logger),
     input_root_(input_root),
     solver_(std::move(solver)),
@@ -44,14 +45,14 @@ void SkeletonConstraintSetLoader::read_coeffs_and_indices()
                    dir / "coef_cols.csv",
                    dir / "coef_rows.csv",
                    solver_,
-                   logger_ , 
+                   logger_,
                    world_);
     rhs_set_.Load(skeleton_coefficient_reader_,
                   dir / "rhs.csv",
                   std::nullopt,
                   dir / "rhs_rows.csv",
                   solver_,
-                  logger_, 
+                  logger_,
                   world_);
 }
 

@@ -44,9 +44,9 @@ void SkeletonCoefficientReader::read_keyed_coeffs_csv(
                 std::vector<std::string> value_tokens(it, tok.end());
                 values_double.resize(value_tokens.size());
                 std::transform(value_tokens.begin(),
-                           value_tokens.end(),
-                           values_double.begin(),
-                           [](const std::string& s) { return std::stod(s); });
+                               value_tokens.end(),
+                               values_double.begin(),
+                               [](const std::string& s) { return std::stod(s); });
             }
             dest[key] = std::move(values_double);
         }
@@ -78,12 +78,12 @@ void SkeletonCoefficientReader::read_indices_csv(const std::filesystem::path& cs
     }
     std::string line;
     std::vector<std::string> names;
-    
-    //csv that contains indices has one line 
-    std::getline(stream, line) ; 
+
+    // csv that contains indices has one line
+    std::getline(stream, line);
     Tokenizer tok(line, sep);
     names.assign(tok.begin(), tok.end());
-    
+
     int error_cols(0);
     int error_rows(0);
     std::vector<std::string> cols_not_found;

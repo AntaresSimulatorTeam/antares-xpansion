@@ -1,8 +1,7 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h"
 
-#include <antares-xpansion/benders/benders_core/SolverIO.h>
-
 #include <algorithm>
+#include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <iostream>
 
 #include "antares-xpansion/benders/benders_core/SkeletonSolverLoader.h"
@@ -51,7 +50,6 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
     skeletonObjCoeffs_.resize(solver_->get_ncols());
     solver_->get_obj(skeletonObjCoeffs_.data(), 0, solver_->get_ncols() - 1);
 
-
     load_coefficient_sets();
 }
 
@@ -69,24 +67,21 @@ void SubproblemWorkerFactory::load_coefficient_sets()
                    dir / "coef_rows.csv",
                    solver_,
                    logger_,
-                   world_
-                   );
+                   world_);
     obj_set_.Load(skeleton_coefficient_reader_,
                   dir / "obj_coef.csv",
                   dir / "obj_cols.csv",
                   std::nullopt,
                   solver_,
                   logger_,
-                  world_
-                  );
+                  world_);
     rhs_set_.Load(skeleton_coefficient_reader_,
                   dir / "rhs.csv",
                   std::nullopt,
                   dir / "rhs_rows.csv",
                   solver_,
                   logger_,
-                  world_
-                  );
+                  world_);
 }
 
 int SubproblemWorkerFactory::GetSubNumber()
@@ -107,23 +102,21 @@ void SubproblemWorkerFactory::ApplyBasis(const std::string& sub_name)
 std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstract(
   std::string sub_name,
   VariableMap& variable_map,
-  double slave_weights
-)
+  double slave_weights)
 
 {
-
     std::vector<double> weighted_obj(skeletonObjCoeffs_.size());
     std::ranges::transform(skeletonObjCoeffs_,
                            weighted_obj.begin(),
                            [slave_weights](double coefficient)
                            { return coefficient * slave_weights; });
-    
-    std::vector<int> indices ; 
-    for (auto i=0; i<skeletonObjCoeffs_.size(); i++)
+
+    std::vector<int> indices;
+    for (auto i = 0; i < skeletonObjCoeffs_.size(); i++)
     {
-        indices.push_back(i) ;   
+        indices.push_back(i);
     }
-    solver_->chg_obj(indices,weighted_obj) ;
+    solver_->chg_obj(indices, weighted_obj);
 
     solver_->chg_coefs(coef_set_.RowIndices(),
                        coef_set_.ColIndices(),
@@ -138,10 +131,8 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
     solver_->chg_obj(obj_set_.ColIndices(), weighted_obj_coeffs);
 
     solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
- 
-    auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map,
-                                                                solver_,
-                                                                logger_);
+
+    auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map, solver_, logger_);
 
     return subproblem_worker;
 }

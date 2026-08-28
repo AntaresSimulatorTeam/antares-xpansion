@@ -8,9 +8,9 @@
 #include <vector>
 
 #include <boost/mpi.hpp>
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "skeleton_coefficient_reader.h"
 
 class SkeletonCoefficientSet
@@ -23,8 +23,8 @@ public:
               std::optional<std::filesystem::path> col_indices_csv,
               std::optional<std::filesystem::path> row_indices_csv,
               const std::shared_ptr<SolverAbstract>& solver,
-              Logger& logger, 
-              boost::mpi::communicator* world );
+              Logger& logger,
+              boost::mpi::communicator* world);
 
     std::vector<double>& CoefficientsFor(const std::string& name);
     std::vector<int>& RowIndices();
@@ -36,5 +36,5 @@ private:
     std::vector<int> row_indices_;
     std::vector<int> col_indices_;
     boost::mpi::communicator* world_ = nullptr;
-    Logger logger_ ; 
+    Logger logger_;
 };

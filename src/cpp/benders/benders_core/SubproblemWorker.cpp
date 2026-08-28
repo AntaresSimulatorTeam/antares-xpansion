@@ -46,7 +46,6 @@ SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
     init_for_compact_in_mem(solver, variable_map);
 }
 
-
 /*!
  *  \brief Fix a set of variables to constant in a problem
  *
