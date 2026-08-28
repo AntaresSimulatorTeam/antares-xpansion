@@ -30,21 +30,9 @@ successive relaxations remain far smaller than the full problem.
 
 ## Warm start
 
-Because Benders decomposition solves the subproblems repeatedly across
-successive iterations, the micro-iterations scheme can carry its learning over
-from one iteration to the next. Rather than rebuilding each subproblem from its
-minimal relaxed formulation and re-discovering the relevant constraints from
-scratch, the warm-start mechanism initializes the subproblem with the
-constraints that had been injected during the previous iteration's
-solve–check–inject sequence. These constraints are known to have been active
-(i.e. binding or violated) for the previous master solution, and since
-successive master solutions usually remain close to one another, a large share
-of them are still needed. Starting from this enriched formulation typically
-requires far fewer micro-iterations to reach feasibility, at the cost of a
-slightly larger initial problem. The trade-off is favorable in practice: the
-constraints carried over from the previous iteration are precisely those most
-likely to matter again, so the relaxation remains small while skipping most of
-the redundant solve–check–inject cycles.
+Rather than rebuilding each subproblem from its minimal relaxed formulation and re-discovering the relevant constraints from scratch, the warm-start mechanism can optionally initialize the subproblem with the constraints injected during the previous iteration's solve–check–inject sequence. These constraints were active (binding or violated) for the previous master solution, and when successive master solutions remain close to one another, a meaningful share of them are still needed, so starting from this enriched formulation can require fewer micro-iterations to reach feasibility.
+
+This behavior is available as an option, but whether it actually helps is use-case dependent and left to the user's judgment. The active-constraint set can vary significantly between successive Benders iterations, in which case the carried-over constraints add little value and mostly inflate the initial problem for no benefit. There is also a compounding risk: as constraints accumulate across iterations without being pruned, the subproblem can drift back toward containing its full constraint set, which produces the same large, heavy-to-solve formulations the micro-iteration scheme was designed to avoid — negating the paradigm's benefits. Whether to enable warm-starting, and whether some form of constraint pruning is needed alongside it, is therefore a trade-off the user should assess for their specific problem structure.
 
 ## Launching a study with micro-iterations
 
@@ -67,7 +55,7 @@ violation. Compared to a standard study, the following elements must be added:
   micro-iteration.
 
     To make the role of these files concrete, consider a subproblem with
-    objective $O$ and three constraints $C_1$, $C_2$ and $C_3$. With the
+    objective $c$ and three constraints $a_1$, $a_2$ and $a_3$. With the
     classical scheme, the subproblem is written as a single optimization
     problem:
 

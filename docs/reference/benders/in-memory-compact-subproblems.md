@@ -52,19 +52,19 @@ under the following format:
 
   Example:
 
-  ```csv
-  sub/sub_1.mps,100,220,300
-  sub/sub_2.mps,300,300,300
-  ```
+```csv
+sub/sub_1.mps,100,220,300
+sub/sub_2.mps,300,300,300
+```
 
 - **`coef_cols.csv`** — contains the column names on which the constraint
   matrix coefficients of `coef.csv` must be set.
 
   Example:
 
-  ```csv
-  z[line_1],z[Line_2],z[line_3]
-  ```
+```csv
+z[line_1],z[Line_2],z[line_3]
+```
 
 - **`coef_rows.csv`** — contains the row names on which the constraint matrix
   coefficients of `coef.csv` must be set. Together, `coef_rows.csv` and
@@ -74,47 +74,47 @@ under the following format:
 
   Example: 
 
-  ```csv
-  constraint_1,constraint_2,constraint_3
-  ```
+```csv
+constraint_1,constraint_2,constraint_3
+```
 
 - **`obj_coef.csv`** — contains the coefficients to set in order to build the
   objective function of the corresponding subproblem.
 
   Example:
 
-  ```csv
-  sub/sub_1.mps,1.001,1.02,-1.2
-  sub/sub_2.mps,1.001,1.02,-1.2
-  ```
+```csv
+sub/sub_1.mps,1.001,1.02,-1.2
+sub/sub_2.mps,1.001,1.02,-1.2
+```
 
 - **`obj_cols.csv`** — contains the column names on which the objective
   coefficients of `obj_coef.csv` must be set.
 
   Example:
 
-  ```csv
-  redispatching_1,redispatching_2,redispatching_3
-  ```
+```csv
+redispatching_1,redispatching_2,redispatching_3
+```
 
 - **`rhs.csv`** — contains the values to set on the right-hand side in order to
   build the corresponding subproblem.
 
   Example:
 
-  ```csv
-  sub/sub_1.mps,83,84,92
-  sub/sub_2.mps,23,45,44
-  ```
+```csv
+sub/sub_1.mps,83,84,92
+sub/sub_2.mps,23,45,44
+```
 
 - **`rhs_rows.csv`** — contains the row names on which the RHS values of
   `rhs.csv` must be set.
 
   Example:
 
-  ```csv
-  branch_line_1,branch_line_2,branch_line_3
-  ```
+```csv
+branch_line_1,branch_line_2,branch_line_3
+```
 
 
 At resolution time, a given subproblem is therefore obtained by loading the
