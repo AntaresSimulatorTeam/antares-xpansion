@@ -6,11 +6,6 @@ target_sources(benders_sequential_test
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
-        SubproblemWorkerFactoryTest.cpp
-        BendersMicroIterationsTest.cpp
-        SolverRowExtractorTest.cpp
-        SkeletonConstraintSetLoaderTest.cpp
-        SubproblemConstraintsManagerTest.cpp
         SubproblemBasisCacheTest.cpp
 )
 
@@ -22,6 +17,7 @@ target_sources(benders_mem_compact_micro_iters_test
         SolverRowExtractorTest.cpp
         BendersMicroIterationsTest.cpp
         SubproblemWorkerFactoryTest.cpp
+        SkeletonCoefficientReaderTest.cpp
 )
 
 target_link_libraries(benders_mem_compact_micro_iters_test
