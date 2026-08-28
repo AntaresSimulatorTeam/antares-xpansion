@@ -54,6 +54,8 @@ nav:
     - Benders:
       - reference/benders/index.md
       - Options: reference/benders/options.md
+      - Micro iterations: reference/benders/micro-iterations.md
+      - Using disk-efficient subproblem storage: reference/benders/in-memory-compact-subproblems.md
     - Trajectory investment:
       - reference/trajectory-investment/index.md
       - Full trajectory workflow: reference/trajectory-investment/trajectory-workflow.md
@@ -76,7 +78,6 @@ nav:
       - developer-guide/xpansion-steps/index.md
       - Antares optimization problem retrieval: developer-guide/xpansion-steps/antares-solver-problem.md
       - Investment problem generation: developer-guide/xpansion-steps/problem-modification.md
-
 
 plugins:
   - search
