@@ -12,5 +12,6 @@ var searchData=
   ['investment_20problem_9',['Trajectory investment problem',['../md_docs_2reference_2trajectory-investment_2index.html',1,'']]],
   ['investment_20problem_20generation_10',['Investment problem generation',['../md_docs_2developer-guide_2xpansion-steps_2problem-modification.html',1,'']]],
   ['investment_20workflow_11',['Trajectory investment workflow',['../md_docs_2reference_2trajectory-investment_2trajectory-workflow.html',1,'']]],
-  ['it_20dynamically_12',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install-from-source_2xpress.html',1,'']]]
+  ['it_20dynamically_12',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install-from-source_2xpress.html',1,'']]],
+  ['iterations_13',['Micro Iterations',['../md_docs_2reference_2benders_2micro-iterations.html',1,'']]]
 ];

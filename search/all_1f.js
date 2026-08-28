@@ -17,15 +17,16 @@ var searchData=
   ['updaterexecutionerror_14',['UpdaterExecutionError',['../classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1UpdaterExecutionError.html',1,'antares_xpansion::study_updater_driver::StudyUpdaterDriver']]],
   ['updatestoppingcriterion_15',['UpdateStoppingCriterion',['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()'],['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()']]],
   ['updatetrace_16',['UpdateTrace',['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()'],['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()'],['../classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f',1,'BendersBaseDouble::UpdateTrace()']]],
-  ['usage_17',['Usage',['../md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md267',1,'Usage'],['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md270',1,'Usage'],['../md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md275',1,'Usage']]],
+  ['usage_17',['Usage',['../md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md278',1,'Usage'],['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md281',1,'Usage'],['../md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md286',1,'Usage']]],
   ['usage_18',['Command-line usage',['../index.html#autotoc_md7',1,'']]],
-  ['usage_20of_20the_20master_20merger_20executable_19',['Usage of the master merger executable',['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md259',1,'']]],
+  ['usage_20of_20the_20master_20merger_20executable_19',['Usage of the master merger executable',['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md270',1,'']]],
   ['use_20the_20other_20ones_20',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2overview_2CHANGELOG.html#autotoc_md163',1,'']]],
   ['user_21',['User',['../classxpansion_1_1logger_1_1User.html',1,'xpansion::logger']]],
-  ['user_20input_20file_22',['User input file',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md285',1,'']]],
+  ['user_20input_20file_22',['User input file',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md296',1,'']]],
   ['user_20input_20file_20parsing_23',['User input file parsing',['../md_docs_2reference_2trajectory-investment_2user-input.html',1,'']]],
   ['userfile_24',['UserFile',['../classxpansion_1_1logger_1_1UserFile.html',1,'xpansion::logger']]],
   ['userinputtranslator_25',['UserInputTranslator',['../classuser__input__translation_1_1UserInputTranslator.html',1,'user_input_translation']]],
   ['userloggertest_26',['UserLoggerTest',['../classUserLoggerTest.html',1,'']]],
-  ['using_20pre_20build_20dependency_27',['Using pre-build dependency',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md76',1,'']]]
+  ['using_20disk_20efficient_20subproblem_20storage_27',['Using disk-efficient subproblem storage',['../md_docs_2reference_2benders_2in-memory-compact-subproblems.html',1,'']]],
+  ['using_20pre_20build_20dependency_28',['Using pre-build dependency',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md76',1,'']]]
 ];

@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Outputs</title>
+<title>Antares Xpansion: Micro Iterations</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md_docs_2reference_2outputs_2index.html',''); initResizable(true); });
+$(function(){initNavTree('md_docs_2reference_2benders_2micro-iterations.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,27 +137,43 @@ $(function(){initNavTree('md_docs_2reference_2outputs_2index.html',''); initResi
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Outputs</div></div>
+  <div class="headertitle"><div class="title">Micro Iterations</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md259"></a></p>
-<p>When the Antares Xpansion algorithm terminates, i.e. when an optimal investment combination has been found, the package produces an archive <code>simulation-name.zip</code> located in the output folder of the Antares study.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md224"></a></p>
+<h1><a class="anchor" id="autotoc_md225"></a>
+Core concept</h1>
+<p>The micro-iterations paradigm applies a constraint-generation scheme (lazy-constraint) at the subproblem level. Instead of instantiating the full set of operational constraints from the outset, each subproblem is initially built with only a subset of them, yielding a relaxed problem that is considerably smaller and faster to solve.</p>
+<p>This relaxation is solved a first time, and the resulting solution is handed to a verification mechanism whose role is to check, outside of the optimization itself, whether the constraints that were left out of the model are satisfied by the current solution. The constraints found to be violated are injected into the subproblem, which is then re-solved with this enriched formulation.</p>
+<p>This solve–check–inject sequence constitutes one <em>micro-iteration</em>, and it is repeated until the verification step detects no further violation. At that point, the solution of the relaxed problem is feasible for the complete formulation — and therefore optimal for it, since removing constraints can only relax the problem.</p>
+<p>The subproblem thus returns exactly the same optimal value and dual information as if it had been solved with all constraints from the start, but the solver only ever handles the constraints that actually matter: in practice, a large share of the operational constraints are inactive at the optimum, and the successive relaxations remain far smaller than the full problem.</p>
+<p><img src="../../assets/media/micro_iterations.png" alt="Micro Iterations" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md226"></a>
+Warm start</h1>
+<p>Rather than rebuilding each subproblem from its minimal relaxed formulation and re-discovering the relevant constraints from scratch, the warm-start mechanism can optionally initialize the subproblem with the constraints injected during the previous iteration's solve–check–inject sequence. These constraints were active (binding or violated) for the previous master solution, and when successive master solutions remain close to one another, a meaningful share of them are still needed, so starting from this enriched formulation can require fewer micro-iterations to reach feasibility.</p>
+<p>This behavior is available as an option, but whether it actually helps is use-case dependent and left to the user's judgment. The active-constraint set can vary significantly between successive Benders iterations, in which case the carried-over constraints add little value and mostly inflate the initial problem for no benefit. There is also a compounding risk: as constraints accumulate across iterations without being pruned, the subproblem can drift back toward containing its full constraint set, which produces the same large, heavy-to-solve formulations the micro-iteration scheme was designed to avoid — negating the paradigm's benefits. Whether to enable warm-starting, and whether some form of constraint pruning is needed alongside it, is therefore a trade-off the user should assess for their specific problem structure.</p>
+<h1><a class="anchor" id="autotoc_md227"></a>
+Launching a study with micro-iterations</h1>
+<p>The micro-iterations mode is enabled through the simulation settings by setting <code>MICRO_ITERATIONS: true</code>. When this mode is active, the study must be enriched with additional inputs that describe the constraints excluded from the initial subproblems and provide the machinery needed to detect their violation. Compared to a standard study, the following elements must be added:</p>
 <ul>
-<li><a class="el" href="md_docs_2reference_2outputs_2optimization-output.html">Results of the optimization</a><ul>
-<li><code>out.json</code>: summary of the algorithm iterations</li>
-<li><code>last_iteration.json</code>: informations about the best and last iterations (subset of the <code>out.json</code>)</li>
-</ul>
+<li><b><code>MICRO_ITERATIONS: true</code></b> in the <code>options.json</code> file, see <a class="el" href="md_docs_2reference_2benders_2options.html">Settings of benders executable</a> — the simulation variable that activates the micro-iterations mode. Without it, the study is solved with the classical scheme in which each subproblem carries its full set of constraints from the start.</li>
+<li><p class="startli"><b>MPS/SVF files for the removed constraints</b> — in addition to the MPS/SVF files representing the initial (relaxed) subproblem optimization problems, the study must provide MPS/SVF files describing the constraints that were removed from the initial formulation. These files are the pool from which violated constraints are injected into the subproblems at each micro-iteration.</p>
+<p class="startli">To make the role of these files concrete, consider a subproblem with objective $c$ and three constraints $a_1$, $a_2$ and $a_3$. With the classical scheme, the subproblem is written as a single optimization problem:</p>
+<p class="startli">$$ \begin{aligned} \min_{x} \quad &amp; c^\top x \ \text{s.t.} \quad &amp; a_1^\top x=b_1\ &amp; a_2^\top x = b_2\ &amp; a_3^\top x = b_3 \end{aligned} $$</p>
+<p class="startli">In micro-iterations mode, this problem is split into the initial relaxed subproblem — which only carries $a_1$ — and the constraints removed from it, $a_2$ and $a_3$, described in separate MPS/SVF files:</p>
+<p class="startli">$$ \underbrace{ \begin{aligned} \min_{x} \quad &amp; c^\top x \ \text{s.t.} \quad &amp; a_1^\top x = b_1 \end{aligned} }_{\text{initial minimal subproblem}} \qquad\qquad\Big|\qquad\qquad \underbrace{ \begin{aligned} &amp; a_2^\top x =b_2 \ &amp; a_3^\top x = b_3 \end{aligned} }_{\text{constraints file with null objective function}} $$</p>
 </li>
-<li><a class="el" href="md_docs_2reference_2outputs_2others.html">Other output files</a> for logs, mathematical aspects and algorithm metrics<ul>
-<li><code>lp/LOLD.txt</code>: lost of load duration at each iteration</li>
-<li><code>lp/UnsuppliedEnergy.txt</code>: unsupplied energy duration at each iteration</li>
-<li><code>reportbenders.txt</code></li>
-<li><code>benders_solver.log</code></li>
-<li><code>benders_output_trace.csv</code>: iteration progress of Benders algorithm</li>
-<li><code>master_last_iteration.mps</code> (or <code>.svf</code>): mathematical formulation of the master problem</li>
-<li><code>master_last_basis.bss</code>: last basis of Benders decomposition </li>
 </ul>
-</li>
+<pre class="fragment">The files on the left represent the initial subproblem, while the files on
+the right are the "removed constraints" files required here: they are not
+part of the initial relaxation, but they form the pool from which the
+verification mechanism selects the violated constraints to re-inject into
+the relaxed subproblem at each micro-iteration. Solving the left-hand
+problem enriched with every constraint from the right-hand side is
+equivalent to solving the original complete problem.
+</pre><ul>
+<li><b>A <code>plugin_inputs</code> folder</b> — this folder contains the artefacts needed to determine, from a subproblem solution, which of the removed constraints are violated. In particular, it can contain an external library that is dynamically linked at runtime to evaluate the violated constraints from the current subproblem solution.</li>
+<li><b>A <code>variables_to_follow.txt</code> file</b> — this file lists the ids of the variables whose values must be extracted from the subproblem solution in order to evaluate the removed constraints and detect violations. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

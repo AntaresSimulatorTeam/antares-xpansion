@@ -140,7 +140,7 @@ $(function(){initNavTree('md_docs_2reference_2benders_2options.html',''); initRe
   <div class="headertitle"><div class="title">Settings for launching Benders executable</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md217"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md228"></a></p>
 <p>It is possible to launch the Benders solver directly as a standalone application. The solver is provided as an executable named Benders, which can be invoked from the command line without requiring any additional wrapper or interface.</p>
 <p>The execution of the solver is configured through an input file named <code>options.json</code>, which must be supplied at runtime. This JSON configuration file defines all the parameters required to control the behavior of the solver. It typically includes the solver’s operational settings, algorithmic options, and problem-specific configurations. By adjusting the attributes in this file, users can fine-tune aspects such as decomposition settings, convergence criteria, logging behavior, performance-related options, and input/output paths.</p>
 <p>This design allows for a clear separation between the solver logic and its configuration, making the execution flexible, reproducible, and easy to automate within scripts or larger workflows. The following attributes are defined in the <code>options.json</code> file:</p>
@@ -204,7 +204,7 @@ $(function(){initNavTree('md_docs_2reference_2benders_2options.html',''); initRe
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">AREA_FILE   </td><td class="markdownTableBodyNone"><code>area.txt</code>   </td><td class="markdownTableBodyNone">Area file used to get areas on which external criteria (LOLD, UnsuppliedEnergy) are computed   </td><td class="markdownTableBodyNone"><code>string</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">CACHE_PROBLEMS   </td><td class="markdownTableBodyNone"><code>false</code>   </td><td class="markdownTableBodyNone">Whether to use subproblems in disk cache rather than loading all problems in memory (allows to reduce RAM usage at the expense of a slight CPU time performance reduction)   </td><td class="markdownTableBodyNone"><code>boolean</code>    </td></tr>
+<td class="markdownTableBodyNone">CACHE_PROBLEMS   </td><td class="markdownTableBodyNone"><code>0</code>   </td><td class="markdownTableBodyNone">Subproblem caching mode: <code>0</code> = all problems loaded in memory (classic mode), <code>1</code> = subproblems stored in disk cache rather than loaded in memory (reduces RAM usage at the expense of a slight CPU time performance reduction), <code>2</code> = disk-optimized mode using a shared skeleton problem with per-subproblem CSV data   </td><td class="markdownTableBodyNone"><code>0</code>, <code>1</code> or <code>2</code>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">PROBLEMS_FORMAT   </td><td class="markdownTableBodyNone"><code>MPS_FILE</code>   </td><td class="markdownTableBodyNone">Format of the problems   </td><td class="markdownTableBodyNone"><code>MPS_FILE</code> or <code>OPTIMIZED</code>    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -216,7 +216,9 @@ $(function(){initNavTree('md_docs_2reference_2benders_2options.html',''); initRe
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">FULL_DIR   </td><td class="markdownTableBodyNone"><code>full</code>   </td><td class="markdownTableBodyNone">Full problems directory name   </td><td class="markdownTableBodyNone"><code>string</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">RESUME   </td><td class="markdownTableBodyNone"><code>false</code>   </td><td class="markdownTableBodyNone">Resume last Benders   </td><td class="markdownTableBodyNone"><code>boolean</code>   </td></tr>
+<td class="markdownTableBodyNone">RESUME   </td><td class="markdownTableBodyNone"><code>false</code>   </td><td class="markdownTableBodyNone">Resume last Benders   </td><td class="markdownTableBodyNone"><code>boolean</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">MICRO_ITERATIONS   </td><td class="markdownTableBodyNone"><code>false</code>   </td><td class="markdownTableBodyNone">Whether to enable the micro-iterations mode, which applies constraint generation at the subproblem level to reduce problem size and speed up resolution   </td><td class="markdownTableBodyNone"><code>boolean</code>   </td></tr>
 </table>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

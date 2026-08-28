@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Outputs</title>
+<title>Antares Xpansion: Using disk-efficient subproblem storage</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md_docs_2reference_2outputs_2index.html',''); initResizable(true); });
+$(function(){initNavTree('md_docs_2reference_2benders_2in-memory-compact-subproblems.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,28 +137,77 @@ $(function(){initNavTree('md_docs_2reference_2outputs_2index.html',''); initResi
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Outputs</div></div>
+  <div class="headertitle"><div class="title">Using disk-efficient subproblem storage</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md259"></a></p>
-<p>When the Antares Xpansion algorithm terminates, i.e. when an optimal investment combination has been found, the package produces an archive <code>simulation-name.zip</code> located in the output folder of the Antares study.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md216"></a></p>
+<h1><a class="anchor" id="autotoc_md217"></a>
+Motivation</h1>
+<h3><a class="anchor" id="autotoc_md218"></a>
+CACHE_PROBLEMS = 0</h3>
+<p>In the Benders decomposition framework, the resolution starts by loading the MPS/SVF files of all the subproblems, so that each of them is held in memory as a fully instantiated optimization problem for the whole duration of the run.</p>
+<h3><a class="anchor" id="autotoc_md219"></a>
+CACHE_PROBLEMS = 1</h3>
+<p>A first RAM usage optimization has been implemented by loading the optimization problem from disk just before solving it.</p>
+<h3><a class="anchor" id="autotoc_md220"></a>
+CACHE_PROBLEMS = 2</h3>
+<p>However, the disk footprint of the input data remains drastically high and can become problematic as the number and size of subproblems increase, potentially becoming the bottleneck before computation even starts.</p>
+<p>Yet this cost is largely redundant: the subproblems share a huge part of their columns and rows — the same variables, the same constraint structure — differing only on certain coeffecient values.</p>
+<p>The idea is to exploit this redundancy by no longer providing one MPS file per subproblem, but a single MPS file acting as a <em>skeleton</em>: the common structure shared by all subproblems. We will have an instance per proc. This skeleton is complemented by a set of much lighter files, one per subproblem, containing only the subproblem-specific data needed to instantiate the actual problem at resolution time. Memory then holds one copy of the shared structure instead of one full problem per subproblem, and the per-subproblem memory footprint is reduced to its lightweight specialization data.</p>
+<p><img src="../../assets/media/mem_optim_data_flow.png" alt="Memory compact subproblem" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md221"></a>
+Study format</h1>
+<p>A memory-optimized study no longer provides one MPS/SVF file per subproblem. Instead, the subproblems are described by a single skeleton problem together with a set of CSV files containing the per-subproblem data. In the following, <em>rows</em> and <em>columns</em> are understood in the MPS sense: rows are the constraints and columns are the variables of the optimization problem. The study is given under the following format:</p>
 <ul>
-<li><a class="el" href="md_docs_2reference_2outputs_2optimization-output.html">Results of the optimization</a><ul>
-<li><code>out.json</code>: summary of the algorithm iterations</li>
-<li><code>last_iteration.json</code>: informations about the best and last iterations (subset of the <code>out.json</code>)</li>
-</ul>
-</li>
-<li><a class="el" href="md_docs_2reference_2outputs_2others.html">Other output files</a> for logs, mathematical aspects and algorithm metrics<ul>
-<li><code>lp/LOLD.txt</code>: lost of load duration at each iteration</li>
-<li><code>lp/UnsuppliedEnergy.txt</code>: unsupplied energy duration at each iteration</li>
-<li><code>reportbenders.txt</code></li>
-<li><code>benders_solver.log</code></li>
-<li><code>benders_output_trace.csv</code>: iteration progress of Benders algorithm</li>
-<li><code>master_last_iteration.mps</code> (or <code>.svf</code>): mathematical formulation of the master problem</li>
-<li><code>master_last_basis.bss</code>: last basis of Benders decomposition </li>
-</ul>
+<li><b><code>sub.mps</code> / <code>sub.svf</code></b> — the core of the optimization problem, common to all the subproblems. This skeleton carries the full structure shared by every subproblem; only the coefficients listed in the CSV files below differ from one subproblem to another.</li>
+<li><p class="startli"><b><code>coef.csv</code></b> — each row of this file corresponds to one subproblem and contains the coefficients to set in the constraint matrix in order to build that subproblem from the skeleton.</p>
+<p class="startli">Example:</p>
 </li>
 </ul>
+<div class="fragment"><div class="line">sub/sub_1.mps,100,220,300</div>
+<div class="line">sub/sub_2.mps,300,300,300</div>
+</div><!-- fragment --><ul>
+<li><p class="startli"><b><code>coef_cols.csv</code></b> — contains the column names on which the constraint matrix coefficients of <code>coef.csv</code> must be set.</p>
+<p class="startli">Example:</p>
+</li>
+</ul>
+<div class="fragment"><div class="line">z[line_1],z[Line_2],z[line_3]</div>
+</div><!-- fragment --><ul>
+<li><p class="startli"><b><code>coef_rows.csv</code></b> — contains the row names on which the constraint matrix coefficients of <code>coef.csv</code> must be set. Together, <code>coef_rows.csv</code> and <code>coef_cols.csv</code> define the positions in the matrix, and each line of <code>coef.csv</code> provides the values to write at these positions for the corresponding subproblem.</p>
+<p class="startli">Example:</p>
+</li>
+</ul>
+<div class="fragment"><div class="line">constraint_1,constraint_2,constraint_3</div>
+</div><!-- fragment --><ul>
+<li><p class="startli"><b><code>obj_coef.csv</code></b> — contains the coefficients to set in order to build the objective function of the corresponding subproblem.</p>
+<p class="startli">Example:</p>
+</li>
+</ul>
+<div class="fragment"><div class="line">sub/sub_1.mps,1.001,1.02,-1.2</div>
+<div class="line">sub/sub_2.mps,1.001,1.02,-1.2</div>
+</div><!-- fragment --><ul>
+<li><p class="startli"><b><code>obj_cols.csv</code></b> — contains the column names on which the objective coefficients of <code>obj_coef.csv</code> must be set.</p>
+<p class="startli">Example:</p>
+</li>
+</ul>
+<div class="fragment"><div class="line">redispatching_1,redispatching_2,redispatching_3</div>
+</div><!-- fragment --><ul>
+<li><p class="startli"><b><code>rhs.csv</code></b> — contains the values to set on the right-hand side in order to build the corresponding subproblem.</p>
+<p class="startli">Example:</p>
+</li>
+</ul>
+<div class="fragment"><div class="line">sub/sub_1.mps,83,84,92</div>
+<div class="line">sub/sub_2.mps,23,45,44</div>
+</div><!-- fragment --><ul>
+<li><p class="startli"><b><code>rhs_rows.csv</code></b> — contains the row names on which the RHS values of <code>rhs.csv</code> must be set.</p>
+<p class="startli">Example:</p>
+</li>
+</ul>
+<div class="fragment"><div class="line">branch_line_1,branch_line_2,branch_line_3</div>
+</div><!-- fragment --><p>At resolution time, a given subproblem is therefore obtained by loading the skeleton and applying its line of <code>coef.csv</code>, <code>obj_coef.csv</code> and <code>rhs.csv</code> at the positions designated by the name files.</p>
+<h1><a class="anchor" id="autotoc_md222"></a>
+Memory optimization Resolution process</h1>
+<p><img src="../../assets/media/disk_optim_workflow.png" alt="disk optimization workflow" class="inline"/> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

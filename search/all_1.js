@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['1_0',['v1.1',['../md_docs_2overview_2format__changes.html#autotoc_md215',1,'']]],
+  ['1_0',['1',['../md_docs_2reference_2benders_2in-memory-compact-subproblems.html#autotoc_md219',1,'CACHE_PROBLEMS = 1'],['../md_docs_2overview_2format__changes.html#autotoc_md215',1,'v1.1']]],
   ['1_200_2003_202021_1',['v0.1.0 (03/2021)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md209',1,'']]],
   ['1_200_2009_202023_2',['v1.1.0 (09/2023)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md172',1,'']]],
   ['1_2001_202023_3',['v1.0.1 (01/2023)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md180',1,'']]],

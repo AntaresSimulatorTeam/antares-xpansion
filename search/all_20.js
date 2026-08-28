@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['v_20version_20tt_0',['&lt;tt&gt;-v, --version&lt;/tt&gt;',['../md_docs_2reference_2cli.html#autotoc_md231',1,'']]],
+  ['v_20version_20tt_0',['&lt;tt&gt;-v, --version&lt;/tt&gt;',['../md_docs_2reference_2cli.html#autotoc_md242',1,'']]],
   ['v0_201_200_2003_202021_1',['v0.1.0 (03/2021)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md209',1,'']]],
   ['v0_202_200_2004_202021_2',['v0.2.0 (04/2021)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md206',1,'']]],
   ['v0_203_200_2005_202021_3',['v0.3.0 (05/2021)',['../md_docs_2overview_2CHANGELOG.html#autotoc_md203',1,'']]],
@@ -50,9 +50,9 @@ var searchData=
   ['version_20cmake_20version_47',['@ref &quot;cmake-version&quot; &quot;CMake version&quot;',['../md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md65',1,'']]],
   ['version_20git_20version_48',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md67',1,'']]],
   ['version_20python_20version_49',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md66',1,'']]],
-  ['version_20tt_50',['version tt',['../md_docs_2reference_2cli.html#autotoc_md232',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2reference_2cli.html#autotoc_md231',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
+  ['version_20tt_50',['version tt',['../md_docs_2reference_2cli.html#autotoc_md243',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2reference_2cli.html#autotoc_md242',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
   ['versions_51',['Versions',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md77',1,'']]],
   ['versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_52',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2overview_2CHANGELOG.html#autotoc_md163',1,'']]],
-  ['vision_53',[' Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md257',1,'']]],
+  ['vision_53',[' Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md268',1,'']]],
   ['voidwriter_54',['VoidWriter',['../classOutput_1_1VoidWriter.html',1,'Output::VoidWriter'],['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter::VoidWriter()']]]
 ];
