@@ -112,7 +112,7 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
                            { return coefficient * slave_weights; });
 
     std::vector<int> indices(skeletonObjCoeffs_.size());
-    std::iota(indices.begin(), indices.end(), 0); 
+    std::iota(indices.begin(), indices.end(), 0);
 
     solver_->chg_obj(indices, weighted_obj);
 
