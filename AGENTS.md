@@ -24,6 +24,7 @@ Without preset, configure with the vcpkg toolchain explicitly (Linux preset equi
 - `src/python/` - Python source
 - `tests/cpp/` - C++ tests (Google Test)
 - `tests/python/` - Python tests (pytest)
+- `tests/end_to_end/` - End-to-end tests, including the cucumber/behave BDD suite
 - `docs/` - Documentation
 
 ## Format Code

@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/SolverRowExtractor.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -125,6 +126,22 @@ void Worker::solve(int& lp_status,
     }
 }
 
+void Worker::set_id_to_name(VariableMap& variable_map)
+{
+    _name_to_id = variable_map;
+    for (const auto& kvp: _name_to_id)
+    {
+        _id_to_name[kvp.second] = kvp.first;
+    }
+}
+
+void Worker::init_for_compact_in_mem(std::shared_ptr<SolverAbstract> solver,
+                                     VariableMap& variable_map)
+{
+    _solver = solver;
+    set_id_to_name(variable_map);
+}
+
 /*!
  *  \brief Get the number of iteration needed to solve a problem
  *
@@ -164,6 +181,11 @@ void Worker::AddRows(const std::vector<char>& qrtype_p,
                      const std::vector<std::string>& row_names) const
 {
     solver_addrows(*_solver, qrtype_p, rhs_p, {}, mstart_p, mclind_p, dmatval_p, row_names);
+}
+
+void Worker::AddRow(const SolverRepresentedRows& row) const
+{
+    AddRows(row.qrtype_p, row.rhs, {}, row.mstart, row.mclind, row.dmatval, row.row_names);
 }
 
 int Worker::Getnrows() const

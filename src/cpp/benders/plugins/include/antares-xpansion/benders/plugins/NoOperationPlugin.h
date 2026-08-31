@@ -11,7 +11,8 @@ public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                         const Logger& logger,
                         const BendersBaseOptions& options,
-                        const SolverLogManager& solver_log_manager) override;
+                        const SolverLogManager& solver_log_manager,
+                        std::shared_ptr<SolverAbstract> sub_problem_solver) override;
 
     void OnBendersEnd() override;
 
@@ -22,8 +23,9 @@ public:
                                       int& num_iter) override;
     void OnBendersMasterResolutionStart() override;
 
-    void OnBendersSubResolutionStart() override;
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
+                                     std::string sub_name) override;
+    void OnBendersSubResolutionEnd() override;
 
     void OnBendersMicroIterationStart() override;
     void OnBendersMicroIterationEnd(std::string sub_name,
@@ -31,4 +33,6 @@ public:
                                     std::string solve_time,
                                     int num_master_iter,
                                     int num_micro_iter) override;
+
+    bool ShouldRestoreSubproblemBasis() const override;
 };

@@ -46,7 +46,6 @@ TEST_CASE("MPS file can be read and we can get number of columns", "[read][read-
         {
             std::filesystem::path instance = datas[inst]._path;
             std::cout << "Current dir " << fs::current_path() << std::endl;
-            std::cout << instance << std::endl;
             //========================================================================================
             // Solver declaration
             std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);

@@ -30,7 +30,13 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/CriterionInputDataReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CouplingMapGenerator.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/ConstraintsFileReader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SolverRowExtractor.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonSolverLoader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/skeleton_coefficient_reader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonCoefficientSet.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonConstraintSetLoader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemBasisCache.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorkerFactory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
@@ -52,9 +58,15 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemWorker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/VariablesGroup.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/Worker.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/skeleton_coefficient_reader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonCoefficientSet.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemBasisCache.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/WorkerMaster.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/common.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ConstraintsFileReader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SolverRowExtractor.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonSolverLoader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ICommunicationStrategy.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SequentialCommunicationStrategy.h

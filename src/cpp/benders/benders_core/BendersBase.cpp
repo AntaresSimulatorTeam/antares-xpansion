@@ -1,6 +1,8 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 #include <chrono>
+#include <filesystem>
+#include <fstream>
 #include <memory>
 #include <mutex>
 #include <numeric>
@@ -478,14 +480,26 @@ void BendersBase::compute_ub()
  */
 void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 {
-    if (Options().CACHE_PROBLEMS)
+    switch (Options().CACHE_PROBLEMS)
     {
-        GetSubproblemCutCache(subproblem_data_map);
-    }
-    else
-    {
+    case 0:
+
         GetSubproblemCutFast(subproblem_data_map);
+        break;
+    case 1:
+        GetSubproblemCutCache(subproblem_data_map);
+        break;
+    case 2:
+        GetCompactInMemCuts(subproblem_data_map);
+        break;
+    default:
+        break;
     }
+}
+
+void BendersBase::set_rank(int rank)
+{
+    rank_ = rank;
 }
 
 void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
@@ -500,24 +514,43 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
     }
 
     std::mutex m;
+    std::exception_ptr first_exception;
     selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_data_map](auto& policy)
+      [this, &nameAndWorkers, &m, &subproblem_data_map, &first_exception](auto& policy)
       {
           std::for_each(policy,
                         nameAndWorkers.begin(),
                         nameAndWorkers.end(),
-                        [this, &m, &subproblem_data_map](
+                        [this, &m, &subproblem_data_map, &first_exception](
                           const std::pair<std::string, SubproblemWorkerPtr>& kvp)
                         {
-                            PlainData::SubProblemData subproblem_data;
-                            const auto& [name, worker] = kvp;
-                            SolveSubproblem(subproblem_data, name, worker);
+                            // A parallel execution policy calls std::terminate if an
+                            // exception escapes this callable, so any solve failure
+                            // must be caught here and rethrown after the loop instead.
+                            try
+                            {
+                                PlainData::SubProblemData subproblem_data;
+                                const auto& [name, worker] = kvp;
+                                SolveSubproblem(subproblem_data, name, worker, nullptr);
 
-                            std::lock_guard guard(m);
-                            subproblem_data_map[name] = subproblem_data;
+                                std::lock_guard guard(m);
+                                subproblem_data_map[name] = subproblem_data;
+                            }
+                            catch (...)
+                            {
+                                std::lock_guard guard(m);
+                                if (!first_exception)
+                                {
+                                    first_exception = std::current_exception();
+                                }
+                            }
                         });
       },
       shouldParallelize());
+    if (first_exception)
+    {
+        std::rethrow_exception(first_exception);
+    }
 }
 
 namespace
@@ -534,36 +567,16 @@ std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, 
 }
 } // namespace
 
-std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
-  const std::shared_ptr<SubproblemWorker>& worker) const
+void BendersBase::StoreSubproblemBasis(const std::string& name,
+                                       const std::shared_ptr<SubproblemWorker>& worker)
 {
-    int row_number = worker->_solver->get_nrows();
-    int col_number = worker->_solver->get_ncols();
-    std::vector<int> rstatus(row_number);
-    std::vector<int> cstatus(col_number);
-    worker->_solver->get_basis(rstatus.data(), cstatus.data());
-    return {std::move(rstatus), std::move(cstatus)};
+    subproblem_basis_cache_.Store(name, *worker->_solver);
 }
 
-/**
- * Create a worker on a problem and reuse the basis to speed up solving
- *
- * @param kvp Problem data
- * @param name Name of the problem
- * @return Worker on the problem
- *
- */
-std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
-  const std::pair<std::string, VariableMap>& kvp,
-  const std::string& name)
+void BendersBase::TryRestoreSubproblemBasis(const std::string& name,
+                                            const std::shared_ptr<SubproblemWorker>& worker)
 {
-    auto worker = makeSubproblemWorker(kvp);
-    if (basiss_.contains(name))
-    {
-        auto& [rstatus, cstatus] = basiss_[name];
-        worker->_solver->set_basis(rstatus, cstatus);
-    }
-    return worker;
+    subproblem_basis_cache_.TryRestore(name, *worker->_solver, _logger);
 }
 
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
@@ -582,67 +595,119 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               benders_problem_provider.get());
 }
 
-void BendersBase::SetBasisForSubproblem(const std::string& name,
-                                        const std::vector<int>& rstatus,
-                                        const std::vector<int>& cstatus)
-{
-    basiss_[name] = std::make_pair(rstatus, cstatus);
-}
-
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 {
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
+
     std::mutex m;
+    std::exception_ptr first_exception;
+
     selectPolicy(
-      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
+      [this, &nameAndVariableMap, &m, &subproblem_data_map, &first_exception](auto& policy)
       {
           std::for_each(policy,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map](
+                        [this, &m, &subproblem_data_map, &first_exception](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
-                            const auto& [name, variables] = kvp;
-                            std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
-                            PlainData::SubProblemData subproblem_data;
-                            SolveSubproblem(subproblem_data, name, worker);
-                            auto [rstatus, cstatus] = GetProblemBasis(worker);
-                            std::lock_guard guard(m);
-                            subproblem_data_map[name] = subproblem_data;
-                            SetBasisForSubproblem(name, rstatus, cstatus);
-                            std::call_once(
-                              variable_indice_once_flag,
-                              [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
-                              *worker);
+                            // A parallel execution policy calls std::terminate if an
+                            // exception escapes this callable, so any solve failure
+                            // must be caught here and rethrown after the loop instead.
+                            try
+                            {
+                                const auto& [name, variables] = kvp;
+                                std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(
+                                  kvp);
+                                PlainData::SubProblemData subproblem_data;
+                                SolveSubproblem(subproblem_data,
+                                                name,
+                                                worker,
+                                                [this, &name, &worker]
+                                                { TryRestoreSubproblemBasis(name, worker); });
+                                std::lock_guard guard(m);
+                                subproblem_data_map[name] = subproblem_data;
+                                StoreSubproblemBasis(name, worker);
+
+                                std::call_once(
+                                  variable_indice_once_flag,
+                                  [this](const auto& worker_)
+                                  { SetSubproblemVariablesIndices(worker_); },
+                                  *worker);
+                            }
+                            catch (...)
+                            {
+                                std::lock_guard guard(m);
+                                if (!first_exception)
+                                {
+                                    first_exception = std::current_exception();
+                                }
+                            }
                         });
       },
       shouldParallelize());
+    if (first_exception)
+    {
+        std::rethrow_exception(first_exception);
+    }
+}
+
+void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
+{
+    auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
+
+    for (const auto& [sub, variables]: nameAndVariableMap)
+    {
+        auto variable_map = coupling_map_[sub];
+        double slave_weights = SubproblemWeight(_data.nsubproblem, sub);
+
+        auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(sub,
+                                                                                     variable_map,
+                                                                                     slave_weights);
+
+        PlainData::SubProblemData subproblem_data;
+        SolveSubproblem(subproblem_data,
+                        sub,
+                        subproblem_worker,
+                        [this, &sub] { subproblem_worker_factory_->ApplyBasis(sub); });
+
+        subproblem_worker_factory_->GetBasis(sub);
+
+        subproblem_data_map[sub] = subproblem_data;
+    }
 }
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::string& name,
-                                  const std::shared_ptr<SubproblemWorker>& worker)
+                                  const std::shared_ptr<SubproblemWorker>& worker,
+                                  const std::function<void()>& post_reset_hook)
 {
     Timer subproblem_timer;
-
     worker->fix_to(_data.x_cut);
-
-    benders_plugin_->OnBendersSubResolutionStart();
+    benders_plugin_->OnBendersSubResolutionStart(worker, name);
+    if (post_reset_hook && benders_plugin_->ShouldRestoreSubproblemBasis())
+    {
+        // Must run after OnBendersSubResolutionStart has reset the (possibly
+        // shared, skeleton-cached) solver's rows back to this subproblem's own
+        // structure, otherwise a warm-start basis sized for a different
+        // subproblem's row count can be applied to the solver.
+        post_reset_hook();
+    }
 
     int num_micro_iter(0);
     if (_options.MICRO_ITERATIONS)
     {
-        benders_plugin_->OnBendersMicroIterationStart();
-
         bool added_rows = true;
+        benders_plugin_->OnBendersMicroIterationStart();
         while (added_rows)
         {
-            auto t1 = std::chrono::high_resolution_clock::now();
+            auto t1 = std::chrono::steady_clock::now();
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
                           _options.LAST_MASTER_MPS + MPS_SUFFIX,
                           _writer);
-            auto t2 = std::chrono::high_resolution_clock::now();
+
+            auto t2 = std::chrono::steady_clock::now();
             auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2
                                                                                               - t1)
                                           .count();
@@ -670,7 +735,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    benders_plugin_->OnBendersSubResolutionEnd(name, num_micro_iter);
+    benders_plugin_->OnBendersSubResolutionEnd();
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
