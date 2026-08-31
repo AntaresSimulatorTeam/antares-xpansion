@@ -38,6 +38,14 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     _solver->chg_obj(sequence, obj_func_coeffs);
 }
 
+SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
+                                   std::shared_ptr<SolverAbstract> solver,
+                                   Logger logger):
+    Worker(variable_map, std::move(logger))
+{
+    init_for_compact_in_mem(solver, variable_map);
+}
+
 /*!
  *  \brief Fix a set of variables to constant in a problem
  *

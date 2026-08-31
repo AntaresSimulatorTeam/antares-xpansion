@@ -2,7 +2,7 @@
 
 ## Accepted [08/2024]
 
-Supersede [Create custom vcpkg ports for deps](./%5B009%5D%20Create_custom_vcpkg_ports_for_deps.md)
+Supersede [Create custom vcpkg ports for deps](./%5B010%5D%20Create_custom_vcpkg_ports_for_deps.md)
 
 ## Context
 

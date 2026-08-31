@@ -1,6 +1,7 @@
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 
 #include <filesystem>
+#include <iostream>
 #include <json/json.h>
 
 #include "antares-xpansion/core/ProblemFormatStream.h"
@@ -93,7 +94,9 @@ void SimulationOptions::set_weights()
 
         if (!file)
         {
-            std::cout << "Cannot open file " << filename << std::endl;
+            std::cerr << LOGLOCATION << "ERROR : Unable to open weight file " << filename
+                      << std::endl;
+            std::exit(1);
         }
         double weights_sum = -1;
         while (std::getline(file, line))

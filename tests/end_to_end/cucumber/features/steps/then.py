@@ -252,7 +252,7 @@ def simu_success(context):
 
 @then("the expected overall cost is {value:g}")
 def check_overall_cost(context, value):
-    print(context.outputs["solution"]["overall_cost"])
+    print(f".... overall cost : {context.outputs['solution']['overall_cost']}")
     np.testing.assert_allclose(value, context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
 
 

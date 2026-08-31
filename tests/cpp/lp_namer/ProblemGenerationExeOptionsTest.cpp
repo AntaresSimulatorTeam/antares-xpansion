@@ -5,6 +5,10 @@
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "gtest/gtest.h"
 
+namespace Antares::Solver
+{
+class SingleProblemGetter;
+}
 namespace po = boost::program_options;
 
 class ProblemGenerationExeOptionsTest
@@ -49,7 +53,7 @@ public:
     }
 
 private:
-    void generate_antares_problems(const std::filesystem::path&,
+    void generate_antares_problems(Antares::Solver::SingleProblemGetter&,
                                    const std::filesystem::path&) override
     {
     }

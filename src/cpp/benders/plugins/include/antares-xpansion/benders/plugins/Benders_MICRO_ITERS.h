@@ -22,26 +22,13 @@ Benders_MICRO_ITERS class.
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-/*
-    This structure will be used to set the subproblems ids on the Julia side
-    @members :
-        - subProblems_ids : a pointer to an array of c-style string
-        - n_subproblems : number of subproblems
-*/
-struct SubProblemIds
-{
-    const char** subProblems_ids;
-    int n_subproblems;
-};
-
-using on_Benders_start_Func = void (*)(SubProblemIds,
-                                       int,
-                                       std::filesystem::path,
+using on_Benders_start_Func = void (*)(std::filesystem::path,
                                        std::filesystem::path,
                                        bool,
                                        mpi::communicator*,
@@ -53,22 +40,20 @@ using on_Benders_master_resolution_start = void (*)();
 using on_Benders_master_resolution_end = void (*)(std::map<std::string, double>&,
                                                   int&,
                                                   mpi::communicator*,
-                                                  std::map<std::string, std::vector<std::string>>&,
                                                   std::filesystem::path input_root);
 
 using on_Benders_micro_iteration_start = void (*)();
 using on_Benders_micro_iteration_end = void (*)(std::string sub_name,
-                                                bool& added_rows,
                                                 std::string solving_time,
                                                 std::vector<double> sub_solution,
-                                                std::vector<int> variables_indices_vector,
+                                                std::vector<int>& variables_indices_vector,
                                                 std::vector<std::string>& variables_names_vector,
                                                 std::filesystem::path input_root,
                                                 std::vector<std::string>& contraints_to_add_vec,
                                                 int,
                                                 int);
 using on_Benders_sub_resolution_start = void (*)();
-using on_Benders_sub_resolution_end = void (*)(std::string sub_name, int num_micro_iter);
+using on_Benders_sub_resolution_end = void (*)();
 
 /*
     Implementation of BendersPlugin to manage the microiterations workflow
@@ -98,7 +83,8 @@ public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                         const Logger& logger,
                         const BendersBaseOptions& options,
-                        const SolverLogManager& solver_log_manager) override;
+                        const SolverLogManager& solver_log_manager,
+                        std::shared_ptr<SolverAbstract> sub_problem_solver) override;
 
     void OnBendersIterationStart() override;
     void OnBendersIterationEnd() override;
@@ -133,8 +119,11 @@ public:
                                     int num_master_iter,
                                     int num_micro_iter) override;
 
-    void OnBendersSubResolutionStart() override;
-    void OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter) override;
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
+                                     std::string sub_name) override;
+    void OnBendersSubResolutionEnd() override;
+
+    bool ShouldRestoreSubproblemBasis() const override;
 
     /*
         This functions sets sub_pb_ids_ which is necessary in handeling the julia code
@@ -142,7 +131,7 @@ public:
             - subs_ids : a pointer to an array of c-style string which are the subproblem ids
             - n_subs : number of sub problem
     */
-    void SetSubProblemIDs(const char** subs_ids, int n_subs);
+    void SetSubProblemIDs(std::vector<std::string>&);
 
 private:
     /*
@@ -163,16 +152,49 @@ private:
             - options : study options
             - solver_log_manager : solver log manger
     */
-    void BuildSubproblemConstraintsManagerMap(const SubproblemsMapPtr& subproblem_map,
-                                              const BendersBaseOptions& options,
-                                              const SolverLogManager& solver_log_manager);
+    void build_subproblem_constraints_manager_map(const SubproblemsMapPtr& subproblem_map,
+                                                  const BendersBaseOptions& options,
+                                                  const SolverLogManager& solver_log_manager);
+
+    void build_skeleton_constraint_set_loader(const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
 
-    void read_variables_to_follow_ids();
     void read_variable_names_to_follow();
     void build_variables_to_follow_indices_vector();
-    const std::map<std::string, std::vector<int>>& get_variables_to_follow_indeices_vector();
+
+    /*
+        Returns the SubproblemConstraintsManager currently representing sub_name's added
+        constraints, regardless of which CACHE_PROBLEMS storage strategy is in use.
+    */
+    SubproblemConstraintsManagerPtr GetActiveManager(const std::string& sub_name);
+
+    /*
+        Records constraint as added for sub_name so it can be replayed on a future Benders
+        iteration. A no-op unless warm_start_ is set (CACHE_PROBLEMS==0 never needs tracking,
+        since its manager is never rebuilt/reset).
+    */
+    void TrackAddedConstraint(const std::string& sub_name, const std::string& constraint);
+
+    /*
+        Re-applies the constraints tracked for sub_name onto its currently active manager.
+        A no-op unless warm_start_ is set.
+    */
+    void ReplayPersistedConstraints(const std::string& sub_name);
+
+    /*
+        Clears the tracked added-constraints list for every subproblem, so nothing gets
+        replayed on the next Benders iteration.
+    */
+    void ClearPersistedConstraintsTracking();
+
+    /*
+        CACHE_PROBLEMS>=2 only: strips sub_problem_solver_ back down to
+        InitialSubProblemSolverSize_ rows, removing whatever rows were added for
+        whichever subproblem last used this shared skeleton solver on this rank.
+        A no-op if it is already at that size.
+    */
+    void ResetSharedSolverToBase();
 
     mpi::communicator* _world;
 #ifdef _WIN32
@@ -193,12 +215,8 @@ private:
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
-    std::filesystem::path input_root_;
-    std::filesystem::path variables_dictionary_path_;
-    SubProblemIds sub_pb_ids_;
-    std::map<std::string, std::string> binary_variables_ids_map_;
-    std::vector<std::string> sub_ids_storage_;
-    std::vector<const char*> sub_ids_ptrs_;
+
+    std::vector<std::string> sub_names_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
     std::map<std::string, std::string> micro_iterations_config_;
     std::vector<std::string> variables_to_follow_;
@@ -206,6 +224,11 @@ private:
     CouplingMap constraints_coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_;
     SubproblemConstraintsManagerPtrMap constraints_map_;
+    const SolverLogManager* solver_log_manager_ = nullptr;
     Logger _logger;
     bool warm_start_;
+    std::shared_ptr<SkeletonConstraintSetLoader> constraint_set_loader_;
+    SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
+    std::shared_ptr<SolverAbstract> sub_problem_solver_;
+    int InitialSubProblemSolverSize_;
 };
