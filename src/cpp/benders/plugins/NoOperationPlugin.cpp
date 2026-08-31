@@ -7,7 +7,8 @@ NoOperationPlugin::NoOperationPlugin()
 void NoOperationPlugin::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
                                        const Logger& logger,
                                        const BendersBaseOptions& options,
-                                       const SolverLogManager& solver_log_manager)
+                                       const SolverLogManager& solver_log_manager,
+                                       std::shared_ptr<SolverAbstract> sub_problem_solver)
 {
 }
 
@@ -44,10 +45,17 @@ void NoOperationPlugin::OnBendersMicroIterationEnd(std::string sub_name,
 {
 }
 
-void NoOperationPlugin::OnBendersSubResolutionStart()
+void NoOperationPlugin::OnBendersSubResolutionStart(
+  const std::shared_ptr<SubproblemWorker>& sub_worker,
+  std::string sub_name)
 {
 }
 
-void NoOperationPlugin::OnBendersSubResolutionEnd(std::string sub_name, int num_micro_iter)
+void NoOperationPlugin::OnBendersSubResolutionEnd()
 {
+}
+
+bool NoOperationPlugin::ShouldRestoreSubproblemBasis() const
+{
+    return true;
 }

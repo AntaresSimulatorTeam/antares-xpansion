@@ -713,6 +713,16 @@ void SolverCbc::chg_rhs(int id_row, double val)
     }
 }
 
+void SolverCbc::chg_coefs(const std::vector<int>& id_rows,
+                          const std::vector<int>& id_cols,
+                          const std::vector<double>& vals)
+{
+    for (size_t i = 0; i < id_rows.size(); i++)
+    {
+        chg_coef(id_rows[i], id_cols[i], vals[i]);
+    }
+}
+
 void SolverCbc::chg_coef(int id_row, int id_col, double val)
 {
     // Very tricky method by method "modifyCoefficient" of OsiClp does not work
@@ -952,4 +962,12 @@ void SolverCbc::presolve_only()
 void SolverCbc::get_presolve_map(int*, int*) const
 {
     throw NotImplementedFeatureSolverException("get_presolve_map is not supported for CBC solver");
+}
+
+void SolverCbc::chg_rhs_values(std::vector<int>& rhs_indices, std::vector<double>& rhs_values)
+{
+    for (int i = 0; i < rhs_indices.size(); ++i)
+    {
+        chg_rhs(rhs_indices[i], rhs_values[i]);
+    }
 }

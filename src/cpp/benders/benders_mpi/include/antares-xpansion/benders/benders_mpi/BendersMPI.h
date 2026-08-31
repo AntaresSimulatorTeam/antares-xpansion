@@ -77,6 +77,8 @@ protected:
 
     void PreRunInitialization();
 
+    std::shared_ptr<SolverAbstract> build_sub_problem_skeleton();
+
     int Rank() const
     {
         return _world.rank();
@@ -130,7 +132,8 @@ protected:
       const SubProblemDataMap& subproblem_data_map);
     void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                          const std::string& name,
-                         const std::shared_ptr<SubproblemWorker>& worker) override;
+                         const std::shared_ptr<SubproblemWorker>& worker,
+                         const std::function<void()>& post_reset_hook) override;
     void UpdateMaxCriterionArea();
 };
 

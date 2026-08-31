@@ -22,6 +22,8 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                 std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world)
 {
+    int rank = _world.rank();
+    set_rank(rank);
 }
 
 /*!
@@ -35,7 +37,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS)
+    if (_options.CACHE_PROBLEMS > 0)
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -47,6 +49,7 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
+                AddSubproblemName(it->first);
                 subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
@@ -304,9 +307,10 @@ void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const 
 
 void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker)
+                                 const std::shared_ptr<SubproblemWorker>& worker,
+                                 const std::function<void()>& post_reset_hook)
 {
-    BendersBase::SolveSubproblem(subproblem_data, name, worker);
+    BendersBase::SolveSubproblem(subproblem_data, name, worker, post_reset_hook);
 
     std::vector<double> solution = worker->get_solution();
     criterion_computation_.ComputeCriterion(SubproblemWeight(_data.nsubproblem, name),
@@ -451,6 +455,27 @@ void BendersMpi::free()
     _world.barrier();
 }
 
+/*When we are in the skeleton + micro iterations mode
+we need to have the hand on the constraint skeleon solver, in order
+to get to be able to fetch the constraints from the constraint optimization problem
+by their in the object that handle the subproblem optimization problem.
+For design choices, we decided to keep everything related to constraint built in
+the micro iteration plugin object, This is why we need to fetch for the constraints solver
+object and set it on subproblem object.
+*/
+std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
+{
+    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(_options.INPUTROOT,
+                                                                           _logger,
+                                                                           _options.SOLVER_NAME,
+                                                                           _options.LOG_LEVEL,
+                                                                           _options.PROBLEMS_FORMAT,
+                                                                           GetSubProblemNames(),
+                                                                           solver_log_manager_,
+                                                                           &_world);
+    return subproblem_worker_factory_->GetSolver();
+}
+
 /*!
  *  \brief Run Benders algorithm in parallel
  *
@@ -548,9 +573,20 @@ void BendersMpi::launch()
     {
         InitializeProblems();
     }
+
     _world.barrier();
 
-    benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+    std::shared_ptr<SolverAbstract> subProblemFactorSolver;
+    if (_options.CACHE_PROBLEMS == 2)
+    {
+        subProblemFactorSolver = build_sub_problem_skeleton();
+    }
+
+    benders_plugin_->OnBendersStart(subproblem_map,
+                                    _logger,
+                                    _options,
+                                    solver_log_manager_,
+                                    subProblemFactorSolver);
 
     Run();
 
@@ -564,5 +600,6 @@ void BendersMpi::launch()
     {
         free();
     }
+
     _world.barrier();
 }

@@ -478,6 +478,7 @@ extern std::function<int(XPRSprob prob, int nbounds, const int colind[], const c
 extern std::function<int(XPRSprob prob, int ncols, const int colind[], const char coltype[])> XPRSchgcoltype;
 extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const double rhs[])> XPRSchgrhs;
 extern std::function<int(XPRSprob prob, int row, int col, double coef)> XPRSchgcoef;
+extern std::function<int(XPRSprob prob, int ncoefs, const int mrow[], const int mcol[], const double dval[])> XPRSchgmcoef;
 extern std::function<int(XPRSprob prob, int rowstat[], int colstat[])> XPRSgetbasis;
 extern std::function<int(XPRSprob prob, int attrib, double* p_value)> XPRSgetdblattrib;
 extern std::function<int(XPRSprob prob, double x[], double slack[], double duals[], double djs[])> XPRSgetlpsol;
