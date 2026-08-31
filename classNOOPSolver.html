@@ -149,10 +149,12 @@ Inheritance diagram for NOOPSolver:</div>
  <div class="center">
   <img src="classNOOPSolver.png" usemap="#NOOPSolver_map" alt=""/>
   <map id="NOOPSolver_map" name="NOOPSolver_map">
-<area href="classSolverAbstract.html" alt="SolverAbstract" shape="rect" coords="0,0,186,24"/>
-<area href="classNOOPSolverForWorker.html" alt="NOOPSolverForWorker" shape="rect" coords="0,112,186,136"/>
-<area href="classNOOPSolverForWorkerMaster.html" alt="NOOPSolverForWorkerMaster" shape="rect" coords="0,168,186,192"/>
-<area href="classCapturingSolverForAlphas.html" alt="CapturingSolverForAlphas" shape="rect" coords="0,224,186,248"/>
+<area href="classSolverAbstract.html" alt="SolverAbstract" shape="rect" coords="196,0,382,24"/>
+<area href="classNOOPSolverForSkeleton.html" alt="NOOPSolverForSkeleton" shape="rect" coords="0,112,186,136"/>
+<area href="classNOOPSolverForWorker.html" alt="NOOPSolverForWorker" shape="rect" coords="196,112,382,136"/>
+<area href="classRecordingSolver.html" alt="RecordingSolver" shape="rect" coords="392,112,578,136"/>
+<area href="classNOOPSolverForWorkerMaster.html" alt="NOOPSolverForWorkerMaster" shape="rect" coords="196,168,382,192"/>
+<area href="classCapturingSolverForAlphas.html" alt="CapturingSolverForAlphas" shape="rect" coords="196,224,382,248"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -282,6 +284,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5cbd694fe01554c2fdb75a895e04551" id="r_ac5cbd694fe01554c2fdb75a895e04551"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5cbd694fe01554c2fdb75a895e04551">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
 <tr class="memdesc:ac5cbd694fe01554c2fdb75a895e04551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
 <tr class="separator:ac5cbd694fe01554c2fdb75a895e04551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2384cf016eeb1660bb515132a02ec062" id="r_a2384cf016eeb1660bb515132a02ec062"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2384cf016eeb1660bb515132a02ec062">chg_rhs_values</a> (std::vector&lt; int &gt; &amp;id_rows, std::vector&lt; double &gt; &amp;vals) override</td></tr>
+<tr class="memdesc:a2384cf016eeb1660bb515132a02ec062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
+<tr class="separator:a2384cf016eeb1660bb515132a02ec062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a618b3779107711bc42ffc81f54e8f649" id="r_a618b3779107711bc42ffc81f54e8f649"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a618b3779107711bc42ffc81f54e8f649">chg_coefs</a> (const std::vector&lt; int &gt; &amp;id_rows, const std::vector&lt; int &gt; &amp;id_cols, const std::vector&lt; double &gt; &amp;vals) override</td></tr>
+<tr class="memdesc:a618b3779107711bc42ffc81f54e8f649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change multiple coefficients in the matrix.  <br /></td></tr>
+<tr class="separator:a618b3779107711bc42ffc81f54e8f649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f8d90f146d65b8c4f4e1a3bf62fab5b" id="r_a5f8d90f146d65b8c4f4e1a3bf62fab5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f8d90f146d65b8c4f4e1a3bf62fab5b">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
 <tr class="memdesc:a5f8d90f146d65b8c4f4e1a3bf62fab5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
 <tr class="separator:a5f8d90f146d65b8c4f4e1a3bf62fab5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -639,6 +647,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#ab7c030732bb69ca245909a497521837a">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classRecordingSolver.html#a47f972058050d879cb8ac73cf791b911">RecordingSolver</a>.</p>
+
 </div>
 </div>
 <a id="a32d5dffe3a65fcf81fb9db31f7c94a8e" name="a32d5dffe3a65fcf81fb9db31f7c94a8e"></a>
@@ -731,6 +741,54 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#ad82a76bf5cc2419cae4aa0bb72216289">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a618b3779107711bc42ffc81f54e8f649" name="a618b3779107711bc42ffc81f54e8f649"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a618b3779107711bc42ffc81f54e8f649">&#9670;&#160;</a></span>chg_coefs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NOOPSolver::chg_coefs </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>id_rows</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>id_cols</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vals</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Change multiple coefficients in the matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id_rows</td><td>: vector of row indices </td></tr>
+    <tr><td class="paramname">id_cols</td><td>: vector of column indices </td></tr>
+    <tr><td class="paramname">vals</td><td>: vector of new values to set in the matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a328b1d8e5ec387f3d0c4b94700dd190e">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#a0511c5baab5c598fdf96d34cb9ce1297">NOOPSolverForSkeleton</a>, and <a class="el" href="classRecordingSolver.html#abf4cf1cd6afa219bb8e681f0bb2afdb3">RecordingSolver</a>.</p>
 
 </div>
 </div>
@@ -853,6 +911,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a7bae7d1aa559bb2e4197eb3d16e494d7">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#ab7bdacad08068b4bc1fecde1309b32ca">NOOPSolverForSkeleton</a>.</p>
+
 </div>
 </div>
 <a id="ac86018eac1d6e75a9ff5ae94eccab32a" name="ac86018eac1d6e75a9ff5ae94eccab32a"></a>
@@ -927,6 +987,48 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#ad258bd76e2f7d5c1103d05ffb79b4c59">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a2384cf016eeb1660bb515132a02ec062" name="a2384cf016eeb1660bb515132a02ec062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2384cf016eeb1660bb515132a02ec062">&#9670;&#160;</a></span>chg_rhs_values()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NOOPSolver::chg_rhs_values </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>id_cols</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vals</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Change rhs of a row. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id_row</td><td>: list of indices of the row </td></tr>
+    <tr><td class="paramname">vals</td><td>: list of new rhs values </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a76b0351222aae31a09503ef01ca59b95">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#a008bc0c6a3d5064187dc62705566a0a7">NOOPSolverForSkeleton</a>, and <a class="el" href="classRecordingSolver.html#a183e96f5e89f486040f2cd5cfcbd6987">RecordingSolver</a>.</p>
 
 </div>
 </div>
@@ -1075,6 +1177,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a29e5ecfb7a74099bcd3873cf2a0a8558">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classRecordingSolver.html#a70b219e5f7cc53d2ccde156f1fbd87c2">RecordingSolver</a>.</p>
+
 </div>
 </div>
 <a id="af6b5f77cdb55e81596bbc18d93f6e840" name="af6b5f77cdb55e81596bbc18d93f6e840"></a>
@@ -1144,6 +1248,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a9d75be3d99380299e2a0955b4849b2a0">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classRecordingSolver.html#a08bdc1c6481658b9e2d5b7eae3629b31">RecordingSolver</a>.</p>
+
 </div>
 </div>
 <a id="a927845bcc9dc40e78b3182842fd172a6" name="a927845bcc9dc40e78b3182842fd172a6"></a>
@@ -1178,6 +1284,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a481087b045ce82f6caf4c2294ba587ce">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#af1cad150304b698cb6723c545ae2aba8">NOOPSolverForSkeleton</a>.</p>
 
 </div>
 </div>
@@ -1617,7 +1725,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a9495ddf5adfb5e6313fa6ec0452570cd">SolverAbstract</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classNOOPSolverForWorkerMaster.html#a0bb4f4831aa557980fb6ad3313fa665e">NOOPSolverForWorkerMaster</a>.</p>
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#ada644592f9bd5d2b667b636deab02a3b">NOOPSolverForSkeleton</a>, <a class="el" href="classNOOPSolverForWorkerMaster.html#a0bb4f4831aa557980fb6ad3313fa665e">NOOPSolverForWorkerMaster</a>, and <a class="el" href="classRecordingSolver.html#a158c35cb3e78ec8bae6d51b58e5c3f7c">RecordingSolver</a>.</p>
 
 </div>
 </div>
@@ -1676,6 +1784,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 <p>returns number of rows of the problem </p>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a13abdc0f811e7c69ccc5344b57b23b0d">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#a6f3bf38fe9cf515fc657bee24dae6394">NOOPSolverForSkeleton</a>, and <a class="el" href="classRecordingSolver.html#a00e6e16fd961ec3976d96b9296ff12a8">RecordingSolver</a>.</p>
 
 </div>
 </div>
@@ -1743,6 +1853,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 <p>returns the objective function coefficients for the columns in a given range </p>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a46de1ce782d732eb07bb5020c2e939cd">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#a60f1d6725dbc8ffffa10e60b131b28d2">NOOPSolverForSkeleton</a>.</p>
 
 </div>
 </div>
@@ -1823,6 +1935,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#abd5ba7035c008c824a66b8b7d1f66467">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#a24cfed0d26dd301b63898002aaf90837">NOOPSolverForSkeleton</a>, and <a class="el" href="classRecordingSolver.html#a99aecbb1d0e523809fbbcd733c371a46">RecordingSolver</a>.</p>
+
 </div>
 </div>
 <a id="a143d0746577998755824bb134dfde0d9" name="a143d0746577998755824bb134dfde0d9"></a>
@@ -1869,6 +1983,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a19ddc94a352a1fcf588180658d4cc333">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classRecordingSolver.html#ae422b7365501d3fe8e03238565497825">RecordingSolver</a>.</p>
+
 </div>
 </div>
 <a id="a2479f92e85cf3ed466def2b23215b646" name="a2479f92e85cf3ed466def2b23215b646"></a>
@@ -1903,6 +2019,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a02d179a5446ad46d376eb6a23d0233fb">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#af740f51cc2e8b82771d7abd697320582">NOOPSolverForSkeleton</a>, and <a class="el" href="classRecordingSolver.html#a8fd691bb67ba7e210da8208e4eef2fc3">RecordingSolver</a>.</p>
 
 </div>
 </div>
@@ -2021,6 +2139,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 <p>Implements <a class="el" href="classSolverAbstract.html#af93e705588c4d1e3ba447d430d1598b8">SolverAbstract</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classRecordingSolver.html#ac910824fbb30ce42fadc8de95361c3a0">RecordingSolver</a>.</p>
+
 </div>
 </div>
 <a id="a3c6a2a87da108e871d58c445c12245bd" name="a3c6a2a87da108e871d58c445c12245bd"></a>
@@ -2090,6 +2210,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a91edc33d9a8150d42a565ffaeed82f96">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#aa03ad35d436f54feba281eabf2c652ee">NOOPSolverForSkeleton</a>, and <a class="el" href="classRecordingSolver.html#a3688e58321e8e97e1d8515ee5b7ca3ba">RecordingSolver</a>.</p>
 
 </div>
 </div>
@@ -2579,6 +2701,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 <p>Set the objective function coefficients for the columns in a given range. </p>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125">SolverAbstract</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classNOOPSolverForSkeleton.html#a21bb528b277eb3b7cf7015c423eeb2d8">NOOPSolverForSkeleton</a>.</p>
 
 </div>
 </div>

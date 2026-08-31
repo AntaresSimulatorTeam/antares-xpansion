@@ -140,19 +140,19 @@ $(function(){initNavTree('md_docs_2reference_2benders_2micro-iterations.html',''
   <div class="headertitle"><div class="title">Micro Iterations</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md224"></a></p>
-<h1><a class="anchor" id="autotoc_md225"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md229"></a></p>
+<h1><a class="anchor" id="autotoc_md230"></a>
 Core concept</h1>
 <p>The micro-iterations paradigm applies a constraint-generation scheme (lazy-constraint) at the subproblem level. Instead of instantiating the full set of operational constraints from the outset, each subproblem is initially built with only a subset of them, yielding a relaxed problem that is considerably smaller and faster to solve.</p>
 <p>This relaxation is solved a first time, and the resulting solution is handed to a verification mechanism whose role is to check, outside of the optimization itself, whether the constraints that were left out of the model are satisfied by the current solution. The constraints found to be violated are injected into the subproblem, which is then re-solved with this enriched formulation.</p>
 <p>This solve–check–inject sequence constitutes one <em>micro-iteration</em>, and it is repeated until the verification step detects no further violation. At that point, the solution of the relaxed problem is feasible for the complete formulation — and therefore optimal for it, since removing constraints can only relax the problem.</p>
 <p>The subproblem thus returns exactly the same optimal value and dual information as if it had been solved with all constraints from the start, but the solver only ever handles the constraints that actually matter: in practice, a large share of the operational constraints are inactive at the optimum, and the successive relaxations remain far smaller than the full problem.</p>
 <p><img src="../../assets/media/micro_iterations.png" alt="Micro Iterations" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md226"></a>
+<h1><a class="anchor" id="autotoc_md231"></a>
 Warm start</h1>
 <p>Rather than rebuilding each subproblem from its minimal relaxed formulation and re-discovering the relevant constraints from scratch, the warm-start mechanism can optionally initialize the subproblem with the constraints injected during the previous iteration's solve–check–inject sequence. These constraints were active (binding or violated) for the previous master solution, and when successive master solutions remain close to one another, a meaningful share of them are still needed, so starting from this enriched formulation can require fewer micro-iterations to reach feasibility.</p>
 <p>This behavior is available as an option, but whether it actually helps is use-case dependent and left to the user's judgment. The active-constraint set can vary significantly between successive Benders iterations, in which case the carried-over constraints add little value and mostly inflate the initial problem for no benefit. There is also a compounding risk: as constraints accumulate across iterations without being pruned, the subproblem can drift back toward containing its full constraint set, which produces the same large, heavy-to-solve formulations the micro-iteration scheme was designed to avoid — negating the paradigm's benefits. Whether to enable warm-starting, and whether some form of constraint pruning is needed alongside it, is therefore a trade-off the user should assess for their specific problem structure.</p>
-<h1><a class="anchor" id="autotoc_md227"></a>
+<h1><a class="anchor" id="autotoc_md232"></a>
 Launching a study with micro-iterations</h1>
 <p>The micro-iterations mode is enabled through the simulation settings by setting <code>MICRO_ITERATIONS: true</code>. When this mode is active, the study must be enriched with additional inputs that describe the constraints excluded from the initial subproblems and provide the machinery needed to detect their violation. Compared to a standard study, the following elements must be added:</p>
 <ul>

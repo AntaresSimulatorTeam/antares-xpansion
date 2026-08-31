@@ -152,11 +152,12 @@ Inheritance diagram for BendersBase:</div>
  <div class="center">
   <img src="classBendersBase.png" usemap="#BendersBase_map" alt=""/>
   <map id="BendersBase_map" name="BendersBase_map">
-<area href="classBendersBaseDouble.html" alt="BendersBaseDouble" shape="rect" coords="0,56,157,80"/>
-<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="167,56,324,80"/>
-<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="334,56,491,80"/>
-<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="167,112,324,136"/>
-<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="334,112,491,136"/>
+<area href="classBendersBaseDouble.html" alt="BendersBaseDouble" shape="rect" coords="0,56,183,80"/>
+<area href="classBendersMicroIterationsDouble.html" alt="BendersMicroIterationsDouble" shape="rect" coords="193,56,376,80"/>
+<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="386,56,569,80"/>
+<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="579,56,762,80"/>
+<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="386,112,569,136"/>
+<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="579,112,762,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -198,6 +199,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MasterChangeRhs</b> (
 <tr class="memitem:a71950448fb16321b8b05443d926db496" id="r_a71950448fb16321b8b05443d926db496"><td class="memItemLeft" align="right" valign="top"><a id="a71950448fb16321b8b05443d926db496" name="a71950448fb16321b8b05443d926db496"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MasterGetRhs</b> (double &amp;rhs, int id_row) const</td></tr>
 <tr class="separator:a71950448fb16321b8b05443d926db496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac283929fd59c0cc60e46b8ede6beda08" id="r_ac283929fd59c0cc60e46b8ede6beda08"><td class="memItemLeft" align="right" valign="top"><a id="ac283929fd59c0cc60e46b8ede6beda08" name="ac283929fd59c0cc60e46b8ede6beda08"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompactInMemCuts</b> (SubProblemDataMap &amp;subproblem_data_map)</td></tr>
+<tr class="separator:ac283929fd59c0cc60e46b8ede6beda08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ded17cf1feead85de4717e9c4a1e6d3" id="r_a8ded17cf1feead85de4717e9c4a1e6d3"><td class="memItemLeft" align="right" valign="top"><a id="a8ded17cf1feead85de4717e9c4a1e6d3" name="a8ded17cf1feead85de4717e9c4a1e6d3"></a>
 const VariableMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MasterVariables</b> () const</td></tr>
 <tr class="separator:a8ded17cf1feead85de4717e9c4a1e6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,17 +363,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_ub</b
 <tr class="memitem:a14b3f53e19121e716fbdcd5a10094938" id="r_a14b3f53e19121e716fbdcd5a10094938"><td class="memItemLeft" align="right" valign="top"><a id="a14b3f53e19121e716fbdcd5a10094938" name="a14b3f53e19121e716fbdcd5a10094938"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemCutFast</b> (SubProblemDataMap &amp;subproblem_data_map)</td></tr>
 <tr class="separator:a14b3f53e19121e716fbdcd5a10094938"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6af09017830a6fc0ea9566acc37ec0f6" id="r_a6af09017830a6fc0ea9566acc37ec0f6"><td class="memItemLeft" align="right" valign="top"><a id="a6af09017830a6fc0ea9566acc37ec0f6" name="a6af09017830a6fc0ea9566acc37ec0f6"></a>
-std::pair&lt; std::vector&lt; int &gt;, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetProblemBasis</b> (const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker) const</td></tr>
-<tr class="separator:a6af09017830a6fc0ea9566acc37ec0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dee7d936018271da96b0cbd92ba11ec" id="r_a2dee7d936018271da96b0cbd92ba11ec"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2dee7d936018271da96b0cbd92ba11ec">BuildProblem</a> (const std::pair&lt; std::string, VariableMap &gt; &amp;kvp, const std::string &amp;name)</td></tr>
-<tr class="separator:a2dee7d936018271da96b0cbd92ba11ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a860857ca470bee39de5a861716e9a81d" id="r_a860857ca470bee39de5a861716e9a81d"><td class="memItemLeft" align="right" valign="top"><a id="a860857ca470bee39de5a861716e9a81d" name="a860857ca470bee39de5a861716e9a81d"></a>
 std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>makeSubproblemWorker</b> (const std::pair&lt; std::string, VariableMap &gt; &amp;kvp) const</td></tr>
 <tr class="separator:a860857ca470bee39de5a861716e9a81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93f2b5f28e7ebca4d3a64aa01afa378e" id="r_a93f2b5f28e7ebca4d3a64aa01afa378e"><td class="memItemLeft" align="right" valign="top"><a id="a93f2b5f28e7ebca4d3a64aa01afa378e" name="a93f2b5f28e7ebca4d3a64aa01afa378e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBasisForSubproblem</b> (const std::string &amp;name, const std::vector&lt; int &gt; &amp;rstatus, const std::vector&lt; int &gt; &amp;cstatus)</td></tr>
-<tr class="separator:a93f2b5f28e7ebca4d3a64aa01afa378e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a157deb14817bb253ab331c8488a2311b" id="r_a157deb14817bb253ab331c8488a2311b"><td class="memItemLeft" align="right" valign="top"><a id="a157deb14817bb253ab331c8488a2311b" name="a157deb14817bb253ab331c8488a2311b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StoreSubproblemBasis</b> (const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
+<tr class="separator:a157deb14817bb253ab331c8488a2311b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af898a16cbe662360fc8cc8fd745e491b" id="r_af898a16cbe662360fc8cc8fd745e491b"><td class="memItemLeft" align="right" valign="top"><a id="af898a16cbe662360fc8cc8fd745e491b" name="af898a16cbe662360fc8cc8fd745e491b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TryRestoreSubproblemBasis</b> (const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
+<tr class="separator:af898a16cbe662360fc8cc8fd745e491b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5602268b76294f5062fe654b656a462f" id="r_a5602268b76294f5062fe654b656a462f"><td class="memItemLeft" align="right" valign="top"><a id="a5602268b76294f5062fe654b656a462f" name="a5602268b76294f5062fe654b656a462f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemCutCache</b> (SubProblemDataMap &amp;subproblem_data_map)</td></tr>
 <tr class="separator:a5602268b76294f5062fe654b656a462f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -391,6 +393,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDataPreRel
 <tr class="memitem:aa3adcc8ceb023a885a3203e2d0e4b022" id="r_aa3adcc8ceb023a885a3203e2d0e4b022"><td class="memItemLeft" align="right" valign="top"><a id="aa3adcc8ceb023a885a3203e2d0e4b022" name="aa3adcc8ceb023a885a3203e2d0e4b022"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetDataPostRelaxation</b> ()</td></tr>
 <tr class="separator:aa3adcc8ceb023a885a3203e2d0e4b022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3276992ca27909f17cc278cc572b8fb" id="r_ae3276992ca27909f17cc278cc572b8fb"><td class="memItemLeft" align="right" valign="top"><a id="ae3276992ca27909f17cc278cc572b8fb" name="ae3276992ca27909f17cc278cc572b8fb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_rank</b> (int rank)</td></tr>
+<tr class="separator:ae3276992ca27909f17cc278cc572b8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a037b186f9ac884cc1224f91c13b6ff3d" id="r_a037b186f9ac884cc1224f91c13b6ff3d"><td class="memItemLeft" align="right" valign="top"><a id="a037b186f9ac884cc1224f91c13b6ff3d" name="a037b186f9ac884cc1224f91c13b6ff3d"></a>
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemPath</b> (const std::string &amp;subproblem_name) const</td></tr>
 <tr class="memdesc:a037b186f9ac884cc1224f91c13b6ff3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get path to subproblem mps file from options. <br /></td></tr>
@@ -543,9 +548,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumOfSubProblemsSol
 <tr class="memitem:a945b1fcfaf6a0412ae7751e0ae96b33c" id="r_a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memItemLeft" align="right" valign="top"><a id="a945b1fcfaf6a0412ae7751e0ae96b33c" name="a945b1fcfaf6a0412ae7751e0ae96b33c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSimplexIterationsBounds</b> ()</td></tr>
 <tr class="separator:a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b87b54cd2cda6c055a90a2b15c35846" id="r_a2b87b54cd2cda6c055a90a2b15c35846"><td class="memItemLeft" align="right" valign="top"><a id="a2b87b54cd2cda6c055a90a2b15c35846" name="a2b87b54cd2cda6c055a90a2b15c35846"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SolveSubproblem</b> (<a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;subproblem_data, const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
-<tr class="separator:a2b87b54cd2cda6c055a90a2b15c35846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a9ba2a94b7a67cc08ae01c6e68230a" id="r_ad1a9ba2a94b7a67cc08ae01c6e68230a"><td class="memItemLeft" align="right" valign="top"><a id="ad1a9ba2a94b7a67cc08ae01c6e68230a" name="ad1a9ba2a94b7a67cc08ae01c6e68230a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SolveSubproblem</b> (<a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;subproblem_data, const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker, const std::function&lt; void()&gt; &amp;post_reset_hook)</td></tr>
+<tr class="separator:ad1a9ba2a94b7a67cc08ae01c6e68230a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6f3d7c79d4ab441ff81f015fbf055a2" id="r_ab6f3d7c79d4ab441ff81f015fbf055a2"><td class="memItemLeft" align="right" valign="top"><a id="ab6f3d7c79d4ab441ff81f015fbf055a2" name="ab6f3d7c79d4ab441ff81f015fbf055a2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubproblemVariablesIndices</b> (const <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &amp;subproblem)</td></tr>
 <tr class="separator:ab6f3d7c79d4ab441ff81f015fbf055a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -587,6 +592,9 @@ CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>coupling_map_<
 <tr class="memitem:a248af1e65254d044be4841443eccc84b" id="r_a248af1e65254d044be4841443eccc84b"><td class="memItemLeft" align="right" valign="top"><a id="a248af1e65254d044be4841443eccc84b" name="a248af1e65254d044be4841443eccc84b"></a>
 VariableMap&#160;</td><td class="memItemRight" valign="bottom"><b>_problem_to_id</b></td></tr>
 <tr class="separator:a248af1e65254d044be4841443eccc84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d2ac939eaf5744736b65d24094ccf05" id="r_a9d2ac939eaf5744736b65d24094ccf05"><td class="memItemLeft" align="right" valign="top"><a id="a9d2ac939eaf5744736b65d24094ccf05" name="a9d2ac939eaf5744736b65d24094ccf05"></a>
+std::shared_ptr&lt; <a class="el" href="classSubproblemWorkerFactory.html">SubproblemWorkerFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subproblem_worker_factory_</b></td></tr>
+<tr class="separator:a9d2ac939eaf5744736b65d24094ccf05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1a67361ef2f93f2dcc1783f05c62f50" id="r_ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memItemLeft" align="right" valign="top"><a id="ad1a67361ef2f93f2dcc1783f05c62f50" name="ad1a67361ef2f93f2dcc1783f05c62f50"></a>
 <a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>relevantIterationData_</b> = {<a class="el" href="classWorkerMasterData.html">WorkerMasterData</a>(), <a class="el" href="classWorkerMasterData.html">WorkerMasterData</a>()}</td></tr>
 <tr class="separator:ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -681,44 +689,6 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 
 </div>
 </div>
-<a id="a2dee7d936018271da96b0cbd92ba11ec" name="a2dee7d936018271da96b0cbd92ba11ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dee7d936018271da96b0cbd92ba11ec">&#9670;&#160;</a></span>BuildProblem()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; BendersBase::BuildProblem </td>
-          <td>(</td>
-          <td class="paramtype">const std::pair&lt; std::string, VariableMap &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>kvp</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Create a worker on a problem and reuse the basis to speed up solving</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">kvp</td><td><a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> data </td></tr>
-    <tr><td class="paramname">name</td><td>Name of the problem </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> on the problem </dd></dl>
-
-</div>
-</div>
 <a id="af2fe1ebf81325e8190482c29d32b6002" name="af2fe1ebf81325e8190482c29d32b6002"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2fe1ebf81325e8190482c29d32b6002">&#9670;&#160;</a></span>free()</h2>
 
@@ -772,7 +742,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Solve and get optimal variables of the Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a>. </p>
 <p>Method to solve and get optimal variables of the Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> and update upper and lower bound </p>
 
-<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#adc0585a9c777648790b12941f417f4a0">BendersBaseDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea">BendersSequentialDouble</a>.</p>
+<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#adc0585a9c777648790b12941f417f4a0">BendersBaseDouble</a>, <a class="el" href="classBendersMicroIterationsDouble.html#ab8079deb437b1cb40b9a5ebbb5d135ed">BendersMicroIterationsDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea">BendersSequentialDouble</a>.</p>
 
 </div>
 </div>
@@ -835,7 +805,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 
 <p>Initialize set of data used in the loop. </p>
 
-<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#abec4d97a2176e8747fdf4c6cbb94a8cd">BendersBaseDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a33c0199bf9a762b001db1f631ca9444f">BendersSequentialDouble</a>.</p>
+<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#abec4d97a2176e8747fdf4c6cbb94a8cd">BendersBaseDouble</a>, <a class="el" href="classBendersMicroIterationsDouble.html#a8c337b8319d7111bf1b09e20094f26be">BendersMicroIterationsDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a33c0199bf9a762b001db1f631ca9444f">BendersSequentialDouble</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1097,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Update trace of the Benders for the current iteration. </p>
 <p>Fonction to store the current Benders data in the trace </p>
 
-<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f">BendersBaseDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3">BendersSequentialDouble</a>.</p>
+<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f">BendersBaseDouble</a>, <a class="el" href="classBendersMicroIterationsDouble.html#a2340a46869c103b3e1a0e604caac5f75">BendersMicroIterationsDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3">BendersSequentialDouble</a>.</p>
 
 </div>
 </div>

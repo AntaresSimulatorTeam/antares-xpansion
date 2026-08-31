@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2developer-guide_2install-from-source_2tests.h
   <div class="headertitle"><div class="title">Tests</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md80"></a></p>
-<h1><a class="anchor" id="autotoc_md81"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md85"></a></p>
+<h1><a class="anchor" id="autotoc_md86"></a>
 CTests</h1>
 <p>Tests compilation can be enabled at configure time using the option <code>-DBUILD_TESTING=ON</code> (<code>OFF</code> by default). After build, tests can be run with <code>ctest</code>:</p>
 <div class="fragment"><div class="line">cd _build</div>
@@ -198,12 +198,12 @@ CTests</h1>
 <div class="fragment"><div class="line">ctest -C Release --output-on-failure -L unit</div>
 </div><!-- fragment --><p>To run all test, don't indicate any label or name:</p>
 <div class="fragment"><div class="line">ctest -C Release --output-on-failure</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md82"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md87"></a>
 Cucumber Tests (BDD)</h1>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md88"></a>
 Overview</h2>
 <p>Cucumber tests use the <a href="https://behave.readthedocs.io/">behave</a> framework (Python BDD testing) to run end-to-end feature tests. These tests validate high-level functionality through human-readable scenarios.</p>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md89"></a>
 Location</h2>
 <div class="fragment"><div class="line">tests/end_to_end/cucumber/</div>
 <div class="line">├── features/</div>
@@ -214,7 +214,7 @@ Location</h2>
 <div class="line">│       ├── when.py</div>
 <div class="line">│       ├── then.py</div>
 <div class="line">│       └── steps.py</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md90"></a>
 Running Tests</h2>
 <div class="fragment"><div class="line"># Install dependencies</div>
 <div class="line">pip install -r requirements-tests.txt</div>
@@ -231,7 +231,7 @@ Running Tests</h2>
 <div class="line"> </div>
 <div class="line"># Run specific scenario by name</div>
 <div class="line">behave cucumber/features/ -n &quot;Benders_handle_mixed_order_of_var&quot;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md86"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md91"></a>
 Writing Tests</h2>
 <p><b>Feature file</b> (<code>*.feature</code>):</p>
 <div class="fragment"><div class="line">Feature: Benders tests</div>
@@ -243,7 +243,7 @@ Writing Tests</h2>
 <div class="line">    Then the simulation succeeds</div>
 <div class="line">    And the simulation takes less than 5 seconds</div>
 </div><!-- fragment --><p><b>Step implementations</b> are in the <code>steps/</code> directory. Each step definition maps Gherkin steps to Python code.</p>
-<h2><a class="anchor" id="autotoc_md87"></a>
+<h2><a class="anchor" id="autotoc_md92"></a>
 Common Tags</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -261,7 +261,7 @@ Common Tags</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>@xpress</code>   </td><td class="markdownTableBodyNone">Xpress solver-specific tests   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md88"></a>
+<h2><a class="anchor" id="autotoc_md93"></a>
 GitHub Action</h2>
 <p>The workflow uses the action at <code>.github/workflows/cucumber-tests/action.yml</code> which:</p><ul>
 <li>Accepts <code>feature</code> (specific feature file/folder, default: <code>features</code>)</li>

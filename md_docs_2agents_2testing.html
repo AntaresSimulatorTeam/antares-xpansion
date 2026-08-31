@@ -273,6 +273,36 @@ Markers</h2>
 <p>Run specific markers:</p>
 <div class="fragment"><div class="line">pytest -m short_sequential tests/python/</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md58"></a>
+Cucumber / BDD Tests (behave)</h1>
+<p>End-to-end functional tests for the Benders solver live under <code>tests/end_to_end/cucumber/</code>, using <a href="https://behave.readthedocs.io/">behave</a> (Gherkin).</p>
+<h2><a class="anchor" id="autotoc_md59"></a>
+Location</h2>
+<div class="fragment"><div class="line">tests/end_to_end/cucumber/features/</div>
+<div class="line">├── *.feature            # Scenario definitions</div>
+<div class="line">└── steps/</div>
+<div class="line">    ├── given.py          # Given steps (study path, batch size, cache problems level, ...)</div>
+<div class="line">    ├── when.py           # When steps (run benders / outer_loop / antares-xpansion)</div>
+<div class="line">    ├── then.py           # Then steps (assertions: cost, solution values, ...)</div>
+<div class="line">    └── environment.py    # before/after hooks</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md60"></a>
+Running</h2>
+<p>Always run <code>behave</code> from <code>tests/end_to_end/</code> (not from inside <code>cucumber/</code>) — the <code>Given the study path is "..."</code> step resolves paths relative to that directory:</p>
+<div class="fragment"><div class="line">cd tests/end_to_end</div>
+<div class="line">behave cucumber/features                                     # full suite</div>
+<div class="line">behave --tags &#39;@short&#39; cucumber/features/&lt;file&gt;.feature       # one file, tagged subset</div>
+</div><!-- fragment --><p>This matches how CI invokes it (<code>.github/workflows/cucumber-tests/action.yml</code>), which by default skips <code>@flaky</code> and <code>@noci</code>.</p>
+<p>Requires a built <code>benders</code>/<code>outer_loop</code> executable and, for <code>MICRO_ITERATIONS</code> studies, the <code>dummy_micro_iterations_plugin</code> target (see <code>tests/cpp/plugins/CMakeLists.txt</code>, which copies it into the relevant <code>data_test/*/plugin_inputs/</code> directories via a <code>POST_BUILD</code> step).</p>
+<h2><a class="anchor" id="autotoc_md61"></a>
+Writing scenarios</h2>
+<p>Prefer a single <code>Scenario Outline</code> with an <code>Examples:</code> table over many near-duplicate <code>Scenario</code>s when several scenarios share the same <code>Then</code> assertions and only differ in a few <code>Given</code>/<code>When</code> parameters (study path, cache level, batch size, proc count, ...) — see <code>benders_memory_and_micro_iterations.feature</code> and <code>benders_aggreg_cuts.feature</code>. Keep every <code>Examples</code> row's step sequence identical: <code>Scenario Outline</code> can't conditionally add or remove a step per row, so use a parametrized step with a harmless default value (e.g. <code>And the batch size is 0</code>) instead of omitting a step for rows where it doesn't apply.</p>
+<h2><a class="anchor" id="autotoc_md62"></a>
+Key <code>Given</code> steps (<code>steps/given.py</code>)</h2>
+<ul>
+<li><code>the study path is "&lt;path&gt;"</code> — copies the study into a temp dir; all later steps operate on that copy</li>
+<li><code>the batch size is &lt;n&gt;</code> — sets <code>BATCH_SIZE</code> in <code>options.json</code></li>
+<li><code>the cache problems level is &lt;n&gt;</code> — sets <code>CACHE_PROBLEMS</code> in <code>options.json</code> (0 = resident subproblems, 1 = reload-from-disk with basis caching, 2 = compact skeleton representation — the last requires the study's <code>sub/</code> layout to actually be in the compact CSV format, not per-subproblem MPS)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md63"></a>
 CI Requirements</h1>
 <ul>
 <li>All tests must pass before merging</li>

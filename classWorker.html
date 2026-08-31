@@ -172,6 +172,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad144d280cf5f7bc86c80728f41f356fc" id="r_ad144d280cf5f7bc86c80728f41f356fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad144d280cf5f7bc86c80728f41f356fc">get_value</a> (double &amp;lb) const</td></tr>
 <tr class="memdesc:ad144d280cf5f7bc86c80728f41f356fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the optimal value of a problem.  <br /></td></tr>
 <tr class="separator:ad144d280cf5f7bc86c80728f41f356fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d542e20ab5f87c4022623efecf43a65" id="r_a0d542e20ab5f87c4022623efecf43a65"><td class="memItemLeft" align="right" valign="top"><a id="a0d542e20ab5f87c4022623efecf43a65" name="a0d542e20ab5f87c4022623efecf43a65"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init_for_compact_in_mem</b> (std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; solver, VariableMap &amp;variable_map)</td></tr>
+<tr class="separator:a0d542e20ab5f87c4022623efecf43a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71dac2104fbc6695bb7edefc431587af" id="r_a71dac2104fbc6695bb7edefc431587af"><td class="memItemLeft" align="right" valign="top"><a id="a71dac2104fbc6695bb7edefc431587af" name="a71dac2104fbc6695bb7edefc431587af"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_id_to_name</b> (VariableMap &amp;variable_map)</td></tr>
+<tr class="separator:a71dac2104fbc6695bb7edefc431587af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ba237e3fdef7d8cc8249fcc5e2c6283" id="r_a5ba237e3fdef7d8cc8249fcc5e2c6283"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ba237e3fdef7d8cc8249fcc5e2c6283">get_splex_num_of_ite_last</a> (int &amp;result) const</td></tr>
 <tr class="memdesc:a5ba237e3fdef7d8cc8249fcc5e2c6283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of iteration needed to solve a problem.  <br /></td></tr>
 <tr class="separator:a5ba237e3fdef7d8cc8249fcc5e2c6283"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,6 +206,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRhs</b> (double *v
 <tr class="memitem:a978018d72e3f96f52c67163918935cdc" id="r_a978018d72e3f96f52c67163918935cdc"><td class="memItemLeft" align="right" valign="top"><a id="a978018d72e3f96f52c67163918935cdc" name="a978018d72e3f96f52c67163918935cdc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (const std::vector&lt; char &gt; &amp;qrtype_p, const std::vector&lt; double &gt; &amp;rhs_p, const std::vector&lt; double &gt; &amp;range_p, const std::vector&lt; int &gt; &amp;mstart_p, const std::vector&lt; int &gt; &amp;mclind_p, const std::vector&lt; double &gt; &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
 <tr class="separator:a978018d72e3f96f52c67163918935cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb6f1cf8a84546f5531a4363e3f637ad" id="r_afb6f1cf8a84546f5531a4363e3f637ad"><td class="memItemLeft" align="right" valign="top"><a id="afb6f1cf8a84546f5531a4363e3f637ad" name="afb6f1cf8a84546f5531a4363e3f637ad"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRow</b> (const <a class="el" href="structSolverRepresentedRows.html">SolverRepresentedRows</a> &amp;row) const</td></tr>
+<tr class="separator:afb6f1cf8a84546f5531a4363e3f637ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd83ae773438dcd743a263ba27ee8e2f" id="r_acd83ae773438dcd743a263ba27ee8e2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd83ae773438dcd743a263ba27ee8e2f">Getnrows</a> () const</td></tr>
 <tr class="memdesc:acd83ae773438dcd743a263ba27ee8e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows (constraints)  <br /></td></tr>
 <tr class="separator:acd83ae773438dcd743a263ba27ee8e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>

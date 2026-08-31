@@ -294,6 +294,12 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>Week</b> () c
 <tr class="memitem:ad0ee54139145f03b9f188d40cb7a0856" id="r_ad0ee54139145f03b9f188d40cb7a0856"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0ee54139145f03b9f188d40cb7a0856">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
 <tr class="memdesc:ad0ee54139145f03b9f188d40cb7a0856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
 <tr class="separator:ad0ee54139145f03b9f188d40cb7a0856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d749c8a722efc2775afcbce212aef04" id="r_a1d749c8a722efc2775afcbce212aef04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d749c8a722efc2775afcbce212aef04">chg_rhs_values</a> (std::vector&lt; int &gt; &amp;id_cols, std::vector&lt; double &gt; &amp;vals)</td></tr>
+<tr class="memdesc:a1d749c8a722efc2775afcbce212aef04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
+<tr class="separator:a1d749c8a722efc2775afcbce212aef04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ff695a5a0300809951151464637994" id="r_ac6ff695a5a0300809951151464637994"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6ff695a5a0300809951151464637994">chg_coefs</a> (const std::vector&lt; int &gt; &amp;id_rows, const std::vector&lt; int &gt; &amp;id_cols, const std::vector&lt; double &gt; &amp;vals) override</td></tr>
+<tr class="memdesc:ac6ff695a5a0300809951151464637994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change multiple coefficients in the matrix.  <br /></td></tr>
+<tr class="separator:ac6ff695a5a0300809951151464637994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13f183f9af6db636f61e0e919ad8f834" id="r_a13f183f9af6db636f61e0e919ad8f834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13f183f9af6db636f61e0e919ad8f834">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
 <tr class="memdesc:a13f183f9af6db636f61e0e919ad8f834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
 <tr class="separator:a13f183f9af6db636f61e0e919ad8f834"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -757,6 +763,52 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ac6ff695a5a0300809951151464637994" name="ac6ff695a5a0300809951151464637994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6ff695a5a0300809951151464637994">&#9670;&#160;</a></span>chg_coefs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Problem::chg_coefs </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>id_rows</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>id_cols</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vals</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Change multiple coefficients in the matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id_rows</td><td>: vector of row indices </td></tr>
+    <tr><td class="paramname">id_cols</td><td>: vector of column indices </td></tr>
+    <tr><td class="paramname">vals</td><td>: vector of new values to set in the matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a328b1d8e5ec387f3d0c4b94700dd190e">SolverAbstract</a>.</p>
+
+</div>
+</div>
 <a id="af4b08904684db423cee3a8f8c58ff800" name="af4b08904684db423cee3a8f8c58ff800"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4b08904684db423cee3a8f8c58ff800">&#9670;&#160;</a></span>chg_col_name()</h2>
 
@@ -950,6 +1002,46 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#ad258bd76e2f7d5c1103d05ffb79b4c59">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a1d749c8a722efc2775afcbce212aef04" name="a1d749c8a722efc2775afcbce212aef04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d749c8a722efc2775afcbce212aef04">&#9670;&#160;</a></span>chg_rhs_values()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Problem::chg_rhs_values </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>id_cols</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vals</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Change rhs of a row. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id_row</td><td>: list of indices of the row </td></tr>
+    <tr><td class="paramname">vals</td><td>: list of new rhs values </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a76b0351222aae31a09503ef01ca59b95">SolverAbstract</a>.</p>
 
 </div>
 </div>

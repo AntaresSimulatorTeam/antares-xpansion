@@ -158,8 +158,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a82de673cbe44b642fa3285ce92d8958c" id="r_a82de673cbe44b642fa3285ce92d8958c"><td class="memItemLeft" align="right" valign="top"><a id="a82de673cbe44b642fa3285ce92d8958c" name="a82de673cbe44b642fa3285ce92d8958c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Benders_MICRO_ITERS</b> (const <a class="el" href="classSimulationOptions.html">SimulationOptions</a> &amp;options, const CouplingMap &amp;coupling_map, mpi::communicator *world)</td></tr>
 <tr class="separator:a82de673cbe44b642fa3285ce92d8958c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a16576fb4f2eb98eb674dd12743fca3" id="r_a8a16576fb4f2eb98eb674dd12743fca3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a16576fb4f2eb98eb674dd12743fca3">OnBendersStart</a> (const SubproblemsMapPtr &amp;subproblem_map, const Logger &amp;logger, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager) override</td></tr>
-<tr class="separator:a8a16576fb4f2eb98eb674dd12743fca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4892271b8f3dfb5d6d9f8af3c463c3b" id="r_af4892271b8f3dfb5d6d9f8af3c463c3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4892271b8f3dfb5d6d9f8af3c463c3b">OnBendersStart</a> (const SubproblemsMapPtr &amp;subproblem_map, const Logger &amp;logger, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; sub_problem_solver) override</td></tr>
+<tr class="separator:af4892271b8f3dfb5d6d9f8af3c463c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45940bb7d7efbd2214cc5d8fec97218d" id="r_a45940bb7d7efbd2214cc5d8fec97218d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45940bb7d7efbd2214cc5d8fec97218d">OnBendersIterationStart</a> () override</td></tr>
 <tr class="separator:a45940bb7d7efbd2214cc5d8fec97218d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2c736afac736fc36315b33345f0f7d9" id="r_ac2c736afac736fc36315b33345f0f7d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2c736afac736fc36315b33345f0f7d9">OnBendersIterationEnd</a> () override</td></tr>
@@ -174,10 +174,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad18a537a543e4f2748f0d70bab70e91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa95b8dac026e4592f0e0cf788bb0966c" id="r_aa95b8dac026e4592f0e0cf788bb0966c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa95b8dac026e4592f0e0cf788bb0966c">OnBendersMicroIterationEnd</a> (std::string sub_name, bool &amp;added_rows, std::string solving_time, int num_master_iter, int num_micro_iter) override</td></tr>
 <tr class="separator:aa95b8dac026e4592f0e0cf788bb0966c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5827836825fb2d50b8b7a20449c0c518" id="r_a5827836825fb2d50b8b7a20449c0c518"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5827836825fb2d50b8b7a20449c0c518">OnBendersSubResolutionStart</a> () override</td></tr>
-<tr class="separator:a5827836825fb2d50b8b7a20449c0c518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a250e6282897a6165a67f7077208a019e" id="r_a250e6282897a6165a67f7077208a019e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a250e6282897a6165a67f7077208a019e">OnBendersSubResolutionEnd</a> (std::string sub_name, int num_micro_iter) override</td></tr>
-<tr class="separator:a250e6282897a6165a67f7077208a019e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac856de2115fab0a98e3cef827fa60b81" id="r_ac856de2115fab0a98e3cef827fa60b81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac856de2115fab0a98e3cef827fa60b81">OnBendersSubResolutionStart</a> (const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;sub_worker, std::string sub_name) override</td></tr>
+<tr class="separator:ac856de2115fab0a98e3cef827fa60b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512634c3fab25bf68769effc7395003f" id="r_a512634c3fab25bf68769effc7395003f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a512634c3fab25bf68769effc7395003f">OnBendersSubResolutionEnd</a> () override</td></tr>
+<tr class="separator:a512634c3fab25bf68769effc7395003f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55fc6281347a0b2a98fbc6f5a6e51f5b" id="r_a55fc6281347a0b2a98fbc6f5a6e51f5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55fc6281347a0b2a98fbc6f5a6e51f5b">ShouldRestoreSubproblemBasis</a> () const override</td></tr>
+<tr class="separator:a55fc6281347a0b2a98fbc6f5a6e51f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69a1c2e860f152a4e4a65138db99c75c" id="r_a69a1c2e860f152a4e4a65138db99c75c"><td class="memItemLeft" align="right" valign="top"><a id="a69a1c2e860f152a4e4a65138db99c75c" name="a69a1c2e860f152a4e4a65138db99c75c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> (std::vector&lt; std::string &gt; &amp;)</td></tr>
 <tr class="separator:a69a1c2e860f152a4e4a65138db99c75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -396,8 +398,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> 
 
 </div>
 </div>
-<a id="a8a16576fb4f2eb98eb674dd12743fca3" name="a8a16576fb4f2eb98eb674dd12743fca3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a16576fb4f2eb98eb674dd12743fca3">&#9670;&#160;</a></span>OnBendersStart()</h2>
+<a id="af4892271b8f3dfb5d6d9f8af3c463c3b" name="af4892271b8f3dfb5d6d9f8af3c463c3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4892271b8f3dfb5d6d9f8af3c463c3b">&#9670;&#160;</a></span>OnBendersStart()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -423,7 +425,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>solver_log_manager</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>solver_log_manager</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>sub_problem_solver</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -437,8 +444,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> 
 
 </div>
 </div>
-<a id="a250e6282897a6165a67f7077208a019e" name="a250e6282897a6165a67f7077208a019e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a250e6282897a6165a67f7077208a019e">&#9670;&#160;</a></span>OnBendersSubResolutionEnd()</h2>
+<a id="a512634c3fab25bf68769effc7395003f" name="a512634c3fab25bf68769effc7395003f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a512634c3fab25bf68769effc7395003f">&#9670;&#160;</a></span>OnBendersSubResolutionEnd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,12 +456,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> 
         <tr>
           <td class="memname">void Benders_MICRO_ITERS::OnBendersSubResolutionEnd </td>
           <td>(</td>
-          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>sub_name</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>num_micro_iter</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -468,8 +471,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> 
 
 </div>
 </div>
-<a id="a5827836825fb2d50b8b7a20449c0c518" name="a5827836825fb2d50b8b7a20449c0c518"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5827836825fb2d50b8b7a20449c0c518">&#9670;&#160;</a></span>OnBendersSubResolutionStart()</h2>
+<a id="ac856de2115fab0a98e3cef827fa60b81" name="ac856de2115fab0a98e3cef827fa60b81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac856de2115fab0a98e3cef827fa60b81">&#9670;&#160;</a></span>OnBendersSubResolutionStart()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -480,8 +483,39 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubProblemIDs</b> 
         <tr>
           <td class="memname">void Benders_MICRO_ITERS::OnBendersSubResolutionStart </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>sub_worker</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>sub_name</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classBendersPlugin.html">BendersPlugin</a>.</p>
+
+</div>
+</div>
+<a id="a55fc6281347a0b2a98fbc6f5a6e51f5b" name="a55fc6281347a0b2a98fbc6f5a6e51f5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55fc6281347a0b2a98fbc6f5a6e51f5b">&#9670;&#160;</a></span>ShouldRestoreSubproblemBasis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Benders_MICRO_ITERS::ShouldRestoreSubproblemBasis </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>

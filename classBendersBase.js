@@ -2,7 +2,6 @@ var classBendersBase =
 [
     [ "BoundSimplexIterations", "classBendersBase.html#a0fa4c04cc9815d16d43cd4a73d89f895", null ],
     [ "BuildCutFull", "classBendersBase.html#affc499db6586868162f6bd7efa8898ea", null ],
-    [ "BuildProblem", "classBendersBase.html#a2dee7d936018271da96b0cbd92ba11ec", null ],
     [ "get_master_path", "classBendersBase.html#a6f53da7e8fd87c0e244368b0dedb4e1e", null ],
     [ "get_master_value", "classBendersBase.html#a070ef7fbeaf5df77a2d8890d1a95c2e7", null ],
     [ "GetSubproblemCut", "classBendersBase.html#a14511a50f100e5076dfe0f7e8ea08070", null ],

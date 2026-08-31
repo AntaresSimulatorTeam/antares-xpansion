@@ -140,22 +140,22 @@ $(function(){initNavTree('md_docs_2reference_2benders_2in-memory-compact-subprob
   <div class="headertitle"><div class="title">Using disk-efficient subproblem storage</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md216"></a></p>
-<h1><a class="anchor" id="autotoc_md217"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md221"></a></p>
+<h1><a class="anchor" id="autotoc_md222"></a>
 Motivation</h1>
-<h3><a class="anchor" id="autotoc_md218"></a>
+<h3><a class="anchor" id="autotoc_md223"></a>
 CACHE_PROBLEMS = 0</h3>
 <p>In the Benders decomposition framework, the resolution starts by loading the MPS/SVF files of all the subproblems, so that each of them is held in memory as a fully instantiated optimization problem for the whole duration of the run.</p>
-<h3><a class="anchor" id="autotoc_md219"></a>
+<h3><a class="anchor" id="autotoc_md224"></a>
 CACHE_PROBLEMS = 1</h3>
 <p>A first RAM usage optimization has been implemented by loading the optimization problem from disk just before solving it.</p>
-<h3><a class="anchor" id="autotoc_md220"></a>
+<h3><a class="anchor" id="autotoc_md225"></a>
 CACHE_PROBLEMS = 2</h3>
 <p>However, the disk footprint of the input data remains drastically high and can become problematic as the number and size of subproblems increase, potentially becoming the bottleneck before computation even starts.</p>
 <p>Yet this cost is largely redundant: the subproblems share a huge part of their columns and rows — the same variables, the same constraint structure — differing only on certain coeffecient values.</p>
 <p>The idea is to exploit this redundancy by no longer providing one MPS file per subproblem, but a single MPS file acting as a <em>skeleton</em>: the common structure shared by all subproblems. We will have an instance per proc. This skeleton is complemented by a set of much lighter files, one per subproblem, containing only the subproblem-specific data needed to instantiate the actual problem at resolution time. Memory then holds one copy of the shared structure instead of one full problem per subproblem, and the per-subproblem memory footprint is reduced to its lightweight specialization data.</p>
 <p><img src="../../assets/media/mem_optim_data_flow.png" alt="Memory compact subproblem" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md221"></a>
+<h1><a class="anchor" id="autotoc_md226"></a>
 Study format</h1>
 <p>A memory-optimized study no longer provides one MPS/SVF file per subproblem. Instead, the subproblems are described by a single skeleton problem together with a set of CSV files containing the per-subproblem data. In the following, <em>rows</em> and <em>columns</em> are understood in the MPS sense: rows are the constraints and columns are the variables of the optimization problem. The study is given under the following format:</p>
 <ul>
@@ -205,7 +205,7 @@ Study format</h1>
 </ul>
 <div class="fragment"><div class="line">branch_line_1,branch_line_2,branch_line_3</div>
 </div><!-- fragment --><p>At resolution time, a given subproblem is therefore obtained by loading the skeleton and applying its line of <code>coef.csv</code>, <code>obj_coef.csv</code> and <code>rhs.csv</code> at the positions designated by the name files.</p>
-<h1><a class="anchor" id="autotoc_md222"></a>
+<h1><a class="anchor" id="autotoc_md227"></a>
 Memory optimization Resolution process</h1>
 <p><img src="../../assets/media/disk_optim_workflow.png" alt="disk optimization workflow" class="inline"/> </p>
 </div></div><!-- contents -->

@@ -139,6 +139,7 @@ $(function(){initNavTree('classSubproblemConstraintsManager.html',''); initResiz
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classSubproblemConstraintsManager-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SubproblemConstraintsManager Class Reference</div></div>
 </div><!--header-->
@@ -146,24 +147,30 @@ $(function(){initNavTree('classSubproblemConstraintsManager.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a736415344aa7c9d4d0a1a420d73871a0" id="r_a736415344aa7c9d4d0a1a420d73871a0"><td class="memItemLeft" align="right" valign="top"><a id="a736415344aa7c9d4d0a1a420d73871a0" name="a736415344aa7c9d4d0a1a420d73871a0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SubproblemConstraintsManager</b> (<a class="el" href="classConstraintsFileReader.html">ConstraintsFileReader</a> file_reader, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;subproblem_worker)</td></tr>
-<tr class="separator:a736415344aa7c9d4d0a1a420d73871a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ffbadcc9e64630ac39a607450ba9a81" id="r_a0ffbadcc9e64630ac39a607450ba9a81"><td class="memItemLeft" align="right" valign="top"><a id="a0ffbadcc9e64630ac39a607450ba9a81" name="a0ffbadcc9e64630ac39a607450ba9a81"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_rows</b> (std::string &amp;row_name)</td></tr>
-<tr class="separator:a0ffbadcc9e64630ac39a607450ba9a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78073d1e04fe528d1341b13c64a59b01" id="r_a78073d1e04fe528d1341b13c64a59b01"><td class="memItemLeft" align="right" valign="top"><a id="a78073d1e04fe528d1341b13c64a59b01" name="a78073d1e04fe528d1341b13c64a59b01"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_sub_solution</b> ()</td></tr>
-<tr class="separator:a78073d1e04fe528d1341b13c64a59b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90d929b6742553a82939c56edc518dc8" id="r_a90d929b6742553a82939c56edc518dc8"><td class="memItemLeft" align="right" valign="top"><a id="a90d929b6742553a82939c56edc518dc8" name="a90d929b6742553a82939c56edc518dc8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>get_variable_index_in_solution</b> (std::string variable_id)</td></tr>
-<tr class="separator:a90d929b6742553a82939c56edc518dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a996467253cfe454970d7c8a60a04e185" id="r_a996467253cfe454970d7c8a60a04e185"><td class="memItemLeft" align="right" valign="top"><a id="a996467253cfe454970d7c8a60a04e185" name="a996467253cfe454970d7c8a60a04e185"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size_of_subproblem</b> ()</td></tr>
-<tr class="separator:a996467253cfe454970d7c8a60a04e185"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10d664c932d4b91c982824c95d38cf1a" id="r_a10d664c932d4b91c982824c95d38cf1a"><td class="memItemLeft" align="right" valign="top"><a id="a10d664c932d4b91c982824c95d38cf1a" name="a10d664c932d4b91c982824c95d38cf1a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>delete_added_rows</b> ()</td></tr>
-<tr class="separator:a10d664c932d4b91c982824c95d38cf1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dfdbd6e258af8114dbee5212b3ea7d2" id="r_a0dfdbd6e258af8114dbee5212b3ea7d2"><td class="memItemLeft" align="right" valign="top"><a id="a0dfdbd6e258af8114dbee5212b3ea7d2" name="a0dfdbd6e258af8114dbee5212b3ea7d2"></a>
+<a class="el" href="structSolverRepresentedRows.html">SolverRepresentedRows</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (std::string &amp;row_name)</td></tr>
+<tr class="separator:a0dfdbd6e258af8114dbee5212b3ea7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee377b4112932a21b6f2fe0f65cc4f7" id="r_abee377b4112932a21b6f2fe0f65cc4f7"><td class="memItemLeft" align="right" valign="top"><a id="abee377b4112932a21b6f2fe0f65cc4f7" name="abee377b4112932a21b6f2fe0f65cc4f7"></a>
+std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubSolution</b> ()</td></tr>
+<tr class="separator:abee377b4112932a21b6f2fe0f65cc4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d928946fba6c2fba2e835c0ff27d0f1" id="r_a8d928946fba6c2fba2e835c0ff27d0f1"><td class="memItemLeft" align="right" valign="top"><a id="a8d928946fba6c2fba2e835c0ff27d0f1" name="a8d928946fba6c2fba2e835c0ff27d0f1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetVariableIndexInSub</b> (std::string variable_id)</td></tr>
+<tr class="separator:a8d928946fba6c2fba2e835c0ff27d0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63597102fa0bb8e97282325cb16903d4" id="r_a63597102fa0bb8e97282325cb16903d4"><td class="memItemLeft" align="right" valign="top"><a id="a63597102fa0bb8e97282325cb16903d4" name="a63597102fa0bb8e97282325cb16903d4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DeleteAddedRows</b> (int base_size)</td></tr>
+<tr class="separator:a63597102fa0bb8e97282325cb16903d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a980f6915c322cc789ed7fd8f94261b60" id="r_a980f6915c322cc789ed7fd8f94261b60"><td class="memItemLeft" align="right" valign="top"><a id="a980f6915c322cc789ed7fd8f94261b60" name="a980f6915c322cc789ed7fd8f94261b60"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SubproblemConstraintsManager</b> (std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; solver, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;subproblem_worker)</td></tr>
+<tr class="separator:a980f6915c322cc789ed7fd8f94261b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a85e2ad5fb9af20e1b36ff0dca032c8b3" id="r_a85e2ad5fb9af20e1b36ff0dca032c8b3"><td class="memItemLeft" align="right" valign="top"><a id="a85e2ad5fb9af20e1b36ff0dca032c8b3" name="a85e2ad5fb9af20e1b36ff0dca032c8b3"></a>
+static SubproblemConstraintsManagerPtr&#160;</td><td class="memItemRight" valign="bottom"><b>FromConstraintsFile</b> (const std::filesystem::path &amp;constraint_file_path, const std::string &amp;solver_name, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, Logger &amp;logger, int log_level, ProblemsFormat format, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;subproblem_worker)</td></tr>
+<tr class="separator:a85e2ad5fb9af20e1b36ff0dca032c8b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5e14ed13a8637402a41218b2e196da5" id="r_af5e14ed13a8637402a41218b2e196da5"><td class="memItemLeft" align="right" valign="top"><a id="af5e14ed13a8637402a41218b2e196da5" name="af5e14ed13a8637402a41218b2e196da5"></a>
+static SubproblemConstraintsManagerPtr&#160;</td><td class="memItemRight" valign="bottom"><b>FromSharedSolver</b> (std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; solver, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;subproblem_worker)</td></tr>
+<tr class="separator:af5e14ed13a8637402a41218b2e196da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cpp/benders/benders_core/include/antares-xpansion/benders/benders_core/<a class="el" href="SubproblemConstraintsManager_8h_source.html">SubproblemConstraintsManager.h</a></li>

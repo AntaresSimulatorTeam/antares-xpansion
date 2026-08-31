@@ -33,6 +33,7 @@ var hierarchy =
     [ "BendersApp", "classBendersApp.html", null ],
     [ "BendersBase", "classBendersBase.html", [
       [ "BendersBaseDouble", "classBendersBaseDouble.html", null ],
+      [ "BendersMicroIterationsDouble", "classBendersMicroIterationsDouble.html", null ],
       [ "BendersMpi", "classBendersMpi.html", [
         [ "BendersByBatch", "classBendersByBatch.html", null ]
       ] ],
@@ -44,6 +45,7 @@ var hierarchy =
     [ "BendersFactory::BendersEnvironment", "structBendersFactory_1_1BendersEnvironment.html", null ],
     [ "BendersFactory", "classBendersFactory.html", null ],
     [ "BendersPlugin", "classBendersPlugin.html", [
+      [ "BendersPluginStub", "classBendersPluginStub.html", null ],
       [ "Benders_MICRO_ITERS", "classBenders__MICRO__ITERS.html", null ],
       [ "NoOperationPlugin", "classNoOperationPlugin.html", null ]
     ] ],
@@ -70,7 +72,6 @@ var hierarchy =
     [ "antares_xpansion.xpansionConfig.ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
     [ "ConfigurationManager", "classConfigurationManager.html", null ],
     [ "ProblemGenerationOptions::ConflictingParameters", "classProblemGenerationOptions_1_1ConflictingParameters.html", null ],
-    [ "ConstraintsFileReader", "classConstraintsFileReader.html", null ],
     [ "YAML::convert< CriterionSingleInputData >", "classYAML_1_1convert_3_01CriterionSingleInputData_01_4.html", null ],
     [ "YAML::convert< OuterLoopCriterionInputData >", "classYAML_1_1convert_3_01OuterLoopCriterionInputData_01_4.html", null ],
     [ "Benders::Criterion::CouldNotReadAreaField", "classBenders_1_1Criterion_1_1CouldNotReadAreaField.html", null ],
@@ -414,7 +415,8 @@ var hierarchy =
       [ "GenericSolverException", "classGenericSolverException.html", null ],
       [ "IniFileNotFound", "classIniFileNotFound.html", null ],
       [ "InvalidMasterStructureFileException", "classInvalidMasterStructureFileException.html", null ],
-      [ "NotImplementedFeatureSolverException", "classNotImplementedFeatureSolverException.html", null ]
+      [ "NotImplementedFeatureSolverException", "classNotImplementedFeatureSolverException.html", null ],
+      [ "SkeletonCoefficientReader::NamesNotFoundException", "classSkeletonCoefficientReader_1_1NamesNotFoundException.html", null ]
     ] ],
     [ "ScenarioToChronicleReader", "classScenarioToChronicleReader.html", null ],
     [ "antares_xpansion.sensitivity_driver.SensitivityDriver", "classantares__xpansion_1_1sensitivity__driver_1_1SensitivityDriver.html", null ],
@@ -436,14 +438,20 @@ var hierarchy =
     [ "SettingsReader", "classSettingsReader.html", null ],
     [ "SimulationOptions", "classSimulationOptions.html", null ],
     [ "SinglePbData", "structSinglePbData.html", null ],
+    [ "SkeletonCoefficientReader", "classSkeletonCoefficientReader.html", null ],
+    [ "SkeletonCoefficientSet", "classSkeletonCoefficientSet.html", null ],
+    [ "SkeletonConstraintSetLoader", "classSkeletonConstraintSetLoader.html", null ],
+    [ "SkeletonSolverLoader", "classSkeletonSolverLoader.html", null ],
     [ "Output::SolutionData", "structOutput_1_1SolutionData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", [
       [ "NOOPSolver", "classNOOPSolver.html", [
+        [ "NOOPSolverForSkeleton", "classNOOPSolverForSkeleton.html", null ],
         [ "NOOPSolverForWorker", "classNOOPSolverForWorker.html", [
           [ "NOOPSolverForWorkerMaster", "classNOOPSolverForWorkerMaster.html", [
             [ "CapturingSolverForAlphas", "classCapturingSolverForAlphas.html", null ]
           ] ]
-        ] ]
+        ] ],
+        [ "RecordingSolver", "classRecordingSolver.html", null ]
       ] ],
       [ "Problem", "classProblem.html", null ],
       [ "SolverCbc", "classSolverCbc.html", null ],
@@ -459,6 +467,7 @@ var hierarchy =
       [ "EmptyLogManager", "classEmptyLogManager.html", null ]
     ] ],
     [ "SolverRepresentedRows", "structSolverRepresentedRows.html", null ],
+    [ "SolverRowExtractor", "classSolverRowExtractor.html", null ],
     [ "antares_xpansion.benders_driver.SolversExe", "classantares__xpansion_1_1benders__driver_1_1SolversExe.html", null ],
     [ "antares_xpansion.split_link_profile.SplitLinkProfile", "classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile.html", null ],
     [ "StandardLp", "classStandardLp.html", null ],
@@ -473,10 +482,11 @@ var hierarchy =
       [ "StudyUpdateLinkCapacitiesStrategy", "classStudyUpdateLinkCapacitiesStrategy.html", null ],
       [ "StudyUpdateLinkParameterStrategy", "classStudyUpdateLinkParameterStrategy.html", null ]
     ] ],
+    [ "SubproblemBasisCache", "classSubproblemBasisCache.html", null ],
     [ "SubproblemConstraintsManager", "classSubproblemConstraintsManager.html", null ],
     [ "PlainData::SubProblemData", "structPlainData_1_1SubProblemData.html", null ],
-    [ "SubProblemIds", "structSubProblemIds.html", null ],
     [ "tests.end_to_end.cucumber.features.steps.then.SubProblemStats", "classtests_1_1end__to__end_1_1cucumber_1_1features_1_1steps_1_1then_1_1SubProblemStats.html", null ],
+    [ "SubproblemWorkerFactory", "classSubproblemWorkerFactory.html", null ],
     [ "T", null, [
       [ "LogUtils::XpansionError< T >", "classLogUtils_1_1XpansionError.html", null ],
       [ "LogUtils::XpansionError< T >", "classLogUtils_1_1XpansionError.html", null ]
@@ -489,6 +499,7 @@ var hierarchy =
       [ "ArchiveWriterTest", "classArchiveWriterTest.html", null ],
       [ "BatchCollectionTest", "classBatchCollectionTest.html", null ],
       [ "BendersBaseTest", "classBendersBaseTest.html", null ],
+      [ "BendersMicroIterationsTest", "classBendersMicroIterationsTest.html", null ],
       [ "BendersSequentialTest", "classBendersSequentialTest.html", [
         [ "BendersSequentialTestBySolver", "classBendersSequentialTestBySolver.html", null ],
         [ "BendersSequentialTestSolverAndFormat", "classBendersSequentialTestSolverAndFormat.html", null ]
@@ -529,7 +540,11 @@ var hierarchy =
       [ "SensitivityStudyTest", "classSensitivityStudyTest.html", null ],
       [ "SensitivityUserLoggerTest", "classSensitivityUserLoggerTest.html", null ],
       [ "SensitivityWriterTest", "classSensitivityWriterTest.html", null ],
+      [ "SkeletonCoefficientReaderTest", "classSkeletonCoefficientReaderTest.html", null ],
+      [ "SkeletonConstraintSetLoaderTest", "classSkeletonConstraintSetLoaderTest.html", null ],
       [ "StudyUpdateTest", "classStudyUpdateTest.html", null ],
+      [ "SubproblemConstraintsManagerTest", "classSubproblemConstraintsManagerTest.html", null ],
+      [ "SubproblemWorkerFactoryTest", "classSubproblemWorkerFactoryTest.html", null ],
       [ "UpdateCapacitiesTest", "classUpdateCapacitiesTest.html", null ],
       [ "UserLoggerTest", "classUserLoggerTest.html", null ],
       [ "VariableFileReaderTest", "classVariableFileReaderTest.html", null ],

@@ -149,16 +149,17 @@ Inheritance diagram for BendersPlugin:</div>
  <div class="center">
   <img src="classBendersPlugin.png" usemap="#BendersPlugin_map" alt=""/>
   <map id="BendersPlugin_map" name="BendersPlugin_map">
-<area href="classBenders__MICRO__ITERS.html" alt="Benders_MICRO_ITERS" shape="rect" coords="0,56,148,80"/>
-<area href="classNoOperationPlugin.html" alt="NoOperationPlugin" shape="rect" coords="158,56,306,80"/>
+<area href="classBendersPluginStub.html" alt="BendersPluginStub" shape="rect" coords="0,56,148,80"/>
+<area href="classBenders__MICRO__ITERS.html" alt="Benders_MICRO_ITERS" shape="rect" coords="158,56,306,80"/>
+<area href="classNoOperationPlugin.html" alt="NoOperationPlugin" shape="rect" coords="316,56,464,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af11d9be2e0855ee24c7ff67f0d14af88" id="r_af11d9be2e0855ee24c7ff67f0d14af88"><td class="memItemLeft" align="right" valign="top"><a id="af11d9be2e0855ee24c7ff67f0d14af88" name="af11d9be2e0855ee24c7ff67f0d14af88"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersStart</b> (const SubproblemsMapPtr &amp;subproblem_map, const Logger &amp;logger, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager)=0</td></tr>
-<tr class="separator:af11d9be2e0855ee24c7ff67f0d14af88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64570e47181e63f3df94af20c89794f9" id="r_a64570e47181e63f3df94af20c89794f9"><td class="memItemLeft" align="right" valign="top"><a id="a64570e47181e63f3df94af20c89794f9" name="a64570e47181e63f3df94af20c89794f9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersStart</b> (const SubproblemsMapPtr &amp;subproblem_map, const Logger &amp;logger, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; sub_problem_solver)=0</td></tr>
+<tr class="separator:a64570e47181e63f3df94af20c89794f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a8b0779d048634cf5e6daf7afb652ca" id="r_a0a8b0779d048634cf5e6daf7afb652ca"><td class="memItemLeft" align="right" valign="top"><a id="a0a8b0779d048634cf5e6daf7afb652ca" name="a0a8b0779d048634cf5e6daf7afb652ca"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersEnd</b> ()=0</td></tr>
 <tr class="separator:a0a8b0779d048634cf5e6daf7afb652ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,12 +169,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersIter
 <tr class="memitem:a8efa6fa5801488f1b47c42e3ec991497" id="r_a8efa6fa5801488f1b47c42e3ec991497"><td class="memItemLeft" align="right" valign="top"><a id="a8efa6fa5801488f1b47c42e3ec991497" name="a8efa6fa5801488f1b47c42e3ec991497"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersIterationEnd</b> ()=0</td></tr>
 <tr class="separator:a8efa6fa5801488f1b47c42e3ec991497"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6925d039c747d252d421378b3c739a0a" id="r_a6925d039c747d252d421378b3c739a0a"><td class="memItemLeft" align="right" valign="top"><a id="a6925d039c747d252d421378b3c739a0a" name="a6925d039c747d252d421378b3c739a0a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersSubResolutionStart</b> ()=0</td></tr>
-<tr class="separator:a6925d039c747d252d421378b3c739a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc9cf6873f3ff35818a4994af2ff9e3a" id="r_afc9cf6873f3ff35818a4994af2ff9e3a"><td class="memItemLeft" align="right" valign="top"><a id="afc9cf6873f3ff35818a4994af2ff9e3a" name="afc9cf6873f3ff35818a4994af2ff9e3a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersSubResolutionEnd</b> (std::string sub_name, int num_micro_iter)=0</td></tr>
-<tr class="separator:afc9cf6873f3ff35818a4994af2ff9e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7647cf3ce1e3d2edbbcba7ec0284c692" id="r_a7647cf3ce1e3d2edbbcba7ec0284c692"><td class="memItemLeft" align="right" valign="top"><a id="a7647cf3ce1e3d2edbbcba7ec0284c692" name="a7647cf3ce1e3d2edbbcba7ec0284c692"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersSubResolutionStart</b> (const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;sub_worker, std::string sub_name)=0</td></tr>
+<tr class="separator:a7647cf3ce1e3d2edbbcba7ec0284c692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c370a15bf197cdd8ac0f8a37937c64" id="r_a16c370a15bf197cdd8ac0f8a37937c64"><td class="memItemLeft" align="right" valign="top"><a id="a16c370a15bf197cdd8ac0f8a37937c64" name="a16c370a15bf197cdd8ac0f8a37937c64"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersSubResolutionEnd</b> ()=0</td></tr>
+<tr class="separator:a16c370a15bf197cdd8ac0f8a37937c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a201db4ea7e82e58499670a6a66f3035a" id="r_a201db4ea7e82e58499670a6a66f3035a"><td class="memItemLeft" align="right" valign="top"><a id="a201db4ea7e82e58499670a6a66f3035a" name="a201db4ea7e82e58499670a6a66f3035a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMasterResolutionStart</b> ()=0</td></tr>
 <tr class="separator:a201db4ea7e82e58499670a6a66f3035a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,6 +187,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMicr
 <tr class="memitem:a9409703a17102662dd3a880b4ac2f79e" id="r_a9409703a17102662dd3a880b4ac2f79e"><td class="memItemLeft" align="right" valign="top"><a id="a9409703a17102662dd3a880b4ac2f79e" name="a9409703a17102662dd3a880b4ac2f79e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnBendersMicroIterationEnd</b> (std::string sub_name, bool &amp;added_rows, std::string solve_time, int num_master_iter, int num_micro_iter)=0</td></tr>
 <tr class="separator:a9409703a17102662dd3a880b4ac2f79e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e7799dd950a4896b483adb5693a88c" id="r_a57e7799dd950a4896b483adb5693a88c"><td class="memItemLeft" align="right" valign="top"><a id="a57e7799dd950a4896b483adb5693a88c" name="a57e7799dd950a4896b483adb5693a88c"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldRestoreSubproblemBasis</b> () const =0</td></tr>
+<tr class="separator:a57e7799dd950a4896b483adb5693a88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/cpp/benders/plugins/include/antares-xpansion/benders/plugins/<a class="el" href="BendersPlugin_8h_source.html">BendersPlugin.h</a></li>
