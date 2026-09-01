@@ -88,7 +88,6 @@ void BendersMpi::InitializeProblems()
     //creating the bestUBtracker 
     std::filesystem::path trackedVariablesFile = std::filesystem::path(_options.INPUTROOT) / "sub_variables_to_save.csv"; 
     best_ub_tracker_ = std::make_shared<BestUbTracker>(&_world,trackedVariablesFile, std::filesystem::path(_options.OUTPUTROOT), _logger ) ; 
-    std::cout<<"set best_ub_tracker_"<<std::endl ; 
 }
 
 std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(

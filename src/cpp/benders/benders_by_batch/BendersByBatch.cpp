@@ -13,6 +13,9 @@ void BendersByBatch::InitializeProblems()
     BuildMasterProblem();
     BroadCastVariablesIndices();
     init_problems_ = false;
+
+    std::filesystem::path trackedVariablesFile = std::filesystem::path(_options.INPUTROOT) / "sub_variables_to_save.csv"; 
+    best_ub_tracker_ = std::make_shared<BestUbTracker>(&_world,trackedVariablesFile, std::filesystem::path(_options.OUTPUTROOT), _logger ) ; 
 }
 
 void BendersByBatch::BuildMasterProblem()
@@ -441,6 +444,7 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
         subproblem_data_map[name] = subproblem_data;
+        best_ub_tracker_->set_variables_values(name, worker, _data.it, _data.best_ub);
         StoreSubproblemBasis(name, worker);
         std::call_once(
           variable_indice_once_flag,
@@ -489,6 +493,7 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
             // subproblem_timer already set time, we add the remaining computation time
             subproblem_data.subproblem_timer += subproblem_timer.elapsed();
             subproblem_data_map[name] = subproblem_data;
+            best_ub_tracker_->set_variables_values(name, worker, _data.it, _data.best_ub);
         }
     }
 }
@@ -530,6 +535,7 @@ void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
         subproblem_data_map[name] = subproblem_data;
+        best_ub_tracker_->set_variables_values(name, worker, _data.it, _data.best_ub);
         subproblem_worker_factory_->GetBasis(name);
     }
 }
