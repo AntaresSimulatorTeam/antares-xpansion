@@ -37,7 +37,7 @@ with $r$ the discount rate, $y_0$ the first investment year, $y_n$ the investmen
 
 - $p_n$ is the transition probability from $\text{parent}(n)$ to $n$.
 - $P(n)$ is the probability of realisation of node $n$ : $P(n) = p_n \times P(\text{parent}(n))$, with $P(\text{root}) = 1$.
-- $w_n = P(n) \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
+- $w_n = P(n) \times \sum_{y = y_n + 1}^{y = y_n + d_n} \frac{1}{(1+r)^{y - y_0}}$.
 - $wIC_{i,n} = P(n) \times \frac{1}{(1+r)^{y_n - y_0}} \times IC_i$, the weighted and discounted one-time payment investment cost per MW.
 - $wDC_{i,n} = P(n) \times \frac{1}{(1+r)^{y_n - y_0}} \times DC_i$, same for the retirement cost per MW.
 - $wOC_{i,n} = w_n \times OC_i$, the weighted and discounted operation and maintenance fixed cost per MW, paid every year of the period.
@@ -76,7 +76,12 @@ The annual problem is the pluriannual problem with a single node $n$ of duration
 
 $$
 \sum_i \left( IC_i + w_n \, OC_i \right) x_{i,n} + w_n \times ANTARES_n(x_n),
-\qquad w_n = \sum_{k = 0}^{d_n - 1} \frac{1}{(1+r)^{k}}
 $$
 
-Dividing by $w_n$ gives back $\sum_i C_i x_i + \text{ANTARES}(x)$ with $C_i = \frac{IC_i}{w_n} + OC_i$ : the annuity amortises the investment cost over the $d_n$ years of the node.
+with : 
+
+$$
+w_n = \sum_{k = 1}^{d_n} \frac{1}{(1+r)^{k}} = \frac{1 - \frac{1}{(1+r)^{d_n}}}{r}
+$$
+
+Dividing by $w_n$ gives back $\sum_i C_i x_i + \text{ANTARES}(x)$ with $C_i = \frac{IC_i}{w_n} + OC_i = \frac{r}{1 - \frac{1}{(1+r)^{d_n}}}IC_i + OC_i$ : the annuity amortises the investment cost over the $d_n$ years of the node.
