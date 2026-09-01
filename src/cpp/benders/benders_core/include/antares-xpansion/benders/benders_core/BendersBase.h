@@ -19,6 +19,7 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "BestUbTracker.h"
 #include "common.h"
 
 /**
@@ -171,6 +172,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
+    std::shared_ptr<BestUbTracker> best_ub_tracker_ = nullptr;
+ 
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
