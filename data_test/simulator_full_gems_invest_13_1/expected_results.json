@@ -1,0 +1,14 @@
+{
+    "problem_status": "OPTIMAL",
+    "overall_cost": 91000.0,
+    "investment_cost": 80000.0,
+    "operational_cost": 11000.0,
+    "iterations": 12,
+    "candidate": {
+        "name": "continuous_generator_candidate.p_max",
+        "invested": 200.0
+    },
+    "variables": {
+        "continuous_generator_candidate.p_max": 200.0
+    }
+}

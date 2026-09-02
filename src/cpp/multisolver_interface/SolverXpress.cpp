@@ -596,6 +596,25 @@ void SolverXpress::chg_col_type(const std::vector<int>& mindex, const std::vecto
     zero_status_check(status, "change column types", LOGLOCATION);
 }
 
+void SolverXpress::chg_rhs_values(std::vector<int>& id_rows, std::vector<double>& vals)
+{
+    int status = XPRSchgrhs(_xprs, id_rows.size(), id_rows.data(), vals.data());
+
+    zero_status_check(status, "change rhs", LOGLOCATION);
+}
+
+void SolverXpress::chg_coefs(const std::vector<int>& id_rows,
+                             const std::vector<int>& id_cols,
+                             const std::vector<double>& vals)
+{
+    int status = XPRSchgmcoef(_xprs,
+                              static_cast<int>(id_rows.size()),
+                              id_rows.data(),
+                              id_cols.data(),
+                              vals.data());
+    zero_status_check(status, "change matrix coefficient", LOGLOCATION);
+}
+
 void SolverXpress::chg_rhs(int id_row, double val)
 {
     int status = XPRSchgrhs(_xprs,

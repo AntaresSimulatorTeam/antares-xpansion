@@ -24,23 +24,11 @@ public:
                      Logger logger,
                      ProblemsFormat format,
                      IBendersProblemProvider* benders_problem_provider);
-    // for GridSearch
-    SubproblemWorker(const VariableMap& variable_map,
-                     const double& slave_weight,
-                     const std::string& solver_name,
-                     const int log_level,
-                     SolverLogManager& solver_log_manager,
-                     Logger logger,
-                     ProblemsFormat format,
-                     IBendersProblemProvider* benders_problem_provider);
-    // for GridEvaluator
-    SubproblemWorker(const double& slave_weight,
-                     const std::string& solver_name,
-                     const int log_level,
-                     SolverLogManager& solver_log_manager,
-                     Logger logger,
-                     ProblemsFormat format,
-                     IBendersProblemProvider* benders_problem_provider);
+
+    SubproblemWorker(VariableMap& variable_map,
+                     std::shared_ptr<SolverAbstract> solver,
+                     Logger logger);
+
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
     int get_variable_index(const std::string& variable_name);

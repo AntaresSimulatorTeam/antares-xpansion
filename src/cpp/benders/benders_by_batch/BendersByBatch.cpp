@@ -52,7 +52,10 @@ void BendersByBatch::BuildBatches()
 
     for (auto& batch: batch_collection_.BatchCollections())
     {
-        if (_options.CACHE_PROBLEMS)
+        switch (_options.CACHE_PROBLEMS)
+        {
+        case 1:
+        case 2:
         {
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
             {
@@ -63,13 +66,16 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
+                    AddSubproblemName(*it);
                     ++it;
                 }
                 ++problem_count;
             }
             batch.sub_problem_names.shrink_to_fit();
+            break;
         }
-        else
+        case 0:
+        default:
         {
             for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
             {
@@ -83,6 +89,8 @@ void BendersByBatch::BuildBatches()
                 }
                 ++problem_count;
             }
+            break;
+        }
         }
     }
 
@@ -121,7 +129,9 @@ void BendersByBatch::Run()
     {
         _data.stop = false;
     }
+
     MasterLoop();
+
     if (Rank() == rank_0)
     {
         compute_ub();
@@ -146,6 +156,8 @@ void BendersByBatch::MasterLoop()
     first_unsolved_batch_ = 0;
     while (!_data.stop)
     {
+        benders_plugin_->OnBendersIterationStart();
+
         if (Rank() == rank_0)
         {
             if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
@@ -160,6 +172,7 @@ void BendersByBatch::MasterLoop()
         SetSubproblemCost(0);
         remaining_epsilon_ = Gap();
 
+        benders_plugin_->OnBendersMasterResolutionStart();
         if (Rank() == rank_0)
         {
             _logger->PrintIterationSeparatorBegin();
@@ -191,6 +204,8 @@ void BendersByBatch::MasterLoop()
         _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
         _logger->PrintIterationSeparatorEnd();
         mathLoggerDriver_->Print(_data);
+
+        benders_plugin_->OnBendersIterationEnd();
     }
 }
 
@@ -210,6 +225,8 @@ void BendersByBatch::SeparationLoop()
             ComputeXCut();
         }
         BroadcastXCut();
+
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
         UpdateRemainingEpsilon();
         _data.number_of_subproblem_solved = 0;
@@ -415,17 +432,19 @@ void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_ma
     for (const auto& kvp: nameAndVariableMap)
     {
         const auto& name = kvp.first;
-        std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+        std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(kvp);
         PlainData::SubProblemData subproblem_data{};
-        SolveSubproblem(subproblem_data, name, worker);
+        SolveSubproblem(subproblem_data,
+                        name,
+                        worker,
+                        [this, &name, &worker] { TryRestoreSubproblemBasis(name, worker); });
         auto timer = calculate_subproblem_contribution(name, subproblem_data);
         subproblem_data.subproblem_timer += timer.elapsed();
-        auto [rstatus, cstatus] = GetProblemBasis(worker);
         subproblem_data_map[name] = subproblem_data;
-        SetBasisForSubproblem(name, rstatus, cstatus);
+        StoreSubproblemBasis(name, worker);
         std::call_once(
           variable_indice_once_flag,
-          [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+          [this](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
           *worker);
     }
 }
@@ -464,7 +483,7 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
             != batch_sub_problems.cend())
         {
             PlainData::SubProblemData subproblem_data{};
-            SolveSubproblem(subproblem_data, name, worker);
+            SolveSubproblem(subproblem_data, name, worker, nullptr);
             Timer subproblem_timer = calculate_subproblem_contribution(name, subproblem_data);
 
             // subproblem_timer already set time, we add the remaining computation time
@@ -476,22 +495,60 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
 
 /*!
  * \brief Solve and store optimal variables of all Subproblem Problems
+ * in compact memory case
  *
  * Method to solve and store optimal variables of all Subproblem Problems
  * after fixing trial values.
  *
  * \param subproblem_data_map Map storing for each subproblem its cut
+ * \param batch_sub_problems list of subproblems contained in the Benders cut
  */
+void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
+                                         const std::vector<std::string>& batch_sub_problems)
+{
+    std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
+    nameAndVariableMap.reserve(batch_sub_problems.size());
+    for (const auto& name: batch_sub_problems)
+    {
+        const auto it = coupling_map_.find(name);
+        nameAndVariableMap.emplace_back(it->first, it->second);
+    }
+
+    for (const auto& kvp: nameAndVariableMap)
+    {
+        auto name = kvp.first;
+        auto variable_map = kvp.second;
+        double slave_weights = SubproblemWeight(_data.nsubproblem, name);
+        auto worker = subproblem_worker_factory_->CreateSubSolverAbstract(name,
+                                                                          variable_map,
+                                                                          slave_weights);
+        PlainData::SubProblemData subproblem_data{};
+        SolveSubproblem(subproblem_data,
+                        name,
+                        worker,
+                        [this, &name] { subproblem_worker_factory_->ApplyBasis(name); });
+        auto timer = calculate_subproblem_contribution(name, subproblem_data);
+        subproblem_data.subproblem_timer += timer.elapsed();
+        subproblem_data_map[name] = subproblem_data;
+        subproblem_worker_factory_->GetBasis(name);
+    }
+}
+
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                                       const std::vector<std::string>& batch_sub_problems)
 {
-    if (Options().CACHE_PROBLEMS)
+    switch (Options().CACHE_PROBLEMS)
     {
+    case 2:
+        GetCompactInMemCuts(subproblem_data_map, batch_sub_problems);
+        break;
+    case 1:
         GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);
-    }
-    else
-    {
+        break;
+    case 0:
+    default:
         GetSubproblemCutFast(subproblem_data_map, batch_sub_problems);
+        break;
     }
 }
 

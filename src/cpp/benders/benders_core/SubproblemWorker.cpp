@@ -38,57 +38,12 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     _solver->chg_obj(sequence, obj_func_coeffs);
 }
 
-SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
-                                   const double& slave_weight,
-                                   const std::string& solver_name,
-                                   const int log_level,
-                                   SolverLogManager& solver_log_manager,
-                                   Logger logger,
-                                   ProblemsFormat format,
-                                   IBendersProblemProvider* benders_problem_provider):
+SubproblemWorker::SubproblemWorker(VariableMap& variable_map,
+                                   std::shared_ptr<SolverAbstract> solver,
+                                   Logger logger):
     Worker(variable_map, std::move(logger))
 {
-    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
-
-    int mps_ncols(_solver->get_ncols());
-    DblVector obj_func_coeffs(mps_ncols);
-    IntVector sequence(mps_ncols);
-    for (int i = 0; i < mps_ncols; ++i)
-    {
-        sequence[i] = i;
-    }
-    solver_get_obj_func_coeffs(*_solver, obj_func_coeffs, 0, mps_ncols - 1);
-    for (auto& c: obj_func_coeffs)
-    {
-        c *= slave_weight;
-    }
-    _solver->chg_obj(sequence, obj_func_coeffs);
-}
-
-SubproblemWorker::SubproblemWorker(const double& slave_weight,
-                                   const std::string& solver_name,
-                                   const int log_level,
-                                   SolverLogManager& solver_log_manager,
-                                   Logger logger,
-                                   ProblemsFormat format,
-                                   IBendersProblemProvider* benders_problem_provider):
-    Worker(std::move(logger))
-{
-    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
-
-    int mps_ncols(_solver->get_ncols());
-    DblVector obj_func_coeffs(mps_ncols);
-    IntVector sequence(mps_ncols);
-    for (int i = 0; i < mps_ncols; ++i)
-    {
-        sequence[i] = i;
-    }
-    solver_get_obj_func_coeffs(*_solver, obj_func_coeffs, 0, mps_ncols - 1);
-    for (auto& c: obj_func_coeffs)
-    {
-        c *= slave_weight;
-    }
-    _solver->chg_obj(sequence, obj_func_coeffs);
+    init_for_compact_in_mem(solver, variable_map);
 }
 
 /*!

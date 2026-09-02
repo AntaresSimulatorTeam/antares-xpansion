@@ -9,6 +9,8 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
 
+struct SolverRepresentedRows;
+
 /*!
  * \class Worker
  * \brief Mother-class Worker
@@ -29,7 +31,8 @@ public:
     virtual ~Worker() = default;
 
     void get_value(double& lb) const;
-
+    void init_for_compact_in_mem(std::shared_ptr<SolverAbstract> solver, VariableMap& variable_map);
+    void set_id_to_name(VariableMap& variable_map);
     void get_splex_num_of_ite_last(int& result) const;
 
     void free();
@@ -56,6 +59,7 @@ public:
                  const std::vector<int>& mclind_p,
                  const std::vector<double>& dmatval_p,
                  const std::vector<std::string>& row_names) const;
+    void AddRow(const SolverRepresentedRows& row) const;
 
     /**
      * @brief Returns the number of rows (constraints)
