@@ -1,0 +1,32 @@
+[Default Ruleset]
+l,area1,0 = 1
+l,area1,1 = 2
+l,area2,0 = 1
+l,area2,1 = 2
+l,area3,0 = 1
+l,area3,1 = 2
+h,area1,0 = 1
+h,area1,1 = 2
+h,area2,0 = 1
+h,area2,1 = 2
+h,area3,0 = 1
+h,area3,1 = 2
+t,area1,0,gas = 1
+t,area1,1,gas = 2
+t,area1,0,nuclear = 1
+t,area1,1,nuclear = 2
+t,area2,0,coal = 1
+t,area2,1,coal = 2
+t,area2,0,gas = 1
+t,area2,1,gas = 2
+t,area2,0,lignite = 1
+t,area2,1,lignite = 2
+t,area2,0,oil = 1
+t,area2,1,oil = 2
+t,area3,0,gas = 1
+t,area3,1,gas = 2
+t,area3,0,nuclear = 1
+t,area3,1,nuclear = 2
+t,area3,0,oil = 1
+t,area3,1,oil = 2
+

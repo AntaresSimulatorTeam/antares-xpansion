@@ -22,7 +22,7 @@ public:
     auto Directories() const -> ConfigDirectories;
     auto Mode() const -> SimulationInputMode;
     auto Format() const -> ProblemsFormat;
-    std::filesystem::path generateOutputName(const std::filesystem::path& study) const;
+    static std::filesystem::path generateOutputName(const std::filesystem::path& study);
     const ProblemGenerationOptions& options_;
 
 private:

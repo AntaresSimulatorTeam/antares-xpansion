@@ -21,7 +21,7 @@ target_link_libraries(factories
         antaresXpansion::benders_by_batch_core
         antaresXpansion::output_core
         antaresXpansion::logger_lib
-        ${PROJECT_NAME}::benders_mpi_core
+        antaresXpansion::benders_mpi_core
         antaresXpansion::outer_loop_lib
         antaresXpansion::plugins
 )

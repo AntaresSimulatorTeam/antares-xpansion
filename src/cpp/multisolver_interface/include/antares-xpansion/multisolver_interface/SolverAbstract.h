@@ -199,7 +199,7 @@ enum SOLVER_STATUS
  * \class class SolverAbstract
  * \brief Virtual class to implement solvers methods
  */
-class SolverAbstract
+class SolverAbstract: public std::enable_shared_from_this<SolverAbstract>
 {
 public:
     std::vector<std::string> SOLVER_STRING_STATUS = {"OPTIMAL",

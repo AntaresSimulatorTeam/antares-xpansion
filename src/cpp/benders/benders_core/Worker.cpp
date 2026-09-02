@@ -209,6 +209,11 @@ Worker::Worker(VariableMap variable_map, Logger logger):
 {
 }
 
+Worker::Worker(Logger logger):
+    logger_{std::move(logger)}
+{
+}
+
 void Worker::writeProb(const std::filesystem::path& out) const
 {
     solver_io_.write(_solver.get(), out);

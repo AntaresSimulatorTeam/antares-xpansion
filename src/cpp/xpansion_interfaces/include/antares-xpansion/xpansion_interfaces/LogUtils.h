@@ -1,6 +1,7 @@
 #pragma once
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 
 namespace LogUtils
 {
@@ -55,6 +56,15 @@ enum class LOGGERTYPE
     CONSOLE
 };
 
+static const std::unordered_map<std::string, LogUtils::LOGLEVEL> LogStrMap = {
+  {"NONE", LogUtils::LOGLEVEL::NONE},
+  {"TRACE", LogUtils::LOGLEVEL::TRACE},
+  {"DEBUG", LogUtils::LOGLEVEL::DEBUG},
+  {"INFO", LogUtils::LOGLEVEL::INFO},
+  {"WARNING", LogUtils::LOGLEVEL::WARNING},
+  {"ERR", LogUtils::LOGLEVEL::ERR},
+  {"FATAL", LogUtils::LOGLEVEL::FATAL}};
+
 inline std::string LogLevelToStr(const LogUtils::LOGLEVEL log_level)
 {
     switch (log_level)
@@ -73,6 +83,24 @@ inline std::string LogLevelToStr(const LogUtils::LOGLEVEL log_level)
         return "FATAL";
     default:
         return "";
+    }
+}
+
+inline LogUtils::LOGLEVEL StrToLogLevel(std::string logStr)
+{
+    std::transform(logStr.begin(),
+                   logStr.end(),
+                   logStr.begin(),
+                   [](unsigned char c) { return std::toupper(c); } // correct
+    );
+    auto it = LogUtils::LogStrMap.find(logStr);
+    if (it != LogUtils::LogStrMap.end())
+    {
+        return it->second;
+    }
+    else
+    {
+        throw std::invalid_argument("Unknown log level: " + logStr);
     }
 }
 } // namespace LogUtils

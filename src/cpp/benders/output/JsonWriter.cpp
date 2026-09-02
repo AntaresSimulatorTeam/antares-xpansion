@@ -66,6 +66,14 @@ void JsonWriter::write_iterations(const IterationsData& iterations_data)
     write_solution(iterations_data.solution_data);
 }
 
+void JsonWriter::write_grid_points(const GridPointsData& grid_points_data)
+{
+    for (const auto& grid_point_data: grid_points_data)
+    {
+        write_grid_point(grid_point_data);
+    }
+}
+
 void JsonWriter::write_nbweeks(const int nb_weeks)
 {
     _output[NBWEEKS_C] = nb_weeks;
@@ -104,6 +112,51 @@ void JsonWriter::write_iteration(const Iteration& iter, const size_t iteration_n
         vectCandidates_l.append(candidate_l);
     }
     _output[ITERATIONS_C][strIterCnt_l][CANDIDATES_C] = vectCandidates_l;
+}
+
+void JsonWriter::write_grid_point(const GridPointData& grid_point_data)
+{
+    static int grid_point_cnt = 1;
+    std::string strGridPointCnt_l = std::to_string(grid_point_cnt++);
+
+    for (const auto& [name, value]: grid_point_data.point)
+    {
+        _output[GRID_POINTS_C][strGridPointCnt_l][GRID_POINT_C][name] = value;
+    }
+    _output[GRID_POINTS_C][strGridPointCnt_l][INVESTMENT_COST_C] = grid_point_data.investment_cost;
+    _output[GRID_POINTS_C][strGridPointCnt_l][OPERATIONAL_COST_C] = grid_point_data
+                                                                      .operational_cost;
+    _output[GRID_POINTS_C][strGridPointCnt_l][OVERALL_COST_C] = grid_point_data.overall_cost;
+}
+
+void JsonWriter::write_VariationDeNiveauxDeStock(const VariationDeNiveauxDeStockData& valeurs_usage)
+{
+    for (auto& [gridID, data]: valeurs_usage)
+    {
+        // Map to store a vector of ValeursUsage for each scenario and week pair
+        std::map<std::pair<int, int>, Json::Value> scenario_week_map;
+        for (const auto& [key, cost]: data)
+        {
+            if (scenario_week_map.find({key.scenario, key.week}) == scenario_week_map.end())
+            {
+                scenario_week_map[{key.scenario, key.week}] = Json::Value(Json::arrayValue);
+            }
+
+            Json::Value variationDeNiveauxDeStock;
+            variationDeNiveauxDeStock[OPERATIONAL_COST_C] = cost;
+            for (const auto& [cst, val]: key.rhsValues)
+            {
+                variationDeNiveauxDeStock["RHS"][cst] = val;
+            }
+            scenario_week_map[{key.scenario, key.week}].append(variationDeNiveauxDeStock);
+        }
+        for (const auto& [key, vectVariationDeNiveauxDeStock]: scenario_week_map)
+        {
+            _output["GridID"][std::to_string(gridID)]["Scenario"][std::to_string(key.first)]["Week"]
+                   [std::to_string(key.second)]["VariationDeNiveauxDeStock"]
+              = vectVariationDeNiveauxDeStock;
+        }
+    }
 }
 
 void JsonWriter::write_solution(const SolutionData& solution)
