@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['data_20from_20tt_20input_20trajectory_20yaml_20tt_0',['Input data of local study or input data from &lt;tt&gt;input-trajectory.yaml&lt;/tt&gt; ?',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md311',1,'']]],
-  ['data_20of_20local_20study_20or_20input_20data_20from_20tt_20input_20trajectory_20yaml_20tt_1',['Input data of local study or input data from &lt;tt&gt;input-trajectory.yaml&lt;/tt&gt; ?',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md311',1,'']]],
+  ['data_20from_20tt_20input_20trajectory_20yaml_20tt_0',['Input data of local study or input data from &lt;tt&gt;input-trajectory.yaml&lt;/tt&gt; ?',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md314',1,'']]],
+  ['data_20of_20local_20study_20or_20input_20data_20from_20tt_20input_20trajectory_20yaml_20tt_1',['Input data of local study or input data from &lt;tt&gt;input-trajectory.yaml&lt;/tt&gt; ?',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md314',1,'']]],
   ['data_5fdir_2',['data_dir',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#af6ce53822a29870f8ea1bac5b1b9abb9',1,'antares_xpansion::config_loader::XpansionSettingsReader']]],
   ['datadir_20tt_3',['&lt;tt&gt;-i, --dataDir&lt;/tt&gt;',['../md_docs_2reference_2cli.html#autotoc_md239',1,'']]],
   ['decomposition_3a_20tt_20benders_20tt_4',['3. Resolution stage with Benders decomposition: &lt;tt&gt;benders&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion-steps_2index.html#autotoc_md116',1,'']]],
@@ -13,7 +13,7 @@ var searchData=
   ['dependencies_10',['dependencies',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md78',1,'Installing dependencies'],['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md80',1,'Other dependencies']]],
   ['dependencies_20install_11',['Dependencies install',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html',1,'']]],
   ['dependency_12',['dependency',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md79',1,'Runtime dependency'],['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md81',1,'Using pre-build dependency']]],
-  ['description_13',['Description',['..//github/workspace/tests/end_to_end/benders/README.md#autotoc_md314',1,'Description'],['..//github/workspace/tests/end_to_end/restart/README.md#autotoc_md325',1,'Description']]],
+  ['description_13',['Description',['..//github/workspace/tests/end_to_end/benders/README.md#autotoc_md317',1,'Description'],['..//github/workspace/tests/end_to_end/restart/README.md#autotoc_md328',1,'Description']]],
   ['description_14',['General description',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md272',1,'']]],
   ['details_15',['Build and installation details',['../md_docs_2developer-guide_2install-from-source_2index.html#autotoc_md74',1,'']]],
   ['detect_5ffully_5fdecommed_5fcandidates_16',['detect_fully_decommed_candidates',['../classuser__input__translation_1_1UserInputTranslator.html#aa61aa4012cf05e6447341f90683fd9ea',1,'user_input_translation::UserInputTranslator']]],

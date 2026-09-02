@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2reference_2trajectory-investment_2merge-maste
   <div class="headertitle"><div class="title">Merging the master problems of annual Xpansion studies</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md274"></a></p>
-<h1><a class="anchor" id="autotoc_md275"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md276"></a></p>
+<h1><a class="anchor" id="autotoc_md277"></a>
 Usage of the master merger executable</h1>
 <p><b>All examples below are based on the tree example given in the <a class="el" href="md_docs_2reference_2trajectory-investment_2index.html">trajectory problem</a> section</b></p>
 <p>The underlying C++ code responsible for merging previously generated Xpansion studies master files needs</p>
@@ -153,7 +153,7 @@ Usage of the master merger executable</h1>
 </ul>
 <p>Usage is : <code>path/to/exectubale &lt;options_file&gt;.json &lt;master_merger_info_file&gt;.json</code></p>
 <p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
-<h1><a class="anchor" id="autotoc_md276"></a>
+<h1><a class="anchor" id="autotoc_md278"></a>
 Options file</h1>
 <p>Only few of the <code><a class="el" href="structBaseOptions.html">BaseOptions</a></code> from the <code>&lt;options_file&gt;.json</code> are used. An option file for the master merger can be :</p>
 <div class="fragment"><div class="line">{</div>
@@ -166,7 +166,7 @@ Options file</h1>
 <div class="line">    &quot;STRUCTURE_FILE&quot; : &quot;&lt;relative/path/to/structure/file&gt;&quot;</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>This means that the merged master file will be written to : <code>&lt;INPUT_ROOT&gt;/&lt;MASTER_NAME&gt;.&lt;mps|svf&gt;</code>, and the merged structure file to : <code>&lt;INPUT_ROOT&gt;/&lt;STRUCTURE_FILE&gt;</code>.</p>
-<h1><a class="anchor" id="autotoc_md277"></a>
+<h1><a class="anchor" id="autotoc_md279"></a>
 Master merger info file</h1>
 <p>The program expects <code>&lt;master_merger_info&gt;.json</code> to have the following structure :</p>
 <p><b>master_merger_info.json</b> : Example of a master structure file :</p>
@@ -274,7 +274,7 @@ Master merger info file</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md278"></a>
+<h1><a class="anchor" id="autotoc_md280"></a>
 Nodal lp info file</h1>
 <p>To access the <code>lp</code> data of each node, the executable expects to be passed the <a href="./multiple-problem-generation.md#output-nodal-lp-info-file">nodal lp info file</a> that references the location &amp; filenames of the ouput of the <code>problem_generation</code> step for each node.</p>
 <div class="fragment"><div class="line">{</div>
@@ -304,7 +304,7 @@ Nodal lp info file</h1>
 <div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
 <div class="line">   }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md279"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md281"></a>
 Input files from each annual study</h1>
 <p>We give below what the folder given as <code>INPUTROOT</code> in the options file should look like in the present example :</p>
 <div class="fragment"><div class="line">.</div>
@@ -446,14 +446,14 @@ Input files from each annual study</h1>
 <div class="line">                └── weights.txt</div>
 </div><!-- fragment --><p>Each of the subfolder is the output of <code>antares -i &lt;study&gt; --step problem_generation</code>. For example, the structure file of a given node should be found at : <code>&lt;INPUTROOT&gt;/&lt;lp_folder&gt;/&lt;structure_file&gt;</code></p>
 <p>Note that the subfolders as presented in this example do not have to be inside the the full study structure and could have been generated and copied from elsewhere in the <code>&lt;INPUTROOT&gt;</code> folder.</p>
-<h1><a class="anchor" id="autotoc_md280"></a>
+<h1><a class="anchor" id="autotoc_md282"></a>
 Trajectory constraints</h1>
 <p>In the <code>constraints</code> section of the <code>master_merger_info.json</code> file, we expect the constraints to be given in the following manner:</p>
 <ul>
 <li><code>coeffs</code> is a dict of investment variable reference to their coefficient in the present constraint. Each reference is built as : <code>&lt;node_name&gt;::&lt;candidate_name&gt;::&lt;variable_type&gt;</code>, where variable type is either :<ul>
-<li><code>x</code> when referencing the $x_{n,i}$ variable.</li>
-<li><code>dx_plus</code> when referencing the $dx_{n,i}^+$ variable.</li>
-<li><code>dx_minus</code> when referencing the $dx_{n,i}^⁻$ variable.</li>
+<li><code>x</code> when referencing the $x_{i,n}$ variable.</li>
+<li><code>dx_plus</code> when referencing the $dx_{i,n}^+$ variable.</li>
+<li><code>dx_minus</code> when referencing the $dx_{i,n}^-$ variable.</li>
 </ul>
 </li>
 <li><code>rhs</code> contains the right-hand side of the constraint expression.</li>

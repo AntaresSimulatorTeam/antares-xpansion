@@ -144,11 +144,11 @@ $(function(){initNavTree('md_docs_2reference_2trajectory-investment_2index.html'
 <h1><a class="anchor" id="autotoc_md272"></a>
 General description</h1>
 <p>Recall the annual investment problem in Xpansion :</p>
-<p>$$ \min_{x \in \mathcal{X}} \quad C^T x + \text{ANTARES}(x) $$</p>
-<p>over a set of investment variables specified by the user, where :</p>
+<p>$$ \min_{x \in \mathcal{X}} \quad \sum_i C_i \, x_i + \text{ANTARES}(x) $$</p>
+<p>over a set of investment variables specified by the user, where, denoting by $i$ a candidate :</p>
 <ul>
-<li>$x$ is the vector of the capacities installed for each candidate</li>
-<li>$C$ contains the fixed cost annuities of those candidates</li>
+<li>$x_i$ is the capacity installed for candidate $i$, and $x = (x_i)_i$ is the vector of those capacities</li>
+<li>$C_i$ is the fixed cost annuity of candidate $i$, given by its <code>annual-cost-per-mw</code> entry in the study's <a class="el" href="md_docs_2reference_2inputs_2candidates.html"><code>candidates.ini</code></a> file</li>
 <li>$\text{ANTARES}(x)$ is the operating cost of the system for a given investment level.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md273"></a>
@@ -156,23 +156,60 @@ General description</h1>
 <p>We want to switch to a pluriannual vision and optimise the investments over several possible trajectories described on a diverging tree of scenarios</p>
 <p><img src="../../assets/media/trajectory/trajectory.png" alt="Trajectory tree" class="inline"/></p>
 <p><b>Figure 1</b> - Trajectory tree made up of annual Xpansion studies</p>
-<p>The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}$ a node in the tree:</p>
-<p>$$ \begin{aligned} \min_{x, dx^+, dx^-} \quad &amp; \sum_{n \in \mathcal{T}} wIC_n^T dx_n^+ + wDC_n^T dx_n^- + wOC_n^Tx_{n} + w_{n} \times ANTARES_n(x_n)\\ \text{s.t.} \quad &amp; \forall i,n \quad x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}</p><ul>
+<p>The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}$ a node in the tree, by $i$ a candidate and by $x_n = (x_{i,n})_i$ the vector of the capacities installed at node $n$:</p>
+<p>$$ \begin{aligned} \min_{x, dx^+, dx^-} \quad &amp; \sum_{n \in \mathcal{T}} \left[ \sum_i \left( wIC_{i,n} \, dx^+_{i,n} + wDC_{i,n} \, dx^-_{i,n} + wOC_{i,n} \, x_{i,n} \right) + w_n \times ANTARES_n(x_n) \right]\\ \text{s.t.} \quad &amp; \forall i,n \quad x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}</p><ul>
 <li>dx^-_{i,n} \\ &amp; \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\ &amp; \forall i,n \quad 0 \leq x_{i,n} \leq X_{i,n}^{max} \ \end{aligned} $$</li>
 </ul>
-<p>$wIC_n$ contains the already weighted (for probability of the node) and discounted one-time payment investment costs per MW.</p><ul>
-<li>$wDC_n$ contains the already weighted (for probability of the node) and discounted one-time payment retirement costs per MW.</li>
-<li>$wOC_n$ contains the already weighted (for represented duration of the node &amp; probability) and discounted operation and maintenance fixed costs.</li>
-<li>$w(n) = P(n) \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.</li>
-<li>$P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.</li>
-<li>$P(root) = 1$.</li>
+<p>with $r$ the discount rate, $y_0$ the first investment year, $y_n$ the investment date of node $n$ and $d_n$ its represented duration ($d_n$ = next investment date $- y_n$, or end of horizon $- y_n$ for a leaf) :</p>
+<ul>
+<li>$p_n$ is the transition probability from $\text{parent}(n)$ to $n$.</li>
+<li>$P(n)$ is the probability of realisation of node $n$ : $P(n) = p_n \times P(\text{parent}(n))$, with $P(\text{root}) = 1$.</li>
+<li>$w_n = P(n) \times \sum_{y = y_n + 1}^{y = y_n + d_n} \frac{1}{(1+r)^{y - y_0}}$.</li>
+<li>$wIC_{i,n} = P(n) \times \frac{1}{(1+r)^{y_n - y_0}} \times IC_i$, the weighted and discounted one-time payment investment cost per MW.</li>
+<li>$wDC_{i,n} = P(n) \times \frac{1}{(1+r)^{y_n - y_0}} \times DC_i$, same for the retirement cost per MW.</li>
+<li>$wOC_{i,n} = w_n \times OC_i$, the weighted and discounted operation and maintenance fixed cost per MW, paid every year of the period.</li>
 </ul>
 <p>!!! note "On the $dx^{+/-}$ variables" </p><pre class="fragment">In our model, $x_{i,n}$ is the capacity available during the period represented by $n$, and this means the decisions $dx_{i,n}^{+/-}$ represent the variation of capacity during the period between $\text{parent}(n)$ and $n$ (i.e. the capacity being built or decommisionned during the period represented by $\text{parent}(n)$, with effective entry into service at the beginning of $n$).
 
 We can impose the decisions to be the same in all children of a given node (see [trajectory constraints](./merge-master.md#trajectory-constraints)) if we want the investment decision of a given period to be independent of what scenario will materialize in the next period when the new capacities enter into service.
 
 In the example from **Figure 1**, this would mean that the capacity we install in the period [2040, 2050] is independent of wether ```2050_A``` or ```2050_B``` will be realised.
-</pre> </div></div><!-- contents -->
+</pre><h1><a class="anchor" id="autotoc_md274"></a>
+Link with the user input file</h1>
+<p>Every parameter of the problem comes from the <a class="el" href="md_docs_2reference_2trajectory-investment_2user-input.html">user input file</a>, except the bounds $X_{i,n}^{max}$ :</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Parameter   </th><th class="markdownTableHeadNone">Comes from    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">$\mathcal{T}$, $\text{parent}(n)$   </td><td class="markdownTableBodyNone">the <code>tree</code> section    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">$p_n$   </td><td class="markdownTableBodyNone">the <code>probability</code> entry of the <code>tree</code> section    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">$r$   </td><td class="markdownTableBodyNone"><code>global: discount_rate</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">$y_0$   </td><td class="markdownTableBodyNone"><code>global: first_investment_year</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">$y_n$   </td><td class="markdownTableBodyNone">the <code>investment_date</code> of the node    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">$d_n$   </td><td class="markdownTableBodyNone">the difference between the <code>investment_date</code> of the children of $n$ and $y_n$, or <code>global: end_of_horizon</code> $- \, y_n$ for a leaf    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">$IC_i$, $DC_i$, $OC_i$   </td><td class="markdownTableBodyNone">the <code>investment</code>, <code>retirement</code> and <code>operation_maintenance</code> <a href="./user-input.md#candidates-costs">costs</a> of the type associated to the candidate by the node's <code>candidate_to_type</code> entry    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">$ANTARES_n$   </td><td class="markdownTableBodyNone">the annual study of the node, given in <code>global: studies</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">$x_{i, \text{parent}(\text{root})}$   </td><td class="markdownTableBodyNone"><code>initial_capacities</code>, the capacity installed before the first investment date, or before the node where the candidate <a href="./user-input.md#a-note-on-candidates">first appears</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">$X_{i,n}^{max}$   </td><td class="markdownTableBodyNone">the <code>candidates.ini</code> of the node's annual study, not the trajectory input file   </td></tr>
+</table>
+<p>The <code>constraints</code> section adds constraints on the $dx^{+/-}_{i,n}$ variables, <code>global: formulation</code> sets whether the investment variables are integer or relaxed, and <code>global: scaling</code> divides every coefficient of the objective without changing the optimal solution.</p>
+<h1><a class="anchor" id="autotoc_md275"></a>
+Link between the annual and the pluriannual problems</h1>
+<p>The annual problem is the pluriannual problem with a single node $n$ of duration $d_n$ : being the root, $P(n) = 1$ and $y_n = y_0$, and with no initial capacity nor retirement, $dx^+_{i,n} = x_{i,n}$ and $dx^-_{i,n} = 0$. The objective is then :</p>
+<p>$$ \sum_i \left( IC_i + w_n \, OC_i \right) x_{i,n} + w_n \times ANTARES_n(x_n), $$</p>
+<p>with :</p>
+<p>$$ w_n = \sum_{k = 1}^{d_n} \frac{1}{(1+r)^{k}} = \frac{1 - \frac{1}{(1+r)^{d_n}}}{r} $$</p>
+<p>Dividing by $w_n$ gives back $\sum_i C_i x_i + \text{ANTARES}(x)$ with $C_i = \frac{IC_i}{w_n} + OC_i = \frac{r}{1 - \frac{1}{(1+r)^{d_n}}}IC_i + OC_i$ : the annuity amortises the investment cost over the $d_n$ years of the node. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -321,6 +321,9 @@ var annotated_dup =
         ] ],
         [ "test_trajectory_cleanup", null, [
           [ "TestTrajectoryCleanup", "classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup.html", "classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup" ]
+        ] ],
+        [ "test_trajectory_input_translation", null, [
+          [ "TestTrajectoryInputTranslationEndToEnd", "classtests_1_1python_1_1test__trajectory__input__translation_1_1TestTrajectoryInputTranslationEndToEnd.html", null ]
         ] ]
       ] ]
     ] ],

@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2reference_2trajectory-investment_2user-input.
   <div class="headertitle"><div class="title">User input file parsing</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md300"></a></p>
-<h1><a class="anchor" id="autotoc_md301"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md302"></a></p>
+<h1><a class="anchor" id="autotoc_md303"></a>
 User input file</h1>
 <p>We give here an example of a user input file corresponding with the illustration given in the problem presentation. <br  />
  <b>input-trajectory.yaml</b> :</p>
@@ -233,7 +233,15 @@ User input file</h1>
 <div class="line">initial_capacities:</div>
 <div class="line">  default: 0</div>
 <div class="line">  semibase: 250</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md302"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md304"></a>
+Candidates costs</h1>
+<p>Each candidate is associated to a type of the <code>candidates_types</code> section, which holds its three unitary costs. They are given <b>undiscounted</b> and <b>in euros per MW</b> : the probability of the node and the discounting are applied by the translator (see <a href="./index.md#switching-to-a-pluriannual-vision">the objective's coefficients</a>).</p>
+<ul>
+<li><code>investment</code> : cost of building 1 MW, paid once when the capacity enters into service.</li>
+<li><code>operation_maintenance</code> : fixed operation and maintenance cost of 1 MW, <b>per year</b>, paid every year of the period during which the capacity is available.</li>
+<li><code>retirement</code> : cost of decommissioning 1 MW, paid once when the capacity is removed.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md305"></a>
 Input file parser &amp; translator</h1>
 <ul>
 <li>Parses the user input file and verifies that the data given in the file matches with the studies (To be implemented : check that every candidate is present in both the study and the node's info).</li>
@@ -247,7 +255,7 @@ Input file parser &amp; translator</h1>
 <li>Translates the constraints to their mathematical formulation (see the <a href="./merge-master.md#trajectory-constraints">trajectory constraints section</a> of the master merger.)</li>
 <li>Formats and outputs the <code>master_merger_info_file.json</code> used as input in both the <a class="el" href="md_docs_2reference_2trajectory-investment_2merge-master.html">merged master problem generator</a> and <a class="el" href="md_docs_2reference_2trajectory-investment_2merge-weights.html">merged weights file generator</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md303"></a>
+<h1><a class="anchor" id="autotoc_md306"></a>
 A note on candidates</h1>
 <p>We recommand that each candidate is defined in all of the studies and adding the necessary constraints to restrict the investment / divestment behaviour for this candidate to the desired feasible space. <br  />
  However, it is still possible to have candidates not present in all of the nodes of the tree. A candidate can either :</p>
@@ -255,11 +263,11 @@ A note on candidates</h1>
 <li>Appear only in later studies, to represent a cluster that might only enter into service later. In this case, when the candidate $i$ first appear in node $n$, the constraint will be : $\text{initial_capacities}_i + dx_{i,n}^+ - dx_{i,n}^- = x_{i,n}$, regardless of wether $n$ is the root node. ( Though as noted above, the recommanded modelisation would be to add the candidate in all the nodes and impose its installed capacity to be $0$ during the construction period)</li>
 <li>Disappear in the final studies, to represent a cluster that is assuredly decommissioned at this point. In this case, when the candidate $i$ disappears at node $n$, the constraint will be : $x_{i, \text{parent}(n)} + dx_{i,n}^+ - dx_{i,n}^- = 0$.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md304"></a>
+<h1><a class="anchor" id="autotoc_md307"></a>
 Trajectory constraints translation</h1>
-<p>The trajectory constraints translator implements 3 types of constraints for now. <br  />
+<p>The trajectory constraints translator implements the following types of constraints. <br  />
  We implement the <code>all</code> keyword for ease of readability. <code>all</code> will be expanded to a list containing all of the nodes or all of the candidates depending on the context.</p>
-<h2><a class="anchor" id="autotoc_md305"></a>
+<h2><a class="anchor" id="autotoc_md308"></a>
 <code>type: max_investment_per_node_per_candidate</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: add_max_1_GW_semibase</div>
@@ -269,13 +277,13 @@ Trajectory constraints translation</h1>
 <div class="line">  value: 1000</div>
 </div><!-- fragment --><p>This entry will result in 4 (4 = |<code>nodes</code>| $\times$ |<code>candidates</code>|) constraints in the merged problem :</p>
 <ul>
-<li>$dx_{2030, semibase}^+ \leq 1000$,</li>
-<li>$dx_{2040, semibase}^+ \leq 1000$,</li>
-<li>$dx_{2050_A, semibase}^+ \leq 1000$,</li>
-<li>$dx_{2050_B, semibase}^+ \leq 1000$</li>
+<li>$dx_{semibase, 2030}^+ \leq 1000$,</li>
+<li>$dx_{semibase, 2040}^+ \leq 1000$,</li>
+<li>$dx_{semibase, 2050_A}^+ \leq 1000$,</li>
+<li>$dx_{semibase, 2050_B}^+ \leq 1000$</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^+ \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md306"></a>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^+ \leq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md309"></a>
 <code>type: max_cumulative_investment_per_node</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: add_cum_2GW</div>
@@ -285,11 +293,11 @@ Trajectory constraints translation</h1>
 <div class="line">  value: 2000</div>
 </div><!-- fragment --><p>This entry will result in 2 (2 = |<code>nodes</code>|) constraints in the merged problem :</p>
 <ul>
-<li>$dx_{2030, semibase}^+ + dx_{2030, peak}^+ \leq 2000$,</li>
-<li>$dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$</li>
+<li>$dx_{semibase, 2030}^+ + dx_{peak, 2030}^+ \leq 2000$,</li>
+<li>$dx_{semibase, 2040}^+ + dx_{peak, 2040}^+ \leq 2000$</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^+ \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md307"></a>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{i \in \text{candidates}} dx_{i, n}^+ \leq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md310"></a>
 <code>type: max_retirement_per_node_per_candidate</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: forbid_retirement</div>
@@ -299,14 +307,14 @@ Trajectory constraints translation</h1>
 <div class="line">  value: 0</div>
 </div><!-- fragment --><p>This entry will result in 8 (8 = |<code>nodes</code>| $\times$ |<code>candidates</code>|) constraints in the merged problem :</p>
 <ul>
-<li>$dx_{2030, semibase}^- \leq 0, \quad dx_{2030, peak}^- \leq 0$,</li>
-<li>$dx_{2040, semibase}^- \leq 0, \quad dx_{2040, peak}^- \leq 0$,</li>
-<li>$dx_{2050_A, semibase}^- \leq 0, \quad dx_{2050_A, peak}^- \leq 0$,</li>
-<li>$dx_{2050_B, semibase}^- \leq 0, \quad dx_{2050_B, peak}^- \leq 0$</li>
+<li>$dx_{semibase, 2030}^- \leq 0, \quad dx_{peak, 2030}^- \leq 0$,</li>
+<li>$dx_{semibase, 2040}^- \leq 0, \quad dx_{peak, 2040}^- \leq 0$,</li>
+<li>$dx_{semibase, 2050_A}^- \leq 0, \quad dx_{peak, 2050_A}^- \leq 0$,</li>
+<li>$dx_{semibase, 2050_B}^- \leq 0, \quad dx_{peak, 2050_B}^- \leq 0$</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^- \leq \text{value} $$</p>
-<p><b>Note :</b> as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.</p>
-<h2><a class="anchor" id="autotoc_md308"></a>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^- \leq \text{value} $$</p>
+<p><b>Note :</b> as we always have $\forall n \in T, \quad \forall i \in C, \quad dx^{+/-}_{i,n} \geq 0$, regardless of the trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.</p>
+<h2><a class="anchor" id="autotoc_md311"></a>
 <code>type: max_cumulative_retirement_per_node</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: decom_cum_2GW</div>
@@ -316,45 +324,45 @@ Trajectory constraints translation</h1>
 <div class="line">  value: 2000</div>
 </div><!-- fragment --><p>This entry would result in 2 (2 = |<code>nodes</code>|) constraints in the merged problem :</p>
 <ul>
-<li>$dx_{2030, semibase}^- + dx_{2030, peak}^- \leq 2000$,</li>
-<li>$dx_{2040, semibase}^- + dx_{2040, peak}^- \leq 2000$</li>
+<li>$dx_{semibase, 2030}^- + dx_{peak, 2030}^- \leq 2000$,</li>
+<li>$dx_{semibase, 2040}^- + dx_{peak, 2040}^- \leq 2000$</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md309"></a>
-<code>type: min_investment_per_candidate_per_node</code></h2>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{i \in \text{candidates}} dx_{i, n}^- \leq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md312"></a>
+<code>type: min_investment_per_node_per_candidate</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: min_invest_1_5GW</div>
 <div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot;, &quot;2050_A&quot; ]</div>
 <div class="line">  candidates: [ semibase ]</div>
-<div class="line">  type: min_investment_per_candidate_per_node</div>
+<div class="line">  type: min_investment_per_node_per_candidate</div>
 <div class="line">  value: 1500</div>
 </div><!-- fragment --><p>This entry would result in 3 (3 = |<code>nodes</code>|) constraints in the merged problem :</p>
 <ul>
-<li>$dx_{2030, semibase}^+ \geq 1500$,</li>
-<li>$dx_{2040, semibase}^+ \geq 1500$,</li>
-<li>$dx_{2040_A, semibase}^+ \geq 1500$,</li>
+<li>$dx_{semibase, 2030}^+ \geq 1500$,</li>
+<li>$dx_{semibase, 2040}^+ \geq 1500$,</li>
+<li>$dx_{semibase, 2050_A}^+ \geq 1500$,</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^+ \geq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md310"></a>
-<code>type: min_retirement_per_candidate_per_node</code></h2>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^+ \geq \text{value} $$</p>
+<h2><a class="anchor" id="autotoc_md313"></a>
+<code>type: min_retirement_per_node_per_candidate</code></h2>
 <p>Example :</p>
 <div class="fragment"><div class="line">- name: min_decom_1GW</div>
 <div class="line">  nodes: [ &quot;2030&quot;, &quot;2040&quot; ]</div>
 <div class="line">  candidates: [ peak ]</div>
-<div class="line">  type: min_retirement_per_candidate_per_node</div>
+<div class="line">  type: min_retirement_per_node_per_candidate</div>
 <div class="line">  value: 1000</div>
 </div><!-- fragment --><p>This entry would result in 2 (2 = |<code>nodes</code>|) constraints in the merged problem :</p>
 <ul>
-<li>$dx_{2030, peak}^- \geq 1000$,</li>
-<li>$dx_{2040, peak}^- \geq 1000$</li>
+<li>$dx_{peak, 2030}^- \geq 1000$,</li>
+<li>$dx_{peak, 2040}^- \geq 1000$</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value} $$</p>
-<h1><a class="anchor" id="autotoc_md311"></a>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^- \geq \text{value} $$</p>
+<h1><a class="anchor" id="autotoc_md314"></a>
 Input data of local study or input data from <code>input-trajectory.yaml</code> ?</h1>
 <p>Each yearly study defines some input data from either <code>candidates.ini</code> and <code>settings.ini</code>. Some of this data are overriden by <code>input-trajectory.yaml</code> whereas some are reused:</p>
 <ul>
 <li><b>Master formulation</b>: The parameter of each individual study (integer or relaxed given in <code>settings.ini</code>) is overriden by the <code>formulation</code> given in the <code>input-trajectory.yaml</code> so that the same master formulation is applied at each node of the tree.</li>
-<li><b>Investment costs</b>: In each individual study, investment costs are given in <code>candidates.ini</code>. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore <b>candidate costs given in <code>input-trajectory.yaml</code> override the local study ones</b>. The candidate costs are given in <b>euros</b> in the <code>candidates_types</code> section, for each candidate type and each case (investment, operation_maintenance and retirement). !!! Note For each node, the list of candidates present in <code>candidate_to_type</code> must exactly match the candidates of the <code>candidates.ini</code> file of the corresponding study.</li>
+<li><b>Investment costs</b>: In each individual study, investment costs are given in <code>candidates.ini</code>. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore <b>candidate costs given in <code>input-trajectory.yaml</code> override the local study ones</b>. The candidate costs are given in <b>euros per MW</b> in the <code>candidates_types</code> section, for each candidate type and each case (investment, operation_maintenance and retirement). !!! Note For each node, the list of candidates present in <code>candidate_to_type</code> must exactly match the candidates of the <code>candidates.ini</code> file of the corresponding study.</li>
 <li><b>Investment bounds</b>: For each candidate, three variables are used to define the capacity, namely $x_{i,n}$ (overall capacity), $dx_{i,n}^+$ and $dx_{i,n}^-$, respectively added and removed capacity for candidate $i$ at node $n$. Bounds on the overall capacity $x_{i,n}$ come from each individual <code>candidates.ini</code> file (section <code>max-investment</code> or <code>max-units</code> combined with <code>unit-size</code>), whereas bounds on $dx$ variables come from the <code>constraints</code> section in <code>input-trajectory.yaml</code>.</li>
 <li><b>Solver parameters</b>:<ul>
 <li>The solver to use for resolution is given in the command line, see <a href="../trajectory-investment/orchestration.md#execution-options">Execution options</a>.</li>
