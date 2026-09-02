@@ -116,30 +116,33 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
 
     solver_->chg_obj(indices, weighted_obj);
 
-    /*we need to check if we are changing any constraints 
+    /*we need to check if we are changing any constraints
     It happens that the provided csv to reset constraints coeffs from sub to sub be empty
     If it's the case there's nothing to set on the solver to build the subproblem worker
     */
     if (!coef_set_.RowIndices().empty())
-        solver_->chg_coefs(coef_set_.RowIndices(),
-                       coef_set_.ColIndices(),
-                       coef_set_.CoefficientsFor(sub_name));
-
-    if (!obj_set_.CoefficientsFor(sub_name).empty()) 
     {
+        solver_->chg_coefs(coef_set_.RowIndices(),
+                           coef_set_.ColIndices(),
+                           coef_set_.CoefficientsFor(sub_name));
+    }
 
+    if (!obj_set_.CoefficientsFor(sub_name).empty())
+    {
         const auto& obj_coeffs = obj_set_.CoefficientsFor(sub_name);
         std::vector<double> weighted_obj_coeffs(obj_coeffs.size());
         std::ranges::transform(obj_coeffs,
-            weighted_obj_coeffs.begin(),
-            [slave_weights](double coefficient)
-            { return coefficient * slave_weights; });
-                
-            solver_->chg_obj(obj_set_.ColIndices(), weighted_obj_coeffs);
+                               weighted_obj_coeffs.begin(),
+                               [slave_weights](double coefficient)
+                               { return coefficient * slave_weights; });
+
+        solver_->chg_obj(obj_set_.ColIndices(), weighted_obj_coeffs);
     }
 
-    if (!rhs_set_.RowIndices().empty()) 
+    if (!rhs_set_.RowIndices().empty())
+    {
         solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
+    }
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map, solver_, logger_);
 
