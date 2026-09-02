@@ -96,6 +96,14 @@ initial_capacities:
   semibase: 250
 ```
 
+## Candidates costs
+
+Each candidate is associated to a type of the ```candidates_types``` section, which holds its three unitary costs. They are given **undiscounted** and **in euros per MW** : the probability of the node and the discounting are applied by the translator (see [the objective's coefficients](./index.md#switching-to-a-pluriannual-vision)).
+
+- ```investment``` : cost of building 1 MW, paid once when the capacity enters into service.
+- ```operation_maintenance``` : fixed operation and maintenance cost of 1 MW, **per year**, paid every year of the period during which the capacity is available.
+- ```retirement``` : cost of decommissioning 1 MW, paid once when the capacity is removed.
+
 ## Input file parser & translator
 
 - Parses the user input file and verifies that the data given in the file matches with the studies (To be implemented :
@@ -129,7 +137,7 @@ A candidate can either :
 
 ## Trajectory constraints translation
 
-The trajectory constraints translator implements 3 types of constraints for now.  
+The trajectory constraints translator implements the following types of constraints.  
 We implement the ```all``` keyword for ease of readability. ```all``` will be expanded to a list containing all of the
 nodes or all of the candidates depending on the context.
 
@@ -147,14 +155,14 @@ Example :
 
 This entry will result in 4 (4 = |```nodes```| $\times$ |```candidates```|) constraints in the merged problem :
 
-- $dx_{2030, semibase}^+ \leq 1000$,
-- $dx_{2040, semibase}^+ \leq 1000$,
-- $dx_{2050\_A, semibase}^+ \leq 1000$,
-- $dx_{2050\_B, semibase}^+ \leq 1000$
+- $dx_{semibase, 2030}^+ \leq 1000$,
+- $dx_{semibase, 2040}^+ \leq 1000$,
+- $dx_{semibase, 2050\_A}^+ \leq 1000$,
+- $dx_{semibase, 2050\_B}^+ \leq 1000$
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^+ \leq \text{value}
+\forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^+ \leq \text{value}
 $$
 
 ### ```type: max_cumulative_investment_per_node```
@@ -170,12 +178,12 @@ Example :
 
 This entry will result in 2 (2 = |```nodes```|) constraints in the merged problem :
 
-- $dx_{2030, semibase}^+ + dx_{2030, peak}^+ \leq 2000$,
-- $dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$
+- $dx_{semibase, 2030}^+ + dx_{peak, 2030}^+ \leq 2000$,
+- $dx_{semibase, 2040}^+ + dx_{peak, 2040}^+ \leq 2000$
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^+ \leq \text{value}
+\forall n \in \text{nodes}, \quad \sum_{i \in \text{candidates}} dx_{i, n}^+ \leq \text{value}
 $$
 
 ### ```type: max_retirement_per_node_per_candidate```
@@ -192,17 +200,17 @@ Example :
 
 This entry will result in 8 (8 = |```nodes```| $\times$ |```candidates```|) constraints in the merged problem :
 
-- $dx_{2030, semibase}^- \leq 0, \quad dx_{2030, peak}^- \leq 0$,
-- $dx_{2040, semibase}^- \leq 0, \quad dx_{2040, peak}^- \leq 0$,
-- $dx_{2050\_A, semibase}^- \leq 0, \quad dx_{2050\_A, peak}^- \leq 0$,
-- $dx_{2050\_B, semibase}^- \leq 0, \quad dx_{2050\_B, peak}^- \leq 0$
+- $dx_{semibase, 2030}^- \leq 0, \quad dx_{peak, 2030}^- \leq 0$,
+- $dx_{semibase, 2040}^- \leq 0, \quad dx_{peak, 2040}^- \leq 0$,
+- $dx_{semibase, 2050\_A}^- \leq 0, \quad dx_{peak, 2050\_A}^- \leq 0$,
+- $dx_{semibase, 2050\_B}^- \leq 0, \quad dx_{peak, 2050\_B}^- \leq 0$
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^- \leq \text{value}
+\forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^- \leq \text{value}
 $$
 
-**Note :** as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the
+**Note :** as we always have $\forall n \in T, \quad \forall i \in C, \quad dx^{+/-}_{i,n} \geq 0$, regardless of the
 trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.
 
 ### ```type: max_cumulative_retirement_per_node```  
@@ -218,55 +226,55 @@ Example :
 
 This entry would result in 2 (2 = |```nodes```|) constraints in the merged problem :
 
-- $dx_{2030, semibase}^- + dx_{2030, peak}^- \leq 2000$,
-- $dx_{2040, semibase}^- + dx_{2040, peak}^- \leq 2000$
+- $dx_{semibase, 2030}^- + dx_{peak, 2030}^- \leq 2000$,
+- $dx_{semibase, 2040}^- + dx_{peak, 2040}^- \leq 2000$
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value}
+\forall n \in \text{nodes}, \quad \sum_{i \in \text{candidates}} dx_{i, n}^- \leq \text{value}
 $$
 
-### ```type: min_investment_per_candidate_per_node```  
+### ```type: min_investment_per_node_per_candidate```  
 Example :
 
 ```yaml
   - name: min_invest_1_5GW
     nodes: [ "2030", "2040", "2050_A" ]
     candidates: [ semibase ]
-    type: min_investment_per_candidate_per_node
+    type: min_investment_per_node_per_candidate
     value: 1500
 ```
 
 This entry would result in 3 (3 = |```nodes```|) constraints in the merged problem :
 
-- $dx_{2030, semibase}^+ \geq 1500$,
-- $dx_{2040, semibase}^+ \geq 1500$,
-- $dx_{2040\_A, semibase}^+ \geq 1500$,
+- $dx_{semibase, 2030}^+ \geq 1500$,
+- $dx_{semibase, 2040}^+ \geq 1500$,
+- $dx_{semibase, 2050\_A}^+ \geq 1500$,
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^+ \geq \text{value}
+\forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^+ \geq \text{value}
 $$
 
-### ```type: min_retirement_per_candidate_per_node```  
+### ```type: min_retirement_per_node_per_candidate```  
 Example :
 
 ```yaml
   - name: min_decom_1GW
     nodes: [ "2030", "2040" ]
     candidates: [ peak ]
-    type: min_retirement_per_candidate_per_node
+    type: min_retirement_per_node_per_candidate
     value: 1000
 ```
 
 This entry would result in 2 (2 = |```nodes```|) constraints in the merged problem :
 
-- $dx_{2030, peak}^- \geq 1000$,
-- $dx_{2040, peak}^- \geq 1000$
+- $dx_{peak, 2030}^- \geq 1000$,
+- $dx_{peak, 2040}^- \geq 1000$
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value}
+\forall n \in \text{nodes}, \quad \forall i \in \text{candidates}, \quad dx_{i, n}^- \geq \text{value}
 $$
 
 ## Input data of local study or input data from `input-trajectory.yaml` ?
@@ -274,7 +282,7 @@ $$
 Each yearly study defines some input data from either `candidates.ini` and `settings.ini`. Some of this data are overriden by `input-trajectory.yaml` whereas some are reused:
 
 - **Master formulation**: The parameter of each individual study (integer or relaxed given in `settings.ini`) is overriden by the `formulation` given in the `input-trajectory.yaml` so that the same master formulation is applied at each node of the tree.
-- **Investment costs**:  In each individual study, investment costs are given in `candidates.ini`. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore **candidate costs given in `input-trajectory.yaml` override the local study ones**. The candidate costs are given in **euros** in the `candidates_types` section, for each candidate type and each case (investment, operation_maintenance and retirement).
+- **Investment costs**:  In each individual study, investment costs are given in `candidates.ini`. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore **candidate costs given in `input-trajectory.yaml` override the local study ones**. The candidate costs are given in **euros per MW** in the `candidates_types` section, for each candidate type and each case (investment, operation_maintenance and retirement).
 !!! Note
     For each node, the list of candidates present in `candidate_to_type` must exactly match the candidates of the `candidates.ini` file of the corresponding study.
 
