@@ -2,8 +2,6 @@
 
 #include <boost/tokenizer.hpp>
 
-#include "iostream"
-
 BestUbTracker::BestUbTracker(mpi::communicator* world,
                                      const std::filesystem::path& file_path,
                                      const std::filesystem::path& output_root,
@@ -29,19 +27,15 @@ BestUbTracker::BestUbTracker(mpi::communicator* world,
         variables_to_follow_.assign(tok.begin(), tok.end());
     }
 
-    for (auto& variable: variables_to_follow_)
-    {
-        std::cout << "variable " << variable << std::endl;
-    }
 }
 
 bool BestUbTracker::set_best_ub_solution_(double new_best_ub, int iter)
 {
     if (new_best_ub < best_ub_)
     {
-        std::cout << "found new best ub " << std::endl;
+        best_ub_ = new_best_ub;
         last_iteration_update_ = iter;
-        return true ; 
+        return true ;
     }
     return false ; 
 }
@@ -58,14 +52,12 @@ void BestUbTracker::set_variables_values(std::string sub_name,
         if ( variables_to_follow_indices_per_sub_.find(sub_name)
         == variables_to_follow_indices_per_sub_.end())
         {
-            std::cout << "getting indices for " << sub_name << std::endl;
             for (auto& variable: variables_to_follow_)
             {
                 auto index = worker->get_variable_index(variable);
                 if (index < 0)
                 {
-                    std::cerr << "unable to find " << variable << " in sub_problem " << sub_name
-                    << std::endl;
+                    _logger->display_message("unable to find " + variable + " in sub_problem " + sub_name);
                 }
                 variables_to_follow_indices_per_sub_[sub_name].push_back(index);
             }
@@ -73,7 +65,6 @@ void BestUbTracker::set_variables_values(std::string sub_name,
         
         if (last_iteration_update_ == iter)
         {
-            std::cout << "updating the solution " << std::endl;
             values_per_sub_[sub_name] = worker->get_solution();
         }
     }
@@ -115,7 +106,7 @@ void BestUbTracker::dump_values()
     std::ofstream out(output_file_);
     if (!out.is_open())
     {
-        std::cerr << "unable to open sub_best_ub_variables.csv for writing" << std::endl;
+        _logger->display_message("unable to open sub_best_ub_variables.csv for writing");
         return;
     }
 
