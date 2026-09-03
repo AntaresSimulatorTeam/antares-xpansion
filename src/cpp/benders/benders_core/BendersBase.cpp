@@ -920,7 +920,11 @@ void BendersBase::post_run_actions() const
 
 void BendersBase::SaveCurrentIterationInOutputFile() const
 {
-    if (!suppress_output_file_writes_ && const auto iter = LastIterationSnapshot())
+    if (suppress_output_file_writes_)
+    {
+        return;
+    }
+    if (const auto iter = LastIterationSnapshot())
     {
         _writer->write_iteration(*iter, _data.it + iterations_before_resume);
         _writer->dump();

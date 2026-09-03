@@ -1,6 +1,8 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h"
 
 #include <algorithm>
+#include <numeric>
+
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <iostream>
 
