@@ -119,16 +119,15 @@ void OuterLoopBenders::InitExternalValues(bool is_bilevel_check_all, double lamb
 
 void OuterLoopBenders::OuterLoopBilevelChecks()
 {
-    if (communication_strategy_->IsMaster()
-        && (adapter_->DoOuterLoop() && !is_bilevel_check_all_))
+    if (communication_strategy_->IsMaster() && (adapter_->DoOuterLoop() && !is_bilevel_check_all_))
     {
         const WorkerMasterData& workerMasterData = adapter_->BestIterationWorkerMaster();
         const auto& invest_cost = workerMasterData._invest_cost;
         const auto& overall_cost = invest_cost + workerMasterData._operational_cost;
         const auto current_iteration_data = adapter_->GetCurrentIterationData();
         const auto& x_cut = current_iteration_data.x_cut;
-        const auto& external_loop_lambda
-          = current_iteration_data.criteria_current_iteration_data.lambda;
+        const auto& external_loop_lambda = current_iteration_data.criteria_current_iteration_data
+                                             .lambda;
         if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
               x_cut,
               adapter_->GetOuterLoopCriterionAtBestBenders() /*/!\ must

@@ -19,9 +19,7 @@ std::vector<double> OuterLoopBendersAdapter::GetOuterLoopCriterionAtBestBenders(
     return outer_loop_criterion_at_best_benders_;
 }
 
-void OuterLoopBendersAdapter::InitOuterLoopData(double lambda,
-                                                double lambda_min,
-                                                double lambda_max)
+void OuterLoopBendersAdapter::InitOuterLoopData(double lambda, double lambda_min, double lambda_max)
 {
     current_outer_loop_data_.lambda = lambda;
     current_outer_loop_data_.lambda_min = lambda_min;
@@ -46,15 +44,14 @@ void OuterLoopBendersAdapter::RefreshOuterLoopStateFromBenders()
     current_outer_loop_data_.lambda_min = preserved.lambda_min;
     current_outer_loop_data_.lambda_max = preserved.lambda_max;
     current_outer_loop_data_.benders_num_run = preserved.benders_num_run;
-    current_outer_loop_data_.outer_loop_bilevel_best_ub
-      = preserved.outer_loop_bilevel_best_ub;
+    current_outer_loop_data_.outer_loop_bilevel_best_ub = preserved.outer_loop_bilevel_best_ub;
 
     const auto& criteria_per_iteration = benders_->GetCriteriaPerIteration();
     const auto best_it = current_data.best_it;
     outer_loop_criterion_at_best_benders_ = (criteria_per_iteration.empty() || best_it < 1)
-                                               ? std::vector<double>{}
-                                               : criteria_per_iteration[static_cast<size_t>(
-                                                   best_it - 1)];
+                                              ? std::vector<double>{}
+                                              : criteria_per_iteration[static_cast<size_t>(best_it
+                                                                                           - 1)];
 }
 
 void OuterLoopBendersAdapter::SaveOuterLoopSolutionInOutputFile() const

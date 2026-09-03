@@ -56,7 +56,7 @@ using on_Benders_sub_resolution_start = void (*)();
 using on_Benders_sub_resolution_end = void (*)();
 
 /*
-    Implementation of BendersPlugin to manage the microiterations workflow
+    Implementation of IBendersPlugin to manage the microiterations workflow
 */
 
 class Benders_MICRO_ITERS final: public IBendersPlugin

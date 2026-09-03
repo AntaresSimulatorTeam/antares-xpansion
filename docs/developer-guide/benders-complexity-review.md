@@ -156,6 +156,10 @@ Dependency rules after the refactor:
 Every phase lands as an independent, green PR (format + unit + e2e gates, §6).
 Phases are strictly incremental; each ends with a working system.
 
+> **Status (branch `refactor/benders-complexity`)**: P1, P2 and P3 are implemented
+> as separate commits on top of the review commit and are ready for build/test
+> validation. P4–P6 remain to be scheduled.
+
 ### Phase 0 — Baseline & safety net (prerequisite)
 1. Restore local build environment (vcpkg checkout + toolchain; no `CMakeCache` survives on
    this machine and network was unavailable at review time) **or** agree that CI is the gate.
@@ -166,44 +170,46 @@ Phases are strictly incremental; each ends with a working system.
 3. Extend unit coverage where components will be moved (CutBuilder, MasterProblemController,
    SubproblemService) *before* moving them — characterization tests on current behavior.
 
-### Phase 1 — Dead code & hygiene (low risk, 1 PR)
+### Phase 1 — Dead code & hygiene (low risk, 1 PR) ✅ done
+
 - Delete `ICutsManager`/`CutsManagerRunTime` (`CutsManagement.{h,cpp}`), the injection in
   `BendersApp::RunExternalLoop`, and the member in `OuterLoopBenders` (already done on the
   legacy branch: commit `9d80437f7`).
-- Delete `workerMasterDataVect_`, `AllCuts()`, commented-out `BendersCuts`/`Clean` blocks.
-- Move the free `selectPolicy` template out of `BendersBase.h` into a helper.
-- Keep `BendersSequential` (valuable test double) but document it as test-only; consider
-  moving it under `tests/cpp` in a later PR.
+- Delete `workerMasterDataVect_`, `AllCuts()`, commented-out `BendersCuts`/`Clean` blocks,
+  and the now-unused `WorkerMasterDataVect` typedef.
+- Move the free `selectPolicy` template out of `BendersBase.h` into `ExecutionPolicy.h`.
+- Keep `BendersSequential` (valuable test double) and document it as test-only.
 
-### Phase 2 — Break the target cycles (medium risk, 1–2 PRs)
+### Phase 2 — Break the target cycles (medium risk, 1–2 PRs) ✅ done
 1. Move the `IBendersPlugin` interface (and only it) from `plugins` into `benders_core`
-   (or a small `benders_plugins_interface` target). `plugins` keeps the concrete plugins.
-   → breaks core↔plugins cycle.
+   (renamed from `BendersPlugin`). `plugins` keeps the concrete plugins. → core↔plugins
+   cycle broken.
 2. Move `MasterUpdateBase` + `IMasterUpdate` from `benders_core` to `outer_loop`.
-   → breaks core↔outer_loop cycle; `benders_core` stops linking `outer_loop_lib`.
-3. De-MPI `SubproblemWorkerFactory`: drop the `boost::mpi::communicator*` ctor parameter;
-   the per-rank subproblem *selection* already happens in `BendersMpi::InitializeProblems` —
-   pass the selected subproblem list (it already is), and give the factory a plain
-   `subproblem_names`-only contract. Verify `Benders_MICRO_ITERS`/`BendersPluginFactory`
-   MPI usage is confined to the plugin target (accept MPI there, since the Julia FFI needs
-   the communicator — document it).
+   → core↔outer_loop cycle broken; `benders_core` no longer links `outer_loop_lib`.
+3. De-MPI the skeleton loading path in `benders_core`: `SubproblemWorkerFactory`,
+   `SkeletonConstraintSetLoader` and `SkeletonCoefficientSet` take an optional
+   fatal-error callback instead of a `boost::mpi::communicator*`; `BendersMpi` and the
+   micro-iterations plugin supply the abort callback. `boost/mpi` no longer appears in
+   `benders_core`.
 
-### Phase 3 — Outer-loop adapter (re-land refacto_outer_5, medium risk, 1–2 PRs)
-1. Introduce `OuterLoopBendersAdapter` (final design of the legacy branch, adapted to the
-   moved `OuterLoopBenders` location): owns λ/λ_min/λ_max, benders_num_run, bilevel_best_ub,
-   outer solution data; `Launch()` = `benders_->launch()` + snapshot refresh.
-2. Strip outer-loop state & methods from `BendersBase`
-   (`GetOuterLoopData`, `GetOuterLoopSolution`, `UpdateOuterLoopSolution`,
-   `SetBilevelBestub`, `GetOuterLoopCriterionAtBestBenders`, `init_data(λ…)`,
-   `GetBendersRunNumber`/`IncrementBendersRunNumber`, `SaveOuterLoop*`); add the generic
-   accessors the adapter needs (`GetLastWorkerMasterData`, `GetCriteriaPerIteration`,
+Known remaining cycle (out of scope, noted for later): `benders_mpi_core` ↔ `factories`.
+
+### Phase 3 — Outer-loop adapter (re-land refacto_outer_5, medium risk, 1–2 PRs) ✅ done
+1. `OuterLoopBendersAdapter` owns λ/λ_min/λ_max, benders_num_run, bilevel_best_ub, outer
+   solution data; `Launch()` = seed engine context + `benders_->launch()` + state refresh.
+2. `BendersBase` lost its outer-loop state & methods; gained generic accessors
+   (`StartOuterLoopIteration(ctx)`, `LastIterationSnapshot`, `GetCriteriaPerIteration`,
    `GetCurrentBendersSolution`).
-3. Replace `DO_OUTER_LOOP` checks inside core output methods with a
-   `suppress_output_file_writes_` flag set by the outer loop.
-4. Simplify `OuterLoopBenders` ctor (no cuts manager; adapter built internally); stop
-   accessing `benders_->_logger` (use adapter accessors).
-5. `CurrentIterationData` keeps only benders-iteration fields; `CriteriaCurrentIterationData`
-   moves to the outer_loop target (shared via a small header both link).
+3. Per-iteration/final output-file writes in the engine are gated by
+   `suppress_output_file_writes_` (set by the adapter) instead of
+   `EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP`.
+4. `OuterLoopBenders` talks to the engine only through the adapter; `OuterLoopLambdaMin/Max`
+   left the `OuterLoop` interface (kept concrete on `OuterLoopBenders`).
+
+Behavior-preservation notes: the per-iteration math-logging columns (benders_num_run,
+max_criterion\*, bilevel best ub, λ values) are seeded into the engine before each run via
+`StartOuterLoopIteration` — identical values to the removed 3-arg `init_data`; the timer
+restart semantics are preserved.
 
 ### Phase 4 — Decompose `BendersBase` (core of the effort, 4–6 PRs)
 Slice in this order (each slice: extract → delegate → slim base class → green):
@@ -265,17 +271,14 @@ removes the duplicated cut-gathering. Highest-risk phase; only after Phase 4 sta
 | In-memory / compact mode used by other workflows | `GetCompactInMemCuts`/`init_for_compact_in_mem` API preserved through Phase 4 |
 | Scope creep in Phase 4 | strict slicing (§5.4), one component per PR, base class shrinks monotonically |
 
-## 8. Decisions needed
+## 8. Decisions
 
-1. **Scope & cadence** — recommend committing to **P0–P3 now** (safe, high-value: cycles
-   broken, outer loop decoupled, dead code gone), then reassess P4–P6 with the new
-   structure in place. OK?
-2. **Build environment** — no usable local build on this machine today (no vcpkg checkout,
-   no CMakeCache, no network at review time). Which gate do we use for the first PRs:
-   local (needs env restore) or CI-only?
-3. **Conflicts** — any active parallel work on benders (in-memory workflow, further
-   micro-iterations) that P4's `BendersBase` surgery could clash with?
-4. **`BendersSequential`** — keep as test-only double (recommended) or retire it in favor
-   of 1-proc MPI in production paths?
-5. **PR shape for P3** — single "outer loop decoupling" PR (adapter + BendersBase trim) or
-   two (state extraction first, adapter second)?
+1. **Scope & cadence** — P0–P3 first, then reassess P4–P6. ✅ approved; P1–P3 implemented
+   on `refactor/benders-complexity`, pending build/test validation.
+2. **Build environment** — local build generation/build/test handled by the maintainer
+   (no usable vcpkg toolchain on the review machine).
+3. **Conflicts** — none reported; P4's `BendersBase` surgery still needs a go/no-go against
+   in-memory / micro-iteration work in flight.
+4. **`BendersSequential`** — kept as a test-only double (documented in the header).
+5. **PR shape for P3** — landed as a single commit (adapter + `BendersBase` trim) on top of
+   the P1/P2 commits; split into PRs per commit.
