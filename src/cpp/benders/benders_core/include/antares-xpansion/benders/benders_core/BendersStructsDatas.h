@@ -61,15 +61,6 @@ struct CurrentIterationData
     CriteriaCurrentIterationData criteria_current_iteration_data;
 };
 
-// /*! \struct to store benders cuts data
-//  */
-// struct BendersCuts {
-//   Point x_cut;
-//   SubProblemDataMap subsProblemDataMap;
-// };
-
-// using BendersCutsPerIteration = std::vector<BendersCuts>;
-
 /*!
  * \class WorkerMasterData
  * \brief Class use to store trace information during the algorithm run
@@ -105,5 +96,3 @@ struct BendersRelevantIterationsData
     WorkerMasterData last;
     WorkerMasterData best;
 };
-
-using WorkerMasterDataVect = std::vector<WorkerMasterData>;

@@ -1,7 +1,6 @@
 #pragma once
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
-#include "antares-xpansion/benders/benders_core/CutsManagement.h"
 #include "antares-xpansion/benders/benders_core/ICommunicationStrategy.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
@@ -21,7 +20,6 @@ public:
     explicit OuterLoopBenders(
       const std::vector<Benders::Criterion::CriterionSingleInputData>& outer_loop_data,
       std::shared_ptr<IMasterUpdate> master_updater,
-      std::shared_ptr<ICutsManager> cuts_manager,
       pBendersBase benders,
       std::shared_ptr<ICommunicationStrategy> communication_strategy);
 
@@ -40,7 +38,6 @@ public:
 
 private:
     std::shared_ptr<IMasterUpdate> master_updater_;
-    std::shared_ptr<ICutsManager> cuts_manager_;
     pBendersBase benders_;
     BendersLoggerBase loggers_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;

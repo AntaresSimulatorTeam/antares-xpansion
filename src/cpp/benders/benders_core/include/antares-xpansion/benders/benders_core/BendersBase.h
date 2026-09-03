@@ -1,7 +1,6 @@
 #pragma once
 
 #include <antares-xpansion/benders/plugins/BendersPlugin.h>
-#include <execution>
 #include <filesystem>
 #include <functional>
 #include <mutex>
@@ -10,6 +9,7 @@
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
+#include "ExecutionPolicy.h"
 #include "ICommunicationStrategy.h"
 #include "SubproblemBasisCache.h"
 #include "SubproblemCut.h"
@@ -20,24 +20,6 @@
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
-
-/**
- * std execution policies don't share a base type so we can't just select
- *them in place in the foreach This function allow the selection of policy
- *via template deduction
- **/
-template<class lambda>
-auto selectPolicy(lambda f, bool shouldParallelize)
-{
-    if (shouldParallelize)
-    {
-        return f(std::execution::par_unseq);
-    }
-    else
-    {
-        return f(std::execution::seq);
-    }
-}
 
 class BendersBase
 {
@@ -53,11 +35,6 @@ public:
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
@@ -157,11 +134,8 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
     WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
@@ -258,7 +232,6 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
     SubproblemsMapPtr GetSubProblemMap() const
     {
         return subproblem_map;

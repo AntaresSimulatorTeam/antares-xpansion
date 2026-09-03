@@ -181,12 +181,9 @@ int BendersApp::RunExternalLoop()
           criterion_input_holder_);
         std::shared_ptr<Outerloop::IMasterUpdate> master_updater = std::make_shared<
           Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
-        std::shared_ptr<Outerloop::ICutsManager>
-          cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
         Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
                                              master_updater,
-                                             cuts_manager,
                                              benders_,
                                              benders_->GetCommunicationStrategy());
         StartMessage();
