@@ -136,9 +136,14 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 #ifdef _WIN32
         DWORD err = GetLastError();
         LPSTR msg = nullptr;
-        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
-                         FORMAT_MESSAGE_IGNORE_INSERTS,
-                       nullptr, err, 0, reinterpret_cast<LPSTR>(&msg), 0, nullptr);
+        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM
+                         | FORMAT_MESSAGE_IGNORE_INSERTS,
+                       nullptr,
+                       err,
+                       0,
+                       reinterpret_cast<LPSTR>(&msg),
+                       0,
+                       nullptr);
         std::cerr << "LoadLibraryW error (" << err << "): " << (msg ? msg : "unknown") << std::endl;
         LocalFree(msg);
 #else
