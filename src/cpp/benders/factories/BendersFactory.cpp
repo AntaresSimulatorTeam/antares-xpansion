@@ -123,7 +123,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         break;
     }
 
-    std::shared_ptr<BendersPlugin> benders_plugin(
+    std::shared_ptr<IBendersPlugin> benders_plugin(
       benders_plugin_factory_->CreatePlugin(coupling_map, options_.MICRO_ITERATIONS, world_));
     benders->SetPlugin(benders_plugin);
 

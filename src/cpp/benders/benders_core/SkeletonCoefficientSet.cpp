@@ -1,7 +1,5 @@
 #include "antares-xpansion/benders/benders_core/SkeletonCoefficientSet.h"
 
-#include <cstdlib>
-
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 void SkeletonCoefficientSet::Load(SkeletonCoefficientReader& skeleton_coefficient_reader,
@@ -10,9 +8,9 @@ void SkeletonCoefficientSet::Load(SkeletonCoefficientReader& skeleton_coefficien
                                   std::optional<std::filesystem::path> row_indices_csv,
                                   const std::shared_ptr<SolverAbstract>& solver,
                                   Logger& logger,
-                                  boost::mpi::communicator* world)
+                                  std::function<void()> fatal_error_handler)
 {
-    world_ = world;
+    fatal_error_handler_ = std::move(fatal_error_handler);
     logger_ = logger;
     skeleton_coefficient_reader.read_keyed_coeffs_csv(coeffs_csv, coeffs_);
     if (col_indices_csv)
@@ -30,9 +28,9 @@ std::vector<double>& SkeletonCoefficientSet::CoefficientsFor(const std::string& 
     if (coeffs_.find(name) == coeffs_.end())
     {
         logger_->display_message("from SkeletonCoefficientSet couldn't find key");
-        if (world_)
+        if (fatal_error_handler_)
         {
-            world_->abort(EXIT_FAILURE);
+            fatal_error_handler_();
         }
     }
     return coeffs_[name];

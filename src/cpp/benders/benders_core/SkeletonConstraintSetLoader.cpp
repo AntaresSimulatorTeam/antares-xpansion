@@ -9,11 +9,11 @@ SkeletonConstraintSetLoader::SkeletonConstraintSetLoader(
   int log_level,
   ProblemsFormat format,
   std::vector<std::string>&& constraints_names,
-  boost::mpi::communicator* world):
+  std::function<void()> fatal_error_handler):
     logger_(logger),
     input_root_(input_root),
     skeleton_coefficient_reader_(std::move(constraints_names)),
-    world_(world)
+    fatal_error_handler_(std::move(fatal_error_handler))
 {
     SkeletonSolverLoader loader(logger_);
     solver_ = loader.Load(input_root_ / "constraints" / "constraints.mps",
@@ -46,14 +46,14 @@ void SkeletonConstraintSetLoader::read_coeffs_and_indices()
                    dir / "coef_rows.csv",
                    solver_,
                    logger_,
-                   world_);
+                   fatal_error_handler_);
     rhs_set_.Load(skeleton_coefficient_reader_,
                   dir / "rhs.csv",
                   std::nullopt,
                   dir / "rhs_rows.csv",
                   solver_,
                   logger_,
-                  world_);
+                  fatal_error_handler_);
 }
 
 int SkeletonConstraintSetLoader::GetConstraintsNumber()

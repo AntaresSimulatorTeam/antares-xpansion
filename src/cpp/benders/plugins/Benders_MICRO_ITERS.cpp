@@ -589,5 +589,11 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBase
                                                                            options.PROBLEMS_FORMAT,
                                                                            std::move(
                                                                              constraints_names),
-                                                                           _world);
+                                                                           [this]()
+                                                                           {
+                                                                               if (_world)
+                                                                               {
+                                                                                   _world->abort(1);
+                                                                               }
+                                                                           });
 }

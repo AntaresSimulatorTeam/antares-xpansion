@@ -8,12 +8,15 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /*
-  This interface will be implemented each time we need to add call backs.
+  Interface for Benders engine plugins (callback hooks around the Benders loop).
+  Concrete plugins live in the `plugins` target (NoOperationPlugin,
+  Benders_MICRO_ITERS). This interface is owned by benders_core so that the
+  engine does not depend on the concrete plugins target.
 */
-class BendersPlugin
+class IBendersPlugin
 {
 public:
-    virtual ~BendersPlugin() = default;
+    virtual ~IBendersPlugin() = default;
 
     /*
       This method will be called on the start of the benders method
@@ -46,8 +49,8 @@ public:
       = 0;
     virtual void OnBendersSubResolutionEnd() = 0;
     /*
-  This method will be called at the start of the master iteration after solving subprolems
-  @inputs :
+      This method will be called at the start of the master iteration after solving subprolems
+      @inputs :
 
 */
     virtual void OnBendersMasterResolutionStart() = 0;

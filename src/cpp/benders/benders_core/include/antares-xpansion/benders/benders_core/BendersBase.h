@@ -1,6 +1,5 @@
 #pragma once
 
-#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <filesystem>
 #include <functional>
 #include <mutex>
@@ -10,6 +9,7 @@
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
 #include "ExecutionPolicy.h"
+#include "IBendersPlugin.h"
 #include "ICommunicationStrategy.h"
 #include "SubproblemBasisCache.h"
 #include "SubproblemCut.h"
@@ -32,7 +32,7 @@ public:
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
+    void SetPlugin(std::shared_ptr<IBendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     LogData GetBestIterationData() const;
@@ -135,7 +135,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterPtr _master;
-    std::shared_ptr<BendersPlugin> benders_plugin_;
+    std::shared_ptr<IBendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;

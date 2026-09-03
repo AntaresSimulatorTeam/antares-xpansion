@@ -4,7 +4,7 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
-#include "antares-xpansion/benders/benders_core/MasterUpdate.h"
+#include "antares-xpansion/benders/outer_loop/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/VariablesGroup.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
@@ -12,7 +12,7 @@
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include <antares-xpansion/benders/factories/BendersPluginFactory.h>
-#include <antares-xpansion/benders/plugins/BendersPlugin.h>
+#include <antares-xpansion/benders/benders_core/IBendersPlugin.h>
 #include "gtest/gtest.h"
 
 boost::mpi::environment* penv = nullptr;

@@ -1,13 +1,12 @@
 #pragma once
 
 #include <filesystem>
+#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
-
-#include <boost/mpi.hpp>
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
@@ -24,7 +23,7 @@ public:
               std::optional<std::filesystem::path> row_indices_csv,
               const std::shared_ptr<SolverAbstract>& solver,
               Logger& logger,
-              boost::mpi::communicator* world);
+              std::function<void()> fatal_error_handler = {});
 
     std::vector<double>& CoefficientsFor(const std::string& name);
     std::vector<int>& RowIndices();
@@ -35,6 +34,6 @@ private:
     std::map<std::string, std::vector<double>> coeffs_;
     std::vector<int> row_indices_;
     std::vector<int> col_indices_;
-    boost::mpi::communicator* world_ = nullptr;
+    std::function<void()> fatal_error_handler_;
     Logger logger_;
 };

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "antares-xpansion/benders/benders_core/MasterUpdate.h"
+#include "antares-xpansion/benders/outer_loop/MasterUpdate.h"
 
 using namespace Outerloop;
 

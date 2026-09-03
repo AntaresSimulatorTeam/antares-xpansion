@@ -992,7 +992,7 @@ Output::Iteration BendersBase::iteration(const WorkerMasterData& masterDataPtr_l
     return iteration;
 }
 
-void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
+void BendersBase::SetPlugin(std::shared_ptr<IBendersPlugin> benders_plugin)
 {
     benders_plugin_ = benders_plugin;
 }
