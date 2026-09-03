@@ -2,7 +2,9 @@
 
 #include <filesystem>
 #include <functional>
+#include <memory>
 #include <mutex>
+#include <optional>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
@@ -92,30 +94,43 @@ public:
 
     virtual void free() = 0;
 
-    int GetBendersRunNumber() const
-    {
-        return _data.criteria_current_iteration_data.benders_num_run;
-    }
-
-    void IncrementBendersRunNumber()
-    {
-        ++_data.criteria_current_iteration_data.benders_num_run;
-    }
-
     CurrentIterationData GetCurrentIterationData() const;
-
-    CriteriaCurrentIterationData GetOuterLoopData() const;
-
-    std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
     virtual void init_data();
-    void init_data(double external_loop_lambda,
-                   double external_loop_lambda_min,
-                   double external_loop_lambda_max);
-    Output::SolutionData GetOuterLoopSolution() const;
-    void SaveOuterLoopSolutionInOutputFile() const;
-    void SaveCurrentOuterLoopIterationInOutputFile() const;
-    void SetBilevelBestub(double bilevel_best_ub);
-    void UpdateOuterLoopSolution();
+
+    /**
+     * @brief Reset the benders run state and seed the outer-loop iteration context.
+     *
+     * Seeds `criteria_current_iteration_data` (benders run number, lambda values,
+     * bilevel best ub) from the provided context so per-iteration math logging
+     * reports the outer-loop values of the current run. The outer-loop
+     * orchestration (OuterLoopBendersAdapter) owns this context; the engine
+     * treats it as run context for logging purposes only.
+     */
+    void StartOuterLoopIteration(const CriteriaCurrentIterationData& outer_loop_context);
+
+    /**
+     * @brief When true, per-iteration and final solution writes to the output
+     * file are skipped (the outer loop owns the output file instead).
+     */
+    void SuppressOutputFileWrites(bool suppress)
+    {
+        suppress_output_file_writes_ = suppress;
+    }
+
+    /// Snapshot of the last benders iteration, if it produced a valid master result.
+    [[nodiscard]] std::optional<Output::Iteration> LastIterationSnapshot() const;
+
+    /// Criterion values per benders iteration, at best iteration of the current run.
+    [[nodiscard]] const std::vector<std::vector<double>>& GetCriteriaPerIteration() const
+    {
+        return criteria_vector_for_each_iteration_;
+    }
+
+    /// Current benders solution, as if the benders run had just ended.
+    [[nodiscard]] Output::SolutionData GetCurrentBendersSolution() const
+    {
+        return BendersSolution();
+    }
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
@@ -144,6 +159,7 @@ protected:
     bool init_data_ = true;
     bool init_problems_ = true;
     bool free_problems_ = true;
+    bool suppress_output_file_writes_ = false;
     BendersBaseOptions _options;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
@@ -345,7 +361,6 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    Output::SolutionData outer_loop_solution_data_;
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 

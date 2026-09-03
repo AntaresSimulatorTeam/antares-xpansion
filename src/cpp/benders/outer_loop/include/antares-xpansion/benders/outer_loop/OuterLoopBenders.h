@@ -1,10 +1,14 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/ICommunicationStrategy.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBendersAdapter.h"
 
 namespace Outerloop
 {
@@ -31,16 +35,16 @@ public:
     void PrintLog() override;
     void init_data() override;
     bool isExceptionRaised() override;
-    double OuterLoopLambdaMin() const override;
-    double OuterLoopLambdaMax() const override;
+    double OuterLoopLambdaMin() const;
+    double OuterLoopLambdaMax() const;
     bool UpdateMaster() override;
     ~OuterLoopBenders() override = default;
 
 private:
     std::shared_ptr<IMasterUpdate> master_updater_;
-    pBendersBase benders_;
-    BendersLoggerBase loggers_;
+    std::shared_ptr<OuterLoopBendersAdapter> adapter_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
+    BendersLoggerBase loggers_;
     bool is_bilevel_check_all_ = false;
     void InitExternalValues(bool is_bilevel_check_all, double lambda);
     OuterLoopBiLevel outer_loop_biLevel_;
