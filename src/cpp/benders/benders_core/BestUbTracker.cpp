@@ -49,8 +49,7 @@ void BestUbTracker::set_variables_values(std::string sub_name,
     if (set_best_ub_solution_(new_ub,iter)) 
     {
 
-        if ( variables_to_follow_indices_per_sub_.find(sub_name)
-        == variables_to_follow_indices_per_sub_.end())
+        if (iter <= 1) [[unlikely]]
         {
             for (auto& variable: variables_to_follow_)
             {
