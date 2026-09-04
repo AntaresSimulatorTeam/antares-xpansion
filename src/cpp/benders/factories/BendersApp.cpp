@@ -7,7 +7,7 @@
 
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
-#include "antares-xpansion/benders/benders_core/MasterUpdate.h"
+#include "antares-xpansion/benders/outer_loop/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
@@ -181,12 +181,9 @@ int BendersApp::RunExternalLoop()
           criterion_input_holder_);
         std::shared_ptr<Outerloop::IMasterUpdate> master_updater = std::make_shared<
           Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
-        std::shared_ptr<Outerloop::ICutsManager>
-          cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
         Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
                                              master_updater,
-                                             cuts_manager,
                                              benders_,
                                              benders_->GetCommunicationStrategy());
         StartMessage();

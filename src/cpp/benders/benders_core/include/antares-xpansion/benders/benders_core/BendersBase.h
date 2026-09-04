@@ -1,15 +1,17 @@
 #pragma once
 
-#include <antares-xpansion/benders/plugins/BendersPlugin.h>
-#include <execution>
 #include <filesystem>
 #include <functional>
+#include <memory>
 #include <mutex>
+#include <optional>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
+#include "ExecutionPolicy.h"
+#include "IBendersPlugin.h"
 #include "ICommunicationStrategy.h"
 #include "SubproblemBasisCache.h"
 #include "SubproblemCut.h"
@@ -20,24 +22,6 @@
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
-
-/**
- * std execution policies don't share a base type so we can't just select
- *them in place in the foreach This function allow the selection of policy
- *via template deduction
- **/
-template<class lambda>
-auto selectPolicy(lambda f, bool shouldParallelize)
-{
-    if (shouldParallelize)
-    {
-        return f(std::execution::par_unseq);
-    }
-    else
-    {
-        return f(std::execution::seq);
-    }
-}
 
 class BendersBase
 {
@@ -50,14 +34,9 @@ public:
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
+    void SetPlugin(std::shared_ptr<IBendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
@@ -115,30 +94,43 @@ public:
 
     virtual void free() = 0;
 
-    int GetBendersRunNumber() const
-    {
-        return _data.criteria_current_iteration_data.benders_num_run;
-    }
-
-    void IncrementBendersRunNumber()
-    {
-        ++_data.criteria_current_iteration_data.benders_num_run;
-    }
-
     CurrentIterationData GetCurrentIterationData() const;
-
-    CriteriaCurrentIterationData GetOuterLoopData() const;
-
-    std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
     virtual void init_data();
-    void init_data(double external_loop_lambda,
-                   double external_loop_lambda_min,
-                   double external_loop_lambda_max);
-    Output::SolutionData GetOuterLoopSolution() const;
-    void SaveOuterLoopSolutionInOutputFile() const;
-    void SaveCurrentOuterLoopIterationInOutputFile() const;
-    void SetBilevelBestub(double bilevel_best_ub);
-    void UpdateOuterLoopSolution();
+
+    /**
+     * @brief Reset the benders run state and seed the outer-loop iteration context.
+     *
+     * Seeds `criteria_current_iteration_data` (benders run number, lambda values,
+     * bilevel best ub) from the provided context so per-iteration math logging
+     * reports the outer-loop values of the current run. The outer-loop
+     * orchestration (OuterLoopBendersAdapter) owns this context; the engine
+     * treats it as run context for logging purposes only.
+     */
+    void StartOuterLoopIteration(const CriteriaCurrentIterationData& outer_loop_context);
+
+    /**
+     * @brief When true, per-iteration and final solution writes to the output
+     * file are skipped (the outer loop owns the output file instead).
+     */
+    void SuppressOutputFileWrites(bool suppress)
+    {
+        suppress_output_file_writes_ = suppress;
+    }
+
+    /// Snapshot of the last benders iteration, if it produced a valid master result.
+    [[nodiscard]] std::optional<Output::Iteration> LastIterationSnapshot() const;
+
+    /// Criterion values per benders iteration, at best iteration of the current run.
+    [[nodiscard]] const std::vector<std::vector<double>>& GetCriteriaPerIteration() const
+    {
+        return criteria_vector_for_each_iteration_;
+    }
+
+    /// Current benders solution, as if the benders run had just ended.
+    [[nodiscard]] Output::SolutionData GetCurrentBendersSolution() const
+    {
+        return BendersSolution();
+    }
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
@@ -157,11 +149,8 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
     WorkerMasterPtr _master;
-    std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
+    std::shared_ptr<IBendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
@@ -170,6 +159,7 @@ protected:
     bool init_data_ = true;
     bool init_problems_ = true;
     bool free_problems_ = true;
+    bool suppress_output_file_writes_ = false;
     BendersBaseOptions _options;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
@@ -258,7 +248,6 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
     SubproblemsMapPtr GetSubProblemMap() const
     {
         return subproblem_map;
@@ -372,7 +361,6 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    Output::SolutionData outer_loop_solution_data_;
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 

@@ -4,7 +4,6 @@
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <antares-xpansion/benders/factories/BendersPluginFactory.h>
-#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <memory>
 #include <optional>
 #include <variant>

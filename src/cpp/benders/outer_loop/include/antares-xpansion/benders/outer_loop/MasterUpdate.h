@@ -1,7 +1,7 @@
 #pragma once
-#include "BendersBase.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
-#include "common.h"
 
 namespace Outerloop
 {

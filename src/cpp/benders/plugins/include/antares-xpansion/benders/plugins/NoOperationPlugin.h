@@ -1,8 +1,8 @@
 #pragma once
 
-#include <antares-xpansion/benders/plugins/BendersPlugin.h>
+#include <antares-xpansion/benders/benders_core/IBendersPlugin.h>
 
-class NoOperationPlugin final: public BendersPlugin
+class NoOperationPlugin final: public IBendersPlugin
 {
 public:
     NoOperationPlugin();

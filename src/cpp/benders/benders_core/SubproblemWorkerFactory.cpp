@@ -1,6 +1,8 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h"
 
 #include <algorithm>
+#include <numeric>
+
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <iostream>
 
@@ -14,11 +16,11 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                                                  ProblemsFormat format,
                                                  std::vector<std::string> sub_problem_names,
                                                  const SolverLogManager& solver_log_manager,
-                                                 boost::mpi::communicator* world):
+                                                 std::function<void()> fatal_error_handler):
     logger_(logger),
     input_root_(input_root),
     skeleton_coefficient_reader_(std::move(sub_problem_names)),
-    world_(world)
+    fatal_error_handler_(std::move(fatal_error_handler))
 {
     SkeletonSolverLoader loader(logger_);
     solver_ = loader.Load(input_root_ / "sub" / "sub.mps",
@@ -67,21 +69,21 @@ void SubproblemWorkerFactory::load_coefficient_sets()
                    dir / "coef_rows.csv",
                    solver_,
                    logger_,
-                   world_);
+                   fatal_error_handler_);
     obj_set_.Load(skeleton_coefficient_reader_,
                   dir / "obj_coef.csv",
                   dir / "obj_cols.csv",
                   std::nullopt,
                   solver_,
                   logger_,
-                  world_);
+                  fatal_error_handler_);
     rhs_set_.Load(skeleton_coefficient_reader_,
                   dir / "rhs.csv",
                   std::nullopt,
                   dir / "rhs_rows.csv",
                   solver_,
                   logger_,
-                  world_);
+                  fatal_error_handler_);
 }
 
 int SubproblemWorkerFactory::GetSubNumber()

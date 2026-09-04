@@ -291,8 +291,6 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData& data) const
 void BendersBase::UpdateTrace()
 {
     FillWorkerMasterData(relevantIterationData_.last);
-    // TODO Outer loop --> de-comment for general case
-    // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 
 bool BendersBase::is_initial_relaxation_requested() const
@@ -922,38 +920,29 @@ void BendersBase::post_run_actions() const
 
 void BendersBase::SaveCurrentIterationInOutputFile() const
 {
-    if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP)
+    if (suppress_output_file_writes_)
     {
-        auto& LastWorkerMasterData = relevantIterationData_.last;
-        if (LastWorkerMasterData._valid)
-        {
-            _writer->write_iteration(iteration(LastWorkerMasterData),
-                                     _data.it + iterations_before_resume);
-            _writer->dump();
-        }
+        return;
+    }
+    if (const auto iter = LastIterationSnapshot())
+    {
+        _writer->write_iteration(*iter, _data.it + iterations_before_resume);
+        _writer->dump();
     }
 }
 
-void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const
+std::optional<Output::Iteration> BendersBase::LastIterationSnapshot() const
 {
-    auto& LastWorkerMasterData = relevantIterationData_.last;
-    if (LastWorkerMasterData._valid)
+    if (!relevantIterationData_.last._valid)
     {
-        _writer->write_iteration(iteration(LastWorkerMasterData),
-                                 _data.criteria_current_iteration_data.benders_num_run);
-        _writer->dump();
+        return std::nullopt;
     }
+    return iteration(relevantIterationData_.last);
 }
 
 void BendersBase::SaveSolutionInOutputFile() const
 {
     _writer->write_solution(solution());
-    _writer->dump();
-}
-
-void BendersBase::SaveOuterLoopSolutionInOutputFile() const
-{
-    _writer->write_solution(GetOuterLoopSolution());
     _writer->dump();
 }
 
@@ -994,7 +983,7 @@ Output::Iteration BendersBase::iteration(const WorkerMasterData& masterDataPtr_l
     return iteration;
 }
 
-void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
+void BendersBase::SetPlugin(std::shared_ptr<IBendersPlugin> benders_plugin)
 {
     benders_plugin_ = benders_plugin;
 }
@@ -1005,17 +994,6 @@ Output::SolutionData BendersBase::solution() const
     solution_data.best_it = _data.best_it + iterations_before_resume;
 
     return solution_data;
-}
-
-void BendersBase::UpdateOuterLoopSolution()
-{
-    outer_loop_solution_data_ = BendersSolution();
-    outer_loop_solution_data_.best_it = _data.criteria_current_iteration_data.benders_num_run;
-}
-
-Output::SolutionData BendersBase::GetOuterLoopSolution() const
-{
-    return outer_loop_solution_data_;
 }
 
 Output::SolutionData BendersBase::BendersSolution() const
@@ -1387,7 +1365,7 @@ void BendersBase::EndWritingInOutputFile() const
     _writer->updateEndTime();
     // TODO duration for outer loop
     _writer->write_duration(_data.benders_time);
-    if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP)
+    if (!suppress_output_file_writes_)
     {
         SaveSolutionInOutputFile();
     }
@@ -1494,33 +1472,12 @@ CurrentIterationData BendersBase::GetCurrentIterationData() const
     return _data;
 }
 
-CriteriaCurrentIterationData BendersBase::GetOuterLoopData() const
-{
-    return _data.criteria_current_iteration_data;
-}
-
-std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const
-{
-    return ((criteria_vector_for_each_iteration_.empty())
-              ? std::vector<double>() // Unnamed RVO
-              : criteria_vector_for_each_iteration_[_data.best_it - 1]);
-}
-
-void BendersBase::init_data(double external_loop_lambda,
-                            double external_loop_lambda_min,
-                            double external_loop_lambda_max)
+void BendersBase::StartOuterLoopIteration(const CriteriaCurrentIterationData& outer_loop_context)
 {
     benders_timer.restart();
-    auto benders_num_run = _data.criteria_current_iteration_data.benders_num_run;
-    auto outer_loop_bilevel_best_ub = _data.criteria_current_iteration_data
-                                        .outer_loop_bilevel_best_ub;
     init_data();
+    _data.criteria_current_iteration_data = outer_loop_context;
     _data.criteria_current_iteration_data.criteria.clear();
-    _data.criteria_current_iteration_data.benders_num_run = benders_num_run;
-    _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
-    _data.criteria_current_iteration_data.lambda = external_loop_lambda;
-    _data.criteria_current_iteration_data.lambda_min = external_loop_lambda_min;
-    _data.criteria_current_iteration_data.lambda_max = external_loop_lambda_max;
 }
 
 bool BendersBase::isExceptionRaised() const
@@ -1547,11 +1504,6 @@ void BendersBase::UpdateOverallCosts()
     }
 
     relevantIterationData_.best._invest_cost = _data.invest_cost;
-}
-
-void BendersBase::SetBilevelBestub(double bilevel_best_ub)
-{
-    _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = bilevel_best_ub;
 }
 
 void BendersBase::setCriterionComputationInputs(

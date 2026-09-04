@@ -8,6 +8,10 @@
 /*!
  * \class BendersSequential
  * \brief Class use run the benders algorithm in sequential
+ *
+ * Test-only engine: production runs always use the MPI backends (BendersMpi /
+ * BendersByBatch), even for a single process. BendersSequential is kept as a
+ * lightweight double for unit tests (no MPI environment required).
  */
 class BendersSequential: public BendersBase
 {

@@ -4,11 +4,11 @@
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include "antares-xpansion/benders/plugins/BendersPlugin.h"
+#include "antares-xpansion/benders/benders_core/IBendersPlugin.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "gtest/gtest.h"
 
-class BendersPluginStub : public BendersPlugin
+class BendersPluginStub : public IBendersPlugin
 {
 public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,

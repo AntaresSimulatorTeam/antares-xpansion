@@ -25,7 +25,7 @@ Benders_MICRO_ITERS class.
 #include "antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h"
 #include "antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
-#include "antares-xpansion/benders/plugins/BendersPlugin.h"
+#include "antares-xpansion/benders/benders_core/IBendersPlugin.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 using on_Benders_start_Func = void (*)(std::filesystem::path,
@@ -56,10 +56,10 @@ using on_Benders_sub_resolution_start = void (*)();
 using on_Benders_sub_resolution_end = void (*)();
 
 /*
-    Implementation of BendersPlugin to manage the microiterations workflow
+    Implementation of IBendersPlugin to manage the microiterations workflow
 */
 
-class Benders_MICRO_ITERS final: public BendersPlugin
+class Benders_MICRO_ITERS final: public IBendersPlugin
 {
 public:
     /*

@@ -2,10 +2,9 @@
 
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <filesystem>
+#include <functional>
 #include <memory>
 #include <string>
-
-#include <boost/mpi.hpp>
 
 #include "SkeletonCoefficientSet.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
@@ -21,7 +20,7 @@ public:
                                 int log_level,
                                 ProblemsFormat format,
                                 std::vector<std::string>&& constraints_names,
-                                boost::mpi::communicator* world = nullptr);
+                                std::function<void()> fatal_error_handler = {});
 
     SkeletonConstraintSetLoader(const std::filesystem::path& input_root,
                                 Logger& logger,
@@ -45,5 +44,5 @@ private:
     std::shared_ptr<SolverAbstract> solver_;
     SolverLogManager solver_log_manager_;
     SkeletonCoefficientReader skeleton_coefficient_reader_;
-    boost::mpi::communicator* world_ = nullptr;
+    std::function<void()> fatal_error_handler_;
 };
