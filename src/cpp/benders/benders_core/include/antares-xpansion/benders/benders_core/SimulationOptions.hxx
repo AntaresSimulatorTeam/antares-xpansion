@@ -90,7 +90,10 @@ BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string, "adequacy_criterion.y
 BENDERS_OPTIONS_MACRO(AREA_FILE, std::string, "area.txt", asString())
 
 // cache problems
-BENDERS_OPTIONS_MACRO(CACHE_PROBLEMS, int, 0, asInt())
+BENDERS_OPTIONS_MACRO(CACHE_PROBLEMS,
+                      CacheProblems,
+                      CacheProblems::NO_CACHE,
+                      as<CacheProblems>())
 
 // Master solution tolerance
 BENDERS_OPTIONS_MACRO(MASTER_SOLUTION_TOLERANCE, double, 1e-4, asDouble())

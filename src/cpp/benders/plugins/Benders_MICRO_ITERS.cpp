@@ -230,12 +230,12 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
 
     switch (options.CACHE_PROBLEMS)
     {
-    // as in case 1 we have nothing to build initially , we load the constraint file in
+    // as in case PER_SUB we have nothing to build initially, we load the constraint file in
     // BendersSubResolutionstart
-    case 0:
+    case CacheProblems::NO_CACHE:
         build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);
         break;
-    case 2:
+    case CacheProblems::COMPACT:
         build_skeleton_constraint_set_loader(options);
         break;
     default:
@@ -284,15 +284,15 @@ void Benders_MICRO_ITERS::OnBendersIterationStart()
 void Benders_MICRO_ITERS::OnBendersIterationEnd()
 {
     OnBendersIterationEnd_();
-    if (options_.CACHE_PROBLEMS < 2)
+    if (options_.CACHE_PROBLEMS != CacheProblems::COMPACT)
     {
         if (!warm_start_)
         {
-            if (options_.CACHE_PROBLEMS == 0)
+            if (options_.CACHE_PROBLEMS == CacheProblems::NO_CACHE)
             {
-                // Only CACHE_PROBLEMS==0 keeps the same manager alive across iterations, so
+                // Only NO_CACHE keeps the same manager alive across iterations, so
                 // it is the only mode where added rows must be physically removed here.
-                // CACHE_PROBLEMS==1 rebuilds a fresh manager from disk on the next
+                // PER_SUB rebuilds a fresh manager from disk on the next
                 // OnBendersSubResolutionStart, making this step moot for that mode.
                 for (auto& [sub_name, constraint_mgr_name]: subproblem_constraint_map_)
                 {
@@ -347,7 +347,7 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 
 SubproblemConstraintsManagerPtr Benders_MICRO_ITERS::GetActiveManager(const std::string& sub_name)
 {
-    if (options_.CACHE_PROBLEMS < 2)
+    if (options_.CACHE_PROBLEMS != CacheProblems::COMPACT)
     {
         std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
         return constraints_map_[constraints_manager_name];
@@ -358,9 +358,9 @@ SubproblemConstraintsManagerPtr Benders_MICRO_ITERS::GetActiveManager(const std:
 void Benders_MICRO_ITERS::TrackAddedConstraint(const std::string& sub_name,
                                                const std::string& constraint)
 {
-    // CACHE_PROBLEMS==0 keeps the same manager alive for the whole run, so its added rows
+    // NO_CACHE keeps the same manager alive for the whole run, so its added rows
     // already persist on their own; nothing needs tracking for replay there.
-    if (options_.CACHE_PROBLEMS == 0 || !warm_start_)
+    if (options_.CACHE_PROBLEMS == CacheProblems::NO_CACHE || !warm_start_)
     {
         return;
     }
@@ -373,7 +373,7 @@ void Benders_MICRO_ITERS::ReplayPersistedConstraints(const std::string& sub_name
     {
         return;
     }
-    if (options_.CACHE_PROBLEMS == 1)
+    if (options_.CACHE_PROBLEMS == CacheProblems::PER_SUB)
     {
         std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
         for (auto& constraint_name: added_constraints_per_sub_[sub_name])
@@ -381,7 +381,7 @@ void Benders_MICRO_ITERS::ReplayPersistedConstraints(const std::string& sub_name
             constraints_map_[constraints_manager_name]->AddRows(constraint_name);
         }
     }
-    else if (options_.CACHE_PROBLEMS >= 2)
+    else if (options_.CACHE_PROBLEMS == CacheProblems::COMPACT)
     {
         auto ContraintsSolver = constraint_set_loader_->GetSolver();
         for (auto& constraint_name: added_constraints_per_sub_[sub_name])
@@ -460,7 +460,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {
-    if (options_.CACHE_PROBLEMS == 2)
+    if (options_.CACHE_PROBLEMS == CacheProblems::COMPACT)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
         auto skeleton_solver = constraint_set_loader_->LoadConstraintSet(constraints_file_name);
@@ -489,7 +489,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
         // and rows temporarily stripped by sharing this skeleton solver come back.
         ReplayPersistedConstraints(sub_name);
     }
-    else if (options_.CACHE_PROBLEMS == 1)
+    else if (options_.CACHE_PROBLEMS == CacheProblems::PER_SUB)
     {
         // In this case we are supposed to have One mps loaded on RAM
         constraints_map_.clear();

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <json/json.h>
 
+#include "antares-xpansion/core/CacheProblems.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -26,6 +27,12 @@ template<>
 inline ProblemsFormat Json::Value::as<ProblemsFormat>() const
 {
     return problemsFormatFromString(asString());
+}
+
+template<>
+inline CacheProblems Json::Value::as<CacheProblems>() const
+{
+    return cacheProblemsFromString(asString());
 }
 
 /*!

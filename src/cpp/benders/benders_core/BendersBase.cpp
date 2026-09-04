@@ -482,14 +482,13 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 {
     switch (Options().CACHE_PROBLEMS)
     {
-    case 0:
-
+    case CacheProblems::NO_CACHE:
         GetSubproblemCutFast(subproblem_data_map);
         break;
-    case 1:
+    case CacheProblems::PER_SUB:
         GetSubproblemCutCache(subproblem_data_map);
         break;
-    case 2:
+    case CacheProblems::COMPACT:
         GetCompactInMemCuts(subproblem_data_map);
         break;
     default:

@@ -37,7 +37,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS > 0)
+    if (_options.CACHE_PROBLEMS != CacheProblems::NO_CACHE)
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -577,7 +577,7 @@ void BendersMpi::launch()
     _world.barrier();
 
     std::shared_ptr<SolverAbstract> subProblemFactorSolver;
-    if (_options.CACHE_PROBLEMS == 2)
+    if (_options.CACHE_PROBLEMS == CacheProblems::COMPACT)
     {
         subProblemFactorSolver = build_sub_problem_skeleton();
     }
