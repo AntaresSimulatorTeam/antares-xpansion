@@ -13,7 +13,17 @@ cmake --preset vcpkg
 cmake --build build
 ```
 
-Run tests: `cmake --preset vcpkg -DBUILD_TESTING=ON && cmake --build build && ctest --test-dir build`
+## Test
+
+```bash
+cmake --preset vcpkg -DBUILD_TESTING=ON && cmake --build build
+ctest --test-dir build -L unit                    # unit tests (C++ and Python)
+ctest --test-dir build -L unit -E unit_launcher   # C++ unit tests only
+```
+
+Select tests by label, not by name pattern — C++ unit-test names are
+inconsistent, so `-R '^unit_'` silently skips about half of them.
+See the [Testing Guide](docs/agents/testing.md) for end-to-end and BDD suites.
 
 Without preset, configure with the vcpkg toolchain explicitly (Linux preset equivalent):
 `cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-release`

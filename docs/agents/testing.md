@@ -1,172 +1,72 @@
 # Testing Guide
 
-This document covers testing patterns for Antares Xpansion.
-
-## Building Tests
-
-Enable tests during CMake configuration:
-
-```bash
-cmake -B build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-```
+Testing patterns for Antares Xpansion. Assumes a build configured with
+`-DBUILD_TESTING=ON` (see [AGENTS.md](../../AGENTS.md)).
 
 ## Running Tests
 
-### All Tests
-
 ```bash
-ctest --test-dir build
+ctest --test-dir build                       # everything
+ctest --test-dir build -L unit               # all unit tests (C++ and Python)
+ctest --test-dir build -L unit -E unit_launcher   # C++ unit tests only
+ctest --test-dir build -R unit_launcher      # Python unit tests only
+ctest --test-dir build -L end_to_end         # integration tests
 ```
 
-### Unit Tests Only (C++ and Python)
-
-```bash
-ctest --test-dir build -L unit
-```
-
-### C++ Unit Tests Only
-
-```bash
-ctest --test-dir build -R '^unit_' -E unit_launcher
-```
-
-### Python Unit Tests Only
-
-```bash
-ctest --test-dir build -R unit_launcher
-```
-
-### End-to-End Tests
-
-```bash
-ctest --test-dir build -L end_to_end
-```
-
-### By Duration Label
-
-```bash
-ctest --test-dir build -L short    # Fast tests
-ctest --test-dir build -L medium    # Medium duration
-ctest --test-dir build -L long      # Long running tests
-```
-
-### With Coverage
-
-```bash
-cmake -B build -S . -DBUILD_TESTING=ON -DCODE_COVERAGE=ON
-cmake --build build
-ctest --test-dir build
-# Coverage report in build/coverage/
-```
-
-## Test Organization
-
-### Test Names
-
-| Test Pattern | Description |
-|-------------|-------------|
-| `unit_*` | C++ unit tests |
-| `unit_launcher` | Python unit tests |
-| `examples_*` | Example-based integration tests |
-| `sequential`, `mpibenders` | Benders integration tests |
+Select by label rather than by name pattern: C++ unit-test *names* are
+inconsistent (`unit_benders_sequential`, but also `helpers_test`,
+`output_writer`, `test_multisolver`, `zip_mps_lib_tests`), so `-R '^unit_'`
+silently skips about half of them. Every one of them carries the `unit` label.
 
 ### Labels
 
-- `unit` - Unit tests
-- `end_to_end` - Integration tests
-- `short`, `medium`, `long` - Duration categories
-- `benders`, `lpnamer`, `bdd` - Functional categories
+| Label | Meaning |
+|---|---|
+| `unit` | Unit tests (C++ and Python) |
+| `end_to_end` | Integration tests |
+| `short`, `medium`, `long` | Duration categories |
+| `benders`, `lpnamer`, `bdd`, `gems`, `restart` | Functional categories |
+
+Labels are assigned in each `tests/**/CMakeLists.txt` via
+`set_property(TEST <name> PROPERTY LABELS ...)`.
+
+### Coverage
+
+```bash
+cmake -B build -S . -DCODE_COVERAGE=ON   # implies BUILD_TESTING=ON
+cmake --build build
+ctest --test-dir build
+cmake --build build --target code-coverage   # report in build/coverage/
+```
 
 ## C++ Tests (Google Test)
 
-### Location
-
-```
-tests/cpp/
-├── benders/
-├── full_run/
-├── helpers/
-├── json_output_writer/
-├── logger/
-├── lp_namer/
-├── merge_mps/
-├── multisolver_interface/
-├── outer_loop/
-├── restart_benders/
-├── sensitivity/
-├── solvers_interface/
-├── study_updater/
-├── TestDoubles/
-├── tests_utils/
-└── zip_mps/
-```
-
-### Writing Tests
-
-```cpp
-#include <gtest/gtest.h>
-
-class MyClassTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-        // Setup code
-    }
-};
-
-TEST_F(MyClassTest, ShouldDoSomething) {
-    MyClass obj;
-    EXPECT_EQ(obj.compute(), expected_value);
-}
-```
-
-### Assertions
-
-- Use `EXPECT_*` for non-fatal failures (test continues)
-- Use `ASSERT_*` for fatal failures (stops test)
-- Prefer clear failure messages:
+Live in `tests/cpp/<component>/`, one CMake target per component. Standard
+GoogleTest — prefer `EXPECT_*` over `ASSERT_*` unless a failure makes the rest
+of the test meaningless, and attach context to non-obvious assertions:
 
 ```cpp
 EXPECT_EQ(actual, expected) << "Failed for input: " << input;
 ```
 
+Shared test doubles live in `tests/cpp/TestDoubles/` and helpers in
+`tests/cpp/tests_utils/` — check both before writing a new fake.
+
 ## Python Tests (pytest)
 
-### Location
+- `tests/python/` — unit tests for the launcher (`unit_launcher`). Plain
+  pytest, no custom markers.
+- `tests/end_to_end/examples/` — example-driven integration tests
+  (`example_test.py`), selected by marker.
 
-```
-tests/python/
-```
-
-### Writing Tests
-
-```python
-import pytest
-
-def test_load_candidates(study_path):
-    reader = CandidatesReader(study_path)
-    candidates = reader.load()
-    assert len(candidates) == 5
-    assert "candidate1" in candidates
-
-@pytest.fixture
-def study_path(tmp_path):
-    # Create test study
-    return tmp_path / "test_study"
-```
-
-### Markers
-
-Available pytest markers (defined in `tests/python/pytest.ini` or conftest):
-- `@pytest.mark.short_sequential`
-- `@pytest.mark.short_mpi`
-- `@pytest.mark.medium_*`
-- `@pytest.mark.long_*`
-
-Run specific markers:
+The duration markers (`short_sequential`, `short_mpi`, `short_memory`,
+`medium_*`, `long_*`, `*_benders_by_batch_mpi`) are declared in
+`tests/end_to_end/examples/pytest.ini` and apply **only** to that directory —
+they do not exist in `tests/python/`. Running them requires `--installDir`:
 
 ```bash
-pytest -m short_sequential tests/python/
+cd tests/end_to_end/examples
+pytest -m short_sequential --installDir=<xpansion-install-dir> example_test.py
 ```
 
 ## Cucumber / BDD Tests (behave)
@@ -191,7 +91,7 @@ tests/end_to_end/cucumber/features/
 
 Always run `behave` from `tests/end_to_end/` (not from inside `cucumber/`) —
 the `Given the study path is "..."` step resolves paths relative to that
-directory:
+directory. This is also the `WORKING_DIRECTORY` the `BDD` ctest target uses:
 
 ```bash
 cd tests/end_to_end
