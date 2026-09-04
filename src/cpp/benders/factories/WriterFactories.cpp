@@ -12,10 +12,10 @@ std::shared_ptr<Output::OutputWriter> build_void_writer()
 }
 
 std::shared_ptr<Output::OutputWriter> build_json_writer(const std::filesystem::path& json_file_name,
-                                                        const bool restart)
+                                                        const int restart)
 {
     std::shared_ptr<Output::OutputWriter> writer;
-    if (restart)
+    if (restart == 1)
     {
         auto out_json_content = get_json_file_content(json_file_name);
         writer = std::make_shared<Output::JsonWriter>(json_file_name, out_json_content);

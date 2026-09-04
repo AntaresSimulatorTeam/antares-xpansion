@@ -156,7 +156,7 @@ void BendersMpi::InitializeMaster()
                                    get_log_level(),
                                    _data.nsubproblem,
                                    solver_log_manager_,
-                                   IsResumeMode(),
+                                   _options.RESUME != 0,
                                    _logger,
                                    Options().PROBLEMS_FORMAT,
                                    benders_problem_provider.get(),

@@ -68,9 +68,9 @@ void BendersBase::OpenCsvFile()
 {
     if (!_csv_file.is_open())
     {
-        const auto opening_mode = _options.RESUME ? std::ios::app : std::ios::trunc;
+        const auto opening_mode = IsResumeMode() ? std::ios::app : std::ios::trunc;
         _csv_file.open(_csv_file_path, std::ios::out | opening_mode);
-        if (_csv_file && !_options.RESUME)
+        if (_csv_file && !IsResumeMode())
         {
             _csv_file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                          "subpb_costs_under_approx;"
@@ -1311,7 +1311,7 @@ void BendersBase::ResetSimplexIterationsBounds()
 
 bool BendersBase::IsResumeMode() const
 {
-    return _options.RESUME;
+    return _options.RESUME == 1;
 }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(int nb_iteration_done)
@@ -1338,7 +1338,7 @@ double BendersBase::execution_time() const
 void BendersBase::ChecksResumeMode()
 {
     benders_timer = Timer();
-    if (IsResumeMode())
+    if (_options.RESUME == 1)
     {
         auto reader = LastIterationReader(LastIterationFile());
         LogData last_iter;

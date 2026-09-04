@@ -220,7 +220,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     double MASTER_SOLUTION_TOLERANCE = 1e-4;
     double CUT_COEFFICIENT_TOLERANCE = 5e-3;
 
-    bool RESUME = false;
+    int RESUME = 0;
     bool MICRO_ITERATIONS = false;
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;
