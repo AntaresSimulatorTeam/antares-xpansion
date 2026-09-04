@@ -225,7 +225,7 @@ step for rows where it doesn't apply.
   steps operate on that copy
 - `the batch size is <n>` — sets `BATCH_SIZE` in `options.json`
 - `the cache problems level is <n>` — sets `CACHE_PROBLEMS` in `options.json`
-  (0 = resident subproblems, 1 = reload-from-disk with basis caching, 2 =
+  (`NO_CACHE` = resident subproblems, `PER_SUB` = reload-from-disk with basis caching, `COMPACT` =
   compact skeleton representation — the last requires the study's `sub/`
   layout to actually be in the compact CSV format, not per-subproblem MPS)
 
