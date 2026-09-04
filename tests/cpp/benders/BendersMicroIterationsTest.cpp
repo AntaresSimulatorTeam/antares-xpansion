@@ -197,7 +197,7 @@ protected:
         BendersBaseOptions options(solver_options);
         options.SEPARATION_PARAM = 0.5;
         options.MASTER_FORMULATION = MasterFormulation::RELAXED;
-        options.RESUME = false;
+        options.RESUME = ResumeMode::COLD_START;
         options.NB_CUTS_PER_ITER = false;
         options.TRACE = false;
         options.BOUND_ALPHA = true;

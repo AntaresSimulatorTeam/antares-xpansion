@@ -1311,7 +1311,7 @@ void BendersBase::ResetSimplexIterationsBounds()
 
 bool BendersBase::IsResumeMode() const
 {
-    return _options.RESUME == 1;
+    return _options.RESUME == ResumeMode::RESUME;
 }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(int nb_iteration_done)
@@ -1338,7 +1338,7 @@ double BendersBase::execution_time() const
 void BendersBase::ChecksResumeMode()
 {
     benders_timer = Timer();
-    if (_options.RESUME == 1)
+    if (IsResumeMode())
     {
         auto reader = LastIterationReader(LastIterationFile());
         LogData last_iter;
