@@ -1,6 +1,6 @@
 # Benders module: complexity review & refactoring plan
 
-Status: **proposal for review** — branch `refactor/benders-complexity` (based on `origin/develop` @ `ccbab405b`)
+Status: **P1–P3 implemented and validated** (build + unit + e2e green) — branch `refactor/benders-complexity` (based on `origin/develop` @ `ccbab405b`)
 
 ## 1. Context
 
@@ -157,8 +157,15 @@ Every phase lands as an independent, green PR (format + unit + e2e gates, §6).
 Phases are strictly incremental; each ends with a working system.
 
 > **Status (branch `refactor/benders-complexity`)**: P1, P2 and P3 are implemented
-> as separate commits on top of the review commit and are ready for build/test
-> validation. P4–P6 remain to be scheduled.
+> as separate commits on top of the review commit and validated: full build
+> green, unit tests green, and the e2e gates green (`benders_memory_and_micro_iterations`,
+> `outer_loop_tests`, `Benders`, `Benders_criterion_output_tests`, `benders_aggreg_cuts`).
+> The only failing e2e targets (`examples_long_sequential`, `examples_long_mpi`,
+> `examples_long_benders_by_batch_mpi`) are pre-existing on `origin/develop`: #1105
+> ("Disable automatic study update") removed the automatic study update from the
+> full-run paths but left `verify_study_update` in the long tests, and CI excludes
+> the `long_*` labels. Out of scope for this refactor.
+> P4–P6 remain to be scheduled.
 
 ### Phase 0 — Baseline & safety net (prerequisite)
 1. Restore local build environment (vcpkg checkout + toolchain; no `CMakeCache` survives on
