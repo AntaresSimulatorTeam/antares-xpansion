@@ -78,6 +78,7 @@ target_include_directories(benders_core
 )
 
 find_package(fmt REQUIRED)
+find_package(yaml-cpp CONFIG REQUIRED)
 target_link_libraries(benders_core
         PUBLIC
         antaresXpansion::helpers
@@ -86,6 +87,7 @@ target_link_libraries(benders_core
         ${JSONCPP_LIB}
         antaresXpansion::core
         fmt::fmt
+        yaml-cpp::yaml-cpp
 )
 
 target_link_libraries(benders_core PRIVATE TBB::tbb)
