@@ -532,10 +532,12 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
                                 PlainData::SubProblemData subproblem_data;
                                 const auto& [name, worker] = kvp;
                                 SolveSubproblem(subproblem_data, name, worker, nullptr);
-                                std::lock_guard guard(m);   
+                                std::lock_guard guard(m);
                                 subproblem_data_map[name] = subproblem_data;
-                                best_ub_tracker_->set_variables_values(name,worker,_data.it,_data.best_ub) ;
-
+                                best_ub_tracker_->set_variables_values(name,
+                                                                       worker,
+                                                                       _data.it,
+                                                                       _data.best_ub);
                             }
                             catch (...)
                             {
@@ -606,48 +608,46 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
     selectPolicy(
       [this, &nameAndVariableMap, &m, &subproblem_data_map, &first_exception](auto& policy)
       {
-          std::for_each(policy,
-                        nameAndVariableMap.begin(),
-                        nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map, &first_exception](
-                          const std::pair<std::string, VariableMap>& kvp)
-                        {
-                            // A parallel execution policy calls std::terminate if an
-                            // exception escapes this callable, so any solve failure
-                            // must be caught here and rethrown after the loop instead.
-                            try
-                            {
-                                const auto& [name, variables] = kvp;
-                                std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(
-                                  kvp);
-                                PlainData::SubProblemData subproblem_data;
-                                SolveSubproblem(subproblem_data,
-                                                name,
-                                                worker,
-                                                [this, &name, &worker]
-                                                { TryRestoreSubproblemBasis(name, worker); });
-                                std::lock_guard guard(m);
-                                subproblem_data_map[name] = subproblem_data;
-                                StoreSubproblemBasis(name, worker);
+          std::for_each(
+            policy,
+            nameAndVariableMap.begin(),
+            nameAndVariableMap.end(),
+            [this, &m, &subproblem_data_map, &first_exception](
+              const std::pair<std::string, VariableMap>& kvp)
+            {
+                // A parallel execution policy calls std::terminate if an
+                // exception escapes this callable, so any solve failure
+                // must be caught here and rethrown after the loop instead.
+                try
+                {
+                    const auto& [name, variables] = kvp;
+                    std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(kvp);
+                    PlainData::SubProblemData subproblem_data;
+                    SolveSubproblem(subproblem_data,
+                                    name,
+                                    worker,
+                                    [this, &name, &worker]
+                                    { TryRestoreSubproblemBasis(name, worker); });
+                    std::lock_guard guard(m);
+                    subproblem_data_map[name] = subproblem_data;
+                    StoreSubproblemBasis(name, worker);
 
-                                best_ub_tracker_->set_variables_values(name,worker,_data.it,_data.best_ub) ;
+                    best_ub_tracker_->set_variables_values(name, worker, _data.it, _data.best_ub);
 
-
-                                std::call_once(
-                                  variable_indice_once_flag,
-                                  [this](const auto& worker_)
-                                  { SetSubproblemVariablesIndices(worker_); },
-                                  *worker);
-                            }
-                            catch (...)
-                            {
-                                std::lock_guard guard(m);
-                                if (!first_exception)
-                                {
-                                    first_exception = std::current_exception();
-                                }
-                            }
-                        });
+                    std::call_once(
+                      variable_indice_once_flag,
+                      [this](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+                      *worker);
+                }
+                catch (...)
+                {
+                    std::lock_guard guard(m);
+                    if (!first_exception)
+                    {
+                        first_exception = std::current_exception();
+                    }
+                }
+            });
       },
       shouldParallelize());
     if (first_exception)
@@ -669,7 +669,6 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                                                                                      variable_map,
                                                                                      slave_weights);
 
-
         PlainData::SubProblemData subproblem_data;
         SolveSubproblem(subproblem_data,
                         sub,
@@ -680,9 +679,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
 
         subproblem_data_map[sub] = subproblem_data;
 
-        best_ub_tracker_->set_variables_values(sub,subproblem_worker,_data.it,_data.best_ub) ;
-
-
+        best_ub_tracker_->set_variables_values(sub, subproblem_worker, _data.it, _data.best_ub);
     }
 }
 

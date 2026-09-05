@@ -14,8 +14,12 @@ void BendersByBatch::InitializeProblems()
     BroadCastVariablesIndices();
     init_problems_ = false;
 
-    std::filesystem::path trackedVariablesFile = std::filesystem::path(_options.INPUTROOT) / "sub_variables_to_save.csv"; 
-    best_ub_tracker_ = std::make_shared<BestUbTracker>(&_world,trackedVariablesFile, std::filesystem::path(_options.OUTPUTROOT), _logger ) ; 
+    std::filesystem::path trackedVariablesFile = std::filesystem::path(_options.INPUTROOT)
+                                                 / "sub_variables_to_save.csv";
+    best_ub_tracker_ = std::make_shared<BestUbTracker>(&_world,
+                                                       trackedVariablesFile,
+                                                       std::filesystem::path(_options.OUTPUTROOT),
+                                                       _logger);
 }
 
 void BendersByBatch::BuildMasterProblem()

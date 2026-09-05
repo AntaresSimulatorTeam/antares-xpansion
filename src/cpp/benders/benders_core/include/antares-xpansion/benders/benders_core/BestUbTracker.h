@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include <boost/mpi/communicator.hpp>
 #include <boost/mpi.hpp>
+#include <boost/mpi/communicator.hpp>
 #include <boost/serialization/deque.hpp>
 #include <boost/serialization/list.hpp>
 #include <boost/serialization/map.hpp>
@@ -27,8 +27,7 @@ namespace mpi = boost::mpi;
 class BestUbTracker
 {
 public:
-
-    BestUbTracker() = default ; 
+    BestUbTracker() = default;
     BestUbTracker(mpi::communicator* world,
                   const std::filesystem::path& file_path,
                   const std::filesystem::path& output_root,
@@ -38,7 +37,7 @@ public:
 
     void set_variables_values(std::string sub_name,
                               const std::shared_ptr<SubproblemWorker>& worker,
-                              int iter, 
+                              int iter,
                               double new_ub);
 
     void dump_values();

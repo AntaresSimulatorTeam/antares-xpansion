@@ -114,14 +114,14 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
     std::vector<int> indices(skeletonObjCoeffs_.size());
     std::iota(indices.begin(), indices.end(), 0);
     solver_->chg_obj(indices, weighted_obj);
-   
-    if (!coef_set_.RowIndices().empty() )
+
+    if (!coef_set_.RowIndices().empty())
     {
         solver_->chg_coefs(coef_set_.RowIndices(),
                            coef_set_.ColIndices(),
                            coef_set_.CoefficientsFor(sub_name));
     }
-        
+
     const auto& obj_coeffs = obj_set_.CoefficientsFor(sub_name);
     std::vector<double> weighted_obj_coeffs(obj_coeffs.size());
     std::ranges::transform(obj_coeffs,

@@ -21,7 +21,7 @@ class Worker
 {
 public:
     Worker(VariableMap variable_map, Logger logger);
-    Worker() = default ; 
+    Worker() = default;
     void init(const std::string& solver_name,
               int log_level,
               const SolverLogManager& solver_log_manager,

@@ -29,7 +29,7 @@ public:
                      std::shared_ptr<SolverAbstract> solver,
                      Logger logger);
 
-    SubproblemWorker() = default ; 
+    SubproblemWorker() = default;
 
     virtual ~SubproblemWorker() = default;
     virtual std::vector<double> get_solution() const;

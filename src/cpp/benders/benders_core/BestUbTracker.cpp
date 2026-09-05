@@ -3,9 +3,9 @@
 #include <boost/tokenizer.hpp>
 
 BestUbTracker::BestUbTracker(mpi::communicator* world,
-                                     const std::filesystem::path& file_path,
-                                     const std::filesystem::path& output_root,
-                                     Logger logger):
+                             const std::filesystem::path& file_path,
+                             const std::filesystem::path& output_root,
+                             Logger logger):
     file_stream_(file_path),
     _world(world),
     _logger(logger)
@@ -13,9 +13,8 @@ BestUbTracker::BestUbTracker(mpi::communicator* world,
     output_file_ = output_root / "sub_best_ub_variables.csv";
     if (!file_stream_.is_open())
     {
-        _logger->display_message("sub_variables_to_save.csv  not found ") ; 
+        _logger->display_message("sub_variables_to_save.csv  not found ");
         return;
-
     }
 
     std::string line;
@@ -26,7 +25,6 @@ BestUbTracker::BestUbTracker(mpi::communicator* world,
         Tokenizer tok(line, sep);
         variables_to_follow_.assign(tok.begin(), tok.end());
     }
-
 }
 
 bool BestUbTracker::set_best_ub_solution_(double new_best_ub, int iter)
@@ -35,20 +33,18 @@ bool BestUbTracker::set_best_ub_solution_(double new_best_ub, int iter)
     {
         best_ub_ = new_best_ub;
         last_iteration_update_ = iter;
-        return true ;
+        return true;
     }
-    return false ; 
+    return false;
 }
 
 void BestUbTracker::set_variables_values(std::string sub_name,
-                                             const std::shared_ptr<SubproblemWorker>& worker,
-                                             int iter, 
-                                             double new_ub)
+                                         const std::shared_ptr<SubproblemWorker>& worker,
+                                         int iter,
+                                         double new_ub)
 {
-
-    if (set_best_ub_solution_(new_ub,iter)) 
+    if (set_best_ub_solution_(new_ub, iter))
     {
-
         if (iter <= 1) [[unlikely]]
         {
             for (auto& variable: variables_to_follow_)
@@ -56,12 +52,13 @@ void BestUbTracker::set_variables_values(std::string sub_name,
                 auto index = worker->get_variable_index(variable);
                 if (index < 0)
                 {
-                    _logger->display_message("unable to find " + variable + " in sub_problem " + sub_name);
+                    _logger->display_message("unable to find " + variable + " in sub_problem "
+                                             + sub_name);
                 }
                 variables_to_follow_indices_per_sub_[sub_name].push_back(index);
             }
         }
-        
+
         if (last_iteration_update_ == iter)
         {
             values_per_sub_[sub_name] = worker->get_solution();

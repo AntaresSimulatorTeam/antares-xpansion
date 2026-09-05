@@ -85,9 +85,13 @@ void BendersMpi::InitializeProblems()
     BroadCastVariablesIndices();
     init_problems_ = false;
 
-    //creating the bestUBtracker 
-    std::filesystem::path trackedVariablesFile = std::filesystem::path(_options.INPUTROOT) / "sub_variables_to_save.csv"; 
-    best_ub_tracker_ = std::make_shared<BestUbTracker>(&_world,trackedVariablesFile, std::filesystem::path(_options.OUTPUTROOT), _logger ) ; 
+    // creating the bestUBtracker
+    std::filesystem::path trackedVariablesFile = std::filesystem::path(_options.INPUTROOT)
+                                                 / "sub_variables_to_save.csv";
+    best_ub_tracker_ = std::make_shared<BestUbTracker>(&_world,
+                                                       trackedVariablesFile,
+                                                       std::filesystem::path(_options.OUTPUTROOT),
+                                                       _logger);
 }
 
 std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(
@@ -513,7 +517,6 @@ void BendersMpi::Run()
 
         step_1_solve_master();
 
-
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
         /*Gather cut from each subproblem in master thread and add them to Master
@@ -598,7 +601,7 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersEnd();
-    best_ub_tracker_->dump_values() ; 
+    best_ub_tracker_->dump_values();
 
     post_run_actions();
 
