@@ -582,12 +582,12 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBase
         constraints_names.push_back("constraints/constraints_" + number_str + ".mps");
     }
 
-    constraint_set_loader_ = std::make_shared<SkeletonConstraintSetLoader>(options.INPUTROOT,
-                                                                           _logger,
-                                                                           options.SOLVER_NAME,
-                                                                           options.LOG_LEVEL,
-                                                                           options.PROBLEMS_FORMAT,
-                                                                           std::move(
-                                                                             constraints_names),
-                                                                           _world);
+    constraint_set_loader_ = std::make_shared<SkeletonConstraintSetLoader>(
+      options.INPUTROOT,
+      _logger,
+      options.SOLVER_NAME,
+      options.LOG_LEVEL,
+      options.PROBLEMS_FORMAT,
+      std::move(constraints_names),
+      _world ? AbortFunc([w = _world](int code) { w->abort(code); }) : AbortFunc{});
 }

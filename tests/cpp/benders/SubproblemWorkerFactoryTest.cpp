@@ -100,25 +100,25 @@ TEST_F(SubproblemWorkerFactoryTest, ConstructsWithValidFiles)
     ASSERT_NO_THROW(buildWithNOOP());
 }
 
-TEST_F(SubproblemWorkerFactoryTest, GetSubNumberReturnsRhsKeyCount)
+TEST_F(SubproblemWorkerFactoryTest, SubproblemCountForThisRankReturnsRhsKeyCount)
 {
     writeTwoSubFixture();
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->GetSubNumber(), 2);
+    EXPECT_EQ(builder->SubproblemCountForThisRank(), 2);
 }
 
-TEST_F(SubproblemWorkerFactoryTest, GetSubNumberZeroWithEmptyRhs)
+TEST_F(SubproblemWorkerFactoryTest, SubproblemCountForThisRankZeroWithEmptyRhs)
 {
     writeEmptyFixture();
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->GetSubNumber(), 0);
+    EXPECT_EQ(builder->SubproblemCountForThisRank(), 0);
 }
 
 TEST_F(SubproblemWorkerFactoryTest, SingleSubproblem)
 {
     writeSingleSubFixture();
     auto builder = buildWithNOOP();
-    EXPECT_EQ(builder->GetSubNumber(), 1);
+    EXPECT_EQ(builder->SubproblemCountForThisRank(), 1);
 }
 
 
@@ -149,10 +149,28 @@ TEST_F(SubproblemWorkerFactoryTest, ManySubproblems)
         names.push_back("sub" + std::to_string(i));
     }
     auto builder = buildWithNOOP(std::move(names));
-    EXPECT_EQ(builder->GetSubNumber(), 100);
+    EXPECT_EQ(builder->SubproblemCountForThisRank(), 100);
 }
 
 
+TEST_F(SubproblemWorkerFactoryTest, CsvWithKeyOnly)
+{
+    // A key with no values — should result in an empty coefficient vector
+    writeFile(subDir_ / "coef.csv", "sub1\n");
+    writeFile(subDir_ / "coef_cols.csv", "\n");
+    writeFile(subDir_ / "coef_rows.csv", "\n");
+    writeFile(subDir_ / "obj_coef.csv", "sub1\n");
+    writeFile(subDir_ / "obj_cols.csv", "\n");
+    writeFile(subDir_ / "rhs.csv", "sub1\n");
+    writeFile(subDir_ / "rhs_rows.csv", "\n");
+
+    auto builder = buildWithNOOP();
+    EXPECT_EQ(builder->SubproblemCountForThisRank(), 1);
+
+    VariableMap variable_map;
+    auto worker = builder->CreateSubSolverAbstract("sub1", variable_map, 1.0);
+    EXPECT_NE(worker, nullptr);
+}
 
 TEST_F(SubproblemWorkerFactoryTest, CsvWithWhitespaceInValues)
 {
