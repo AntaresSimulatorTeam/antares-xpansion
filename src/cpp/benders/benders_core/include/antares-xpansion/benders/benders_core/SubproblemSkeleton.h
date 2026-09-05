@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/mpi.hpp>
-
 #include "SkeletonCoefficientSet.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
@@ -30,7 +28,7 @@ public:
               std::vector<std::string> sub_problem_names,
               const std::shared_ptr<SolverAbstract>& solver,
               Logger& logger,
-              boost::mpi::communicator* world = nullptr);
+              AbortFunc abort_func = nullptr);
 
     /// Stamps `sub_name`'s coefficients, objective and right-hand side onto `solver`,
     /// the objective being scaled by `slave_weight`.

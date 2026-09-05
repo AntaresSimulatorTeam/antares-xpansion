@@ -12,7 +12,7 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                                                  ProblemsFormat format,
                                                  std::vector<std::string> sub_problem_names,
                                                  const SolverLogManager& solver_log_manager,
-                                                 boost::mpi::communicator* world):
+                                                 AbortFunc abort_func):
     logger_(logger)
 {
     SkeletonSolverLoader loader(logger_);
@@ -21,7 +21,11 @@ SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& in
                           solver_log_manager,
                           log_level,
                           format);
-    skeleton_.Load(input_root / "sub", std::move(sub_problem_names), solver_, logger_, world);
+    skeleton_.Load(input_root / "sub",
+                   std::move(sub_problem_names),
+                   solver_,
+                   logger_,
+                   std::move(abort_func));
 }
 
 SubproblemWorkerFactory::SubproblemWorkerFactory(const std::filesystem::path& input_root,

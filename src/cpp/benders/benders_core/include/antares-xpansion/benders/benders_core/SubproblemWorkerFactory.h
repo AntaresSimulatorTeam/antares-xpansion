@@ -3,7 +3,6 @@
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <filesystem>
 
-#include <boost/mpi.hpp>
 #include <boost/tokenizer.hpp>
 
 #include "BendersProblemFromFile.h"
@@ -17,8 +16,6 @@
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "skeleton_coefficient_reader.h"
 
-namespace mpi = boost::mpi;
-
 class SubproblemWorkerFactory
 {
 public:
@@ -29,7 +26,7 @@ public:
                             ProblemsFormat format,
                             std::vector<std::string> sub_problem_names,
                             const SolverLogManager& solver_log_manager,
-                            boost::mpi::communicator* world = nullptr);
+                            AbortFunc abort_func = nullptr);
 
     SubproblemWorkerFactory(const std::filesystem::path& input_root,
                             Logger& logger,

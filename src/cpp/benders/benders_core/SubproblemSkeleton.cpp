@@ -23,7 +23,7 @@ void SubproblemSkeleton::Load(const std::filesystem::path& sub_dir,
                               std::vector<std::string> sub_problem_names,
                               const std::shared_ptr<SolverAbstract>& solver,
                               Logger& logger,
-                              boost::mpi::communicator* world)
+                              AbortFunc abort_func)
 {
     const auto ncols = solver->get_ncols();
     skeleton_obj_coeffs_.resize(ncols);
@@ -39,21 +39,21 @@ void SubproblemSkeleton::Load(const std::filesystem::path& sub_dir,
                    sub_dir / "coef_rows.csv",
                    solver,
                    logger,
-                   world);
+                   abort_func);
     obj_set_.Load(reader,
                   sub_dir / "obj_coef.csv",
                   sub_dir / "obj_cols.csv",
                   std::nullopt,
                   solver,
                   logger,
-                  world);
+                  abort_func);
     rhs_set_.Load(reader,
                   sub_dir / "rhs.csv",
                   std::nullopt,
                   sub_dir / "rhs_rows.csv",
                   solver,
                   logger,
-                  world);
+                  abort_func);
 }
 
 void SubproblemSkeleton::ApplyTo(SolverAbstract& solver,
