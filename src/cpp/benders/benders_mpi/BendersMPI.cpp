@@ -499,7 +499,6 @@ void BendersMpi::Run()
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
 
-    std::cout<<"start running "<<std::endl ; 
     while (!_data.stop)
     {
         benders_plugin_->OnBendersIterationStart();
@@ -514,7 +513,6 @@ void BendersMpi::Run()
 
         step_1_solve_master();
 
-        std::cout<<"finished solving master "<<std::endl ; 
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
 
@@ -600,7 +598,6 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersEnd();
-    std::cout<<"dumping value ..... "<<std::endl ; 
     best_ub_tracker_->dump_values() ; 
 
     post_run_actions();

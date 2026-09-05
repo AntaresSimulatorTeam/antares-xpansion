@@ -124,7 +124,7 @@ void BestUbTracker::dump_values()
         const auto& indices = variables_to_follow_indices_per_sub_[sub_name];
         for (size_t i = 0; i < indices.size(); ++i)
         {
-            out << "," << values[indices[i]];
+            out << "," << values[static_cast<size_t>(indices[i])];
         }
         out << "\n";
     }
