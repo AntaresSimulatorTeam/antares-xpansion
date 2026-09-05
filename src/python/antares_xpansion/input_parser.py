@@ -92,9 +92,9 @@ class InputParser:
                                  help="Runs presolve step before Benders methods (Xpress only)")
         self.parser.add_argument("--cache_problems",
                                  dest=LauncherOptionsKeys.cache_problems_key(),
-                                 default=False,
-                                 action='store_true',
-                                 help="Cache problems on disque during benders")
+                                 default="NO_CACHE",
+                                 choices=["NO_CACHE", "PER_SUB", "COMPACT"],
+                                 help="Cache problems mode during benders (NO_CACHE, PER_SUB, COMPACT)")
         self.parser.add_argument("--problem-format",
                                  dest=LauncherOptionsKeys.problem_format_key(),
                                  choices=["mps", "OPTIMIZED"],
