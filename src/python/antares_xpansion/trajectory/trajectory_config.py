@@ -16,7 +16,7 @@ class TrajectoryInputParameters:
     # Solver and problems format
     problems_format: str
     solver: str
-    cache_problems: bool
+    cache_problems: str
     # Relevant for resolution only
     method: str
     n_mpi: int
