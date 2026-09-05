@@ -291,6 +291,18 @@ def check_simulator_solver(context, string):
     assert (find_in_simulator_log(context.tmp_study / "output", string_to_find))
 
 
+@then('the problem_status is "{problem_status}"')
+def check_problem_status(context, problem_status):
+    actual = context.outputs["solution"]["problem_status"]
+    assert actual == problem_status, f"Expected problem_status '{problem_status}', got '{actual}'"
+
+
+@then('the number of iterations is {n:d}')
+def check_number_of_iterations(context, n):
+    actual = len(context.outputs["iterations"])
+    assert actual == n, f"Expected {n} iterations, got {actual}"
+
+
 @then('Benders has been launched with solver "{string}"')
 def check_benders_solver(context, string):
     solver_in_benders = context.options_data["SOLVER_NAME"]
