@@ -104,7 +104,7 @@ class ResumeStudy:
 
         assert master_file_path.exists()
 
-        options[OptimisationKeys.resume_key()] = True
+        options[OptimisationKeys.resume_key()] = "resume"
         with open(options_file_path, "w") as options_json:
             json.dump(options, options_json, indent=4)
 
