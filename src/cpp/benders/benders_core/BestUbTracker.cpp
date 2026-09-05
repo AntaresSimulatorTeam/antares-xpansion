@@ -31,7 +31,7 @@ BestUbTracker::BestUbTracker(mpi::communicator* world,
 
 bool BestUbTracker::set_best_ub_solution_(double new_best_ub, int iter)
 {
-    if (new_best_ub < best_ub_)
+    if (new_best_ub <= best_ub_)
     {
         best_ub_ = new_best_ub;
         last_iteration_update_ = iter;

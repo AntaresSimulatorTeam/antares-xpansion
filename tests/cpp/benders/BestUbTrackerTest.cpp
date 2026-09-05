@@ -5,10 +5,29 @@
 #include <string>
 #include <vector>
 
+#include <boost/mpi.hpp>
+
 #include "LoggerStub.h"
 #include "antares-xpansion/benders/benders_core/BestUbTracker.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "gtest/gtest.h"
+
+namespace mpi = boost::mpi;
+
+boost::mpi::environment* penv = nullptr;
+boost::mpi::communicator* pworld = nullptr;
+
+int main(int argc, char** argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+
+    mpi::environment env(argc, argv);
+    mpi::communicator world;
+    penv = &env;
+    pworld = &world;
+
+    return RUN_ALL_TESTS();
+}
 
 using namespace Xpansion::Test;
 
@@ -76,14 +95,16 @@ protected:
         std::filesystem::create_directories(tmpDir_);
 
         csvFile_ = tmpDir_ / "variable_to_follow.csv";
-        std::ofstream out(csvFile_);
-        out << "variable_1,variable_2,variable_3,variable_4\n";
+        {
+            std::ofstream out(csvFile_);
+            out << "variable_1,variable_2,variable_3,variable_4\n";
+        }
 
         logger_ = std::make_shared<LoggerNOOPStub>();
         worker_1_ = std::make_shared<SubproblemWorkerTest>() ; 
         worker_2_ = std::make_shared<SubproblemWorkerTest>() ;
 
-        best_ub_tracker_ = std::make_shared<BestUbTracker>(nullptr,csvFile_,tmpDir_,logger_) ; 
+        best_ub_tracker_ = std::make_shared<BestUbTracker>(pworld,csvFile_,tmpDir_,logger_) ;
 
     }
 
@@ -102,13 +123,13 @@ protected:
 
 TEST_F(BestUbTrackerTest, ConstructorWithValidFile_DoesNotThrow)
 {
-    EXPECT_NO_THROW(BestUbTracker(nullptr, csvFile_, tmpDir_, logger_));
+    EXPECT_NO_THROW(BestUbTracker(pworld, csvFile_, tmpDir_, logger_));
 }
 
 TEST_F(BestUbTrackerTest, ConstructorWithMissingFile_DoesNotThrow)
 {
     auto missingFile = tmpDir_ / "nonexistent.csv";
-    EXPECT_NO_THROW(BestUbTracker(nullptr, missingFile, tmpDir_, logger_));
+    EXPECT_NO_THROW(BestUbTracker(pworld, missingFile, tmpDir_, logger_));
 }
 
 TEST_F(BestUbTrackerTest, SetAndDumpBehaviour) 
@@ -137,6 +158,7 @@ TEST_F(BestUbTrackerTest, SetAndDumpBehaviour)
     best_ub_tracker_->dump_values();
 
     auto result2 = read_output_csv(tmpDir_ / "sub_best_ub_variables.csv");
+    std::cout<<"resul2 size after the csv read "<<result2.size()<<std::endl ; 
 
     EXPECT_EQ(result2["sub_1"], (std::vector<double>{1., 3., 5., 5.}));
     EXPECT_EQ(result2["sub_2"], (std::vector<double>{3., 3., 5., 5.}));
