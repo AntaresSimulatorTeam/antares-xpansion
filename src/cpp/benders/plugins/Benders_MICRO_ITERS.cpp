@@ -13,6 +13,7 @@
 #include <string_view>
 
 #include <boost/tokenizer.hpp>
+#include <json/reader.h>
 
 #include "iostream"
 
@@ -141,37 +142,32 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
     std::filesystem::path mirco_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
-                                                          / "micro_iterations_config.txt";
+                                                          / "micro_iterations_config.json";
     std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.string());
 
     if (micro_iterations_options_stream.is_open())
     {
-        std::string line;
-        while (std::getline(micro_iterations_options_stream, line))
+        Json::Value config;
+        Json::CharReaderBuilder reader_builder;
+        std::string errors;
+        if (!Json::parseFromStream(reader_builder, micro_iterations_options_stream, &config, &errors))
         {
-            std::istringstream iss(line);
-            std::string key, value;
+            std::cerr << "Failed to parse JSON config: " << errors << std::endl;
+            exit(EXIT_FAILURE);
+        }
 
-            if (std::getline(iss, key, '=') && std::getline(iss, value))
+        for (const auto& key : config.getMemberNames())
+        {
+            if (key == "warm_start")
             {
-                if (key == "warm_start")
+                if (config[key].asString() == "0")
                 {
-                    if (value == "0")
-                    {
-                        warm_start_ = false;
-                    }
-                }
-                else
-                {
-                    micro_iterations_config_[key] = value;
+                    warm_start_ = false;
                 }
             }
-        }
-        for (auto [key, value]: micro_iterations_config_)
-        {
-            if (key == "plugin_lib_path")
+            else
             {
-                std::string cpp_output_lib_path = micro_iterations_config_["plugin_lib_path"];
+                micro_iterations_config_[key] = config[key].asString();
             }
         }
     }
