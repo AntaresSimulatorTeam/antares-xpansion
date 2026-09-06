@@ -419,33 +419,6 @@ void BendersBase::ActivateIntegrityConstraints() const
     _master->ActivateIntegrityConstraints();
 }
 
-void BendersBase::ComputeXCut()
-{
-    if (_data.it == 1)
-    {
-        _data.x_in = _data.x_out;
-        _data.x_cut = _data.x_out;
-        _data.master_only_vars_in = _data.master_only_vars_out;
-        _data.master_only_vars_cut = _data.master_only_vars_out;
-    }
-    else
-    {
-        for (const auto& [name, value]: _data.x_out)
-        {
-            _data.x_cut[name] = _options.SEPARATION_PARAM * _data.x_out[name]
-                                + (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
-        }
-        for (int i(0); i < _data.master_only_vars_out.size(); ++i)
-        {
-            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM
-                                              * _data.master_only_vars_out[i]
-                                            + (1 - Options().SEPARATION_PARAM)
-                                                * _data.master_only_vars_in[i];
-        }
-    }
-    roundXCut();
-}
-
 void BendersBase::ComputeInvestCost()
 {
     _data.invest_cost = 0;
@@ -1430,35 +1403,6 @@ void BendersBase::setCriterionComputationInputs(
   const Benders::Criterion::CriterionInputData& criterion_input_data)
 {
     criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
-}
-
-/*!
- *  \brief  _data.x_in is within the bounds thanks to restoreFeasibility called in
-WorkerMaster::get(...). This function helps to avoid x_cut getting inifinitely close to a bound due
-to the way it is updated using x_in:
-    - Suppose x_in = x_out = 1 in the first iteration
-    - Suppose x_out always 0 in the following iterations
-    - Then x_cut will be always divided by 2 (if separation_parameter = 0.5) each time, becoming
-inifinitely small. At some point we want to round it to the bound to avoid numerical issues. We
-reuse the setting MASTER_SOLUTION_TOLERANCE
- */
-void BendersBase::roundXCut()
-{
-    for (auto& kvp: _data.x_cut)
-    {
-        double value = kvp.second;
-        double lb = _data.min_invest.at(kvp.first);
-        double ub = _data.max_invest.at(kvp.first);
-
-        if (std::abs(value - lb) < _options.MASTER_SOLUTION_TOLERANCE)
-        {
-            kvp.second = lb;
-        }
-        else if (std::abs(value - ub) < _options.MASTER_SOLUTION_TOLERANCE)
-        {
-            kvp.second = ub;
-        }
-    }
 }
 
 std::map<int, double> BendersBase::GetSubCutTolerance() const

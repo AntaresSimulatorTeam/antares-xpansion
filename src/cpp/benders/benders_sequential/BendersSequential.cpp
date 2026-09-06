@@ -128,7 +128,8 @@ void BendersSequential::Run()
         get_master_value();
         _logger->log_master_solving_duration(_data.timer_master);
 
-        ComputeXCut();
+        cuts_manager_.ComputeXCut(_data, Options().SEPARATION_PARAM,
+                                  Options().MASTER_SOLUTION_TOLERANCE);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
         _logger->display_message("\tSolving subproblems...");

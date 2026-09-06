@@ -237,7 +237,8 @@ void BendersMpi::solve_master_and_create_trace()
 
     _logger->log_master_solving_duration(_data.timer_master);
 
-    ComputeXCut();
+    cuts_manager_.ComputeXCut(_data, Options().SEPARATION_PARAM,
+                              Options().MASTER_SOLUTION_TOLERANCE);
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 }
 

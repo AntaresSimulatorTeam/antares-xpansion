@@ -97,6 +97,35 @@ public:
         master->add_cut(s, x_cut, rhs);
     }
 
+    // Computes the separation point x_cut from x_out and x_in using the
+    // separation parameter, then rounds values near variable bounds.
+    void ComputeXCut(CurrentIterationData& data, double separation_param,
+                     double master_solution_tolerance)
+    {
+        if (data.it == 1)
+        {
+            data.x_in = data.x_out;
+            data.x_cut = data.x_out;
+            data.master_only_vars_in = data.master_only_vars_out;
+            data.master_only_vars_cut = data.master_only_vars_out;
+        }
+        else
+        {
+            for (const auto& [name, value]: data.x_out)
+            {
+                data.x_cut[name] = separation_param * data.x_out[name]
+                                   + (1 - separation_param) * data.x_in[name];
+            }
+            for (int i(0); i < data.master_only_vars_out.size(); ++i)
+            {
+                data.master_only_vars_cut[i] = separation_param * data.master_only_vars_out[i]
+                                               + (1 - separation_param)
+                                                   * data.master_only_vars_in[i];
+            }
+        }
+        RoundXCut(data, master_solution_tolerance);
+    }
+
     void BuildAllAggregatedCuts(
       const std::vector<SubProblemNamesInCut>& subproblem_names,
       const std::vector<SubProblemDataMap>& gathered_subproblem_map,
@@ -134,6 +163,27 @@ public:
     }
 
 private:
+    // Rounds x_cut values that are within tolerance of variable bounds to
+    // avoid numerical drift from repeated separation parameter application.
+    void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
+    {
+        for (auto& kvp: data.x_cut)
+        {
+            double value = kvp.second;
+            double lb = data.min_invest.at(kvp.first);
+            double ub = data.max_invest.at(kvp.first);
+
+            if (std::abs(value - lb) < master_solution_tolerance)
+            {
+                kvp.second = lb;
+            }
+            else if (std::abs(value - ub) < master_solution_tolerance)
+            {
+                kvp.second = ub;
+            }
+        }
+    }
+
     // Updates min/max simplex iteration bounds for the current iteration.
     // Used by SetSubproblemDataCostAndSimplexIter to track solver effort
     // across subproblems during cut gathering.

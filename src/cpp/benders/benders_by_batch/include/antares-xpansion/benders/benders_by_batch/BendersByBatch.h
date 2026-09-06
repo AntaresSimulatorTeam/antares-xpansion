@@ -30,7 +30,7 @@ public:
 protected:
     void InitializeProblems() override;
     void BroadcastSingleSubpbCostsUnderApprox();
-    void ComputeXCut() override;
+    void ComputeXCut();
     void UpdateStoppingCriterion() override;
     bool ShouldRelaxationStop() const override;
     void BuildBatches();

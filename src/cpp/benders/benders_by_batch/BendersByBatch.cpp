@@ -262,31 +262,16 @@ void BendersByBatch::SeparationLoop()
 
 void BendersByBatch::ComputeXCut()
 {
-    if (_data.it == 1)
-    {
-        _data.x_in = _data.x_out;
-        _data.x_cut = _data.x_out;
-        _data.master_only_vars_in = _data.master_only_vars_out;
-        _data.master_only_vars_cut = _data.master_only_vars_out;
-    }
-    else
+    // In batch mode, x_in must be updated before the separation formula:
+    // - it==1: handled by the base ComputeXCut (sets x_in = x_out)
+    // - it>1: previous x_cut becomes the new x_in for the next separation
+    if (_data.it != 1)
     {
         _data.x_in = _data.x_cut;
         _data.master_only_vars_in = _data.master_only_vars_cut;
-        for (const auto& [name, value]: _data.x_out)
-        {
-            _data.x_cut[name] = Options().SEPARATION_PARAM * _data.x_out[name]
-                                + (1 - Options().SEPARATION_PARAM) * _data.x_in[name];
-        }
-        for (int i(0); i < _data.master_only_vars_out.size(); ++i)
-        {
-            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM
-                                              * _data.master_only_vars_out[i]
-                                            + (1 - Options().SEPARATION_PARAM)
-                                                * _data.master_only_vars_in[i];
-        }
     }
-    roundXCut();
+    batch_cuts_manager_.ComputeXCut(_data, Options().SEPARATION_PARAM,
+                                    Options().MASTER_SOLUTION_TOLERANCE);
 }
 
 void BendersByBatch::UpdateRemainingEpsilon()
