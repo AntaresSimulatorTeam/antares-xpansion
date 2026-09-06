@@ -8,12 +8,12 @@
 #include <chrono>
 #include <exception>
 #include <fstream>
+#include <json/reader.h>
 #include <sstream>
 #include <stdexcept>
 #include <string_view>
 
 #include <boost/tokenizer.hpp>
-#include <json/reader.h>
 
 #include "iostream"
 
@@ -150,13 +150,16 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
         Json::Value config;
         Json::CharReaderBuilder reader_builder;
         std::string errors;
-        if (!Json::parseFromStream(reader_builder, micro_iterations_options_stream, &config, &errors))
+        if (!Json::parseFromStream(reader_builder,
+                                   micro_iterations_options_stream,
+                                   &config,
+                                   &errors))
         {
             std::cerr << "Failed to parse JSON config: " << errors << std::endl;
             exit(EXIT_FAILURE);
         }
 
-        for (const auto& key : config.getMemberNames())
+        for (const auto& key: config.getMemberNames())
         {
             if (key == "warm_start")
             {
