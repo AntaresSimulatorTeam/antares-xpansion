@@ -1,6 +1,7 @@
 #ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
+#include "CutsManagerByBatch.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
@@ -38,9 +39,6 @@ private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
                           const std::vector<std::string>& batch_sub_problems);
     void BuildMasterProblem();
-    double ComputeBatchContributionInGap(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                const std::vector<std::string>& batch_sub_problems);
     void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
@@ -67,9 +65,7 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
-    // Placeholder: will be replaced by CutsManagerByBatch
-    std::vector<SubProblemNamesInCut> batch_subproblem_per_cut_indices_;
-    CutsManagerMpi batch_cuts_manager_;
+    CutsManagerByBatch batch_cuts_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

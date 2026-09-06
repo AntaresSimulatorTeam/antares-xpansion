@@ -17,9 +17,7 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                         _data,
                         _problem_to_id,
                         relevantIterationData_,
-                        _master,
-                        batch_subproblem_per_cut_indices_,
-                        logger)
+                        _master)
 {
 }
 
@@ -386,58 +384,16 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     local_solved = subproblem_data_map.size();
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
-    std::vector<SubProblemDataMap> gathered_subproblem_map;
+
     bool global_misprice = misprice_;
     AllReduce(misprice_, global_misprice, std::logical_and<bool>());
     misprice_ = global_misprice;
-    Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
-    _data.subproblems_walltime = subproblems_timer_per_proc.elapsed();
 
-    // if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-    //   external_loop_criterion_current_batch =
-    //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
-    // }
-    batch_cuts_manager_.SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, _data);
-    if (_world.rank() == rank_0)
-    {
-        auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
-
-        *batch_contribution_in_gap = ComputeBatchContributionInGap(
-          gathered_subproblem_map,
-          batch_cuts_list[current_batch_id_].name_to_cut);
-        batch_cuts_manager_.BuildAllAggregatedCuts(batch_cuts_list[current_batch_id_].name_to_cut,
-                                              gathered_subproblem_map,
-                                              _problem_to_id,
-                                              _data.ub,
-                                              _data.x_cut,
-                                              relevantIterationData_.last._cut_trace,
-                                              _master);
-    }
-}
-
-double BendersByBatch::ComputeBatchContributionInGap(
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-  const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const
-{
-    double batch_contribution_in_gap = 0.0;
-    for (const auto& names_and_positions_in_gathered: subproblems_per_cut)
-    {
-        // Performs max(0, sum_{s sub_pb in cut}(phi_s(x) - theta_s))
-        // where phi_s(x) - theta_s has already been computed within each proc and is equal to
-        // contribution_in_gap
-        double sum = std::accumulate(
-          names_and_positions_in_gathered.begin(),
-          names_and_positions_in_gathered.end(),
-          0.0,
-          [&](double acc, const auto& name_and_position)
-          {
-              const auto& subproblem_name = name_and_position.first;
-              size_t pos = name_and_position.second;
-              return acc + gathered_subproblem_map[pos].at(subproblem_name).contribution_in_gap;
-          });
-        batch_contribution_in_gap += std::max(0.0, sum);
-    }
-    return batch_contribution_in_gap;
+    auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
+    batch_cuts_manager_.GatherAndBuildCuts(subproblem_data_map,
+                                          subproblems_timer_per_proc,
+                                          batch_cuts_list[current_batch_id_].name_to_cut,
+                                          *batch_contribution_in_gap);
 }
 
 void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
