@@ -2,6 +2,7 @@
 
 #include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "CutsManagerMpi.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"
@@ -37,9 +38,6 @@ protected:
     void Run() override;
     void InitializeProblems() override;
     void BroadcastXCut();
-    void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-    void SetSubproblemDataCostAndSimplexIter(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     mpi::communicator& _world;
 
@@ -57,15 +55,12 @@ private:
 
     void do_solve_master_create_trace_and_update_cuts();
 
-    virtual void gather_subproblems_cut_package_and_build_cuts(
-      const SubProblemDataMap& subproblem_data_map,
-      const Timer& process_timer);
-
     void write_exception_message(const std::exception& ex) const;
 
     void check_if_some_proc_had_a_failure(int success);
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
+    CutsManagerMpi cuts_manager_;
 
 protected:
     void InitializeMaster();
@@ -126,7 +121,6 @@ protected:
         mpi::all_reduce(_world, in_value, out_value, op);
     }
 
-    virtual void GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime);
     void BroadCastVariablesIndices();
     virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap& subproblem_data_map);

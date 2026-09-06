@@ -60,7 +60,6 @@ public:
     // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
-    int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
     void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map);
@@ -87,8 +86,6 @@ public:
                        const std::vector<double>& dmatval_p,
                        const std::vector<std::string>& row_names = {}) const;
     void MasterGetRowType(std::vector<char>& qrtype, int first, int last) const;
-    void ResetMasterFromLastIteration();
-    std::filesystem::path LastMasterPath() const;
     bool MasterIsEmpty() const;
 
     void DoFreeProblems(bool free_problems)
@@ -307,7 +304,6 @@ protected:
         return cumulative_number_of_subproblem_resolved_before_resume;
     }
 
-    void BoundSimplexIterations(int subproblem_iteration);
     void ResetSimplexIterationsBounds();
 
     SubproblemsMapPtr subproblem_map;
@@ -333,9 +329,6 @@ protected:
     // var_indices is a vector(for each patterns p) of vector (var indices related
     // to p)
     void SetSubproblemsVariablesIndices();
-
-    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
-                                   const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     int SetAggregation(int max_aggregation) const;
 

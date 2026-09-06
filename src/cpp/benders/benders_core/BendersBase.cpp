@@ -790,38 +790,6 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
     _master->add_cut(s, _data.x_cut, rhs);
 }
 
-void BendersBase::build_all_aggregated_cuts(
-  const std::vector<SubProblemNamesInCut>& subproblem_names,
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
-{
-    std::vector<int> subproblem_ids_per_cut;
-    for (const auto& subproblem_names_in_cut: subproblem_names)
-    {
-        Point s;
-        double rhs{0};
-        std::vector<int> subproblem_ids_per_cut;
-
-        for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
-        {
-            subproblem_ids_per_cut.push_back(_problem_to_id[sub_problem_name]);
-
-            auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
-              sub_problem_name);
-
-            if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end())
-            {
-                auto& subproblem_data = subproblem_data_pair->second;
-                _data.ub += subproblem_data.subproblem_cost;
-                rhs += subproblem_data.subproblem_cost;
-                compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
-                relevantIterationData_.last._cut_trace[sub_problem_name] = subproblem_data;
-            }
-        }
-
-        _master->addGroupSubproblemCut(subproblem_ids_per_cut, s, _data.x_cut, rhs);
-    }
-}
-
 /*!
  *  \brief Add cut to Master Problem and store the cut in a set
  *
@@ -1284,21 +1252,6 @@ double BendersBase::GetSubproblemCost() const
 void BendersBase::SetSubproblemCost(const double& subproblem_cost)
 {
     _data.subproblem_cost = subproblem_cost;
-}
-
-/*!
- *	\brief Update maximum and minimum of simplex iterations
- *
- *	\param subproblem_iterations : number of iterations done with the
- *subproblem
- *
- */
-void BendersBase::BoundSimplexIterations(int subproblem_iterations)
-{
-    _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations
-                                                                            : _data.max_simplexiter;
-    _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations
-                                                                            : _data.min_simplexiter;
 }
 
 void BendersBase::ResetSimplexIterationsBounds()

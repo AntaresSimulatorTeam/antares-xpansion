@@ -9,7 +9,11 @@ class BendersByBatch: public BendersMpi
     std::vector<unsigned> random_batch_permutation_;
 
 public:
-    using BendersMpi::BendersMpi;
+    BendersByBatch(const BendersBaseOptions& options,
+                   std::shared_ptr<ILogger> logger,
+                   std::shared_ptr<Output::OutputWriter> writer,
+                   mpi::communicator& world,
+                   std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     ~BendersByBatch() override = default;
     void Run() override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
@@ -63,6 +67,9 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
+    // Placeholder: will be replaced by CutsManagerByBatch
+    std::vector<SubProblemNamesInCut> batch_subproblem_per_cut_indices_;
+    CutsManagerMpi batch_cuts_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

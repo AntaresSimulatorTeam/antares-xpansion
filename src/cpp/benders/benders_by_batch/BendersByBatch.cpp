@@ -6,6 +6,23 @@
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 
+BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
+                               std::shared_ptr<ILogger> logger,
+                               std::shared_ptr<Output::OutputWriter> writer,
+                               mpi::communicator& world,
+                               std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
+    batch_cuts_manager_(world,
+                        rank_0,
+                        _data,
+                        _problem_to_id,
+                        relevantIterationData_,
+                        _master,
+                        batch_subproblem_per_cut_indices_,
+                        logger)
+{
+}
+
 void BendersByBatch::InitializeProblems()
 {
     MatchProblemToId();
@@ -380,7 +397,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     //   external_loop_criterion_current_batch =
     //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
     // }
-    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
+    batch_cuts_manager_.SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, _data);
     if (_world.rank() == rank_0)
     {
         auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
@@ -388,8 +405,13 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
         *batch_contribution_in_gap = ComputeBatchContributionInGap(
           gathered_subproblem_map,
           batch_cuts_list[current_batch_id_].name_to_cut);
-        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].name_to_cut,
-                                  gathered_subproblem_map);
+        batch_cuts_manager_.BuildAllAggregatedCuts(batch_cuts_list[current_batch_id_].name_to_cut,
+                                              gathered_subproblem_map,
+                                              _problem_to_id,
+                                              _data.ub,
+                                              _data.x_cut,
+                                              relevantIterationData_.last._cut_trace,
+                                              _master);
     }
 }
 

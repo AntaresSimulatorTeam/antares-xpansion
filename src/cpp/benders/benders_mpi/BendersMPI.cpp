@@ -16,11 +16,19 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(options,
-                std::move(logger),
+                logger,
                 std::move(writer),
                 std::move(mathLoggerDriver),
                 std::make_shared<MpiCommunicationStrategy>(world)),
-    _world(world)
+    _world(world),
+    cuts_manager_(world,
+                  rank_0,
+                  _data,
+                  _problem_to_id,
+                  relevantIterationData_,
+                  _master,
+                  subproblem_per_cut_indices_,
+                  logger)
 {
     int rank = _world.rank();
     set_rank(rank);
@@ -259,7 +267,18 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
         write_exception_message(ex);
     }
     check_if_some_proc_had_a_failure(success);
-    gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
+    cuts_manager_.GatherAndBuildCuts(subproblem_data_map, walltime, exception_raised_);
+    if (!exception_raised_ && !criterion_computation_.IsEmpty())
+    {
+        ComputeSubproblemsContributionToCriteria(subproblem_data_map);
+
+        if (Rank() == rank_0)
+        {
+            criteria_vector_for_each_iteration_.push_back(
+              _data.criteria_current_iteration_data.criteria);
+            UpdateMaxCriterionArea();
+        }
+    }
     if (Rank() == rank_0)
     {
         _data.cumulative_number_of_subproblem_solved += _data.nsubproblem;
@@ -268,42 +287,6 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     }
 }
 
-void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
-  const SubProblemDataMap& subproblem_data_map,
-  const Timer& walltime)
-{
-    if (!exception_raised_)
-    {
-        GatherCuts(subproblem_data_map, walltime);
-    }
-}
-
-void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
-{
-    std::vector<SubProblemDataMap> gathered_subproblem_map;
-    mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-    _data.subproblems_walltime = walltime.elapsed();
-    double cumulative_subproblems_timer_per_iter(0);
-    Reduce(_data.subproblems_cputime,
-           cumulative_subproblems_timer_per_iter,
-           std::plus<double>(),
-           rank_0);
-    _data.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter;
-
-    // only rank_0 receive non-emtpy gathered_subproblem_map
-    master_build_cuts(gathered_subproblem_map);
-    if (!criterion_computation_.IsEmpty())
-    {
-        ComputeSubproblemsContributionToCriteria(subproblem_data_map);
-
-        if (_world.rank() == rank_0)
-        {
-            criteria_vector_for_each_iteration_.push_back(
-              _data.criteria_current_iteration_data.criteria);
-            UpdateMaxCriterionArea();
-        }
-    }
-}
 
 void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
@@ -370,34 +353,6 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     return subproblem_data_map;
 }
 
-void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
-{
-    SetSubproblemCost(0);
-    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
-
-    _data.ub = 0;
-
-    if (_world.rank() == rank_0)
-    {
-        build_all_aggregated_cuts(subproblem_per_cut_indices_, gathered_subproblem_map);
-    }
-
-    _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
-    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
-}
-
-void BendersMpi::SetSubproblemDataCostAndSimplexIter(
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
-{
-    for (const auto& subproblem_data_map: gathered_subproblem_map)
-    {
-        for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
-        {
-            SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
-            BoundSimplexIterations(subproblem_data.simplex_iter);
-        }
-    }
-}
 
 /*!
  *  \brief Gather, store and sort all process results in a set
