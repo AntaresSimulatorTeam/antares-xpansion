@@ -26,7 +26,12 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 std::move(logger),
                 std::move(writer),
                 mathLoggerDriver,
-                std::make_shared<SequentialCommunicationStrategy>())
+                std::make_shared<SequentialCommunicationStrategy>()),
+    cuts_manager_(_data,
+                  _problem_to_id,
+                  relevantIterationData_,
+                  _master,
+                  options.NB_CUTS_PER_ITER)
 {
 }
 
@@ -86,8 +91,8 @@ void BendersSequential::BuildCut()
     }
 
     _data.subproblems_walltime = timer.elapsed();
-    _data.ub = 0;
-    BuildCutFull(subproblem_data_map);
+    check_status(subproblem_data_map);
+    cuts_manager_.GatherAndBuildCuts(subproblem_data_map);
 }
 
 /*!

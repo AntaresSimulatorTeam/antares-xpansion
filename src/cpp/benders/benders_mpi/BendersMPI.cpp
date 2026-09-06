@@ -267,7 +267,9 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
         write_exception_message(ex);
     }
     check_if_some_proc_had_a_failure(success);
+
     cuts_manager_.GatherAndBuildCuts(subproblem_data_map, walltime, exception_raised_);
+    
     if (!exception_raised_ && !criterion_computation_.IsEmpty())
     {
         ComputeSubproblemsContributionToCriteria(subproblem_data_map);

@@ -168,6 +168,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
+    
+    void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
@@ -194,7 +196,6 @@ protected:
                                    const std::shared_ptr<SubproblemWorker>& worker);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
-    void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
@@ -342,13 +343,10 @@ private:
     void print_master_csv(std::ostream& stream,
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
-    void check_status(const SubProblemDataMap& subproblem_data_map) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;
     [[nodiscard]] std::string status_from_criterion() const;
-    void compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map);
-    void compute_cut(const SubProblemDataMap& subproblem_data_map);
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const;
