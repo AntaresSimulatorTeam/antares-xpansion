@@ -27,11 +27,7 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 std::move(writer),
                 mathLoggerDriver,
                 std::make_shared<SequentialCommunicationStrategy>()),
-    cuts_manager_(_data,
-                  _problem_to_id,
-                  relevantIterationData_,
-                  _master,
-                  options.NB_CUTS_PER_ITER)
+    cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master, options.NB_CUTS_PER_ITER)
 {
 }
 
@@ -128,7 +124,8 @@ void BendersSequential::Run()
         get_master_value();
         _logger->log_master_solving_duration(_data.timer_master);
 
-        cuts_manager_.ComputeXCut(_data, Options().SEPARATION_PARAM,
+        cuts_manager_.ComputeXCut(_data,
+                                  Options().SEPARATION_PARAM,
                                   Options().MASTER_SOLUTION_TOLERANCE);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
 

@@ -237,7 +237,8 @@ void BendersMpi::solve_master_and_create_trace()
 
     _logger->log_master_solving_duration(_data.timer_master);
 
-    cuts_manager_.ComputeXCut(_data, Options().SEPARATION_PARAM,
+    cuts_manager_.ComputeXCut(_data,
+                              Options().SEPARATION_PARAM,
                               Options().MASTER_SOLUTION_TOLERANCE);
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 }
@@ -270,7 +271,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     check_if_some_proc_had_a_failure(success);
 
     cuts_manager_.GatherAndBuildCuts(subproblem_data_map, walltime, exception_raised_);
-    
+
     if (!exception_raised_ && !criterion_computation_.IsEmpty())
     {
         ComputeSubproblemsContributionToCriteria(subproblem_data_map);
@@ -289,7 +290,6 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
           _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
     }
 }
-
 
 void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
@@ -355,7 +355,6 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     GetSubproblemCut(subproblem_data_map);
     return subproblem_data_map;
 }
-
 
 /*!
  *  \brief Gather, store and sort all process results in a set

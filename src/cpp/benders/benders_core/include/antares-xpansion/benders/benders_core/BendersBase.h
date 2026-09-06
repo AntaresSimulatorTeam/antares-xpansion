@@ -168,7 +168,7 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-    
+
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;

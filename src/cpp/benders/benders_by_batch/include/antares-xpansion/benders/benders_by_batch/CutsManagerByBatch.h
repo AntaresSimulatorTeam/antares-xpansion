@@ -2,8 +2,8 @@
 
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/benders_core/CutsManager.hxx"
-#include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
+#include "antares-xpansion/helpers/Timer.h"
 
 class CutsManagerByBatch: public CutsManager<CutsManagerByBatch>
 {

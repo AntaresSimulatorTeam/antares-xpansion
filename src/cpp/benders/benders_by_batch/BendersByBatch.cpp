@@ -12,12 +12,7 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(world,
-                        rank_0,
-                        _data,
-                        _problem_to_id,
-                        relevantIterationData_,
-                        _master)
+    batch_cuts_manager_(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master)
 {
 }
 
@@ -270,7 +265,8 @@ void BendersByBatch::ComputeXCut()
         _data.x_in = _data.x_cut;
         _data.master_only_vars_in = _data.master_only_vars_cut;
     }
-    batch_cuts_manager_.ComputeXCut(_data, Options().SEPARATION_PARAM,
+    batch_cuts_manager_.ComputeXCut(_data,
+                                    Options().SEPARATION_PARAM,
                                     Options().MASTER_SOLUTION_TOLERANCE);
 }
 
@@ -376,9 +372,9 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
 
     auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
     batch_cuts_manager_.GatherAndBuildCuts(subproblem_data_map,
-                                          subproblems_timer_per_proc,
-                                          batch_cuts_list[current_batch_id_].name_to_cut,
-                                          *batch_contribution_in_gap);
+                                           subproblems_timer_per_proc,
+                                           batch_cuts_list[current_batch_id_].name_to_cut,
+                                           *batch_contribution_in_gap);
 }
 
 void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,

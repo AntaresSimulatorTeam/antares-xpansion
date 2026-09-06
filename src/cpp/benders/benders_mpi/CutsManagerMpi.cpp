@@ -29,8 +29,7 @@ void CutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_
     }
 }
 
-void CutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map,
-                                const Timer& walltime)
+void CutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(world_, subproblem_data_map, gathered_subproblem_map, rank_0_);
@@ -46,8 +45,7 @@ void CutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map,
     MasterBuildCuts(gathered_subproblem_map);
 }
 
-void CutsManagerMpi::MasterBuildCuts(
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+void CutsManagerMpi::MasterBuildCuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
     data_.subproblem_cost = 0;
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, data_);

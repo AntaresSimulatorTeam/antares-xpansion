@@ -1,8 +1,8 @@
 #pragma once
 
+#include "CutsManagerMpi.h"
 #include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include "CutsManagerMpi.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"

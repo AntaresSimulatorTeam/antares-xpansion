@@ -99,7 +99,8 @@ public:
 
     // Computes the separation point x_cut from x_out and x_in using the
     // separation parameter, then rounds values near variable bounds.
-    void ComputeXCut(CurrentIterationData& data, double separation_param,
+    void ComputeXCut(CurrentIterationData& data,
+                     double separation_param,
                      double master_solution_tolerance)
     {
         if (data.it == 1)
@@ -126,14 +127,13 @@ public:
         RoundXCut(data, master_solution_tolerance);
     }
 
-    void BuildAllAggregatedCuts(
-      const std::vector<SubProblemNamesInCut>& subproblem_names,
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      const VariableMap& problem_to_id,
-      double& ub,
-      const Point& x_cut,
-      SubProblemDataMap& cut_trace,
-      const WorkerMasterPtr& master)
+    void BuildAllAggregatedCuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
+                                const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+                                const VariableMap& problem_to_id,
+                                double& ub,
+                                const Point& x_cut,
+                                SubProblemDataMap& cut_trace,
+                                const WorkerMasterPtr& master)
     {
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
