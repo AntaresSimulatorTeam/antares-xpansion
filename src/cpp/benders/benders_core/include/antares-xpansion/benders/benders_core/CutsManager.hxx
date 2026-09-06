@@ -106,7 +106,6 @@ public:
       SubProblemDataMap& cut_trace,
       const WorkerMasterPtr& master)
     {
-        std::vector<int> subproblem_ids_per_cut;
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
             Point s;
