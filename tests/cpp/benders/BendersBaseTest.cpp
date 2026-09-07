@@ -1,9 +1,9 @@
-#include "antares-xpansion/benders/benders_core/CutsManager.hxx"
+#include "antares-xpansion/benders/benders_core/BendersCutsManager.hxx"
 #include "gtest/gtest.h"
 
-// Minimal CutsManager test double — only ComputeXCut is under test,
+// Minimal BendersCutsManager test double — only ComputeXCut is under test,
 // so GatherAndBuildCutsImpl is never called.
-class CutsManagerTestDouble: public CutsManager<CutsManagerTestDouble>
+class BendersCutsManagerTestDouble: public BendersCutsManager<BendersCutsManagerTestDouble>
 {
 public:
     void GatherAndBuildCutsImpl()
@@ -23,7 +23,7 @@ TEST(ComputeXCutTest, FirstIteration)
     data.max_invest = {{"x1", 1e+20}, {"x2", 1e+20}};
     data.it = 1;
 
-    CutsManagerTestDouble cuts_manager;
+    BendersCutsManagerTestDouble cuts_manager;
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // In first iteration, x_cut should equal x_out
@@ -42,7 +42,7 @@ TEST(ComputeXCutTest, LaterIteration)
     data.max_invest = {{"x1", 1e+20}, {"x2", 1e+20}};
     data.it = 2;
 
-    CutsManagerTestDouble cuts_manager;
+    BendersCutsManagerTestDouble cuts_manager;
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // x_cut = sep_param * x_out + (1 - sep_param) * x_in, no rounding here
@@ -62,7 +62,7 @@ TEST(ComputeXCutTest, RoundingLowerBound)
     data.max_invest = {{"x1", 10}, {"x2", 1e+20}};
     data.it = 2;
 
-    CutsManagerTestDouble cuts_manager;
+    BendersCutsManagerTestDouble cuts_manager;
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // x1 rounded to lower bound (1.005 without rounding)
@@ -82,7 +82,7 @@ TEST(ComputeXCutTest, RoundingUpperBound)
     data.max_invest = {{"x1", 10}, {"x2", 6.0}};
     data.it = 2;
 
-    CutsManagerTestDouble cuts_manager;
+    BendersCutsManagerTestDouble cuts_manager;
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // x1 not rounded, x2 rounded to upper bound (5.995 without rounding)

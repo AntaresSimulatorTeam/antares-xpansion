@@ -1,15 +1,15 @@
 #pragma once
 
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
-#include "antares-xpansion/benders/benders_core/CutsManager.hxx"
+#include "antares-xpansion/benders/benders_core/BendersCutsManager.hxx"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common_mpi.h"
 
-class CutsManagerMpi: public CutsManager<CutsManagerMpi>
+class BendersCutsManagerMpi: public BendersCutsManager<BendersCutsManagerMpi>
 {
 public:
-    CutsManagerMpi(mpi::communicator& world,
+    BendersCutsManagerMpi(mpi::communicator& world,
                    int rank_0,
                    CurrentIterationData& data,
                    const VariableMap& problem_to_id,

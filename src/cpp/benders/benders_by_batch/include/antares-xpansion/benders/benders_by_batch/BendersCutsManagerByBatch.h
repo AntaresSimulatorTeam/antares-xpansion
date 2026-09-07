@@ -1,14 +1,14 @@
 #pragma once
 
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
-#include "antares-xpansion/benders/benders_core/CutsManager.hxx"
+#include "antares-xpansion/benders/benders_core/BendersCutsManager.hxx"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/helpers/Timer.h"
 
-class CutsManagerByBatch: public CutsManager<CutsManagerByBatch>
+class BendersCutsManagerByBatch: public BendersCutsManager<BendersCutsManagerByBatch>
 {
 public:
-    CutsManagerByBatch(mpi::communicator& world,
+    BendersCutsManagerByBatch(mpi::communicator& world,
                        int rank_0,
                        CurrentIterationData& data,
                        const VariableMap& problem_to_id,

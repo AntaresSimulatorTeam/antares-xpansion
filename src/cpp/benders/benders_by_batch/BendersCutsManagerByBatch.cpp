@@ -1,8 +1,8 @@
-#include "antares-xpansion/benders/benders_by_batch/CutsManagerByBatch.h"
+#include "antares-xpansion/benders/benders_by_batch/BendersCutsManagerByBatch.h"
 
 #include <numeric>
 
-CutsManagerByBatch::CutsManagerByBatch(mpi::communicator& world,
+BendersCutsManagerByBatch::BendersCutsManagerByBatch(mpi::communicator& world,
                                        int rank_0,
                                        CurrentIterationData& data,
                                        const VariableMap& problem_to_id,
@@ -17,7 +17,7 @@ CutsManagerByBatch::CutsManagerByBatch(mpi::communicator& world,
 {
 }
 
-void CutsManagerByBatch::GatherAndBuildCutsImpl(
+void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(
   const SubProblemDataMap& subproblem_data_map,
   const Timer& walltime,
   const std::vector<SubProblemNamesInCut>& subproblems_per_cut,
@@ -43,7 +43,7 @@ void CutsManagerByBatch::GatherAndBuildCutsImpl(
     }
 }
 
-double CutsManagerByBatch::ComputeBatchContributionInGap(
+double BendersCutsManagerByBatch::ComputeBatchContributionInGap(
   const std::vector<SubProblemDataMap>& gathered_subproblem_map,
   const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const
 {

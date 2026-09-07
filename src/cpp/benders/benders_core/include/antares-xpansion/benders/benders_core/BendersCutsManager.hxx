@@ -25,10 +25,10 @@ inline void compute_cut_val(const Point& var_name_subgradient, const Point& x_cu
 } // namespace
 
 template<typename Derived>
-class CutsManager
+class BendersCutsManager
 {
 public:
-    CutsManager() = default;
+    BendersCutsManager() = default;
 
     template<typename... Args>
     void GatherAndBuildCuts(Args&&... args)

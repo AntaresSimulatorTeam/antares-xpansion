@@ -1,6 +1,6 @@
-#include "antares-xpansion/benders/benders_mpi/CutsManagerMpi.h"
+#include "antares-xpansion/benders/benders_mpi/BendersCutsManagerMpi.h"
 
-CutsManagerMpi::CutsManagerMpi(mpi::communicator& world,
+BendersCutsManagerMpi::BendersCutsManagerMpi(mpi::communicator& world,
                                int rank_0,
                                CurrentIterationData& data,
                                const VariableMap& problem_to_id,
@@ -19,7 +19,7 @@ CutsManagerMpi::CutsManagerMpi(mpi::communicator& world,
 {
 }
 
-void CutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
+void BendersCutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
                                             const Timer& walltime,
                                             bool exception_raised)
 {
@@ -29,7 +29,7 @@ void CutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_
     }
 }
 
-void CutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
+void BendersCutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(world_, subproblem_data_map, gathered_subproblem_map, rank_0_);
@@ -45,7 +45,7 @@ void CutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, co
     MasterBuildCuts(gathered_subproblem_map);
 }
 
-void CutsManagerMpi::MasterBuildCuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+void BendersCutsManagerMpi::MasterBuildCuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
     data_.subproblem_cost = 0;
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, data_);

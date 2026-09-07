@@ -1,7 +1,7 @@
 #ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
-#include "CutsManagerByBatch.h"
+#include "BendersCutsManagerByBatch.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
@@ -65,7 +65,7 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
-    CutsManagerByBatch batch_cuts_manager_;
+    BendersCutsManagerByBatch batch_cuts_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

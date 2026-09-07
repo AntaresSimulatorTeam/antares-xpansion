@@ -10,9 +10,9 @@ add_library(benders_sequential_core)
 
 target_sources(benders_sequential_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersSequential.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/CutsManagerSequential.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BendersCutsManagerSequential.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersSequential.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/CutsManagerSequential.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersCutsManagerSequential.h
 )
 
 target_include_directories(benders_sequential_core

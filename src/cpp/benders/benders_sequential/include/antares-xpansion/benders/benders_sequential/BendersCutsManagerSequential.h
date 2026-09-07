@@ -1,12 +1,12 @@
 #pragma once
 
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
-#include "antares-xpansion/benders/benders_core/CutsManager.hxx"
+#include "antares-xpansion/benders/benders_core/BendersCutsManager.hxx"
 
-class CutsManagerSequential: public CutsManager<CutsManagerSequential>
+class BendersCutsManagerSequential: public BendersCutsManager<BendersCutsManagerSequential>
 {
 public:
-    CutsManagerSequential(CurrentIterationData& data,
+    BendersCutsManagerSequential(CurrentIterationData& data,
                           VariableMap& problem_to_id,
                           BendersRelevantIterationsData& relevantIterationData,
                           const WorkerMasterPtr& master,

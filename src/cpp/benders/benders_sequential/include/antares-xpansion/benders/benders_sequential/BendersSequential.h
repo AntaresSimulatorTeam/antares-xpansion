@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CutsManagerSequential.h"
+#include "BendersCutsManagerSequential.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
@@ -33,5 +33,5 @@ protected:
 
 private:
     ArchiveReader reader_;
-    CutsManagerSequential cuts_manager_;
+    BendersCutsManagerSequential cuts_manager_;
 };

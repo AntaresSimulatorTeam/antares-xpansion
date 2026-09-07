@@ -19,11 +19,11 @@ add_library(benders_by_batch_core)
 target_sources(benders_by_batch_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BatchCollection.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersByBatch.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/CutsManagerByBatch.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BendersCutsManagerByBatch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/RandomBatchShuffler.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BatchCollection.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersByBatch.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/CutsManagerByBatch.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersCutsManagerByBatch.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h
 )
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CutsManagerMpi.h"
+#include "BendersCutsManagerMpi.h"
 #include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
@@ -59,7 +59,7 @@ private:
     void check_if_some_proc_had_a_failure(int success);
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
-    CutsManagerMpi cuts_manager_;
+    BendersCutsManagerMpi cuts_manager_;
 
 protected:
     void InitializeMaster();
