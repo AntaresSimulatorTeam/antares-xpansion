@@ -27,8 +27,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                   _problem_to_id,
                   relevantIterationData_,
                   _master,
-                  subproblem_per_cut_indices_,
-                  logger)
+                  subproblem_per_cut_indices_)
 {
 }
 
@@ -262,6 +261,9 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     check_if_some_proc_had_a_failure(success);
 
     cuts_manager_.GatherAndBuildCuts(subproblem_data_map, walltime, exception_raised_);
+
+    _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
+    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
     if (!exception_raised_ && !criterion_computation_.IsEmpty())
     {

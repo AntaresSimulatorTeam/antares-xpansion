@@ -7,16 +7,14 @@ BendersCutsManagerMpi::BendersCutsManagerMpi(
   const VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
   const WorkerMasterPtr& master,
-  const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices,
-  Logger logger):
+  const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices):
     world_(world),
     rank_0_(rank_0),
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData),
     master_(master),
-    subproblem_per_cut_indices_(subproblem_per_cut_indices),
-    logger_(std::move(logger))
+    subproblem_per_cut_indices_(subproblem_per_cut_indices)
 {
 }
 
@@ -65,7 +63,4 @@ void BendersCutsManagerMpi::MasterBuildCuts(
                                relevantIterationData_.last._cut_trace,
                                master_);
     }
-
-    logger_->LogSubproblemsSolvingCumulativeCpuTime(data_.subproblems_cumulative_cputime);
-    logger_->LogSubproblemsSolvingWalltime(data_.subproblems_walltime);
 }
