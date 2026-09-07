@@ -4,13 +4,11 @@ BendersCutsManagerSequential::BendersCutsManagerSequential(
   CurrentIterationData& data,
   VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  const WorkerMasterPtr& master,
-  int nb_cuts_per_iter):
+  const WorkerMasterPtr& master):
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData),
-    master_(master),
-    nb_cuts_per_iter_(nb_cuts_per_iter)
+    master_(master)
 {
 }
 
@@ -18,22 +16,18 @@ void BendersCutsManagerSequential::GatherAndBuildCutsImpl(
   const SubProblemDataMap& subproblem_data_map)
 {
     data_.ub = 0;
+    std::vector<SubProblemDataMap> gathered{subproblem_data_map};
+    BuildAllAggregatedCuts(subproblem_per_cut_indices_,
+                           gathered,
+                           problem_to_id_,
+                           data_.ub,
+                           data_.x_cut,
+                           relevantIterationData_.last._cut_trace,
+                           master_);
+}
 
-    if (nb_cuts_per_iter_)
-    {
-        ComputeCutAggregate(subproblem_data_map,
-                            data_.ub,
-                            data_.x_cut,
-                            relevantIterationData_.last._cut_trace,
-                            master_);
-    }
-    else
-    {
-        ComputeCut(subproblem_data_map,
-                   data_.ub,
-                   data_.x_cut,
-                   problem_to_id_,
-                   relevantIterationData_.last._cut_trace,
-                   master_);
-    }
+void BendersCutsManagerSequential::SetSubproblemPerCutIndices(
+  std::vector<SubProblemNamesInCut> indices)
+{
+    subproblem_per_cut_indices_ = std::move(indices);
 }

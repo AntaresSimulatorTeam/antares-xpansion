@@ -9,15 +9,15 @@ public:
     BendersCutsManagerSequential(CurrentIterationData& data,
                                  VariableMap& problem_to_id,
                                  BendersRelevantIterationsData& relevantIterationData,
-                                 const WorkerMasterPtr& master,
-                                 int nb_cuts_per_iter);
+                                 const WorkerMasterPtr& master);
 
     void GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map);
+    void SetSubproblemPerCutIndices(std::vector<SubProblemNamesInCut> indices);
 
 private:
     CurrentIterationData& data_;
     VariableMap& problem_to_id_;
     BendersRelevantIterationsData& relevantIterationData_;
     const WorkerMasterPtr& master_;
-    int nb_cuts_per_iter_;
+    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 };

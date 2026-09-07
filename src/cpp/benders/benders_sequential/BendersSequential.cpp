@@ -27,13 +27,38 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 std::move(writer),
                 mathLoggerDriver,
                 std::make_shared<SequentialCommunicationStrategy>()),
-    cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master, options.NB_CUTS_PER_ITER)
+    cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master)
 {
 }
 
 void BendersSequential::InitializeProblems()
 {
     MatchProblemToId();
+
+    int n_cuts = SetAggregation(_data.nsubproblem);
+    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
+    subproblem_per_cut_indices.reserve(n_cuts);
+
+    SubProblemNamesInCut current_cut;
+    size_t group_size = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+    current_cut.reserve(group_size);
+
+    for (const auto& [name, id]: _problem_to_id)
+    {
+        current_cut.emplace_back(name, 0);
+        if (current_cut.size() == group_size)
+        {
+            subproblem_per_cut_indices.emplace_back(std::move(current_cut));
+            current_cut.clear();
+            current_cut.reserve(group_size);
+        }
+    }
+    if (!current_cut.empty())
+    {
+        subproblem_per_cut_indices.emplace_back(std::move(current_cut));
+    }
+    cuts_manager_.SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
+
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
     reset_master<WorkerMaster>(master_variable_map_,

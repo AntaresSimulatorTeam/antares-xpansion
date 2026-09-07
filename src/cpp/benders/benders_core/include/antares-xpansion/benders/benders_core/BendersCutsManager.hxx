@@ -53,50 +53,6 @@ public:
         }
     }
 
-    // Adds one individual cut per subproblem to the master problem.
-    // Used when NB_CUTS_PER_ITER is 0 (no aggregation).
-    void ComputeCut(const SubProblemDataMap& subproblem_data_map,
-                    double& ub,
-                    const Point& x_cut,
-                    VariableMap& problem_to_id,
-                    SubProblemDataMap& cut_trace,
-                    const WorkerMasterPtr& master)
-    {
-        for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
-        {
-            ub += subproblem_data.subproblem_cost;
-
-            master->addSubproblemCut(problem_to_id[subproblem_name],
-                                     subproblem_data.var_name_and_subgradient,
-                                     x_cut,
-                                     subproblem_data.subproblem_cost);
-
-            cut_trace[subproblem_name] = subproblem_data;
-        }
-    }
-
-    // Adds a single aggregated cut (summing all subproblem subgradients)
-    // to the master problem. Used when NB_CUTS_PER_ITER > 0.
-    void ComputeCutAggregate(const SubProblemDataMap& subproblem_data_map,
-                             double& ub,
-                             const Point& x_cut,
-                             SubProblemDataMap& cut_trace,
-                             const WorkerMasterPtr& master)
-    {
-        Point s;
-        double rhs(0);
-        for (const auto& [name, subproblem_data]: subproblem_data_map)
-        {
-            ub += subproblem_data.subproblem_cost;
-            rhs += subproblem_data.subproblem_cost;
-
-            compute_cut_val(subproblem_data.var_name_and_subgradient, x_cut, s);
-
-            cut_trace[name] = subproblem_data;
-        }
-        master->add_cut(s, x_cut, rhs);
-    }
-
     // Computes the separation point x_cut from x_out and x_in using the
     // separation parameter, then rounds values near variable bounds.
     void ComputeXCut(CurrentIterationData& data,
