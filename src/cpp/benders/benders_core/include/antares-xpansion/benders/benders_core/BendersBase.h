@@ -53,7 +53,6 @@ public:
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
@@ -149,11 +148,8 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
     WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
@@ -167,7 +163,6 @@ protected:
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
-    bool is_bilevel_check_all_ = false;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -193,11 +188,9 @@ protected:
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
-    void set_rank(int rank);
     [[nodiscard]] std::filesystem::path GetSubproblemPath(const std::string& subproblem_name) const;
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;
-    [[nodiscard]] std::filesystem::path get_structure_path() const;
     [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
 
     template<typename T, typename... Args>
@@ -249,7 +242,6 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
     SubproblemsMapPtr GetSubProblemMap() const
     {
         return subproblem_map;
@@ -359,8 +351,6 @@ private:
     Output::SolutionData outer_loop_solution_data_;
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
-
-    int rank_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

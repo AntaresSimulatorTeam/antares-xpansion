@@ -30,8 +30,6 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                   subproblem_per_cut_indices_,
                   logger)
 {
-    int rank = _world.rank();
-    set_rank(rank);
 }
 
 /*!

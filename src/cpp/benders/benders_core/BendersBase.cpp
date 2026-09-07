@@ -291,8 +291,6 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData& data) const
 void BendersBase::UpdateTrace()
 {
     FillWorkerMasterData(relevantIterationData_.last);
-    // TODO Outer loop --> de-comment for general case
-    // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 
 bool BendersBase::is_initial_relaxation_requested() const
@@ -468,11 +466,6 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     default:
         break;
     }
-}
-
-void BendersBase::set_rank(int rank)
-{
-    rank_ = rank;
 }
 
 void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
