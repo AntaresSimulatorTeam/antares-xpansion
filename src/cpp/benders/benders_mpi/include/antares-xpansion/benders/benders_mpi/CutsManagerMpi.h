@@ -22,6 +22,11 @@ public:
                                 const Timer& walltime,
                                 bool exception_raised);
 
+    void BroadcastXCut()
+    {
+        mpi::broadcast(world_, data_.x_cut, rank_0_);
+    }
+
 private:
     void GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime);
     void MasterBuildCuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);

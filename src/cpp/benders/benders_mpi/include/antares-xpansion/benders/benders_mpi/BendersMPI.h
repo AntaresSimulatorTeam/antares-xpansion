@@ -37,7 +37,6 @@ protected:
     void free() override;
     void Run() override;
     void InitializeProblems() override;
-    void BroadcastXCut();
 
     mpi::communicator& _world;
 

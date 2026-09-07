@@ -53,11 +53,6 @@ public:
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
     void MasterChangeRhs(int id_row, double val) const;

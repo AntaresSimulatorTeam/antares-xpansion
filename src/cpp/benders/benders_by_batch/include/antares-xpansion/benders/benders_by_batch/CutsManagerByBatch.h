@@ -20,6 +20,11 @@ public:
                                 const std::vector<SubProblemNamesInCut>& subproblems_per_cut,
                                 double& batch_contribution_in_gap);
 
+    void BroadcastXCut()
+    {
+        mpi::broadcast(world_, data_.x_cut, rank_0_);
+    }
+
 private:
     double ComputeBatchContributionInGap(
       const std::vector<SubProblemDataMap>& gathered_subproblem_map,

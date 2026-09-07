@@ -202,7 +202,10 @@ void BendersMpi::step_1_solve_master()
         write_exception_message(ex);
     }
     check_if_some_proc_had_a_failure(success);
-    BroadcastXCut();
+    if (!exception_raised_)
+    {
+        cuts_manager_.BroadcastXCut();
+    }
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts()
@@ -216,16 +219,6 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts()
             ResetDataPostRelaxation();
         }
         solve_master_and_create_trace();
-    }
-}
-
-void BendersMpi::BroadcastXCut()
-{
-    if (!exception_raised_)
-    {
-        Point x_cut = get_x_cut();
-        mpi::broadcast(_world, x_cut, rank_0);
-        set_x_cut(x_cut);
     }
 }
 

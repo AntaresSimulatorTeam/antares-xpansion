@@ -234,7 +234,7 @@ void BendersByBatch::SeparationLoop()
         {
             ComputeXCut();
         }
-        BroadcastXCut();
+        batch_cuts_manager_.BroadcastXCut();
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
