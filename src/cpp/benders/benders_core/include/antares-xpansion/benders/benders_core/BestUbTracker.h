@@ -43,7 +43,9 @@ public:
     void dump_values();
 
 private:
-    bool set_best_ub_solution_(double new_best_ub, int iter);
+    bool set_best_ub_solution_(double new_best_ub);
+    void extract_tracked_values_(const std::string& sub_name,
+                                 const std::shared_ptr<SubproblemWorker>& worker);
 
     std::ifstream file_stream_;
     mpi::communicator* _world;
@@ -51,7 +53,6 @@ private:
     Logger _logger;
 
     double best_ub_ = std::numeric_limits<double>::max();
-    int last_iteration_update_ = -1;
 
     std::vector<std::string> variables_to_follow_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;

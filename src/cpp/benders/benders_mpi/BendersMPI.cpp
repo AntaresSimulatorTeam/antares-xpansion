@@ -320,7 +320,7 @@ void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 {
     BendersBase::SolveSubproblem(subproblem_data, name, worker, post_reset_hook);
 
-    std::vector<double> solution = worker->get_solution();
+    const auto& solution = worker->get_solution();
     criterion_computation_.ComputeCriterion(SubproblemWeight(_data.nsubproblem, name),
                                             solution,
                                             subproblem_data.criteria,

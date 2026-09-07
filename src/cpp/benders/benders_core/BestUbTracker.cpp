@@ -27,12 +27,11 @@ BestUbTracker::BestUbTracker(mpi::communicator* world,
     }
 }
 
-bool BestUbTracker::set_best_ub_solution_(double new_best_ub, int iter)
+bool BestUbTracker::set_best_ub_solution_(double new_best_ub)
 {
     if (new_best_ub <= best_ub_)
     {
         best_ub_ = new_best_ub;
-        last_iteration_update_ = iter;
         return true;
     }
     return false;
@@ -43,7 +42,7 @@ void BestUbTracker::set_variables_values(std::string sub_name,
                                          int iter,
                                          double new_ub)
 {
-    if (set_best_ub_solution_(new_ub, iter))
+    if (set_best_ub_solution_(new_ub))
     {
         if (iter <= 1) [[unlikely]]
         {
@@ -59,43 +58,38 @@ void BestUbTracker::set_variables_values(std::string sub_name,
             }
         }
 
-        if (last_iteration_update_ == iter)
-        {
-            values_per_sub_[sub_name] = worker->get_solution();
-        }
+        extract_tracked_values_(sub_name, worker);
+    }
+}
+
+void BestUbTracker::extract_tracked_values_(const std::string& sub_name,
+                                            const std::shared_ptr<SubproblemWorker>& worker)
+{
+    const auto& indices = variables_to_follow_indices_per_sub_[sub_name];
+    auto full_solution = worker->get_solution();
+    auto& tracked = values_per_sub_[sub_name];
+    tracked.resize(indices.size());
+    for (size_t i = 0; i < indices.size(); ++i)
+    {
+        tracked[i] = full_solution[static_cast<size_t>(indices[i])];
     }
 }
 
 void BestUbTracker::dump_values()
 {
-    // Gather values_per_sub_ from all ranks to rank 0
     std::vector<std::map<std::string, std::vector<double>>> gathered_values;
-
     mpi::gather(*_world, values_per_sub_, gathered_values, 0);
-
-    // Also gather indices so rank 0 has indices for all subproblems
-    std::vector<std::map<std::string, std::vector<int>>> gathered_indices;
-    mpi::gather(*_world, variables_to_follow_indices_per_sub_, gathered_indices, 0);
 
     if (_world->rank() != 0)
     {
         return;
     }
 
-    // Merge all gathered maps into values_per_sub_
     for (const auto& rank_values: gathered_values)
     {
         for (const auto& [sub_name, values]: rank_values)
         {
             values_per_sub_[sub_name] = values;
-        }
-    }
-
-    for (const auto& rank_indices: gathered_indices)
-    {
-        for (const auto& [sub_name, indices]: rank_indices)
-        {
-            variables_to_follow_indices_per_sub_[sub_name] = indices;
         }
     }
 
@@ -106,7 +100,6 @@ void BestUbTracker::dump_values()
         return;
     }
 
-    // header: first column is sub name, then the followed variables
     out << "sub_name";
     for (const auto& var: variables_to_follow_)
     {
@@ -114,14 +107,12 @@ void BestUbTracker::dump_values()
     }
     out << "\n";
 
-    // one row per subproblem
     for (const auto& [sub_name, values]: values_per_sub_)
     {
         out << sub_name;
-        const auto& indices = variables_to_follow_indices_per_sub_[sub_name];
-        for (size_t i = 0; i < indices.size(); ++i)
+        for (const auto& val: values)
         {
-            out << "," << values[static_cast<size_t>(indices[i])];
+            out << "," << val;
         }
         out << "\n";
     }

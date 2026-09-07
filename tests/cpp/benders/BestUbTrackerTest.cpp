@@ -41,7 +41,7 @@ public:
         solution_ = new_sol ;
     }
 
-    std::vector<double> get_solution() const override
+    const std::vector<double>& get_solution() const override
     {
         return solution_ ;
     }
