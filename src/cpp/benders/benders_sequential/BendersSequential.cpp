@@ -35,27 +35,32 @@ void BendersSequential::InitializeProblems()
 {
     MatchProblemToId();
 
-    int n_cuts = SetAggregation(_data.nsubproblem);
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
-    subproblem_per_cut_indices.reserve(n_cuts);
 
-    SubProblemNamesInCut current_cut;
-    size_t group_size = (_data.nsubproblem + n_cuts - 1) / n_cuts;
-    current_cut.reserve(group_size);
-
-    for (const auto& [name, id]: _problem_to_id)
+    // Skip cut aggregation when there are no subproblems to avoid division by zero
+    if (_data.nsubproblem > 0) [[likely]]
     {
-        current_cut.emplace_back(name, 0);
-        if (current_cut.size() == group_size)
+        int n_cuts = SetAggregation(_data.nsubproblem);
+        subproblem_per_cut_indices.reserve(n_cuts);
+
+        SubProblemNamesInCut current_cut;
+        size_t group_size = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+        current_cut.reserve(group_size);
+
+        for (const auto& [name, id]: _problem_to_id)
+        {
+            current_cut.emplace_back(name, 0);
+            if (current_cut.size() == group_size)
+            {
+                subproblem_per_cut_indices.emplace_back(std::move(current_cut));
+                current_cut.clear();
+                current_cut.reserve(group_size);
+            }
+        }
+        if (!current_cut.empty())
         {
             subproblem_per_cut_indices.emplace_back(std::move(current_cut));
-            current_cut.clear();
-            current_cut.reserve(group_size);
         }
-    }
-    if (!current_cut.empty())
-    {
-        subproblem_per_cut_indices.emplace_back(std::move(current_cut));
     }
     cuts_manager_.SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
 
