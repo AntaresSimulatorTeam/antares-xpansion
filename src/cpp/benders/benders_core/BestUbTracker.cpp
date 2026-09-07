@@ -42,22 +42,25 @@ void BestUbTracker::set_variables_values(std::string sub_name,
                                          int iter,
                                          double new_ub)
 {
+    std::call_once(indices_once_flag_,
+                   [this, &sub_name, &worker]()
+                   {
+                       for (auto& variable: variables_to_follow_)
+                       {
+                           auto index = worker->get_variable_index(variable);
+                           if (index < 0)
+                           {
+                               _logger->display_message("unable to find " + variable
+                                                        + " in sub_problem " + sub_name);
+                           }
+                           variables_to_follow_indices_.push_back(index);
+                       }
+                   });
+
+    // for mutlithreaded parallel subproblem case to avoid data race on best_ub
+    std::lock_guard guard(mutex_);
     if (set_best_ub_solution_(new_ub))
     {
-        if (iter <= 1) [[unlikely]]
-        {
-            for (auto& variable: variables_to_follow_)
-            {
-                auto index = worker->get_variable_index(variable);
-                if (index < 0)
-                {
-                    _logger->display_message("unable to find " + variable + " in sub_problem "
-                                             + sub_name);
-                }
-                variables_to_follow_indices_per_sub_[sub_name].push_back(index);
-            }
-        }
-
         extract_tracked_values_(sub_name, worker);
     }
 }
@@ -65,7 +68,7 @@ void BestUbTracker::set_variables_values(std::string sub_name,
 void BestUbTracker::extract_tracked_values_(const std::string& sub_name,
                                             const std::shared_ptr<SubproblemWorker>& worker)
 {
-    const auto& indices = variables_to_follow_indices_per_sub_[sub_name];
+    const auto& indices = variables_to_follow_indices_;
     auto full_solution = worker->get_solution();
     auto& tracked = values_per_sub_[sub_name];
     tracked.resize(indices.size());

@@ -5,6 +5,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -52,9 +53,11 @@ private:
     std::filesystem::path output_file_;
     Logger _logger;
 
+    std::mutex mutex_;
+    std::once_flag indices_once_flag_;
     double best_ub_ = std::numeric_limits<double>::max();
 
     std::vector<std::string> variables_to_follow_;
-    std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
+    std::vector<int> variables_to_follow_indices_;
     std::map<std::string, std::vector<double>> values_per_sub_;
 };
