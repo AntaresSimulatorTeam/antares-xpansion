@@ -1,7 +1,7 @@
 #pragma once
 
-#include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/benders_core/BendersCutsManager.hxx"
+#include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 #include "antares-xpansion/helpers/Timer.h"
 
@@ -9,11 +9,11 @@ class BendersCutsManagerByBatch: public BendersCutsManager<BendersCutsManagerByB
 {
 public:
     BendersCutsManagerByBatch(mpi::communicator& world,
-                       int rank_0,
-                       CurrentIterationData& data,
-                       const VariableMap& problem_to_id,
-                       BendersRelevantIterationsData& relevantIterationData,
-                       const WorkerMasterPtr& master);
+                              int rank_0,
+                              CurrentIterationData& data,
+                              const VariableMap& problem_to_id,
+                              BendersRelevantIterationsData& relevantIterationData,
+                              const WorkerMasterPtr& master);
 
     void GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
                                 const Timer& walltime,

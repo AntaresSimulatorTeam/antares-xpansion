@@ -1,10 +1,11 @@
 #include "antares-xpansion/benders/benders_sequential/BendersCutsManagerSequential.h"
 
-BendersCutsManagerSequential::BendersCutsManagerSequential(CurrentIterationData& data,
-                                             VariableMap& problem_to_id,
-                                             BendersRelevantIterationsData& relevantIterationData,
-                                             const WorkerMasterPtr& master,
-                                             int nb_cuts_per_iter):
+BendersCutsManagerSequential::BendersCutsManagerSequential(
+  CurrentIterationData& data,
+  VariableMap& problem_to_id,
+  BendersRelevantIterationsData& relevantIterationData,
+  const WorkerMasterPtr& master,
+  int nb_cuts_per_iter):
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData),
@@ -13,7 +14,8 @@ BendersCutsManagerSequential::BendersCutsManagerSequential(CurrentIterationData&
 {
 }
 
-void BendersCutsManagerSequential::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map)
+void BendersCutsManagerSequential::GatherAndBuildCutsImpl(
+  const SubProblemDataMap& subproblem_data_map)
 {
     data_.ub = 0;
 

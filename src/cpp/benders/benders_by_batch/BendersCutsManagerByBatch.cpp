@@ -2,12 +2,13 @@
 
 #include <numeric>
 
-BendersCutsManagerByBatch::BendersCutsManagerByBatch(mpi::communicator& world,
-                                       int rank_0,
-                                       CurrentIterationData& data,
-                                       const VariableMap& problem_to_id,
-                                       BendersRelevantIterationsData& relevantIterationData,
-                                       const WorkerMasterPtr& master):
+BendersCutsManagerByBatch::BendersCutsManagerByBatch(
+  mpi::communicator& world,
+  int rank_0,
+  CurrentIterationData& data,
+  const VariableMap& problem_to_id,
+  BendersRelevantIterationsData& relevantIterationData,
+  const WorkerMasterPtr& master):
     world_(world),
     rank_0_(rank_0),
     data_(data),

@@ -1,13 +1,14 @@
 #include "antares-xpansion/benders/benders_mpi/BendersCutsManagerMpi.h"
 
-BendersCutsManagerMpi::BendersCutsManagerMpi(mpi::communicator& world,
-                               int rank_0,
-                               CurrentIterationData& data,
-                               const VariableMap& problem_to_id,
-                               BendersRelevantIterationsData& relevantIterationData,
-                               const WorkerMasterPtr& master,
-                               const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices,
-                               Logger logger):
+BendersCutsManagerMpi::BendersCutsManagerMpi(
+  mpi::communicator& world,
+  int rank_0,
+  CurrentIterationData& data,
+  const VariableMap& problem_to_id,
+  BendersRelevantIterationsData& relevantIterationData,
+  const WorkerMasterPtr& master,
+  const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices,
+  Logger logger):
     world_(world),
     rank_0_(rank_0),
     data_(data),
@@ -20,8 +21,8 @@ BendersCutsManagerMpi::BendersCutsManagerMpi(mpi::communicator& world,
 }
 
 void BendersCutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
-                                            const Timer& walltime,
-                                            bool exception_raised)
+                                                   const Timer& walltime,
+                                                   bool exception_raised)
 {
     if (!exception_raised)
     {
@@ -29,7 +30,8 @@ void BendersCutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subp
     }
 }
 
-void BendersCutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime)
+void BendersCutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map,
+                                       const Timer& walltime)
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(world_, subproblem_data_map, gathered_subproblem_map, rank_0_);
@@ -45,7 +47,8 @@ void BendersCutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_
     MasterBuildCuts(gathered_subproblem_map);
 }
 
-void BendersCutsManagerMpi::MasterBuildCuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+void BendersCutsManagerMpi::MasterBuildCuts(
+  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
     data_.subproblem_cost = 0;
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, data_);
