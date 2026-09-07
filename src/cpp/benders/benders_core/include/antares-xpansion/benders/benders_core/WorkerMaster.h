@@ -41,14 +41,6 @@ public:
     void get_dual_values(std::vector<double>& dual) const;
     [[nodiscard]] int get_number_constraint() const;
 
-    void add_cut(const Point& s, const Point& x0, const double& rhs) const;
-    void add_cut_by_iter(int i, const Point& s, const double& sx0, const double& rhs) const;
-    void add_dynamic_cut(const Point& s, const double& sx0, const double& rhs) const;
-    void addSubproblemCut(int i,
-                          const Point& subgradient,
-                          const Point& x_cut,
-                          const double& rhs) const;
-
     void addGroupSubproblemCut(std::vector<int> subproblem_ids,
                                const Point& subgradient,
                                const Point& x_cut,
@@ -73,18 +65,10 @@ private:
     bool _mps_has_alpha = false;
     double _master_solution_tolerance;
     std::map<int, double> _subproblem_tolerance;
-    void define_matval_mclind(const Point& s,
-                              std::vector<double>& matval,
-                              std::vector<int>& mclind) const;
-
     void DefineRhsWithMasterVariable(const Point& s,
                                      const Point& x0,
                                      const double& rhs,
                                      std::vector<double>& rowrhs) const;
-
-    void define_rhs_from_sx0(const double& sx0,
-                             const double& rhs,
-                             std::vector<double>& rowrhs) const;
 
     void define_matval_mclind_for_index(std::vector<int> subproblem_ids,
                                         const Point& s,

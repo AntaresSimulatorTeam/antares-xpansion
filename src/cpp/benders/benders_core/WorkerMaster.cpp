@@ -148,29 +148,6 @@ int WorkerMaster::get_number_constraint() const
     return _solver->get_nrows();
 }
 
-/*!
- *  \brief Add benders cut to a problem
- *
- *  \param s : subgradient of optimal slave variables
- *  \param x_cut : master separation point
- *  \param rhs : optimal slave value
- */
-void WorkerMaster::add_cut(const Point& s, const Point& x_cut, const double& rhs) const
-{
-    // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x_cut)
-    int ncoeffs(1 + (int)s.size());
-    std::vector<char> rowtype(1, 'L');
-    std::vector<double> rowrhs(1, 0);
-    std::vector<double> matval(ncoeffs, 1);
-    std::vector<int> mstart = {0, ncoeffs};
-    std::vector<int> mclind(ncoeffs);
-
-    DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
-    define_matval_mclind(s, matval, mclind);
-
-    solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
-}
-
 void WorkerMaster::DefineRhsWithMasterVariable(const Point& s,
                                                const Point& x_cut,
                                                const double& rhs,
@@ -184,82 +161,6 @@ void WorkerMaster::DefineRhsWithMasterVariable(const Point& s,
             rowrhs.front() += (s.find(kvp.first)->second * x_cut.find(kvp.first)->second);
         }
     }
-}
-
-void WorkerMaster::define_matval_mclind(const Point& s,
-                                        std::vector<double>& matval,
-                                        std::vector<int>& mclind) const
-{
-    size_t mclindCnt_l(0);
-    for (const auto& kvp: _name_to_id)
-    {
-        if (s.find(kvp.first) != s.end())
-        {
-            mclind[mclindCnt_l] = kvp.second;
-            matval[mclindCnt_l] = s.find(kvp.first)->second;
-            ++mclindCnt_l;
-        }
-    }
-    mclind.back() = _id_alpha;
-    matval.back() = -1;
-}
-
-/*!
- *  \brief Add benders cut to a problem
- *
- *  \param s : optimal slave variables
- *  \param sx0 : subgradient times x0
- *  \param rhs : optimal slave value
- */
-void WorkerMaster::add_dynamic_cut(const Point& s, const double& sx0, const double& rhs) const
-{
-    // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x0)
-    int ncoeffs(1 + (int)s.size());
-    std::vector<char> rowtype(1, 'L');
-    std::vector<double> rowrhs(1, 0);
-    std::vector<double> matval(ncoeffs, 1);
-    std::vector<int> mstart = {0, ncoeffs};
-    std::vector<int> mclind(ncoeffs);
-
-    define_rhs_from_sx0(sx0, rhs, rowrhs);
-    define_matval_mclind(s, matval, mclind);
-    solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
-}
-
-void WorkerMaster::define_rhs_from_sx0(const double& sx0,
-                                       const double& rhs,
-                                       std::vector<double>& rowrhs) const
-{
-    rowrhs.front() -= rhs;
-    rowrhs.front() += sx0;
-}
-
-/*!
- *  \brief Add benders cut to a problem
- *
- *  \param i : identifier of a subproblem
- *  \param s : optimal slave variables
- *  \param sx0 : subgradient times x0
- *  \param rhs : optimal slave value
- */
-void WorkerMaster::add_cut_by_iter(const int i,
-                                   const Point& s,
-                                   const double& sx0,
-                                   const double& rhs) const
-{
-    // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x0)
-    int ncoeffs(1 + (int)s.size());
-    std::vector<char> rowtype(1, 'L');
-    std::vector<double> rowrhs(1, 0);
-    std::vector<double> matval(ncoeffs, 1);
-    std::vector<int> mstart = {0, ncoeffs};
-    std::vector<int> mclind(ncoeffs);
-
-    define_rhs_from_sx0(sx0, rhs, rowrhs);
-    std::vector<int> subproblem_ids = {i};
-    define_matval_mclind_for_index(subproblem_ids, s, matval, mclind);
-
-    solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_matval_mclind_for_index(std::vector<int> subproblem_ids,
@@ -283,42 +184,6 @@ void WorkerMaster::define_matval_mclind_for_index(std::vector<int> subproblem_id
         mclind.push_back(_id_single_subpb_costs_under_approx[alpha_i]);
         matval.push_back(-1);
     }
-}
-
-/*!
- *  \brief Add one benders cut to a problem
- *
- *  \param i : identifier of a subproblem
- *  \param s : optimal slave variables
- *  \param x_cut : optimal Master variables
- *  \param rhs : optimal slave value
- */
-// TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
-void WorkerMaster::addSubproblemCut(int i,
-                                    const Point& subgradient,
-                                    const Point& x_cut,
-                                    const double& rhs) const
-{
-    // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
-    // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
-    int nCandidates((int)subgradient.size());
-    int ncoeffs(1 + (int)subgradient.size());
-    std::vector<char> rowtype(1, 'L');
-    std::vector<double> rowrhs(1, 0);
-    std::vector<double> matval(nCandidates, 1);
-    std::vector<int> mstart = {0, ncoeffs};
-    std::vector<int> mclind(nCandidates);
-
-    DefineRhsWithMasterVariable(subgradient, x_cut, rhs, rowrhs);
-    std::vector<int> subproblem_ids = {i};
-    define_matval_mclind_for_index(subproblem_ids, subgradient, matval, mclind);
-
-    // Round numerically small rhs ant coefficients to zero to get clean cuts and avoid numerical
-    // artifacts
-    setToZeroIfWithinTolerance(rowrhs, 0, rowrhs.size(), subproblem_ids);
-    setToZeroIfWithinTolerance(matval, 0, matval.size(), subproblem_ids);
-
-    solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 /*!
