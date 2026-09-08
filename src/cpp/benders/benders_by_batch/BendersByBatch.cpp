@@ -87,18 +87,22 @@ void BendersByBatch::BuildBatches()
         case 0:
         default:
         {
-            for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
+            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
             {
-                // In case there are more subproblems than process
-                if (batch.proc_numbers[problem_pos] == Rank())
-                { // Assign  [problemNumber % WorldSize] to processID
-
-                    AddSubproblem({batch.sub_problem_names[problem_pos],
-                                   coupling_map_[batch.sub_problem_names[problem_pos]]});
-                    AddSubproblemName(batch.sub_problem_names[problem_pos]);
+                auto process_to_feed = problem_count % WorldSize();
+                if (process_to_feed != Rank())
+                {
+                    it = batch.sub_problem_names.erase(it);
+                }
+                else
+                {
+                    AddSubproblem({*it, coupling_map_[*it]});
+                    AddSubproblemName(*it);
+                    ++it;
                 }
                 ++problem_count;
             }
+            batch.sub_problem_names.shrink_to_fit();
             break;
         }
         }
