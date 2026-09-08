@@ -449,45 +449,73 @@ void BendersBase::compute_ub()
  *
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
-void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
+FastBeginHook BendersBase::MakeFastBeginHook()
+{
+    return [this]()
+    {
+        std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
+        nameAndWorkers.reserve(subproblem_map.size());
+        for (const auto& [name, worker]: subproblem_map)
+        {
+            nameAndWorkers.emplace_back(name, worker);
+        }
+        return nameAndWorkers;
+    };
+}
+
+CacheBeginHook BendersBase::MakeCacheBeginHook()
+{
+    return [this]()
+    {
+        std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
+        nameAndVariableMap.reserve(coupling_map_.size());
+        for (auto& [name, variables]: coupling_map_)
+        {
+            nameAndVariableMap.emplace_back(name, variables);
+        }
+        return nameAndVariableMap;
+    };
+}
+
+void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
+                                   const FastBeginHook& fast_begin_hook,
+                                   const CacheBeginHook& cache_begin_hook,
+                                   const PostSolveHook& post_solve_hook)
 {
     switch (Options().CACHE_PROBLEMS)
     {
     case 0:
-
-        GetSubproblemCutFast(subproblem_data_map);
+        GetSubproblemCutFast(subproblem_data_map, fast_begin_hook, post_solve_hook);
         break;
     case 1:
-        GetSubproblemCutCache(subproblem_data_map);
+        GetSubproblemCutCache(subproblem_data_map, cache_begin_hook, post_solve_hook);
         break;
     case 2:
-        GetCompactInMemCuts(subproblem_data_map);
+        GetCompactInMemCuts(subproblem_data_map, cache_begin_hook, post_solve_hook);
         break;
     default:
         break;
     }
 }
 
-void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
+void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
+                                       const FastBeginHook& begin_hook,
+                                       const PostSolveHook& post_solve_hook)
 {
     // With gcc9 there was no parallelisation when iterating on the map directly
     // so with project it in a vector
-    std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
-    nameAndWorkers.reserve(subproblem_map.size());
-    for (const auto& [name, worker]: subproblem_map)
-    {
-        nameAndWorkers.emplace_back(name, worker);
-    }
+    auto nameAndWorkers = begin_hook();
 
     std::mutex m;
     std::exception_ptr first_exception;
     selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_data_map, &first_exception](auto& policy)
+      [this, &nameAndWorkers, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
+        auto& policy)
       {
           std::for_each(policy,
                         nameAndWorkers.begin(),
                         nameAndWorkers.end(),
-                        [this, &m, &subproblem_data_map, &first_exception](
+                        [this, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
                           const std::pair<std::string, SubproblemWorkerPtr>& kvp)
                         {
                             // A parallel execution policy calls std::terminate if an
@@ -498,6 +526,10 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
                                 PlainData::SubProblemData subproblem_data;
                                 const auto& [name, worker] = kvp;
                                 SolveSubproblem(subproblem_data, name, worker, nullptr);
+                                if (post_solve_hook)
+                                {
+                                    post_solve_hook(name, subproblem_data);
+                                }
 
                                 std::lock_guard guard(m);
                                 subproblem_data_map[name] = subproblem_data;
@@ -518,20 +550,6 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
         std::rethrow_exception(first_exception);
     }
 }
-
-namespace
-{
-template<class T>
-std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, T>& map_to_flatten)
-{
-    std::vector<std::pair<std::string, T&>> flatten_result;
-    flatten_result.reserve(map_to_flatten.size());
-    std::ranges::for_each(map_to_flatten,
-                          [&flatten_result](auto& pair)
-                          { flatten_result.emplace_back(pair.first, pair.second); });
-    return flatten_result;
-}
-} // namespace
 
 void BendersBase::StoreSubproblemBasis(const std::string& name,
                                        const std::shared_ptr<SubproblemWorker>& worker)
@@ -561,20 +579,23 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               benders_problem_provider.get());
 }
 
-void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
+void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
+                                        const CacheBeginHook& begin_hook,
+                                        const PostSolveHook& post_solve_hook)
 {
-    auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
+    auto nameAndVariableMap = begin_hook();
 
     std::mutex m;
     std::exception_ptr first_exception;
 
     selectPolicy(
-      [this, &nameAndVariableMap, &m, &subproblem_data_map, &first_exception](auto& policy)
+      [this, &nameAndVariableMap, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
+        auto& policy)
       {
           std::for_each(policy,
                         nameAndVariableMap.begin(),
                         nameAndVariableMap.end(),
-                        [this, &m, &subproblem_data_map, &first_exception](
+                        [this, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
                           const std::pair<std::string, VariableMap>& kvp)
                         {
                             // A parallel execution policy calls std::terminate if an
@@ -591,6 +612,10 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                                                 worker,
                                                 [this, &name, &worker]
                                                 { TryRestoreSubproblemBasis(name, worker); });
+                                if (post_solve_hook)
+                                {
+                                    post_solve_hook(name, subproblem_data);
+                                }
                                 std::lock_guard guard(m);
                                 subproblem_data_map[name] = subproblem_data;
                                 StoreSubproblemBasis(name, worker);
@@ -618,17 +643,18 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
     }
 }
 
-void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
+void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
+                                      const CacheBeginHook& begin_hook,
+                                      const PostSolveHook& post_solve_hook)
 {
-    auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
+    auto nameAndVariableMap = begin_hook();
 
-    for (const auto& [sub, variables]: nameAndVariableMap)
+    for (auto& [sub, variables]: nameAndVariableMap)
     {
-        auto variable_map = coupling_map_[sub];
         double slave_weights = SubproblemWeight(_data.nsubproblem, sub);
 
         auto subproblem_worker = subproblem_worker_factory_->CreateSubSolverAbstract(sub,
-                                                                                     variable_map,
+                                                                                     variables,
                                                                                      slave_weights);
 
         PlainData::SubProblemData subproblem_data;
@@ -636,6 +662,10 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map)
                         sub,
                         subproblem_worker,
                         [this, &sub] { subproblem_worker_factory_->ApplyBasis(sub); });
+        if (post_solve_hook)
+        {
+            post_solve_hook(sub, subproblem_data);
+        }
 
         subproblem_worker_factory_->GetBasis(sub);
 

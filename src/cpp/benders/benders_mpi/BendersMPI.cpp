@@ -345,7 +345,7 @@ void BendersMpi::ComputeSubproblemsContributionToCriteria(
 SubProblemDataMap BendersMpi::get_subproblem_cut_package()
 {
     SubProblemDataMap subproblem_data_map;
-    GetSubproblemCut(subproblem_data_map);
+    GetSubproblemCut(subproblem_data_map, MakeFastBeginHook(), MakeCacheBeginHook(), nullptr);
     return subproblem_data_map;
 }
 

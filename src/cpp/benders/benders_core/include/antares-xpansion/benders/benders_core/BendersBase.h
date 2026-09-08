@@ -39,6 +39,10 @@ auto selectPolicy(lambda f, bool shouldParallelize)
     }
 }
 
+using FastBeginHook = std::function<std::vector<std::pair<std::string, SubproblemWorkerPtr>>()>;
+using CacheBeginHook = std::function<std::vector<std::pair<std::string, VariableMap>>()>;
+using PostSolveHook = std::function<void(const std::string&, PlainData::SubProblemData&)>;
+
 class BendersBase
 {
 public:
@@ -56,7 +60,9 @@ public:
     void set_input_map(const CouplingMap& coupling_map);
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
-    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map);
+    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
+                             const CacheBeginHook& begin_hook,
+                             const PostSolveHook& post_solve_hook);
 
     const VariableMap& MasterVariables() const
     {
@@ -174,15 +180,24 @@ protected:
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
-    void GetSubproblemCut(SubProblemDataMap& subproblem_data_map);
-    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map);
+    FastBeginHook MakeFastBeginHook();
+    CacheBeginHook MakeCacheBeginHook();
+    void GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
+                          const FastBeginHook& fast_begin_hook,
+                          const CacheBeginHook& cache_begin_hook,
+                          const PostSolveHook& post_solve_hook);
+    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
+                              const FastBeginHook& begin_hook,
+                              const PostSolveHook& post_solve_hook);
     std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap>& kvp) const;
     void StoreSubproblemBasis(const std::string& name,
                               const std::shared_ptr<SubproblemWorker>& worker);
     void TryRestoreSubproblemBasis(const std::string& name,
                                    const std::shared_ptr<SubproblemWorker>& worker);
-    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
+    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
+                               const CacheBeginHook& begin_hook,
+                               const PostSolveHook& post_solve_hook);
     virtual void post_run_actions() const;
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;

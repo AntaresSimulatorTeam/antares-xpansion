@@ -361,7 +361,12 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
 {
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
-    GetSubproblemCut(subproblem_data_map, batch_sub_problems);
+    auto post_solve = [this](const std::string& name, PlainData::SubProblemData& data)
+    { calculate_subproblem_contribution(name, data); };
+    GetSubproblemCut(subproblem_data_map,
+                     MakeFastBeginHook(batch_sub_problems),
+                     MakeCacheBeginHook(batch_sub_problems),
+                     post_solve);
     local_solved = subproblem_data_map.size();
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
@@ -377,42 +382,9 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
                                            *batch_contribution_in_gap);
 }
 
-void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
-                                           const std::vector<std::string>& batch_sub_problems)
+void BendersByBatch::calculate_subproblem_contribution(const std::string& name,
+                                                       PlainData::SubProblemData& subproblem_data)
 {
-    std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
-    nameAndVariableMap.reserve(batch_sub_problems.size());
-    for (const auto& name: batch_sub_problems)
-    {
-        const auto it = coupling_map_.find(name);
-        nameAndVariableMap.emplace_back(it->first, it->second);
-    }
-
-    for (const auto& kvp: nameAndVariableMap)
-    {
-        const auto& name = kvp.first;
-        std::shared_ptr<SubproblemWorker> worker = makeSubproblemWorker(kvp);
-        PlainData::SubProblemData subproblem_data{};
-        SolveSubproblem(subproblem_data,
-                        name,
-                        worker,
-                        [this, &name, &worker] { TryRestoreSubproblemBasis(name, worker); });
-        auto timer = calculate_subproblem_contribution(name, subproblem_data);
-        subproblem_data.subproblem_timer += timer.elapsed();
-        subproblem_data_map[name] = subproblem_data;
-        StoreSubproblemBasis(name, worker);
-        std::call_once(
-          variable_indice_once_flag,
-          [this](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
-          *worker);
-    }
-}
-
-Timer BendersByBatch::calculate_subproblem_contribution(const std::string& name,
-                                                        PlainData::SubProblemData& subproblem_data)
-{
-    Timer subproblem_timer;
-
     auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
     // Tbb includes min max define of windows std::numeric_limits<int>::max();
     subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost - subpb_cost_under_approx;
@@ -428,120 +400,38 @@ Timer BendersByBatch::calculate_subproblem_contribution(const std::string& name,
     {
         misprice_ = false;
     }
-    return subproblem_timer;
 }
 
-void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
-                                          const std::vector<std::string>& batch_sub_problems)
+FastBeginHook BendersByBatch::MakeFastBeginHook(const std::vector<std::string>& batch_sub_problems)
 {
-    const auto& sub_pblm_map = GetSubProblemMap();
-
-    std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
-    nameAndWorkers.reserve(batch_sub_problems.size());
-    for (const auto& name: batch_sub_problems)
+    return [this, &batch_sub_problems]()
     {
-        auto it = sub_pblm_map.find(name);
-        nameAndWorkers.emplace_back(it->first, it->second);
-    }
-
-    std::mutex m;
-    std::exception_ptr first_exception;
-    selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_data_map, &first_exception](auto& policy)
-      {
-          std::for_each(policy,
-                        nameAndWorkers.begin(),
-                        nameAndWorkers.end(),
-                        [this, &m, &subproblem_data_map, &first_exception](
-                          const std::pair<std::string, SubproblemWorkerPtr>& kvp)
-                        {
-                            try
-                            {
-                                const auto& [name, worker] = kvp;
-                                PlainData::SubProblemData subproblem_data{};
-                                SolveSubproblem(subproblem_data, name, worker, nullptr);
-                                Timer subproblem_timer = calculate_subproblem_contribution(
-                                  name,
-                                  subproblem_data);
-                                subproblem_data.subproblem_timer += subproblem_timer.elapsed();
-
-                                std::lock_guard guard(m);
-                                subproblem_data_map[name] = subproblem_data;
-                            }
-                            catch (...)
-                            {
-                                std::lock_guard guard(m);
-                                if (!first_exception)
-                                {
-                                    first_exception = std::current_exception();
-                                }
-                            }
-                        });
-      },
-      shouldParallelize());
-    if (first_exception)
-    {
-        std::rethrow_exception(first_exception);
-    }
+        const auto& sub_pblm_map = GetSubProblemMap();
+        std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
+        nameAndWorkers.reserve(batch_sub_problems.size());
+        for (const auto& name: batch_sub_problems)
+        {
+            auto it = sub_pblm_map.find(name);
+            nameAndWorkers.emplace_back(it->first, it->second);
+        }
+        return nameAndWorkers;
+    };
 }
 
-/*!
- * \brief Solve and store optimal variables of all Subproblem Problems
- * in compact memory case
- *
- * Method to solve and store optimal variables of all Subproblem Problems
- * after fixing trial values.
- *
- * \param subproblem_data_map Map storing for each subproblem its cut
- * \param batch_sub_problems list of subproblems contained in the Benders cut
- */
-void BendersByBatch::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
-                                         const std::vector<std::string>& batch_sub_problems)
+CacheBeginHook BendersByBatch::MakeCacheBeginHook(
+  const std::vector<std::string>& batch_sub_problems)
 {
-    std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
-    nameAndVariableMap.reserve(batch_sub_problems.size());
-    for (const auto& name: batch_sub_problems)
+    return [this, &batch_sub_problems]()
     {
-        const auto it = coupling_map_.find(name);
-        nameAndVariableMap.emplace_back(it->first, it->second);
-    }
-
-    for (const auto& kvp: nameAndVariableMap)
-    {
-        auto name = kvp.first;
-        auto variable_map = kvp.second;
-        double slave_weights = SubproblemWeight(_data.nsubproblem, name);
-        auto worker = subproblem_worker_factory_->CreateSubSolverAbstract(name,
-                                                                          variable_map,
-                                                                          slave_weights);
-        PlainData::SubProblemData subproblem_data{};
-        SolveSubproblem(subproblem_data,
-                        name,
-                        worker,
-                        [this, &name] { subproblem_worker_factory_->ApplyBasis(name); });
-        auto timer = calculate_subproblem_contribution(name, subproblem_data);
-        subproblem_data.subproblem_timer += timer.elapsed();
-        subproblem_data_map[name] = subproblem_data;
-        subproblem_worker_factory_->GetBasis(name);
-    }
-}
-
-void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
-                                      const std::vector<std::string>& batch_sub_problems)
-{
-    switch (Options().CACHE_PROBLEMS)
-    {
-    case 2:
-        GetCompactInMemCuts(subproblem_data_map, batch_sub_problems);
-        break;
-    case 1:
-        GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);
-        break;
-    case 0:
-    default:
-        GetSubproblemCutFast(subproblem_data_map, batch_sub_problems);
-        break;
-    }
+        std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
+        nameAndVariableMap.reserve(batch_sub_problems.size());
+        for (const auto& name: batch_sub_problems)
+        {
+            const auto it = coupling_map_.find(name);
+            nameAndVariableMap.emplace_back(it->first, it->second);
+        }
+        return nameAndVariableMap;
+    };
 }
 
 void BendersByBatch::BroadcastXOut()

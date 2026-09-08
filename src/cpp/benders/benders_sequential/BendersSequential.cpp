@@ -109,7 +109,7 @@ void BendersSequential::BuildCut()
 {
     SubProblemDataMap subproblem_data_map;
     Timer timer;
-    GetSubproblemCut(subproblem_data_map);
+    GetSubproblemCut(subproblem_data_map, MakeFastBeginHook(), MakeCacheBeginHook(), nullptr);
     SetSubproblemCost(0);
     for (const auto& [_, subproblem_data]: subproblem_data_map)
     {

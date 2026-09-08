@@ -36,17 +36,11 @@ protected:
     void BuildBatches();
 
 private:
-    void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
-                          const std::vector<std::string>& batch_sub_problems);
     void BuildMasterProblem();
-    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
-                               const std::vector<std::string>& batch_sub_problems);
-    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
-                             const std::vector<std::string>& batch_sub_problems);
-    Timer calculate_subproblem_contribution(const std::string& name,
-                                            PlainData::SubProblemData& subproblem_data);
-    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
-                              const std::vector<std::string>& batch_sub_problems);
+    void calculate_subproblem_contribution(const std::string& name,
+                                           PlainData::SubProblemData& subproblem_data);
+    FastBeginHook MakeFastBeginHook(const std::vector<std::string>& batch_sub_problems);
+    CacheBeginHook MakeCacheBeginHook(const std::vector<std::string>& batch_sub_problems);
 
     void get_subs_per_cut_per_batch();
 
