@@ -28,6 +28,12 @@ inline ProblemsFormat Json::Value::as<ProblemsFormat>() const
     return problemsFormatFromString(asString());
 }
 
+template<>
+inline ResumeMode Json::Value::as<ResumeMode>() const
+{
+    return resumeModeFromString(asString());
+}
+
 /*!
  *  \brief Constructor of Benders Options
  *
