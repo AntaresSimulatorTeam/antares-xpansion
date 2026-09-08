@@ -436,19 +436,52 @@ void BendersByBatch::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map
 {
     const auto& sub_pblm_map = GetSubProblemMap();
 
-    for (const auto& [name, worker]: sub_pblm_map)
+    std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
+    nameAndWorkers.reserve(batch_sub_problems.size());
+    for (const auto& name: batch_sub_problems)
     {
-        if (std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(), name)
-            != batch_sub_problems.cend())
-        {
-            PlainData::SubProblemData subproblem_data{};
-            SolveSubproblem(subproblem_data, name, worker, nullptr);
-            Timer subproblem_timer = calculate_subproblem_contribution(name, subproblem_data);
+        auto it = sub_pblm_map.find(name);
+        nameAndWorkers.emplace_back(it->first, it->second);
+    }
 
-            // subproblem_timer already set time, we add the remaining computation time
-            subproblem_data.subproblem_timer += subproblem_timer.elapsed();
-            subproblem_data_map[name] = subproblem_data;
-        }
+    std::mutex m;
+    std::exception_ptr first_exception;
+    selectPolicy(
+      [this, &nameAndWorkers, &m, &subproblem_data_map, &first_exception](auto& policy)
+      {
+          std::for_each(policy,
+                        nameAndWorkers.begin(),
+                        nameAndWorkers.end(),
+                        [this, &m, &subproblem_data_map, &first_exception](
+                          const std::pair<std::string, SubproblemWorkerPtr>& kvp)
+                        {
+                            try
+                            {
+                                const auto& [name, worker] = kvp;
+                                PlainData::SubProblemData subproblem_data{};
+                                SolveSubproblem(subproblem_data, name, worker, nullptr);
+                                Timer subproblem_timer = calculate_subproblem_contribution(
+                                  name,
+                                  subproblem_data);
+                                subproblem_data.subproblem_timer += subproblem_timer.elapsed();
+
+                                std::lock_guard guard(m);
+                                subproblem_data_map[name] = subproblem_data;
+                            }
+                            catch (...)
+                            {
+                                std::lock_guard guard(m);
+                                if (!first_exception)
+                                {
+                                    first_exception = std::current_exception();
+                                }
+                            }
+                        });
+      },
+      shouldParallelize());
+    if (first_exception)
+    {
+        std::rethrow_exception(first_exception);
     }
 }
 
