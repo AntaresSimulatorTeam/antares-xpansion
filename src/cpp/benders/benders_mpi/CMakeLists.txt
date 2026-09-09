@@ -27,6 +27,7 @@ target_sources(benders_mpi_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersCutsManagerMpi.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/common_mpi.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersSubProblemsManagerMpi.h
 
 )
 

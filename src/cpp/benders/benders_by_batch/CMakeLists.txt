@@ -25,6 +25,7 @@ target_sources(benders_by_batch_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersByBatch.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersCutsManagerByBatch.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersSubProblemsManagerByBatch.h
 )
 
 target_include_directories(benders_by_batch_core
