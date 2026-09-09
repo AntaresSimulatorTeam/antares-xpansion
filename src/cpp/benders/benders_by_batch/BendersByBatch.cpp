@@ -21,6 +21,9 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                _writer,
                                shouldParallelize())
 {
+    batch_subproblems_manager_.SetOnVariablesIndicesSet(
+      [this](const std::vector<std::string>& col_names)
+      { criterion_computation_.SearchVariables(col_names); });
 }
 
 void BendersByBatch::free()
