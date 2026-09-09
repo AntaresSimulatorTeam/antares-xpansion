@@ -11,10 +11,7 @@
 #include "BendersSubProblemsManager.hxx"
 #include "CriterionComputation.h"
 #include "ICommunicationStrategy.h"
-#include "SubproblemBasisCache.h"
 #include "SubproblemCut.h"
-#include "SubproblemWorker.h"
-#include "SubproblemWorkerFactory.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -38,9 +35,6 @@ public:
     void set_input_map(const CouplingMap& coupling_map);
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
-    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
-                             const CacheBeginHook& begin_hook,
-                             const PostSolveHook& post_solve_hook);
 
     const VariableMap& MasterVariables() const
     {
@@ -158,30 +152,11 @@ protected:
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
-    FastBeginHook MakeFastBeginHook();
-    CacheBeginHook MakeCacheBeginHook();
-    void GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
-                          const FastBeginHook& fast_begin_hook,
-                          const CacheBeginHook& cache_begin_hook,
-                          const PostSolveHook& post_solve_hook);
-    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
-                              const FastBeginHook& begin_hook,
-                              const PostSolveHook& post_solve_hook);
-    std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
-      const std::pair<std::string, VariableMap>& kvp) const;
-    void StoreSubproblemBasis(const std::string& name,
-                              const std::shared_ptr<SubproblemWorker>& worker);
-    void TryRestoreSubproblemBasis(const std::string& name,
-                                   const std::shared_ptr<SubproblemWorker>& worker);
-    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
-                               const CacheBeginHook& begin_hook,
-                               const PostSolveHook& post_solve_hook);
     virtual void post_run_actions() const;
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
-    [[nodiscard]] std::filesystem::path GetSubproblemPath(const std::string& subproblem_name) const;
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;
     [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
@@ -194,11 +169,8 @@ protected:
     }
 
     void free_master();
-    void free_subproblems();
-    void AddSubproblem(const std::pair<std::string, VariableMap>& kvp);
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     void MatchProblemToId();
-    void AddSubproblemName(const std::string& name);
     [[nodiscard]] std::string get_master_name() const;
     [[nodiscard]] std::string get_solver_name() const;
     [[nodiscard]] int get_log_level() const;
@@ -287,14 +259,7 @@ protected:
 
     void ResetSimplexIterationsBounds();
 
-    SubproblemsMapPtr subproblem_map;
     SolverLogManager solver_log_manager_;
-
-    virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-                                 const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker,
-                                 const std::function<void()>& post_reset_hook);
-    void SetSubproblemVariablesIndices(const SubproblemWorker& subproblem);
 
     Benders::Criterion::CriterionComputation criterion_computation_;
     /**
@@ -335,7 +300,6 @@ private:
     void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
     LogData best_iteration_data;
@@ -343,7 +307,6 @@ private:
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
-    SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
 
