@@ -32,8 +32,10 @@ protected:
     virtual void free();
     virtual void Run();
 
+protected:
+    BendersSubProblemsManagerSequential subproblems_manager_;
+
 private:
     ArchiveReader reader_;
     BendersCutsManagerSequential cuts_manager_;
-    BendersSubProblemsManagerSequential subproblems_manager_;
 };

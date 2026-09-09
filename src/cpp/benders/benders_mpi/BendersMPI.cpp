@@ -152,7 +152,7 @@ void BendersMpi::BroadCastVariablesIndices()
 {
     if (_world.rank() == rank_0)
     {
-        SetSubproblemsVariablesIndices();
+        subproblems_manager_.SetSubproblemsVariablesIndices();
     }
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
@@ -412,14 +412,15 @@ object and set it on subproblem object.
 */
 std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
 {
-    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(_options.INPUTROOT,
-                                                                           _logger,
-                                                                           _options.SOLVER_NAME,
-                                                                           _options.LOG_LEVEL,
-                                                                           _options.PROBLEMS_FORMAT,
-                                                                           GetSubProblemNames(),
-                                                                           solver_log_manager_,
-                                                                           &_world);
+    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
+      _options.INPUTROOT,
+      _logger,
+      _options.SOLVER_NAME,
+      _options.LOG_LEVEL,
+      _options.PROBLEMS_FORMAT,
+      subproblems_manager_.GetSubProblemNames(),
+      solver_log_manager_,
+      &_world);
     return subproblem_worker_factory_->GetSolver();
 }
 
@@ -529,7 +530,7 @@ void BendersMpi::launch()
         subProblemFactorSolver = build_sub_problem_skeleton();
     }
 
-    benders_plugin_->OnBendersStart(subproblem_map,
+    benders_plugin_->OnBendersStart(subproblems_manager_.GetSubProblemMap(),
                                     _logger,
                                     _options,
                                     solver_log_manager_,

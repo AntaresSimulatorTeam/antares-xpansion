@@ -104,7 +104,8 @@ public:
     void Run() override
     {
         // OnBendersStart
-        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_, nullptr);
+        SubproblemsMapPtr empty_subproblem_map;
+        benders_plugin_->OnBendersStart(empty_subproblem_map, _logger, _options, solver_log_manager_, nullptr);
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();

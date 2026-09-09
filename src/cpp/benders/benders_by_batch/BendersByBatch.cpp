@@ -23,6 +23,19 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
 {
 }
 
+void BendersByBatch::free()
+{
+    if (_world.rank() == rank_0)
+    {
+        free_master();
+    }
+    else
+    {
+        batch_subproblems_manager_.free_subproblems();
+    }
+    _world.barrier();
+}
+
 void BendersByBatch::InitializeProblems()
 {
     MatchProblemToId();

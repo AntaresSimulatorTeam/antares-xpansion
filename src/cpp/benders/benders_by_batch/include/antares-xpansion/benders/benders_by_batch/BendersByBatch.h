@@ -28,6 +28,8 @@ public:
         return "Benders By Batch mpi";
     }
 
+    void free() override;
+
 protected:
     void InitializeProblems() override;
     void BroadcastSingleSubpbCostsUnderApprox();

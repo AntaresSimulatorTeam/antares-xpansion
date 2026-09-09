@@ -207,16 +207,6 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    SubproblemsMapPtr GetSubProblemMap() const
-    {
-        return subproblem_map;
-    }
-
-    StrVector GetSubProblemNames() const
-    {
-        return subproblems;
-    }
-
     [[nodiscard]] virtual bool shouldParallelize() const;
 
     double AbsoluteGap() const
@@ -262,20 +252,6 @@ protected:
     SolverLogManager solver_log_manager_;
 
     Benders::Criterion::CriterionComputation criterion_computation_;
-    /**
-     * for the nth variable name, Subproblems shares the same prefix , only the
-     suffix is different
-     * ex variable at index = 0 is named in:
-
-    * subproblems-1-1  --> DirectFlow::link<area1$$area2>::hour<0>
-                                      * subproblems-3-5  -->
-    DirectFlow::link<area1$$area2>::hour<672>
-     */
-    // Search for variables in sub problems that satisfy patterns
-    // var_indices is a vector(for each patterns p) of vector (var indices related
-    // to p)
-    void SetSubproblemsVariablesIndices();
-
     int SetAggregation(int max_aggregation) const;
 
     std::map<int, double> GetSubCutTolerance() const;
