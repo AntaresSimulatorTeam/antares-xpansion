@@ -2,7 +2,7 @@
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
 #include "BendersCutsManagerByBatch.h"
-#include "BendersSubProblemsManagerByBatch.h"
+#include "BendersSubProblemsManagerByBatch.hxx"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
@@ -29,9 +29,11 @@ public:
     }
 
     void free() override;
+    void launch() override;
 
 protected:
     void InitializeProblems() override;
+    void BroadCastVariablesIndices() override;
     void BroadcastSingleSubpbCostsUnderApprox();
     void ComputeXCut();
     void UpdateStoppingCriterion() override;

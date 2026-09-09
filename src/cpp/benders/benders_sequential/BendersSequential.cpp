@@ -90,6 +90,7 @@ void BendersSequential::InitializeProblems()
         subproblems_manager_.AddSubproblem(problem);
         subproblems_manager_.AddSubproblemName(problem.first);
     }
+    subproblems_manager_.BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS);
 }
 
 /*!
@@ -197,6 +198,13 @@ void BendersSequential::launch()
     _logger->display_message("Constructing workers...");
 
     InitializeProblems();
+
+    benders_plugin_->OnBendersStart(subproblems_manager_.GetSubProblemMap(),
+                                    _logger,
+                                    _options,
+                                    solver_log_manager_,
+                                    subproblems_manager_.GetFactorySolver());
+
     _logger->display_message("Running solver...");
     try
     {

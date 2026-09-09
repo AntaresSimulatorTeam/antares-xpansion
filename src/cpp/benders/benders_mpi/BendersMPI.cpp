@@ -36,6 +36,9 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                          _writer,
                          shouldParallelize())
 {
+    subproblems_manager_.SetOnVariablesIndicesSet(
+      [this](const std::vector<std::string>& col_names)
+      { criterion_computation_.SearchVariables(col_names); });
 }
 
 /*!
@@ -95,6 +98,7 @@ void BendersMpi::InitializeProblems()
     }
     BuildMasterProblem();
     BroadCastVariablesIndices();
+    subproblems_manager_.BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
     init_problems_ = false;
 }
 
@@ -402,28 +406,6 @@ void BendersMpi::free()
     _world.barrier();
 }
 
-/*When we are in the skeleton + micro iterations mode
-we need to have the hand on the constraint skeleon solver, in order
-to get to be able to fetch the constraints from the constraint optimization problem
-by their in the object that handle the subproblem optimization problem.
-For design choices, we decided to keep everything related to constraint built in
-the micro iteration plugin object, This is why we need to fetch for the constraints solver
-object and set it on subproblem object.
-*/
-std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
-{
-    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
-      _options.INPUTROOT,
-      _logger,
-      _options.SOLVER_NAME,
-      _options.LOG_LEVEL,
-      _options.PROBLEMS_FORMAT,
-      subproblems_manager_.GetSubProblemNames(),
-      solver_log_manager_,
-      &_world);
-    return subproblem_worker_factory_->GetSolver();
-}
-
 /*!
  *  \brief Run Benders algorithm in parallel
  *
@@ -524,17 +506,11 @@ void BendersMpi::launch()
 
     _world.barrier();
 
-    std::shared_ptr<SolverAbstract> subProblemFactorSolver;
-    if (_options.CACHE_PROBLEMS == 2)
-    {
-        subProblemFactorSolver = build_sub_problem_skeleton();
-    }
-
     benders_plugin_->OnBendersStart(subproblems_manager_.GetSubProblemMap(),
                                     _logger,
                                     _options,
                                     solver_log_manager_,
-                                    subProblemFactorSolver);
+                                    subproblems_manager_.GetFactorySolver());
 
     Run();
 

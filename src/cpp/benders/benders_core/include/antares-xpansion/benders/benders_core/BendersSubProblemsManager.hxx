@@ -51,6 +51,28 @@ auto selectPolicy(lambda f, bool shouldParallelize)
 template<typename Derived>
 class BendersSubProblemsManager
 {
+protected:
+    // Subproblem storage
+    SubproblemsMapPtr subproblem_map_;
+    CouplingMap coupling_map_;
+    SubproblemBasisCache subproblem_basis_cache_;
+    std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
+    StrVector subproblems_;
+    VariableMap problem_to_id_;
+
+    // References to BendersBase-owned state
+    CurrentIterationData& data_;
+    const BendersBaseOptions& options_;
+    std::shared_ptr<BendersPlugin> plugin_;
+    Logger logger_;
+    SolverLogManager& solver_log_manager_;
+    std::shared_ptr<Output::OutputWriter> writer_;
+    bool should_parallelize_;
+
+    // Injectable hooks
+    std::function<void(const std::vector<std::string>&)> on_variables_indices_set_;
+    std::once_flag variable_indice_once_flag_;
+
 public:
     BendersSubProblemsManager(CurrentIterationData& data,
                               const BendersBaseOptions& options,
@@ -123,6 +145,9 @@ public:
         };
     }
 
+    // As we want to unify the api, for now the post solve hook is only needed to compute crieterion
+    // stuff on BendersMPI, to avoid setting nullptr on the api from the benders sequential and
+    // bybatch cases we decided to just impelement a hook that renders a void method
     auto MakePostSolveHookImpl()
     {
         return [](const std::string&, PlainData::SubProblemData&, const SubproblemWorkerPtr&) {};
@@ -132,11 +157,10 @@ public:
     // Dispatcher
     // ---------------------------------------------------------------
 
-    template<typename PostSolveHookT>
     void GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                           const FastBeginHook& fast_begin_hook,
                           const CacheBeginHook& cache_begin_hook,
-                          PostSolveHookT&& post_solve_hook)
+                          const PostSolveHook& post_solve_hook)
     {
         switch (options_.CACHE_PROBLEMS)
         {
@@ -158,10 +182,9 @@ public:
     // Cache=0: fast path — persistent workers
     // ---------------------------------------------------------------
 
-    template<typename PostSolveHookT>
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const FastBeginHook& begin_hook,
-                              const PostSolveHookT& post_solve_hook)
+                              const PostSolveHook& post_solve_hook)
     {
         auto nameAndWorkers = begin_hook();
 
@@ -208,10 +231,9 @@ public:
     // Cache=1: disk cache — recreate workers each iteration
     // ---------------------------------------------------------------
 
-    template<typename PostSolveHookT>
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                const CacheBeginHook& begin_hook,
-                               const PostSolveHookT& post_solve_hook)
+                               const PostSolveHook& post_solve_hook)
     {
         auto nameAndVariableMap = begin_hook();
 
@@ -270,10 +292,9 @@ public:
     // Cache=2: skeleton — shared solver, morphed per subproblem
     // ---------------------------------------------------------------
 
-    template<typename PostSolveHookT>
     void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
                              const CacheBeginHook& begin_hook,
-                             const PostSolveHookT& post_solve_hook)
+                             const PostSolveHook& post_solve_hook)
     {
         auto nameAndVariableMap = begin_hook();
 
@@ -309,6 +330,8 @@ public:
         Timer subproblem_timer;
         worker->fix_to(data_.x_cut);
         plugin_->OnBendersSubResolutionStart(worker, name);
+        // with this hook we try to avoid duplicating the whole bloc since the diffence is just the
+        // overhead of the method finally so for every special case we just set a lambda function
         if (post_reset_hook && plugin_->ShouldRestoreSubproblemBasis())
         {
             post_reset_hook();
@@ -508,9 +531,26 @@ public:
         on_variables_indices_set_ = std::move(callback);
     }
 
-    void SetSubproblemWorkerFactory(std::shared_ptr<SubproblemWorkerFactory> factory)
+    // we need it in the cache problem == 2 to create the skeleton
+    void BuildSubproblemWorkerFactory(int cache_problems, boost::mpi::communicator* world = nullptr)
     {
-        subproblem_worker_factory_ = std::move(factory);
+        if (cache_problems == 2)
+        {
+            subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
+              options_.INPUTROOT,
+              logger_,
+              options_.SOLVER_NAME,
+              options_.LOG_LEVEL,
+              options_.PROBLEMS_FORMAT,
+              subproblems_,
+              solver_log_manager_,
+              world);
+        }
+    }
+
+    std::shared_ptr<SolverAbstract> GetFactorySolver() const
+    {
+        return subproblem_worker_factory_ ? subproblem_worker_factory_->GetSolver() : nullptr;
     }
 
     void SetCouplingMap(const CouplingMap& coupling_map)
@@ -527,26 +567,4 @@ public:
     {
         return coupling_map_;
     }
-
-protected:
-    // Subproblem storage
-    SubproblemsMapPtr subproblem_map_;
-    CouplingMap coupling_map_;
-    SubproblemBasisCache subproblem_basis_cache_;
-    std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
-    StrVector subproblems_;
-    VariableMap problem_to_id_;
-
-    // References to BendersBase-owned state
-    CurrentIterationData& data_;
-    const BendersBaseOptions& options_;
-    std::shared_ptr<BendersPlugin> plugin_;
-    Logger logger_;
-    SolverLogManager& solver_log_manager_;
-    std::shared_ptr<Output::OutputWriter> writer_;
-    bool should_parallelize_;
-
-    // Injectable hooks
-    std::function<void(const std::vector<std::string>&)> on_variables_indices_set_;
-    std::once_flag variable_indice_once_flag_;
 };

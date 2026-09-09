@@ -36,12 +36,56 @@ void BendersByBatch::free()
     _world.barrier();
 }
 
+// TODO: unify launch() in BendersBase with virtual Synchronize() and
+// GetActiveSubProblemMap()/GetActiveFactorySolver() accessors so all 3
+// benders variants share the same launch logic.
+void BendersByBatch::launch()
+{
+    if (init_problems_)
+    {
+        InitializeProblems();
+    }
+
+    _world.barrier();
+
+    benders_plugin_->OnBendersStart(batch_subproblems_manager_.GetSubProblemMap(),
+                                    _logger,
+                                    _options,
+                                    solver_log_manager_,
+                                    batch_subproblems_manager_.GetFactorySolver());
+
+    Run();
+
+    _world.barrier();
+
+    benders_plugin_->OnBendersEnd();
+
+    post_run_actions();
+
+    if (free_problems_)
+    {
+        free();
+    }
+
+    _world.barrier();
+}
+
+void BendersByBatch::BroadCastVariablesIndices()
+{
+    if (_world.rank() == rank_0)
+    {
+        batch_subproblems_manager_.SetSubproblemsVariablesIndices();
+    }
+    BroadCast(criterion_computation_.getVarIndices(), rank_0);
+}
+
 void BendersByBatch::InitializeProblems()
 {
     MatchProblemToId();
     BuildBatches();
     BuildMasterProblem();
     BroadCastVariablesIndices();
+    batch_subproblems_manager_.BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
     init_problems_ = false;
 }
 
