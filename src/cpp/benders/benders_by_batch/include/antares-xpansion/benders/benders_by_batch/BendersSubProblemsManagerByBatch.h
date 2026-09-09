@@ -14,7 +14,7 @@ public:
     using BendersSubProblemsManager::MakePostSolveHookImpl;
 
     // Batch post-solve: wraps an external callback with the 3-arg signature
-    PostSolveHook MakePostSolveHookImpl(
+    auto MakePostSolveHookImpl(
       std::function<void(const std::string&, PlainData::SubProblemData&)> callback)
     {
         return [cb = std::move(callback)](const std::string& name,

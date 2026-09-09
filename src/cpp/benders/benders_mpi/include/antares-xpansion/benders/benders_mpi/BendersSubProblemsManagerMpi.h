@@ -9,8 +9,8 @@ public:
     using BendersSubProblemsManager::BendersSubProblemsManager;
     using BendersSubProblemsManager::MakePostSolveHookImpl;
 
-    PostSolveHook MakePostSolveHookImpl(Benders::Criterion::CriterionComputation& criterion,
-                                        CurrentIterationData& data)
+    auto MakePostSolveHookImpl(Benders::Criterion::CriterionComputation& criterion,
+                               CurrentIterationData& data)
     {
         return [this, &criterion, &data](const std::string& name,
                                          PlainData::SubProblemData& subproblem_data,

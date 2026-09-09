@@ -123,7 +123,7 @@ public:
         };
     }
 
-    PostSolveHook MakePostSolveHookImpl()
+    auto MakePostSolveHookImpl()
     {
         return [](const std::string&, PlainData::SubProblemData&, const SubproblemWorkerPtr&) {};
     }
@@ -132,10 +132,11 @@ public:
     // Dispatcher
     // ---------------------------------------------------------------
 
+    template<typename PostSolveHookT>
     void GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
                           const FastBeginHook& fast_begin_hook,
                           const CacheBeginHook& cache_begin_hook,
-                          const PostSolveHook& post_solve_hook)
+                          PostSolveHookT&& post_solve_hook)
     {
         switch (options_.CACHE_PROBLEMS)
         {
@@ -157,9 +158,10 @@ public:
     // Cache=0: fast path — persistent workers
     // ---------------------------------------------------------------
 
+    template<typename PostSolveHookT>
     void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                               const FastBeginHook& begin_hook,
-                              const PostSolveHook& post_solve_hook)
+                              const PostSolveHookT& post_solve_hook)
     {
         auto nameAndWorkers = begin_hook();
 
@@ -206,9 +208,10 @@ public:
     // Cache=1: disk cache — recreate workers each iteration
     // ---------------------------------------------------------------
 
+    template<typename PostSolveHookT>
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                const CacheBeginHook& begin_hook,
-                               const PostSolveHook& post_solve_hook)
+                               const PostSolveHookT& post_solve_hook)
     {
         auto nameAndVariableMap = begin_hook();
 
@@ -267,9 +270,10 @@ public:
     // Cache=2: skeleton — shared solver, morphed per subproblem
     // ---------------------------------------------------------------
 
+    template<typename PostSolveHookT>
     void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
                              const CacheBeginHook& begin_hook,
-                             const PostSolveHook& post_solve_hook)
+                             const PostSolveHookT& post_solve_hook)
     {
         auto nameAndVariableMap = begin_hook();
 
