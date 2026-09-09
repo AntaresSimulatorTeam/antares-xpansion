@@ -11,6 +11,7 @@
 #include "SubproblemWorker.h"
 #include "SubproblemWorkerFactory.h"
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
+#include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
 

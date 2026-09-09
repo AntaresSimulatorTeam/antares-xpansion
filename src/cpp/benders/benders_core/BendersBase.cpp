@@ -528,7 +528,7 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
                                 SolveSubproblem(subproblem_data, name, worker, nullptr);
                                 if (post_solve_hook)
                                 {
-                                    post_solve_hook(name, subproblem_data);
+                                    post_solve_hook(name, subproblem_data, worker);
                                 }
 
                                 std::lock_guard guard(m);
@@ -614,7 +614,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
                                                 { TryRestoreSubproblemBasis(name, worker); });
                                 if (post_solve_hook)
                                 {
-                                    post_solve_hook(name, subproblem_data);
+                                    post_solve_hook(name, subproblem_data, worker);
                                 }
                                 std::lock_guard guard(m);
                                 subproblem_data_map[name] = subproblem_data;
@@ -664,7 +664,7 @@ void BendersBase::GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
                         [this, &sub] { subproblem_worker_factory_->ApplyBasis(sub); });
         if (post_solve_hook)
         {
-            post_solve_hook(sub, subproblem_data);
+            post_solve_hook(sub, subproblem_data, subproblem_worker);
         }
 
         subproblem_worker_factory_->GetBasis(sub);

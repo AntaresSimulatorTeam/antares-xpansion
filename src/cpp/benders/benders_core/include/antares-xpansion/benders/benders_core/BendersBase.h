@@ -1,7 +1,6 @@
 #pragma once
 
 #include <antares-xpansion/benders/plugins/BendersPlugin.h>
-#include <execution>
 #include <filesystem>
 #include <functional>
 #include <mutex>
@@ -19,29 +18,8 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "BendersSubProblemsManager.hxx"
 #include "common.h"
-
-/**
- * std execution policies don't share a base type so we can't just select
- *them in place in the foreach This function allow the selection of policy
- *via template deduction
- **/
-template<class lambda>
-auto selectPolicy(lambda f, bool shouldParallelize)
-{
-    if (shouldParallelize)
-    {
-        return f(std::execution::par_unseq);
-    }
-    else
-    {
-        return f(std::execution::seq);
-    }
-}
-
-using FastBeginHook = std::function<std::vector<std::pair<std::string, SubproblemWorkerPtr>>()>;
-using CacheBeginHook = std::function<std::vector<std::pair<std::string, VariableMap>>()>;
-using PostSolveHook = std::function<void(const std::string&, PlainData::SubProblemData&)>;
 
 class BendersBase
 {
@@ -267,6 +245,8 @@ protected:
         return subproblems;
     }
 
+    [[nodiscard]] virtual bool shouldParallelize() const;
+
     double AbsoluteGap() const
     {
         return _options.ABSOLUTE_GAP;
@@ -349,7 +329,6 @@ private:
     [[nodiscard]] std::string status_from_criterion() const;
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
-    [[nodiscard]] virtual bool shouldParallelize() const;
 
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;

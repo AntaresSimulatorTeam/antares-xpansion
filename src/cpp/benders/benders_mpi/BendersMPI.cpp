@@ -27,7 +27,9 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                   _problem_to_id,
                   relevantIterationData_,
                   _master,
-                  subproblem_per_cut_indices_)
+                  subproblem_per_cut_indices_),
+    subproblems_manager_(_data, _options, benders_plugin_, _logger,
+                         solver_log_manager_, _writer, shouldParallelize())
 {
 }
 
@@ -54,7 +56,7 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
-                AddSubproblemName(it->first);
+                subproblems_manager_.AddSubproblemName(it->first);
                 subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
@@ -71,14 +73,14 @@ void BendersMpi::InitializeProblems()
             if (auto process_to_feed = current_problem_id % _world.size();
                 process_to_feed == _world.rank())
             { // Assign  [problemNumber % processCount] to processID
-                const auto subProblemFilePath = GetSubproblemPath(problem.first);
                 subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
-                AddSubproblem(problem);
-                AddSubproblemName(problem.first);
+                subproblems_manager_.AddSubproblem(problem);
+                subproblems_manager_.AddSubproblemName(problem.first);
             }
             current_problem_id++;
         }
     }
+    subproblems_manager_.SetCouplingMap(coupling_map_);
 
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
@@ -400,7 +402,7 @@ void BendersMpi::free()
     }
     else
     {
-        free_subproblems();
+        subproblems_manager_.free_subproblems();
     }
     _world.barrier();
 }

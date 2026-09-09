@@ -27,7 +27,9 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 std::move(writer),
                 mathLoggerDriver,
                 std::make_shared<SequentialCommunicationStrategy>()),
-    cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master)
+    cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master),
+    subproblems_manager_(_data, _options, benders_plugin_, _logger,
+                         solver_log_manager_, _writer, shouldParallelize())
 {
 }
 
@@ -77,12 +79,11 @@ void BendersSequential::InitializeProblems()
                                benders_problem_provider.get(),
                                Options().MASTER_SOLUTION_TOLERANCE,
                                GetSubCutTolerance());
+    subproblems_manager_.SetCouplingMap(coupling_map_);
     for (const auto& problem: coupling_map_)
     {
-        const auto subProblemFilePath = GetSubproblemPath(problem.first);
-
-        AddSubproblem(problem);
-        AddSubproblemName(problem.first);
+        subproblems_manager_.AddSubproblem(problem);
+        subproblems_manager_.AddSubproblemName(problem.first);
     }
 }
 
@@ -95,7 +96,7 @@ void BendersSequential::free()
     {
         free_master();
     }
-    free_subproblems();
+    subproblems_manager_.free_subproblems();
 }
 
 /*!

@@ -12,7 +12,9 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master)
+    batch_cuts_manager_(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master),
+    batch_subproblems_manager_(_data, _options, benders_plugin_, _logger,
+                               solver_log_manager_, _writer, shouldParallelize())
 {
 }
 
@@ -76,7 +78,7 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
-                    AddSubproblemName(*it);
+                    batch_subproblems_manager_.AddSubproblemName(*it);
                     ++it;
                 }
                 ++problem_count;
@@ -96,8 +98,8 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
-                    AddSubproblem({*it, coupling_map_[*it]});
-                    AddSubproblemName(*it);
+                    batch_subproblems_manager_.AddSubproblem({*it, coupling_map_[*it]});
+                    batch_subproblems_manager_.AddSubproblemName(*it);
                     ++it;
                 }
                 ++problem_count;
@@ -107,6 +109,7 @@ void BendersByBatch::BuildBatches()
         }
         }
     }
+    batch_subproblems_manager_.SetCouplingMap(coupling_map_);
 
     BroadCastVariablesIndices();
     init_problems_ = false;
@@ -365,7 +368,8 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
 {
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
-    auto post_solve = [this](const std::string& name, PlainData::SubProblemData& data)
+    auto post_solve = [this](const std::string& name, PlainData::SubProblemData& data,
+                             const SubproblemWorkerPtr&)
     { calculate_subproblem_contribution(name, data); };
     GetSubproblemCut(subproblem_data_map,
                      MakeFastBeginHook(batch_sub_problems),
