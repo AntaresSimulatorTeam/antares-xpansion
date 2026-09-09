@@ -441,8 +441,6 @@ void BendersBase::compute_ub()
     _data.ub += _data.invest_cost;
 }
 
-
-
 int BendersBase::SetAggregation(int max_aggregation) const
 {
     if (max_aggregation < _options.NB_CUTS_PER_ITER)
