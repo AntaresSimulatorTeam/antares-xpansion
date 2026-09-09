@@ -28,8 +28,13 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                   relevantIterationData_,
                   _master,
                   subproblem_per_cut_indices_),
-    subproblems_manager_(_data, _options, benders_plugin_, _logger,
-                         solver_log_manager_, _writer, shouldParallelize())
+    subproblems_manager_(_data,
+                         _options,
+                         benders_plugin_,
+                         _logger,
+                         solver_log_manager_,
+                         _writer,
+                         shouldParallelize())
 {
 }
 
@@ -286,20 +291,6 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     }
 }
 
-void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-                                 const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker,
-                                 const std::function<void()>& post_reset_hook)
-{
-    BendersBase::SolveSubproblem(subproblem_data, name, worker, post_reset_hook);
-
-    std::vector<double> solution = worker->get_solution();
-    criterion_computation_.ComputeCriterion(SubproblemWeight(_data.nsubproblem, name),
-                                            solution,
-                                            subproblem_data.criteria,
-                                            subproblem_data.patterns_values);
-}
-
 void BendersMpi::UpdateMaxCriterionArea()
 {
     auto criteria_begin = _data.criteria_current_iteration_data.criteria.cbegin();
@@ -347,7 +338,11 @@ void BendersMpi::ComputeSubproblemsContributionToCriteria(
 SubProblemDataMap BendersMpi::get_subproblem_cut_package()
 {
     SubProblemDataMap subproblem_data_map;
-    GetSubproblemCut(subproblem_data_map, MakeFastBeginHook(), MakeCacheBeginHook(), nullptr);
+    subproblems_manager_.GetSubproblemCut(
+      subproblem_data_map,
+      subproblems_manager_.MakeFastBeginHook(),
+      subproblems_manager_.MakeCacheBeginHook(),
+      subproblems_manager_.MakePostSolveHook(criterion_computation_, _data));
     return subproblem_data_map;
 }
 

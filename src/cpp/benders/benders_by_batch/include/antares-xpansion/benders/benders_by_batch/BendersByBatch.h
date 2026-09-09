@@ -40,9 +40,6 @@ private:
     void BuildMasterProblem();
     void calculate_subproblem_contribution(const std::string& name,
                                            PlainData::SubProblemData& subproblem_data);
-    FastBeginHook MakeFastBeginHook(const std::vector<std::string>& batch_sub_problems);
-    CacheBeginHook MakeCacheBeginHook(const std::vector<std::string>& batch_sub_problems);
-
     void get_subs_per_cut_per_batch();
 
     BatchCollection batch_collection_;

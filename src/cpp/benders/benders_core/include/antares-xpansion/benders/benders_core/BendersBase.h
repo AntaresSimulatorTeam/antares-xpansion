@@ -8,6 +8,7 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
+#include "BendersSubProblemsManager.hxx"
 #include "CriterionComputation.h"
 #include "ICommunicationStrategy.h"
 #include "SubproblemBasisCache.h"
@@ -18,7 +19,6 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "BendersSubProblemsManager.hxx"
 #include "common.h"
 
 class BendersBase

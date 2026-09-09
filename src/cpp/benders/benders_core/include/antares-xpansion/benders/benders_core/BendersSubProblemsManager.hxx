@@ -17,8 +17,8 @@
 
 using FastBeginHook = std::function<std::vector<std::pair<std::string, SubproblemWorkerPtr>>()>;
 using CacheBeginHook = std::function<std::vector<std::pair<std::string, VariableMap>>()>;
-using PostSolveHook = std::function<void(const std::string&, PlainData::SubProblemData&,
-                                        const SubproblemWorkerPtr&)>;
+using PostSolveHook = std::function<
+  void(const std::string&, PlainData::SubProblemData&, const SubproblemWorkerPtr&)>;
 
 /**
  * std execution policies don't share a base type so we can't just select
@@ -70,7 +70,7 @@ public:
     }
 
     // ---------------------------------------------------------------
-    // CRTP dispatch: begin hooks (variadic to allow batch-scoped args)
+    // CRTP dispatch: hooks (variadic to allow batch-scoped args)
     // ---------------------------------------------------------------
 
     template<typename... Args>
@@ -83,6 +83,12 @@ public:
     CacheBeginHook MakeCacheBeginHook(Args&&... args)
     {
         return static_cast<Derived*>(this)->MakeCacheBeginHookImpl(std::forward<Args>(args)...);
+    }
+
+    template<typename... Args>
+    PostSolveHook MakePostSolveHook(Args&&... args)
+    {
+        return static_cast<Derived*>(this)->MakePostSolveHookImpl(std::forward<Args>(args)...);
     }
 
     // ---------------------------------------------------------------
@@ -115,6 +121,11 @@ public:
             }
             return nameAndVariableMap;
         };
+    }
+
+    PostSolveHook MakePostSolveHookImpl()
+    {
+        return [](const std::string&, PlainData::SubProblemData&, const SubproblemWorkerPtr&) {};
     }
 
     // ---------------------------------------------------------------
@@ -169,10 +180,7 @@ public:
                                     PlainData::SubProblemData subproblem_data;
                                     const auto& [name, worker] = kvp;
                                     SolveSubproblem(subproblem_data, name, worker, nullptr);
-                                    if (post_solve_hook)
-                                    {
-                                        post_solve_hook(name, subproblem_data, worker);
-                                    }
+                                    post_solve_hook(name, subproblem_data, worker);
 
                                     std::lock_guard guard(m);
                                     subproblem_data_map[name] = subproblem_data;
@@ -227,10 +235,7 @@ public:
                                                     worker,
                                                     [this, &name, &worker]
                                                     { TryRestoreSubproblemBasis(name, worker); });
-                                    if (post_solve_hook)
-                                    {
-                                        post_solve_hook(name, subproblem_data, worker);
-                                    }
+                                    post_solve_hook(name, subproblem_data, worker);
                                     std::lock_guard guard(m);
                                     subproblem_data_map[name] = subproblem_data;
                                     StoreSubproblemBasis(name, worker);
@@ -280,10 +285,7 @@ public:
                             sub,
                             subproblem_worker,
                             [this, &sub] { subproblem_worker_factory_->ApplyBasis(sub); });
-            if (post_solve_hook)
-            {
-                post_solve_hook(sub, subproblem_data, subproblem_worker);
-            }
+            post_solve_hook(sub, subproblem_data, subproblem_worker);
 
             subproblem_worker_factory_->GetBasis(sub);
 

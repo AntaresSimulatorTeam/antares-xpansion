@@ -11,6 +11,16 @@ public:
     // Default hooks (no batch filter) — inherited from base
     using BendersSubProblemsManager::MakeCacheBeginHookImpl;
     using BendersSubProblemsManager::MakeFastBeginHookImpl;
+    using BendersSubProblemsManager::MakePostSolveHookImpl;
+
+    // Batch post-solve: wraps an external callback with the 3-arg signature
+    PostSolveHook MakePostSolveHookImpl(
+      std::function<void(const std::string&, PlainData::SubProblemData&)> callback)
+    {
+        return [cb = std::move(callback)](const std::string& name,
+                                          PlainData::SubProblemData& data,
+                                          const SubproblemWorkerPtr&) { cb(name, data); };
+    }
 
     // Batch-scoped overrides: only include subproblems in the current batch
     FastBeginHook MakeFastBeginHookImpl(const std::vector<std::string>& batch_sub_problems)

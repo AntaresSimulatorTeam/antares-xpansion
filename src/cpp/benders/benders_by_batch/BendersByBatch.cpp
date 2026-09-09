@@ -13,8 +13,13 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
     batch_cuts_manager_(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master),
-    batch_subproblems_manager_(_data, _options, benders_plugin_, _logger,
-                               solver_log_manager_, _writer, shouldParallelize())
+    batch_subproblems_manager_(_data,
+                               _options,
+                               benders_plugin_,
+                               _logger,
+                               solver_log_manager_,
+                               _writer,
+                               shouldParallelize())
 {
 }
 
@@ -368,13 +373,13 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
 {
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
-    auto post_solve = [this](const std::string& name, PlainData::SubProblemData& data,
-                             const SubproblemWorkerPtr&)
-    { calculate_subproblem_contribution(name, data); };
-    GetSubproblemCut(subproblem_data_map,
-                     MakeFastBeginHook(batch_sub_problems),
-                     MakeCacheBeginHook(batch_sub_problems),
-                     post_solve);
+    batch_subproblems_manager_.GetSubproblemCut(
+      subproblem_data_map,
+      batch_subproblems_manager_.MakeFastBeginHook(batch_sub_problems),
+      batch_subproblems_manager_.MakeCacheBeginHook(batch_sub_problems),
+      batch_subproblems_manager_.MakePostSolveHook(
+        [this](const std::string& name, PlainData::SubProblemData& data)
+        { calculate_subproblem_contribution(name, data); }));
     local_solved = subproblem_data_map.size();
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
@@ -408,38 +413,6 @@ void BendersByBatch::calculate_subproblem_contribution(const std::string& name,
     {
         misprice_ = false;
     }
-}
-
-FastBeginHook BendersByBatch::MakeFastBeginHook(const std::vector<std::string>& batch_sub_problems)
-{
-    return [this, &batch_sub_problems]()
-    {
-        const auto& sub_pblm_map = GetSubProblemMap();
-        std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
-        nameAndWorkers.reserve(batch_sub_problems.size());
-        for (const auto& name: batch_sub_problems)
-        {
-            auto it = sub_pblm_map.find(name);
-            nameAndWorkers.emplace_back(it->first, it->second);
-        }
-        return nameAndWorkers;
-    };
-}
-
-CacheBeginHook BendersByBatch::MakeCacheBeginHook(
-  const std::vector<std::string>& batch_sub_problems)
-{
-    return [this, &batch_sub_problems]()
-    {
-        std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
-        nameAndVariableMap.reserve(batch_sub_problems.size());
-        for (const auto& name: batch_sub_problems)
-        {
-            const auto it = coupling_map_.find(name);
-            nameAndVariableMap.emplace_back(it->first, it->second);
-        }
-        return nameAndVariableMap;
-    };
 }
 
 void BendersByBatch::BroadcastXOut()

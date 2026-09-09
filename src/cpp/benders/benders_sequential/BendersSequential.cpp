@@ -28,8 +28,13 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 mathLoggerDriver,
                 std::make_shared<SequentialCommunicationStrategy>()),
     cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master),
-    subproblems_manager_(_data, _options, benders_plugin_, _logger,
-                         solver_log_manager_, _writer, shouldParallelize())
+    subproblems_manager_(_data,
+                         _options,
+                         benders_plugin_,
+                         _logger,
+                         solver_log_manager_,
+                         _writer,
+                         shouldParallelize())
 {
 }
 
@@ -110,7 +115,10 @@ void BendersSequential::BuildCut()
 {
     SubProblemDataMap subproblem_data_map;
     Timer timer;
-    GetSubproblemCut(subproblem_data_map, MakeFastBeginHook(), MakeCacheBeginHook(), nullptr);
+    subproblems_manager_.GetSubproblemCut(subproblem_data_map,
+                                          subproblems_manager_.MakeFastBeginHook(),
+                                          subproblems_manager_.MakeCacheBeginHook(),
+                                          subproblems_manager_.MakePostSolveHook());
     SetSubproblemCost(0);
     for (const auto& [_, subproblem_data]: subproblem_data_map)
     {
