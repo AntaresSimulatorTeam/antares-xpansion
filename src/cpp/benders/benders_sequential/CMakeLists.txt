@@ -13,7 +13,7 @@ target_sources(benders_sequential_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersCutsManagerSequential.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersSequential.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersCutsManagerSequential.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersSubProblemsManagerSequential.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersSubProblemsManagerSequential.hxx
 )
 
 target_include_directories(benders_sequential_core
