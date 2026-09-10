@@ -756,6 +756,27 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     return it_master->second;
 }
 
+void BendersBase::reset_master(
+    const VariableMap& variable_map,
+    const std::string& solver_name,
+    int log_level,
+    int subproblems_count,
+    SolverLogManager& solver_log_manager,
+    bool mps_has_alpha,
+    Logger logger,
+    ProblemsFormat format,
+    IBendersProblemProvider* benders_problem_provider,
+    double master_solution_tolerance,
+    const std::map<int, double>& subproblem_cut_coefficient_tolerance)
+{
+    _master = std::make_shared<WorkerMaster>(
+        variable_map, solver_name, log_level, subproblems_count,
+        solver_log_manager, mps_has_alpha, logger, format,
+        benders_problem_provider, master_solution_tolerance,
+        subproblem_cut_coefficient_tolerance);
+    master_is_empty_ = false;
+}
+
 void BendersBase::free_master()
 {
     _master->free();

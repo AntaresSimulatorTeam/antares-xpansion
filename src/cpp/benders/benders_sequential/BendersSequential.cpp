@@ -73,7 +73,7 @@ void BendersSequential::InitializeProblems()
 
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
-    reset_master<WorkerMaster>(master_variable_map_,
+    reset_master(master_variable_map_,
                                get_solver_name(),
                                get_log_level(),
                                _data.nsubproblem,

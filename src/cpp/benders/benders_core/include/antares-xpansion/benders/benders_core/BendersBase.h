@@ -160,12 +160,17 @@ protected:
     [[nodiscard]] std::filesystem::path get_master_path() const;
     [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
 
-    template<typename T, typename... Args>
-    void reset_master(Args&&... args)
-    {
-        _master = std::make_shared<T>(std::forward<Args>(args)...);
-        master_is_empty_ = false;
-    }
+    void reset_master(const VariableMap& variable_map,
+                      const std::string& solver_name,
+                      int log_level,
+                      int subproblems_count,
+                      SolverLogManager& solver_log_manager,
+                      bool mps_has_alpha,
+                      Logger logger,
+                      ProblemsFormat format,
+                      IBendersProblemProvider* benders_problem_provider,
+                      double master_solution_tolerance,
+                      const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
     void free_master();
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
