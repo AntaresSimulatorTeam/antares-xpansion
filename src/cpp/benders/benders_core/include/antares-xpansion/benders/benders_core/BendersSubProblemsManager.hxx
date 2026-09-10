@@ -63,7 +63,7 @@ protected:
     // References to BendersBase-owned state
     CurrentIterationData& data_;
     const BendersBaseOptions& options_;
-    std::shared_ptr<BendersPlugin> plugin_;
+    const std::shared_ptr<BendersPlugin>& plugin_;
     Logger logger_;
     SolverLogManager& solver_log_manager_;
     std::shared_ptr<Output::OutputWriter> writer_;
@@ -76,14 +76,14 @@ protected:
 public:
     BendersSubProblemsManager(CurrentIterationData& data,
                               const BendersBaseOptions& options,
-                              std::shared_ptr<BendersPlugin> plugin,
+                              const std::shared_ptr<BendersPlugin>& plugin,
                               Logger logger,
                               SolverLogManager& solver_log_manager,
                               std::shared_ptr<Output::OutputWriter> writer,
                               bool should_parallelize):
         data_(data),
         options_(options),
-        plugin_(std::move(plugin)),
+        plugin_(plugin),
         logger_(std::move(logger)),
         solver_log_manager_(solver_log_manager),
         writer_(std::move(writer)),
