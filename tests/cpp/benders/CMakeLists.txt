@@ -2,7 +2,7 @@ add_executable(benders_sequential_test)
 target_sources(benders_sequential_test
         PRIVATE
         benders_sequential_test.cpp
-        BendersBaseTest.cpp
+        BendersCutsManagerTest.cpp
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
@@ -56,3 +56,27 @@ target_include_directories(benders_sequential_test
 
 add_test(NAME unit_benders_sequential COMMAND benders_sequential_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 set_property(TEST unit_benders_sequential PROPERTY LABELS unit)
+
+add_executable(benders_core_classes_test)
+target_sources(benders_core_classes_test
+        PRIVATE
+        BendersSubProblemsManagerTest.cpp
+)
+
+target_link_libraries(benders_core_classes_test
+        PRIVATE
+        antaresXpansion::benders_sequential_core
+        antaresXpansion::benders_core
+        antaresXpansion::plugins
+        antaresXpansion::output_core
+        antaresXpansion::logger_lib
+        tests_utils
+        GTest::Main)
+
+target_include_directories(benders_core_classes_test
+        PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../TestDoubles/
+)
+
+add_test(NAME benders_core_classes COMMAND benders_core_classes_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_property(TEST benders_core_classes PROPERTY LABELS unit)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <antares-xpansion/benders/plugins/BendersPlugin.h>
-#include <execution>
 #include <filesystem>
 #include <functional>
 #include <mutex>
@@ -9,35 +8,15 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
+#include "BendersSubProblemsManager.hxx"
 #include "CriterionComputation.h"
 #include "ICommunicationStrategy.h"
-#include "SubproblemBasisCache.h"
 #include "SubproblemCut.h"
-#include "SubproblemWorker.h"
-#include "SubproblemWorkerFactory.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "common.h"
-
-/**
- * std execution policies don't share a base type so we can't just select
- *them in place in the foreach This function allow the selection of policy
- *via template deduction
- **/
-template<class lambda>
-auto selectPolicy(lambda f, bool shouldParallelize)
-{
-    if (shouldParallelize)
-    {
-        return f(std::execution::par_unseq);
-    }
-    else
-    {
-        return f(std::execution::seq);
-    }
-}
 
 class BendersBase
 {
@@ -53,17 +32,9 @@ public:
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
-    LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
-    int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
-    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map);
 
     const VariableMap& MasterVariables() const
     {
@@ -87,8 +58,6 @@ public:
                        const std::vector<double>& dmatval_p,
                        const std::vector<std::string>& row_names = {}) const;
     void MasterGetRowType(std::vector<char>& qrtype, int first, int last) const;
-    void ResetMasterFromLastIteration();
-    std::filesystem::path LastMasterPath() const;
     bool MasterIsEmpty() const;
 
     void DoFreeProblems(bool free_problems)
@@ -157,23 +126,20 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
     WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
-    std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
 
+    void check_status(const SubProblemDataMap& subproblem_data_map) const;
+
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
-    bool is_bilevel_check_all_ = false;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -182,31 +148,16 @@ protected:
     bool SwitchToIntegerMaster(bool is_relaxed) const;
     virtual void HandleInitialMasterRelaxation();
     virtual void UpdateTrace();
-    virtual void ComputeXCut();
-    void roundXCut();
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
-    void GetSubproblemCut(SubProblemDataMap& subproblem_data_map);
-    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map);
-    std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
-      const std::pair<std::string, VariableMap>& kvp) const;
-    void StoreSubproblemBasis(const std::string& name,
-                              const std::shared_ptr<SubproblemWorker>& worker);
-    void TryRestoreSubproblemBasis(const std::string& name,
-                                   const std::shared_ptr<SubproblemWorker>& worker);
-    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
-    void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
-    void set_rank(int rank);
-    [[nodiscard]] std::filesystem::path GetSubproblemPath(const std::string& subproblem_name) const;
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;
-    [[nodiscard]] std::filesystem::path get_structure_path() const;
     [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
 
     template<typename T, typename... Args>
@@ -217,11 +168,8 @@ protected:
     }
 
     void free_master();
-    void free_subproblems();
-    void AddSubproblem(const std::pair<std::string, VariableMap>& kvp);
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     void MatchProblemToId();
-    void AddSubproblemName(const std::string& name);
     [[nodiscard]] std::string get_master_name() const;
     [[nodiscard]] std::string get_solver_name() const;
     [[nodiscard]] int get_log_level() const;
@@ -258,16 +206,7 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
-    SubproblemsMapPtr GetSubProblemMap() const
-    {
-        return subproblem_map;
-    }
-
-    StrVector GetSubProblemNames() const
-    {
-        return subproblems;
-    }
+    [[nodiscard]] virtual bool shouldParallelize() const;
 
     double AbsoluteGap() const
     {
@@ -307,36 +246,11 @@ protected:
         return cumulative_number_of_subproblem_resolved_before_resume;
     }
 
-    void BoundSimplexIterations(int subproblem_iteration);
     void ResetSimplexIterationsBounds();
 
-    SubproblemsMapPtr subproblem_map;
     SolverLogManager solver_log_manager_;
 
-    virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-                                 const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker,
-                                 const std::function<void()>& post_reset_hook);
-    void SetSubproblemVariablesIndices(const SubproblemWorker& subproblem);
-
     Benders::Criterion::CriterionComputation criterion_computation_;
-    /**
-     * for the nth variable name, Subproblems shares the same prefix , only the
-     suffix is different
-     * ex variable at index = 0 is named in:
-
-    * subproblems-1-1  --> DirectFlow::link<area1$$area2>::hour<0>
-                                      * subproblems-3-5  -->
-    DirectFlow::link<area1$$area2>::hour<672>
-     */
-    // Search for variables in sub problems that satisfy patterns
-    // var_indices is a vector(for each patterns p) of vector (var indices related
-    // to p)
-    void SetSubproblemsVariablesIndices();
-
-    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
-                                   const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-
     int SetAggregation(int max_aggregation) const;
 
     std::map<int, double> GetSubCutTolerance() const;
@@ -349,23 +263,18 @@ private:
     void print_master_csv(std::ostream& stream,
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
-    void check_status(const SubProblemDataMap& subproblem_data_map) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;
     [[nodiscard]] std::string status_from_criterion() const;
-    void compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map);
-    void compute_cut(const SubProblemDataMap& subproblem_data_map);
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
-    [[nodiscard]] virtual bool shouldParallelize() const;
 
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    StrVector subproblems;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
     LogData best_iteration_data;
@@ -373,10 +282,7 @@ private:
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
-    SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
-
-    int rank_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

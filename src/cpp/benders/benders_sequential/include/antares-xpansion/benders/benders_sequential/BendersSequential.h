@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BendersCutsManagerSequential.h"
+#include "BendersSubProblemsManagerSequential.hxx"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
@@ -30,6 +32,10 @@ protected:
     virtual void free();
     virtual void Run();
 
+protected:
+    BendersSubProblemsManagerSequential subproblems_manager_;
+
 private:
     ArchiveReader reader_;
+    BendersCutsManagerSequential cuts_manager_;
 };

@@ -15,6 +15,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersProblemFromFile.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersStructsDatas.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
+
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationPrinter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationWriter.cpp
@@ -47,6 +48,8 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/CriterionInputDataReader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/CustomVector.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/CutsManagement.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersCutsManager.hxx
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersSubProblemsManager.hxx
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/IBendersProblemProvider.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/LastIterationPrinter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/LastIterationReader.h
