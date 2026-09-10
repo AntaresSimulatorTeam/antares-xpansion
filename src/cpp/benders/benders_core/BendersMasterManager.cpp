@@ -28,6 +28,7 @@ void BendersMasterManager::CreateMaster(
                                              benders_problem_provider,
                                              master_solution_tolerance,
                                              subproblem_cut_coefficient_tolerance);
+    variable_map_ = variable_map;
     is_empty_ = false;
 }
 
