@@ -186,7 +186,7 @@ void BendersMpi::BuildMasterProblem()
     InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
+        master_manager_.AddAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
     }
 }
 

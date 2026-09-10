@@ -6,6 +6,7 @@
 #include <mutex>
 #include <tbb/tbb.h>
 
+#include "BendersMasterManager.h"
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "BendersSubProblemsManager.hxx"
@@ -127,6 +128,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterPtr _master;
+    BendersMasterManager master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
@@ -278,7 +280,6 @@ private:
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
-    bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;

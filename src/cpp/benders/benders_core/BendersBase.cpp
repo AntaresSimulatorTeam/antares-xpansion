@@ -374,65 +374,26 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
  */
 void BendersBase::get_master_value()
 {
-    Timer timer_master;
-
-    _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);
-    _data.master_only_vars_out.resize(_master->_id_master_only_vars.size());
-    if (_options.BOUND_ALPHA)
-    {
-        _master->fix_alpha(_data.best_ub);
-    }
-    _master->solve(_data.master_status,
-                   _options.OUTPUTROOT,
-                   _options.LAST_MASTER_MPS + MPS_SUFFIX,
-                   _writer);
-
-    _master->get(_data.x_out,
-                 _data.overall_subpb_cost_under_approx,
-                 _data.single_subpb_costs_under_approx,
-                 _data.master_only_vars_out); /*Get the optimal variables of the
-                                                            Master Problem*/
-    _master->get_value(_data.lb);             /*Get the optimal value of the Master Problem*/
-
-    for (const auto& pairIdName: _master->_id_to_name)
-    {
-        _master->_solver->get_ub(&_data.max_invest[pairIdName.second],
-                                 pairIdName.first,
-                                 pairIdName.first);
-        _master->_solver->get_lb(&_data.min_invest[pairIdName.second],
-                                 pairIdName.first,
-                                 pairIdName.first);
-    }
-
-    _data.timer_master = timer_master.elapsed();
+    master_manager_.SolveMaster(_data,
+                                _options.BOUND_ALPHA,
+                                _options.OUTPUTROOT,
+                                _options.LAST_MASTER_MPS,
+                                _writer);
 }
 
 void BendersBase::DeactivateIntegrityConstraints() const
 {
-    _master->DeactivateIntegrityConstraints();
+    master_manager_.DeactivateIntegrityConstraints();
 }
 
 void BendersBase::ActivateIntegrityConstraints() const
 {
-    _master->ActivateIntegrityConstraints();
+    master_manager_.ActivateIntegrityConstraints();
 }
 
 void BendersBase::ComputeInvestCost()
 {
-    _data.invest_cost = 0;
-
-    std::vector<double> obj(MasterObjectiveFunctionCoeffs());
-
-    for (const auto& [col_name, value]: _data.x_cut)
-    {
-        int col_id = _master->_name_to_id[col_name];
-        _data.invest_cost += obj[col_id] * _data.x_cut[col_name];
-    }
-    for (int i(0); i < _data.master_only_vars_cut.size(); ++i)
-    {
-        int col_id = _master->_id_master_only_vars[i];
-        _data.invest_cost += obj[col_id] * _data.master_only_vars_cut[i];
-    }
+    master_manager_.ComputeInvestCost(_data);
 }
 
 void BendersBase::compute_ub()
@@ -689,14 +650,10 @@ double BendersBase::SubproblemWeight(int subproblem_count, const std::string& na
  */
 std::filesystem::path BendersBase::get_master_path() const
 {
-    if (_options.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED && _options.SOLVER_NAME == "XPRESS")
-    {
-        return std::filesystem::path(_options.INPUTROOT) / (_options.MASTER_NAME + SAVE_SUFFIX);
-    }
-    else
-    {
-        return std::filesystem::path(_options.INPUTROOT) / (_options.MASTER_NAME + MPS_SUFFIX);
-    }
+    return master_manager_.GetMasterPath(_options.INPUTROOT,
+                                         _options.MASTER_NAME,
+                                         _options.PROBLEMS_FORMAT,
+                                         _options.SOLVER_NAME);
 }
 
 LogData BendersBase::bendersDataToLogData(const CurrentIterationData& data) const
@@ -768,29 +725,28 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                double master_solution_tolerance,
                                const std::map<int, double>& subproblem_cut_coefficient_tolerance)
 {
-    _master = std::make_shared<WorkerMaster>(variable_map,
-                                             solver_name,
-                                             log_level,
-                                             subproblems_count,
-                                             solver_log_manager,
-                                             mps_has_alpha,
-                                             logger,
-                                             format,
-                                             benders_problem_provider,
-                                             master_solution_tolerance,
-                                             subproblem_cut_coefficient_tolerance);
-    master_is_empty_ = false;
+    master_manager_.CreateMaster(variable_map,
+                                 solver_name,
+                                 log_level,
+                                 subproblems_count,
+                                 solver_log_manager,
+                                 mps_has_alpha,
+                                 logger,
+                                 format,
+                                 benders_problem_provider,
+                                 master_solution_tolerance,
+                                 subproblem_cut_coefficient_tolerance);
+    _master = master_manager_.GetMaster();
 }
 
 void BendersBase::free_master()
 {
-    _master->free();
-    master_is_empty_ = true;
+    master_manager_.FreeMaster();
 }
 
 WorkerMasterPtr BendersBase::get_master() const
 {
-    return _master;
+    return master_manager_.GetMaster();
 }
 
 void BendersBase::MatchProblemToId()
@@ -953,17 +909,17 @@ double BendersBase::GetBendersTime() const
 void BendersBase::write_basis() const
 {
     const auto filename(std::filesystem::path(_options.OUTPUTROOT) / (_options.LAST_MASTER_BASIS));
-    _master->write_basis(filename);
+    master_manager_.WriteBasis(filename);
 }
 
 void BendersBase::MasterChangeRhs(int id_row, double val) const
 {
-    _master->ChangeRhs(id_row, val);
+    master_manager_.ChangeRhs(id_row, val);
 }
 
 void BendersBase::MasterGetRhs(double& rhs, int id_row) const
 {
-    _master->GetRhs(&rhs, id_row);
+    master_manager_.GetRhs(rhs, id_row);
 }
 
 void BendersBase::MasterAddRows(const std::vector<char>& qrtype_p,
@@ -974,20 +930,17 @@ void BendersBase::MasterAddRows(const std::vector<char>& qrtype_p,
                                 const std::vector<double>& dmatval_p,
                                 const std::vector<std::string>& row_names) const
 {
-    _master->AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p, row_names);
+    master_manager_.AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p, row_names);
 }
 
 bool BendersBase::MasterIsEmpty() const
 {
-    return master_is_empty_;
+    return master_manager_.IsEmpty();
 }
 
 std::vector<double> BendersBase::MasterObjectiveFunctionCoeffs() const
 {
-    int ncols = _master->_solver->get_ncols();
-    std::vector<double> obj(ncols);
-    _master->_solver->get_obj(obj.data(), 0, ncols - 1);
-    return obj;
+    return master_manager_.GetObjectiveFunctionCoeffs();
 }
 
 void BendersBase::MasterRowsCoeffs(std::vector<int>& mstart,
@@ -998,42 +951,37 @@ void BendersBase::MasterRowsCoeffs(std::vector<int>& mstart,
                                    int first,
                                    int last) const
 {
-    _master->_solver
-      ->get_rows(mstart.data(), mclind.data(), dmatval.data(), size, nels.data(), first, last);
+    master_manager_.GetRowsCoeffs(mstart, mclind, dmatval, size, nels, first, last);
 }
 
 int BendersBase::MasterGetNElems() const
 {
-    return _master->_solver->get_nelems();
+    return master_manager_.GetNElems();
 }
 
 void BendersBase::SetMasterObjectiveFunctionCoeffsToZeros() const
 {
-    // assuming that master var id are in [0, size-1]
-    auto master_vars_size = master_variable_map_.size();
-    std::vector<double> zeros(master_vars_size, 0.0);
-    SetMasterObjectiveFunction(zeros.data(), 0, static_cast<int>(master_vars_size) - 1);
+    master_manager_.SetObjectiveFunctionCoeffsToZeros();
 }
 
 void BendersBase::SetMasterObjectiveFunction(const double* coeffs, int first, int last) const
 {
-    assert(last >= first);
-    _master->_solver->set_obj(coeffs, first, last);
+    master_manager_.SetObjectiveFunction(coeffs, first, last);
 }
 
 int BendersBase::MasterGetnrows() const
 {
-    return _master->Getnrows();
+    return master_manager_.GetNrows();
 }
 
 int BendersBase::MasterGetncols() const
 {
-    return _master->Getncols();
+    return master_manager_.GetNcols();
 }
 
 void BendersBase::MasterGetRowType(std::vector<char>& qrtype, int first, int last) const
 {
-    _master->_solver->get_row_type(qrtype.data(), first, last);
+    master_manager_.GetRowType(qrtype, first, last);
 }
 
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const
@@ -1086,19 +1034,7 @@ bool BendersBase::isExceptionRaised() const
  */
 void BendersBase::UpdateOverallCosts()
 {
-    auto obj = MasterObjectiveFunctionCoeffs();
-    _data.invest_cost = 0;
-    for (const auto& [var_name, var_id]: MasterVariables())
-    {
-        _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
-    }
-    for (int i(0); i < _data.master_only_vars_cut.size(); ++i)
-    {
-        int col_id = _master->_id_master_only_vars[i];
-        _data.invest_cost += obj[col_id] * _data.master_only_vars_cut[i];
-    }
-
-    relevantIterationData_.best._invest_cost = _data.invest_cost;
+    master_manager_.UpdateOverallCosts(_data, relevantIterationData_.best._invest_cost);
 }
 
 void BendersBase::SetBilevelBestub(double bilevel_best_ub)

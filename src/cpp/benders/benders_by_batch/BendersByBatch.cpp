@@ -97,7 +97,7 @@ void BendersByBatch::BuildMasterProblem()
     InitializeMaster();
     for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
-        _master->addAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
+        master_manager_.AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
     }
 }
 
@@ -346,14 +346,12 @@ void BendersByBatch::UpdateRemainingEpsilon()
 {
     if (Rank() == rank_0)
     {
-        auto master_ptr = get_master();
-        int ncols = master_ptr->_solver->get_ncols();
-        std::vector<double> obj(ncols);
-        master_ptr->_solver->get_obj(obj.data(), 0, ncols - 1);
+        auto obj = master_manager_.GetObjectiveFunctionCoeffs();
+        const auto& name_to_id = master_manager_.GetNameToId();
         remaining_epsilon_ = Gap();
         for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
         {
-            int col_id = master_ptr->_name_to_id[candidate_name];
+            int col_id = name_to_id.at(candidate_name);
             remaining_epsilon_ -= obj[col_id]
                                   * (x_cut_candidate_value - _data.x_out[candidate_name]);
         }
