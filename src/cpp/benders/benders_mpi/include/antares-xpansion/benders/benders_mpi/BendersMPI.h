@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BendersCutsManagerMpi.h"
+#include "BendersSubProblemsManagerMpi.hxx"
 #include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
@@ -36,10 +38,6 @@ protected:
     void free() override;
     void Run() override;
     void InitializeProblems() override;
-    void BroadcastXCut();
-    void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-    void SetSubproblemDataCostAndSimplexIter(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     mpi::communicator& _world;
 
@@ -57,15 +55,15 @@ private:
 
     void do_solve_master_create_trace_and_update_cuts();
 
-    virtual void gather_subproblems_cut_package_and_build_cuts(
-      const SubProblemDataMap& subproblem_data_map,
-      const Timer& process_timer);
-
     void write_exception_message(const std::exception& ex) const;
 
     void check_if_some_proc_had_a_failure(int success);
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
+    BendersCutsManagerMpi cuts_manager_;
+
+protected:
+    BendersSubProblemsManagerMpi subproblems_manager_;
 
 protected:
     void InitializeMaster();
@@ -76,8 +74,6 @@ protected:
     }
 
     void PreRunInitialization();
-
-    std::shared_ptr<SolverAbstract> build_sub_problem_skeleton();
 
     int Rank() const
     {
@@ -126,14 +122,9 @@ protected:
         mpi::all_reduce(_world, in_value, out_value, op);
     }
 
-    virtual void GatherCuts(const SubProblemDataMap& subproblem_data_map, const Timer& walltime);
-    void BroadCastVariablesIndices();
+    virtual void BroadCastVariablesIndices();
     virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap& subproblem_data_map);
-    void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-                         const std::string& name,
-                         const std::shared_ptr<SubproblemWorker>& worker,
-                         const std::function<void()>& post_reset_hook) override;
     void UpdateMaxCriterionArea();
 };
 
