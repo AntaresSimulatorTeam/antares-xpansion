@@ -1,10 +1,9 @@
 #pragma once
 
-#include <ortools/math_opt/cpp/math_opt.h>
-
 #include <fstream>
 #include <memory>
 #include <optional>
+#include <ortools/math_opt/cpp/math_opt.h>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -24,7 +23,11 @@ public:
 
     [[nodiscard]] SolverMathOpt* clone() const override;
     int get_number_of_instances() override;
-    std::string get_solver_name() const override { return name_; }
+
+    std::string get_solver_name() const override
+    {
+        return name_;
+    }
 
     void init() override;
     void free() override;
@@ -48,12 +51,22 @@ public:
     void get_obj(double* obj, int first, int last) const override;
     void set_obj_to_zero() override;
     void set_obj(const double* obj, int first, int last) override;
-    void get_rows(int* mstart, int* mclind, double* dmatval, int size, int* nels, int first,
+    void get_rows(int* mstart,
+                  int* mclind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
                   int last) const override;
     void get_row_type(char* qrtype, int first, int last) const override;
     void get_rhs(double* rhs, int first, int last) const override;
     void get_rhs_range(double* range, int first, int last) const override;
-    void get_cols(int* mstart, int* mrwind, double* dmatval, int size, int* nels, int first,
+    void get_cols(int* mstart,
+                  int* mrwind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
                   int last) const override;
     void get_col_type(char* coltype, int first, int last) const override;
     void get_lb(double* lb, int first, int last) const override;
@@ -69,22 +82,36 @@ public:
     // Problem modification
     void del_rows(int first, int last) override;
     void del_cols(int first, int last) override;
-    void add_rows(int newrows, int newnz, const char* qrtype, const double* rhs, const double* range,
-                  const int* mstart, const int* mclind, const double* dmatval,
+    void add_rows(int newrows,
+                  int newnz,
+                  const char* qrtype,
+                  const double* rhs,
+                  const double* range,
+                  const int* mstart,
+                  const int* mclind,
+                  const double* dmatval,
                   const std::vector<std::string>& row_names) override;
-    void add_cols(int newcol, int newnz, const double* objx, const int* mstart, const int* mrwind,
-                  const double* dmatval, const double* bdl, const double* bdu,
+    void add_cols(int newcol,
+                  int newnz,
+                  const double* objx,
+                  const int* mstart,
+                  const int* mrwind,
+                  const double* dmatval,
+                  const double* bdl,
+                  const double* bdu,
                   const std::vector<std::string>& col_names) override;
     void add_name(int type, const char* cnames, int indice) override;
     void add_names(int type, const std::vector<std::string>& cnames, int first, int end) override;
     void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) override;
     void chg_obj_direction(bool minimize) override;
-    void chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype,
+    void chg_bounds(const std::vector<int>& mindex,
+                    const std::vector<char>& qbtype,
                     const std::vector<double>& bnd) override;
     void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) override;
     void chg_rhs(int id_row, double val) override;
     void chg_coef(int id_row, int id_col, double val) override;
-    void chg_coefs(const std::vector<int>& id_rows, const std::vector<int>& id_cols,
+    void chg_coefs(const std::vector<int>& id_rows,
+                   const std::vector<int>& id_cols,
                    const std::vector<double>& vals) override;
     void chg_rhs_values(std::vector<int>&, std::vector<double>&) override;
     void chg_row_name(int id_row, const std::string& name) override;

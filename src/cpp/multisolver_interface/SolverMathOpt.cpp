@@ -64,11 +64,11 @@ SolverMathOpt::SolverMathOpt(const SolverMathOpt& other):
     _model = std::make_unique<math_opt::Model>("mathopt");
 
     // Copy variables
-    for (const auto& var : other._variables)
+    for (const auto& var: other._variables)
     {
         auto new_var = _model->AddContinuousVariable(other._model->lower_bound(var),
-                                                    other._model->upper_bound(var),
-                                                    other._model->name(var));
+                                                     other._model->upper_bound(var),
+                                                     other._model->name(var));
         if (other._model->is_integer(var))
         {
             _model->set_integer(new_var);
@@ -88,7 +88,7 @@ SolverMathOpt::SolverMathOpt(const SolverMathOpt& other):
     for (size_t i = 0; i < other._variables.size(); ++i)
     {
         _model->set_objective_coefficient(_variables[i],
-                                         other._model->objective_coefficient(other._variables[i]));
+                                          other._model->objective_coefficient(other._variables[i]));
     }
 
     // Copy constraints
@@ -101,7 +101,7 @@ SolverMathOpt::SolverMathOpt(const SolverMathOpt& other):
         auto new_ct = _model->AddLinearConstraint(lb, ub, other._model->name(src_ct));
 
         // Copy coefficients
-        for (const auto& var : other._model->RowNonzeros(src_ct))
+        for (const auto& var: other._model->RowNonzeros(src_ct))
         {
             double coeff = other._model->coefficient(src_ct, var);
             // Find the index of this variable in other._variables
@@ -217,7 +217,7 @@ void SolverMathOpt::write_basis(const std::filesystem::path& filename)
         || !_last_result->solutions[0].basis.has_value())
     {
         throw GenericSolverException(
-            "write_basis: no basis available (solve not called or no basis)");
+          "write_basis: no basis available (solve not called or no basis)");
     }
 
     const auto& basis = *_last_result->solutions[0].basis;
@@ -245,8 +245,7 @@ void SolverMathOpt::write_basis(const std::filesystem::path& filename)
     std::ofstream ofs(filename);
     if (!ofs)
     {
-        throw GenericSolverException("write_basis: cannot open file "
-                                     + filename.string());
+        throw GenericSolverException("write_basis: cannot open file " + filename.string());
     }
 
     ofs << "MATHOPT_BASIS v1\n";
@@ -308,8 +307,7 @@ void SolverMathOpt::read_prob_lp(const std::filesystem::path& filename)
     {
         throw GenericSolverException("Failed to open LP file: " + path.string());
     }
-    std::string lp_data((std::istreambuf_iterator<char>(ifs)),
-                        std::istreambuf_iterator<char>());
+    std::string lp_data((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
 
     auto proto_or = operations_research::math_opt::ModelProtoFromLp(lp_data);
     if (!proto_or.ok())
@@ -339,8 +337,7 @@ void SolverMathOpt::read_basis(const std::filesystem::path& filename)
     std::ifstream ifs(filename);
     if (!ifs)
     {
-        throw GenericSolverException("read_basis: cannot open file "
-                                     + filename.string());
+        throw GenericSolverException("read_basis: cannot open file " + filename.string());
     }
 
     auto int_to_status = [](int s) -> math_opt::BasisStatus
@@ -367,7 +364,7 @@ void SolverMathOpt::read_basis(const std::filesystem::path& filename)
 
     // Read column statuses
     int ncols = 0;
-    ifs >> line >> ncols; // "COLUMNS <n>"
+    ifs >> line >> ncols;    // "COLUMNS <n>"
     std::getline(ifs, line); // consume newline
     for (int i = 0; i < ncols && i < get_ncols(); ++i)
     {
@@ -379,7 +376,7 @@ void SolverMathOpt::read_basis(const std::filesystem::path& filename)
 
     // Read row statuses
     int nrows = 0;
-    ifs >> line >> nrows; // "ROWS <n>"
+    ifs >> line >> nrows;    // "ROWS <n>"
     std::getline(ifs, line); // consume newline
     for (int i = 0; i < nrows && i < get_nrows(); ++i)
     {
@@ -442,7 +439,7 @@ int SolverMathOpt::get_nrows() const
 int SolverMathOpt::get_nelems() const
 {
     int count = 0;
-    for (const auto& ct : _constraints)
+    for (const auto& ct: _constraints)
     {
         count += static_cast<int>(_model->RowNonzeros(ct).size());
     }
@@ -452,7 +449,7 @@ int SolverMathOpt::get_nelems() const
 int SolverMathOpt::get_n_integer_vars() const
 {
     int count = 0;
-    for (const auto& var : _variables)
+    for (const auto& var: _variables)
     {
         if (_model->is_integer(var))
         {
@@ -472,7 +469,7 @@ void SolverMathOpt::get_obj(double* obj, int first, int last) const
 
 void SolverMathOpt::set_obj_to_zero()
 {
-    for (const auto& var : _variables)
+    for (const auto& var: _variables)
     {
         _model->set_objective_coefficient(var, 0.0);
     }
@@ -487,12 +484,12 @@ void SolverMathOpt::set_obj(const double* obj, int first, int last)
 }
 
 void SolverMathOpt::get_rows(int* mstart,
-                              int* mclind,
-                              double* dmatval,
-                              int size,
-                              int* nels,
-                              int first,
-                              int last) const
+                             int* mclind,
+                             double* dmatval,
+                             int size,
+                             int* nels,
+                             int first,
+                             int last) const
 {
     int offset = 0;
     int total_nels = 0;
@@ -500,7 +497,7 @@ void SolverMathOpt::get_rows(int* mstart,
     {
         mstart[r - first] = offset;
         const auto& vars = _model->RowNonzeros(_constraints[r]);
-        for (const auto& var : vars)
+        for (const auto& var: vars)
         {
             if (offset < size)
             {
@@ -581,12 +578,12 @@ void SolverMathOpt::get_rhs_range(double* range, int first, int last) const
 }
 
 void SolverMathOpt::get_cols(int* mstart,
-                              int* mrwind,
-                              double* dmatval,
-                              int size,
-                              int* nels,
-                              int first,
-                              int last) const
+                             int* mrwind,
+                             double* dmatval,
+                             int size,
+                             int* nels,
+                             int first,
+                             int last) const
 {
     int offset = 0;
     int total_nels = 0;
@@ -594,7 +591,7 @@ void SolverMathOpt::get_cols(int* mstart,
     {
         mstart[c - first] = offset;
         const auto& cts = _model->ColumnNonzeros(_variables[c]);
-        for (const auto& ct : cts)
+        for (const auto& ct: cts)
         {
             if (offset < size)
             {
@@ -729,14 +726,14 @@ void SolverMathOpt::del_cols(int first, int last)
 }
 
 void SolverMathOpt::add_rows(int newrows,
-                              int newnz,
-                              const char* qrtype,
-                              const double* rhs,
-                              const double* range,
-                              const int* mstart,
-                              const int* mclind,
-                              const double* dmatval,
-                              const std::vector<std::string>& row_names)
+                             int newnz,
+                             const char* qrtype,
+                             const double* rhs,
+                             const double* range,
+                             const int* mstart,
+                             const int* mclind,
+                             const double* dmatval,
+                             const std::vector<std::string>& row_names)
 {
     for (int i = 0; i < newrows; ++i)
     {
@@ -791,14 +788,14 @@ void SolverMathOpt::add_rows(int newrows,
 }
 
 void SolverMathOpt::add_cols(int newcol,
-                              int newnz,
-                              const double* objx,
-                              const int* mstart,
-                              const int* mrwind,
-                              const double* dmatval,
-                              const double* bdl,
-                              const double* bdu,
-                              const std::vector<std::string>& col_names)
+                             int newnz,
+                             const double* objx,
+                             const int* mstart,
+                             const int* mrwind,
+                             const double* dmatval,
+                             const double* bdl,
+                             const double* bdu,
+                             const std::vector<std::string>& col_names)
 {
     for (int i = 0; i < newcol; ++i)
     {
@@ -824,14 +821,12 @@ void SolverMathOpt::add_cols(int newcol,
 
 void SolverMathOpt::add_name(int type, const char* cnames, int indice)
 {
-    throw NotImplementedFeatureSolverException(
-      "add_name is not supported for MATHOPT solver");
+    throw NotImplementedFeatureSolverException("add_name is not supported for MATHOPT solver");
 }
 
 void SolverMathOpt::add_names(int type, const std::vector<std::string>& cnames, int first, int end)
 {
-    throw NotImplementedFeatureSolverException(
-      "add_names is not supported for MATHOPT solver");
+    throw NotImplementedFeatureSolverException("add_names is not supported for MATHOPT solver");
 }
 
 void SolverMathOpt::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj)
@@ -857,8 +852,8 @@ void SolverMathOpt::chg_obj_direction(bool minimize)
 }
 
 void SolverMathOpt::chg_bounds(const std::vector<int>& mindex,
-                                const std::vector<char>& qbtype,
-                                const std::vector<double>& bnd)
+                               const std::vector<char>& qbtype,
+                               const std::vector<double>& bnd)
 {
     assert(qbtype.size() == mindex.size());
     assert(bnd.size() == mindex.size());
@@ -949,8 +944,8 @@ void SolverMathOpt::chg_coef(int id_row, int id_col, double val)
 }
 
 void SolverMathOpt::chg_coefs(const std::vector<int>& id_rows,
-                               const std::vector<int>& id_cols,
-                               const std::vector<double>& vals)
+                              const std::vector<int>& id_cols,
+                              const std::vector<double>& vals)
 {
     for (size_t i = 0; i < id_rows.size(); ++i)
     {
@@ -983,14 +978,14 @@ void SolverMathOpt::chg_row_name(int id_row, const std::string& name)
 
     // Save coefficients
     std::vector<std::pair<math_opt::Variable, double>> coeffs;
-    for (const auto& var : _model->RowNonzeros(ct))
+    for (const auto& var: _model->RowNonzeros(ct))
     {
         coeffs.emplace_back(var, _model->coefficient(ct, var));
     }
 
     _model->DeleteLinearConstraint(ct);
     auto new_ct = _model->AddLinearConstraint(lb, ub, name);
-    for (const auto& [var, coeff] : coeffs)
+    for (const auto& [var, coeff]: coeffs)
     {
         _model->set_coefficient(new_ct, var, coeff);
     }
@@ -1021,7 +1016,7 @@ void SolverMathOpt::chg_col_name(int id_col, const std::string& name)
 
     // Save column coefficients
     std::vector<std::pair<math_opt::LinearConstraint, double>> coeffs;
-    for (const auto& ct : _model->ColumnNonzeros(var))
+    for (const auto& ct: _model->ColumnNonzeros(var))
     {
         coeffs.emplace_back(ct, _model->coefficient(ct, var));
     }
@@ -1031,7 +1026,7 @@ void SolverMathOpt::chg_col_name(int id_col, const std::string& name)
                                         : _model->AddContinuousVariable(lb, ub, name);
     _model->set_objective_coefficient(new_var, obj_coeff);
 
-    for (const auto& [ct, coeff] : coeffs)
+    for (const auto& [ct, coeff]: coeffs)
     {
         _model->set_coefficient(ct, new_var, coeff);
     }
@@ -1078,7 +1073,7 @@ int SolverMathOpt::solve_lp()
     {
         std::stringstream buffer;
         buffer << "MathOpt solve failed: " << result.status();
-        for (auto* stream : get_stream())
+        for (auto* stream: get_stream())
         {
             *stream << buffer.str() << std::endl;
         }
@@ -1130,7 +1125,7 @@ int SolverMathOpt::solve_mip()
     {
         std::stringstream buffer;
         buffer << "MathOpt MIP solve failed: " << result.status();
-        for (auto* stream : get_stream())
+        for (auto* stream: get_stream())
         {
             *stream << buffer.str() << std::endl;
         }
@@ -1286,7 +1281,7 @@ void SolverMathOpt::get_lp_sol(double* primals, double* duals, double* reduced_c
         }
         else
         {
-            //When we don't have a dual feasible solution do we return vector of 01
+            // When we don't have a dual feasible solution do we return vector of 01
             std::fill_n(duals, get_nrows(), 0.0);
         }
     }
@@ -1372,8 +1367,7 @@ void SolverMathOpt::mark_indices_to_keep_presolve(int, int, int*, int*)
 
 void SolverMathOpt::presolve_only()
 {
-    throw NotImplementedFeatureSolverException(
-      "presolve_only is not supported for MATHOPT solver");
+    throw NotImplementedFeatureSolverException("presolve_only is not supported for MATHOPT solver");
 }
 
 /*************************************************************************************************
@@ -1389,7 +1383,7 @@ void SolverMathOpt::rebuild_from_model()
     _constraints.clear();
     _row_types.clear();
 
-    for (const auto& var : _model->SortedVariables())
+    for (const auto& var: _model->SortedVariables())
     {
         _variables.push_back(var);
     }
@@ -1397,7 +1391,7 @@ void SolverMathOpt::rebuild_from_model()
     // MathOpt stores constraints as lb <= expr <= ub with no row type.
     // SolverAbstract uses row type chars (L/G/E/R) that get_rhs(), chg_rhs(),
     // and get_row_type() depend on, so we derive and cache them from bounds.
-    for (const auto& ct : _model->SortedLinearConstraints())
+    for (const auto& ct: _model->SortedLinearConstraints())
     {
         _constraints.push_back(ct);
 

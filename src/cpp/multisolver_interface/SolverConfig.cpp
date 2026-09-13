@@ -29,7 +29,8 @@ void SolverConfig::init(std::string solver_name)
     const std::map<std::string, bool> save_restore_support = {{"clp", false},
                                                               {"cbc", false},
                                                               {"coin", false},
-                                                              {"xpress", true}};
+                                                              {"xpress", true},
+                                                              {"mathopt", false}};
     name = std::move(solver_name);
     std::ranges::transform(name, name.begin(), ::tolower);
     if (save_restore_support.find(name) == save_restore_support.end())

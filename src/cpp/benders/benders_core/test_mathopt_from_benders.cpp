@@ -1,6 +1,5 @@
-#include <ortools/math_opt/cpp/math_opt.h>
-
 #include <iostream>
+#include <ortools/math_opt/cpp/math_opt.h>
 
 using namespace operations_research::math_opt;
 
@@ -8,19 +7,19 @@ int main()
 {
     Model model("BendersTestLP");
 
-    std::cout<<"model creating "<<std::endl ; 
+    std::cout << "model creating " << std::endl;
     Variable x = model.AddContinuousVariable(0.0, 10.0, "x");
     Variable y = model.AddContinuousVariable(0.0, 10.0, "y");
-    std::cout<<"variable add "<<std::endl ; 
+    std::cout << "variable add " << std::endl;
 
     LinearConstraint c1 = model.AddLinearConstraint(x + 2 * y <= 14, "capacity");
     LinearConstraint c2 = model.AddLinearConstraint(3 * x + y <= 14, "demand");
 
-    std::cout<<"constraint  add "<<std::endl ; 
+    std::cout << "constraint  add " << std::endl;
 
     model.Maximize(x + y);
 
-    std::cout<<"maximize called "<<std::endl ;
+    std::cout << "maximize called " << std::endl;
 
     SolveArguments args;
     args.parameters.enable_output = true;
