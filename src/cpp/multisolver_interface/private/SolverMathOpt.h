@@ -2,6 +2,7 @@
 
 #include <ortools/math_opt/cpp/math_opt.h>
 
+#include <fstream>
 #include <memory>
 #include <optional>
 #include <string>
@@ -123,6 +124,7 @@ private:
     int _log_level = 0;
     int _threads = 1;
     std::optional<int> _iteration_limit;
+    std::ofstream _log_stream;
 
     void rebuild_from_model();
     void rebuild_index_maps();

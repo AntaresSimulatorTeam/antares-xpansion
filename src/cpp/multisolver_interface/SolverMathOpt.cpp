@@ -38,13 +38,23 @@ SolverMathOpt::SolverMathOpt():
 SolverMathOpt::SolverMathOpt(const SolverLogManager& log_manager):
     SolverMathOpt()
 {
-    _fp = log_manager.log_file_ptr;
+    if (log_manager.log_file_path != "")
+    {
+        _log_file = log_manager.log_file_path;
+        _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+        add_stream(_log_stream);
+    }
 }
 
 SolverMathOpt::SolverMathOpt(const SolverMathOpt& other):
     SolverMathOpt()
 {
-    _fp = other._fp;
+    _log_file = other._log_file;
+    if (_log_file != "")
+    {
+        _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+        add_stream(_log_stream);
+    }
     _minimize = other._minimize;
     _log_level = other._log_level;
     _threads = other._threads;
@@ -114,6 +124,10 @@ SolverMathOpt::SolverMathOpt(const SolverMathOpt& other):
 SolverMathOpt::~SolverMathOpt()
 {
     number_of_problems_counter() -= 1;
+    if (_log_stream.is_open())
+    {
+        _log_stream.close();
+    }
 }
 
 SolverMathOpt* SolverMathOpt::clone() const
@@ -222,7 +236,7 @@ void SolverMathOpt::write_basis(const std::filesystem::path& filename)
         case BS::kAtLowerBound:
             return 3;
         case BS::kFixedValue:
-            return 3;
+            return 4;
         default:
             return 0;
         }
@@ -339,6 +353,8 @@ void SolverMathOpt::read_basis(const std::filesystem::path& filename)
             return math_opt::BasisStatus::kAtUpperBound;
         case 3:
             return math_opt::BasisStatus::kAtLowerBound;
+        case 4:
+            return math_opt::BasisStatus::kFixedValue;
         default:
             return math_opt::BasisStatus::kFree;
         }
@@ -388,6 +404,8 @@ void SolverMathOpt::set_basis(std::span<int> rstatus, std::span<int> cstatus)
             return math_opt::BasisStatus::kAtUpperBound;
         case 3:
             return math_opt::BasisStatus::kAtLowerBound;
+        case 4:
+            return math_opt::BasisStatus::kFixedValue;
         default:
             return math_opt::BasisStatus::kFree;
         }
@@ -722,14 +740,8 @@ void SolverMathOpt::add_rows(int newrows,
 {
     for (int i = 0; i < newrows; ++i)
     {
-        // Build the linear expression from sparse data
-        math_opt::LinearExpression expr;
         int start = mstart[i];
         int end = (i + 1 < newrows) ? mstart[i + 1] : newnz;
-        for (int k = start; k < end; ++k)
-        {
-            expr += dmatval[k] * _variables[mclind[k]];
-        }
 
         // Determine bounds from row type
         double lb, ub;
@@ -1039,11 +1051,18 @@ void SolverMathOpt::chg_col_name(int id_col, const std::string& name)
 int SolverMathOpt::solve_lp()
 {
     math_opt::SolveArguments args;
-    args.parameters.enable_output = (_log_level > 0);
     args.parameters.threads = _threads;
     if (_iteration_limit.has_value())
     {
         args.parameters.iteration_limit = *_iteration_limit;
+    }
+    if (_log_level > 0 && _log_stream.is_open())
+    {
+        args.message_callback = math_opt::PrinterMessageCallback(_log_stream);
+    }
+    else
+    {
+        args.parameters.enable_output = (_log_level > 0);
     }
 
     // Pass warm-start basis if one was set via set_basis() or read_basis().
@@ -1075,11 +1094,11 @@ int SolverMathOpt::solve_lp()
     {
         return OPTIMAL;
     }
-    else if (reason == TR::kInfeasible || reason == TR::kInfeasibleOrUnbounded)
+    else if (reason == TR::kInfeasible)
     {
         return INFEASIBLE;
     }
-    else if (reason == TR::kUnbounded)
+    else if (reason == TR::kUnbounded || reason == TR::kInfeasibleOrUnbounded)
     {
         return UNBOUNDED;
     }
@@ -1092,17 +1111,21 @@ int SolverMathOpt::solve_lp()
 int SolverMathOpt::solve_mip()
 {
     math_opt::SolveArguments args;
-    args.parameters.enable_output = (_log_level > 0);
     args.parameters.threads = _threads;
     if (_iteration_limit.has_value())
     {
         args.parameters.iteration_limit = *_iteration_limit;
     }
+    if (_log_level > 0 && _log_stream.is_open())
+    {
+        args.message_callback = math_opt::PrinterMessageCallback(_log_stream);
+    }
+    else
+    {
+        args.parameters.enable_output = (_log_level > 0);
+    }
 
-    // CP-SAT is always bundled in libortools.so and handles MIP.
-    // Alternatives: kHighs (if linked) or kGscip (if USE_SCIP=ON) provide
-    // better native support for continuous variables in MIP models.
-    auto result = math_opt::Solve(*_model, math_opt::SolverType::kCpSat, args);
+    auto result = math_opt::Solve(*_model, math_opt::SolverType::kGscip, args);
     if (!result.ok())
     {
         std::stringstream buffer;
@@ -1123,11 +1146,11 @@ int SolverMathOpt::solve_mip()
     {
         return OPTIMAL;
     }
-    else if (reason == TR::kInfeasible || reason == TR::kInfeasibleOrUnbounded)
+    else if (reason == TR::kInfeasible)
     {
         return INFEASIBLE;
     }
-    else if (reason == TR::kUnbounded)
+    else if (reason == TR::kUnbounded || reason == TR::kInfeasibleOrUnbounded)
     {
         return UNBOUNDED;
     }
@@ -1175,7 +1198,7 @@ void SolverMathOpt::get_basis(int* rstatus, int* cstatus) const
         case BS::kAtLowerBound:
             return 3;
         case BS::kFixedValue:
-            return 3;
+            return 4;
         default:
             return 0;
         }
@@ -1206,7 +1229,10 @@ double SolverMathOpt::get_mip_value() const
     {
         throw GenericSolverException("get_mip_value: no solution available (solve not called)");
     }
-    return _last_result->objective_value();
+    // Use primal_bound instead of objective_value() because objective_value()
+    // CHECK-fails when no primal feasible solution exists (e.g. INFEASIBLE).
+    // primal_bound is always safe and equals objective_value() on OPTIMAL.
+    return _last_result->termination.objective_bounds.primal_bound;
 }
 
 double SolverMathOpt::get_lp_value() const
@@ -1215,7 +1241,10 @@ double SolverMathOpt::get_lp_value() const
     {
         throw GenericSolverException("get_lp_value: no solution available (solve not called)");
     }
-    return _last_result->objective_value();
+    // Use primal_bound instead of objective_value() because objective_value()
+    // CHECK-fails when no primal feasible solution exists (e.g. INFEASIBLE).
+    // primal_bound is always safe and equals objective_value() on OPTIMAL.
+    return _last_result->termination.objective_bounds.primal_bound;
 }
 
 int SolverMathOpt::get_splex_num_of_ite_last() const
@@ -1246,21 +1275,36 @@ void SolverMathOpt::get_lp_sol(double* primals, double* duals, double* reduced_c
 
     if (duals)
     {
-        const auto& dvals = _last_result->dual_values();
-        for (int i = 0; i < get_nrows(); ++i)
+        if (_last_result->has_dual_feasible_solution())
         {
-            auto it = dvals.find(_constraints[i]);
-            duals[i] = (it != dvals.end()) ? it->second : 0.0;
+            const auto& dvals = _last_result->dual_values();
+            for (int i = 0; i < get_nrows(); ++i)
+            {
+                auto it = dvals.find(_constraints[i]);
+                duals[i] = (it != dvals.end()) ? it->second : 0.0;
+            }
+        }
+        else
+        {
+            //When we don't have a dual feasible solution do we return vector of 01
+            std::fill_n(duals, get_nrows(), 0.0);
         }
     }
 
     if (reduced_costs)
     {
-        const auto& rc = _last_result->reduced_costs();
-        for (int i = 0; i < get_ncols(); ++i)
+        if (_last_result->has_dual_feasible_solution())
         {
-            auto it = rc.find(_variables[i]);
-            reduced_costs[i] = (it != rc.end()) ? it->second : 0.0;
+            const auto& rc = _last_result->reduced_costs();
+            for (int i = 0; i < get_ncols(); ++i)
+            {
+                auto it = rc.find(_variables[i]);
+                reduced_costs[i] = (it != rc.end()) ? it->second : 0.0;
+            }
+        }
+        else
+        {
+            std::fill_n(reduced_costs, get_ncols(), 0.0);
         }
     }
 }
@@ -1339,6 +1383,8 @@ void SolverMathOpt::presolve_only()
 
 void SolverMathOpt::rebuild_from_model()
 {
+    _last_result.reset();
+    _initial_basis.reset();
     _variables.clear();
     _constraints.clear();
     _row_types.clear();
