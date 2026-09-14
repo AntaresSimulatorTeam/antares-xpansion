@@ -30,7 +30,7 @@ void BendersByBatch::free()
 {
     if (_world.rank() == rank_0)
     {
-        free_master();
+        master_manager_->FreeMaster();
     }
     else
     {

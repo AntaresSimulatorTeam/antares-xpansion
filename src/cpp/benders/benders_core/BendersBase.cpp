@@ -719,11 +719,6 @@ void BendersBase::reset_master(const VariableMap& variable_map,
     _master = master_manager_->GetMaster();
 }
 
-void BendersBase::free_master()
-{
-    master_manager_->FreeMaster();
-}
-
 WorkerMasterPtr BendersBase::get_master() const
 {
     return master_manager_->GetMaster();
@@ -890,78 +885,6 @@ void BendersBase::write_basis() const
 {
     const auto filename(std::filesystem::path(_options.OUTPUTROOT) / (_options.LAST_MASTER_BASIS));
     master_manager_->WriteBasis(filename);
-}
-
-void BendersBase::MasterChangeRhs(int id_row, double val) const
-{
-    master_manager_->ChangeRhs(id_row, val);
-}
-
-void BendersBase::MasterGetRhs(double& rhs, int id_row) const
-{
-    master_manager_->GetRhs(rhs, id_row);
-}
-
-void BendersBase::MasterAddRows(const std::vector<char>& qrtype_p,
-                                const std::vector<double>& rhs_p,
-                                const std::vector<double>& range_p,
-                                const std::vector<int>& mstart_p,
-                                const std::vector<int>& mclind_p,
-                                const std::vector<double>& dmatval_p,
-                                const std::vector<std::string>& row_names) const
-{
-    master_manager_->AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p, row_names);
-}
-
-bool BendersBase::MasterIsEmpty() const
-{
-    return master_manager_->IsEmpty();
-}
-
-std::vector<double> BendersBase::MasterObjectiveFunctionCoeffs() const
-{
-    return master_manager_->GetObjectiveFunctionCoeffs();
-}
-
-void BendersBase::MasterRowsCoeffs(std::vector<int>& mstart,
-                                   std::vector<int>& mclind,
-                                   std::vector<double>& dmatval,
-                                   int size,
-                                   std::vector<int>& nels,
-                                   int first,
-                                   int last) const
-{
-    master_manager_->GetRowsCoeffs(mstart, mclind, dmatval, size, nels, first, last);
-}
-
-int BendersBase::MasterGetNElems() const
-{
-    return master_manager_->GetNElems();
-}
-
-void BendersBase::SetMasterObjectiveFunctionCoeffsToZeros() const
-{
-    master_manager_->SetObjectiveFunctionCoeffsToZeros();
-}
-
-void BendersBase::SetMasterObjectiveFunction(const double* coeffs, int first, int last) const
-{
-    master_manager_->SetObjectiveFunction(coeffs, first, last);
-}
-
-int BendersBase::MasterGetnrows() const
-{
-    return master_manager_->GetNrows();
-}
-
-int BendersBase::MasterGetncols() const
-{
-    return master_manager_->GetNcols();
-}
-
-void BendersBase::MasterGetRowType(std::vector<char>& qrtype, int first, int last) const
-{
-    master_manager_->GetRowType(qrtype, first, last);
 }
 
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const

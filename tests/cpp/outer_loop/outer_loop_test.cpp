@@ -89,10 +89,11 @@ INSTANTIATE_TEST_SUITE_P(availsolvers, MasterUpdateBaseTest, ::testing::ValuesIn
 
 double LambdaMax(pBendersBase benders)
 {
-    const auto& obj = benders->MasterObjectiveFunctionCoeffs();
+    auto master = benders->GetMasterManager();
+    const auto& obj = master->GetObjectiveFunctionCoeffs();
     const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
     double lambda_max = 0;
-    for (const auto& [var_name, var_id]: benders->MasterVariables())
+    for (const auto& [var_name, var_id]: master->GetVariableMap())
     {
         lambda_max += obj[var_id] * max_invest.at(var_name);
     }
@@ -154,15 +155,16 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
       0.5,
       outer_loop_input_data.StoppingThreshold());
     auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
+    auto facade = std::make_shared<OuterLoopFacade>(benders);
     Outerloop::OuterLoopBenders out_loop(outer_loop_input_data.Criteria(),
                                          master_updater,
                                          cut_manager,
-                                         benders,
-                                         benders->GetOuterLoopManager(),
+                                         facade,
                                          benders->GetCommunicationStrategy());
     out_loop.OuterLoopCheckFeasibility();
 
-    auto num_constraints_master_before = benders->MasterGetnrows();
+    auto master = benders->GetMasterManager();
+    auto num_constraints_master_before = master->GetNrows();
     auto lambda_min = out_loop.OuterLoopLambdaMin();
     auto lambda_max = out_loop.OuterLoopLambdaMax();
     auto expected_lambda_max = LambdaMax(benders);
@@ -171,39 +173,39 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     //--------
 
     master_updater->Update(lambda_min, lambda_max);
-    auto num_constraints_master_after = benders->MasterGetnrows();
+    auto num_constraints_master_after = master->GetNrows();
 
     //------
     ASSERT_EQ(num_constraints_master_after, num_constraints_master_before + 1);
     //------
 
-    auto master_variables = benders->MasterVariables();
-    auto expected_coeffs = benders->MasterObjectiveFunctionCoeffs();
+    auto master_variables = master->GetVariableMap();
+    auto expected_coeffs = master->GetObjectiveFunctionCoeffs();
 
     // criterion is low <=> lambda_max = min(lambda_max, invest_cost)
     auto expected_rhs = 0.5 * lambda_max;
 
     // get added constraint infos (coeff, sign & rhs)
     std::vector<int> mstart(1 + 1);
-    auto n_elems = benders->MasterGetNElems();
+    auto n_elems = master->GetNElems();
 
     std::vector<int> mclind(n_elems);
     std::vector<double> matval(n_elems);
     std::vector<int> p_nels(1, 0);
 
     auto added_row_index = num_constraints_master_after - 1;
-    benders
-      ->MasterRowsCoeffs(mstart, mclind, matval, n_elems, p_nels, added_row_index, added_row_index);
-    std::vector<double> coeffs(benders->MasterGetncols());
+    master
+      ->GetRowsCoeffs(mstart, mclind, matval, n_elems, p_nels, added_row_index, added_row_index);
+    std::vector<double> coeffs(master->GetNcols());
 
     for (auto ind = mstart[0]; ind < mstart[1]; ++ind)
     {
         coeffs[mclind[ind]] = matval[ind];
     }
     double rhs;
-    benders->MasterGetRhs(rhs, added_row_index);
+    master->GetRhs(rhs, added_row_index);
     std::vector<char> qrtype(1);
-    benders->MasterGetRowType(qrtype, added_row_index, added_row_index);
+    master->GetRowType(qrtype, added_row_index, added_row_index);
     CheckMinInvestmentConstraint(master_variables,
                                  expected_coeffs,
                                  expected_rhs,

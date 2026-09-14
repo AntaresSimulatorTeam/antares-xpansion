@@ -8,13 +8,13 @@ BendersOuterLoopManager::BendersOuterLoopManager(
   const BendersRelevantIterationsData& relevant_iteration_data,
   std::shared_ptr<Output::OutputWriter> writer,
   BendersSolutionFn benders_solution_fn,
-  IterationFn iteration_fn)
-    : data_(data),
-      criteria_vector_for_each_iteration_(criteria_vector_for_each_iteration),
-      relevant_iteration_data_(relevant_iteration_data),
-      writer_(std::move(writer)),
-      benders_solution_fn_(std::move(benders_solution_fn)),
-      iteration_fn_(std::move(iteration_fn))
+  IterationFn iteration_fn):
+    data_(data),
+    criteria_vector_for_each_iteration_(criteria_vector_for_each_iteration),
+    relevant_iteration_data_(relevant_iteration_data),
+    writer_(std::move(writer)),
+    benders_solution_fn_(std::move(benders_solution_fn)),
+    iteration_fn_(std::move(iteration_fn))
 {
 }
 

@@ -7,8 +7,8 @@
 #include <tbb/tbb.h>
 
 #include "BendersMasterManager.h"
-#include "BendersOuterLoopManager.h"
 #include "BendersMathLogger.h"
+#include "BendersOuterLoopManager.h"
 #include "BendersStructsDatas.h"
 #include "BendersSubProblemsManager.hxx"
 #include "CriterionComputation.h"
@@ -35,49 +35,14 @@ public:
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     void set_input_map(const CouplingMap& coupling_map);
-    void MasterChangeRhs(int id_row, double val) const;
-    void MasterGetRhs(double& rhs, int id_row) const;
-
-    const VariableMap& MasterVariables() const
-    {
-        return master_variable_map_;
-    }
-
-    std::vector<double> MasterObjectiveFunctionCoeffs() const;
-    void MasterRowsCoeffs(std::vector<int>& mstart,
-                          std::vector<int>& mclind,
-                          std::vector<double>& dmatval,
-                          int size,
-                          std::vector<int>& nels,
-                          int first,
-                          int last) const;
-    int MasterGetNElems() const;
-    void MasterAddRows(const std::vector<char>& qrtype_p,
-                       const std::vector<double>& rhs_p,
-                       const std::vector<double>& range_p,
-                       const std::vector<int>& mstart_p,
-                       const std::vector<int>& mclind_p,
-                       const std::vector<double>& dmatval_p,
-                       const std::vector<std::string>& row_names = {}) const;
-    void MasterGetRowType(std::vector<char>& qrtype, int first, int last) const;
-    bool MasterIsEmpty() const;
 
     void DoFreeProblems(bool free_problems)
     {
         free_problems_ = free_problems;
     }
 
-    int MasterGetnrows() const;
-    int MasterGetncols() const;
     WorkerMasterData BestIterationWorkerMaster() const;
-    void SetMasterObjectiveFunctionCoeffsToZeros() const;
-    void SetMasterObjectiveFunction(const double* coeffs, int first, int last) const;
     virtual void InitializeProblems() = 0;
-
-    void SetMaxIteration(int max_iteration)
-    {
-        _options.MAX_ITERATIONS = max_iteration;
-    }
 
     BendersBaseOptions Options() const
     {
@@ -177,7 +142,6 @@ protected:
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
-    void free_master();
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     void MatchProblemToId();
     [[nodiscard]] std::string get_master_name() const;

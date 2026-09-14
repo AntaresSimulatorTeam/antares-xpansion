@@ -100,7 +100,7 @@ void BendersSequential::free()
 {
     if (get_master())
     {
-        free_master();
+        master_manager_->FreeMaster();
     }
     subproblems_manager_.free_subproblems();
 }
