@@ -1,7 +1,11 @@
 #pragma once
-#include "BendersBase.h"
+#include <memory>
+#include <string>
+
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "common.h"
+
+class BendersMasterManager;
 
 namespace Outerloop
 {
@@ -9,10 +13,10 @@ namespace Outerloop
 class MasterUpdateBase: public IMasterUpdate
 {
 public:
-    explicit MasterUpdateBase(pBendersBase benders,
+    explicit MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
                               double tau,
                               double outer_loop_stopping_threshold);
-    explicit MasterUpdateBase(pBendersBase benders,
+    explicit MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
                               double tau,
                               double outer_loop_stopping_threshold,
                               const std::string& name);
@@ -24,7 +28,7 @@ private:
     void UpdateConstraints();
     void AddMinInvestConstraint();
     int additional_constraint_index_ = -1;
-    pBendersBase benders_;
+    std::shared_ptr<BendersMasterManager> master_manager_;
     double lambda_ = 0;
     // tau
     double dichotomy_weight_coeff_ = 0.5;

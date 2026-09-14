@@ -180,7 +180,7 @@ int BendersApp::RunExternalLoop()
         const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
           criterion_input_holder_);
         std::shared_ptr<Outerloop::IMasterUpdate> master_updater = std::make_shared<
-          Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
+          Outerloop::MasterUpdateBase>(benders_->GetMasterManager(), tau, outer_loop_inputs.StoppingThreshold());
         std::shared_ptr<Outerloop::ICutsManager>
           cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
@@ -188,6 +188,7 @@ int BendersApp::RunExternalLoop()
                                              master_updater,
                                              cuts_manager,
                                              benders_,
+                                             benders_->GetOuterLoopManager(),
                                              benders_->GetCommunicationStrategy());
         StartMessage();
         ext_loop.Run();

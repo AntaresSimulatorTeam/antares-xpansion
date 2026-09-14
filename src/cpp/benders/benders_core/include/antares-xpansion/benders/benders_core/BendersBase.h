@@ -98,18 +98,10 @@ public:
 
     CurrentIterationData GetCurrentIterationData() const;
 
-    CriteriaCurrentIterationData GetOuterLoopData() const;
-
-    std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
     virtual void init_data();
     void init_data(double external_loop_lambda,
                    double external_loop_lambda_min,
                    double external_loop_lambda_max);
-    Output::SolutionData GetOuterLoopSolution() const;
-    void SaveOuterLoopSolutionInOutputFile() const;
-    void SaveCurrentOuterLoopIterationInOutputFile() const;
-    void SetBilevelBestub(double bilevel_best_ub);
-    void UpdateOuterLoopSolution();
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
@@ -125,11 +117,21 @@ public:
         return communication_strategy_;
     }
 
+    [[nodiscard]] std::shared_ptr<BendersMasterManager> GetMasterManager() const
+    {
+        return master_manager_;
+    }
+
+    [[nodiscard]] std::shared_ptr<BendersOuterLoopManager> GetOuterLoopManager() const
+    {
+        return outer_loop_manager_;
+    }
+
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterPtr _master;
-    BendersMasterManager master_manager_;
+    std::shared_ptr<BendersMasterManager> master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
@@ -288,7 +290,7 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    BendersOuterLoopManager outer_loop_manager_;
+    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
 

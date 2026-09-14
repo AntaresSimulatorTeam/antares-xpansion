@@ -1,5 +1,6 @@
 #pragma once
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/BendersOuterLoopManager.h"
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/CutsManagement.h"
 #include "antares-xpansion/benders/benders_core/ICommunicationStrategy.h"
@@ -23,6 +24,7 @@ public:
       std::shared_ptr<IMasterUpdate> master_updater,
       std::shared_ptr<ICutsManager> cuts_manager,
       pBendersBase benders,
+      std::shared_ptr<BendersOuterLoopManager> outer_loop_manager,
       std::shared_ptr<ICommunicationStrategy> communication_strategy);
 
     void Run() override;
@@ -42,6 +44,7 @@ private:
     std::shared_ptr<IMasterUpdate> master_updater_;
     std::shared_ptr<ICutsManager> cuts_manager_;
     pBendersBase benders_;
+    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
     BendersLoggerBase loggers_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
     bool is_bilevel_check_all_ = false;

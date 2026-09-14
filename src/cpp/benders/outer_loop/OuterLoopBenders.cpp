@@ -8,10 +8,12 @@ OuterLoopBenders::OuterLoopBenders(
   std::shared_ptr<IMasterUpdate> master_updater,
   std::shared_ptr<ICutsManager> cuts_manager,
   pBendersBase benders,
+  std::shared_ptr<BendersOuterLoopManager> outer_loop_manager,
   std::shared_ptr<ICommunicationStrategy> communication_strategy):
     master_updater_(std::move(master_updater)),
     cuts_manager_(std::move(cuts_manager)),
     benders_(std::move(benders)),
+    outer_loop_manager_(std::move(outer_loop_manager)),
     communication_strategy_(std::move(communication_strategy)),
     outer_loop_biLevel_(outer_loop_data)
 {
@@ -29,7 +31,7 @@ void OuterLoopBenders::PrintLog()
     msg << "*** Adequacy criterion loop: " << benders_->GetBendersRunNumber();
     logger->display_message(msg.str());
     msg.str("");
-    const auto outer_loop_data = benders_->GetOuterLoopData();
+    const auto outer_loop_data = outer_loop_manager_->GetOuterLoopData();
     msg << "*** Max Criterion: " << std::scientific << std::setprecision(10)
         << outer_loop_data.max_criterion_best_it;
     logger->display_message(msg.str());
@@ -129,17 +131,17 @@ void OuterLoopBenders::OuterLoopBilevelChecks()
                                              .criteria_current_iteration_data.lambda;
         if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
               x_cut,
-              benders_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
+              outer_loop_manager_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
   be at best it*/
               ,
               overall_cost,
               invest_cost,
               external_loop_lambda))
         {
-            benders_->UpdateOuterLoopSolution();
+            outer_loop_manager_->UpdateOuterLoopSolution();
         }
-        benders_->SaveCurrentOuterLoopIterationInOutputFile();
-        benders_->SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
+        outer_loop_manager_->SaveCurrentOuterLoopIterationInOutputFile();
+        outer_loop_manager_->SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
     }
 }
 
@@ -147,7 +149,7 @@ void OuterLoopBenders::Run()
 {
     OuterLoop::Run();
     benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-    benders_->SaveOuterLoopSolutionInOutputFile();
+    outer_loop_manager_->SaveOuterLoopSolutionInOutputFile();
     benders_->free();
 }
 } // namespace Outerloop

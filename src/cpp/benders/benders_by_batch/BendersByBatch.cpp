@@ -97,7 +97,7 @@ void BendersByBatch::BuildMasterProblem()
     InitializeMaster();
     for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
-        master_manager_.AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
+        master_manager_->AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
     }
 }
 
@@ -346,8 +346,8 @@ void BendersByBatch::UpdateRemainingEpsilon()
 {
     if (Rank() == rank_0)
     {
-        auto obj = master_manager_.GetObjectiveFunctionCoeffs();
-        const auto& name_to_id = master_manager_.GetNameToId();
+        auto obj = master_manager_->GetObjectiveFunctionCoeffs();
+        const auto& name_to_id = master_manager_->GetNameToId();
         remaining_epsilon_ = Gap();
         for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
         {
