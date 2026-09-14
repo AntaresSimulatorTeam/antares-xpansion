@@ -25,6 +25,12 @@ BendersBase::BendersBase(BendersBaseOptions options,
     mathLoggerDriver_(std::move(mathLoggerDriver)),
     _options(std::move(options)),
     _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv")),
+    outer_loop_manager_(_data,
+                        criteria_vector_for_each_iteration_,
+                        relevantIterationData_,
+                        _writer,
+                        [this]() { return BendersSolution(); },
+                        [this](const WorkerMasterData& d) { return iteration(d); }),
     communication_strategy_(std::move(communication_strategy))
 {
 }
@@ -472,13 +478,7 @@ void BendersBase::SaveCurrentIterationInOutputFile() const
 
 void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const
 {
-    auto& LastWorkerMasterData = relevantIterationData_.last;
-    if (LastWorkerMasterData._valid)
-    {
-        _writer->write_iteration(iteration(LastWorkerMasterData),
-                                 _data.criteria_current_iteration_data.benders_num_run);
-        _writer->dump();
-    }
+    outer_loop_manager_.SaveCurrentOuterLoopIterationInOutputFile();
 }
 
 void BendersBase::SaveSolutionInOutputFile() const
@@ -489,8 +489,7 @@ void BendersBase::SaveSolutionInOutputFile() const
 
 void BendersBase::SaveOuterLoopSolutionInOutputFile() const
 {
-    _writer->write_solution(GetOuterLoopSolution());
-    _writer->dump();
+    outer_loop_manager_.SaveOuterLoopSolutionInOutputFile();
 }
 
 Output::CandidatesVec candidates_data(const WorkerMasterData& masterDataPtr_l)
@@ -545,13 +544,12 @@ Output::SolutionData BendersBase::solution() const
 
 void BendersBase::UpdateOuterLoopSolution()
 {
-    outer_loop_solution_data_ = BendersSolution();
-    outer_loop_solution_data_.best_it = _data.criteria_current_iteration_data.benders_num_run;
+    outer_loop_manager_.UpdateOuterLoopSolution();
 }
 
 Output::SolutionData BendersBase::GetOuterLoopSolution() const
 {
-    return outer_loop_solution_data_;
+    return outer_loop_manager_.GetOuterLoopSolution();
 }
 
 Output::SolutionData BendersBase::BendersSolution() const
@@ -996,14 +994,12 @@ CurrentIterationData BendersBase::GetCurrentIterationData() const
 
 CriteriaCurrentIterationData BendersBase::GetOuterLoopData() const
 {
-    return _data.criteria_current_iteration_data;
+    return outer_loop_manager_.GetOuterLoopData();
 }
 
 std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const
 {
-    return ((criteria_vector_for_each_iteration_.empty())
-              ? std::vector<double>() // Unnamed RVO
-              : criteria_vector_for_each_iteration_[_data.best_it - 1]);
+    return outer_loop_manager_.GetOuterLoopCriterionAtBestBenders();
 }
 
 void BendersBase::init_data(double external_loop_lambda,
@@ -1039,7 +1035,7 @@ void BendersBase::UpdateOverallCosts()
 
 void BendersBase::SetBilevelBestub(double bilevel_best_ub)
 {
-    _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub = bilevel_best_ub;
+    outer_loop_manager_.SetBilevelBestub(bilevel_best_ub);
 }
 
 void BendersBase::setCriterionComputationInputs(

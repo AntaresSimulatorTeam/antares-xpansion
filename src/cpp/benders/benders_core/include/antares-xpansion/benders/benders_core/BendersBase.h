@@ -7,6 +7,7 @@
 #include <tbb/tbb.h>
 
 #include "BendersMasterManager.h"
+#include "BendersOuterLoopManager.h"
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "BendersSubProblemsManager.hxx"
@@ -287,7 +288,7 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    Output::SolutionData outer_loop_solution_data_;
+    BendersOuterLoopManager outer_loop_manager_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
 
