@@ -38,7 +38,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 {
     subproblems_manager_.SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
-      { criterion_computation_.SearchVariables(col_names); });
+      { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
 }
 
 /*!
@@ -158,7 +158,7 @@ void BendersMpi::BroadCastVariablesIndices()
     {
         subproblems_manager_.SetSubproblemsVariablesIndices();
     }
-    BroadCast(criterion_computation_.getVarIndices(), rank_0);
+    BroadCast(outer_loop_manager_->GetCriterionComputation().getVarIndices(), rank_0);
 }
 
 void BendersMpi::InitializeMaster()
@@ -276,15 +276,15 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
     _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
-    if (!exception_raised_ && !criterion_computation_.IsEmpty())
+    if (!exception_raised_ && !outer_loop_manager_->GetCriterionComputation().IsEmpty())
     {
         ComputeSubproblemsContributionToCriteria(subproblem_data_map);
 
         if (Rank() == rank_0)
         {
-            criteria_vector_for_each_iteration_.push_back(
+            outer_loop_manager_->PushCriteriaForIteration(
               _data.criteria_current_iteration_data.criteria);
-            UpdateMaxCriterionArea();
+            outer_loop_manager_->UpdateMaxCriterionArea();
         }
     }
     if (Rank() == rank_0)
@@ -295,28 +295,11 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     }
 }
 
-void BendersMpi::UpdateMaxCriterionArea()
-{
-    auto criteria_begin = _data.criteria_current_iteration_data.criteria.cbegin();
-    auto criteria_end = _data.criteria_current_iteration_data.criteria.cend();
-    auto max_criterion_it = std::max_element(criteria_begin, criteria_end);
-    if (max_criterion_it != criteria_end)
-    {
-        _data.criteria_current_iteration_data.max_criterion = *max_criterion_it;
-        auto max_criterion_index = std::distance(criteria_begin, max_criterion_it);
-        _data.criteria_current_iteration_data.max_criterion_area = criterion_computation_
-                                                                     .getCriterionInputData()
-                                                                     .Criteria()
-                                                                       [max_criterion_index]
-                                                                     .Pattern()
-                                                                     .GetBody();
-    }
-}
 
 void BendersMpi::ComputeSubproblemsContributionToCriteria(
   const SubProblemDataMap& subproblem_data_map)
 {
-    const auto vars_size = criterion_computation_.getVarIndices().size();
+    const auto vars_size = outer_loop_manager_->GetCriterionComputation().getVarIndices().size();
     std::vector<double> criteria_per_sub_problem_per_pattern(vars_size, {});
     _data.criteria_current_iteration_data.criteria.resize(vars_size, 0.);
     std::vector<double> patterns_values_per_sub_problem_per_pattern(vars_size, {});
@@ -346,7 +329,7 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
       subproblem_data_map,
       subproblems_manager_.MakeFastBeginHook(),
       subproblems_manager_.MakeCacheBeginHook(),
-      subproblems_manager_.MakePostSolveHook(criterion_computation_, _data));
+      subproblems_manager_.MakePostSolveHook(outer_loop_manager_->GetCriterionComputation(), _data));
     return subproblem_data_map;
 }
 

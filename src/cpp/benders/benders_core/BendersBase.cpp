@@ -27,12 +27,11 @@ BendersBase::BendersBase(BendersBaseOptions options,
     _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv")),
     master_manager_(std::make_shared<BendersMasterManager>()),
     outer_loop_manager_(std::make_shared<BendersOuterLoopManager>(
-                        _data,
-                        criteria_vector_for_each_iteration_,
-                        relevantIterationData_,
-                        _writer,
-                        [this]() { return BendersSolution(); },
-                        [this](const WorkerMasterData& d) { return iteration(d); })),
+      _data,
+      relevantIterationData_,
+      _writer,
+      [this]() { return BendersSolution(); },
+      [this](const WorkerMasterData& d) { return iteration(d); })),
     communication_strategy_(std::move(communication_strategy))
 {
 }
@@ -69,7 +68,7 @@ void BendersBase::init_data()
     _data.iteration_time = 0;
     _data.timer_master = 0;
     _data.subproblems_walltime = 0;
-    criteria_vector_for_each_iteration_.clear();
+    outer_loop_manager_->ClearCriteriaHistory();
 }
 
 void BendersBase::OpenCsvFile()
@@ -383,10 +382,10 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
 void BendersBase::get_master_value()
 {
     master_manager_->SolveMaster(_data,
-                                _options.BOUND_ALPHA,
-                                _options.OUTPUTROOT,
-                                _options.LAST_MASTER_MPS,
-                                _writer);
+                                 _options.BOUND_ALPHA,
+                                 _options.OUTPUTROOT,
+                                 _options.LAST_MASTER_MPS,
+                                 _writer);
 }
 
 void BendersBase::DeactivateIntegrityConstraints() const
@@ -631,9 +630,9 @@ double BendersBase::SubproblemWeight(int subproblem_count, const std::string& na
 std::filesystem::path BendersBase::get_master_path() const
 {
     return master_manager_->GetMasterPath(_options.INPUTROOT,
-                                         _options.MASTER_NAME,
-                                         _options.PROBLEMS_FORMAT,
-                                         _options.SOLVER_NAME);
+                                          _options.MASTER_NAME,
+                                          _options.PROBLEMS_FORMAT,
+                                          _options.SOLVER_NAME);
 }
 
 LogData BendersBase::bendersDataToLogData(const CurrentIterationData& data) const
@@ -706,16 +705,16 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                const std::map<int, double>& subproblem_cut_coefficient_tolerance)
 {
     master_manager_->CreateMaster(variable_map,
-                                 solver_name,
-                                 log_level,
-                                 subproblems_count,
-                                 solver_log_manager,
-                                 mps_has_alpha,
-                                 logger,
-                                 format,
-                                 benders_problem_provider,
-                                 master_solution_tolerance,
-                                 subproblem_cut_coefficient_tolerance);
+                                  solver_name,
+                                  log_level,
+                                  subproblems_count,
+                                  solver_log_manager,
+                                  mps_has_alpha,
+                                  logger,
+                                  format,
+                                  benders_problem_provider,
+                                  master_solution_tolerance,
+                                  subproblem_cut_coefficient_tolerance);
     _master = master_manager_->GetMaster();
 }
 
@@ -926,12 +925,6 @@ bool BendersBase::isExceptionRaised() const
 void BendersBase::UpdateOverallCosts()
 {
     master_manager_->UpdateOverallCosts(_data, relevantIterationData_.best._invest_cost);
-}
-
-void BendersBase::setCriterionComputationInputs(
-  const Benders::Criterion::CriterionInputData& criterion_input_data)
-{
-    criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
 }
 
 std::map<int, double> BendersBase::GetSubCutTolerance() const

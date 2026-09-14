@@ -4,13 +4,11 @@
 
 BendersOuterLoopManager::BendersOuterLoopManager(
   CurrentIterationData& data,
-  const std::vector<std::vector<double>>& criteria_vector_for_each_iteration,
   const BendersRelevantIterationsData& relevant_iteration_data,
   std::shared_ptr<Output::OutputWriter> writer,
   BendersSolutionFn benders_solution_fn,
   IterationFn iteration_fn):
     data_(data),
-    criteria_vector_for_each_iteration_(criteria_vector_for_each_iteration),
     relevant_iteration_data_(relevant_iteration_data),
     writer_(std::move(writer)),
     benders_solution_fn_(std::move(benders_solution_fn)),
@@ -61,4 +59,49 @@ void BendersOuterLoopManager::SaveCurrentOuterLoopIterationInOutputFile() const
 void BendersOuterLoopManager::SetBilevelBestub(double bilevel_best_ub)
 {
     data_.criteria_current_iteration_data.outer_loop_bilevel_best_ub = bilevel_best_ub;
+}
+
+void BendersOuterLoopManager::SetCriterionComputationInputs(
+  const Benders::Criterion::CriterionInputData& criterion_input_data)
+{
+    criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
+}
+
+Benders::Criterion::CriterionComputation& BendersOuterLoopManager::GetCriterionComputation()
+{
+    return criterion_computation_;
+}
+
+const Benders::Criterion::CriterionComputation& BendersOuterLoopManager::GetCriterionComputation()
+  const
+{
+    return criterion_computation_;
+}
+
+void BendersOuterLoopManager::PushCriteriaForIteration(const std::vector<double>& criteria)
+{
+    criteria_vector_for_each_iteration_.push_back(criteria);
+}
+
+void BendersOuterLoopManager::ClearCriteriaHistory()
+{
+    criteria_vector_for_each_iteration_.clear();
+}
+
+void BendersOuterLoopManager::UpdateMaxCriterionArea()
+{
+    auto criteria_begin = data_.criteria_current_iteration_data.criteria.cbegin();
+    auto criteria_end = data_.criteria_current_iteration_data.criteria.cend();
+    auto max_criterion_it = std::max_element(criteria_begin, criteria_end);
+    if (max_criterion_it != criteria_end)
+    {
+        data_.criteria_current_iteration_data.max_criterion = *max_criterion_it;
+        auto max_criterion_index = std::distance(criteria_begin, max_criterion_it);
+        data_.criteria_current_iteration_data.max_criterion_area = criterion_computation_
+                                                                     .getCriterionInputData()
+                                                                     .Criteria()
+                                                                       [max_criterion_index]
+                                                                     .Pattern()
+                                                                     .GetBody();
+    }
 }

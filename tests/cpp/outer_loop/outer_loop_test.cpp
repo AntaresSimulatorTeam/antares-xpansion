@@ -148,7 +148,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     auto outer_loop_input_data = Benders::Criterion::CriterionInputFromYaml().Read(
       std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
 
-    benders->setCriterionComputationInputs(outer_loop_input_data);
+    benders->GetOuterLoopManager()->SetCriterionComputationInputs(outer_loop_input_data);
 
     auto master_updater = std::make_shared<MasterUpdateBase>(
       benders->GetMasterManager(),

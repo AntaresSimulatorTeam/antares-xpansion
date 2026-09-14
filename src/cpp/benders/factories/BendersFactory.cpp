@@ -130,7 +130,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     benders->set_input_map(coupling_map);
 
     auto criterion_input_holder = ProcessCriterionInput();
-    benders->setCriterionComputationInputs(
+    benders->GetOuterLoopManager()->SetCriterionComputationInputs(
       std::visit([](auto&& the_variant)
                  { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
                  criterion_input_holder));

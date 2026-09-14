@@ -125,7 +125,6 @@ protected:
     virtual void BroadCastVariablesIndices();
     virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap& subproblem_data_map);
-    void UpdateMaxCriterionArea();
 };
 
 struct Entry

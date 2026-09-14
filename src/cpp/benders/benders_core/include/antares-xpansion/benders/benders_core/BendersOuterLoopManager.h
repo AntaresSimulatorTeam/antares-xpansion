@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BendersStructsDatas.h"
+#include "CriterionComputation.h"
 
 namespace Output
 {
@@ -21,7 +22,6 @@ public:
 
     BendersOuterLoopManager(
       CurrentIterationData& data,
-      const std::vector<std::vector<double>>& criteria_vector_for_each_iteration,
       const BendersRelevantIterationsData& relevant_iteration_data,
       std::shared_ptr<Output::OutputWriter> writer,
       BendersSolutionFn benders_solution_fn,
@@ -35,12 +35,22 @@ public:
     void SaveCurrentOuterLoopIterationInOutputFile() const;
     void SetBilevelBestub(double bilevel_best_ub);
 
+    void SetCriterionComputationInputs(
+      const Benders::Criterion::CriterionInputData& criterion_input_data);
+    Benders::Criterion::CriterionComputation& GetCriterionComputation();
+    [[nodiscard]] const Benders::Criterion::CriterionComputation& GetCriterionComputation() const;
+
+    void PushCriteriaForIteration(const std::vector<double>& criteria);
+    void ClearCriteriaHistory();
+    void UpdateMaxCriterionArea();
+
 private:
     CurrentIterationData& data_;
-    const std::vector<std::vector<double>>& criteria_vector_for_each_iteration_;
+    std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     const BendersRelevantIterationsData& relevant_iteration_data_;
     std::shared_ptr<Output::OutputWriter> writer_;
     BendersSolutionFn benders_solution_fn_;
     IterationFn iteration_fn_;
     Output::SolutionData outer_loop_solution_data_;
+    Benders::Criterion::CriterionComputation criterion_computation_;
 };

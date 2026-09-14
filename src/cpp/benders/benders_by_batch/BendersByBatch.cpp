@@ -23,7 +23,7 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
 {
     batch_subproblems_manager_.SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
-      { criterion_computation_.SearchVariables(col_names); });
+      { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
 }
 
 void BendersByBatch::free()
@@ -79,7 +79,7 @@ void BendersByBatch::BroadCastVariablesIndices()
     {
         batch_subproblems_manager_.SetSubproblemsVariablesIndices();
     }
-    BroadCast(criterion_computation_.getVarIndices(), rank_0);
+    BroadCast(outer_loop_manager_->GetCriterionComputation().getVarIndices(), rank_0);
 }
 
 void BendersByBatch::InitializeProblems()
@@ -316,7 +316,7 @@ void BendersByBatch::SeparationLoop()
 
         if (Rank() == rank_0)
         {
-            criteria_vector_for_each_iteration_.push_back(
+            outer_loop_manager_->PushCriteriaForIteration(
               _data.criteria_current_iteration_data.criteria);
             // TODO
             //  UpdateOuterLoopMaxCriterionArea();

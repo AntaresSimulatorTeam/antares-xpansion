@@ -11,7 +11,6 @@
 #include "BendersOuterLoopManager.h"
 #include "BendersStructsDatas.h"
 #include "BendersSubProblemsManager.hxx"
-#include "CriterionComputation.h"
 #include "ICommunicationStrategy.h"
 #include "SubproblemCut.h"
 #include "Worker.h"
@@ -74,8 +73,6 @@ public:
     std::shared_ptr<Output::OutputWriter> _writer;
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
     std::once_flag variable_indice_once_flag;
-    void setCriterionComputationInputs(
-      const Benders::Criterion::CriterionInputData& criterion_input_data);
 
     [[nodiscard]] std::shared_ptr<ICommunicationStrategy> GetCommunicationStrategy() const
     {
@@ -106,10 +103,10 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
+    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
+
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
-
-    std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -224,7 +221,6 @@ protected:
 
     SolverLogManager solver_log_manager_;
 
-    Benders::Criterion::CriterionComputation criterion_computation_;
     int SetAggregation(int max_aggregation) const;
 
     std::map<int, double> GetSubCutTolerance() const;
@@ -254,7 +250,6 @@ private:
     int iterations_before_resume = 0;
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
-    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };
 
