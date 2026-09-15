@@ -12,6 +12,7 @@ add_library(benders_core)
 target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersBase.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersMasterManager.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BendersOutputManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersOuterLoopManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersMathLogger.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersProblemFromFile.cpp
@@ -43,6 +44,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMasterManager.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersOutputManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersOuterLoopManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersProblemFromFile.h

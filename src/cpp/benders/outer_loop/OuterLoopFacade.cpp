@@ -75,12 +75,12 @@ void OuterLoopFacade::UpdateOverallCosts()
 
 Logger OuterLoopFacade::GetLogger() const
 {
-    return benders_->_logger;
+    return benders_->GetOutputManager()->GetLogger();
 }
 
 std::shared_ptr<MathLoggerDriver> OuterLoopFacade::GetMathLoggerDriver() const
 {
-    return benders_->mathLoggerDriver_;
+    return benders_->GetOutputManager()->GetMathLoggerDriver();
 }
 
 // Master operations

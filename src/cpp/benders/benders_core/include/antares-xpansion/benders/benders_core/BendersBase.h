@@ -9,6 +9,7 @@
 #include "BendersMasterManager.h"
 #include "BendersMathLogger.h"
 #include "BendersOuterLoopManager.h"
+#include "BendersOutputManager.h"
 #include "BendersStructsDatas.h"
 #include "BendersSubProblemsManager.hxx"
 #include "ICommunicationStrategy.h"
@@ -69,9 +70,6 @@ public:
 
     bool isExceptionRaised() const;
     void UpdateOverallCosts();
-    Logger _logger;
-    std::shared_ptr<Output::OutputWriter> _writer;
-    std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
     std::once_flag variable_indice_once_flag;
 
     [[nodiscard]] std::shared_ptr<ICommunicationStrategy> GetCommunicationStrategy() const
@@ -89,6 +87,11 @@ public:
         return outer_loop_manager_;
     }
 
+    [[nodiscard]] std::shared_ptr<BendersOutputManager> GetOutputManager() const
+    {
+        return output_manager_;
+    }
+
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
@@ -104,6 +107,7 @@ protected:
     bool free_problems_ = true;
     BendersBaseOptions _options;
     std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
+    std::shared_ptr<BendersOutputManager> output_manager_;
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
@@ -113,18 +117,17 @@ protected:
     bool is_initial_relaxation_requested() const;
     bool SwitchToIntegerMaster(bool is_relaxed) const;
     virtual void HandleInitialMasterRelaxation();
-    virtual void UpdateTrace();
+    void UpdateTrace();
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
-    virtual void post_run_actions() const;
+    virtual void post_run_actions();
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;
-    [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
 
     void reset_master(const VariableMap& variable_map,
                       const std::string& solver_name,
@@ -140,16 +143,6 @@ protected:
 
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     void MatchProblemToId();
-    [[nodiscard]] std::string get_master_name() const;
-    [[nodiscard]] std::string get_solver_name() const;
-    [[nodiscard]] int get_log_level() const;
-    [[nodiscard]] bool is_trace() const;
-    [[nodiscard]] Point get_x_cut() const;
-    void set_x_cut(const Point& x0);
-    [[nodiscard]] Point get_x_out() const;
-    void set_x_out(const Point& x0);
-    [[nodiscard]] double GetSubproblemCost() const;
-    void SetSubproblemCost(const double& subproblem_cost);
     bool IsResumeMode() const;
 
     std::filesystem::path LastIterationFile() const
@@ -158,20 +151,8 @@ protected:
     }
 
     void UpdateMaxNumberIterationResumeMode(int nb_iteration_done);
-    void SaveCurrentIterationInOutputFile() const;
-    void SaveSolutionInOutputFile() const;
-    void PrintCurrentIterationCsv();
-    void OpenCsvFile();
-    void CloseCsvFile();
     void ChecksResumeMode();
-    virtual void SaveCurrentBendersData();
     void ClearCurrentIterationCutTrace();
-    virtual void EndWritingInOutputFile() const;
-
-    [[nodiscard]] int GetNumIterationsBeforeRestart() const
-    {
-        return iterations_before_resume;
-    }
 
     double GetBendersTime() const;
     virtual void write_basis() const;
@@ -211,11 +192,6 @@ protected:
     virtual void UpdateStoppingCriterion();
     virtual bool ShouldRelaxationStop() const;
 
-    int GetNumOfSubProblemsSolvedBeforeResume()
-    {
-        return cumulative_number_of_subproblem_resolved_before_resume;
-    }
-
     void ResetSimplexIterationsBounds();
 
     SolverLogManager solver_log_manager_;
@@ -225,29 +201,11 @@ protected:
     std::map<int, double> GetSubCutTolerance() const;
 
 private:
-    void print_master_and_cut(std::ostream& file,
-                              int ite,
-                              WorkerMasterData& trace,
-                              const Point& xopt);
-    void print_master_csv(std::ostream& stream,
-                          const WorkerMasterData& trace,
-                          const Point& xopt) const;
-    [[nodiscard]] LogData build_log_data_from_data() const;
-    [[nodiscard]] Output::SolutionData solution() const;
-    [[nodiscard]] Output::SolutionData BendersSolution() const;
-    [[nodiscard]] std::string status_from_criterion() const;
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
 
-    Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
-    LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
     int _totalNbProblems = 0;
-    std::ofstream _csv_file;
-    std::filesystem::path _csv_file_path;
-    LogData best_iteration_data;
-    int iterations_before_resume = 0;
-    int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
 };

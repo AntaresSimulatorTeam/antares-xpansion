@@ -22,31 +22,25 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                 std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world),
     cuts_manager_(std::make_shared<BendersCutsManagerMpi>(world,
-                  rank_0,
-                  _data,
-                  _problem_to_id,
-                  relevantIterationData_,
-                  _master,
-                  subproblem_per_cut_indices_)),
-    subproblems_manager_(std::make_shared<BendersSubProblemsManagerMpi>(_data,
-                         _options,
-                         benders_plugin_,
-                         _logger,
-                         solver_log_manager_,
-                         _writer,
-                         shouldParallelize()))
+                                                          rank_0,
+                                                          _data,
+                                                          _problem_to_id,
+                                                          relevantIterationData_,
+                                                          _master,
+                                                          subproblem_per_cut_indices_)),
+    subproblems_manager_(
+      std::make_shared<BendersSubProblemsManagerMpi>(_data,
+                                                     _options,
+                                                     benders_plugin_,
+                                                     output_manager_->GetLogger(),
+                                                     solver_log_manager_,
+                                                     output_manager_->GetWriter(),
+                                                     shouldParallelize()))
 {
     subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
       { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
 }
-
-/*!
- *  \brief Method to load each problem in a thread
- *
- *  The initialization of each problem is done sequentially
- *
- */
 
 void BendersMpi::InitializeProblems()
 {
@@ -74,13 +68,11 @@ void BendersMpi::InitializeProblems()
     else
     {
         int current_problem_id = 0;
-        // Dispatch subproblems to process
         for (const auto& problem: coupling_map_)
         {
-            // In case there are more subproblems than process
             if (auto process_to_feed = current_problem_id % _world.size();
                 process_to_feed == _world.rank())
-            { // Assign  [problemNumber % processCount] to processID
+            {
                 subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
                 subproblems_manager_->AddSubproblem(problem);
                 subproblems_manager_->AddSubproblemName(problem.first);
@@ -169,12 +161,12 @@ void BendersMpi::InitializeMaster()
         std::shared_ptr<IBendersProblemProvider>
           benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
         reset_master(master_variable_map_,
-                     get_solver_name(),
-                     get_log_level(),
+                     _options.SOLVER_NAME,
+                     _options.LOG_LEVEL,
                      _data.control.nsubproblem,
                      solver_log_manager_,
                      IsResumeMode(),
-                     _logger,
+                     output_manager_->GetLogger(),
                      Options().PROBLEMS_FORMAT,
                      benders_problem_provider.get(),
                      Options().MASTER_SOLUTION_TOLERANCE,
@@ -191,13 +183,6 @@ void BendersMpi::BuildMasterProblem()
     }
 }
 
-/*!
- *  \brief Solve, get and send solution of the Master Problem to every thread
- *
- *  \param _env : environment variable for mpi communication
- *
- *  \param _world : communicator variable for mpi communication
- */
 void BendersMpi::step_1_solve_master()
 {
     int success = 1;
@@ -223,7 +208,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts()
     {
         if (SwitchToIntegerMaster(_data.control.is_in_initial_relaxation))
         {
-            _logger->LogAtSwitchToInteger();
+            output_manager_->GetLogger()->LogAtSwitchToInteger();
             ActivateIntegrityConstraints();
             ResetDataPostRelaxation();
         }
@@ -233,33 +218,30 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts()
 
 void BendersMpi::solve_master_and_create_trace()
 {
-    _logger->log_at_initialization(_data.control.it + GetNumIterationsBeforeRestart());
-    _logger->display_message("\tSolving master...");
+    auto logger = output_manager_->GetLogger();
+
+    logger->log_at_initialization(_data.control.it
+                                  + output_manager_->GetNumIterationsBeforeRestart());
+    logger->display_message("\tSolving master...");
     get_master_value();
 
-    _logger->log_master_solving_duration(_data.master.timer_master);
+    logger->log_master_solving_duration(_data.master.timer_master);
 
     cuts_manager_->ComputeXCut(_data,
-                              Options().SEPARATION_PARAM,
-                              Options().MASTER_SOLUTION_TOLERANCE);
-    _logger->log_iteration_candidates(bendersDataToLogData(_data));
+                               Options().SEPARATION_PARAM,
+                               Options().MASTER_SOLUTION_TOLERANCE);
+    logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
 }
 
-/*!
- *  \brief Get cut information from each Subproblem and add it to the Master
- * problem
- *
- * Get cut information of every Subproblem in each thread and send it to
- * thread 0 to build new Master's cuts
- *
- */
 void BendersMpi::step_2_solve_subproblems_and_build_cuts()
 {
+    auto logger = output_manager_->GetLogger();
+
     int success = 1;
     SubProblemDataMap subproblem_data_map;
     Timer walltime;
     Timer subproblems_timer_per_proc;
-    _logger->display_message("\tSolving subproblems...");
+    logger->display_message("\tSolving subproblems...");
     try
     {
         subproblem_data_map = get_subproblem_cut_package();
@@ -274,8 +256,8 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
 
     cuts_manager_->GatherAndBuildCuts(subproblem_data_map, walltime, exception_raised_);
 
-    _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.cuts.subproblems_cumulative_cputime);
-    _logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
+    logger->LogSubproblemsSolvingCumulativeCpuTime(_data.cuts.subproblems_cumulative_cputime);
+    logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
 
     if (!exception_raised_ && !outer_loop_manager_->GetCriterionComputation().IsEmpty())
     {
@@ -290,9 +272,9 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     if (Rank() == rank_0)
     {
         _data.control.cumulative_number_of_subproblem_solved += _data.control.nsubproblem;
-        _logger->cumulative_number_of_sub_problem_solved(
+        logger->cumulative_number_of_sub_problem_solved(
           _data.control.cumulative_number_of_subproblem_solved
-          + GetNumOfSubProblemsSolvedBeforeResume());
+          + output_manager_->GetNumOfSubProblemsSolvedBeforeResume());
     }
 }
 
@@ -330,17 +312,9 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
       subproblems_manager_->MakeFastBeginHook(),
       subproblems_manager_->MakeCacheBeginHook(),
       subproblems_manager_->MakePostSolveHook(outer_loop_manager_->GetCriterionComputation(),
-                                             _data));
+                                              _data));
     return subproblem_data_map;
 }
-
-/*!
- *  \brief Gather, store and sort all process results in a set
- *
- *  \param _env : environment variable for mpi communication
- *
- *  \param _world : communicator variable for mpi communication
- */
 
 void BendersMpi::check_if_some_proc_had_a_failure(int success)
 {
@@ -355,7 +329,7 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success)
 void BendersMpi::write_exception_message(const std::exception& ex) const
 {
     std::string error = "Exception raised : " + std::string(ex.what());
-    _logger->display_message(error);
+    output_manager_->GetLogger()->display_message(error);
 }
 
 void BendersMpi::step_4_update_best_solution(int rank)
@@ -364,7 +338,8 @@ void BendersMpi::step_4_update_best_solution(int rank)
     {
         compute_ub();
         update_best_ub();
-        _logger->log_at_iteration_end(bendersDataToLogData(_data));
+        output_manager_->GetLogger()->log_at_iteration_end(
+          output_manager_->bendersDataToLogData(_data));
 
         UpdateTrace();
         _data.control.iteration_time = -_data.control.benders_time;
@@ -374,9 +349,6 @@ void BendersMpi::step_4_update_best_solution(int rank)
     }
 }
 
-/*!
- *  \brief Method to free the memory used by each problem
- */
 void BendersMpi::free()
 {
     if (_world.rank() == rank_0)
@@ -390,12 +362,6 @@ void BendersMpi::free()
     _world.barrier();
 }
 
-/*!
- *  \brief Run Benders algorithm in parallel
- *
- *  Method to run Benders algorithm in parallel
- *
- */
 void BendersMpi::Run()
 {
     if (init_data_)
@@ -404,7 +370,6 @@ void BendersMpi::Run()
     }
     else
     {
-        // only ?
         _data.control.stop = false;
     }
     _data.control.number_of_subproblem_solved = _data.control.nsubproblem;
@@ -416,17 +381,12 @@ void BendersMpi::Run()
         ++_data.control.it;
         ResetSimplexIterationsBounds();
 
-        /*Solve Master problem, get optimal value and cost and send it to
-         * process*/
-
         benders_plugin_->OnBendersMasterResolutionStart();
 
         step_1_solve_master();
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
 
-        /*Gather cut from each subproblem in master thread and add them to Master
-         * problem*/
         if (!exception_raised_)
         {
             step_2_solve_subproblems_and_build_cuts();
@@ -443,16 +403,17 @@ void BendersMpi::Run()
 
         if (Rank() == rank_0)
         {
-            mathLoggerDriver_->Print(_data);
-            SaveCurrentBendersData();
+            output_manager_->MathLoggerPrint();
+            output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
         }
 
         benders_plugin_->OnBendersIterationEnd();
     }
     if (_world.rank() == rank_0)
     {
-        CloseCsvFile();
-        EndWritingInOutputFile();
+        output_manager_->CloseCsvFile();
+        output_manager_->EndWritingInOutputFile(_data.control.benders_time,
+                                                _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
         write_basis();
     }
     _world.barrier();
@@ -472,12 +433,12 @@ void BendersMpi::PreRunInitialization()
     if (_world.rank() == rank_0)
     {
         ChecksResumeMode();
-        if (is_trace())
+        if (_options.TRACE)
         {
-            OpenCsvFile();
+            output_manager_->OpenCsvFile();
         }
     }
-    mathLoggerDriver_->write_header();
+    output_manager_->MathLoggerWriteHeader();
     init_data_ = false;
 }
 
@@ -491,7 +452,7 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(subproblems_manager_->GetSubProblemMap(),
-                                    _logger,
+                                    output_manager_->GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     subproblems_manager_->GetFactorySolver());

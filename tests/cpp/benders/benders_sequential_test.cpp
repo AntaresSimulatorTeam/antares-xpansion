@@ -72,19 +72,7 @@ public:
     {
     }
 
-    void EndWritingInOutputFile() const override
-    {
-    }
-
-    void UpdateTrace() override
-    {
-    }
-
-    void post_run_actions() const override
-    {
-    }
-
-    void SaveCurrentBendersData() override
+    void post_run_actions() override
     {
     }
 
