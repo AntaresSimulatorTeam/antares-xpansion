@@ -157,7 +157,7 @@ TEST(Resume, ShouldNotResumeIfCriterionOk)
     options.ABSOLUTE_GAP = 100.f;
     options.RELATIVE_GAP = 200.f;
     options.TIME_LIMIT = 500.f;
-    options.RESUME = true;
+    options.RESUME = ResumeMode::RESUME;
 
     auto writer = std::make_shared<WriterMockStatus>();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
@@ -172,7 +172,7 @@ TEST(Resume, DontResumeIfOptionOff)
     options.ABSOLUTE_GAP = 100.f;
     options.RELATIVE_GAP = 200.f;
     options.TIME_LIMIT = 500.f;
-    options.RESUME = false;
+    options.RESUME = ResumeMode::COLD_START;
 
     auto writer = std::make_shared<WriterMockStatus>();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
@@ -187,7 +187,7 @@ TEST(Resume, ContinueIfCreterionNotMatch)
     options.ABSOLUTE_GAP = 100.f;
     options.RELATIVE_GAP = 200.f;
     options.TIME_LIMIT = 500.f;
-    options.RESUME = true;
+    options.RESUME = ResumeMode::RESUME;
 
     auto writer = std::make_shared<WriterMockStatus>();
     writer->status = "NotOptimal";

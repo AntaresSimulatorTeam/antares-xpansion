@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 
     std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
                                                                        options.JSON_FILE),
-                                                                     false);
+                                                                     ResumeMode::COLD_START);
     try
     {
         logger->display_message("Given tree path is : " + std::string(argv[2]),

@@ -104,6 +104,13 @@ void BendersApp::InitializeBendersEnvironment(bool outer_loop)
             throw std::runtime_error(
               "Could not initialize benders. Please see above messages for actual error.");
         }
+        if (logger_)
+        {
+            logger_->display_message(
+              "Benders optimization was NOT executed: the previous run status is already "
+              "OPTIMAL in resume mode. If input data has changed since the last run, "
+              "delete the output JSON file or use a non-resume mode to force re-optimization.");
+        }
         return;
     }
     auto&& environment = env.value();

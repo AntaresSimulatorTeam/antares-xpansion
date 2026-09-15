@@ -40,7 +40,7 @@ void BendersSequential::InitializeProblems()
                                get_log_level(),
                                _data.nsubproblem,
                                solver_log_manager_,
-                               IsResumeMode(),
+                               _options.RESUME != ResumeMode::COLD_START,
                                _logger,
                                Options().PROBLEMS_FORMAT,
                                benders_problem_provider.get(),
