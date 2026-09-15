@@ -2,7 +2,7 @@ add_executable(benders_sequential_test)
 target_sources(benders_sequential_test
         PRIVATE
         benders_sequential_test.cpp
-        BendersBaseTest.cpp
+        BendersCutsManagerTest.cpp
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp

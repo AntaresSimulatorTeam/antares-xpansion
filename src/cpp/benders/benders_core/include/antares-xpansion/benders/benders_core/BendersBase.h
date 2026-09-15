@@ -53,14 +53,7 @@ public:
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
     double execution_time() const;
     virtual std::string BendersName() const = 0;
-    // TODO rename to be consistent with data that it hold
-    // ref of value?
-    WorkerMasterDataVect AllCuts() const;
-    // BendersCuts CutsBestIteration() const;
-    // void Clean();
-    LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
-    int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     void MasterGetRhs(double& rhs, int id_row) const;
     void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map);
@@ -87,8 +80,6 @@ public:
                        const std::vector<double>& dmatval_p,
                        const std::vector<std::string>& row_names = {}) const;
     void MasterGetRowType(std::vector<char>& qrtype, int first, int last) const;
-    void ResetMasterFromLastIteration();
-    std::filesystem::path LastMasterPath() const;
     bool MasterIsEmpty() const;
 
     void DoFreeProblems(bool free_problems)
@@ -157,11 +148,8 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterDataVect workerMasterDataVect_;
     WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
-    // BendersCuts best_iteration_cuts_;
-    // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     VariableMap _problem_to_id;
@@ -172,8 +160,9 @@ protected:
     bool free_problems_ = true;
     BendersBaseOptions _options;
 
+    void check_status(const SubProblemDataMap& subproblem_data_map) const;
+
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
-    bool is_bilevel_check_all_ = false;
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -182,8 +171,6 @@ protected:
     bool SwitchToIntegerMaster(bool is_relaxed) const;
     virtual void HandleInitialMasterRelaxation();
     virtual void UpdateTrace();
-    virtual void ComputeXCut();
-    void roundXCut();
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
@@ -197,16 +184,13 @@ protected:
                                    const std::shared_ptr<SubproblemWorker>& worker);
     void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
-    void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
-    void set_rank(int rank);
     [[nodiscard]] std::filesystem::path GetSubproblemPath(const std::string& subproblem_name) const;
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;
-    [[nodiscard]] std::filesystem::path get_structure_path() const;
     [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
 
     template<typename T, typename... Args>
@@ -258,7 +242,6 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
     SubproblemsMapPtr GetSubProblemMap() const
     {
         return subproblem_map;
@@ -307,7 +290,6 @@ protected:
         return cumulative_number_of_subproblem_resolved_before_resume;
     }
 
-    void BoundSimplexIterations(int subproblem_iteration);
     void ResetSimplexIterationsBounds();
 
     SubproblemsMapPtr subproblem_map;
@@ -334,9 +316,6 @@ protected:
     // to p)
     void SetSubproblemsVariablesIndices();
 
-    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
-                                   const std::vector<SubProblemDataMap>& gathered_subproblem_map);
-
     int SetAggregation(int max_aggregation) const;
 
     std::map<int, double> GetSubCutTolerance() const;
@@ -349,13 +328,10 @@ private:
     void print_master_csv(std::ostream& stream,
                           const WorkerMasterData& trace,
                           const Point& xopt) const;
-    void check_status(const SubProblemDataMap& subproblem_data_map) const;
     [[nodiscard]] LogData build_log_data_from_data() const;
     [[nodiscard]] Output::SolutionData solution() const;
     [[nodiscard]] Output::SolutionData BendersSolution() const;
     [[nodiscard]] std::string status_from_criterion() const;
-    void compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map);
-    void compute_cut(const SubProblemDataMap& subproblem_data_map);
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const;
@@ -375,8 +351,6 @@ private:
     Output::SolutionData outer_loop_solution_data_;
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
-
-    int rank_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

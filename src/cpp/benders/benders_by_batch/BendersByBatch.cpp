@@ -6,6 +6,16 @@
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 
+BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
+                               std::shared_ptr<ILogger> logger,
+                               std::shared_ptr<Output::OutputWriter> writer,
+                               mpi::communicator& world,
+                               std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
+    batch_cuts_manager_(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master)
+{
+}
+
 void BendersByBatch::InitializeProblems()
 {
     MatchProblemToId();
@@ -224,7 +234,7 @@ void BendersByBatch::SeparationLoop()
         {
             ComputeXCut();
         }
-        BroadcastXCut();
+        batch_cuts_manager_.BroadcastXCut();
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
@@ -247,31 +257,17 @@ void BendersByBatch::SeparationLoop()
 
 void BendersByBatch::ComputeXCut()
 {
-    if (_data.it == 1)
-    {
-        _data.x_in = _data.x_out;
-        _data.x_cut = _data.x_out;
-        _data.master_only_vars_in = _data.master_only_vars_out;
-        _data.master_only_vars_cut = _data.master_only_vars_out;
-    }
-    else
+    // In batch mode, x_in must be updated before the separation formula:
+    // - it==1: handled by the base ComputeXCut (sets x_in = x_out)
+    // - it>1: previous x_cut becomes the new x_in for the next separation
+    if (_data.it != 1)
     {
         _data.x_in = _data.x_cut;
         _data.master_only_vars_in = _data.master_only_vars_cut;
-        for (const auto& [name, value]: _data.x_out)
-        {
-            _data.x_cut[name] = Options().SEPARATION_PARAM * _data.x_out[name]
-                                + (1 - Options().SEPARATION_PARAM) * _data.x_in[name];
-        }
-        for (int i(0); i < _data.master_only_vars_out.size(); ++i)
-        {
-            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM
-                                              * _data.master_only_vars_out[i]
-                                            + (1 - Options().SEPARATION_PARAM)
-                                                * _data.master_only_vars_in[i];
-        }
     }
-    roundXCut();
+    batch_cuts_manager_.ComputeXCut(_data,
+                                    Options().SEPARATION_PARAM,
+                                    Options().MASTER_SOLUTION_TOLERANCE);
 }
 
 void BendersByBatch::UpdateRemainingEpsilon()
@@ -369,53 +365,16 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     local_solved = subproblem_data_map.size();
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
-    std::vector<SubProblemDataMap> gathered_subproblem_map;
+
     bool global_misprice = misprice_;
     AllReduce(misprice_, global_misprice, std::logical_and<bool>());
     misprice_ = global_misprice;
-    Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
-    _data.subproblems_walltime = subproblems_timer_per_proc.elapsed();
 
-    // if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-    //   external_loop_criterion_current_batch =
-    //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
-    // }
-    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
-    if (_world.rank() == rank_0)
-    {
-        auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
-
-        *batch_contribution_in_gap = ComputeBatchContributionInGap(
-          gathered_subproblem_map,
-          batch_cuts_list[current_batch_id_].name_to_cut);
-        build_all_aggregated_cuts(batch_cuts_list[current_batch_id_].name_to_cut,
-                                  gathered_subproblem_map);
-    }
-}
-
-double BendersByBatch::ComputeBatchContributionInGap(
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-  const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const
-{
-    double batch_contribution_in_gap = 0.0;
-    for (const auto& names_and_positions_in_gathered: subproblems_per_cut)
-    {
-        // Performs max(0, sum_{s sub_pb in cut}(phi_s(x) - theta_s))
-        // where phi_s(x) - theta_s has already been computed within each proc and is equal to
-        // contribution_in_gap
-        double sum = std::accumulate(
-          names_and_positions_in_gathered.begin(),
-          names_and_positions_in_gathered.end(),
-          0.0,
-          [&](double acc, const auto& name_and_position)
-          {
-              const auto& subproblem_name = name_and_position.first;
-              size_t pos = name_and_position.second;
-              return acc + gathered_subproblem_map[pos].at(subproblem_name).contribution_in_gap;
-          });
-        batch_contribution_in_gap += std::max(0.0, sum);
-    }
-    return batch_contribution_in_gap;
+    auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
+    batch_cuts_manager_.GatherAndBuildCuts(subproblem_data_map,
+                                           subproblems_timer_per_proc,
+                                           batch_cuts_list[current_batch_id_].name_to_cut,
+                                           *batch_contribution_in_gap);
 }
 
 void BendersByBatch::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
