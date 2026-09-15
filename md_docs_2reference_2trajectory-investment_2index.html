@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2reference_2trajectory-investment_2index.html'
   <div class="headertitle"><div class="title">Trajectory investment problem</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md271"></a></p>
-<h1><a class="anchor" id="autotoc_md272"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md256"></a></p>
+<h1><a class="anchor" id="autotoc_md257"></a>
 General description</h1>
 <p>Recall the annual investment problem in Xpansion :</p>
 <p>$$ \min_{x \in \mathcal{X}} \quad \sum_i C_i \, x_i + \text{ANTARES}(x) $$</p>
@@ -151,7 +151,7 @@ General description</h1>
 <li>$C_i$ is the fixed cost annuity of candidate $i$, given by its <code>annual-cost-per-mw</code> entry in the study's <a class="el" href="md_docs_2reference_2inputs_2candidates.html"><code>candidates.ini</code></a> file</li>
 <li>$\text{ANTARES}(x)$ is the operating cost of the system for a given investment level.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md273"></a>
+<h1><a class="anchor" id="autotoc_md258"></a>
  Switching to a pluriannual vision</h1>
 <p>We want to switch to a pluriannual vision and optimise the investments over several possible trajectories described on a diverging tree of scenarios</p>
 <p><img src="../../assets/media/trajectory/trajectory.png" alt="Trajectory tree" class="inline"/></p>
@@ -174,7 +174,7 @@ General description</h1>
 We can impose the decisions to be the same in all children of a given node (see [trajectory constraints](./merge-master.md#trajectory-constraints)) if we want the investment decision of a given period to be independent of what scenario will materialize in the next period when the new capacities enter into service.
 
 In the example from **Figure 1**, this would mean that the capacity we install in the period [2040, 2050] is independent of wether ```2050_A``` or ```2050_B``` will be realised.
-</pre><h1><a class="anchor" id="autotoc_md274"></a>
+</pre><h1><a class="anchor" id="autotoc_md259"></a>
 Link with the user input file</h1>
 <p>Every parameter of the problem comes from the <a class="el" href="md_docs_2reference_2trajectory-investment_2user-input.html">user input file</a>, except the bounds $X_{i,n}^{max}$ :</p>
 <table class="markdownTable">
@@ -202,7 +202,7 @@ Link with the user input file</h1>
 <td class="markdownTableBodyNone">$X_{i,n}^{max}$   </td><td class="markdownTableBodyNone">the <code>candidates.ini</code> of the node's annual study, not the trajectory input file   </td></tr>
 </table>
 <p>The <code>constraints</code> section adds constraints on the $dx^{+/-}_{i,n}$ variables, <code>global: formulation</code> sets whether the investment variables are integer or relaxed, and <code>global: scaling</code> divides every coefficient of the objective without changing the optimal solution.</p>
-<h1><a class="anchor" id="autotoc_md275"></a>
+<h1><a class="anchor" id="autotoc_md260"></a>
 Link between the annual and the pluriannual problems</h1>
 <p>The annual problem is the pluriannual problem with a single node $n$ of duration $d_n$ : being the root, $P(n) = 1$ and $y_n = y_0$, and with no initial capacity nor retirement, $dx^+_{i,n} = x_{i,n}$ and $dx^-_{i,n} = 0$. The objective is then :</p>
 <p>$$ \sum_i \left( IC_i + w_n \, OC_i \right) x_{i,n} + w_n \times ANTARES_n(x_n), $$</p>
