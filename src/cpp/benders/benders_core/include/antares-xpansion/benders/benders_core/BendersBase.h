@@ -106,8 +106,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
     std::shared_ptr<BendersOutputManager> output_manager_;
+    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
