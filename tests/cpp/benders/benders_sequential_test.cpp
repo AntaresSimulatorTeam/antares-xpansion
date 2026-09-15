@@ -5,6 +5,7 @@
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
+#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
@@ -31,6 +32,7 @@ public:
                                      std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
         BendersSequential(options, logger, writer, mathLoggerDriver)
     {
+        SetPlugin(std::make_shared<NoOperationPlugin>());
     }
 
     void init_data() override
@@ -92,7 +94,7 @@ public:
 
     SubproblemsMapPtr problems() const
     {
-        return GetSubProblemMap();
+        return subproblems_manager_.GetSubProblemMap();
     }
 
     void DeactivateIntegrityConstraints() const override
