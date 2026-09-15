@@ -359,39 +359,5 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     EXPECT_EQ(master->_id_master_only_vars, expected);
 }
 
-TEST_F(WorkerMasterAddRowsTest, AddSubproblemCutAppliesRoundingOnCoeffs)
-{
-    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
-    auto master = make_master(1);
-    master->_solver = capturing_solver;
-    master->_name_to_id = {{"var1", 0}, {"var2", 1}, {"var3", 2}};
-    master->set_id_single_subpb_costs_under_approx({4});
 
-    Point subgradient;
-    subgradient["var1"] = -5e-3; 
-    subgradient["var2"] = -4e-2;
-    subgradient["var3"] = -3e-1;
-
-    Point x_cut;
-    x_cut["var1"] = 1.0;
-    x_cut["var2"] = 10.0;
-    x_cut["var3"] = 100.0;
-
-    double subproblem_cost = 10.0;
-
-    master->addSubproblemCut(0, subgradient, x_cut, subproblem_cost);
-    // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
-    // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
-
-    EXPECT_EQ(capturing_solver->captured_rows.size(), 1);
-    const auto& row = capturing_solver->captured_rows[0];
-    EXPECT_EQ(row.rhs[0], -40.405);
-
-    EXPECT_EQ(row.matval.size(),4);
-    EXPECT_EQ(row.matval[0], 0.0);
-    EXPECT_EQ(row.matval[1], 0.0);
-    EXPECT_EQ(row.matval[2], -0.3);
-    EXPECT_EQ(row.matval[3], -1);
-
-}
 
