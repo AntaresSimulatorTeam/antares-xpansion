@@ -60,10 +60,10 @@ private:
     void check_if_some_proc_had_a_failure(int success);
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
-    BendersCutsManagerMpi cuts_manager_;
+    std::shared_ptr<BendersCutsManagerMpi> cuts_manager_;
 
 protected:
-    BendersSubProblemsManagerMpi subproblems_manager_;
+    std::shared_ptr<BendersSubProblemsManagerMpi> subproblems_manager_;
 
 protected:
     void InitializeMaster();

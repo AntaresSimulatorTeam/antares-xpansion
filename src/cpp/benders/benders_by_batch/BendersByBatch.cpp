@@ -12,16 +12,16 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master),
-    batch_subproblems_manager_(_data,
+    batch_cuts_manager_(std::make_shared<BendersCutsManagerByBatch>(world, rank_0, _data, _problem_to_id, relevantIterationData_, _master)),
+    batch_subproblems_manager_(std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                _options,
                                benders_plugin_,
                                _logger,
                                solver_log_manager_,
                                _writer,
-                               shouldParallelize())
+                               shouldParallelize()))
 {
-    batch_subproblems_manager_.SetOnVariablesIndicesSet(
+    batch_subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
       { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
 }
@@ -34,7 +34,7 @@ void BendersByBatch::free()
     }
     else
     {
-        batch_subproblems_manager_.free_subproblems();
+        batch_subproblems_manager_->free_subproblems();
     }
     _world.barrier();
 }
@@ -51,11 +51,11 @@ void BendersByBatch::launch()
 
     _world.barrier();
 
-    benders_plugin_->OnBendersStart(batch_subproblems_manager_.GetSubProblemMap(),
+    benders_plugin_->OnBendersStart(batch_subproblems_manager_->GetSubProblemMap(),
                                     _logger,
                                     _options,
                                     solver_log_manager_,
-                                    batch_subproblems_manager_.GetFactorySolver());
+                                    batch_subproblems_manager_->GetFactorySolver());
 
     Run();
 
@@ -77,7 +77,7 @@ void BendersByBatch::BroadCastVariablesIndices()
 {
     if (_world.rank() == rank_0)
     {
-        batch_subproblems_manager_.SetSubproblemsVariablesIndices();
+        batch_subproblems_manager_->SetSubproblemsVariablesIndices();
     }
     BroadCast(outer_loop_manager_->GetCriterionComputation().getVarIndices(), rank_0);
 }
@@ -88,7 +88,7 @@ void BendersByBatch::InitializeProblems()
     BuildBatches();
     BuildMasterProblem();
     BroadCastVariablesIndices();
-    batch_subproblems_manager_.BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
+    batch_subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
     init_problems_ = false;
 }
 
@@ -143,7 +143,7 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
-                    batch_subproblems_manager_.AddSubproblemName(*it);
+                    batch_subproblems_manager_->AddSubproblemName(*it);
                     ++it;
                 }
                 ++problem_count;
@@ -163,8 +163,8 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
-                    batch_subproblems_manager_.AddSubproblem({*it, coupling_map_[*it]});
-                    batch_subproblems_manager_.AddSubproblemName(*it);
+                    batch_subproblems_manager_->AddSubproblem({*it, coupling_map_[*it]});
+                    batch_subproblems_manager_->AddSubproblemName(*it);
                     ++it;
                 }
                 ++problem_count;
@@ -174,7 +174,7 @@ void BendersByBatch::BuildBatches()
         }
         }
     }
-    batch_subproblems_manager_.SetCouplingMap(coupling_map_);
+    batch_subproblems_manager_->SetCouplingMap(coupling_map_);
 
     BroadCastVariablesIndices();
     init_problems_ = false;
@@ -307,7 +307,7 @@ void BendersByBatch::SeparationLoop()
         {
             ComputeXCut();
         }
-        batch_cuts_manager_.BroadcastXCut();
+        batch_cuts_manager_->BroadcastXCut();
 
         benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
@@ -337,7 +337,7 @@ void BendersByBatch::ComputeXCut()
         _data.solution.x_in = _data.solution.x_cut;
         _data.solution.master_only_vars_in = _data.solution.master_only_vars_cut;
     }
-    batch_cuts_manager_.ComputeXCut(_data,
+    batch_cuts_manager_->ComputeXCut(_data,
                                     Options().SEPARATION_PARAM,
                                     Options().MASTER_SOLUTION_TOLERANCE);
 }
@@ -431,11 +431,11 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
 {
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
-    batch_subproblems_manager_.GetSubproblemCut(
+    batch_subproblems_manager_->GetSubproblemCut(
       subproblem_data_map,
-      batch_subproblems_manager_.MakeFastBeginHook(batch_sub_problems),
-      batch_subproblems_manager_.MakeCacheBeginHook(batch_sub_problems),
-      batch_subproblems_manager_.MakePostSolveHook(
+      batch_subproblems_manager_->MakeFastBeginHook(batch_sub_problems),
+      batch_subproblems_manager_->MakeCacheBeginHook(batch_sub_problems),
+      batch_subproblems_manager_->MakePostSolveHook(
         [this](const std::string& name, PlainData::SubProblemData& data)
         { calculate_subproblem_contribution(name, data); }));
     local_solved = subproblem_data_map.size();
@@ -447,7 +447,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     misprice_ = global_misprice;
 
     auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
-    batch_cuts_manager_.GatherAndBuildCuts(subproblem_data_map,
+    batch_cuts_manager_->GatherAndBuildCuts(subproblem_data_map,
                                            subproblems_timer_per_proc,
                                            batch_cuts_list[current_batch_id_].name_to_cut,
                                            *batch_contribution_in_gap);

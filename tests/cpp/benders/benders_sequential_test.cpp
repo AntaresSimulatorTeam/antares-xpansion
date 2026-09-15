@@ -94,7 +94,7 @@ public:
 
     SubproblemsMapPtr problems() const
     {
-        return subproblems_manager_.GetSubProblemMap();
+        return subproblems_manager_->GetSubProblemMap();
     }
 
     void DeactivateIntegrityConstraints() const override
