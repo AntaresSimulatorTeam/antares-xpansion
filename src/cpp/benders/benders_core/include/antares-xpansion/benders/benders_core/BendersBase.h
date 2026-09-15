@@ -52,12 +52,12 @@ public:
 
     int GetBendersRunNumber() const
     {
-        return _data.criteria_current_iteration_data.benders_num_run;
+        return _data.criteria.benders_num_run;
     }
 
     void IncrementBendersRunNumber()
     {
-        ++_data.criteria_current_iteration_data.benders_num_run;
+        ++_data.criteria.benders_num_run;
     }
 
     CurrentIterationData GetCurrentIterationData() const;
@@ -104,7 +104,6 @@ protected:
     bool free_problems_ = true;
     BendersBaseOptions _options;
     std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
-
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
@@ -196,12 +195,12 @@ protected:
 
     DblVector GetAlpha_i() const
     {
-        return _data.single_subpb_costs_under_approx;
+        return _data.master.single_subpb_costs_under_approx;
     }
 
     void SetAlpha_i(const DblVector& single_subpb_costs_under_approx)
     {
-        _data.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
+        _data.master.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
     }
 
     int ProblemToId(const std::string& problem_name) const

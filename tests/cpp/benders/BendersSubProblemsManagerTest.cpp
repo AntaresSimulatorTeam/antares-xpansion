@@ -118,8 +118,8 @@ protected:
     void SetUp() override
     {
         // 1. CurrentIterationData — default-constructed, set x_cut
-        data_.x_cut = {{"var1", 1.0}, {"var2", 2.0}};
-        data_.it = 1;
+        data_.solution.x_cut = {{"var1", 1.0}, {"var2", 2.0}};
+        data_.control.it = 1;
 
         // 2. BendersBaseOptions
         options_ = std::make_unique<BendersBaseOptions>(MakeDefaultOptions());
@@ -499,7 +499,7 @@ TEST_F(BendersSubProblemsManagerTest, GetSubproblemCutCache_SolvesAllSubproblems
     options_->SOLVER_NAME = "COIN";
     options_->SLAVE_WEIGHT = "CONSTANT";
     options_->SLAVE_WEIGHT_VALUE = 1.0;
-    data_.nsubproblem = 2;
+    data_.control.nsubproblem = 2;
 
     auto manager = MakeManager();
 
@@ -576,7 +576,7 @@ TEST_F(BendersSubProblemsManagerTest, GetCompactInMemCuts_SolvesViaFactory)
     options_->SOLVER_NAME = "COIN";
     options_->SLAVE_WEIGHT = "CONSTANT";
     options_->SLAVE_WEIGHT_VALUE = 1.0;
-    data_.nsubproblem = 1;
+    data_.control.nsubproblem = 1;
 
     auto manager = MakeManager();
     manager.AddSubproblemName("sub1.mps");

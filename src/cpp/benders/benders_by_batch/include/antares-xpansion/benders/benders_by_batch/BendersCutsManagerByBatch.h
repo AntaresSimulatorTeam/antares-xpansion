@@ -22,7 +22,7 @@ public:
 
     void BroadcastXCut()
     {
-        mpi::broadcast(world_, data_.x_cut, rank_0_);
+        mpi::broadcast(world_, data_.solution.x_cut, rank_0_);
     }
 
 private:

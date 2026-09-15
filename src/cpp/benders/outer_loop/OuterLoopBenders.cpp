@@ -124,9 +124,8 @@ void OuterLoopBenders::OuterLoopBilevelChecks()
         const WorkerMasterData& workerMasterData = facade_->BestIterationWorkerMaster();
         const auto& invest_cost = workerMasterData._invest_cost;
         const auto& overall_cost = invest_cost + workerMasterData._operational_cost;
-        const auto& x_cut = facade_->GetCurrentIterationData().x_cut;
-        const auto& external_loop_lambda = facade_->GetCurrentIterationData()
-                                             .criteria_current_iteration_data.lambda;
+        const auto& x_cut = facade_->GetCurrentIterationData().solution.x_cut;
+        const auto& external_loop_lambda = facade_->GetCurrentIterationData().criteria.lambda;
         if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
               x_cut,
               facade_->GetOuterLoopCriterionAtBestBenders() /*/!\ must

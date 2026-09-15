@@ -170,44 +170,44 @@ void BendersMasterManager::SolveMaster(CurrentIterationData& data,
 {
     Timer timer_master;
 
-    data.single_subpb_costs_under_approx.resize(data.nsubproblem);
-    data.master_only_vars_out.resize(master_->_id_master_only_vars.size());
+    data.master.single_subpb_costs_under_approx.resize(data.control.nsubproblem);
+    data.solution.master_only_vars_out.resize(master_->_id_master_only_vars.size());
     if (bound_alpha)
     {
-        master_->fix_alpha(data.best_ub);
+        master_->fix_alpha(data.control.best_ub);
     }
-    master_->solve(data.master_status, output_root, last_master_mps + MPS_SUFFIX, writer);
+    master_->solve(data.master.master_status, output_root, last_master_mps + MPS_SUFFIX, writer);
 
-    master_->get(data.x_out,
-                 data.overall_subpb_cost_under_approx,
-                 data.single_subpb_costs_under_approx,
-                 data.master_only_vars_out);
-    master_->get_value(data.lb);
+    master_->get(data.solution.x_out,
+                 data.master.overall_subpb_cost_under_approx,
+                 data.master.single_subpb_costs_under_approx,
+                 data.solution.master_only_vars_out);
+    master_->get_value(data.master.lb);
 
     for (const auto& [id, name]: master_->_id_to_name)
     {
-        master_->_solver->get_ub(&data.max_invest[name], id, id);
-        master_->_solver->get_lb(&data.min_invest[name], id, id);
+        master_->_solver->get_ub(&data.solution.max_invest[name], id, id);
+        master_->_solver->get_lb(&data.solution.min_invest[name], id, id);
     }
 
-    data.timer_master = timer_master.elapsed();
+    data.master.timer_master = timer_master.elapsed();
 }
 
 void BendersMasterManager::ComputeInvestCost(CurrentIterationData& data) const
 {
-    data.invest_cost = 0;
+    data.master.invest_cost = 0;
 
     std::vector<double> obj(GetObjectiveFunctionCoeffs());
 
-    for (const auto& [col_name, value]: data.x_cut)
+    for (const auto& [col_name, value]: data.solution.x_cut)
     {
         int col_id = master_->_name_to_id[col_name];
-        data.invest_cost += obj[col_id] * data.x_cut[col_name];
+        data.master.invest_cost += obj[col_id] * data.solution.x_cut[col_name];
     }
-    for (int i(0); i < data.master_only_vars_cut.size(); ++i)
+    for (int i(0); i < data.solution.master_only_vars_cut.size(); ++i)
     {
         int col_id = master_->_id_master_only_vars[i];
-        data.invest_cost += obj[col_id] * data.master_only_vars_cut[i];
+        data.master.invest_cost += obj[col_id] * data.solution.master_only_vars_cut[i];
     }
 }
 
@@ -215,18 +215,18 @@ void BendersMasterManager::UpdateOverallCosts(CurrentIterationData& data,
                                               double& best_invest_cost) const
 {
     auto obj = GetObjectiveFunctionCoeffs();
-    data.invest_cost = 0;
+    data.master.invest_cost = 0;
     for (const auto& [var_name, var_id]: variable_map_)
     {
-        data.invest_cost += obj[var_id] * data.x_cut.at(var_name);
+        data.master.invest_cost += obj[var_id] * data.solution.x_cut.at(var_name);
     }
-    for (int i(0); i < data.master_only_vars_cut.size(); ++i)
+    for (int i(0); i < data.solution.master_only_vars_cut.size(); ++i)
     {
         int col_id = master_->_id_master_only_vars[i];
-        data.invest_cost += obj[col_id] * data.master_only_vars_cut[i];
+        data.master.invest_cost += obj[col_id] * data.solution.master_only_vars_cut[i];
     }
 
-    best_invest_cost = data.invest_cost;
+    best_invest_cost = data.master.invest_cost;
 }
 
 void BendersMasterManager::AddAlphasFixingConstraints(

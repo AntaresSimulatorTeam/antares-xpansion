@@ -18,20 +18,20 @@ BendersOuterLoopManager::BendersOuterLoopManager(
 
 CriteriaCurrentIterationData BendersOuterLoopManager::GetOuterLoopData() const
 {
-    return data_.criteria_current_iteration_data;
+    return data_.criteria;
 }
 
 std::vector<double> BendersOuterLoopManager::GetOuterLoopCriterionAtBestBenders() const
 {
     return ((criteria_vector_for_each_iteration_.empty())
               ? std::vector<double>()
-              : criteria_vector_for_each_iteration_[data_.best_it - 1]);
+              : criteria_vector_for_each_iteration_[data_.control.best_it - 1]);
 }
 
 void BendersOuterLoopManager::UpdateOuterLoopSolution()
 {
     outer_loop_solution_data_ = benders_solution_fn_();
-    outer_loop_solution_data_.best_it = data_.criteria_current_iteration_data.benders_num_run;
+    outer_loop_solution_data_.best_it = data_.criteria.benders_num_run;
 }
 
 Output::SolutionData BendersOuterLoopManager::GetOuterLoopSolution() const
@@ -51,14 +51,14 @@ void BendersOuterLoopManager::SaveCurrentOuterLoopIterationInOutputFile() const
     if (LastWorkerMasterData._valid)
     {
         writer_->write_iteration(iteration_fn_(LastWorkerMasterData),
-                                 data_.criteria_current_iteration_data.benders_num_run);
+                                 data_.criteria.benders_num_run);
         writer_->dump();
     }
 }
 
 void BendersOuterLoopManager::SetBilevelBestub(double bilevel_best_ub)
 {
-    data_.criteria_current_iteration_data.outer_loop_bilevel_best_ub = bilevel_best_ub;
+    data_.criteria.outer_loop_bilevel_best_ub = bilevel_best_ub;
 }
 
 void BendersOuterLoopManager::SetCriterionComputationInputs(
@@ -90,18 +90,16 @@ void BendersOuterLoopManager::ClearCriteriaHistory()
 
 void BendersOuterLoopManager::UpdateMaxCriterionArea()
 {
-    auto criteria_begin = data_.criteria_current_iteration_data.criteria.cbegin();
-    auto criteria_end = data_.criteria_current_iteration_data.criteria.cend();
+    auto criteria_begin = data_.criteria.criteria.cbegin();
+    auto criteria_end = data_.criteria.criteria.cend();
     auto max_criterion_it = std::max_element(criteria_begin, criteria_end);
     if (max_criterion_it != criteria_end)
     {
-        data_.criteria_current_iteration_data.max_criterion = *max_criterion_it;
+        data_.criteria.max_criterion = *max_criterion_it;
         auto max_criterion_index = std::distance(criteria_begin, max_criterion_it);
-        data_.criteria_current_iteration_data.max_criterion_area = criterion_computation_
-                                                                     .getCriterionInputData()
-                                                                     .Criteria()
-                                                                       [max_criterion_index]
-                                                                     .Pattern()
-                                                                     .GetBody();
+        data_.criteria.max_criterion_area = criterion_computation_.getCriterionInputData()
+                                              .Criteria()[max_criterion_index]
+                                              .Pattern()
+                                              .GetBody();
     }
 }

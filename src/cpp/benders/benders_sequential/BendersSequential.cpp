@@ -45,13 +45,13 @@ void BendersSequential::InitializeProblems()
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
 
     // Skip cut aggregation when there are no subproblems to avoid division by zero
-    if (_data.nsubproblem > 0) [[likely]]
+    if (_data.control.nsubproblem > 0) [[likely]]
     {
-        int n_cuts = SetAggregation(_data.nsubproblem);
+        int n_cuts = SetAggregation(_data.control.nsubproblem);
         subproblem_per_cut_indices.reserve(n_cuts);
 
         SubProblemNamesInCut current_cut;
-        size_t group_size = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+        size_t group_size = (_data.control.nsubproblem + n_cuts - 1) / n_cuts;
         current_cut.reserve(group_size);
 
         for (const auto& [name, id]: _problem_to_id)
@@ -76,7 +76,7 @@ void BendersSequential::InitializeProblems()
     reset_master(master_variable_map_,
                  get_solver_name(),
                  get_log_level(),
-                 _data.nsubproblem,
+                 _data.control.nsubproblem,
                  solver_log_manager_,
                  IsResumeMode(),
                  _logger,
@@ -126,7 +126,7 @@ void BendersSequential::BuildCut()
         SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
 
-    _data.subproblems_walltime = timer.elapsed();
+    _data.cuts.subproblems_walltime = timer.elapsed();
     check_status(subproblem_data_map);
     cuts_manager_.GatherAndBuildCuts(subproblem_data_map);
 }
@@ -147,22 +147,22 @@ void BendersSequential::Run()
 
     HandleInitialMasterRelaxation();
 
-    while (!_data.stop)
+    while (!_data.control.stop)
     {
         Timer timer_master;
-        ++_data.it;
+        ++_data.control.it;
 
-        if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
+        if (SwitchToIntegerMaster(_data.control.is_in_initial_relaxation))
         {
             _logger->LogAtSwitchToInteger();
             ActivateIntegrityConstraints();
             ResetDataPostRelaxation();
         }
 
-        _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
+        _logger->log_at_initialization(_data.control.it + GetNumIterationsBeforeRestart());
         _logger->display_message("\tSolving master...");
         get_master_value();
-        _logger->log_master_solving_duration(_data.timer_master);
+        _logger->log_master_solving_duration(_data.master.timer_master);
 
         cuts_manager_.ComputeXCut(_data,
                                   Options().SEPARATION_PARAM,
@@ -171,7 +171,7 @@ void BendersSequential::Run()
 
         _logger->display_message("\tSolving subproblems...");
         BuildCut();
-        _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
+        _logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
 
         compute_ub();
         update_best_ub();
@@ -180,11 +180,11 @@ void BendersSequential::Run()
 
         UpdateTrace();
 
-        _data.timer_master = timer_master.elapsed();
-        _data.iteration_time = -_data.benders_time;
-        _data.benders_time = GetBendersTime();
-        _data.iteration_time += _data.benders_time;
-        _data.stop = ShouldBendersStop();
+        _data.master.timer_master = timer_master.elapsed();
+        _data.control.iteration_time = -_data.control.benders_time;
+        _data.control.benders_time = GetBendersTime();
+        _data.control.iteration_time += _data.control.benders_time;
+        _data.control.stop = ShouldBendersStop();
         SaveCurrentBendersData();
     }
     CloseCsvFile();

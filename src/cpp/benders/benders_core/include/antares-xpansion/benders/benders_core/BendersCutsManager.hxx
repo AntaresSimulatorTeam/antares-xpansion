@@ -47,7 +47,7 @@ public:
         {
             for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
             {
-                data.subproblem_cost += subproblem_data.subproblem_cost;
+                data.cuts.subproblem_cost += subproblem_data.subproblem_cost;
                 BoundSimplexIterations(subproblem_data.simplex_iter, data);
             }
         }
@@ -59,25 +59,26 @@ public:
                      double separation_param,
                      double master_solution_tolerance)
     {
-        if (data.it == 1)
+        if (data.control.it == 1)
         {
-            data.x_in = data.x_out;
-            data.x_cut = data.x_out;
-            data.master_only_vars_in = data.master_only_vars_out;
-            data.master_only_vars_cut = data.master_only_vars_out;
+            data.solution.x_in = data.solution.x_out;
+            data.solution.x_cut = data.solution.x_out;
+            data.solution.master_only_vars_in = data.solution.master_only_vars_out;
+            data.solution.master_only_vars_cut = data.solution.master_only_vars_out;
         }
         else
         {
-            for (const auto& [name, value]: data.x_out)
+            for (const auto& [name, value]: data.solution.x_out)
             {
-                data.x_cut[name] = separation_param * data.x_out[name]
-                                   + (1 - separation_param) * data.x_in[name];
+                data.solution.x_cut[name] = separation_param * data.solution.x_out[name]
+                                            + (1 - separation_param) * data.solution.x_in[name];
             }
-            for (int i(0); i < data.master_only_vars_out.size(); ++i)
+            for (int i(0); i < data.solution.master_only_vars_out.size(); ++i)
             {
-                data.master_only_vars_cut[i] = separation_param * data.master_only_vars_out[i]
-                                               + (1 - separation_param)
-                                                   * data.master_only_vars_in[i];
+                data.solution.master_only_vars_cut[i] = separation_param
+                                                          * data.solution.master_only_vars_out[i]
+                                                        + (1 - separation_param)
+                                                            * data.solution.master_only_vars_in[i];
             }
         }
         RoundXCut(data, master_solution_tolerance);
@@ -123,11 +124,11 @@ private:
     // avoid numerical drift from repeated separation parameter application.
     void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
     {
-        for (auto& kvp: data.x_cut)
+        for (auto& kvp: data.solution.x_cut)
         {
             double value = kvp.second;
-            double lb = data.min_invest.at(kvp.first);
-            double ub = data.max_invest.at(kvp.first);
+            double lb = data.solution.min_invest.at(kvp.first);
+            double ub = data.solution.max_invest.at(kvp.first);
 
             if (std::abs(value - lb) < master_solution_tolerance)
             {
@@ -145,11 +146,11 @@ private:
     // across subproblems during cut gathering.
     void BoundSimplexIterations(int subproblem_iterations, CurrentIterationData& data)
     {
-        data.max_simplexiter = (data.max_simplexiter < subproblem_iterations)
-                                 ? subproblem_iterations
-                                 : data.max_simplexiter;
-        data.min_simplexiter = (data.min_simplexiter > subproblem_iterations)
-                                 ? subproblem_iterations
-                                 : data.min_simplexiter;
+        data.cuts.max_simplexiter = (data.cuts.max_simplexiter < subproblem_iterations)
+                                      ? subproblem_iterations
+                                      : data.cuts.max_simplexiter;
+        data.cuts.min_simplexiter = (data.cuts.min_simplexiter > subproblem_iterations)
+                                      ? subproblem_iterations
+                                      : data.cuts.min_simplexiter;
     }
 };

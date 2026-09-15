@@ -20,12 +20,11 @@ public:
     using BendersSolutionFn = std::function<Output::SolutionData()>;
     using IterationFn = std::function<Output::Iteration(const WorkerMasterData&)>;
 
-    BendersOuterLoopManager(
-      CurrentIterationData& data,
-      const BendersRelevantIterationsData& relevant_iteration_data,
-      std::shared_ptr<Output::OutputWriter> writer,
-      BendersSolutionFn benders_solution_fn,
-      IterationFn iteration_fn);
+    BendersOuterLoopManager(CurrentIterationData& data,
+                            const BendersRelevantIterationsData& relevant_iteration_data,
+                            std::shared_ptr<Output::OutputWriter> writer,
+                            BendersSolutionFn benders_solution_fn,
+                            IterationFn iteration_fn);
 
     [[nodiscard]] CriteriaCurrentIterationData GetOuterLoopData() const;
     [[nodiscard]] std::vector<double> GetOuterLoopCriterionAtBestBenders() const;

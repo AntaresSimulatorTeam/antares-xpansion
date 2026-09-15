@@ -191,13 +191,13 @@ void BendersByBatch::get_subs_per_cut_per_batch()
 
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox()
 {
-    DblVector single_subpb_costs_under_approx(_data.nsubproblem);
+    DblVector single_subpb_costs_under_approx(_data.control.nsubproblem);
     if (Rank() == rank_0)
     {
         single_subpb_costs_under_approx = GetAlpha_i();
     }
 
-    BroadCast(single_subpb_costs_under_approx.data(), _data.nsubproblem, rank_0);
+    BroadCast(single_subpb_costs_under_approx.data(), _data.control.nsubproblem, rank_0);
     SetAlpha_i(single_subpb_costs_under_approx);
 }
 
@@ -209,7 +209,7 @@ void BendersByBatch::Run()
     }
     else
     {
-        _data.stop = false;
+        _data.control.stop = false;
     }
 
     MasterLoop();
@@ -233,16 +233,16 @@ void BendersByBatch::MasterLoop()
     random_batch_permutation_.resize(number_of_batch_);
     batch_counter_ = 0;
     current_batch_id_ = 0;
-    _data.number_of_subproblem_solved = 0;
+    _data.control.number_of_subproblem_solved = 0;
     cumulative_subproblems_timer_per_iter_ = 0;
     first_unsolved_batch_ = 0;
-    while (!_data.stop)
+    while (!_data.control.stop)
     {
         benders_plugin_->OnBendersIterationStart();
 
         if (Rank() == rank_0)
         {
-            if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
+            if (SwitchToIntegerMaster(_data.control.is_in_initial_relaxation))
             {
                 _logger->LogAtSwitchToInteger();
                 ActivateIntegrityConstraints();
@@ -250,7 +250,7 @@ void BendersByBatch::MasterLoop()
             }
         }
 
-        _data.ub = 0;
+        _data.cuts.ub = 0;
         SetSubproblemCost(0);
         remaining_epsilon_ = Gap();
 
@@ -261,7 +261,7 @@ void BendersByBatch::MasterLoop()
 
             _logger->display_message("\tSolving master...");
             get_master_value();
-            _logger->log_master_solving_duration(_data.timer_master);
+            _logger->log_master_solving_duration(_data.master.timer_master);
 
             random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
                                           .GetCyclicBatchOrder(current_batch_id_);
@@ -272,18 +272,19 @@ void BendersByBatch::MasterLoop()
         SeparationLoop();
         if (Rank() == rank_0)
         {
-            _data.iteration_time = -_data.benders_time;
-            _data.benders_time = GetBendersTime();
-            _data.iteration_time += _data.benders_time;
-            _data.stop = ShouldBendersStop();
+            _data.control.iteration_time = -_data.control.benders_time;
+            _data.control.benders_time = GetBendersTime();
+            _data.control.iteration_time += _data.control.benders_time;
+            _data.control.stop = ShouldBendersStop();
         }
-        BroadCast(_data.stop, rank_0);
+        BroadCast(_data.control.stop, rank_0);
         BroadCast(batch_counter_, rank_0);
-        _data.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter_;
+        _data.cuts.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter_;
         _logger->cumulative_number_of_sub_problem_solved(
-          _data.cumulative_number_of_subproblem_solved + GetNumOfSubProblemsSolvedBeforeResume());
-        _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
-        _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
+          _data.control.cumulative_number_of_subproblem_solved
+          + GetNumOfSubProblemsSolvedBeforeResume());
+        _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.cuts.subproblems_cumulative_cputime);
+        _logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
         _logger->PrintIterationSeparatorEnd();
         mathLoggerDriver_->Print(_data);
 
@@ -298,26 +299,25 @@ void BendersByBatch::SeparationLoop()
     batch_counter_ = 0;
     while (misprice_ && batch_counter_ < number_of_batch_)
     {
-        _data.it++;
+        _data.control.it++;
         ResetSimplexIterationsBounds();
 
-        _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
+        _logger->log_at_initialization(_data.control.it + GetNumIterationsBeforeRestart());
         if (Rank() == rank_0)
         {
             ComputeXCut();
         }
         batch_cuts_manager_.BroadcastXCut();
 
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.x_cut, _data.it);
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
         UpdateRemainingEpsilon();
-        _data.number_of_subproblem_solved = 0;
+        _data.control.number_of_subproblem_solved = 0;
         SolveBatches();
 
         if (Rank() == rank_0)
         {
-            outer_loop_manager_->PushCriteriaForIteration(
-              _data.criteria_current_iteration_data.criteria);
+            outer_loop_manager_->PushCriteriaForIteration(_data.criteria.criteria);
             // TODO
             //  UpdateOuterLoopMaxCriterionArea();
             UpdateTrace();
@@ -332,10 +332,10 @@ void BendersByBatch::ComputeXCut()
     // In batch mode, x_in must be updated before the separation formula:
     // - it==1: handled by the base ComputeXCut (sets x_in = x_out)
     // - it>1: previous x_cut becomes the new x_in for the next separation
-    if (_data.it != 1)
+    if (_data.control.it != 1)
     {
-        _data.x_in = _data.x_cut;
-        _data.master_only_vars_in = _data.master_only_vars_cut;
+        _data.solution.x_in = _data.solution.x_cut;
+        _data.solution.master_only_vars_in = _data.solution.master_only_vars_cut;
     }
     batch_cuts_manager_.ComputeXCut(_data,
                                     Options().SEPARATION_PARAM,
@@ -349,11 +349,11 @@ void BendersByBatch::UpdateRemainingEpsilon()
         auto obj = master_manager_->GetObjectiveFunctionCoeffs();
         const auto& name_to_id = master_manager_->GetNameToId();
         remaining_epsilon_ = Gap();
-        for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
+        for (const auto& [candidate_name, x_cut_candidate_value]: _data.solution.x_cut)
         {
             int col_id = name_to_id.at(candidate_name);
             remaining_epsilon_ -= obj[col_id]
-                                  * (x_cut_candidate_value - _data.x_out[candidate_name]);
+                                  * (x_cut_candidate_value - _data.solution.x_out[candidate_name]);
         }
     }
 }
@@ -381,7 +381,7 @@ void BendersByBatch::SolveBatches()
                  problem_solved);
         // accumulate locally for the whole separation iteration
         problem_solved_by_rank += problem_solved;
-        Reduce(_data.subproblems_cputime,
+        Reduce(_data.cuts.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
                rank_0);
@@ -412,9 +412,9 @@ void BendersByBatch::SolveBatches()
     if (Rank() == rank_0)
     {
         // per-iteration number of subproblems solved
-        _data.number_of_subproblem_solved = global_total_solved;
+        _data.control.number_of_subproblem_solved = global_total_solved;
         // accumulate globally across iterations
-        _data.cumulative_number_of_subproblem_solved += global_total_solved;
+        _data.control.cumulative_number_of_subproblem_solved += global_total_solved;
     }
 }
 
@@ -440,7 +440,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
         { calculate_subproblem_contribution(name, data); }));
     local_solved = subproblem_data_map.size();
 
-    _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
+    _data.cuts.subproblems_cputime = subproblems_timer_per_proc.elapsed();
 
     bool global_misprice = misprice_;
     AllReduce(misprice_, global_misprice, std::logical_and<bool>());
@@ -460,11 +460,11 @@ void BendersByBatch::calculate_subproblem_contribution(const std::string& name,
     // Tbb includes min max define of windows std::numeric_limits<int>::max();
     subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost - subpb_cost_under_approx;
     double cut_value_at_x_cut = subproblem_data.subproblem_cost;
-    for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
+    for (const auto& [candidate_name, x_cut_candidate_value]: _data.solution.x_cut)
     {
         auto subgradient_at_name = subproblem_data.var_name_and_subgradient[candidate_name];
         cut_value_at_x_cut += subgradient_at_name
-                              * (_data.x_out[candidate_name] - x_cut_candidate_value);
+                              * (_data.solution.x_out[candidate_name] - x_cut_candidate_value);
     }
 
     if (subpb_cost_under_approx < cut_value_at_x_cut)
@@ -482,14 +482,14 @@ void BendersByBatch::BroadcastXOut()
 
 double BendersByBatch::Gap() const
 {
-    if (_data.is_in_initial_relaxation)
+    if (_data.control.is_in_initial_relaxation)
     {
-        return RelaxedGap() * _data.lb;
+        return RelaxedGap() * _data.master.lb;
     }
     else
     {
         // Tbb 2020 includes Windows min max defines
-        return (std::max)(AbsoluteGap(), RelativeGap() * _data.lb);
+        return (std::max)(AbsoluteGap(), RelativeGap() * _data.master.lb);
     }
 }
 
@@ -501,23 +501,23 @@ double BendersByBatch::Gap() const
  */
 void BendersByBatch::UpdateStoppingCriterion()
 {
-    if (_data.benders_time > Options().TIME_LIMIT)
+    if (_data.control.benders_time > Options().TIME_LIMIT)
     {
-        _data.stopping_criterion = StoppingCriterion::timelimit;
+        _data.control.stopping_criterion = StoppingCriterion::timelimit;
     }
-    else if ((Options().MAX_ITERATIONS != -1) && (_data.it >= Options().MAX_ITERATIONS))
+    else if ((Options().MAX_ITERATIONS != -1) && (_data.control.it >= Options().MAX_ITERATIONS))
     {
-        _data.stopping_criterion = StoppingCriterion::max_iteration;
+        _data.control.stopping_criterion = StoppingCriterion::max_iteration;
     }
     else if (batch_counter_ >= number_of_batch_)
     {
         if (Gap() == AbsoluteGap())
         {
-            _data.stopping_criterion = StoppingCriterion::absolute_gap;
+            _data.control.stopping_criterion = StoppingCriterion::absolute_gap;
         }
         else
         {
-            _data.stopping_criterion = StoppingCriterion::relative_gap;
+            _data.control.stopping_criterion = StoppingCriterion::relative_gap;
         }
     }
 }
@@ -527,5 +527,5 @@ void BendersByBatch::UpdateStoppingCriterion()
  */
 bool BendersByBatch::ShouldRelaxationStop() const
 {
-    return (_data.stopping_criterion != StoppingCriterion::empty);
+    return (_data.control.stopping_criterion != StoppingCriterion::empty);
 }

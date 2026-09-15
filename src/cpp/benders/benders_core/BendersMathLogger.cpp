@@ -204,54 +204,55 @@ void PrintBendersData(LogDestination& log_destination,
                       const BENDERSMETHOD& method)
 {
     log_destination.InsertDelimiter();
-    log_destination << data.it;
+    log_destination << data.control.it;
     log_destination.InsertDelimiter();
-    log_destination << std::scientific << std::setprecision(10) << data.lb;
+    log_destination << std::scientific << std::setprecision(10) << data.master.lb;
     log_destination.InsertDelimiter();
     if (method == BENDERSMETHOD::BENDERS)
     {
-        log_destination << std::scientific << std::setprecision(10) << data.ub;
+        log_destination << std::scientific << std::setprecision(10) << data.cuts.ub;
         log_destination.InsertDelimiter();
-        log_destination << std::scientific << std::setprecision(10) << data.best_ub;
-        log_destination.InsertDelimiter();
-        log_destination << std::scientific << std::setprecision(2) << data.best_ub - data.lb;
+        log_destination << std::scientific << std::setprecision(10) << data.control.best_ub;
         log_destination.InsertDelimiter();
         log_destination << std::scientific << std::setprecision(2)
-                        << (data.best_ub - data.lb) / data.best_ub;
+                        << data.control.best_ub - data.master.lb;
+        log_destination.InsertDelimiter();
+        log_destination << std::scientific << std::setprecision(2)
+                        << (data.control.best_ub - data.master.lb) / data.control.best_ub;
         log_destination.InsertDelimiter();
     }
-    log_destination << data.min_simplexiter;
+    log_destination << data.cuts.min_simplexiter;
     log_destination.InsertDelimiter();
-    log_destination << data.max_simplexiter;
+    log_destination << data.cuts.max_simplexiter;
     log_destination.InsertDelimiter();
     if (type == HEADERSTYPE::LONG || method == BENDERSMETHOD::BENDERS_BY_BATCH)
     {
-        log_destination << data.number_of_subproblem_solved;
+        log_destination << data.control.number_of_subproblem_solved;
         log_destination.InsertDelimiter();
     }
     if (type == HEADERSTYPE::LONG)
     {
-        log_destination << data.cumulative_number_of_subproblem_solved;
+        log_destination << data.control.cumulative_number_of_subproblem_solved;
         log_destination.InsertDelimiter();
     }
 
-    log_destination << std::setprecision(2) << data.iteration_time;
+    log_destination << std::setprecision(2) << data.control.iteration_time;
     log_destination.InsertDelimiter();
 
-    log_destination << std::setprecision(2) << data.timer_master;
+    log_destination << std::setprecision(2) << data.master.timer_master;
     log_destination.InsertDelimiter();
 
-    log_destination << std::setprecision(2) << data.subproblems_walltime;
+    log_destination << std::setprecision(2) << data.cuts.subproblems_walltime;
     log_destination.InsertDelimiter();
 
     if (type == HEADERSTYPE::LONG)
     {
-        log_destination << std::setprecision(2) << data.subproblems_cumulative_cputime;
+        log_destination << std::setprecision(2) << data.cuts.subproblems_cumulative_cputime;
         log_destination.InsertDelimiter();
         log_destination << std::setprecision(2)
-                        << getDurationNotSolving(data.iteration_time,
-                                                 data.timer_master,
-                                                 data.subproblems_walltime);
+                        << getDurationNotSolving(data.control.iteration_time,
+                                                 data.master.timer_master,
+                                                 data.cuts.subproblems_walltime);
         log_destination.InsertDelimiter();
     }
     log_destination << std::endl;
@@ -263,25 +264,21 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const BENDERSMETHOD& method)
 {
     log_destination.InsertDelimiter();
-    log_destination << data.criteria_current_iteration_data.benders_num_run;
+    log_destination << data.criteria.benders_num_run;
     log_destination.InsertDelimiter();
-    log_destination << std::scientific << std::setprecision(10)
-                    << data.criteria_current_iteration_data.max_criterion;
+    log_destination << std::scientific << std::setprecision(10) << data.criteria.max_criterion;
     log_destination.InsertDelimiter();
-    log_destination << data.criteria_current_iteration_data.max_criterion_area;
+    log_destination << data.criteria.max_criterion_area;
     log_destination.InsertDelimiter();
 
     log_destination << std::scientific << std::setprecision(10)
-                    << data.criteria_current_iteration_data.outer_loop_bilevel_best_ub;
+                    << data.criteria.outer_loop_bilevel_best_ub;
     log_destination.InsertDelimiter();
-    log_destination << std::scientific << std::setprecision(10)
-                    << data.criteria_current_iteration_data.lambda;
+    log_destination << std::scientific << std::setprecision(10) << data.criteria.lambda;
     log_destination.InsertDelimiter();
-    log_destination << std::scientific << std::setprecision(10)
-                    << data.criteria_current_iteration_data.lambda_min;
+    log_destination << std::scientific << std::setprecision(10) << data.criteria.lambda_min;
     log_destination.InsertDelimiter();
-    log_destination << std::scientific << std::setprecision(10)
-                    << data.criteria_current_iteration_data.lambda_max;
+    log_destination << std::scientific << std::setprecision(10) << data.criteria.lambda_max;
     PrintBendersData(log_destination, data, type, method);
 }
 
