@@ -127,9 +127,9 @@ class TrajectoryArgsParser:
         self.parser.add_argument(
             "--cache_problems",
             dest=TrajectoryLauncherOptionsKeys.cache_problems_key(),
-            default=False,
-            action="store_true",
-            help="Cache problems on disk during benders",
+            default="NO_CACHE",
+            choices=["NO_CACHE", "PER_SUB", "COMPACT"],
+            help="Cache problems mode during benders (NO_CACHE, PER_SUB, COMPACT)",
         )
 
         # Args for the resolution

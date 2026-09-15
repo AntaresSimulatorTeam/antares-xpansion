@@ -3,16 +3,16 @@
 ## Motivation
 
 
-#### CACHE_PROBLEMS = 0
+#### CACHE_PROBLEMS = NO_CACHE
 In the Benders decomposition framework, the resolution starts by loading the
 MPS/SVF files of all the subproblems, so that each of them is held in memory as
 a fully instantiated optimization problem for the whole duration of the run. 
 
 
-#### CACHE_PROBLEMS = 1
+#### CACHE_PROBLEMS = PER_SUB
 A first RAM usage optimization has been implemented by loading the optimization problem from disk just before solving it.
 
-#### CACHE_PROBLEMS = 2
+#### CACHE_PROBLEMS = COMPACT
 However, the disk footprint of the input data remains drastically high and can become problematic as the number and size of subproblems increase, potentially becoming the bottleneck before computation even starts.
 
 Yet this cost is largely redundant: the subproblems share a huge part of their columns and rows — the

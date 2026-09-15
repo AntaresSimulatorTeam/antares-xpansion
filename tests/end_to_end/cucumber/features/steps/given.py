@@ -46,7 +46,7 @@ def set_batch_size(context, batch_size):
 def set_cache_problems_level(context, level):
     with open(str(context.tmp_study / "options.json"), "r") as file:
         options_content = json.load(file)
-    options_content["CACHE_PROBLEMS"] = int(level)
+    options_content["CACHE_PROBLEMS"] = level
     with open(str(context.tmp_study / "options.json"), "w") as file:
         json.dump(options_content, file, indent=4)
 

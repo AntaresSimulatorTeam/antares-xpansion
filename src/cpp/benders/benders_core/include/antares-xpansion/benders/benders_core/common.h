@@ -22,6 +22,7 @@
 #include <tuple>
 #include <vector>
 
+#include "antares-xpansion/core/CacheProblems.h"
 #include "antares-xpansion/core/ProblemFormat.h"
 
 enum class MasterFormulation
@@ -225,7 +226,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
-    int CACHE_PROBLEMS = 0;
+    CacheProblems CACHE_PROBLEMS = CacheProblems::NO_CACHE;
 
     MasterFormulation MASTER_FORMULATION;
 

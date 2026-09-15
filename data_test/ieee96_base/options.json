@@ -22,7 +22,7 @@
     "SOLVER_NAME": "COIN",
     "LOG_LEVEL": 2,
     "MAX_ITERATIONS": -1,
-    "CACHE_PROBLEMS": 0,
+    "CACHE_PROBLEMS": "NO_CACHE",
     "AGGREGATION": 0,
     "CSV_NAME": "benders_output_trace",
     "OUTPUTROOT": "."
