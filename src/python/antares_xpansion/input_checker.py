@@ -49,12 +49,15 @@ def _check_profile_file_consistency(filename_path):
                     % (idx + 1, filename_path)
                 )
                 raise ProfileFileValueError
-            if first_profile[-1] < 0:
+            if first_profile and first_profile[-1] < 0:
                 logger.error(
                     "Line %d in file %s indicates a negative value"
                     % (idx + 1, filename_path)
                 )
                 raise ProfileFileNegativeValue
+
+    if not first_profile:
+        return False
 
     if len(first_profile) != 8760:
         logger.error("file %s does not have 8760 lines" % filename_path)

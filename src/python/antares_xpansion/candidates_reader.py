@@ -212,11 +212,15 @@ class CandidatesReader:
 
     @staticmethod
     def _read_or_create_link_profile_array_simple(file: str):
-        link_profile_array = np.ones(8760)
-        if file:
-            link_profile_array = np.genfromtxt(file)
-            CandidatesReader.check_nan_in_profile_link_array(
-                link_profile_array, file)
+        if not file:
+            return np.ones(8760)
+
+        if not Path(file).read_text().strip():
+            return np.zeros(8760)
+
+        link_profile_array = np.genfromtxt(file)
+        CandidatesReader.check_nan_in_profile_link_array(
+            link_profile_array, file)
 
         return link_profile_array
 
