@@ -109,6 +109,10 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path& filename,
         (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << errMsg << filename;
         throw std::filesystem::filesystem_error(LOGLOCATION + errMsg, filename, std::error_code());
     }
+    if (isEmptyProfileFile(filename))
+    {
+        return;
+    }
     std::string str_value;
     double value;
     std::string line;
