@@ -11,9 +11,16 @@ int main(int argc, char** argv)
         mpi::environment env(argc, argv);
         mpi::communicator world;
         // First check usage (options are given)
-        if (world.rank() == 0)
+        if (argc < 2)
         {
-            usage(argc);
+            if (world.rank() == 0)
+            {
+                usage(argc);
+            }
+            else
+            {
+                return MPI_Abort(world, 1);
+            }
         }
         auto benders_factory = BendersApp(argv[1], world, SOLVER::OUTER_LOOP);
         return benders_factory.Run();
