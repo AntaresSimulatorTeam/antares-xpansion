@@ -8,6 +8,8 @@
 const std::string VALID_DIRECT_PROFILE_NAME("temp_direct_profile.txt");
 const std::string VALID_INDIRECT_PROFILE_NAME("temp_indirect_profile.txt");
 const std::string INVALID_DIRECT_PROFILE("temp_invalid_direct_profile.txt");
+const std::string EMPTY_DIRECT_PROFILE("temp_empty_direct_profile.txt");
+const std::string EMPTY_INDIRECT_PROFILE("temp_empty_indirect_profile.txt");
 
 class LinkProfileReaderTest : public ::testing::Test {
  protected:
@@ -55,6 +57,9 @@ class LinkProfileReaderTest : public ::testing::Test {
     std::vector<double> invalid_indirectLinkprofile_l(100, 1);
     createMergedProfileFile(INVALID_DIRECT_PROFILE, invalid_directLinkprofile_l,
                             invalid_directLinkprofile_l);
+
+    std::ofstream(EMPTY_DIRECT_PROFILE).close();
+    std::ofstream(EMPTY_INDIRECT_PROFILE).close();
   }
 
   static void TearDownTestCase() {
@@ -63,6 +68,8 @@ class LinkProfileReaderTest : public ::testing::Test {
     // delete the created tmp file
     std::remove(VALID_DIRECT_PROFILE_NAME.c_str());
     std::remove(INVALID_DIRECT_PROFILE.c_str());
+    std::remove(EMPTY_DIRECT_PROFILE.c_str());
+    std::remove(EMPTY_INDIRECT_PROFILE.c_str());
   }
 
   void SetUp() {
@@ -96,6 +103,19 @@ TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
   ASSERT_EQ(profile.getIndirectProfile(0), 0);
   ASSERT_EQ(profile.getDirectProfile(1), 0.5);
   ASSERT_EQ(profile.getIndirectProfile(1), 0.5);
+}
+
+TEST_F(LinkProfileReaderTest, ReadEmptySplitProfileAsZeroProfile) {
+  LinkProfile profile =
+      LinkProfileReader(logger_)
+          .ReadLinkProfile(std::filesystem::path(EMPTY_DIRECT_PROFILE),
+                           std::filesystem::path(EMPTY_INDIRECT_PROFILE))
+          .at(0);
+
+  ASSERT_EQ(profile.getDirectProfile(0), 0);
+  ASSERT_EQ(profile.getIndirectProfile(0), 0);
+  ASSERT_EQ(profile.getDirectProfile(8759), 0);
+  ASSERT_EQ(profile.getIndirectProfile(8759), 0);
 }
 
 TEST_F(LinkProfileReaderTest, ReadInvalidMergedProfile) {

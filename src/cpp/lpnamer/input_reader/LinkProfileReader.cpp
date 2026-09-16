@@ -1,8 +1,23 @@
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 
+#include <algorithm>
+#include <cctype>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+
+namespace
+{
+bool isEmptyProfileFile(const std::filesystem::path& filename)
+{
+    std::ifstream infile(filename);
+    return std::all_of(std::istreambuf_iterator<char>(infile),
+                       std::istreambuf_iterator<char>(),
+                       [](unsigned char character) { return std::isspace(character); });
+}
+} // namespace
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
   const std::filesystem::path& direct_filename,
@@ -13,9 +28,27 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
       << "indirect_file_name: " << indirect_file_name << "\n";
     EnsureFileIsGood(direct_filename);
     EnsureFileIsGood(indirect_file_name);
+    const bool empty_direct_profile = isEmptyProfileFile(direct_filename);
+    const bool empty_indirect_profile = isEmptyProfileFile(indirect_file_name);
     std::vector<LinkProfile> result;
     ReadLinkProfile(direct_filename, result, true);
     ReadLinkProfile(indirect_file_name, result, false);
+
+    if (result.empty())
+    {
+        result.emplace_back(logger_);
+    }
+    for (auto& profile: result)
+    {
+        if (empty_direct_profile)
+        {
+            std::fill(profile.direct_link_profile.begin(), profile.direct_link_profile.end(), 0);
+        }
+        if (empty_indirect_profile)
+        {
+            std::fill(profile.indirect_link_profile.begin(), profile.indirect_link_profile.end(), 0);
+        }
+    }
     return result;
 }
 
@@ -37,6 +70,18 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     std::vector<LinkProfile> result;
     ReadLinkProfile(direct_filename, result, true);
     ReadLinkProfile(direct_filename, result, false);
+    if (result.empty())
+    {
+        result.emplace_back(logger_);
+    }
+    if (isEmptyProfileFile(direct_filename))
+    {
+        for (auto& profile: result)
+        {
+            std::fill(profile.direct_link_profile.begin(), profile.direct_link_profile.end(), 0);
+            std::fill(profile.indirect_link_profile.begin(), profile.indirect_link_profile.end(), 0);
+        }
+    }
     return result;
 }
 
