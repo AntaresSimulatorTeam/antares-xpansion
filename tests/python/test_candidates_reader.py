@@ -16,7 +16,7 @@ def test_empty_profile_file_is_a_zero_timeseries(tmp_path):
 
 
 def test_missing_profile_uses_default_unity_timeseries():
-    profile = CandidatesReader._read_or_create_link_profile_array_simple("")
+    profile = CandidatesReader._read_or_create_link_profile_array_simple()
 
     assert profile.shape == (8760,)
     assert np.array_equal(profile, np.ones(8760))
