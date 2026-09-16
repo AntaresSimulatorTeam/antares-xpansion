@@ -46,7 +46,9 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
         }
         if (empty_indirect_profile)
         {
-            std::fill(profile.indirect_link_profile.begin(), profile.indirect_link_profile.end(), 0);
+            std::fill(profile.indirect_link_profile.begin(),
+                      profile.indirect_link_profile.end(),
+                      0);
         }
     }
     return result;
@@ -79,7 +81,9 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
         for (auto& profile: result)
         {
             std::fill(profile.direct_link_profile.begin(), profile.direct_link_profile.end(), 0);
-            std::fill(profile.indirect_link_profile.begin(), profile.indirect_link_profile.end(), 0);
+            std::fill(profile.indirect_link_profile.begin(),
+                      profile.indirect_link_profile.end(),
+                      0);
         }
     }
     return result;
