@@ -8,6 +8,7 @@
 #include <chrono>
 #include <exception>
 #include <fstream>
+#include <json/reader.h>
 #include <sstream>
 #include <stdexcept>
 #include <string_view>
@@ -141,43 +142,39 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
     std::filesystem::path mirco_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
-                                                          / "micro_iterations_config.txt";
+                                                          / "micro_iterations_config.json";
     std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.string());
 
     if (micro_iterations_options_stream.is_open())
     {
-        std::string line;
-        while (std::getline(micro_iterations_options_stream, line))
+        Json::Value config;
+        Json::CharReaderBuilder reader_builder;
+        std::string errors;
+        if (!Json::parseFromStream(reader_builder,
+                                   micro_iterations_options_stream,
+                                   &config,
+                                   &errors))
         {
-            std::istringstream iss(line);
-            std::string key, value;
-
-            if (std::getline(iss, key, '=') && std::getline(iss, value))
-            {
-                if (key == "warm_start")
-                {
-                    if (value == "0")
-                    {
-                        warm_start_ = false;
-                    }
-                }
-                else
-                {
-                    micro_iterations_config_[key] = value;
-                }
-            }
+            _logger->display_message("failed to open : " + mirco_iterations_options_path.string());
+            _logger->display_message("Erros :" + errors);
+            exit(EXIT_FAILURE);
         }
-        for (auto [key, value]: micro_iterations_config_)
+
+        for (const auto& key: config.getMemberNames())
         {
-            if (key == "plugin_lib_path")
+            if (key == "warm_start")
             {
-                std::string cpp_output_lib_path = micro_iterations_config_["plugin_lib_path"];
+                warm_start_ = config[key].asBool();
+            }
+            else
+            {
+                micro_iterations_config_[key] = config[key].asString();
             }
         }
     }
     else
     {
-        std::cerr << "unable to open : " << mirco_iterations_options_path.string() << std::endl;
+        _logger->display_message("unable to open : " + mirco_iterations_options_path.string());
         exit(EXIT_FAILURE);
     }
 }
