@@ -189,6 +189,32 @@ def step_problem_generation_memory(context, step, memory_mode=None, pb_format=No
     run_xpansion_step(context, step, memory_mode, pb_format, nproc=1)
 
 
+@when('I set MAX_ITERATIONS to {max_iterations:d}')
+def set_max_iterations(context, max_iterations):
+    options_path = Path(context.tmp_study) / "options.json"
+    with open(options_path, "r") as file:
+        options_content = json.load(file)
+    options_content["MAX_ITERATIONS"] = max_iterations
+    with open(options_path, "w") as file:
+        json.dump(options_content, file, indent=4)
+
+
+@when('I set RESUME to "{resume_mode}"')
+def set_resume_mode(context, resume_mode):
+    import shutil
+    study_path = Path(context.tmp_study)
+    options_path = study_path / "options.json"
+    with open(options_path, "r") as file:
+        options_content = json.load(file)
+    options_content["RESUME"] = resume_mode
+    with open(options_path, "w") as file:
+        json.dump(options_content, file, indent=4)
+    # Replace master.mps with master_last_iteration.mps (which contains the accumulated cuts)
+    last_master = study_path / "master_last_iteration.mps"
+    master = study_path / "master.mps"
+    shutil.copy(last_master, master)
+
+
 @when('I run antares-xpansion in trajectory')
 def run_trajectory_mode(context):
     """Run the trajectory investment workflow (full step) and load outputs"""
