@@ -155,7 +155,8 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
                                    &config,
                                    &errors))
         {
-            std::cerr << "Failed to parse JSON config: " << errors << std::endl;
+            _logger->display_message("failed to open : " + mirco_iterations_options_path.string());
+            _logger->display_message("Erros :" + errors);
             exit(EXIT_FAILURE);
         }
 
@@ -163,10 +164,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
         {
             if (key == "warm_start")
             {
-                if (config[key].asString() == "0")
-                {
-                    warm_start_ = false;
-                }
+                warm_start_ = config[key].asBool();
             }
             else
             {
@@ -176,7 +174,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
     }
     else
     {
-        std::cerr << "unable to open : " << mirco_iterations_options_path.string() << std::endl;
+        _logger->display_message("unable to open : " + mirco_iterations_options_path.string());
         exit(EXIT_FAILURE);
     }
 }
