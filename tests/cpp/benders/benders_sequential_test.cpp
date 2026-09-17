@@ -165,6 +165,7 @@ protected:
     void SetUp() override
     {
         logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
+        mathLoggerDriver = std::make_shared<MathLoggerDriver>();
         writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                       std::tmpnam(nullptr));
         original_dir = std::filesystem::current_path();
