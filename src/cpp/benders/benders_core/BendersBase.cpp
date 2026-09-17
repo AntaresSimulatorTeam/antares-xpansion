@@ -291,8 +291,6 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData& data) const
 void BendersBase::UpdateTrace()
 {
     FillWorkerMasterData(relevantIterationData_.last);
-    // TODO Outer loop --> de-comment for general case
-    // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 
 bool BendersBase::is_initial_relaxation_requested() const
@@ -419,33 +417,6 @@ void BendersBase::ActivateIntegrityConstraints() const
     _master->ActivateIntegrityConstraints();
 }
 
-void BendersBase::ComputeXCut()
-{
-    if (_data.it == 1)
-    {
-        _data.x_in = _data.x_out;
-        _data.x_cut = _data.x_out;
-        _data.master_only_vars_in = _data.master_only_vars_out;
-        _data.master_only_vars_cut = _data.master_only_vars_out;
-    }
-    else
-    {
-        for (const auto& [name, value]: _data.x_out)
-        {
-            _data.x_cut[name] = _options.SEPARATION_PARAM * _data.x_out[name]
-                                + (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
-        }
-        for (int i(0); i < _data.master_only_vars_out.size(); ++i)
-        {
-            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM
-                                              * _data.master_only_vars_out[i]
-                                            + (1 - Options().SEPARATION_PARAM)
-                                                * _data.master_only_vars_in[i];
-        }
-    }
-    roundXCut();
-}
-
 void BendersBase::ComputeInvestCost()
 {
     _data.invest_cost = 0;
@@ -495,11 +466,6 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     default:
         break;
     }
-}
-
-void BendersBase::set_rank(int rank)
-{
-    rank_ = rank;
 }
 
 void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
@@ -753,101 +719,6 @@ void BendersBase::SetSubproblemsVariablesIndices()
     }
 }
 
-void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
-{
-    for (const auto& [cand_name, cand_value]: x_cut)
-    {
-        const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
-        if (cand_name_and_subgradient != var_name_subgradient.end())
-        {
-            s[cand_name] += cand_name_and_subgradient->second;
-        }
-    }
-}
-
-/*!
- *  \brief Add aggregated cut to Master Problem and store it in a set
- *
- *  Method to add aggregated cut from subproblems to Master Problem and store
- * it in a map linking each subproblem to its set of non-aggregated cut
- *
- *  \param subproblem_data_map : map storing all cuts information for each
- * subproblem
- */
-void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map)
-{
-    Point s;
-    double rhs(0);
-    for (const auto& [name, subproblem_data]: subproblem_data_map)
-    {
-        _data.ub += subproblem_data.subproblem_cost;
-        rhs += subproblem_data.subproblem_cost;
-
-        compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
-
-        relevantIterationData_.last._cut_trace[name] = subproblem_data;
-    }
-    _master->add_cut(s, _data.x_cut, rhs);
-}
-
-void BendersBase::build_all_aggregated_cuts(
-  const std::vector<SubProblemNamesInCut>& subproblem_names,
-  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
-{
-    std::vector<int> subproblem_ids_per_cut;
-    for (const auto& subproblem_names_in_cut: subproblem_names)
-    {
-        Point s;
-        double rhs{0};
-        std::vector<int> subproblem_ids_per_cut;
-
-        for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
-        {
-            subproblem_ids_per_cut.push_back(_problem_to_id[sub_problem_name]);
-
-            auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
-              sub_problem_name);
-
-            if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end())
-            {
-                auto& subproblem_data = subproblem_data_pair->second;
-                _data.ub += subproblem_data.subproblem_cost;
-                rhs += subproblem_data.subproblem_cost;
-                compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
-                relevantIterationData_.last._cut_trace[sub_problem_name] = subproblem_data;
-            }
-        }
-
-        _master->addGroupSubproblemCut(subproblem_ids_per_cut, s, _data.x_cut, rhs);
-    }
-}
-
-/*!
- *  \brief Add cut to Master Problem and store the cut in a set
- *
- *  Method to add cut from a subproblem to the Master Problem and store this
- * cut in a map linking each subproblem to its set of cuts.
- *
- *  \param all_package : vector storing all cuts information for each
- * subproblem problem
- *
- */
-void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
-{
-    // current_outer_loop_criterion_ = 0.0;
-    for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
-    {
-        _data.ub += subproblem_data.subproblem_cost;
-
-        _master->addSubproblemCut(_problem_to_id[subproblem_name],
-                                  subproblem_data.var_name_and_subgradient,
-                                  _data.x_cut,
-                                  subproblem_data.subproblem_cost);
-
-        relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
-    }
-}
-
 int BendersBase::SetAggregation(int max_aggregation) const
 {
     if (max_aggregation < _options.NB_CUTS_PER_ITER)
@@ -868,24 +739,6 @@ int BendersBase::SetAggregation(int max_aggregation) const
         return max_aggregation;
     }
     return _options.NB_CUTS_PER_ITER;
-}
-
-/*!
- *  \brief Add cuts in master problem
- *
- *  \param subproblem_data_map : storage of every subproblem information
- */
-void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
-{
-    check_status(subproblem_data_map);
-    if (_options.NB_CUTS_PER_ITER)
-    {
-        compute_cut_aggregate(subproblem_data_map);
-    }
-    else
-    {
-        compute_cut(subproblem_data_map);
-    }
 }
 
 LogData BendersBase::build_log_data_from_data() const
@@ -1286,21 +1139,6 @@ void BendersBase::SetSubproblemCost(const double& subproblem_cost)
     _data.subproblem_cost = subproblem_cost;
 }
 
-/*!
- *	\brief Update maximum and minimum of simplex iterations
- *
- *	\param subproblem_iterations : number of iterations done with the
- *subproblem
- *
- */
-void BendersBase::BoundSimplexIterations(int subproblem_iterations)
-{
-    _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations
-                                                                            : _data.max_simplexiter;
-    _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations
-                                                                            : _data.min_simplexiter;
-}
-
 void BendersBase::ResetSimplexIterationsBounds()
 {
     _data.max_simplexiter = 0;
@@ -1558,35 +1396,6 @@ void BendersBase::setCriterionComputationInputs(
   const Benders::Criterion::CriterionInputData& criterion_input_data)
 {
     criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
-}
-
-/*!
- *  \brief  _data.x_in is within the bounds thanks to restoreFeasibility called in
-WorkerMaster::get(...). This function helps to avoid x_cut getting inifinitely close to a bound due
-to the way it is updated using x_in:
-    - Suppose x_in = x_out = 1 in the first iteration
-    - Suppose x_out always 0 in the following iterations
-    - Then x_cut will be always divided by 2 (if separation_parameter = 0.5) each time, becoming
-inifinitely small. At some point we want to round it to the bound to avoid numerical issues. We
-reuse the setting MASTER_SOLUTION_TOLERANCE
- */
-void BendersBase::roundXCut()
-{
-    for (auto& kvp: _data.x_cut)
-    {
-        double value = kvp.second;
-        double lb = _data.min_invest.at(kvp.first);
-        double ub = _data.max_invest.at(kvp.first);
-
-        if (std::abs(value - lb) < _options.MASTER_SOLUTION_TOLERANCE)
-        {
-            kvp.second = lb;
-        }
-        else if (std::abs(value - ub) < _options.MASTER_SOLUTION_TOLERANCE)
-        {
-            kvp.second = ub;
-        }
-    }
 }
 
 std::map<int, double> BendersBase::GetSubCutTolerance() const
