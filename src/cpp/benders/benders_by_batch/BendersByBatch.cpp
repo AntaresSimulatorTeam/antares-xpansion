@@ -285,6 +285,7 @@ void BendersByBatch::MasterLoop()
         }
         batch_cuts_manager_->BroadcastXCut();
         benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
+        UpdateRemainingEpsilon();
 
         SeparationLoop();
         if (Rank() == rank_0)
@@ -316,11 +317,10 @@ void BendersByBatch::SeparationLoop()
     misprice_ = true;
     first_unsolved_batch_ = 0;
     batch_counter_ = 0;
+    _data.control.number_of_subproblem_solved = 0;
     while (misprice_ && batch_counter_ < number_of_batch_)
     {
         logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
-        UpdateRemainingEpsilon();
-        _data.control.number_of_subproblem_solved = 0;
         SolveBatches();
 
         if (Rank() == rank_0)
