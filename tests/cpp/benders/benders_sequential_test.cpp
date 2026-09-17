@@ -43,6 +43,13 @@ public:
         _data.master.lb = parametrized_lb;
         _data.control.best_ub = parametrized_best_ub;
         _data.control.it = parametrized_it;
+        relevantIterationData_.last._x_in = std::make_shared<Point>();
+        relevantIterationData_.last._x_out = std::make_shared<Point>();
+        relevantIterationData_.last._x_cut = std::make_shared<Point>();
+        relevantIterationData_.last._min_invest = std::make_shared<Point>();
+        relevantIterationData_.last._max_invest = std::make_shared<Point>();
+        relevantIterationData_.last._valid = true;
+        relevantIterationData_.best = relevantIterationData_.last;
     }
 
     [[nodiscard]] WorkerMasterPtr get_master() const override
