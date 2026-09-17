@@ -274,6 +274,18 @@ void BendersByBatch::MasterLoop()
         BroadcastXOut();
         BroadcastSingleSubpbCostsUnderApprox();
         BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(), rank_0);
+        _data.control.it++;
+        ResetSimplexIterationsBounds();
+
+        logger->log_at_initialization(_data.control.it
+                                      + output_manager_->GetNumIterationsBeforeRestart());
+        if (Rank() == rank_0)
+        {
+            ComputeXCut();
+        }
+        batch_cuts_manager_->BroadcastXCut();
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
+
         SeparationLoop();
         if (Rank() == rank_0)
         {
@@ -306,18 +318,6 @@ void BendersByBatch::SeparationLoop()
     batch_counter_ = 0;
     while (misprice_ && batch_counter_ < number_of_batch_)
     {
-        _data.control.it++;
-        ResetSimplexIterationsBounds();
-
-        logger->log_at_initialization(_data.control.it
-                                      + output_manager_->GetNumIterationsBeforeRestart());
-        if (Rank() == rank_0)
-        {
-            ComputeXCut();
-        }
-        batch_cuts_manager_->BroadcastXCut();
-
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
         UpdateRemainingEpsilon();
         _data.control.number_of_subproblem_solved = 0;
