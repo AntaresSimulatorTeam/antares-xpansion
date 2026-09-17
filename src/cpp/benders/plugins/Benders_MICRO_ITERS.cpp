@@ -133,6 +133,22 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     {
         std::cerr << "failed to open the plugin given on path " << cpp_lib_absolute_path
                   << std::endl;
+#ifdef _WIN32
+        DWORD err = GetLastError();
+        LPSTR msg = nullptr;
+        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM
+                         | FORMAT_MESSAGE_IGNORE_INSERTS,
+                       nullptr,
+                       err,
+                       0,
+                       reinterpret_cast<LPSTR>(&msg),
+                       0,
+                       nullptr);
+        std::cerr << "LoadLibraryW error (" << err << "): " << (msg ? msg : "unknown") << std::endl;
+        LocalFree(msg);
+#else
+        std::cerr << "dlerror: " << dlerror() << std::endl;
+#endif
         _world->abort(EXIT_FAILURE);
     }
 }
