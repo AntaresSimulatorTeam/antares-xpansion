@@ -106,7 +106,7 @@ class TrajectoryArgsParser:
         )
         # When manipulating problem files : under which format are they written ?
         self.parser.add_argument(
-            "--problems-format",
+            "--problem-format",
             dest=TrajectoryLauncherOptionsKeys.problems_format_key(),
             type=str,
             choices=["saved", "mps"],
@@ -169,7 +169,7 @@ class TrajectoryArgsParser:
         """Checks that the given args are compatible with each other"""
         if params.problems_format == "saved" and params.solver != "Xpress":
             raise self.XpansionTrajectoryInvalidArguments(
-                "Argument '--problems-format saved' is only compatible with '--solver Xpress'"
+                "Argument '--problem-format saved' is only compatible with '--solver Xpress'"
             )
 
     def _warn_non_relevant_arg(self, step, arg):
