@@ -96,7 +96,8 @@ TEST_F(LinkProfileReaderTest, ReadValidSplitProfile) {
 
 TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
   LinkProfile profile = LinkProfileReader(logger_)
-                            .ReadLinkProfile(VALID_DIRECT_PROFILE_NAME)
+                            .ReadLinkProfile(VALID_DIRECT_PROFILE_NAME,
+                                             VALID_DIRECT_PROFILE_NAME)
                             .at(0);
 
   ASSERT_EQ(profile.getDirectProfile(0), 0);
@@ -122,7 +123,7 @@ TEST_F(LinkProfileReaderTest, ReadInvalidMergedProfile) {
   try {
     [[maybe_unused]] LinkProfile profile =
         LinkProfileReader(logger_)
-            .ReadLinkProfile(INVALID_DIRECT_PROFILE)
+            .ReadLinkProfile(INVALID_DIRECT_PROFILE, INVALID_DIRECT_PROFILE)
             .at(0);
     FAIL();
   } catch (const std::domain_error& expected) {
