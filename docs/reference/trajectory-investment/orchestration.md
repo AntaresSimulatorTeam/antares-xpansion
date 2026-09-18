@@ -54,7 +54,7 @@ Usage of the launcher is :
 
 - ```--np``` : See the eponymous [annual xpansion argument](https://antares-doc.readthedocs.io/en/latest/programmatic/antares-xpansion-cli/#-n-np).
 
-- ```--problems-format``` : See the
+- ```--problem-format``` : See the
   eponymous [annual xpansion argument](https://antares-doc.readthedocs.io/en/latest/programmatic/antares-xpansion-cli/#-problem-format-mps-optimized).
 
 - ```--solver``` : Tells the program which solver to use when manipulating optimization problems in steps
