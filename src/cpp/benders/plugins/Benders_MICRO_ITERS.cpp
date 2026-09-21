@@ -155,8 +155,10 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
                                    &config,
                                    &errors))
         {
-            _logger->display_message("failed to open : " + mirco_iterations_options_path.string());
-            _logger->display_message("Erros :" + errors);
+            std::ostringstream oss;
+            oss << "failed to open : " << mirco_iterations_options_path.string() << "\n"
+                << "Errors: " << errors;
+            _logger->display_message(oss.str());
             exit(EXIT_FAILURE);
         }
 
