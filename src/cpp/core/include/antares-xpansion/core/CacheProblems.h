@@ -17,15 +17,15 @@ enum class CacheProblems
 inline CacheProblems cacheProblemsFromString(const std::string& str)
 {
     auto lower_str = StringManip::StringUtils::ToLowercase(str);
-    if (lower_str == "no_cache" || lower_str == "0")
+    if (lower_str == "no_cache")
     {
         return CacheProblems::NO_CACHE;
     }
-    if (lower_str == "per_sub" || lower_str == "1")
+    if (lower_str == "per_sub")
     {
         return CacheProblems::PER_SUB;
     }
-    if (lower_str == "compact" || lower_str == "2")
+    if (lower_str == "compact")
     {
         return CacheProblems::COMPACT;
     }
