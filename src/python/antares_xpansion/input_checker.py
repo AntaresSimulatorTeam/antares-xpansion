@@ -6,6 +6,8 @@ import os
 import shutil
 import sys
 
+import numpy as np
+
 from antares_xpansion.logger import step_logger
 from antares_xpansion.profile_link_checker import ProfileLinkChecker
 
@@ -36,33 +38,29 @@ logger = step_logger(__name__, "input checks")
 
 
 def _check_profile_file_consistency(filename_path):
-    with open(filename_path, "r") as profile_file:
-        first_profile = []
-        for idx, line in enumerate(profile_file):
-            try:
-                line_vals = line.strip().split()
-                if len(line_vals) != 0:
-                    first_profile.append(float(line_vals[0]))
-            except ValueError:
-                logger.error(
-                    'Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
-                    % (idx + 1, filename_path)
-                )
-                raise ProfileFileValueError
-            if first_profile and first_profile[-1] < 0:
-                logger.error(
-                    "Line %d in file %s indicates a negative value"
-                    % (idx + 1, filename_path)
-                )
-                raise ProfileFileNegativeValue
+    try:
+        profile = np.loadtxt(filename_path, ndmin=2)
+    except ValueError:
+        logger.error(
+            'File %s is not valid: allowed float values in formats "X" or "X Y".'
+            % filename_path
+        )
+        raise ProfileFileValueError
 
-    if not first_profile:
+    if profile.size == 0:
         return False
+
+    first_profile = profile[:, 0]
+
+    if np.any(first_profile < 0):
+        logger.error("file %s indicates a negative value" % filename_path)
+        raise ProfileFileNegativeValue
 
     if len(first_profile) != 8760:
         logger.error("file %s does not have 8760 lines" % filename_path)
         raise ProfileFileWrongNumberOfLines
-    return any(first_profile)
+
+    return bool(np.any(first_profile))
 
 
 def _check_profile_file(filename_path):
