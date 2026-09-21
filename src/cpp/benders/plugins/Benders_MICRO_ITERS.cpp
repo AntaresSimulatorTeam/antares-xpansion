@@ -507,7 +507,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                               *solver_log_manager_,
                               _logger,
                               options_.LOG_LEVEL,
-                              options_.PROBLEMS_FORMAT,
+                              options_.PROBLEM_FORMAT,
                               sub_worker);
 
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
@@ -562,7 +562,7 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
           solver_log_manager,
           _logger,
           options.LOG_LEVEL,
-          options.PROBLEMS_FORMAT,
+          options.PROBLEM_FORMAT,
           sub_worker);
     }
 }
@@ -586,7 +586,7 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBase
                                                                            _logger,
                                                                            options.SOLVER_NAME,
                                                                            options.LOG_LEVEL,
-                                                                           options.PROBLEMS_FORMAT,
+                                                                           options.PROBLEM_FORMAT,
                                                                            std::move(
                                                                              constraints_names),
                                                                            _world);

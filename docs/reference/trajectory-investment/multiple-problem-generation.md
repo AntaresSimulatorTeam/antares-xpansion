@@ -99,7 +99,7 @@ This gives the following information :
 
 - ```lp_folder``` is the path to the folder containing the output of the problem generation.
 - ```master_file```is the name of the file containing this node's master problem (no file extension, file extension is
-  implicitely deduced from ```PROBLEMS_FORMAT``` input option later.)
+  implicitely deduced from ```PROBLEM_FORMAT``` input option later.)
 - ```structure_file``` is the corresponding structure file (mostly useful if the name is not the default
   ```structure.txt```).
 - ```weights_file``` points to the weights file outputted by the problem generation if it exists (optional).

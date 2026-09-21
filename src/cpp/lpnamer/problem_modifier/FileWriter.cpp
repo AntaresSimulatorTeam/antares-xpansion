@@ -12,18 +12,18 @@ void FileWriter::Write_problem(Problem* in_prblm, const std::filesystem::path& o
 {
     switch (format_)
     {
-    case ProblemsFormat::MPS_FILE:
+    case ProblemFormat::MPS_FILE:
         in_prblm->write_prob_mps(output_file);
         break;
-    case ProblemsFormat::OPTIMIZED:
+    case ProblemFormat::OPTIMIZED:
         in_prblm->save_prob(output_file);
         break;
     default:
-        throw std::runtime_error(fmt::format("Unknown ProblemsFormat: {}", format_));
+        throw std::runtime_error(fmt::format("Unknown ProblemFormat: {}", format_));
     }
 }
 
-FileWriter::FileWriter(ProblemsFormat format):
+FileWriter::FileWriter(ProblemFormat format):
     format_(format)
 {
 }

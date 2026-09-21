@@ -166,7 +166,7 @@ struct BaseOptions
     std::string MASTER_NAME;
     std::string SOLVER_NAME;
 
-    ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
+    ProblemFormat PROBLEM_FORMAT = ProblemFormat::MPS_FILE;
 };
 
 struct PresolveOptions: public BaseOptions

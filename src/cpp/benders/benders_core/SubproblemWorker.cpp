@@ -18,7 +18,7 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
                                    int log_level,
                                    const SolverLogManager& solver_log_manager,
                                    Logger logger,
-                                   ProblemsFormat format,
+                                   ProblemFormat format,
                                    IBendersProblemProvider* benders_problem_provider):
     Worker(variable_map, std::move(logger))
 {
