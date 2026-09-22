@@ -216,6 +216,7 @@ TEST_F(BendersSubProblemsManagerTest, MatchProblemToId_AssignsSequentialIds)
     coupling_map["beta.mps"] = {{"v", 0}};
     coupling_map["gamma.mps"] = {{"v", 0}};
     auto manager = MakeManager(coupling_map);
+    manager.MatchProblemToId();
 
     const auto& id_map = manager.GetProblemToId();
     ASSERT_EQ(id_map.size(), 3u);
