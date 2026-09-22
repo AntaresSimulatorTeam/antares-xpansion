@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classSolverAbstract.html#a7bae7d1aa559bb2e4197eb3d16e494d7":[45,0,260,10],
 "classSolverAbstract.html#a81e225fed285ec9a4cc9b7eb50e62e58":[45,0,260,24],
 "classSolverAbstract.html#a83670d0db30f639d17878c32c65f379d":[45,0,260,39],
 "classSolverAbstract.html#a844778faddcf63066064c14a92582944":[45,0,260,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classStringManip_1_1IsNot.html":[45,0,17,0],
 "classStringManip_1_1StringUtils.html":[45,0,17,1],
 "classStructureGeneration.html":[45,0,274],
-"classStudyUpdateLinkCapacitiesStrategy.html":[45,0,275],
-"classStudyUpdateLinkParameterStrategy.html":[45,0,276]
+"classStudyUpdateLinkCapacitiesStrategy.html":[45,0,275]
 };

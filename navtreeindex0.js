@@ -27,6 +27,7 @@ var NAVTREEINDEX0 =
 "BendersStructsDatas_8h_source.html":[46,0,0,0,0,1,0,0,0,0,4],
 "Benders__MICRO__ITERS_8h_source.html":[46,0,0,0,0,10,0,0,0,0,0],
 "COIN__common__functions_8h_source.html":[46,0,0,0,6,1,0],
+"CacheProblems_8h_source.html":[46,0,0,0,1,0,0,0,0],
 "CandidateLog_8h_source.html":[46,0,0,0,0,5,0,0,0,0,0],
 "Candidate_8h_source.html":[46,0,0,0,4,3,0,0,0,0,1],
 "CandidatesINIReader_8h_source.html":[46,0,0,0,4,1,0,0,0,0,1],
@@ -102,8 +103,8 @@ var NAVTREEINDEX0 =
 "OuterLoopBiLevel_8h_source.html":[46,0,0,0,0,8,0,0,0,0,3],
 "OuterLoop_8h_source.html":[46,0,0,0,0,8,0,0,0,0,1],
 "OutputWriter_8h_source.html":[46,0,0,0,0,9,0,0,0,0,1],
-"ProblemFormatStream_8h_source.html":[46,0,0,0,1,0,0,0,1],
-"ProblemFormat_8h_source.html":[46,0,0,0,1,0,0,0,0],
+"ProblemFormatStream_8h_source.html":[46,0,0,0,1,0,0,0,2],
+"ProblemFormat_8h_source.html":[46,0,0,0,1,0,0,0,1],
 "ProblemGenerationExeOptions_8h_source.html":[46,0,0,0,4,2,0,0,0,0,3],
 "ProblemGenerationLogger_8h_source.html":[46,0,0,0,4,0,0,0,0,0,1],
 "ProblemGenerationOptions_8h_source.html":[46,0,0,0,4,2,0,0,0,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classBendersBase.html#afa9edac4513a89c829bdd69271bf3b50":[45,0,57,7],
 "classBendersBase.html#affc499db6586868162f6bd7efa8898ea":[45,0,57,1],
 "classBendersBaseDouble.html":[45,0,58],
-"classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f":[45,0,58,2],
-"classBendersBaseDouble.html#abec4d97a2176e8747fdf4c6cbb94a8cd":[45,0,58,1]
+"classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f":[45,0,58,2]
 };

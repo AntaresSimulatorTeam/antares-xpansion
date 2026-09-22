@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"namespacelaunch.html":[43,0,2],
 "namespacelaunch__trajectory.html":[43,0,3],
 "namespacemembers.html":[43,1,0],
 "namespacemembers_func.html":[43,1,1],

@@ -213,7 +213,7 @@ Key <code>Given</code> steps (<code>steps/given.py</code>)</h2>
 <ul>
 <li><code>the study path is "&lt;path&gt;"</code> — copies the study into a temp dir; all later steps operate on that copy</li>
 <li><code>the batch size is &lt;n&gt;</code> — sets <code>BATCH_SIZE</code> in <code>options.json</code></li>
-<li><code>the cache problems level is &lt;n&gt;</code> — sets <code>CACHE_PROBLEMS</code> in <code>options.json</code> (0 = resident subproblems, 1 = reload-from-disk with basis caching, 2 = compact skeleton representation — the last requires the study's <code>sub/</code> layout to actually be in the compact CSV format, not per-subproblem MPS)</li>
+<li><code>the cache problems level is &lt;n&gt;</code> — sets <code>CACHE_PROBLEMS</code> in <code>options.json</code> (<code>NO_CACHE</code> = resident subproblems, <code>PER_SUB</code> = reload-from-disk with basis caching, <code>COMPACT</code> = compact skeleton representation — the last requires the study's <code>sub/</code> layout to actually be in the compact CSV format, not per-subproblem MPS)</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md48"></a>
 CI Requirements</h1>

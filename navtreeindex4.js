@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classStudyUpdateLinkParameterStrategy.html":[45,0,276],
 "classStudyUpdateLinkParameterStrategy.html#a7bc3dca99fbf78003a2438a394afcef0":[45,0,276,0],
 "classStudyUpdateLinkParameterStrategy.html#aa0b97c6cb17e2eb7cacc74eb8c77e5dd":[45,0,276,1],
 "classStudyUpdateStrategy.html":[45,0,279],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html":[45,0,0,11,8],
 "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[43,0,0,5,9],
 "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[45,0,0,11,9],
-"classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[43,0,0,5,10],
-"classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[45,0,0,11,10]
+"classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[43,0,0,5,10]
 };
