@@ -47,41 +47,7 @@ void BendersMpi::InitializeProblems()
 {
     subproblems_manager_->MatchProblemToId();
     _problem_to_id = subproblems_manager_->GetProblemToId();
-    SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS > 0)
-    {
-        int current_problem_id = 0;
-        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
-        {
-            auto process_to_feed = current_problem_id % _world.size();
-            if (process_to_feed != _world.rank())
-            {
-                it = coupling_map_.erase(it);
-            }
-            else
-            {
-                subproblems_manager_->AddSubproblemName(it->first);
-                subs_per_proc.emplace_back(it->first, process_to_feed);
-                ++it;
-            }
-            current_problem_id++;
-        }
-    }
-    else
-    {
-        int current_problem_id = 0;
-        for (const auto& problem: coupling_map_)
-        {
-            if (auto process_to_feed = current_problem_id % _world.size();
-                process_to_feed == _world.rank())
-            {
-                subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
-                subproblems_manager_->AddSubproblem(problem);
-                subproblems_manager_->AddSubproblemName(problem.first);
-            }
-            current_problem_id++;
-        }
-    }
+    auto subs_per_proc = subproblems_manager_->DistributeSubproblems(_world.rank(), _world.size());
 
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);

@@ -127,57 +127,7 @@ void BendersByBatch::BuildBatches()
     }
     BroadCast(batch_collection_, rank_0);
 
-    auto problem_count = 0;
-
-    for (auto& batch: batch_collection_.BatchCollections())
-    {
-        switch (_options.CACHE_PROBLEMS)
-        {
-        case 1:
-        case 2:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
-                    batch_subproblems_manager_->AddSubproblemName(*it);
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        case 0:
-        default:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
-                    batch_subproblems_manager_->AddSubproblem({*it, coupling_map_[*it]});
-                    batch_subproblems_manager_->AddSubproblemName(*it);
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        }
-    }
-    BroadCastVariablesIndices();
-    init_problems_ = false;
+    batch_subproblems_manager_->DistributeSubproblems(batch_collection_, Rank(), WorldSize());
 }
 
 void BendersByBatch::get_subs_per_cut_per_batch()

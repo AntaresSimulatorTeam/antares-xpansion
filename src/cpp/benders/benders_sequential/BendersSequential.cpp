@@ -80,11 +80,7 @@ void BendersSequential::InitializeProblems()
                  benders_problem_provider.get(),
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());
-    for (const auto& problem: coupling_map_)
-    {
-        subproblems_manager_->AddSubproblem(problem);
-        subproblems_manager_->AddSubproblemName(problem.first);
-    }
+    subproblems_manager_->DistributeSubproblems();
     subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS);
 }
 
