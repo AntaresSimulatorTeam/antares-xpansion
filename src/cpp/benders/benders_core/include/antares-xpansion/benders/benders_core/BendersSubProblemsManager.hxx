@@ -80,7 +80,9 @@ public:
                               Logger logger,
                               SolverLogManager& solver_log_manager,
                               std::shared_ptr<Output::OutputWriter> writer,
-                              bool should_parallelize):
+                              bool should_parallelize,
+                              const CouplingMap& coupling_map):
+        coupling_map_(coupling_map),
         data_(data),
         options_(options),
         plugin_(plugin),
@@ -89,6 +91,7 @@ public:
         writer_(std::move(writer)),
         should_parallelize_(should_parallelize)
     {
+        MatchProblemToId();
     }
 
     // ---------------------------------------------------------------

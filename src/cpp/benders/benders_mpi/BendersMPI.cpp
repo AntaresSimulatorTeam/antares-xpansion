@@ -35,7 +35,8 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                                                      output_manager_->GetLogger(),
                                                      solver_log_manager_,
                                                      output_manager_->GetWriter(),
-                                                     shouldParallelize()))
+                                                     shouldParallelize(),
+                                                     coupling_map_))
 {
     subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
@@ -44,7 +45,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 
 void BendersMpi::InitializeProblems()
 {
-    MatchProblemToId();
+    _problem_to_id = subproblems_manager_->GetProblemToId();
     SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS > 0)
     {

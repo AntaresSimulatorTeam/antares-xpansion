@@ -29,13 +29,14 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                                                             output_manager_->GetLogger(),
                                                             solver_log_manager_,
                                                             output_manager_->GetWriter(),
-                                                            shouldParallelize()))
+                                                            shouldParallelize(),
+                                                            coupling_map_))
 {
 }
 
 void BendersSequential::InitializeProblems()
 {
-    MatchProblemToId();
+    _problem_to_id = subproblems_manager_->GetProblemToId();
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
 

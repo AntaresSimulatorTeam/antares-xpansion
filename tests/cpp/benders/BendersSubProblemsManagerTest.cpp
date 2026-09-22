@@ -141,11 +141,11 @@ protected:
     }
 
     /// Create the manager under test. Call after SetUp or after customizing options.
-    BendersSubProblemsManagerSequential MakeManager()
+    BendersSubProblemsManagerSequential MakeManager(const CouplingMap& coupling_map = {})
     {
         return BendersSubProblemsManagerSequential(
             data_, *options_, plugin_, logger_,
-            solver_log_manager_, writer_, should_parallelize_);
+            solver_log_manager_, writer_, should_parallelize_, coupling_map);
     }
 
     /// Create a SubproblemWorker backed by a ControllableSolver.
