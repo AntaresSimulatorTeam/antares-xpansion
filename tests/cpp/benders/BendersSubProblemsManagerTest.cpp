@@ -141,11 +141,17 @@ protected:
     }
 
     /// Create the manager under test. Call after SetUp or after customizing options.
-    BendersSubProblemsManagerSequential MakeManager(const CouplingMap& coupling_map = {})
+    BendersSubProblemsManagerSequential MakeManager()
     {
         return BendersSubProblemsManagerSequential(
             data_, *options_, plugin_, logger_,
-            solver_log_manager_, writer_, should_parallelize_, coupling_map);
+            solver_log_manager_, writer_, should_parallelize_, coupling_map_);
+    }
+
+    BendersSubProblemsManagerSequential MakeManager(const CouplingMap& coupling_map)
+    {
+        coupling_map_ = coupling_map;
+        return MakeManager();
     }
 
     /// Create a SubproblemWorker backed by a ControllableSolver.
@@ -170,6 +176,7 @@ protected:
     SolverLogManager solver_log_manager_;
     std::shared_ptr<Output::OutputWriter> writer_;
     bool should_parallelize_ = false;
+    CouplingMap coupling_map_;
 };
 
 // ---------------------------------------------------------------------------
@@ -199,35 +206,16 @@ TEST_F(BendersSubProblemsManagerTest, AddSubproblemName_AddsToNamesList)
     EXPECT_EQ(names[1], "sub2.mps");
 }
 
-TEST_F(BendersSubProblemsManagerTest, SetCouplingMap_StoresMap)
-{
-    auto manager = MakeManager();
-
-    CouplingMap coupling_map;
-    coupling_map["sub1.mps"] = {{"var1", 0}, {"var2", 1}};
-    coupling_map["sub2.mps"] = {{"var1", 0}};
-    manager.SetCouplingMap(coupling_map);
-
-    const auto& stored = manager.GetCouplingMap();
-    ASSERT_EQ(stored.size(), 2u);
-    EXPECT_EQ(stored.at("sub1.mps").size(), 2u);
-    EXPECT_EQ(stored.at("sub2.mps").size(), 1u);
-}
-
 // ---------------------------------------------------------------------------
 // Tests: Problem-to-ID Mapping
 // ---------------------------------------------------------------------------
 TEST_F(BendersSubProblemsManagerTest, MatchProblemToId_AssignsSequentialIds)
 {
-    auto manager = MakeManager();
-
     CouplingMap coupling_map;
     coupling_map["alpha.mps"] = {{"v", 0}};
     coupling_map["beta.mps"] = {{"v", 0}};
     coupling_map["gamma.mps"] = {{"v", 0}};
-    manager.SetCouplingMap(coupling_map);
-
-    manager.MatchProblemToId();
+    auto manager = MakeManager(coupling_map);
 
     const auto& id_map = manager.GetProblemToId();
     ASSERT_EQ(id_map.size(), 3u);
@@ -240,8 +228,7 @@ TEST_F(BendersSubProblemsManagerTest, MatchProblemToId_AssignsSequentialIds)
 
 TEST_F(BendersSubProblemsManagerTest, ProblemToId_ThrowsOnUnknownName)
 {
-    auto manager = MakeManager();
-    manager.MatchProblemToId(); // empty coupling map → empty id map
+    auto manager = MakeManager(); // empty coupling map → empty id map
 
     EXPECT_THROW(manager.ProblemToId("unknown"), std::out_of_range);
 }

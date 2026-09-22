@@ -36,6 +36,7 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
 
 void BendersSequential::InitializeProblems()
 {
+    subproblems_manager_->MatchProblemToId();
     _problem_to_id = subproblems_manager_->GetProblemToId();
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
@@ -79,7 +80,6 @@ void BendersSequential::InitializeProblems()
                  benders_problem_provider.get(),
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());
-    subproblems_manager_->SetCouplingMap(coupling_map_);
     for (const auto& problem: coupling_map_)
     {
         subproblems_manager_->AddSubproblem(problem);

@@ -54,7 +54,7 @@ class BendersSubProblemsManager
 protected:
     // Subproblem storage
     SubproblemsMapPtr subproblem_map_;
-    CouplingMap coupling_map_;
+    const CouplingMap& coupling_map_;
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
     StrVector subproblems_;
@@ -91,7 +91,6 @@ public:
         writer_(std::move(writer)),
         should_parallelize_(should_parallelize)
     {
-        MatchProblemToId();
     }
 
     // ---------------------------------------------------------------
@@ -555,16 +554,6 @@ public:
     std::shared_ptr<SolverAbstract> GetFactorySolver() const
     {
         return subproblem_worker_factory_ ? subproblem_worker_factory_->GetSolver() : nullptr;
-    }
-
-    void SetCouplingMap(const CouplingMap& coupling_map)
-    {
-        coupling_map_ = coupling_map;
-    }
-
-    CouplingMap& GetCouplingMap()
-    {
-        return coupling_map_;
     }
 
     const CouplingMap& GetCouplingMap() const

@@ -45,6 +45,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 
 void BendersMpi::InitializeProblems()
 {
+    subproblems_manager_->MatchProblemToId();
     _problem_to_id = subproblems_manager_->GetProblemToId();
     SubProblemNamesInCut subs_per_proc;
     if (_options.CACHE_PROBLEMS > 0)
@@ -81,7 +82,6 @@ void BendersMpi::InitializeProblems()
             current_problem_id++;
         }
     }
-    subproblems_manager_->SetCouplingMap(coupling_map_);
 
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);

@@ -88,6 +88,7 @@ void BendersByBatch::BroadCastVariablesIndices()
 
 void BendersByBatch::InitializeProblems()
 {
+    batch_subproblems_manager_->MatchProblemToId();
     _problem_to_id = batch_subproblems_manager_->GetProblemToId();
     BuildBatches();
     BuildMasterProblem();
@@ -175,8 +176,6 @@ void BendersByBatch::BuildBatches()
         }
         }
     }
-    batch_subproblems_manager_->SetCouplingMap(coupling_map_);
-
     BroadCastVariablesIndices();
     init_problems_ = false;
 }
