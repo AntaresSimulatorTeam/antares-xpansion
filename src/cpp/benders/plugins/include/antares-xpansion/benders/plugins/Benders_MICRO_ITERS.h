@@ -70,7 +70,8 @@ public:
     */
     Benders_MICRO_ITERS(const SimulationOptions& options,
                         const CouplingMap& coupling_map,
-                        mpi::communicator* world);
+                        mpi::communicator* world,
+                        const Logger& logger);
 
     /*
         Default destrucor
@@ -81,7 +82,6 @@ public:
         Implementation of benders start call back
     */
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                        const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
                         std::shared_ptr<SolverAbstract> sub_problem_solver) override;

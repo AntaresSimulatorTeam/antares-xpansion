@@ -19,8 +19,10 @@
 
 Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                          const CouplingMap& coupling_map,
-                                         mpi::communicator* world):
-    options_(options)
+                                         mpi::communicator* world,
+                                         const Logger& logger):
+    options_(options),
+    _logger(logger)
 {
     coupling_map_ = coupling_map;
 
@@ -226,7 +228,6 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 }
 
 void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                                         const Logger& logger,
                                          const BendersBaseOptions& options,
                                          const SolverLogManager& solver_log_manager,
                                          std::shared_ptr<SolverAbstract> sub_problem_solver)
@@ -242,7 +243,6 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
         // coefficients differ)
         InitialSubProblemSolverSize_ = subproblem_map.begin()->second->get_problem_row_num();
     }
-    _logger = logger;
     solver_log_manager_ = &solver_log_manager;
 
     switch (options.CACHE_PROBLEMS)
