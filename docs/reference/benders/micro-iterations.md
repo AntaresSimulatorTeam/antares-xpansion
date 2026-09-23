@@ -97,6 +97,15 @@ violation. Compared to a standard study, the following elements must be added:
     problem enriched with every constraint from the right-hand side is
     equivalent to solving the original complete problem.
 
+- **A `micro_iterations_config.json` file** — a JSON configuration file placed
+  in the study's input root directory. It contains two keys:
+  `warm_start` (boolean), which controls whether each Benders iteration starts
+  its subproblems with the constraints that were injected during the previous
+  Benders iteration's solve–check–inject sequence rather than reverting to the
+  minimal relaxation; and `plugin_lib_path` (string), which provides the path
+  to the external shared library that is dynamically loaded at runtime to
+  evaluate constraint violations.
+
 - **A `plugin_inputs` folder** — this folder contains the artefacts needed to
   determine, from a subproblem solution, which of the removed constraints are
   violated. In particular, it can contain an external library that is

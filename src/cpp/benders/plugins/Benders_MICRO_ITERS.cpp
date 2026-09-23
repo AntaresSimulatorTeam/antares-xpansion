@@ -35,9 +35,8 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
-    std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
-    auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path;
+    auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path_;
 #ifdef _WIN32
     handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
 #else
@@ -156,21 +155,40 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
                                    &errors))
         {
             std::ostringstream oss;
-            oss << "failed to open : " << mirco_iterations_options_path.string() << "\n"
+            oss << "failed to parse : " << mirco_iterations_options_path.string() << "\n"
                 << "Errors: " << errors;
             _logger->display_message(oss.str());
             exit(EXIT_FAILURE);
         }
 
+        if (config.isMember("warm_start") && config["warm_start"].isBool())
+        {
+            warm_start_ = config["warm_start"].asBool();
+        }
+        else
+        {
+            warm_start_ = false;
+            _logger->display_message("warm start value should be set as a boolean value in the "
+                                     "config. By default warm_start = false");
+        }
+
+        if (config.isMember("plugin_lib_path"))
+        {
+            plugin_lib_path_ = std::filesystem::path(config["plugin_lib_path"].asString());
+        }
+        else
+        {
+            _logger->display_message("plugin_lib_path is not set in micro_iterations_config.json");
+            _world->abort(EXIT_FAILURE);
+        }
+
         for (const auto& key: config.getMemberNames())
         {
-            if (key == "warm_start")
+            if (key == "warm_start" || "plugin_lib_path")
             {
-                warm_start_ = config[key].asBool();
-            }
-            else
-            {
-                micro_iterations_config_[key] = config[key].asString();
+                std::ostringstream oss;
+                oss << key << " is not micro_iterations parameter";
+                _logger->display_message(oss.str());
             }
         }
     }
