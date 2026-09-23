@@ -70,7 +70,8 @@ public:
     */
     Benders_MICRO_ITERS(const SimulationOptions& options,
                         const CouplingMap& coupling_map,
-                        mpi::communicator* world);
+                        mpi::communicator* world,
+                        const Logger& logger);
 
     /*
         Default destrucor
@@ -81,7 +82,6 @@ public:
         Implementation of benders start call back
     */
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                        const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
                         std::shared_ptr<SolverAbstract> sub_problem_solver) override;
@@ -218,7 +218,6 @@ private:
 
     std::vector<std::string> sub_names_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
-    std::map<std::string, std::string> micro_iterations_config_;
     std::vector<std::string> variables_to_follow_;
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
@@ -227,6 +226,7 @@ private:
     const SolverLogManager* solver_log_manager_ = nullptr;
     Logger _logger;
     bool warm_start_;
+    std::filesystem::path plugin_lib_path_;
     std::shared_ptr<SkeletonConstraintSetLoader> constraint_set_loader_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
     std::shared_ptr<SolverAbstract> sub_problem_solver_;
