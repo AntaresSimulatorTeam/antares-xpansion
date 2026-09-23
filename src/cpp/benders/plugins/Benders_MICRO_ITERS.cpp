@@ -184,7 +184,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 
         for (const auto& key: config.getMemberNames())
         {
-            if (key == "warm_start" || "plugin_lib_path")
+            if (key == "warm_start" || key == "plugin_lib_path")
             {
                 std::ostringstream oss;
                 oss << key << " is not micro_iterations parameter";
