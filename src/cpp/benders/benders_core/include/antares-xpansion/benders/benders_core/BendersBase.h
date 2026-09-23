@@ -232,7 +232,6 @@ protected:
     void set_x_out(const Point& x0);
     [[nodiscard]] double GetSubproblemCost() const;
     void SetSubproblemCost(const double& subproblem_cost);
-    bool IsResumeMode() const;
 
     std::filesystem::path LastIterationFile() const
     {
