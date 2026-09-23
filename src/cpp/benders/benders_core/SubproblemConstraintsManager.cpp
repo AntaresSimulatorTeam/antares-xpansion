@@ -18,7 +18,7 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromConstraintsFil
   const SolverLogManager& solver_log_manager,
   Logger& logger,
   int log_level,
-  ProblemsFormat format,
+  ProblemFormat format,
   const std::shared_ptr<SubproblemWorker>& subproblem_worker)
 {
     SkeletonSolverLoader loader(logger);

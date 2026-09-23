@@ -85,7 +85,7 @@ auto ConfigurationManager::Mode() const -> SimulationInputMode
                                                       LOGLOCATION);
 }
 
-auto ConfigurationManager::Format() const -> ProblemsFormat
+auto ConfigurationManager::Format() const -> ProblemFormat
 {
     return format_;
 }

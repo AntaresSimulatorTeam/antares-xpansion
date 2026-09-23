@@ -616,9 +616,9 @@ class ConfigLoader(XpansionSettingsReader):
         options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
 
         if self.gems_candidates():
-            options_values[OptimisationKeys.problems_format_key()] = "mps"
+            options_values[OptimisationKeys.problem_format_key()] = "mps"
         else:
-            options_values[OptimisationKeys.problems_format_key()] = self.problem_format()
+            options_values[OptimisationKeys.problem_format_key()] = self.problem_format()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
