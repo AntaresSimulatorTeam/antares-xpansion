@@ -47,7 +47,7 @@ The following attributes are defined in the `options.json` file:
 |OUTPUTROOT | `.` |  Path to the folder where output files should be printed  | `boolean` |
 |OUTER_LOOP_OPTION_FILE | `adequacy_criterion.yml` |  Outer Loop Options file  |`string`|
 |AREA_FILE | `area.txt` |  Area file used to get areas on which external criteria (LOLD, UnsuppliedEnergy) are computed |`string` |
-|CACHE_PROBLEMS | `0` |  Subproblem caching mode: `0` = all problems loaded in memory (classic mode), `1` = subproblems stored in disk cache rather than loaded in memory (reduces RAM usage at the expense of a slight CPU time performance reduction), `2` = disk-optimized mode using a shared skeleton problem with per-subproblem CSV data  | `0`, `1` or `2` |
+|CACHE_PROBLEMS | `NO_CACHE` |  Subproblem caching mode: `NO_CACHE` = all problems loaded in memory (classic mode), `PER_SUB` = subproblems stored in disk cache rather than loaded in memory (reduces RAM usage at the expense of a slight CPU time performance reduction), `COMPACT` = disk-optimized mode using a shared skeleton problem with per-subproblem CSV data  | `NO_CACHE`, `PER_SUB` or `COMPACT` |
 |PROBLEMS_FORMAT | `MPS_FILE` |  Format of the problems |`MPS_FILE` or `OPTIMIZED` |
 |MASTER_SOLUTION_TOLERANCE | `1e-4` |  Tolerance for rounding the solution variables of the master problem (to avoid subproblems infeasibilities) | `double` > 0|
 |CUT_COEFFICIENT_TOLERANCE | `5e-3` |  Cofficient under which cuts coefficients and right-hand sides are considered to be zero | `double` > 0|
