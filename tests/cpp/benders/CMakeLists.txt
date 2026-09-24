@@ -2,7 +2,6 @@ add_executable(benders_sequential_test)
 target_sources(benders_sequential_test
         PRIVATE
         benders_sequential_test.cpp
-        BendersCutsManagerTest.cpp
         BendersByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
@@ -61,6 +60,10 @@ add_executable(benders_core_classes_test)
 target_sources(benders_core_classes_test
         PRIVATE
         BendersSubProblemsManagerTest.cpp
+        BendersOuterLoopManagerTest.cpp
+        BendersOutputManagerTest.cpp
+        BendersMasterManagerTest.cpp
+        BendersCutsManagerTest.cpp
 )
 
 target_link_libraries(benders_core_classes_test

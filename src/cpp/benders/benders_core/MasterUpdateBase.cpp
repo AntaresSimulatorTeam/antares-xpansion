@@ -1,24 +1,25 @@
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/BendersMasterManager.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 
 using namespace Outerloop;
 
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders,
+MasterUpdateBase::MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
                                    double tau,
                                    double outer_loop_stopping_threshold):
-    MasterUpdateBase(std::move(benders),
+    MasterUpdateBase(std::move(master_manager),
                      tau,
                      outer_loop_stopping_threshold,
                      "Min_Investment_Constraint")
 {
 }
 
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders,
+MasterUpdateBase::MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
                                    double tau,
                                    double outer_loop_stopping_threshold,
                                    const std::string& name):
-    benders_(std::move(benders)),
+    master_manager_(std::move(master_manager)),
     outer_loop_stopping_threshold_(outer_loop_stopping_threshold),
     min_invest_constraint_name_(name)
 {
@@ -46,9 +47,9 @@ bool MasterUpdateBase::Update(double lambda_min, double lambda_max)
 
 void MasterUpdateBase::UpdateConstraints()
 {
-    if (!benders_->MasterIsEmpty() && additional_constraint_index_ > -1)
+    if (!master_manager_->IsEmpty() && additional_constraint_index_ > -1)
     {
-        benders_->MasterChangeRhs(additional_constraint_index_, lambda_);
+        master_manager_->ChangeRhs(additional_constraint_index_, lambda_);
     }
     else
     {
@@ -62,8 +63,8 @@ void MasterUpdateBase::UpdateConstraints()
  */
 void MasterUpdateBase::AddMinInvestConstraint()
 {
-    auto master_variables = benders_->MasterVariables();
-    const auto obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
+    auto master_variables = master_manager_->GetVariableMap();
+    const auto obj_coeff = master_manager_->GetObjectiveFunctionCoeffs();
     auto newnz = master_variables.size();
     int newrows = 1;
     std::vector<char> rtype(newrows, 'G');
@@ -85,13 +86,13 @@ void MasterUpdateBase::AddMinInvestConstraint()
     {
         std::vector<std::string> row_names(newrows, min_invest_constraint_name_);
 
-        benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval, row_names);
+        master_manager_->AddRows(rtype, rhs, {}, matstart, mclind, matval, row_names);
     }
     else
     {
-        benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
+        master_manager_->AddRows(rtype, rhs, {}, matstart, mclind, matval);
     }
-    additional_constraint_index_ = benders_->MasterGetnrows() - 1;
+    additional_constraint_index_ = master_manager_->GetNrows() - 1;
 }
 
 double MasterUpdateBase::Rhs() const

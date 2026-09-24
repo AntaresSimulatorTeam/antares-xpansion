@@ -300,7 +300,7 @@ public:
 
         for (auto& [sub, variables]: nameAndVariableMap)
         {
-            double slave_weights = SubproblemWeight(data_.nsubproblem, sub);
+            double slave_weights = SubproblemWeight(data_.control.nsubproblem, sub);
 
             auto subproblem_worker = subproblem_worker_factory_
                                        ->CreateSubSolverAbstract(sub, variables, slave_weights);
@@ -328,7 +328,7 @@ public:
                          const std::function<void()>& post_reset_hook)
     {
         Timer subproblem_timer;
-        worker->fix_to(data_.x_cut);
+        worker->fix_to(data_.solution.x_cut);
         plugin_->OnBendersSubResolutionStart(worker, name);
         // with this hook we try to avoid duplicating the whole bloc since the diffence is just the
         // overhead of the method finally so for every special case we just set a lambda function
@@ -359,7 +359,7 @@ public:
                 plugin_->OnBendersMicroIterationEnd(name,
                                                     added_rows,
                                                     std::to_string(elapsed_microseconds),
-                                                    data_.it,
+                                                    data_.control.it,
                                                     num_micro_iter);
             }
         }
@@ -390,7 +390,7 @@ public:
             GetSubproblemPath(kvp.first));
         subproblem_map_[kvp.first] = std::make_shared<SubproblemWorker>(
           kvp.second,
-          SubproblemWeight(data_.nsubproblem, kvp.first),
+          SubproblemWeight(data_.control.nsubproblem, kvp.first),
           options_.SOLVER_NAME,
           options_.LOG_LEVEL,
           solver_log_manager_,
@@ -411,7 +411,8 @@ public:
           benders_problem_provider = std::make_shared<BendersProblemFromFile>(
             GetSubproblemPath(kvp.first));
         return std::make_shared<SubproblemWorker>(kvp.second,
-                                                  SubproblemWeight(data_.nsubproblem, kvp.first),
+                                                  SubproblemWeight(data_.control.nsubproblem,
+                                                                   kvp.first),
                                                   options_.SOLVER_NAME,
                                                   options_.LOG_LEVEL,
                                                   solver_log_manager_,

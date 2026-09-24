@@ -33,9 +33,9 @@ protected:
     virtual void Run();
 
 protected:
-    BendersSubProblemsManagerSequential subproblems_manager_;
+    std::shared_ptr<BendersSubProblemsManagerSequential> subproblems_manager_;
 
 private:
     ArchiveReader reader_;
-    BendersCutsManagerSequential cuts_manager_;
+    std::shared_ptr<BendersCutsManagerSequential> cuts_manager_;
 };

@@ -33,14 +33,14 @@ void BendersCutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(world_, subproblem_data_map, gathered_subproblem_map, rank_0_);
-    data_.subproblems_walltime = walltime.elapsed();
+    data_.cuts.subproblems_walltime = walltime.elapsed();
     double cumulative_subproblems_timer_per_iter(0);
     mpi::reduce(world_,
-                data_.subproblems_cputime,
+                data_.cuts.subproblems_cputime,
                 cumulative_subproblems_timer_per_iter,
                 std::plus<double>(),
                 rank_0_);
-    data_.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter;
+    data_.cuts.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter;
 
     MasterBuildCuts(gathered_subproblem_map);
 }
@@ -48,18 +48,18 @@ void BendersCutsManagerMpi::GatherCuts(const SubProblemDataMap& subproblem_data_
 void BendersCutsManagerMpi::MasterBuildCuts(
   const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
-    data_.subproblem_cost = 0;
+    data_.cuts.subproblem_cost = 0;
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, data_);
 
-    data_.ub = 0;
+    data_.cuts.ub = 0;
 
     if (world_.rank() == rank_0_)
     {
         BuildAllAggregatedCuts(subproblem_per_cut_indices_,
                                gathered_subproblem_map,
                                problem_to_id_,
-                               data_.ub,
-                               data_.x_cut,
+                               data_.cuts.ub,
+                               data_.solution.x_cut,
                                relevantIterationData_.last._cut_trace,
                                master_);
     }

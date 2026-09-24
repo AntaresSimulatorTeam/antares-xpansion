@@ -15,13 +15,13 @@ BendersCutsManagerSequential::BendersCutsManagerSequential(
 void BendersCutsManagerSequential::GatherAndBuildCutsImpl(
   const SubProblemDataMap& subproblem_data_map)
 {
-    data_.ub = 0;
+    data_.cuts.ub = 0;
     std::vector<SubProblemDataMap> gathered{subproblem_data_map};
     BuildAllAggregatedCuts(subproblem_per_cut_indices_,
                            gathered,
                            problem_to_id_,
-                           data_.ub,
-                           data_.x_cut,
+                           data_.cuts.ub,
+                           data_.solution.x_cut,
                            relevantIterationData_.last._cut_trace,
                            master_);
 }

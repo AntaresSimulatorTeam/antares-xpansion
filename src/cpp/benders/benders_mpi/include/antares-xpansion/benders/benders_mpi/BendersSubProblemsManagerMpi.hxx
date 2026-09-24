@@ -17,7 +17,7 @@ public:
                                          const SubproblemWorkerPtr& worker)
         {
             std::vector<double> solution = worker->get_solution();
-            criterion.ComputeCriterion(SubproblemWeight(data.nsubproblem, name),
+            criterion.ComputeCriterion(SubproblemWeight(data.control.nsubproblem, name),
                                        solution,
                                        subproblem_data.criteria,
                                        subproblem_data.patterns_values);

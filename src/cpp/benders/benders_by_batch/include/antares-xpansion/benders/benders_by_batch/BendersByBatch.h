@@ -61,8 +61,8 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
-    BendersCutsManagerByBatch batch_cuts_manager_;
-    BendersSubProblemsManagerByBatch batch_subproblems_manager_;
+    std::shared_ptr<BendersCutsManagerByBatch> batch_cuts_manager_;
+    std::shared_ptr<BendersSubProblemsManagerByBatch> batch_subproblems_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

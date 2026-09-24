@@ -26,7 +26,7 @@ void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(world_, subproblem_data_map, gathered_subproblem_map, rank_0_);
-    data_.subproblems_walltime = walltime.elapsed();
+    data_.cuts.subproblems_walltime = walltime.elapsed();
 
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map, data_);
 
@@ -37,8 +37,8 @@ void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(
         BuildAllAggregatedCuts(subproblems_per_cut,
                                gathered_subproblem_map,
                                problem_to_id_,
-                               data_.ub,
-                               data_.x_cut,
+                               data_.cuts.ub,
+                               data_.solution.x_cut,
                                relevantIterationData_.last._cut_trace,
                                master_);
     }

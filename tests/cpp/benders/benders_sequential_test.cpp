@@ -38,11 +38,18 @@ public:
     void init_data() override
     {
         BendersBase::init_data();
-        _data.stop = parametrized_stop;
-        _data.nsubproblem = parametrized_nsubproblem;
-        _data.lb = parametrized_lb;
-        _data.best_ub = parametrized_best_ub;
-        _data.it = parametrized_it;
+        _data.control.stop = parametrized_stop;
+        _data.control.nsubproblem = parametrized_nsubproblem;
+        _data.master.lb = parametrized_lb;
+        _data.control.best_ub = parametrized_best_ub;
+        _data.control.it = parametrized_it;
+        relevantIterationData_.last._x_in = std::make_shared<Point>();
+        relevantIterationData_.last._x_out = std::make_shared<Point>();
+        relevantIterationData_.last._x_cut = std::make_shared<Point>();
+        relevantIterationData_.last._min_invest = std::make_shared<Point>();
+        relevantIterationData_.last._max_invest = std::make_shared<Point>();
+        relevantIterationData_.last._valid = true;
+        relevantIterationData_.best = relevantIterationData_.last;
     }
 
     [[nodiscard]] WorkerMasterPtr get_master() const override
@@ -60,7 +67,7 @@ public:
 
     void compute_ub() override
     {
-        _data.ub = parametrized_ub;
+        _data.cuts.ub = parametrized_ub;
     }
 
     CurrentIterationData get_data() const
@@ -72,19 +79,7 @@ public:
     {
     }
 
-    void EndWritingInOutputFile() const override
-    {
-    }
-
-    void UpdateTrace() override
-    {
-    }
-
-    void post_run_actions() const override
-    {
-    }
-
-    void SaveCurrentBendersData() override
+    void post_run_actions() override
     {
     }
 
@@ -94,7 +89,7 @@ public:
 
     SubproblemsMapPtr problems() const
     {
-        return subproblems_manager_.GetSubProblemMap();
+        return subproblems_manager_->GetSubProblemMap();
     }
 
     void DeactivateIntegrityConstraints() const override
@@ -131,7 +126,7 @@ public:
     {
         parametrized_stop = stop;
         parametrized_nsubproblem = nsubproblem;
-        _data.nsubproblem = nsubproblem;
+        _data.control.nsubproblem = nsubproblem;
     }
 
     void set_bounds(double lb, double best_ub)
@@ -142,14 +137,14 @@ public:
 
     void set_bestx(Point x_out, Point x_in)
     {
-        _data.x_out = x_out;
-        _data.x_in = x_in;
+        _data.solution.x_out = x_out;
+        _data.solution.x_in = x_in;
     }
 
     void set_invest_bounds(Point min_invest, Point max_invest)
     {
-        _data.min_invest = min_invest;
-        _data.max_invest = max_invest;
+        _data.solution.min_invest = min_invest;
+        _data.solution.max_invest = max_invest;
     }
 
     void set_ub(double ub)
@@ -177,6 +172,7 @@ protected:
     void SetUp() override
     {
         logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
+        mathLoggerDriver = std::make_shared<MathLoggerDriver>();
         writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                       std::tmpnam(nullptr));
         original_dir = std::filesystem::current_path();
@@ -387,7 +383,7 @@ TEST_F(BendersSequentialTest,
     EXPECT_EQ(benders._reactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPostRelaxationCall, true);
 
-    EXPECT_EQ(benders.get_data().it, expec_benders_run_it);
+    EXPECT_EQ(benders.get_data().control.it, expec_benders_run_it);
 }
 
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation)
@@ -411,8 +407,8 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation)
     EXPECT_EQ(benders._reactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPostRelaxationCall, true);
 
-    EXPECT_EQ(benders.get_data().best_ub, 1e+20);
-    EXPECT_EQ(benders.get_data().best_it, 0);
+    EXPECT_EQ(benders.get_data().control.best_ub, 1e+20);
+    EXPECT_EQ(benders.get_data().control.best_it, 0);
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement)
@@ -458,11 +454,11 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement)
     EXPECT_EQ(benders._reactivateIntConstraintCall, false);
     EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 
-    EXPECT_EQ(benders.get_data().x_out, x_out);
-    EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
-    EXPECT_EQ(benders.get_data().x_in, x_in);
-    EXPECT_EQ(benders.get_data().best_ub, init_ub);
-    EXPECT_EQ(benders.get_data().best_it, 0);
+    EXPECT_EQ(benders.get_data().solution.x_out, x_out);
+    EXPECT_EQ(benders.get_data().solution.x_cut, expec_x_cut);
+    EXPECT_EQ(benders.get_data().solution.x_in, x_in);
+    EXPECT_EQ(benders.get_data().control.best_ub, init_ub);
+    EXPECT_EQ(benders.get_data().control.best_it, 0);
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement)
@@ -509,11 +505,11 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement)
     EXPECT_EQ(benders._reactivateIntConstraintCall, false);
     EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 
-    EXPECT_EQ(benders.get_data().x_out, x_out);
-    EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
-    EXPECT_EQ(benders.get_data().x_in, expec_x_cut);
-    EXPECT_EQ(benders.get_data().best_ub, current_ub);
-    EXPECT_EQ(benders.get_data().best_it, current_it + 1);
+    EXPECT_EQ(benders.get_data().solution.x_out, x_out);
+    EXPECT_EQ(benders.get_data().solution.x_cut, expec_x_cut);
+    EXPECT_EQ(benders.get_data().solution.x_in, expec_x_cut);
+    EXPECT_EQ(benders.get_data().control.best_ub, current_ub);
+    EXPECT_EQ(benders.get_data().control.best_it, current_it + 1);
 }
 
 TEST_F(BendersSequentialTest, IntegersAndBinariesAreRelaxedAfterDeactivation)
