@@ -28,11 +28,11 @@ Scenario Outline: Benders converges to the same solution across batch and cache 
 
     Examples:
       | cache_level | batch_size | procs |
-      | 0           | 0          | 1     |
-      | 0           | 0          | 5     |
-      | 0           | 5          | 1     |
-      | 0           | 5          | 3     |
-      | 1           | 0          | 1     |
-      | 1           | 0          | 5     |
-      | 1           | 5          | 1     |
-      | 1           | 5          | 3     |
+      | NO_CACHE    | 0          | 1     |
+      | NO_CACHE    | 0          | 5     |
+      | NO_CACHE    | 5          | 1     |
+      | NO_CACHE    | 5          | 3     |
+      | PER_SUB     | 0          | 1     |
+      | PER_SUB     | 0          | 5     |
+      | PER_SUB     | 5          | 1     |
+      | PER_SUB     | 5          | 3     |

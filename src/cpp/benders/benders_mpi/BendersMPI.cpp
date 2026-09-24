@@ -46,7 +46,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS > 0)
+    if (_options.CACHE_PROBLEMS != CacheProblems::NO_CACHE)
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)

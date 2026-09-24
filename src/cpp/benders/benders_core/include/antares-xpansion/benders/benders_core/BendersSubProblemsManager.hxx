@@ -164,13 +164,13 @@ public:
     {
         switch (options_.CACHE_PROBLEMS)
         {
-        case 0:
+        case CacheProblems::NO_CACHE:
             GetSubproblemCutFast(subproblem_data_map, fast_begin_hook, post_solve_hook);
             break;
-        case 1:
+        case CacheProblems::PER_SUB:
             GetSubproblemCutCache(subproblem_data_map, cache_begin_hook, post_solve_hook);
             break;
-        case 2:
+        case CacheProblems::COMPACT:
             GetCompactInMemCuts(subproblem_data_map, cache_begin_hook, post_solve_hook);
             break;
         default:
@@ -533,9 +533,10 @@ public:
     }
 
     // we need it in the cache problem == 2 to create the skeleton
-    void BuildSubproblemWorkerFactory(int cache_problems, boost::mpi::communicator* world = nullptr)
+    void BuildSubproblemWorkerFactory(CacheProblems cache_problems,
+                                      boost::mpi::communicator* world = nullptr)
     {
-        if (cache_problems == 2)
+        if (cache_problems == CacheProblems::COMPACT)
         {
             subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(
               options_.INPUTROOT,
