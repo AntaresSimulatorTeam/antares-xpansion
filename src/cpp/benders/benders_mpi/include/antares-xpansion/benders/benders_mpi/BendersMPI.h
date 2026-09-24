@@ -61,8 +61,6 @@ private:
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
     BendersCutsManagerMpi cuts_manager_;
-
-protected:
     BendersSubProblemsManagerMpi subproblems_manager_;
 
 protected:

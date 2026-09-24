@@ -103,7 +103,7 @@ static BendersBaseOptions MakeDefaultOptions()
     solver_opts.SLAVE_WEIGHT_VALUE = 1.0;
 
     BendersBaseOptions opts(solver_opts);
-    opts.CACHE_PROBLEMS = 0; // fast path
+    opts.CACHE_PROBLEMS = CacheProblems::NO_CACHE; // fast path
     opts.MICRO_ITERATIONS = false;
     opts.BATCH_SIZE = 0;
     return opts;
@@ -284,7 +284,7 @@ TEST_F(BendersSubProblemsManagerTest, SubproblemWeight_CustomWeights)
 // ---------------------------------------------------------------------------
 TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DispatchesToFast_WhenCache0)
 {
-    options_->CACHE_PROBLEMS = 0;
+    options_->CACHE_PROBLEMS = CacheProblems::NO_CACHE;
     auto manager = MakeManager();
 
     bool fast_called = false;
@@ -312,7 +312,7 @@ TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DispatchesToFast_WhenCach
 
 TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DispatchesToCache_WhenCache1)
 {
-    options_->CACHE_PROBLEMS = 1;
+    options_->CACHE_PROBLEMS = CacheProblems::PER_SUB;
     auto manager = MakeManager();
 
     bool fast_called = false;
@@ -340,7 +340,7 @@ TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DispatchesToCache_WhenCac
 
 TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DispatchesToSkeleton_WhenCache2)
 {
-    options_->CACHE_PROBLEMS = 2;
+    options_->CACHE_PROBLEMS = CacheProblems::COMPACT;
     auto manager = MakeManager();
 
     bool fast_called = false;
@@ -365,32 +365,6 @@ TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DispatchesToSkeleton_When
 
     EXPECT_FALSE(fast_called);
     EXPECT_TRUE(cache_called);
-}
-
-TEST_F(BendersSubProblemsManagerTest, GetSubproblemCut_DoesNothing_WhenCacheUnknown)
-{
-    options_->CACHE_PROBLEMS = 99;
-    auto manager = MakeManager();
-
-    bool any_called = false;
-
-    FastBeginHook fast_hook = [&any_called]()
-    {
-        any_called = true;
-        return std::vector<std::pair<std::string, SubproblemWorkerPtr>>{};
-    };
-    CacheBeginHook cache_hook = [&any_called]()
-    {
-        any_called = true;
-        return std::vector<std::pair<std::string, VariableMap>>{};
-    };
-    PostSolveHook post_hook = [](const std::string&, PlainData::SubProblemData&,
-                                 const SubproblemWorkerPtr&) {};
-
-    SubProblemDataMap result;
-    manager.GetSubproblemCut(result, fast_hook, cache_hook, post_hook);
-
-    EXPECT_FALSE(any_called);
 }
 
 // ---------------------------------------------------------------------------
@@ -580,7 +554,7 @@ TEST_F(BendersSubProblemsManagerTest, GetCompactInMemCuts_SolvesViaFactory)
 
     auto manager = MakeManager();
     manager.AddSubproblemName("sub1.mps");
-    manager.BuildSubproblemWorkerFactory(2);
+    manager.BuildSubproblemWorkerFactory(CacheProblems::COMPACT);
 
     VariableMap vars = {{"x1", 0}, {"x2", 1}};
     CacheBeginHook hook = [&]()
