@@ -47,7 +47,7 @@ class InputParameters:
     allow_run_as_root: bool
     memory: bool
     run_presolve: bool
-    cache_problems: bool
+    cache_problems: str
     problem_format: str
 
 
@@ -194,7 +194,7 @@ class XpansionConfigConstants:
         return 0
 
     def cache_problems_default_value(self):
-        return False
+        return "NO_CACHE"
 
     def master_solution_tolerance_default_value(self):
         return 1e-4

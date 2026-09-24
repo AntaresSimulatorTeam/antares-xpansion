@@ -12,7 +12,7 @@ public:
     SubProblemNamesInCut DistributeSubproblemsImpl(int rank, int world_size)
     {
         SubProblemNamesInCut subs_per_proc;
-        if (options_.CACHE_PROBLEMS > 0)
+        if (options_.CACHE_PROBLEMS != CacheProblems::NO_CACHE)
         {
             int current_problem_id = 0;
             for (auto it = coupling_map_.begin(); it != coupling_map_.end();)

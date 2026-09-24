@@ -128,6 +128,7 @@ void BendersByBatch::BuildBatches()
     BroadCast(batch_collection_, rank_0);
 
     batch_subproblems_manager_->DistributeSubproblems(batch_collection_, Rank(), WorldSize());
+
 }
 
 void BendersByBatch::get_subs_per_cut_per_batch()

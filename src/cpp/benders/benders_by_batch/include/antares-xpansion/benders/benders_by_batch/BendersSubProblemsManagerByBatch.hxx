@@ -21,8 +21,8 @@ public:
         {
             switch (options_.CACHE_PROBLEMS)
             {
-            case 1:
-            case 2:
+            case CacheProblems::PER_SUB:
+            case CacheProblems::COMPACT:
             {
                 for (auto it = batch.sub_problem_names.begin();
                      it != batch.sub_problem_names.end();)
@@ -42,7 +42,7 @@ public:
                 batch.sub_problem_names.shrink_to_fit();
                 break;
             }
-            case 0:
+            case CacheProblems::NO_CACHE:
             default:
             {
                 for (auto it = batch.sub_problem_names.begin();

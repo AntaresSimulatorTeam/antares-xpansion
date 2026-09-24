@@ -2,7 +2,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Literal
 
 import yaml
 from antares_xpansion.benders_driver import BendersDriver, SolversExe
@@ -35,7 +35,7 @@ class TrajectoryResolutionData:
     structure_file: str
     solver: str
     problems_format: str
-    cache_problems: bool
+    cache_problems: Literal["NO_CACHE", "PER_SUB", "COMPACT"]
     method: str
     n_mpi: int
     oversubscribe: bool
