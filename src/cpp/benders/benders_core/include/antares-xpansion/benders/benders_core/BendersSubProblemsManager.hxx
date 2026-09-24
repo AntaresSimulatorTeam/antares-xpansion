@@ -54,7 +54,7 @@ class BendersSubProblemsManager
 protected:
     // Subproblem storage
     SubproblemsMapPtr subproblem_map_;
-    CouplingMap coupling_map_;
+    CouplingMap& coupling_map_;
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
     StrVector subproblems_;
@@ -80,7 +80,9 @@ public:
                               Logger logger,
                               SolverLogManager& solver_log_manager,
                               std::shared_ptr<Output::OutputWriter> writer,
-                              bool should_parallelize):
+                              bool should_parallelize,
+                              CouplingMap& coupling_map):
+        coupling_map_(coupling_map),
         data_(data),
         options_(options),
         plugin_(plugin),
@@ -89,6 +91,26 @@ public:
         writer_(std::move(writer)),
         should_parallelize_(should_parallelize)
     {
+    }
+
+    // ---------------------------------------------------------------
+    // CRTP dispatch: subproblem distribution
+    // ---------------------------------------------------------------
+
+    template<typename... Args>
+    auto DistributeSubproblems(Args&&... args)
+    {
+        return static_cast<Derived*>(this)->DistributeSubproblemsImpl(std::forward<Args>(args)...);
+    }
+
+    // Default implementation: add all subproblems (used by Sequential)
+    void DistributeSubproblemsImpl()
+    {
+        for (const auto& problem: coupling_map_)
+        {
+            AddSubproblem(problem);
+            AddSubproblemName(problem.first);
+        }
     }
 
     // ---------------------------------------------------------------
@@ -553,16 +575,6 @@ public:
     std::shared_ptr<SolverAbstract> GetFactorySolver() const
     {
         return subproblem_worker_factory_ ? subproblem_worker_factory_->GetSolver() : nullptr;
-    }
-
-    void SetCouplingMap(const CouplingMap& coupling_map)
-    {
-        coupling_map_ = coupling_map;
-    }
-
-    CouplingMap& GetCouplingMap()
-    {
-        return coupling_map_;
     }
 
     const CouplingMap& GetCouplingMap() const

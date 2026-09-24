@@ -142,7 +142,6 @@ protected:
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
-    void MatchProblemToId();
     bool IsResumeMode() const;
 
     std::filesystem::path LastIterationFile() const
@@ -182,11 +181,6 @@ protected:
     void SetAlpha_i(const DblVector& single_subpb_costs_under_approx)
     {
         _data.master.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
-    }
-
-    int ProblemToId(const std::string& problem_name) const
-    {
-        return _problem_to_id.at(problem_name);
     }
 
     virtual void UpdateStoppingCriterion();

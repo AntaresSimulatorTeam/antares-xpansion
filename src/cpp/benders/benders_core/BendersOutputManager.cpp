@@ -417,9 +417,9 @@ int BendersOutputManager::GetNumOfSubProblemsSolvedBeforeResume() const
     return cumulative_number_of_subproblem_resolved_before_resume_;
 }
 
-void BendersOutputManager::UpdateBestIterationData(const LogData& data)
+void BendersOutputManager::UpdateBestIterationData(const CurrentIterationData& data)
 {
-    best_iteration_data_ = data;
+    best_iteration_data_ = bendersDataToLogData(data);
 }
 
 const LogData& BendersOutputManager::GetBestIterationData() const

@@ -53,7 +53,7 @@ public:
     void LoadResumeData(const std::filesystem::path& last_iteration_file, Logger& logger);
     [[nodiscard]] int GetNumIterationsBeforeRestart() const;
     [[nodiscard]] int GetNumOfSubProblemsSolvedBeforeResume() const;
-    void UpdateBestIterationData(const LogData& data);
+    void UpdateBestIterationData(const CurrentIterationData& data);
     [[nodiscard]] const LogData& GetBestIterationData() const;
     void SetIterationsBeforeResume(int value);
     void SetCumulativeSubproblemsSolvedBeforeResume(int value);

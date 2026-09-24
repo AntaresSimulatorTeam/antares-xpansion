@@ -25,7 +25,8 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                                          output_manager_->GetLogger(),
                                                          solver_log_manager_,
                                                          output_manager_->GetWriter(),
-                                                         shouldParallelize()))
+                                                         shouldParallelize(),
+                                                         coupling_map_))
 {
     batch_subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
@@ -87,7 +88,8 @@ void BendersByBatch::BroadCastVariablesIndices()
 
 void BendersByBatch::InitializeProblems()
 {
-    MatchProblemToId();
+    batch_subproblems_manager_->MatchProblemToId();
+    _problem_to_id = batch_subproblems_manager_->GetProblemToId();
     BuildBatches();
     BuildMasterProblem();
     BroadCastVariablesIndices();
@@ -125,59 +127,7 @@ void BendersByBatch::BuildBatches()
     }
     BroadCast(batch_collection_, rank_0);
 
-    auto problem_count = 0;
-
-    for (auto& batch: batch_collection_.BatchCollections())
-    {
-        switch (_options.CACHE_PROBLEMS)
-        {
-        case CacheProblems::PER_SUB:
-        case CacheProblems::COMPACT:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
-                    batch_subproblems_manager_->AddSubproblemName(*it);
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        case CacheProblems::NO_CACHE:
-        default:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
-                    batch_subproblems_manager_->AddSubproblem({*it, coupling_map_[*it]});
-                    batch_subproblems_manager_->AddSubproblemName(*it);
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        }
-    }
-    batch_subproblems_manager_->SetCouplingMap(coupling_map_);
-
-    BroadCastVariablesIndices();
-    init_problems_ = false;
+    batch_subproblems_manager_->DistributeSubproblems(batch_collection_, Rank(), WorldSize());
 }
 
 void BendersByBatch::get_subs_per_cut_per_batch()
@@ -257,7 +207,6 @@ void BendersByBatch::MasterLoop()
 
         _data.cuts.ub = 0;
         _data.cuts.subproblem_cost = 0;
-        remaining_epsilon_ = Gap();
 
         benders_plugin_->OnBendersMasterResolutionStart();
         if (Rank() == rank_0)
@@ -274,6 +223,19 @@ void BendersByBatch::MasterLoop()
         BroadcastXOut();
         BroadcastSingleSubpbCostsUnderApprox();
         BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(), rank_0);
+        _data.control.it++;
+        ResetSimplexIterationsBounds();
+
+        logger->log_at_initialization(_data.control.it
+                                      + output_manager_->GetNumIterationsBeforeRestart());
+        if (Rank() == rank_0)
+        {
+            ComputeXCut();
+        }
+        batch_cuts_manager_->BroadcastXCut();
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
+        UpdateRemainingEpsilon();
+
         SeparationLoop();
         if (Rank() == rank_0)
         {
@@ -304,23 +266,10 @@ void BendersByBatch::SeparationLoop()
     misprice_ = true;
     first_unsolved_batch_ = 0;
     batch_counter_ = 0;
+    _data.control.number_of_subproblem_solved = 0;
     while (misprice_ && batch_counter_ < number_of_batch_)
     {
-        _data.control.it++;
-        ResetSimplexIterationsBounds();
-
-        logger->log_at_initialization(_data.control.it
-                                      + output_manager_->GetNumIterationsBeforeRestart());
-        if (Rank() == rank_0)
-        {
-            ComputeXCut();
-        }
-        batch_cuts_manager_->BroadcastXCut();
-
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
-        UpdateRemainingEpsilon();
-        _data.control.number_of_subproblem_solved = 0;
         SolveBatches();
 
         if (Rank() == rank_0)
@@ -374,12 +323,8 @@ void BendersByBatch::SolveBatches()
         const auto& batch = batch_collection_.GetBatchFromId(current_batch_id_);
         const auto& batch_sub_problems = batch.sub_problem_names;
         double batch_contribution_in_gap = 0;
-        std::vector<double> external_loop_criterion_current_batch = {};
         int problem_solved = 0;
-        BuildCut(batch_sub_problems,
-                 &batch_contribution_in_gap,
-                 external_loop_criterion_current_batch,
-                 problem_solved);
+        BuildCut(batch_sub_problems, &batch_contribution_in_gap, problem_solved);
         problem_solved_by_rank += problem_solved;
         Reduce(_data.cuts.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
@@ -414,7 +359,6 @@ void BendersByBatch::SolveBatches()
 
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
                               double* batch_contribution_in_gap,
-                              std::vector<double>& external_loop_criterion_current_batch,
                               int& local_solved)
 {
     SubProblemDataMap subproblem_data_map;
@@ -444,7 +388,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
 void BendersByBatch::calculate_subproblem_contribution(const std::string& name,
                                                        PlainData::SubProblemData& subproblem_data)
 {
-    auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
+    auto subpb_cost_under_approx = GetAlpha_i()[batch_subproblems_manager_->ProblemToId(name)];
     subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost - subpb_cost_under_approx;
     double cut_value_at_x_cut = subproblem_data.subproblem_cost;
     for (const auto& [candidate_name, x_cut_candidate_value]: _data.solution.x_cut)

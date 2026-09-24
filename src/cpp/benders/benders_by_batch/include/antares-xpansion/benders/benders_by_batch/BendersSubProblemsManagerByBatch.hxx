@@ -1,5 +1,6 @@
 #pragma once
 
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_core/BendersSubProblemsManager.hxx"
 
 class BendersSubProblemsManagerByBatch
@@ -12,6 +13,60 @@ public:
     using BendersSubProblemsManager::MakeCacheBeginHookImpl;
     using BendersSubProblemsManager::MakeFastBeginHookImpl;
     using BendersSubProblemsManager::MakePostSolveHookImpl;
+
+    void DistributeSubproblemsImpl(BatchCollection& batch_collection, int rank, int world_size)
+    {
+        auto problem_count = 0;
+        for (auto& batch: batch_collection.BatchCollections())
+        {
+            switch (options_.CACHE_PROBLEMS)
+            {
+            case CacheProblems::PER_SUB:
+            case CacheProblems::COMPACT:
+            {
+                for (auto it = batch.sub_problem_names.begin();
+                     it != batch.sub_problem_names.end();)
+                {
+                    auto process_to_feed = problem_count % world_size;
+                    if (process_to_feed != rank)
+                    {
+                        it = batch.sub_problem_names.erase(it);
+                    }
+                    else
+                    {
+                        AddSubproblemName(*it);
+                        ++it;
+                    }
+                    ++problem_count;
+                }
+                batch.sub_problem_names.shrink_to_fit();
+                break;
+            }
+            case CacheProblems::NO_CACHE:
+            default:
+            {
+                for (auto it = batch.sub_problem_names.begin();
+                     it != batch.sub_problem_names.end();)
+                {
+                    auto process_to_feed = problem_count % world_size;
+                    if (process_to_feed != rank)
+                    {
+                        it = batch.sub_problem_names.erase(it);
+                    }
+                    else
+                    {
+                        AddSubproblem({*it, coupling_map_[*it]});
+                        AddSubproblemName(*it);
+                        ++it;
+                    }
+                    ++problem_count;
+                }
+                batch.sub_problem_names.shrink_to_fit();
+                break;
+            }
+            }
+        }
+    }
 
     // Batch post-solve: wraps an external callback with the 3-arg signature
     // i'm guessing too complicated ?? it's just a move of cb that call itself

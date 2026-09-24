@@ -87,7 +87,7 @@ void BendersBase::update_best_ub()
         _data.criteria.max_criterion_best_it = _data.criteria.max_criterion;
         _data.criteria.max_criterion_area_best_it = _data.criteria.max_criterion_area;
         relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
-        output_manager_->UpdateBestIterationData(output_manager_->bendersDataToLogData(_data));
+        output_manager_->UpdateBestIterationData(_data);
     }
 }
 
@@ -362,16 +362,6 @@ void BendersBase::reset_master(const VariableMap& variable_map,
 WorkerMasterPtr BendersBase::get_master() const
 {
     return master_manager_->GetMaster();
-}
-
-void BendersBase::MatchProblemToId()
-{
-    int count = 0;
-    for (const auto& problem: coupling_map_)
-    {
-        _problem_to_id[problem.first] = count;
-        count++;
-    }
 }
 
 void BendersBase::ResetSimplexIterationsBounds()
