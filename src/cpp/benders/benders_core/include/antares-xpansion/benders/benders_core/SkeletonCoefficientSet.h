@@ -1,17 +1,18 @@
 #pragma once
 
 #include <filesystem>
+#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include <boost/mpi.hpp>
-
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "skeleton_coefficient_reader.h"
+
+using AbortFunc = std::function<void(int)>;
 
 class SkeletonCoefficientSet
 {
@@ -24,7 +25,7 @@ public:
               std::optional<std::filesystem::path> row_indices_csv,
               const std::shared_ptr<SolverAbstract>& solver,
               Logger& logger,
-              boost::mpi::communicator* world);
+              AbortFunc abort_func = nullptr);
 
     std::vector<double>& CoefficientsFor(const std::string& name);
     std::vector<int>& RowIndices();
@@ -35,6 +36,6 @@ private:
     std::map<std::string, std::vector<double>> coeffs_;
     std::vector<int> row_indices_;
     std::vector<int> col_indices_;
-    boost::mpi::communicator* world_ = nullptr;
+    AbortFunc abort_func_;
     Logger logger_;
 };

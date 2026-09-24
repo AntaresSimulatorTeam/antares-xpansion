@@ -36,6 +36,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonCoefficientSet.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonConstraintSetLoader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemBasisCache.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemSkeleton.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorkerFactory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
@@ -62,6 +63,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonCoefficientSet.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonConstraintSetLoader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemBasisCache.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemSkeleton.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemWorkerFactory.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/WorkerMaster.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/common.h

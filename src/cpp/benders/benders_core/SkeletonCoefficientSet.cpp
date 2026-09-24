@@ -10,9 +10,9 @@ void SkeletonCoefficientSet::Load(SkeletonCoefficientReader& skeleton_coefficien
                                   std::optional<std::filesystem::path> row_indices_csv,
                                   const std::shared_ptr<SolverAbstract>& solver,
                                   Logger& logger,
-                                  boost::mpi::communicator* world)
+                                  AbortFunc abort_func)
 {
-    world_ = world;
+    abort_func_ = std::move(abort_func);
     logger_ = logger;
     skeleton_coefficient_reader.read_keyed_coeffs_csv(coeffs_csv, coeffs_);
     if (col_indices_csv)
@@ -30,9 +30,9 @@ std::vector<double>& SkeletonCoefficientSet::CoefficientsFor(const std::string& 
     if (coeffs_.find(name) == coeffs_.end())
     {
         logger_->display_message("from SkeletonCoefficientSet couldn't find key");
-        if (world_)
+        if (abort_func_)
         {
-            world_->abort(EXIT_FAILURE);
+            abort_func_(EXIT_FAILURE);
         }
     }
     return coeffs_[name];

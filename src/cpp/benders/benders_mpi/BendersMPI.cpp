@@ -472,7 +472,8 @@ std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
                                                                            _options.PROBLEMS_FORMAT,
                                                                            GetSubProblemNames(),
                                                                            solver_log_manager_,
-                                                                           &_world);
+                                                                           [this](int code)
+                                                                           { _world.abort(code); });
     return subproblem_worker_factory_->GetSolver();
 }
 
