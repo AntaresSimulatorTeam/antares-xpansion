@@ -167,17 +167,17 @@ void BendersMpi::InitializeMaster()
     {
         std::shared_ptr<IBendersProblemProvider>
           benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
-        reset_master<WorkerMaster>(master_variable_map_,
-                                   get_solver_name(),
-                                   get_log_level(),
-                                   _data.nsubproblem,
-                                   solver_log_manager_,
-                                   IsResumeMode(),
-                                   _logger,
-                                   Options().PROBLEMS_FORMAT,
-                                   benders_problem_provider.get(),
-                                   Options().MASTER_SOLUTION_TOLERANCE,
-                                   GetSubCutTolerance());
+        reset_master(master_variable_map_,
+                     get_solver_name(),
+                     get_log_level(),
+                     _data.nsubproblem,
+                     solver_log_manager_,
+                     IsResumeMode(),
+                     _logger,
+                     Options().PROBLEMS_FORMAT,
+                     benders_problem_provider.get(),
+                     Options().MASTER_SOLUTION_TOLERANCE,
+                     GetSubCutTolerance());
     }
 }
 
@@ -186,7 +186,7 @@ void BendersMpi::BuildMasterProblem()
     InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        _master->addAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
+        master_manager_.AddAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
     }
 }
 

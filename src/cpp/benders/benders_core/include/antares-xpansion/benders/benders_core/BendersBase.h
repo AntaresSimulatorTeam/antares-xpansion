@@ -6,6 +6,7 @@
 #include <mutex>
 #include <tbb/tbb.h>
 
+#include "BendersMasterManager.h"
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "BendersSubProblemsManager.hxx"
@@ -127,6 +128,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterPtr _master;
+    BendersMasterManager master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
@@ -160,12 +162,17 @@ protected:
     [[nodiscard]] std::filesystem::path get_master_path() const;
     [[nodiscard]] LogData bendersDataToLogData(const CurrentIterationData& data) const;
 
-    template<typename T, typename... Args>
-    void reset_master(Args&&... args)
-    {
-        _master = std::make_shared<T>(std::forward<Args>(args)...);
-        master_is_empty_ = false;
-    }
+    void reset_master(const VariableMap& variable_map,
+                      const std::string& solver_name,
+                      int log_level,
+                      int subproblems_count,
+                      SolverLogManager& solver_log_manager,
+                      bool mps_has_alpha,
+                      Logger logger,
+                      ProblemsFormat format,
+                      IBendersProblemProvider* benders_problem_provider,
+                      double master_solution_tolerance,
+                      const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
     void free_master();
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
@@ -273,7 +280,6 @@ private:
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& data) const;
-    bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     std::ofstream _csv_file;
     std::filesystem::path _csv_file_path;
