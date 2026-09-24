@@ -93,19 +93,19 @@ void SubproblemWorker::get_subgradient(Point& subgradient) const
  *
  *  \param lb : reference to a map
  */
-std::vector<double> SubproblemWorker::get_solution() const
+const std::vector<double>& SubproblemWorker::get_solution() const
 {
-    std::vector<double> solution(_solver->get_ncols());
+    solution_cache_.resize(_solver->get_ncols());
 
     if (_solver->get_n_integer_vars() > 0)
     {
-        _solver->get_mip_sol(solution.data());
+        _solver->get_mip_sol(solution_cache_.data());
     }
     else
     {
-        _solver->get_lp_sol(solution.data(), NULL, NULL);
+        _solver->get_lp_sol(solution_cache_.data(), NULL, NULL);
     }
-    return solution;
+    return solution_cache_;
 }
 
 void SubproblemWorker::delete_rows(int start_pos)

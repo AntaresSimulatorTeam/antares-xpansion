@@ -29,9 +29,11 @@ public:
                      std::shared_ptr<SolverAbstract> solver,
                      Logger logger);
 
+    SubproblemWorker() = default;
+
     virtual ~SubproblemWorker() = default;
-    std::vector<double> get_solution() const;
-    int get_variable_index(const std::string& variable_name);
+    virtual const std::vector<double>& get_solution() const;
+    virtual int get_variable_index(const std::string& variable_name);
     void delete_rows(int start_pos);
     int get_problem_row_num();
 
@@ -39,4 +41,7 @@ public:
     void fix_to(const Point& x0) const;
 
     void get_subgradient(Point& subgradient) const;
+
+private:
+    mutable std::vector<double> solution_cache_;
 };

@@ -37,7 +37,7 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromSharedSolver(
     return std::make_shared<SubproblemConstraintsManager>(std::move(solver), subproblem_worker);
 }
 
-std::vector<double> SubproblemConstraintsManager::GetSubSolution()
+const std::vector<double>& SubproblemConstraintsManager::GetSubSolution()
 {
     return subproblem_worker_->get_solution();
 }

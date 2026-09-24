@@ -33,7 +33,7 @@ public:
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     SolverRepresentedRows AddRows(std::string& row_name);
-    std::vector<double> GetSubSolution();
+    const std::vector<double>& GetSubSolution();
     int GetVariableIndexInSub(std::string variable_id);
     void DeleteAddedRows(int base_size);
 
