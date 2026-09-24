@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BendersCutsManagerMpi.h"
+#include "BendersSubProblemsManagerMpi.hxx"
 #include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
@@ -60,6 +61,7 @@ private:
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
     BendersCutsManagerMpi cuts_manager_;
+    BendersSubProblemsManagerMpi subproblems_manager_;
 
 protected:
     void InitializeMaster();
@@ -70,8 +72,6 @@ protected:
     }
 
     void PreRunInitialization();
-
-    std::shared_ptr<SolverAbstract> build_sub_problem_skeleton();
 
     int Rank() const
     {
@@ -120,13 +120,9 @@ protected:
         mpi::all_reduce(_world, in_value, out_value, op);
     }
 
-    void BroadCastVariablesIndices();
+    virtual void BroadCastVariablesIndices();
     virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap& subproblem_data_map);
-    void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-                         const std::string& name,
-                         const std::shared_ptr<SubproblemWorker>& worker,
-                         const std::function<void()>& post_reset_hook) override;
     void UpdateMaxCriterionArea();
 };
 

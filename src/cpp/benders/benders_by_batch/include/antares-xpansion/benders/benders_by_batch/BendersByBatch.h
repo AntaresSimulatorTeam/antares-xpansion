@@ -2,6 +2,7 @@
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
 #include "BendersCutsManagerByBatch.h"
+#include "BendersSubProblemsManagerByBatch.hxx"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
@@ -27,8 +28,12 @@ public:
         return "Benders By Batch mpi";
     }
 
+    void free() override;
+    void launch() override;
+
 protected:
     void InitializeProblems() override;
+    void BroadCastVariablesIndices() override;
     void BroadcastSingleSubpbCostsUnderApprox();
     void ComputeXCut();
     void UpdateStoppingCriterion() override;
@@ -36,18 +41,9 @@ protected:
     void BuildBatches();
 
 private:
-    void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
-                          const std::vector<std::string>& batch_sub_problems);
     void BuildMasterProblem();
-    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
-                               const std::vector<std::string>& batch_sub_problems);
-    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
-                             const std::vector<std::string>& batch_sub_problems);
-    Timer calculate_subproblem_contribution(const std::string& name,
-                                            PlainData::SubProblemData& subproblem_data);
-    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
-                              const std::vector<std::string>& batch_sub_problems);
-
+    void calculate_subproblem_contribution(const std::string& name,
+                                           PlainData::SubProblemData& subproblem_data);
     void get_subs_per_cut_per_batch();
 
     BatchCollection batch_collection_;
@@ -66,6 +62,7 @@ private:
     int first_unsolved_batch_;
     int batch_counter_;
     BendersCutsManagerByBatch batch_cuts_manager_;
+    BendersSubProblemsManagerByBatch batch_subproblems_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

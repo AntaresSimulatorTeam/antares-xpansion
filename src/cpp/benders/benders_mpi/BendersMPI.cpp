@@ -27,8 +27,18 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                   _problem_to_id,
                   relevantIterationData_,
                   _master,
-                  subproblem_per_cut_indices_)
+                  subproblem_per_cut_indices_),
+    subproblems_manager_(_data,
+                         _options,
+                         benders_plugin_,
+                         _logger,
+                         solver_log_manager_,
+                         _writer,
+                         shouldParallelize())
 {
+    subproblems_manager_.SetOnVariablesIndicesSet(
+      [this](const std::vector<std::string>& col_names)
+      { criterion_computation_.SearchVariables(col_names); });
 }
 
 /*!
@@ -54,7 +64,7 @@ void BendersMpi::InitializeProblems()
             }
             else
             {
-                AddSubproblemName(it->first);
+                subproblems_manager_.AddSubproblemName(it->first);
                 subs_per_proc.emplace_back(it->first, process_to_feed);
                 ++it;
             }
@@ -71,14 +81,14 @@ void BendersMpi::InitializeProblems()
             if (auto process_to_feed = current_problem_id % _world.size();
                 process_to_feed == _world.rank())
             { // Assign  [problemNumber % processCount] to processID
-                const auto subProblemFilePath = GetSubproblemPath(problem.first);
                 subs_per_proc.push_back(std::make_pair(problem.first, process_to_feed));
-                AddSubproblem(problem);
-                AddSubproblemName(problem.first);
+                subproblems_manager_.AddSubproblem(problem);
+                subproblems_manager_.AddSubproblemName(problem.first);
             }
             current_problem_id++;
         }
     }
+    subproblems_manager_.SetCouplingMap(coupling_map_);
 
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
     mpi::gather(_world, subs_per_proc, gathered_subs_per_proc, rank_0);
@@ -88,6 +98,7 @@ void BendersMpi::InitializeProblems()
     }
     BuildMasterProblem();
     BroadCastVariablesIndices();
+    subproblems_manager_.BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
     init_problems_ = false;
 }
 
@@ -145,7 +156,7 @@ void BendersMpi::BroadCastVariablesIndices()
 {
     if (_world.rank() == rank_0)
     {
-        SetSubproblemsVariablesIndices();
+        subproblems_manager_.SetSubproblemsVariablesIndices();
     }
     BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
@@ -284,20 +295,6 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     }
 }
 
-void BendersMpi::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-                                 const std::string& name,
-                                 const std::shared_ptr<SubproblemWorker>& worker,
-                                 const std::function<void()>& post_reset_hook)
-{
-    BendersBase::SolveSubproblem(subproblem_data, name, worker, post_reset_hook);
-
-    std::vector<double> solution = worker->get_solution();
-    criterion_computation_.ComputeCriterion(SubproblemWeight(_data.nsubproblem, name),
-                                            solution,
-                                            subproblem_data.criteria,
-                                            subproblem_data.patterns_values);
-}
-
 void BendersMpi::UpdateMaxCriterionArea()
 {
     auto criteria_begin = _data.criteria_current_iteration_data.criteria.cbegin();
@@ -345,7 +342,11 @@ void BendersMpi::ComputeSubproblemsContributionToCriteria(
 SubProblemDataMap BendersMpi::get_subproblem_cut_package()
 {
     SubProblemDataMap subproblem_data_map;
-    GetSubproblemCut(subproblem_data_map);
+    subproblems_manager_.GetSubproblemCut(
+      subproblem_data_map,
+      subproblems_manager_.MakeFastBeginHook(),
+      subproblems_manager_.MakeCacheBeginHook(),
+      subproblems_manager_.MakePostSolveHook(criterion_computation_, _data));
     return subproblem_data_map;
 }
 
@@ -400,30 +401,9 @@ void BendersMpi::free()
     }
     else
     {
-        free_subproblems();
+        subproblems_manager_.free_subproblems();
     }
     _world.barrier();
-}
-
-/*When we are in the skeleton + micro iterations mode
-we need to have the hand on the constraint skeleon solver, in order
-to get to be able to fetch the constraints from the constraint optimization problem
-by their in the object that handle the subproblem optimization problem.
-For design choices, we decided to keep everything related to constraint built in
-the micro iteration plugin object, This is why we need to fetch for the constraints solver
-object and set it on subproblem object.
-*/
-std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
-{
-    subproblem_worker_factory_ = std::make_shared<SubproblemWorkerFactory>(_options.INPUTROOT,
-                                                                           _logger,
-                                                                           _options.SOLVER_NAME,
-                                                                           _options.LOG_LEVEL,
-                                                                           _options.PROBLEMS_FORMAT,
-                                                                           GetSubProblemNames(),
-                                                                           solver_log_manager_,
-                                                                           &_world);
-    return subproblem_worker_factory_->GetSolver();
 }
 
 /*!
@@ -526,17 +506,11 @@ void BendersMpi::launch()
 
     _world.barrier();
 
-    std::shared_ptr<SolverAbstract> subProblemFactorSolver;
-    if (_options.CACHE_PROBLEMS == CacheProblems::COMPACT)
-    {
-        subProblemFactorSolver = build_sub_problem_skeleton();
-    }
-
-    benders_plugin_->OnBendersStart(subproblem_map,
+    benders_plugin_->OnBendersStart(subproblems_manager_.GetSubProblemMap(),
                                     _logger,
                                     _options,
                                     solver_log_manager_,
-                                    subProblemFactorSolver);
+                                    subproblems_manager_.GetFactorySolver());
 
     Run();
 
