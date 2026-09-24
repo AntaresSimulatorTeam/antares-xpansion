@@ -6,6 +6,7 @@
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
+#include "SolverMathOpt.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/multisolver_interface/SolverXpress.h"
@@ -19,6 +20,7 @@ const char* COIN_STR("COIN");
 const char* CBC_STR("CBC");
 const char* CLP_STR("CLP");
 const char* XPRESS_STR("XPRESS");
+const char* MATHOPT_STR("MATHOPT");
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 std::vector<std::string> available_solvers;
@@ -38,6 +40,7 @@ void GetAvailableSolversInternal(std::shared_ptr<ILoggerXpansion> logger)
         available_solvers.emplace_back(CLP_STR);
         available_solvers.emplace_back(CBC_STR);
 #endif
+        available_solvers.emplace_back(MATHOPT_STR);
     }
 }
 } // namespace
@@ -63,6 +66,7 @@ std::vector<std::string> SolverLoader::GetSupportedSolvers()
         supported_solvers.emplace_back(CLP_STR);
         supported_solvers.emplace_back(CBC_STR);
 #endif
+        supported_solvers.emplace_back(MATHOPT_STR);
     }
     return supported_solvers;
 }
@@ -153,6 +157,10 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
         ret = std::make_shared<SolverCbc>();
     }
 #endif
+    else if (solver_config == MATHOPT_STR)
+    {
+        ret = std::make_shared<SolverMathOpt>();
+    }
     else
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
@@ -183,6 +191,10 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
         ret = std::make_shared<SolverCbc>();
     }
 #endif
+    else if (solver_config == MATHOPT_STR)
+    {
+        ret = std::make_shared<SolverMathOpt>();
+    }
     else
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
@@ -222,6 +234,10 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
         return create<SolverCbc>(log_manager);
     }
 #endif
+    if (solver_config == MATHOPT_STR)
+    {
+        return create<SolverMathOpt>(log_manager);
+    }
 
     throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
 }

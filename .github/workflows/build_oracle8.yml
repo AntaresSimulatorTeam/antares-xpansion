@@ -159,6 +159,7 @@ jobs:
         shell: bash
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
+          export LD_LIBRARY_PATH=${GITHUB_WORKSPACE}/or-tools/install/lib:$LD_LIBRARY_PATH
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium|short"
 

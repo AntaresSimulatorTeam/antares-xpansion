@@ -90,6 +90,7 @@ target_link_libraries(benders_core
         antaresXpansion::core
         antaresXpansion::plugins
         fmt::fmt
+        ortools::ortools
 )
 
 target_link_libraries(benders_core PRIVATE TBB::tbb)
@@ -97,3 +98,6 @@ target_link_libraries(benders_core PRIVATE TBB::tbb)
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include"
 )
+
+add_executable(test_mathopt_from_benders test_mathopt_from_benders.cpp)
+target_link_libraries(test_mathopt_from_benders PRIVATE ortools::ortools)
