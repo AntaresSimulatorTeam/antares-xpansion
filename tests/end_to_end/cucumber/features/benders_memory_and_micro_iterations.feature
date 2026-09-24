@@ -21,12 +21,12 @@ Scenario Outline: Benders solves the ieee96 study to the same solution
 
     Examples:
       | study_path                                | cache_level | batch_size | procs |
-      | data_test/ieee96_base                      | 0           | 0          | 1     |
-      | data_test/ieee96_base                      | 0           | 1          | 3     |
-      | data_test/ieee96_base                      | 1           | 0          | 1     |
-      | data_test/ieee96_base                      | 1           | 1          | 3     |
-      | data_test/ieee96_skeleton                   | 2           | 0          | 1     |
-      | data_test/ieee96_skeleton                   | 2           | 1          | 3     |
+      | data_test/ieee96_base                      | NO_CACHE    | 0          | 1     |
+      | data_test/ieee96_base                      | NO_CACHE    | 1          | 3     |
+      | data_test/ieee96_base                      | PER_SUB     | 0          | 1     |
+      | data_test/ieee96_base                      | PER_SUB     | 1          | 3     |
+      | data_test/ieee96_skeleton                   | COMPACT     | 0          | 1     |
+      | data_test/ieee96_skeleton                   | COMPACT     | 1          | 3     |
 
 @fast @short @low_memory
 Scenario Outline: Benders solves the ieee96 study to the same solution with micro-iterations, regardless of warm start
@@ -50,31 +50,31 @@ Scenario Outline: Benders solves the ieee96 study to the same solution with micr
 
     Examples:
       | study_path                                | cache_level | batch_size | procs | warm_start |
-      | data_test/ieee96_micro_it                  | 0           | 0          | 1     | 0          |
-      | data_test/ieee96_micro_it                  | 0           | 0          | 1     | 1          |
-      | data_test/ieee96_micro_it                  | 0           | 1          | 3     | 0          |
-      | data_test/ieee96_micro_it                  | 0           | 1          | 3     | 1          |
-      | data_test/ieee96_micro_it                  | 1           | 0          | 1     | 0          |
-      | data_test/ieee96_micro_it                  | 1           | 0          | 1     | 1          |
-      | data_test/ieee96_micro_it                  | 1           | 1          | 3     | 0          |
-      | data_test/ieee96_micro_it                  | 1           | 1          | 3     | 1          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 1     | 0          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 1     | 1          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 3     | 0          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 3     | 1          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 0          | 1     | 0          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 0          | 1     | 1          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 1          | 3     | 0          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 1          | 3     | 1          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 0          | 1     | 0          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 0          | 1     | 1          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 1          | 3     | 0          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 1          | 3     | 1          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 0          | 1     | 0          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 0          | 1     | 1          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 1          | 3     | 0          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 1          | 3     | 1          |
 
     # These rows decouple Benders by batch and multiple procs: batch_size=1/procs=1 exercises BendersByBatch on a
     # single process, and batch_size=0/procs=3 exercises plain BendersMpi across 3
     # processes
-      | data_test/ieee96_micro_it                  | 0           | 1          | 1     | 0          |
-      | data_test/ieee96_micro_it                  | 0           | 1          | 1     | 1          |
-      | data_test/ieee96_micro_it                  | 0           | 0          | 3     | 0          |
-      | data_test/ieee96_micro_it                  | 0           | 0          | 3     | 1          |
-      | data_test/ieee96_micro_it                  | 1           | 1          | 1     | 0          |
-      | data_test/ieee96_micro_it                  | 1           | 1          | 1     | 1          |
-      | data_test/ieee96_micro_it                  | 1           | 0          | 3     | 0          |
-      | data_test/ieee96_micro_it                  | 1           | 0          | 3     | 1          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 1     | 0          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 1          | 1     | 1          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 3     | 0          |
-      | data_test/ieee96_micro_it_skeleton_study   | 2           | 0          | 3     | 1          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 1          | 1     | 0          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 1          | 1     | 1          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 0          | 3     | 0          |
+      | data_test/ieee96_micro_it                  | NO_CACHE    | 0          | 3     | 1          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 1          | 1     | 0          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 1          | 1     | 1          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 0          | 3     | 0          |
+      | data_test/ieee96_micro_it                  | PER_SUB     | 0          | 3     | 1          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 1          | 1     | 0          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 1          | 1     | 1          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 0          | 3     | 0          |
+      | data_test/ieee96_micro_it_skeleton_study   | COMPACT     | 0          | 3     | 1          |
