@@ -590,7 +590,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               Options().LOG_LEVEL,
                                               solver_log_manager_,
                                               _logger,
-                                              _options.PROBLEMS_FORMAT,
+                                              _options.PROBLEM_FORMAT,
                                               benders_problem_provider.get());
 }
 
@@ -1118,7 +1118,7 @@ double BendersBase::SubproblemWeight(int subproblem_count, const std::string& na
  */
 std::filesystem::path BendersBase::get_master_path() const
 {
-    if (_options.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED && _options.SOLVER_NAME == "XPRESS")
+    if (_options.PROBLEM_FORMAT == ProblemFormat::OPTIMIZED && _options.SOLVER_NAME == "XPRESS")
     {
         return std::filesystem::path(_options.INPUTROOT) / (_options.MASTER_NAME + SAVE_SUFFIX);
     }
@@ -1208,7 +1208,7 @@ void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
       _options.LOG_LEVEL,
       solver_log_manager_,
       _logger,
-      _options.PROBLEMS_FORMAT,
+      _options.PROBLEM_FORMAT,
       benders_problem_provider.get());
 }
 

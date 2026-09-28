@@ -22,7 +22,7 @@ public:
                      int log_level,
                      const SolverLogManager& solver_log_manager,
                      Logger logger,
-                     ProblemsFormat format,
+                     ProblemFormat format,
                      IBendersProblemProvider* benders_problem_provider);
 
     SubproblemWorker(VariableMap& variable_map,

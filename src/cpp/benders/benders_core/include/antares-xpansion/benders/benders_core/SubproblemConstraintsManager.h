@@ -23,7 +23,7 @@ public:
       const SolverLogManager& solver_log_manager,
       Logger& logger,
       int log_level,
-      ProblemsFormat format,
+      ProblemFormat format,
       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
     // CACHE_PROBLEMS >= 2: shared skeleton solver, already mutated by

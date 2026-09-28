@@ -77,13 +77,13 @@ class TrajectoryInvestmentDriver:
         # The problems format and solver are expected as full upper case by the C++ executables
         # ONE
         solver = self.config.solver
-        problems_format = self.config.problems_format
+        problem_format = self.config.problem_format
         # TODO : hardcoded solver for now
         # TWO
         solver = "Xpress"
-        problems_format = "OPTIMIZED"
+        problem_format = "OPTIMIZED"
         if solver != "Xpress":
-            problems_format = "MPS"
+            problem_format = "MPS"
 
         mm_data = MergeMasterData(
             self.config.get_executable_path(self.config.MERGE_MASTER_MPS),
@@ -93,7 +93,7 @@ class TrajectoryInvestmentDriver:
             self.config.input_root,
             self.output_folder,
             solver,
-            problems_format,
+            problem_format,
             self.config.MERGED_MASTER,
             self.config.MERGED_STRUCTURE,
         )
@@ -130,7 +130,7 @@ class TrajectoryInvestmentDriver:
             master_name=self.config.MERGED_MASTER,
             structure_file=self.config.MERGED_STRUCTURE,
             solver=solver,
-            problems_format=problems_format,
+            problem_format=problem_format,
             cache_problems=self.config.cache_problems,
             method=self.config.method,
             n_mpi=self.config.n_mpi,

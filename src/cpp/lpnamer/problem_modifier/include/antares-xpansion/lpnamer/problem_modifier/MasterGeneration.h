@@ -30,7 +30,7 @@ public:
                               std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
                               SolverLogManager& solver_log_manager,
                               FileWriter& file_writer,
-                              ProblemsFormat format = ProblemsFormat::OPTIMIZED);
+                              ProblemFormat format = ProblemFormat::OPTIMIZED);
     std::vector<Candidate> generate(const std::vector<ActiveLink>& links,
                                     const std::string& master_formulation,
                                     const AdditionalConstraints& additionalConstraints_p) const;
@@ -48,6 +48,6 @@ private: /*methods*/
     SolverLogManager& logManager_;
     const std::string solver_name_;
     FileWriter& writer_;
-    ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
+    ProblemFormat format_{ProblemFormat::OPTIMIZED};
 };
 #endif //__MASTER_GENERATION__

@@ -158,7 +158,7 @@ void BendersMpi::InitializeMaster()
                                    solver_log_manager_,
                                    IsResumeMode(),
                                    _logger,
-                                   Options().PROBLEMS_FORMAT,
+                                   Options().PROBLEM_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
                                    GetSubCutTolerance());
@@ -469,7 +469,7 @@ std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
                                                                            _logger,
                                                                            _options.SOLVER_NAME,
                                                                            _options.LOG_LEVEL,
-                                                                           _options.PROBLEMS_FORMAT,
+                                                                           _options.PROBLEM_FORMAT,
                                                                            GetSubProblemNames(),
                                                                            solver_log_manager_,
                                                                            &_world);
