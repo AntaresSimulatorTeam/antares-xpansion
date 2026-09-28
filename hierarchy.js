@@ -217,7 +217,7 @@ var hierarchy =
     [ "FilesMapper", "classFilesMapper.html", null ],
     [ "tests.end_to_end.utils_functions.FilesToRead", "classtests_1_1end__to__end_1_1utils__functions_1_1FilesToRead.html", null ],
     [ "formatter", null, [
-      [ "fmt::formatter< ProblemsFormat >", "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html", null ]
+      [ "fmt::formatter< ProblemFormat >", "structfmt_1_1formatter_3_01ProblemFormat_01_4.html", null ]
     ] ],
     [ "antares_xpansion.full_run_driver.FullRunDriver", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html", null ],
     [ "antares_xpansion.gems_driver.GemsDriver", "classantares__xpansion_1_1gems__driver_1_1GemsDriver.html", null ],

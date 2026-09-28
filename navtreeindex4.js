@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classStudyUpdateLinkCapacitiesStrategy.html":[45,0,275],
 "classStudyUpdateLinkParameterStrategy.html":[45,0,276],
 "classStudyUpdateLinkParameterStrategy.html#a7bc3dca99fbf78003a2438a394afcef0":[45,0,276,0],
 "classStudyUpdateLinkParameterStrategy.html#aa0b97c6cb17e2eb7cacc74eb8c77e5dd":[45,0,276,1],
@@ -17,8 +18,8 @@ var NAVTREEINDEX4 =
 "classSubproblemConstraintsManager.html":[45,0,282],
 "classSubproblemConstraintsManagerTest.html":[45,0,283],
 "classSubproblemWorker.html":[45,0,284],
+"classSubproblemWorker.html#a3cc94eeda4ce13e0003f7025e32e9a88":[45,0,284,0],
 "classSubproblemWorker.html#a531ddbc498bd7e11092a7d30dde5d837":[45,0,284,3],
-"classSubproblemWorker.html#a5a2957a2f29ebafa4adec5fd07fa65e4":[45,0,284,0],
 "classSubproblemWorker.html#a9032b50b5b2e7ed630cbb106f487a1ec":[45,0,284,1],
 "classSubproblemWorker.html#af1c505070e046e61bf4c46fa015907fa":[45,0,284,2],
 "classSubproblemWorkerFactory.html":[45,0,285],
@@ -46,7 +47,7 @@ var NAVTREEINDEX4 =
 "classWorker.html":[45,0,304],
 "classWorker.html#a08567d41cc2e77b6c122543d64e904e4":[45,0,304,8],
 "classWorker.html#a1a9104c18381ba2210d0220dc18310a3":[45,0,304,7],
-"classWorker.html#a3cb29b6fca63283d104fe424cd2adbde":[45,0,304,4],
+"classWorker.html#a22b90b1c3f5fd5ce1a890bea4cbb6321":[45,0,304,4],
 "classWorker.html#a415adaf758b96a5372a7468670b2476a":[45,0,304,5],
 "classWorker.html#a5ba237e3fdef7d8cc8249fcc5e2c6283":[45,0,304,1],
 "classWorker.html#abdb60808816e1a3409a63fe0c2dd98b5":[45,0,304,6],
@@ -58,17 +59,17 @@ var NAVTREEINDEX4 =
 "classWorkerMaster.html#a4c531a222024ba4631e4e0c5f5e24dcb":[45,0,305,1],
 "classWorkerMaster.html#a4e0985f5db67b527c238d9c78456347c":[45,0,305,3],
 "classWorkerMaster.html#a8d54999dd4bb88dea5124813f58d5b5f":[45,0,305,8],
-"classWorkerMaster.html#a8d85899a865a596cea33ff25372a374f":[45,0,305,0],
 "classWorkerMaster.html#aa8ba73f3af1fdcd14a61d66beca727a2":[45,0,305,4],
 "classWorkerMaster.html#aba45491d5e583afcf336e9516d373827":[45,0,305,9],
 "classWorkerMaster.html#ad7c04951f75b564dbf6a92a98a23a919":[45,0,305,5],
 "classWorkerMaster.html#ae76c047e796f3243fab131b12bdec4d5":[45,0,305,6],
 "classWorkerMaster.html#ae8f3621f598c5b3e8bdcb6e4679c1fb1":[45,0,305,7],
+"classWorkerMaster.html#af7acc4f6c76dc37e9f972c47e521eeca":[45,0,305,0],
 "classWorkerMasterAddRowsTest.html":[45,0,306],
 "classWorkerMasterData.html":[45,0,307],
 "classWorkerMasterData.html#ab607ad86ef5badf22f0ed51e097aad77":[45,0,307,0],
 "classWorkerMasterMock.html":[45,0,308],
-"classWorkerMasterMock.html#a8d85899a865a596cea33ff25372a374f":[45,0,308,0],
+"classWorkerMasterMock.html#af7acc4f6c76dc37e9f972c47e521eeca":[45,0,308,0],
 "classWorkerMasterTest.html":[45,0,309],
 "classWriterMockStatus.html":[45,0,310],
 "classXpansionProblemsFromAntaresProvider.html":[45,0,311],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html":[43,0,0,5,8],
 "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html":[45,0,0,11,8],
 "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[43,0,0,5,9],
-"classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[45,0,0,11,9],
-"classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[43,0,0,5,10]
+"classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[45,0,0,11,9]
 };

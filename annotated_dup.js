@@ -180,7 +180,7 @@ var annotated_dup =
       [ "TrajectoryInvestmentDriver", "classdriver__trajectory_1_1TrajectoryInvestmentDriver.html", "classdriver__trajectory_1_1TrajectoryInvestmentDriver" ]
     ] ],
     [ "fmt", null, [
-      [ "formatter< ProblemsFormat >", "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html", null ]
+      [ "formatter< ProblemFormat >", "structfmt_1_1formatter_3_01ProblemFormat_01_4.html", null ]
     ] ],
     [ "LoadXpress", null, [
       [ "XpressLoader", "classLoadXpress_1_1XpressLoader.html", "classLoadXpress_1_1XpressLoader" ]

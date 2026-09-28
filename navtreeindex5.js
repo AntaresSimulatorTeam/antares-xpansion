@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[43,0,0,5,10],
 "classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[45,0,0,11,10],
 "classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentNonNullSimultaneously.html":[43,0,0,5,11],
 "classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentNonNullSimultaneously.html":[45,0,0,11,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486":[45,0,23,0,4,0],
 "common_8h_source.html":[46,0,0,0,0,1,0,0,0,0,5],
 "common__mpi_8h_source.html":[46,0,0,0,0,2,0,0,0,0,1],
-"conceptOStreamable.html":[44,0],
-"conceptOStreamableIntegral.html":[44,1]
+"conceptOStreamable.html":[44,0]
 };

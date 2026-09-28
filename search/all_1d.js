@@ -55,7 +55,7 @@ var searchData=
   ['simulation_52',['simulation',['../index.html#autotoc_md3',1,'Antares Xpansion simulation'],['../md_docs_2index.html#autotoc_md119',1,'Antares Xpansion simulation']]],
   ['simulation_20procedure_53',['Antares Xpansion simulation procedure',['../md_docs_2developer-guide_2xpansion-steps_2index.html',1,'']]],
   ['simulationname_20last_20your_20antares_20output_20directory_20tt_54',['&lt;tt&gt;--simulationName {last, your-antares-output-directory}&lt;/tt&gt;',['../md_docs_2reference_2cli.html#autotoc_md225',1,'']]],
-  ['simulationoptions_55',['SimulationOptions',['../classSimulationOptions.html',1,'SimulationOptions'],['../classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9',1,'SimulationOptions::SimulationOptions()']]],
+  ['simulationoptions_55',['SimulationOptions',['../classSimulationOptions.html',1,'SimulationOptions'],['../classSimulationOptions.html#a05056945c8434dcdfc5ab9d28a82f0f8',1,'SimulationOptions::SimulationOptions()'],['../classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9',1,'SimulationOptions::SimulationOptions(const std::filesystem::path &amp;options_filename)']]],
   ['simulator_20build_56',['Automatic Antares Simulator build',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md68',1,'']]],
   ['simulator_20optimization_20problems_20retrieval_3a_20tt_20antares_20tt_57',['1. Antares-Simulator optimization problems retrieval: &lt;tt&gt;antares&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion-steps_2index.html#autotoc_md99',1,'']]],
   ['single_20file_20versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_58',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2overview_2CHANGELOG.html#autotoc_md153',1,'']]],
@@ -135,7 +135,7 @@ var searchData=
   ['subproblemdata_132',['SubProblemData',['../structPlainData_1_1SubProblemData.html',1,'PlainData']]],
   ['subproblemstats_133',['SubProblemStats',['../classtests_1_1end__to__end_1_1cucumber_1_1features_1_1steps_1_1then_1_1SubProblemStats.html',1,'tests::end_to_end::cucumber::features::steps::then']]],
   ['subproblemweight_134',['SubproblemWeight',['../classBendersBase.html#ab979fd9e6fd791c6b01d244da33ba849',1,'BendersBase']]],
-  ['subproblemworker_135',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#a5a2957a2f29ebafa4adec5fd07fa65e4',1,'SubproblemWorker::SubproblemWorker()']]],
+  ['subproblemworker_135',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#a3cc94eeda4ce13e0003f7025e32e9a88',1,'SubproblemWorker::SubproblemWorker()']]],
   ['subproblemworkerfactory_136',['SubproblemWorkerFactory',['../classSubproblemWorkerFactory.html',1,'']]],
   ['subproblemworkerfactorytest_137',['SubproblemWorkerFactoryTest',['../classSubproblemWorkerFactoryTest.html',1,'']]]
 ];

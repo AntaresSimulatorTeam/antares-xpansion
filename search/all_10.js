@@ -41,7 +41,7 @@ var searchData=
   ['format_38',['Study format',['../md_docs_2reference_2benders_2in-memory-compact-subproblems.html#autotoc_md211',1,'']]],
   ['format_20changes_39',['Study format changes',['../md_docs_2overview_2format__changes.html',1,'']]],
   ['format_20mps_20optimized_20tt_40',['&lt;tt&gt;--problem-format {MPS, OPTIMIZED}&lt;/tt&gt;',['../md_docs_2reference_2cli.html#autotoc_md227',1,'']]],
-  ['formatter_3c_20problemsformat_20_3e_41',['formatter&lt; ProblemsFormat &gt;',['../structfmt_1_1formatter_3_01ProblemsFormat_01_4.html',1,'fmt']]],
+  ['formatter_3c_20problemformat_20_3e_41',['formatter&lt; ProblemFormat &gt;',['../structfmt_1_1formatter_3_01ProblemFormat_01_4.html',1,'fmt']]],
   ['formatting_42',['Formatting',['../md_docs_2agents_2cpp-conventions.html#autotoc_md13',1,'Formatting'],['../md_docs_2agents_2python-conventions.html#autotoc_md28',1,'Formatting']]],
   ['formulation_43',['Master problem formulation',['../md_docs_2reference_2outputs_2others.html#autotoc_md254',1,'']]],
   ['formulationenum_44',['FormulationEnum',['../classuser__input__translation_1_1FormulationEnum.html',1,'user_input_translation']]],

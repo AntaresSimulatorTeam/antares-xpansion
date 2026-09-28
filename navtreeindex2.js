@@ -203,10 +203,11 @@ var NAVTREEINDEX2 =
 "classSimpleLoggerMock.html":[45,0,251],
 "classSimpleLoggerMock.html#a2380a04fd4a2cd5dbadf62414ef8812b":[45,0,251,0],
 "classSimulationOptions.html":[45,0,252],
-"classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9":[45,0,252,0],
-"classSimulationOptions.html#a9f76fa0b9615eac54d0e6394bbe50df8":[45,0,252,1],
-"classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49":[45,0,252,3],
-"classSimulationOptions.html#ae54424a28d9548d14640a68a60c3547e":[45,0,252,2],
+"classSimulationOptions.html#a05056945c8434dcdfc5ab9d28a82f0f8":[45,0,252,0],
+"classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9":[45,0,252,1],
+"classSimulationOptions.html#a9f76fa0b9615eac54d0e6394bbe50df8":[45,0,252,2],
+"classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49":[45,0,252,4],
+"classSimulationOptions.html#ae54424a28d9548d14640a68a60c3547e":[45,0,252,3],
 "classSkeletonCoefficientReader.html":[45,0,254],
 "classSkeletonCoefficientReaderTest.html":[45,0,255],
 "classSkeletonCoefficientReader_1_1NamesNotFoundException.html":[45,0,254,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125":[45,0,260,56],
 "classSolverAbstract.html#a6f14bdf4c3a47e26efdb550b7b28dce6":[45,0,260,40],
 "classSolverAbstract.html#a7028f73741560bc9a5ba54ac03e6c5a7":[45,0,260,53],
-"classSolverAbstract.html#a76b0351222aae31a09503ef01ca59b95":[45,0,260,13],
-"classSolverAbstract.html#a7a91e1f4c146a51986c4f9936a6ad40a":[45,0,260,58]
+"classSolverAbstract.html#a76b0351222aae31a09503ef01ca59b95":[45,0,260,13]
 };

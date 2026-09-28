@@ -1,4 +1,4 @@
 var classWorkerMasterMock =
 [
-    [ "WorkerMaster", "classWorkerMasterMock.html#a8d85899a865a596cea33ff25372a374f", null ]
+    [ "WorkerMaster", "classWorkerMasterMock.html#af7acc4f6c76dc37e9f972c47e521eeca", null ]
 ];

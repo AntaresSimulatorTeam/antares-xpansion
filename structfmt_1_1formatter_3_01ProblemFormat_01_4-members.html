@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: launch_trajectory Namespace Reference</title>
+<title>Antares Xpansion: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('namespacelaunch__trajectory.html',''); initResizable(true); });
+$(function(){initNavTree('structfmt_1_1formatter_3_01ProblemFormat_01_4.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,44 +137,18 @@ $(function(){initNavTree('namespacelaunch__trajectory.html',''); initResizable(t
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">launch_trajectory Namespace Reference</div></div>
+  <div class="headertitle"><div class="title">fmt::formatter&lt; ProblemFormat &gt; Member List</div></div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a4edacdf7ff1046412d3ccf80f7038a9b" id="r_a4edacdf7ff1046412d3ccf80f7038a9b"><td class="memItemLeft" align="right" valign="top"><a id="a4edacdf7ff1046412d3ccf80f7038a9b" name="a4edacdf7ff1046412d3ccf80f7038a9b"></a>
-str&#160;</td><td class="memItemRight" valign="bottom"><b>conf_file</b> = Path(os.path.abspath(__file__)).parent / &quot;config.yaml&quot;</td></tr>
-<tr class="separator:a4edacdf7ff1046412d3ccf80f7038a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1beeb00a38b5e139219edbf6abc42d9" id="r_ab1beeb00a38b5e139219edbf6abc42d9"><td class="memItemLeft" align="right" valign="top"><a id="ab1beeb00a38b5e139219edbf6abc42d9" name="ab1beeb00a38b5e139219edbf6abc42d9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>config_parser</b> = <a class="el" href="classantares__xpansion_1_1config__file__parser_1_1ConfigFileParser.html">ConfigFileParser</a>(conf_file)</td></tr>
-<tr class="separator:ab1beeb00a38b5e139219edbf6abc42d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70a94c86f0e12762a6048fd5ca681082" id="r_a70a94c86f0e12762a6048fd5ca681082"><td class="memItemLeft" align="right" valign="top"><a id="a70a94c86f0e12762a6048fd5ca681082" name="a70a94c86f0e12762a6048fd5ca681082"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>install_data</b> = config_parser.get_config_parameters()</td></tr>
-<tr class="separator:a70a94c86f0e12762a6048fd5ca681082"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f1a94afdb13b8b08a6d3a3186dd660d" id="r_a0f1a94afdb13b8b08a6d3a3186dd660d"><td class="memItemLeft" align="right" valign="top"><a id="a0f1a94afdb13b8b08a6d3a3186dd660d" name="a0f1a94afdb13b8b08a6d3a3186dd660d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>parser</b> = TrajectoryArgsParser()</td></tr>
-<tr class="separator:a0f1a94afdb13b8b08a6d3a3186dd660d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa63e0eabf80015a7ab053d60eeff5592" id="r_aa63e0eabf80015a7ab053d60eeff5592"><td class="memItemLeft" align="right" valign="top"><a id="aa63e0eabf80015a7ab053d60eeff5592" name="aa63e0eabf80015a7ab053d60eeff5592"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>input_parameters</b> = parser.parse_args()</td></tr>
-<tr class="separator:aa63e0eabf80015a7ab053d60eeff5592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3909499b7d2fd2f7f79c81738fda6fd" id="r_ab3909499b7d2fd2f7f79c81738fda6fd"><td class="memItemLeft" align="right" valign="top"><a id="ab3909499b7d2fd2f7f79c81738fda6fd" name="ab3909499b7d2fd2f7f79c81738fda6fd"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>config</b> = TrajectoryConfig(input_parameters, install_data)</td></tr>
-<tr class="separator:ab3909499b7d2fd2f7f79c81738fda6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dceabed4f31099e4af2d638e0554a59" id="r_a9dceabed4f31099e4af2d638e0554a59"><td class="memItemLeft" align="right" valign="top"><a id="a9dceabed4f31099e4af2d638e0554a59" name="a9dceabed4f31099e4af2d638e0554a59"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>driver</b> = TrajectoryInvestmentDriver(config)</td></tr>
-<tr class="separator:a9dceabed4f31099e4af2d638e0554a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><pre class="fragment">Controls the execution of the antares xpansion trajectory investment steps
-</pre> </div></div><!-- contents -->
+
+<p>This is the complete list of members for <a class="el" href="structfmt_1_1formatter_3_01ProblemFormat_01_4.html">fmt::formatter&lt; ProblemFormat &gt;</a>, including all inherited members.</p>
+<table class="directory">
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>format</b>(ProblemFormat problem_format, format_context &amp;ctx) const -&gt; format_context::iterator (defined in <a class="el" href="structfmt_1_1formatter_3_01ProblemFormat_01_4.html">fmt::formatter&lt; ProblemFormat &gt;</a>)</td><td class="entry"><a class="el" href="structfmt_1_1formatter_3_01ProblemFormat_01_4.html">fmt::formatter&lt; ProblemFormat &gt;</a></td><td class="entry"></td></tr>
+</table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacelaunch__trajectory.html">launch_trajectory</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

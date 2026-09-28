@@ -25,7 +25,7 @@ var searchData=
   ['with_20the_20user_20input_20file_22',['Link with the user input file',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md259',1,'']]],
   ['with_20tt_20lp_5fnamer_20tt_23',['Modification of weekly problems with &lt;tt&gt;lp_namer&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion-steps_2problem-modification.html#autotoc_md109',1,'']]],
   ['worker_24',['Worker',['../classWorker.html',1,'']]],
-  ['workermaster_25',['WorkerMaster',['../classWorkerMaster.html',1,'WorkerMaster'],['../classWorkerMaster.html#a8d85899a865a596cea33ff25372a374f',1,'WorkerMaster::WorkerMaster()'],['../classWorkerMasterMock.html#a8d85899a865a596cea33ff25372a374f',1,'WorkerMasterMock::WorkerMaster()']]],
+  ['workermaster_25',['WorkerMaster',['../classWorkerMaster.html',1,'WorkerMaster'],['../classWorkerMaster.html#af7acc4f6c76dc37e9f972c47e521eeca',1,'WorkerMaster::WorkerMaster()'],['../classWorkerMasterMock.html#af7acc4f6c76dc37e9f972c47e521eeca',1,'WorkerMasterMock::WorkerMaster()']]],
   ['workermasteraddrowstest_26',['WorkerMasterAddRowsTest',['../classWorkerMasterAddRowsTest.html',1,'']]],
   ['workermasterdata_27',['WorkerMasterData',['../classWorkerMasterData.html',1,'']]],
   ['workermastermock_28',['WorkerMasterMock',['../classWorkerMasterMock.html',1,'']]],
