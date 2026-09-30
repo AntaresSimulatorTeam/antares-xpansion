@@ -100,7 +100,9 @@ public:
 
             for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
             {
-                subproblem_ids_per_cut.push_back(problem_to_id.at(sub_problem_name));
+                auto problem_to_id_pair = problem_to_id.find(sub_problem_name) ; 
+                if (problem_to_id_pair != problem_to_id.end())
+                    subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
 
                 auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
                   sub_problem_name);

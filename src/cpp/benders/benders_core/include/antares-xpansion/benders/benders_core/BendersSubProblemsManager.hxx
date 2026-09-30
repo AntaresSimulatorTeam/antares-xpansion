@@ -30,7 +30,7 @@ auto selectPolicy(lambda f, bool shouldParallelize)
 {
     if (shouldParallelize)
     {
-        return f(std::execution::par_unseq);
+        return f(std::execution::par);
     }
     else
     {
