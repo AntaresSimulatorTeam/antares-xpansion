@@ -85,7 +85,7 @@ void BendersSequential::InitializeProblems()
                                Options().MASTER_SOLUTION_TOLERANCE,
                                GetSubCutTolerance());
     subproblems_manager_.SetCouplingMap(coupling_map_);
-    for (const auto& problem: coupling_map_)
+    for (const auto& problem: *coupling_map_)
     {
         subproblems_manager_.AddSubproblem(problem);
         subproblems_manager_.AddSubproblemName(problem.first);

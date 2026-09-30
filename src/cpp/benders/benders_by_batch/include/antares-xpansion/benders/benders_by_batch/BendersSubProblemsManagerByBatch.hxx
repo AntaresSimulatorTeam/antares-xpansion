@@ -48,7 +48,7 @@ public:
             nameAndVariableMap.reserve(batch_sub_problems.size());
             for (const auto& name: batch_sub_problems)
             {
-                auto it = coupling_map_.find(name);
+                auto it = coupling_map_->find(name);
                 nameAndVariableMap.emplace_back(it->first, it->second);
             }
             return nameAndVariableMap;

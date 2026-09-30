@@ -129,7 +129,7 @@ protected:
     WorkerMasterPtr _master;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
-    CouplingMap coupling_map_;
+    std::shared_ptr<CouplingMap> coupling_map_ = std::make_shared<CouplingMap>();
     VariableMap _problem_to_id;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;

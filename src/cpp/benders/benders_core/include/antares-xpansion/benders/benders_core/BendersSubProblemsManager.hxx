@@ -54,7 +54,7 @@ class BendersSubProblemsManager
 protected:
     // Subproblem storage
     SubproblemsMapPtr subproblem_map_;
-    CouplingMap coupling_map_;
+    std::shared_ptr<const CouplingMap> coupling_map_ = std::make_shared<CouplingMap>();
     SubproblemBasisCache subproblem_basis_cache_;
     std::shared_ptr<SubproblemWorkerFactory> subproblem_worker_factory_;
     StrVector subproblems_;
@@ -136,8 +136,8 @@ public:
         return [this]()
         {
             std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
-            nameAndVariableMap.reserve(coupling_map_.size());
-            for (auto& [name, variables]: coupling_map_)
+            nameAndVariableMap.reserve(coupling_map_->size());
+            for (const auto& [name, variables]: *coupling_map_)
             {
                 nameAndVariableMap.emplace_back(name, variables);
             }
@@ -431,7 +431,7 @@ public:
     void MatchProblemToId()
     {
         int count = 0;
-        for (const auto& problem: coupling_map_)
+        for (const auto& problem: *coupling_map_)
         {
             problem_to_id_[problem.first] = count;
             count++;
@@ -554,18 +554,13 @@ public:
         return subproblem_worker_factory_ ? subproblem_worker_factory_->GetSolver() : nullptr;
     }
 
-    void SetCouplingMap(const CouplingMap& coupling_map)
+    void SetCouplingMap(std::shared_ptr<const CouplingMap> coupling_map)
     {
-        coupling_map_ = coupling_map;
-    }
-
-    CouplingMap& GetCouplingMap()
-    {
-        return coupling_map_;
+        coupling_map_ = std::move(coupling_map);
     }
 
     const CouplingMap& GetCouplingMap() const
     {
-        return coupling_map_;
+        return *coupling_map_;
     }
 };

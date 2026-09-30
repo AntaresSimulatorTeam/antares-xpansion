@@ -55,12 +55,12 @@ void BendersMpi::InitializeProblems()
     if (_options.CACHE_PROBLEMS != CacheProblems::NO_CACHE)
     {
         int current_problem_id = 0;
-        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
+        for (auto it = coupling_map_->begin(); it != coupling_map_->end();)
         {
             auto process_to_feed = current_problem_id % _world.size();
             if (process_to_feed != _world.rank())
             {
-                it = coupling_map_.erase(it);
+                it = coupling_map_->erase(it);
             }
             else
             {
@@ -75,7 +75,7 @@ void BendersMpi::InitializeProblems()
     {
         int current_problem_id = 0;
         // Dispatch subproblems to process
-        for (const auto& problem: coupling_map_)
+        for (const auto& problem: *coupling_map_)
         {
             // In case there are more subproblems than process
             if (auto process_to_feed = current_problem_id % _world.size();

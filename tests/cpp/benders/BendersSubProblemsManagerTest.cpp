@@ -203,9 +203,9 @@ TEST_F(BendersSubProblemsManagerTest, SetCouplingMap_StoresMap)
 {
     auto manager = MakeManager();
 
-    CouplingMap coupling_map;
-    coupling_map["sub1.mps"] = {{"var1", 0}, {"var2", 1}};
-    coupling_map["sub2.mps"] = {{"var1", 0}};
+    auto coupling_map = std::make_shared<CouplingMap>();
+    (*coupling_map)["sub1.mps"] = {{"var1", 0}, {"var2", 1}};
+    (*coupling_map)["sub2.mps"] = {{"var1", 0}};
     manager.SetCouplingMap(coupling_map);
 
     const auto& stored = manager.GetCouplingMap();
@@ -221,10 +221,10 @@ TEST_F(BendersSubProblemsManagerTest, MatchProblemToId_AssignsSequentialIds)
 {
     auto manager = MakeManager();
 
-    CouplingMap coupling_map;
-    coupling_map["alpha.mps"] = {{"v", 0}};
-    coupling_map["beta.mps"] = {{"v", 0}};
-    coupling_map["gamma.mps"] = {{"v", 0}};
+    auto coupling_map = std::make_shared<CouplingMap>();
+    (*coupling_map)["alpha.mps"] = {{"v", 0}};
+    (*coupling_map)["beta.mps"] = {{"v", 0}};
+    (*coupling_map)["gamma.mps"] = {{"v", 0}};
     manager.SetCouplingMap(coupling_map);
 
     manager.MatchProblemToId();

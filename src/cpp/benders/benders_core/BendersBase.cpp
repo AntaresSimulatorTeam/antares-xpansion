@@ -736,12 +736,12 @@ void BendersBase::set_solver_log_file(const std::filesystem::path& log_file)
  */
 void BendersBase::set_input_map(const CouplingMap& coupling_map)
 {
-    coupling_map_ = coupling_map;
-    _totalNbProblems = static_cast<int>(coupling_map_.size());
+    coupling_map_ = std::make_shared<CouplingMap>(coupling_map);
+    _totalNbProblems = static_cast<int>(coupling_map_->size());
     _writer->write_nbweeks(_totalNbProblems);
     _data.nsubproblem = _totalNbProblems - 1;
-    master_variable_map_ = get_master_variable_map(coupling_map_);
-    coupling_map_.erase(get_master_name());
+    master_variable_map_ = get_master_variable_map(*coupling_map_);
+    coupling_map_->erase(get_master_name());
 }
 
 std::map<std::string, int> BendersBase::get_master_variable_map(
@@ -770,7 +770,7 @@ WorkerMasterPtr BendersBase::get_master() const
 void BendersBase::MatchProblemToId()
 {
     int count = 0;
-    for (const auto& problem: coupling_map_)
+    for (const auto& problem: *coupling_map_)
     {
         _problem_to_id[problem.first] = count;
         count++;

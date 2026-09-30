@@ -103,14 +103,14 @@ void BendersByBatch::BuildMasterProblem()
 
 void BendersByBatch::BuildBatches()
 {
-    const auto& coupling_map_size = coupling_map_.size();
+    const auto& coupling_map_size = coupling_map_->size();
 
     // Only rank 0 builds the batch collection, then it is broadcasted to all procs
 
     if (Rank() == rank_0)
     {
         std::vector<std::string> problem_names;
-        for (const auto& problem_name: coupling_map_ | std::views::keys)
+        for (const auto& problem_name: (*coupling_map_) | std::views::keys)
         {
             problem_names.emplace_back(problem_name);
         }
@@ -163,7 +163,7 @@ void BendersByBatch::BuildBatches()
                 }
                 else
                 {
-                    batch_subproblems_manager_.AddSubproblem({*it, coupling_map_[*it]});
+                    batch_subproblems_manager_.AddSubproblem({*it, (*coupling_map_)[*it]});
                     batch_subproblems_manager_.AddSubproblemName(*it);
                     ++it;
                 }
