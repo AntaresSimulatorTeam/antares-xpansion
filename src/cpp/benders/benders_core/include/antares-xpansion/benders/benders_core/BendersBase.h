@@ -77,17 +77,17 @@ public:
         return communication_strategy_;
     }
 
-    [[nodiscard]] std::shared_ptr<BendersMasterManager> GetMasterManager() const
+    [[nodiscard]] const std::unique_ptr<BendersMasterManager>& GetMasterManager() const
     {
         return master_manager_;
     }
 
-    [[nodiscard]] std::shared_ptr<BendersOuterLoopManager> GetOuterLoopManager() const
+    [[nodiscard]] const std::unique_ptr<BendersOuterLoopManager>& GetOuterLoopManager() const
     {
         return outer_loop_manager_;
     }
 
-    [[nodiscard]] std::shared_ptr<BendersOutputManager> GetOutputManager() const
+    [[nodiscard]] const std::unique_ptr<BendersOutputManager>& GetOutputManager() const
     {
         return output_manager_;
     }
@@ -96,7 +96,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterPtr _master;
-    std::shared_ptr<BendersMasterManager> master_manager_;
+    std::unique_ptr<BendersMasterManager> master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
@@ -106,8 +106,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-    std::shared_ptr<BendersOutputManager> output_manager_;
-    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
+    std::unique_ptr<BendersOutputManager> output_manager_;
+    std::unique_ptr<BendersOuterLoopManager> outer_loop_manager_;
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 

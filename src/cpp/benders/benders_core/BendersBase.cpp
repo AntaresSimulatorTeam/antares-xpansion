@@ -21,15 +21,15 @@ BendersBase::BendersBase(BendersBaseOptions options,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
                          std::shared_ptr<ICommunicationStrategy> communication_strategy):
     _options(std::move(options)),
-    master_manager_(std::make_shared<BendersMasterManager>()),
-    output_manager_(std::make_shared<BendersOutputManager>(std::move(logger),
+    master_manager_(std::make_unique<BendersMasterManager>()),
+    output_manager_(std::make_unique<BendersOutputManager>(std::move(logger),
                                                            std::move(writer),
                                                            std::move(mathLoggerDriver),
                                                            _data,
                                                            _options,
                                                            _problem_to_id,
                                                            relevantIterationData_)),
-    outer_loop_manager_(std::make_shared<BendersOuterLoopManager>(
+    outer_loop_manager_(std::make_unique<BendersOuterLoopManager>(
       _data,
       relevantIterationData_,
       output_manager_->GetWriter(),

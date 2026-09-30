@@ -89,7 +89,7 @@ INSTANTIATE_TEST_SUITE_P(availsolvers, MasterUpdateBaseTest, ::testing::ValuesIn
 
 double LambdaMax(pBendersBase benders)
 {
-    auto master = benders->GetMasterManager();
+    const auto& master = benders->GetMasterManager();
     const auto& obj = master->GetObjectiveFunctionCoeffs();
     const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
     double lambda_max = 0;
@@ -163,7 +163,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
                                          benders->GetCommunicationStrategy());
     out_loop.OuterLoopCheckFeasibility();
 
-    auto master = benders->GetMasterManager();
+    const auto& master = benders->GetMasterManager();
     auto num_constraints_master_before = master->GetNrows();
     auto lambda_min = out_loop.OuterLoopLambdaMin();
     auto lambda_max = out_loop.OuterLoopLambdaMax();

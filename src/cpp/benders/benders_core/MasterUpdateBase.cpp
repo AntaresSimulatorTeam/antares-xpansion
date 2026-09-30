@@ -5,21 +5,21 @@
 
 using namespace Outerloop;
 
-MasterUpdateBase::MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
+MasterUpdateBase::MasterUpdateBase(const std::unique_ptr<BendersMasterManager>& master_manager,
                                    double tau,
                                    double outer_loop_stopping_threshold):
-    MasterUpdateBase(std::move(master_manager),
+    MasterUpdateBase(master_manager,
                      tau,
                      outer_loop_stopping_threshold,
                      "Min_Investment_Constraint")
 {
 }
 
-MasterUpdateBase::MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
+MasterUpdateBase::MasterUpdateBase(const std::unique_ptr<BendersMasterManager>& master_manager,
                                    double tau,
                                    double outer_loop_stopping_threshold,
                                    const std::string& name):
-    master_manager_(std::move(master_manager)),
+    master_manager_(master_manager),
     outer_loop_stopping_threshold_(outer_loop_stopping_threshold),
     min_invest_constraint_name_(name)
 {
