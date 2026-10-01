@@ -281,7 +281,7 @@ TEST(BuildAllAggregatedCutsTest, EmptySubproblemNames_NoOp)
     SubProblemDataMap cut_trace;
 
     cuts_manager.BuildAllAggregatedCuts(subproblem_names, gathered, problem_to_id, ub, x_cut,
-                                        cut_trace, master);
+                                        cut_trace);
 
     EXPECT_DOUBLE_EQ(ub, 0.0);
     EXPECT_TRUE(cut_trace.empty());
@@ -307,7 +307,7 @@ TEST(BuildAllAggregatedCutsTest, SingleCutGroup_AccumulatesUbAndTrace)
     SubProblemDataMap cut_trace;
 
     cuts_manager.BuildAllAggregatedCuts(subproblem_names, gathered, problem_to_id, ub, x_cut,
-                                        cut_trace, master);
+                                        cut_trace);
 
     EXPECT_DOUBLE_EQ(ub, 75.0);
     ASSERT_EQ(cut_trace.size(), 1u);
@@ -336,7 +336,7 @@ TEST(BuildAllAggregatedCutsTest, MultipleCutGroups_AccumulatesUb)
     SubProblemDataMap cut_trace;
 
     cuts_manager.BuildAllAggregatedCuts(subproblem_names, gathered, problem_to_id, ub, x_cut,
-                                        cut_trace, master);
+                                        cut_trace);
 
     EXPECT_DOUBLE_EQ(ub, 80.0); // 30 + 50
     EXPECT_EQ(cut_trace.size(), 2u);
@@ -365,7 +365,7 @@ TEST(BuildAllAggregatedCutsTest, MultipleSubproblemsInOneCutGroup)
     SubProblemDataMap cut_trace;
 
     cuts_manager.BuildAllAggregatedCuts(subproblem_names, gathered, problem_to_id, ub, x_cut,
-                                        cut_trace, master);
+                                        cut_trace);
 
     EXPECT_DOUBLE_EQ(ub, 100.0); // 40 + 60
     EXPECT_EQ(cut_trace.size(), 2u);

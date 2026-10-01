@@ -89,8 +89,7 @@ public:
                                 const VariableMap& problem_to_id,
                                 double& ub,
                                 const Point& x_cut,
-                                SubProblemDataMap& cut_trace,
-                                const WorkerMasterPtr& master)
+                                SubProblemDataMap& cut_trace)
     {
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
@@ -117,11 +116,16 @@ public:
                 }
             }
 
-            master->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+            master_->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
         }
     }
 
+protected : 
+    WorkerMasterPtr master_;
+
 private:
+    
+
     // Rounds x_cut values that are within tolerance of variable bounds to
     // avoid numerical drift from repeated separation parameter application.
     void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
