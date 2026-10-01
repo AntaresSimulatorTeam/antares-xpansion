@@ -137,14 +137,20 @@ int BendersApp::RunBenders()
     {
         std::ostringstream msg;
         msg << "error: " << e.what() << std::endl;
-        benders_loggers_.display_message(msg.str());
+        if (pworld_->rank() == 0)
+        {
+            std::cerr << msg.str();
+        }
         mpi::environment::abort(1);
     }
     catch (...)
     {
         std::ostringstream msg;
         msg << "Exception of unknown type!" << std::endl;
-        benders_loggers_.display_message(msg.str());
+        if (pworld_->rank() == 0)
+        {
+            std::cerr << msg.str();
+        }
         mpi::environment::abort(1);
     }
     return 0;
@@ -197,14 +203,20 @@ int BendersApp::RunExternalLoop()
     {
         std::ostringstream msg;
         msg << "error: " << e.what() << std::endl;
-        benders_loggers_.display_message(msg.str());
+        if (pworld_->rank() == 0)
+        {
+            std::cerr << msg.str();
+        }
         mpi::environment::abort(1);
     }
     catch (...)
     {
         std::ostringstream msg;
         msg << "Exception of unknown type!" << std::endl;
-        benders_loggers_.display_message(msg.str());
+        if (pworld_->rank() == 0)
+        {
+            std::cerr << msg.str();
+        }
         mpi::environment::abort(1);
     }
     return 0;
