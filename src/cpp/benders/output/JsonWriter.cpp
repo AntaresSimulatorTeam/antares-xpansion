@@ -30,8 +30,8 @@ void JsonWriter::_open_file()
         if (error)
         {
             throw std::runtime_error("Could not create parent directory '" + parent_path.string()
-                                     + "' for JSON output file '" + _filename.string() + "': "
-                                     + error.message());
+                                     + "' for JSON output file '" + _filename.string()
+                                     + "': " + error.message());
         }
     }
 
