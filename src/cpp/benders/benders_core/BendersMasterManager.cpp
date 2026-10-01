@@ -201,7 +201,7 @@ void BendersMasterManager::ComputeInvestCost(CurrentIterationData& data) const
 
     for (const auto& [col_name, value]: data.solution.x_cut)
     {
-        int col_id = master_->_name_to_id[col_name];
+        int col_id = master_->_name_to_id.at(col_name);
         data.master.invest_cost += obj[col_id] * data.solution.x_cut[col_name];
     }
     for (int i(0); i < data.solution.master_only_vars_cut.size(); ++i)
