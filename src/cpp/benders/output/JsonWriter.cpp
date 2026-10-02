@@ -1,6 +1,5 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 
-#include <fmt/format.h>
 #include <stdexcept>
 
 #include "config.h"
@@ -30,19 +29,16 @@ void JsonWriter::_open_file()
         std::filesystem::create_directories(parent_path, error);
         if (error)
         {
-            throw std::runtime_error(
-              fmt::format("Could not create parent directory '{}' for JSON output file '{}': {}",
-                          parent_path.string(),
-                          _filename.string(),
-                          error.message()));
+            throw std::runtime_error("Could not create parent directory '" + parent_path.string()
+                                     + "' for JSON output file '" + _filename.string()
+                                     + "': " + error.message());
         }
     }
 
     _jsonOut_l.open(_filename, std::ofstream::out | std::ofstream::trunc);
     if (_jsonOut_l.fail())
     {
-        throw std::runtime_error(
-          fmt::format("Could not open JSON output file '{}'", _filename.string()));
+        throw std::runtime_error("Could not open JSON output file '" + _filename.string() + "'");
     }
 }
 
