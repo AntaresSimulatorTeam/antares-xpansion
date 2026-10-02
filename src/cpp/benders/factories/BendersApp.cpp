@@ -23,6 +23,8 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
+        benders_loggers_.AddLogger(logger_);
+        benders_loggers_.AddLogger(math_log_driver_);
         writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
     }
     else
@@ -30,9 +32,9 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         logger_ = build_void_logger();
         writer_ = build_void_writer();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
+        benders_loggers_.AddLogger(logger_);
+        benders_loggers_.AddLogger(math_log_driver_);
     }
-    benders_loggers_.AddLogger(logger_);
-    benders_loggers_.AddLogger(math_log_driver_);
     writer_->write_log_level(options_.LOG_LEVEL);
     writer_->write_master_name(options_.MASTER_NAME);
     writer_->write_solver_name(options_.SOLVER_NAME);
