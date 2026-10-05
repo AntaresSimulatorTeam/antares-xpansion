@@ -65,7 +65,6 @@ private:
 
 protected:
     void InitializeMaster();
-    void CreateCutsManager();
 
     [[nodiscard]] bool shouldParallelize() const final
     {

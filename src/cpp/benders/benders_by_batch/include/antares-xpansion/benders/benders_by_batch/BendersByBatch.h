@@ -40,7 +40,6 @@ protected:
     void BuildBatches();
 
 private:
-    void CreateBatchCutsManager();
     void BuildMasterProblem();
     void calculate_subproblem_contribution(const std::string& name,
                                            PlainData::SubProblemData& subproblem_data);

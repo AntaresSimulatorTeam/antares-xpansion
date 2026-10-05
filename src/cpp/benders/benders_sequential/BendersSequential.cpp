@@ -26,7 +26,11 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                                                             solver_log_manager_,
                                                             output_manager_->GetWriter(),
                                                             shouldParallelize(),
-                                                            coupling_map_))
+                                                            coupling_map_)),
+    cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
+                                                                 _problem_to_id,
+                                                                 relevantIterationData_,
+                                                                 *master_manager_))
 {
 }
 
@@ -76,10 +80,6 @@ void BendersSequential::InitializeProblems()
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());
 
-    cuts_manager_ = std::make_shared<BendersCutsManagerSequential>(_data,
-                                                                   _problem_to_id,
-                                                                   relevantIterationData_,
-                                                                   *master_manager_);
     cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
 
     subproblems_manager_->DistributeSubproblems();
