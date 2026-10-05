@@ -17,7 +17,7 @@ void BendersMasterManager::CreateMaster(
   double master_solution_tolerance,
   const std::map<int, double>& subproblem_cut_coefficient_tolerance)
 {
-    master_ = std::make_shared<WorkerMaster>(variable_map,
+    master_ = std::make_unique<WorkerMaster>(variable_map,
                                              solver_name,
                                              log_level,
                                              subproblems_count,

@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <numeric>
+#include <utility>
 
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
@@ -11,7 +12,7 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                std::shared_ptr<Output::OutputWriter> writer,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
+    BendersMpi(options, std::move(logger), std::move(writer), world, std::move(mathLoggerDriver)),
     batch_subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                                          _options,

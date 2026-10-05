@@ -102,7 +102,7 @@ public:
     [[nodiscard]] const std::vector<int>& GetMasterOnlyVarsIds() const;
 
 private:
-    std::shared_ptr<WorkerMaster> master_;
+    std::unique_ptr<WorkerMaster> master_;
     VariableMap variable_map_;
     bool is_empty_ = true;
 };
