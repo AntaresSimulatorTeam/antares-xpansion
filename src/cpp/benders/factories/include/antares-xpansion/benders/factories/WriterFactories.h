@@ -5,8 +5,8 @@
 #include <filesystem>
 #include <string>
 
-#include "antares-xpansion/core/ResumeMode.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
+#include "antares-xpansion/core/ResumeMode.h"
 
 std::shared_ptr<Output::OutputWriter> build_void_writer();
 
