@@ -1,6 +1,8 @@
 
 #include <antares-xpansion/benders/benders_core/SimulationOptions.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
+#include <antares-xpansion/benders/factories/BendersPluginFactory.h>
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
@@ -11,8 +13,6 @@
 #include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
-#include <antares-xpansion/benders/factories/BendersPluginFactory.h>
-#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include "gtest/gtest.h"
 
 boost::mpi::environment* penv = nullptr;
@@ -90,10 +90,10 @@ INSTANTIATE_TEST_SUITE_P(availsolvers, MasterUpdateBaseTest, ::testing::ValuesIn
 double LambdaMax(pBendersBase benders)
 {
     const auto& master = benders->GetMasterManager();
-    const auto& obj = master->GetObjectiveFunctionCoeffs();
+    const auto& obj = master.GetObjectiveFunctionCoeffs();
     const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
     double lambda_max = 0;
-    for (const auto& [var_name, var_id]: master->GetVariableMap())
+    for (const auto& [var_name, var_id]: master.GetVariableMap())
     {
         lambda_max += obj[var_id] * max_invest.at(var_name);
     }
@@ -120,35 +120,32 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
 {
     BendersBaseOptions bendersoptions = BuildBendersOptions();
-    SimulationOptions sim_options ; 
+    SimulationOptions sim_options;
     auto benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(sim_options);
-    
+
     CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
-        std::filesystem::path(bendersoptions.INPUTROOT) / bendersoptions.STRUCTURE_FILE,
-        logger.get(),
-        ::testing::UnitTest::GetInstance()->current_test_info()->name());
-        // override solver
-    auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map,false,pworld) ; 
-    
+      std::filesystem::path(bendersoptions.INPUTROOT) / bendersoptions.STRUCTURE_FILE,
+      logger.get(),
+      ::testing::UnitTest::GetInstance()->current_test_info()->name());
+    // override solver
+    auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map, false, pworld);
+
     bendersoptions.SOLVER_NAME = GetParam();
     bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
     bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE = OUTER_OPTIONS_FILE;
     benders = std::make_shared<BendersMpi>(bendersoptions,
-        logger,
+                                           logger,
                                            writer,
                                            *pworld,
                                            math_log_driver);
     benders->SetPlugin(benders_plugin);
-
-
-                            
 
     benders->set_input_map(coupling_map);
 
     auto outer_loop_input_data = Benders::Criterion::CriterionInputFromYaml().Read(
       std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
 
-    benders->GetOuterLoopManager()->SetCriterionComputationInputs(outer_loop_input_data);
+    benders->GetOuterLoopManager().SetCriterionComputationInputs(outer_loop_input_data);
 
     auto master_updater = std::make_shared<MasterUpdateBase>(
       benders->GetMasterManager(),
@@ -164,7 +161,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     out_loop.OuterLoopCheckFeasibility();
 
     const auto& master = benders->GetMasterManager();
-    auto num_constraints_master_before = master->GetNrows();
+    auto num_constraints_master_before = master.GetNrows();
     auto lambda_min = out_loop.OuterLoopLambdaMin();
     auto lambda_max = out_loop.OuterLoopLambdaMax();
     auto expected_lambda_max = LambdaMax(benders);
@@ -173,39 +170,38 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     //--------
 
     master_updater->Update(lambda_min, lambda_max);
-    auto num_constraints_master_after = master->GetNrows();
+    auto num_constraints_master_after = master.GetNrows();
 
     //------
     ASSERT_EQ(num_constraints_master_after, num_constraints_master_before + 1);
     //------
 
-    auto master_variables = master->GetVariableMap();
-    auto expected_coeffs = master->GetObjectiveFunctionCoeffs();
+    auto master_variables = master.GetVariableMap();
+    auto expected_coeffs = master.GetObjectiveFunctionCoeffs();
 
     // criterion is low <=> lambda_max = min(lambda_max, invest_cost)
     auto expected_rhs = 0.5 * lambda_max;
 
     // get added constraint infos (coeff, sign & rhs)
     std::vector<int> mstart(1 + 1);
-    auto n_elems = master->GetNElems();
+    auto n_elems = master.GetNElems();
 
     std::vector<int> mclind(n_elems);
     std::vector<double> matval(n_elems);
     std::vector<int> p_nels(1, 0);
 
     auto added_row_index = num_constraints_master_after - 1;
-    master
-      ->GetRowsCoeffs(mstart, mclind, matval, n_elems, p_nels, added_row_index, added_row_index);
-    std::vector<double> coeffs(master->GetNcols());
+    master.GetRowsCoeffs(mstart, mclind, matval, n_elems, p_nels, added_row_index, added_row_index);
+    std::vector<double> coeffs(master.GetNcols());
 
     for (auto ind = mstart[0]; ind < mstart[1]; ++ind)
     {
         coeffs[mclind[ind]] = matval[ind];
     }
     double rhs;
-    master->GetRhs(rhs, added_row_index);
+    master.GetRhs(rhs, added_row_index);
     std::vector<char> qrtype(1);
-    master->GetRowType(qrtype, added_row_index, added_row_index);
+    master.GetRowType(qrtype, added_row_index, added_row_index);
     CheckMinInvestmentConstraint(master_variables,
                                  expected_coeffs,
                                  expected_rhs,

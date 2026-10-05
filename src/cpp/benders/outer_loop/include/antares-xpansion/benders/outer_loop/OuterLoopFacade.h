@@ -43,6 +43,6 @@ public:
 
 private:
     pBendersBase benders_;
-    const std::unique_ptr<BendersMasterManager>& master_manager_;
-    const std::unique_ptr<BendersOuterLoopManager>& outer_loop_manager_;
+    BendersMasterManager& master_manager_;
+    BendersOuterLoopManager& outer_loop_manager_;
 };

@@ -26,21 +26,21 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                                                           _data,
                                                           _problem_to_id,
                                                           relevantIterationData_,
-                                                          *master_manager_,
+                                                          master_manager_,
                                                           subproblem_per_cut_indices_)),
     subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerMpi>(_data,
                                                      _options,
                                                      benders_plugin_,
-                                                     output_manager_->GetLogger(),
+                                                     output_manager_.GetLogger(),
                                                      solver_log_manager_,
-                                                     output_manager_->GetWriter(),
+                                                     output_manager_.GetWriter(),
                                                      shouldParallelize(),
                                                      coupling_map_))
 {
     subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
-      { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
+      { outer_loop_manager_.GetCriterionComputation().SearchVariables(col_names); });
 }
 
 void BendersMpi::InitializeProblems()
@@ -118,7 +118,7 @@ void BendersMpi::BroadCastVariablesIndices()
     {
         subproblems_manager_->SetSubproblemsVariablesIndices();
     }
-    BroadCast(outer_loop_manager_->GetCriterionComputation().getVarIndices(), rank_0);
+    BroadCast(outer_loop_manager_.GetCriterionComputation().getVarIndices(), rank_0);
 }
 
 void BendersMpi::InitializeMaster()
@@ -133,7 +133,7 @@ void BendersMpi::InitializeMaster()
                      _data.control.nsubproblem,
                      solver_log_manager_,
                      IsResumeMode(),
-                     output_manager_->GetLogger(),
+                     output_manager_.GetLogger(),
                      Options().PROBLEMS_FORMAT,
                      benders_problem_provider.get(),
                      Options().MASTER_SOLUTION_TOLERANCE,
@@ -146,7 +146,7 @@ void BendersMpi::BuildMasterProblem()
     InitializeMaster();
     if (_world.rank() == rank_0)
     {
-        master_manager_->AddAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
+        master_manager_.AddAlphasFixingConstraints(subproblem_per_cut_indices_, _problem_to_id);
     }
 }
 
@@ -175,7 +175,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts()
     {
         if (SwitchToIntegerMaster(_data.control.is_in_initial_relaxation))
         {
-            output_manager_->GetLogger()->LogAtSwitchToInteger();
+            output_manager_.GetLogger()->LogAtSwitchToInteger();
             ActivateIntegrityConstraints();
             ResetDataPostRelaxation();
         }
@@ -185,10 +185,10 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts()
 
 void BendersMpi::solve_master_and_create_trace()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     logger->log_at_initialization(_data.control.it
-                                  + output_manager_->GetNumIterationsBeforeRestart());
+                                  + output_manager_.GetNumIterationsBeforeRestart());
     logger->display_message("\tSolving master...");
     get_master_value();
 
@@ -197,12 +197,12 @@ void BendersMpi::solve_master_and_create_trace()
     cuts_manager_->ComputeXCut(_data,
                                Options().SEPARATION_PARAM,
                                Options().MASTER_SOLUTION_TOLERANCE);
-    logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
+    logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
 }
 
 void BendersMpi::step_2_solve_subproblems_and_build_cuts()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     int success = 1;
     SubProblemDataMap subproblem_data_map;
@@ -226,14 +226,14 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     logger->LogSubproblemsSolvingCumulativeCpuTime(_data.cuts.subproblems_cumulative_cputime);
     logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
 
-    if (!exception_raised_ && !outer_loop_manager_->GetCriterionComputation().IsEmpty())
+    if (!exception_raised_ && !outer_loop_manager_.GetCriterionComputation().IsEmpty())
     {
         ComputeSubproblemsContributionToCriteria(subproblem_data_map);
 
         if (Rank() == rank_0)
         {
-            outer_loop_manager_->PushCriteriaForIteration(_data.criteria.criteria);
-            outer_loop_manager_->UpdateMaxCriterionArea();
+            outer_loop_manager_.PushCriteriaForIteration(_data.criteria.criteria);
+            outer_loop_manager_.UpdateMaxCriterionArea();
         }
     }
     if (Rank() == rank_0)
@@ -241,14 +241,14 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
         _data.control.cumulative_number_of_subproblem_solved += _data.control.nsubproblem;
         logger->cumulative_number_of_sub_problem_solved(
           _data.control.cumulative_number_of_subproblem_solved
-          + output_manager_->GetNumOfSubProblemsSolvedBeforeResume());
+          + output_manager_.GetNumOfSubProblemsSolvedBeforeResume());
     }
 }
 
 void BendersMpi::ComputeSubproblemsContributionToCriteria(
   const SubProblemDataMap& subproblem_data_map)
 {
-    const auto vars_size = outer_loop_manager_->GetCriterionComputation().getVarIndices().size();
+    const auto vars_size = outer_loop_manager_.GetCriterionComputation().getVarIndices().size();
     std::vector<double> criteria_per_sub_problem_per_pattern(vars_size, {});
     _data.criteria.criteria.resize(vars_size, 0.);
     std::vector<double> patterns_values_per_sub_problem_per_pattern(vars_size, {});
@@ -278,7 +278,7 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
       subproblem_data_map,
       subproblems_manager_->MakeFastBeginHook(),
       subproblems_manager_->MakeCacheBeginHook(),
-      subproblems_manager_->MakePostSolveHook(outer_loop_manager_->GetCriterionComputation(),
+      subproblems_manager_->MakePostSolveHook(outer_loop_manager_.GetCriterionComputation(),
                                               _data));
     return subproblem_data_map;
 }
@@ -296,7 +296,7 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success)
 void BendersMpi::write_exception_message(const std::exception& ex) const
 {
     std::string error = "Exception raised : " + std::string(ex.what());
-    output_manager_->GetLogger()->display_message(error);
+    output_manager_.GetLogger()->display_message(error);
 }
 
 void BendersMpi::step_4_update_best_solution(int rank)
@@ -305,8 +305,8 @@ void BendersMpi::step_4_update_best_solution(int rank)
     {
         compute_ub();
         update_best_ub();
-        output_manager_->GetLogger()->log_at_iteration_end(
-          output_manager_->bendersDataToLogData(_data));
+        output_manager_.GetLogger()->log_at_iteration_end(
+          output_manager_.bendersDataToLogData(_data));
 
         UpdateTrace();
         _data.control.iteration_time = -_data.control.benders_time;
@@ -320,7 +320,7 @@ void BendersMpi::free()
 {
     if (_world.rank() == rank_0)
     {
-        master_manager_->FreeMaster();
+        master_manager_.FreeMaster();
     }
     else
     {
@@ -370,16 +370,16 @@ void BendersMpi::Run()
 
         if (Rank() == rank_0)
         {
-            output_manager_->MathLoggerPrint();
-            output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+            output_manager_.MathLoggerPrint();
+            output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
         }
 
         benders_plugin_->OnBendersIterationEnd();
     }
     if (_world.rank() == rank_0)
     {
-        output_manager_->CloseCsvFile();
-        output_manager_->EndWritingInOutputFile(_data.control.benders_time,
+        output_manager_.CloseCsvFile();
+        output_manager_.EndWritingInOutputFile(_data.control.benders_time,
                                                 _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
         write_basis();
     }
@@ -402,10 +402,10 @@ void BendersMpi::PreRunInitialization()
         ChecksResumeMode();
         if (_options.TRACE)
         {
-            output_manager_->OpenCsvFile();
+            output_manager_.OpenCsvFile();
         }
     }
-    output_manager_->MathLoggerWriteHeader();
+    output_manager_.MathLoggerWriteHeader();
     init_data_ = false;
 }
 
@@ -419,7 +419,7 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(subproblems_manager_->GetSubProblemMap(),
-                                    output_manager_->GetLogger(),
+                                    output_manager_.GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     subproblems_manager_->GetFactorySolver());
