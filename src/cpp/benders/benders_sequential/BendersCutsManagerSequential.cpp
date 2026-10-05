@@ -4,8 +4,8 @@ BendersCutsManagerSequential::BendersCutsManagerSequential(
   CurrentIterationData& data,
   VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  WorkerMaster* master):
-    BendersCutsManager<BendersCutsManagerSequential>(master),
+  BendersMasterManager& master_manager):
+    BendersCutsManager<BendersCutsManagerSequential>(master_manager),
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData)

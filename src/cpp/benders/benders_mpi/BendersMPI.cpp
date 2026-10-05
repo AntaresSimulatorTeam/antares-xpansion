@@ -56,8 +56,8 @@ void BendersMpi::InitializeProblems()
     init_problems_ = false;
 }
 
-// Built once the master problem exists. master() is nullptr outside of rank_0, which
-// never builds a cut.
+// The master manager owns the master problem and is the one handle kept here; it holds
+// no master outside of rank_0, which never builds a cut.
 void BendersMpi::CreateCutsManager()
 {
     cuts_manager_ = std::make_shared<BendersCutsManagerMpi>(_world,
@@ -65,7 +65,7 @@ void BendersMpi::CreateCutsManager()
                                                             _data,
                                                             _problem_to_id,
                                                             relevantIterationData_,
-                                                            Master(),
+                                                            *master_manager_,
                                                             subproblem_per_cut_indices_);
 }
 

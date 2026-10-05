@@ -76,11 +76,10 @@ void BendersSequential::InitializeProblems()
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());
 
-    // Built once the master problem exists: the cuts manager points at it.
     cuts_manager_ = std::make_shared<BendersCutsManagerSequential>(_data,
                                                                    _problem_to_id,
                                                                    relevantIterationData_,
-                                                                   Master());
+                                                                   *master_manager_);
     cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
 
     subproblems_manager_->DistributeSubproblems();

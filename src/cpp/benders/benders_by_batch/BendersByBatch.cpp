@@ -94,8 +94,8 @@ void BendersByBatch::InitializeProblems()
     init_problems_ = false;
 }
 
-// Built once the master problem exists. master() is nullptr outside of rank_0, which
-// never builds a cut.
+// The master manager owns the master problem and is the one handle kept here; it holds
+// no master outside of rank_0, which never builds a cut.
 void BendersByBatch::CreateBatchCutsManager()
 {
     batch_cuts_manager_ = std::make_shared<BendersCutsManagerByBatch>(_world,
@@ -103,7 +103,7 @@ void BendersByBatch::CreateBatchCutsManager()
                                                                       _data,
                                                                       _problem_to_id,
                                                                       relevantIterationData_,
-                                                                      Master());
+                                                                      *master_manager_);
 }
 
 void BendersByBatch::BuildMasterProblem()

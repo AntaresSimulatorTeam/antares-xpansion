@@ -6,9 +6,9 @@ BendersCutsManagerMpi::BendersCutsManagerMpi(
   CurrentIterationData& data,
   const VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  WorkerMaster* master,
+  BendersMasterManager& master_manager,
   const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices):
-    BendersCutsManager(master),
+    BendersCutsManager(master_manager),
     world_(world),
     rank_0_(rank_0),
     data_(data),
