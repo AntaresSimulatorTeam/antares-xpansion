@@ -54,7 +54,7 @@ public:
 
     [[nodiscard]] WorkerMaster* Master() const
     {
-        return master_manager_->Master();
+        return master_manager_.Master();
     }
 
     void get_master_value() override

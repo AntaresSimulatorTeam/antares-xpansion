@@ -105,7 +105,7 @@ public:
     {
         // OnBendersStart
         SubproblemsMapPtr empty_subproblem_map;
-        benders_plugin_->OnBendersStart(empty_subproblem_map, output_manager_->GetLogger(), _options, solver_log_manager_, nullptr);
+        benders_plugin_->OnBendersStart(empty_subproblem_map, output_manager_.GetLogger(), _options, solver_log_manager_, nullptr);
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();

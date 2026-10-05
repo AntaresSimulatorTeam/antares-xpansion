@@ -29,6 +29,12 @@ public:
                 std::shared_ptr<Output::OutputWriter> writer,
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
+    // outer_loop_manager_ is built with callbacks capturing this, so the object
+    // cannot be relocated once constructed.
+    BendersBase(const BendersBase&) = delete;
+    BendersBase& operator=(const BendersBase&) = delete;
+    BendersBase(BendersBase&&) = delete;
+    BendersBase& operator=(BendersBase&&) = delete;
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
@@ -77,17 +83,32 @@ public:
         return communication_strategy_;
     }
 
-    [[nodiscard]] const std::unique_ptr<BendersMasterManager>& GetMasterManager() const
+    [[nodiscard]] BendersMasterManager& GetMasterManager()
     {
         return master_manager_;
     }
 
-    [[nodiscard]] const std::unique_ptr<BendersOuterLoopManager>& GetOuterLoopManager() const
+    [[nodiscard]] const BendersMasterManager& GetMasterManager() const
+    {
+        return master_manager_;
+    }
+
+    [[nodiscard]] BendersOuterLoopManager& GetOuterLoopManager()
     {
         return outer_loop_manager_;
     }
 
-    [[nodiscard]] const std::unique_ptr<BendersOutputManager>& GetOutputManager() const
+    [[nodiscard]] const BendersOuterLoopManager& GetOuterLoopManager() const
+    {
+        return outer_loop_manager_;
+    }
+
+    [[nodiscard]] BendersOutputManager& GetOutputManager()
+    {
+        return output_manager_;
+    }
+
+    [[nodiscard]] const BendersOutputManager& GetOutputManager() const
     {
         return output_manager_;
     }
@@ -95,7 +116,7 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    std::unique_ptr<BendersMasterManager> master_manager_;
+    BendersMasterManager master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
@@ -105,8 +126,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-    std::unique_ptr<BendersOutputManager> output_manager_;
-    std::unique_ptr<BendersOuterLoopManager> outer_loop_manager_;
+    BendersOutputManager output_manager_;
+    BendersOuterLoopManager outer_loop_manager_;
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
