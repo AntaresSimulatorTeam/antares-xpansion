@@ -8,23 +8,6 @@
 #include "SubproblemCut.h"
 #include "common.h"
 
-namespace
-{
-
-inline void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
-{
-    for (const auto& [cand_name, cand_value]: x_cut)
-    {
-        const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
-        if (cand_name_and_subgradient != var_name_subgradient.end())
-        {
-            s[cand_name] += cand_name_and_subgradient->second;
-        }
-    }
-}
-
-} // namespace
-
 template<typename Derived>
 class BendersCutsManager
 {
@@ -134,6 +117,20 @@ protected:
     BendersMasterManager& master_manager_;
 
 private:
+    // Accumulates the subgradient of one subproblem into the cut coefficients s,
+    // for every candidate present in the separation point x_cut.
+    static void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
+    {
+        for (const auto& [cand_name, cand_value]: x_cut)
+        {
+            const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
+            if (cand_name_and_subgradient != var_name_subgradient.end())
+            {
+                s[cand_name] += cand_name_and_subgradient->second;
+            }
+        }
+    }
+
     // Rounds x_cut values that are within tolerance of variable bounds to
     // avoid numerical drift from repeated separation parameter application.
     void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
