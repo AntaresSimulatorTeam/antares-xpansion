@@ -36,7 +36,7 @@ public:
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
     void FreeMaster();
     [[nodiscard]] bool IsEmpty() const;
-    [[nodiscard]] WorkerMasterPtr GetMaster() const;
+    [[nodiscard]] WorkerMaster* Master() const;
 
     // Variable management
     void SetVariableMap(const VariableMap& variable_map);
@@ -102,7 +102,7 @@ public:
     [[nodiscard]] const std::vector<int>& GetMasterOnlyVarsIds() const;
 
 private:
-    WorkerMasterPtr master_;
+    std::shared_ptr<WorkerMaster> master_;
     VariableMap variable_map_;
     bool is_empty_ = true;
 };

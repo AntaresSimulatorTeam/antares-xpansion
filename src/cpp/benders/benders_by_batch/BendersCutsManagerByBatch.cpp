@@ -8,14 +8,14 @@ BendersCutsManagerByBatch::BendersCutsManagerByBatch(
   CurrentIterationData& data,
   const VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  const WorkerMasterPtr& master):
+  WorkerMaster& master):
+    BendersCutsManager(master),
     world_(world),
     rank_0_(rank_0),
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData)
 {
-      master_ = master ; 
 }
 
 void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(

@@ -26,7 +26,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                                                           _data,
                                                           _problem_to_id,
                                                           relevantIterationData_,
-                                                          _master,
+                                                          *master(),
                                                           subproblem_per_cut_indices_)),
     subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerMpi>(_data,

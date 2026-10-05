@@ -43,9 +43,9 @@ bool BendersMasterManager::IsEmpty() const
     return is_empty_;
 }
 
-WorkerMasterPtr BendersMasterManager::GetMaster() const
+WorkerMaster* BendersMasterManager::Master() const
 {
-    return master_;
+    return master_.get();
 }
 
 void BendersMasterManager::SetVariableMap(const VariableMap& variable_map)

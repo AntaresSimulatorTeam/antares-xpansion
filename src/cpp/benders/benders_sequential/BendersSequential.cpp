@@ -21,7 +21,7 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
     cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
                                                                  _problem_to_id,
                                                                  relevantIterationData_,
-                                                                 _master)),
+                                                                 *master())),
     subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerSequential>(_data,
                                                             _options,
@@ -86,7 +86,7 @@ void BendersSequential::InitializeProblems()
 
 void BendersSequential::free()
 {
-    if (get_master())
+    if (master())
     {
         master_manager_->FreeMaster();
     }

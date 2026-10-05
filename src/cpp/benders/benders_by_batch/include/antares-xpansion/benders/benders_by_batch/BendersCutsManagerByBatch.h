@@ -13,7 +13,7 @@ public:
                               CurrentIterationData& data,
                               const VariableMap& problem_to_id,
                               BendersRelevantIterationsData& relevantIterationData,
-                              const WorkerMasterPtr& master);
+                              WorkerMaster& master);
 
     void GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
                                 const Timer& walltime,

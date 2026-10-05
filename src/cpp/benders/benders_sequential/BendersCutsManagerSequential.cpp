@@ -4,12 +4,12 @@ BendersCutsManagerSequential::BendersCutsManagerSequential(
   CurrentIterationData& data,
   VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  const WorkerMasterPtr& master):
+  WorkerMaster& master):
+    BendersCutsManager<BendersCutsManagerSequential>(master),
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData)
 {
-      master_ = master ; 
 }
 
 void BendersCutsManagerSequential::GatherAndBuildCutsImpl(

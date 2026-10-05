@@ -1,13 +1,16 @@
 #include "antares-xpansion/benders/benders_mpi/BendersCutsManagerMpi.h"
 
+#include <utility>
+
 BendersCutsManagerMpi::BendersCutsManagerMpi(
   mpi::communicator& world,
   int rank_0,
   CurrentIterationData& data,
   const VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  const WorkerMasterPtr& master,
+  WorkerMaster& master,
   const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices):
+    BendersCutsManager(master),
     world_(world),
     rank_0_(rank_0),
     data_(data),
@@ -15,7 +18,6 @@ BendersCutsManagerMpi::BendersCutsManagerMpi(
     relevantIterationData_(relevantIterationData),
     subproblem_per_cut_indices_(subproblem_per_cut_indices)
 {
-        master_ = master ; 
 }
 
 void BendersCutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,

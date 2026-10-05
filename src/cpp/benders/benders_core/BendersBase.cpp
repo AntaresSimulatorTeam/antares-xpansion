@@ -1,16 +1,10 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
-#include <chrono>
 #include <filesystem>
-#include <fstream>
 #include <memory>
-#include <mutex>
-#include <numeric>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
-#include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
-#include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
@@ -20,8 +14,8 @@ BendersBase::BendersBase(BendersBaseOptions options,
                          std::shared_ptr<Output::OutputWriter> writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
                          std::shared_ptr<ICommunicationStrategy> communication_strategy):
-    _options(std::move(options)),
     master_manager_(std::make_unique<BendersMasterManager>()),
+    _options(std::move(options)),
     output_manager_(std::make_unique<BendersOutputManager>(std::move(logger),
                                                            std::move(writer),
                                                            std::move(mathLoggerDriver),
@@ -356,12 +350,11 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                   benders_problem_provider,
                                   master_solution_tolerance,
                                   subproblem_cut_coefficient_tolerance);
-    _master = master_manager_->GetMaster();
 }
 
-WorkerMasterPtr BendersBase::get_master() const
+WorkerMaster* BendersBase::master() const
 {
-    return master_manager_->GetMaster();
+    return master_manager_->Master();
 }
 
 void BendersBase::ResetSimplexIterationsBounds()
