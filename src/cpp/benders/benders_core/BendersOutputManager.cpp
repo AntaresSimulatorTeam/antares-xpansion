@@ -176,7 +176,7 @@ void BendersOutputManager::SaveCurrentIterationInOutputFile() const
 
 void BendersOutputManager::SaveSolutionInOutputFile() const
 {
-    writer_->write_solution(BuildSolution(static_cast<int>(problem_to_id_.size())));
+    writer_->write_solution(BuildSolution(problem_to_id_.size()));
     writer_->dump();
 }
 

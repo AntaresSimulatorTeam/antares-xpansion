@@ -89,7 +89,8 @@ public:
                                 const VariableMap& problem_to_id,
                                 double& ub,
                                 const Point& x_cut,
-                                SubProblemDataMap& cut_trace)
+                                SubProblemDataMap& cut_trace,
+                                const WorkerMasterPtr& master)
     {
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
@@ -118,12 +119,9 @@ public:
                 }
             }
 
-            master_->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+            master->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
         }
     }
-
-protected:
-    WorkerMasterPtr master_;
 
 private:
     // Rounds x_cut values that are within tolerance of variable bounds to

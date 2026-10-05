@@ -18,5 +18,6 @@ private:
     CurrentIterationData& data_;
     VariableMap& problem_to_id_;
     BendersRelevantIterationsData& relevantIterationData_;
+    const WorkerMasterPtr& master_;
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
 };
