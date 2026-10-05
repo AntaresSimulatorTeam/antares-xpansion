@@ -89,7 +89,7 @@ TEST(ComputeXCutTest, FirstIteration)
     data.control.it = 1;
 
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // In first iteration, x_cut should equal x_out
@@ -109,7 +109,7 @@ TEST(ComputeXCutTest, LaterIteration)
     data.control.it = 2;
 
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // x_cut = sep_param * x_out + (1 - sep_param) * x_in, no rounding here
@@ -130,7 +130,7 @@ TEST(ComputeXCutTest, RoundingLowerBound)
     data.control.it = 2;
 
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // x1 rounded to lower bound (1.005 without rounding)
@@ -151,7 +151,7 @@ TEST(ComputeXCutTest, RoundingUpperBound)
     data.control.it = 2;
 
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     cuts_manager.ComputeXCut(data, sep_param, master_solution_tolerance);
 
     // x1 not rounded, x2 rounded to upper bound (5.995 without rounding)
@@ -176,7 +176,7 @@ TEST(ComputeXCutTest, FirstIteration_CopiesMasterOnlyVars)
     data.control.it = 1;
 
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     cuts_manager.ComputeXCut(data, 0.5, 0.1);
 
     EXPECT_EQ(data.solution.master_only_vars_cut[0], 5.0);
@@ -198,7 +198,7 @@ TEST(ComputeXCutTest, LaterIteration_InterpolatesMasterOnlyVars)
     data.control.it = 2;
 
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     cuts_manager.ComputeXCut(data, 0.5, 0.1);
 
     // 0.5 * 10.0 + 0.5 * 0.0 = 5.0
@@ -212,7 +212,7 @@ TEST(ComputeXCutTest, LaterIteration_InterpolatesMasterOnlyVars)
 TEST(SetSubproblemDataCostAndSimplexIterTest, EmptyGatheredData)
 {
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     CurrentIterationData data;
     data.cuts.subproblem_cost = 0.0;
 
@@ -225,7 +225,7 @@ TEST(SetSubproblemDataCostAndSimplexIterTest, EmptyGatheredData)
 TEST(SetSubproblemDataCostAndSimplexIterTest, SingleSubproblem_AccumulatesCost)
 {
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     CurrentIterationData data;
     data.cuts.subproblem_cost = 0.0;
     data.cuts.min_simplexiter = 999999;
@@ -245,7 +245,7 @@ TEST(SetSubproblemDataCostAndSimplexIterTest, SingleSubproblem_AccumulatesCost)
 TEST(SetSubproblemDataCostAndSimplexIterTest, MultipleSubproblems_AccumulatesAll)
 {
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     CurrentIterationData data;
     data.cuts.subproblem_cost = 0.0;
     data.cuts.min_simplexiter = 999999;
@@ -269,7 +269,7 @@ TEST(SetSubproblemDataCostAndSimplexIterTest, MultipleSubproblems_AccumulatesAll
 TEST(SetSubproblemDataCostAndSimplexIterTest, PreExistingCost_IsAccumulated)
 {
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
     CurrentIterationData data;
     data.cuts.subproblem_cost = 50.0; // pre-existing
     data.cuts.min_simplexiter = 10;
@@ -293,7 +293,7 @@ TEST(SetSubproblemDataCostAndSimplexIterTest, PreExistingCost_IsAccumulated)
 TEST(BuildAllAggregatedCutsTest, EmptySubproblemNames_NoOp)
 {
     auto master = MakeNOOPWorkerMaster();
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
 
     std::vector<SubProblemNamesInCut> subproblem_names; // empty
     std::vector<SubProblemDataMap> gathered;
@@ -313,7 +313,7 @@ TEST(BuildAllAggregatedCutsTest, SingleCutGroup_AccumulatesUbAndTrace)
 {
     VariableMap var_map = {{"x1", 0}};
     auto master = MakeNOOPWorkerMaster(var_map, {{0, 1e-3}});
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
 
     // One cut group with one subproblem at position 0 in gathered
     SubProblemNamesInCut cut_group = {{"sp1", 0}};
@@ -340,7 +340,7 @@ TEST(BuildAllAggregatedCutsTest, MultipleCutGroups_AccumulatesUb)
 {
     VariableMap var_map = {{"x1", 0}};
     auto master = MakeNOOPWorkerMaster(var_map, {{0, 1e-3}, {1, 1e-3}});
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
 
     // Two cut groups, each with one subproblem
     SubProblemNamesInCut group1 = {{"sp1", 0}};
@@ -368,7 +368,7 @@ TEST(BuildAllAggregatedCutsTest, MultipleSubproblemsInOneCutGroup)
 {
     VariableMap var_map = {{"x1", 0}};
     auto master = MakeNOOPWorkerMaster(var_map, {{0, 1e-3}, {1, 1e-3}});
-    BendersCutsManagerTestDouble cuts_manager(*master);
+    BendersCutsManagerTestDouble cuts_manager(master.get());
 
     // One cut group with two subproblems from different ranks (positions)
     SubProblemNamesInCut group = {{"sp1", 0}, {"sp2", 1}};
@@ -406,7 +406,7 @@ TEST(BendersCutsManagerSequentialTest, SetSubproblemPerCutIndices_StoresConfig)
     BendersRelevantIterationsData relevant_data;
     auto master = MakeNOOPWorkerMaster({}, {{0, 1e-3}});
 
-    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, *master);
+    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, master.get());
 
     SubProblemNamesInCut group = {{"sp1", 0}};
     std::vector<SubProblemNamesInCut> indices = {group};
@@ -434,7 +434,7 @@ TEST(BendersCutsManagerSequentialTest, GatherAndBuildCuts_InitializesUbToZero)
     BendersRelevantIterationsData relevant_data;
     auto master = MakeNOOPWorkerMaster();
 
-    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, *master);
+    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, master.get());
     seq_manager.SetSubproblemPerCutIndices({}); // empty => no cuts built
 
     SubProblemDataMap sp_data;
@@ -451,7 +451,7 @@ TEST(BendersCutsManagerSequentialTest, GatherAndBuildCuts_AccumulatesUb)
     BendersRelevantIterationsData relevant_data;
     auto master = MakeNOOPWorkerMaster({{"x1", 0}}, {{0, 1e-3}, {1, 1e-3}});
 
-    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, *master);
+    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, master.get());
 
     SubProblemNamesInCut group1 = {{"sp1", 0}};
     SubProblemNamesInCut group2 = {{"sp2", 0}};
@@ -474,7 +474,7 @@ TEST(BendersCutsManagerSequentialTest, GatherAndBuildCuts_PopulatesCutTrace)
     BendersRelevantIterationsData relevant_data;
     auto master = MakeNOOPWorkerMaster({{"x1", 0}}, {{0, 1e-3}});
 
-    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, *master);
+    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, master.get());
 
     SubProblemNamesInCut group = {{"sp1", 0}};
     seq_manager.SetSubproblemPerCutIndices({group});
@@ -495,7 +495,7 @@ TEST(BendersCutsManagerSequentialTest, GatherAndBuildCuts_EmptyData_NoOp)
     BendersRelevantIterationsData relevant_data;
     auto master = MakeNOOPWorkerMaster();
 
-    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, *master);
+    BendersCutsManagerSequential seq_manager(data, problem_to_id, relevant_data, master.get());
     seq_manager.SetSubproblemPerCutIndices({});
 
     SubProblemDataMap sp_data; // empty

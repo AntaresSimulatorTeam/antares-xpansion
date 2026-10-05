@@ -16,12 +16,8 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
     BendersBase(options,
                 std::move(logger),
                 std::move(writer),
-                mathLoggerDriver,
+                std::move(mathLoggerDriver),
                 std::make_shared<SequentialCommunicationStrategy>()),
-    cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
-                                                                 _problem_to_id,
-                                                                 relevantIterationData_,
-                                                                 *master())),
     subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerSequential>(_data,
                                                             _options,
@@ -65,7 +61,6 @@ void BendersSequential::InitializeProblems()
             subproblem_per_cut_indices.emplace_back(std::move(current_cut));
         }
     }
-    cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
 
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
@@ -80,6 +75,14 @@ void BendersSequential::InitializeProblems()
                  benders_problem_provider.get(),
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());
+
+    // Built once the master problem exists: the cuts manager points at it.
+    cuts_manager_ = std::make_shared<BendersCutsManagerSequential>(_data,
+                                                                   _problem_to_id,
+                                                                   relevantIterationData_,
+                                                                   master());
+    cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
+
     subproblems_manager_->DistributeSubproblems();
     subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS);
 }

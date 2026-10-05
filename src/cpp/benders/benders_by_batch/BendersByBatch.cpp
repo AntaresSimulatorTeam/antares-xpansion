@@ -12,12 +12,6 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(std::make_shared<BendersCutsManagerByBatch>(world,
-                                                                    rank_0,
-                                                                    _data,
-                                                                    _problem_to_id,
-                                                                    relevantIterationData_,
-                                                                    *master())),
     batch_subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                                          _options,
@@ -92,9 +86,23 @@ void BendersByBatch::InitializeProblems()
     _problem_to_id = batch_subproblems_manager_->GetProblemToId();
     BuildBatches();
     BuildMasterProblem();
+    CreateCutsManager();
+    CreateBatchCutsManager();
     BroadCastVariablesIndices();
     batch_subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
     init_problems_ = false;
+}
+
+// Built once the master problem exists. master() is nullptr outside of rank_0, which
+// never builds a cut.
+void BendersByBatch::CreateBatchCutsManager()
+{
+    batch_cuts_manager_ = std::make_shared<BendersCutsManagerByBatch>(_world,
+                                                                      rank_0,
+                                                                      _data,
+                                                                      _problem_to_id,
+                                                                      relevantIterationData_,
+                                                                      master());
 }
 
 void BendersByBatch::BuildMasterProblem()

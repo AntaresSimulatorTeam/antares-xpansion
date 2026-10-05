@@ -16,18 +16,11 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(options,
-                logger,
+                std::move(logger),
                 std::move(writer),
                 std::move(mathLoggerDriver),
                 std::make_shared<MpiCommunicationStrategy>(world)),
     _world(world),
-    cuts_manager_(std::make_shared<BendersCutsManagerMpi>(world,
-                                                          rank_0,
-                                                          _data,
-                                                          _problem_to_id,
-                                                          relevantIterationData_,
-                                                          *master(),
-                                                          subproblem_per_cut_indices_)),
     subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerMpi>(_data,
                                                      _options,
@@ -57,9 +50,23 @@ void BendersMpi::InitializeProblems()
                                                        _data.control.nsubproblem);
     }
     BuildMasterProblem();
+    CreateCutsManager();
     BroadCastVariablesIndices();
     subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
     init_problems_ = false;
+}
+
+// Built once the master problem exists. master() is nullptr outside of rank_0, which
+// never builds a cut.
+void BendersMpi::CreateCutsManager()
+{
+    cuts_manager_ = std::make_shared<BendersCutsManagerMpi>(_world,
+                                                            rank_0,
+                                                            _data,
+                                                            _problem_to_id,
+                                                            relevantIterationData_,
+                                                            master(),
+                                                            subproblem_per_cut_indices_);
 }
 
 std::vector<SubProblemNamesInCut> BendersMpi::get_subs_per_cut(

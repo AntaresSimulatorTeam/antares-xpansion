@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <vector>
 
 #include "BendersStructsDatas.h"
@@ -28,8 +29,9 @@ template<typename Derived>
 class BendersCutsManager
 {
 public:
-    BendersCutsManager() = default;
-    explicit BendersCutsManager(WorkerMaster& master);
+    // master is nullptr on the processes that do not own the master problem; those
+    // processes take part in the gathering but never build a cut.
+    explicit BendersCutsManager(WorkerMaster* master);
 
     template<typename... Args>
     void GatherAndBuildCuts(Args&&... args)
@@ -92,6 +94,9 @@ public:
                                 const Point& x_cut,
                                 SubProblemDataMap& cut_trace)
     {
+        assert((subproblem_names.empty() || master_ != nullptr)
+               && "cuts can only be built on the process owning the master problem");
+
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
             Point s;
@@ -119,12 +124,12 @@ public:
                 }
             }
 
-            master_.addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+            master_->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
         }
     }
 
 protected:
-    WorkerMaster& master_;
+    WorkerMaster* master_;
 
 private:
     // Rounds x_cut values that are within tolerance of variable bounds to
@@ -163,7 +168,7 @@ private:
 };
 
 template<typename Derived>
-BendersCutsManager<Derived>::BendersCutsManager(WorkerMaster& master):
+BendersCutsManager<Derived>::BendersCutsManager(WorkerMaster* master):
     master_(master)
 {
 }
