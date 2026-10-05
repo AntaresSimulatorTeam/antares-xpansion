@@ -22,7 +22,7 @@ public:
                          const CurrentIterationData& data,
                          const BendersBaseOptions& options,
                          const VariableMap& problem_to_id,
-                         const BendersRelevantIterationsData& relevant_iteration_data);
+                         BendersRelevantIterationsData& relevant_iteration_data);
 
     [[nodiscard]] Logger GetLogger() const;
     [[nodiscard]] std::shared_ptr<Output::OutputWriter> GetWriter() const;
@@ -84,7 +84,7 @@ private:
     const CurrentIterationData& data_;
     const BendersBaseOptions& options_;
     const VariableMap& problem_to_id_;
-    const BendersRelevantIterationsData& relevant_iteration_data_;
+    BendersRelevantIterationsData& relevant_iteration_data_;
 
     LogData best_iteration_data_;
     int iterations_before_resume_ = 0;

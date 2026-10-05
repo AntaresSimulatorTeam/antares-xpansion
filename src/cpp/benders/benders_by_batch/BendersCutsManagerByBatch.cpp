@@ -15,7 +15,7 @@ BendersCutsManagerByBatch::BendersCutsManagerByBatch(
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData)
 {
-      master_ = master ; 
+    master_ = master;
 }
 
 void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(

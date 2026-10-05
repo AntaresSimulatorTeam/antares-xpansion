@@ -15,7 +15,7 @@ BendersCutsManagerMpi::BendersCutsManagerMpi(
     relevantIterationData_(relevantIterationData),
     subproblem_per_cut_indices_(subproblem_per_cut_indices)
 {
-        master_ = master ; 
+    master_ = master;
 }
 
 void BendersCutsManagerMpi::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,

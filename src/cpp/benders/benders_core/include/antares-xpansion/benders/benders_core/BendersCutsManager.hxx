@@ -99,9 +99,11 @@ public:
 
             for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
             {
-                auto problem_to_id_pair = problem_to_id.find(sub_problem_name) ; 
+                auto problem_to_id_pair = problem_to_id.find(sub_problem_name);
                 if (problem_to_id_pair != problem_to_id.end())
+                {
                     subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
+                }
 
                 auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
                   sub_problem_name);
@@ -120,12 +122,10 @@ public:
         }
     }
 
-protected : 
+protected:
     WorkerMasterPtr master_;
 
 private:
-    
-
     // Rounds x_cut values that are within tolerance of variable bounds to
     // avoid numerical drift from repeated separation parameter application.
     void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
