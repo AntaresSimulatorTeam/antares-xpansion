@@ -352,7 +352,7 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                   subproblem_cut_coefficient_tolerance);
 }
 
-WorkerMaster* BendersBase::master() const
+WorkerMaster* BendersBase::Master() const
 {
     return master_manager_->Master();
 }

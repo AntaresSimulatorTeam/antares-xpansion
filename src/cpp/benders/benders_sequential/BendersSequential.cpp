@@ -80,7 +80,7 @@ void BendersSequential::InitializeProblems()
     cuts_manager_ = std::make_shared<BendersCutsManagerSequential>(_data,
                                                                    _problem_to_id,
                                                                    relevantIterationData_,
-                                                                   master());
+                                                                   Master());
     cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
 
     subproblems_manager_->DistributeSubproblems();
@@ -89,7 +89,7 @@ void BendersSequential::InitializeProblems()
 
 void BendersSequential::free()
 {
-    if (master())
+    if (Master())
     {
         master_manager_->FreeMaster();
     }

@@ -52,9 +52,9 @@ public:
         relevantIterationData_.best = relevantIterationData_.last;
     }
 
-    [[nodiscard]] WorkerMaster* master() const override
+    [[nodiscard]] WorkerMaster* Master() const override
     {
-        return BendersSequential::master();
+        return BendersSequential::Master();
     }
 
     void get_master_value() override
@@ -276,9 +276,9 @@ protected:
     {
         char col_type;
         std::vector<char> nb_units_col_types;
-        for (auto col_id: benders.master()->get_id_int_vars())
+        for (auto col_id: benders.Master()->get_id_int_vars())
         {
-            benders.master()->solver()->get_col_type(&col_type, col_id, col_id);
+            benders.Master()->solver()->get_col_type(&col_type, col_id, col_id);
             nb_units_col_types.push_back(col_type);
         }
         return nb_units_col_types;
@@ -601,7 +601,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperly)
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly
-    EXPECT_TRUE(benders.master());
+    EXPECT_TRUE(benders.Master());
 }
 
 // Problems
@@ -655,7 +655,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore)
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly
-    EXPECT_TRUE(benders.master());
+    EXPECT_TRUE(benders.Master());
 }
 
 void updateStructureFile(const std::string& structure_file_path, const std::string& solver)

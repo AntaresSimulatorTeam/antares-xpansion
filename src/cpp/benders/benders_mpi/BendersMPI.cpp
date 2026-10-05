@@ -65,7 +65,7 @@ void BendersMpi::CreateCutsManager()
                                                             _data,
                                                             _problem_to_id,
                                                             relevantIterationData_,
-                                                            master(),
+                                                            Master(),
                                                             subproblem_per_cut_indices_);
 }
 

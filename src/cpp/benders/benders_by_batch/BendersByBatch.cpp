@@ -102,7 +102,7 @@ void BendersByBatch::CreateBatchCutsManager()
                                                                       _data,
                                                                       _problem_to_id,
                                                                       relevantIterationData_,
-                                                                      master());
+                                                                      Master());
 }
 
 void BendersByBatch::BuildMasterProblem()
