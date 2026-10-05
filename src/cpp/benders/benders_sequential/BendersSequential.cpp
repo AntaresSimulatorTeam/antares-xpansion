@@ -88,10 +88,7 @@ void BendersSequential::InitializeProblems()
 
 void BendersSequential::free()
 {
-    if (Master())
-    {
-        master_manager_->FreeMaster();
-    }
+    master_manager_->FreeMaster();
     subproblems_manager_->free_subproblems();
 }
 

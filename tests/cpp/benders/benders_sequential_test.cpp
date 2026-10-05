@@ -5,8 +5,8 @@
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
-#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
@@ -52,9 +52,9 @@ public:
         relevantIterationData_.best = relevantIterationData_.last;
     }
 
-    [[nodiscard]] WorkerMaster* Master() const override
+    [[nodiscard]] WorkerMaster* Master() const
     {
-        return BendersSequential::Master();
+        return master_manager_->Master();
     }
 
     void get_master_value() override

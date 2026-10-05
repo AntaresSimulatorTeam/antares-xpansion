@@ -34,6 +34,10 @@ void BendersMasterManager::CreateMaster(
 
 void BendersMasterManager::FreeMaster()
 {
+    if (!master_)
+    {
+        return;
+    }
     master_->free();
     is_empty_ = true;
 }

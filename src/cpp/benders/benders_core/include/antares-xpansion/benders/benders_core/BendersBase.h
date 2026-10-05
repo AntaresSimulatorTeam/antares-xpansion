@@ -140,7 +140,6 @@ protected:
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
-    [[nodiscard]] virtual WorkerMaster* Master() const;
     bool IsResumeMode() const;
 
     std::filesystem::path LastIterationFile() const
