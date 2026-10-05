@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -143,6 +144,13 @@ protected:
         for (int i=0;i<subproblems_count;i++){
             subproblem_cut_coefficient_tolerance[i] = 0.1;
         }
+        return make_master(subproblems_count, subproblem_cut_coefficient_tolerance);
+    }
+
+    std::shared_ptr<WorkerMaster> make_master(
+      int subproblems_count,
+      const std::map<int, double>& subproblem_cut_coefficient_tolerance)
+    {
         return std::make_shared<WorkerMaster>(VariableMap{},
                                               "COIN",
                                               0,
@@ -237,6 +245,116 @@ TEST_F(WorkerMasterAddRowsTest, ConstraintsAddedPerCutIndependently)
     const auto& row = capturing_solver->captured_rows[0];
     EXPECT_EQ(row.mclind, std::vector<int>({10, 11}));
     EXPECT_EQ(row.matval, std::vector<double>({1.0, -1.0}));
+}
+
+// A cut built for a group of one subproblem is the cut the (removed) addSubproblemCut
+// used to build: same rhs, same coefficients, same rounding against that subproblem's
+// own tolerance. This is the shape produced when NB_CUTS_PER_ITER == 0.
+TEST_F(WorkerMasterAddRowsTest, AddGroupSubproblemCutAppliesRoundingOnCoeffs)
+{
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    auto master = make_master(1); // cut coefficient tolerance 0.1 for subproblem 0
+    master->_solver = capturing_solver;
+    master->_name_to_id = {{"var1", 0}, {"var2", 1}, {"var3", 2}};
+    master->set_id_single_subpb_costs_under_approx({4});
+
+    Point subgradient;
+    subgradient["var1"] = -5e-3;
+    subgradient["var2"] = -4e-2;
+    subgradient["var3"] = -3e-1;
+
+    Point x_cut;
+    x_cut["var1"] = 1.0;
+    x_cut["var2"] = 10.0;
+    x_cut["var3"] = 100.0;
+
+    double subproblem_cost = 10.0;
+
+    master->addGroupSubproblemCut({0}, subgradient, x_cut, subproblem_cost);
+    // cut is -alpha_0 + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
+    // i.e. alpha_0 >= subproblem_cost + subgradient.(x - x_cut) (human form)
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 1u);
+    const auto& row = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row.rowtype, std::vector<char>({'L'}));
+    EXPECT_NEAR(row.rhs[0], -40.405, 1e-12);
+
+    EXPECT_EQ(row.mclind, std::vector<int>({0, 1, 2, 4}));
+    ASSERT_EQ(row.matval.size(), 4u);
+    EXPECT_EQ(row.matval[0], 0.0); // |-5e-3| < 0.1 -> snapped to zero
+    EXPECT_EQ(row.matval[1], 0.0); // |-4e-2| < 0.1 -> snapped to zero
+    EXPECT_DOUBLE_EQ(row.matval[2], -0.3);
+    EXPECT_DOUBLE_EQ(row.matval[3], -1.0); // the alpha coefficient is never rounded away
+}
+
+// The rhs is rounded too, not only the candidate coefficients.
+TEST_F(WorkerMasterAddRowsTest, AddGroupSubproblemCutRoundsRhsWithinTolerance)
+{
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    auto master = make_master(1); // cut coefficient tolerance 0.1 for subproblem 0
+    master->_solver = capturing_solver;
+    master->_name_to_id = {{"var1", 0}};
+    master->set_id_single_subpb_costs_under_approx({10});
+
+    Point subgradient{{"var1", 0.01}};
+    Point x_cut{{"var1", 1.0}};
+
+    // rhs = -0.02 + 0.01 * 1.0 = -0.01, within the 0.1 tolerance
+    master->addGroupSubproblemCut({0}, subgradient, x_cut, 0.02);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 1u);
+    const auto& row = capturing_solver->captured_rows[0];
+    EXPECT_EQ(row.rhs, std::vector<double>({0.0}));
+    EXPECT_EQ(row.mclind, std::vector<int>({0, 10}));
+    EXPECT_EQ(row.matval, std::vector<double>({0.0, -1.0}));
+}
+
+// The rounding tolerance of an aggregated cut is the SUM of the tolerances of the
+// subproblems it groups, so a coefficient that survives in a single-subproblem cut can
+// be snapped to zero in a cut grouping several of them.
+TEST_F(WorkerMasterAddRowsTest, AddGroupSubproblemCutSumsTolerancesAcrossTheGroup)
+{
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    auto master = make_master(3); // cut coefficient tolerance 0.1 per subproblem
+    master->_solver = capturing_solver;
+    master->_name_to_id = {{"var1", 0}};
+    master->set_id_single_subpb_costs_under_approx({10, 11, 12});
+
+    Point subgradient{{"var1", -0.2}};
+    Point x_cut{{"var1", 0.0}};
+
+    master->addGroupSubproblemCut({0}, subgradient, x_cut, 5.0);
+    master->addGroupSubproblemCut({0, 1, 2}, subgradient, x_cut, 5.0);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 2u);
+
+    // Tolerance 0.1: |-0.2| >= 0.1, the coefficient is kept.
+    const auto& single = capturing_solver->captured_rows[0];
+    EXPECT_EQ(single.rhs, std::vector<double>({-5.0}));
+    EXPECT_EQ(single.mclind, std::vector<int>({0, 10}));
+    EXPECT_EQ(single.matval, std::vector<double>({-0.2, -1.0}));
+
+    // Tolerance 0.1 + 0.1 + 0.1 = 0.3: |-0.2| < 0.3, the coefficient is snapped to zero,
+    // while the one alpha coefficient added per grouped subproblem is kept.
+    const auto& grouped = capturing_solver->captured_rows[1];
+    EXPECT_EQ(grouped.rhs, std::vector<double>({-5.0}));
+    EXPECT_EQ(grouped.mclind, std::vector<int>({0, 10, 11, 12}));
+    EXPECT_EQ(grouped.matval, std::vector<double>({0.0, -1.0, -1.0, -1.0}));
+}
+
+TEST_F(WorkerMasterAddRowsTest, AddGroupSubproblemCutThrowsWhenSubproblemToleranceIsMissing)
+{
+    auto capturing_solver = std::make_shared<CapturingSolverForAlphas>();
+    auto master = make_master(1); // a tolerance is registered for subproblem 0 only
+    master->_solver = capturing_solver;
+    master->_name_to_id = {{"var1", 0}};
+    master->set_id_single_subpb_costs_under_approx({10, 11, 12, 13});
+
+    Point subgradient{{"var1", -1.0}};
+    Point x_cut{{"var1", 1.0}};
+
+    EXPECT_THROW(master->addGroupSubproblemCut({3}, subgradient, x_cut, 1.0), std::runtime_error);
+    EXPECT_TRUE(capturing_solver->captured_rows.empty());
 }
 
 class WorkerMasterMock : public WorkerMaster {
