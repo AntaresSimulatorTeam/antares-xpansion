@@ -7,8 +7,6 @@
 #include "WorkerMaster.h"
 #include "common.h"
 
-namespace
-{
 
 inline void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
 {
@@ -21,8 +19,6 @@ inline void compute_cut_val(const Point& var_name_subgradient, const Point& x_cu
         }
     }
 }
-
-} // namespace
 
 template<typename Derived>
 class BendersCutsManager

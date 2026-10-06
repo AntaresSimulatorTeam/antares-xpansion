@@ -36,7 +36,7 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
     writer_->write_log_level(options_.LOG_LEVEL);
     writer_->write_master_name(options_.MASTER_NAME);
     writer_->write_solver_name(options_.SOLVER_NAME);
-    writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEMS_FORMAT));
+    writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEM_FORMAT));
 }
 
 bool BendersApp::isCriterionListEmpty() const

@@ -15,7 +15,6 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersProblemFromFile.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersStructsDatas.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
-
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationPrinter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationWriter.cpp

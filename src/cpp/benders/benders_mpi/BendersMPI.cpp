@@ -174,7 +174,7 @@ void BendersMpi::InitializeMaster()
                                    solver_log_manager_,
                                    IsResumeMode(),
                                    _logger,
-                                   Options().PROBLEMS_FORMAT,
+                                   Options().PROBLEM_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
                                    GetSubCutTolerance());
