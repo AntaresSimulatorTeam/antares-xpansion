@@ -28,7 +28,7 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
     ptr_merged_solver_ = factory_.create_solver(options_.SOLVER_NAME);
     ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
 
-    solver_io_.configure(options_.SOLVER_NAME, options_.PROBLEMS_FORMAT);
+    solver_io_.configure(options_.SOLVER_NAME, options_.PROBLEM_FORMAT);
 }
 
 /**

@@ -22,7 +22,7 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
                            SolverLogManager& solver_log_manager,
                            const bool mps_has_alpha,
                            Logger logger,
-                           ProblemsFormat format,
+                           ProblemFormat format,
                            IBendersProblemProvider* benders_problem_provider,
                            double master_solution_tolerance,
                            const std::map<int, double>& subproblem_cut_coefficient_tolerance):

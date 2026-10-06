@@ -255,14 +255,13 @@ protected:
         return options;
     }
 
-    BendersSequentialDouble init_benders_sequential(
-      MasterFormulation master_formulation,
-      int max_iter,
-      double relaxed_gap,
-      double sep_param,
-      const std::string& solver = "COIN",
-      const std::string& master_name = "mip_toy_prob",
-      ProblemsFormat format = ProblemsFormat::MPS_FILE)
+    BendersSequentialDouble init_benders_sequential(MasterFormulation master_formulation,
+                                                    int max_iter,
+                                                    double relaxed_gap,
+                                                    double sep_param,
+                                                    const std::string& solver = "COIN",
+                                                    const std::string& master_name = "mip_toy_prob",
+                                                    ProblemFormat format = ProblemFormat::MPS_FILE)
     {
         BendersBaseOptions options = init_benders_options(master_formulation,
                                                           max_iter,
@@ -270,7 +269,7 @@ protected:
                                                           sep_param,
                                                           solver,
                                                           master_name);
-        options.PROBLEMS_FORMAT = format;
+        options.PROBLEM_FORMAT = format;
         return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
     }
 
@@ -632,7 +631,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly)
 
 class BendersSequentialTestSolverAndFormat
     : public BendersSequentialTest,
-      public ::testing::WithParamInterface<std::tuple<std::string, ProblemsFormat>>
+      public ::testing::WithParamInterface<std::tuple<std::string, ProblemFormat>>
 {
 };
 
@@ -653,7 +652,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore)
                                                               1e-6,
                                                               GetParam(),
                                                               "mip_toy_prob",
-                                                              ProblemsFormat::OPTIMIZED);
+                                                              ProblemFormat::OPTIMIZED);
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly

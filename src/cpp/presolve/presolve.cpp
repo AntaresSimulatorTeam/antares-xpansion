@@ -220,7 +220,7 @@ void Presolve::reduce_problems(std::shared_ptr<SolverAbstract> solver,
     CouplingMap reduced_couplings = full_couplings;
 
     SolverIO solver_io;
-    solver_io.configure(options.SOLVER_NAME, options.PROBLEMS_FORMAT);
+    solver_io.configure(options.SOLVER_NAME, options.PROBLEM_FORMAT);
 
     const size_t nb_prob_total{full_couplings.size() - 1};
     size_t processed = 0;
@@ -254,7 +254,7 @@ void Presolve::reduce_problems(std::shared_ptr<SolverAbstract> solver,
         const auto full2reduced = get_candidates_presolve_map(*solver, candidate_indices);
         update_reduced_couplings_for_file(reduced_couplings, filename, var_map, full2reduced);
 
-        if (options.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED)
+        if (options.PROBLEM_FORMAT == ProblemFormat::OPTIMIZED)
         {
             /*
             When we force presolve_only, we interrupt the problem leaving it in a

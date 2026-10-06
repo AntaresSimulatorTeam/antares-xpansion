@@ -109,7 +109,7 @@ class XpansionConfigConstants:
             "batch_size": 0,
             "master_solution_tolerance": 1e-4,
             "cut_coefficient_tolerance": 5e-3,
-            "problems_format": "OPTIMIZED",
+            "problem_format": "OPTIMIZED",
         }
 
     def _set_default_options(self):
@@ -124,7 +124,7 @@ class XpansionConfigConstants:
             OptimisationKeys.slave_weight_key(): self.slave_weight_default_value(),
             OptimisationKeys.slave_weight_value_key(): self.slave_weight_value_default_value(),
             OptimisationKeys.master_name_key(): self.master_name_default_value(),
-            OptimisationKeys.problems_format_key(): self.problems_format_default_value(),
+            OptimisationKeys.problem_format_key(): self.problem_format_default_value(),
             OptimisationKeys.structure_file_key(): self.structure_file_default_value(),
             OptimisationKeys.input_root_key(): self.input_root_default_value(),
             OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
@@ -153,7 +153,7 @@ class XpansionConfigConstants:
     def master_name_default_value(self):
         return "master"
 
-    def problems_format_default_value(self):
+    def problem_format_default_value(self):
         return "OPTIMIZED"
 
     # TODO Why not returning an int here?
