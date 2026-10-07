@@ -12,7 +12,7 @@ The first two steps are (order of execution does not matter) :
 - [Multiple problem generation](./multiple-problem-generation.md) : Runs the Xpansion problem generation for each study
   in the tree.
     - Before running the multiple problem generation, generate
-      the [MultipleProblemGeneration input files](./multiple-problem-generation.md#study-paths-archives-file).
+      the [MultipleProblemGeneration input files](./multiple-problem-generation.md#study-paths-and-archives-file).
 
 Intermediary files :
 
