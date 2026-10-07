@@ -7,7 +7,7 @@ var searchData=
   ['need_20custom_20weights_4',['Why we need custom weights',['../md_docs_2reference_2trajectory-investment_2merge-weights.html#autotoc_md269',1,'']]],
   ['new_20contributors_5',['New Contributors',['../md_docs_2overview_2CHANGELOG.html#autotoc_md145',1,'']]],
   ['no_5fcache_6',['CACHE_PROBLEMS = NO_CACHE',['../md_docs_2reference_2benders_2in-memory-compact-subproblems.html#autotoc_md208',1,'']]],
-  ['nodal_20lp_20info_20file_7',['Output : Nodal Lp Info file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md276',1,'']]],
+  ['nodal_20lp_20info_20file_7',['Output: Nodal Lp Info file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md276',1,'']]],
   ['nodal_20lp_20info_20file_8',['Nodal lp info file',['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md265',1,'']]],
   ['nodedata_9',['NodeData',['../classuser__input__translation_1_1NodeData.html',1,'user_input_translation']]],
   ['nodelpdatalocation_10',['NodeLpDataLocation',['../structNodeLpDataLocation.html',1,'']]],

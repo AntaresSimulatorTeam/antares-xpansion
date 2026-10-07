@@ -149,7 +149,7 @@ Usage</h1>
 </div><!-- fragment --><p>Note that this executable uses options that extend the simple <code><a class="el" href="classProblemGenerationExeOptions.html">ProblemGenerationExeOptions</a></code> parser used in the individual problem generation executable. Thus, every other option of the individual problem generation can be given to the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> executable and will be duplicated for each individual node's problem generation.</p>
 <p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
 <h1><a class="anchor" id="autotoc_md274"></a>
-Study paths / archives file</h1>
+Study paths and archives file</h1>
 <p>The study paths file (or archive paths file when called with <code>--archive &lt;archive_paths_file&gt;</code>) tells the executable where to find the relevant input for each node :</p>
 <ul>
 <li>Study paths when using memory mode (and option <code>--study</code>)</li>
@@ -177,7 +177,7 @@ Weights / additional constraints reference file</h1>
  And for node <code>2040</code>, the result will be the same as calling : <br  />
  </p><div class="fragment"><div class="line">&lt;single_problem_gen_executable&gt; --study ./node_2040_study</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md276"></a>
-Output : Nodal Lp Info file</h1>
+Output: Nodal Lp Info file</h1>
 <p>We give an example of a corresponding <code>nodal_lp_info.json</code>. This file is written to the path given in the <code>--nodal-file</code> argument when calling the executable.</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">  &quot;2030&quot;: {</div>

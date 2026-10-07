@@ -54,7 +54,7 @@ var searchData=
   ['logs_51',['Logs',['../md_docs_2reference_2outputs_2others.html#autotoc_md252',1,'']]],
   ['logutils_52',['LogUtils',['../classantares__xpansion_1_1log__utils_1_1LogUtils.html',1,'antares_xpansion::log_utils']]],
   ['loopflow_5f_53',['loopFlow_',['../structLinkdataRecord_1_1FileColumns.html#a72660e6f946994368a7a69859aa7dde0',1,'LinkdataRecord::FileColumns']]],
-  ['lp_20info_20file_54',['Output : Nodal Lp Info file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md276',1,'']]],
+  ['lp_20info_20file_54',['Output: Nodal Lp Info file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md276',1,'']]],
   ['lp_20info_20file_55',['Nodal lp info file',['../md_docs_2reference_2trajectory-investment_2merge-master.html#autotoc_md265',1,'']]],
   ['lp_5fnamer_20tt_56',['Modification of weekly problems with &lt;tt&gt;lp_namer&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion-steps_2problem-modification.html#autotoc_md109',1,'']]],
   ['lpfilesextractor_57',['LpFilesExtractor',['../classLpFilesExtractor.html',1,'']]],

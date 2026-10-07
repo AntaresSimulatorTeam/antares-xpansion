@@ -69,7 +69,7 @@ var searchData=
   ['timelimitvalueerror_66',['TimelimitValueError',['../classantares__xpansion_1_1input__checker_1_1TimelimitValueError.html',1,'antares_xpansion::input_checker']]],
   ['timer_67',['Timer',['../classTimer.html',1,'']]],
   ['to_68',['to',['../structto.html',1,'']]],
-  ['to_20a_20pluriannual_20vision_69',[' Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258',1,'']]],
+  ['to_20a_20pluriannual_20vision_69',['Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258',1,'']]],
   ['to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_70',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2overview_2CHANGELOG.html#autotoc_md153',1,'']]],
   ['to_5fmerger_5fjson_71',['to_merger_json',['../classuser__input__translation_1_1TrajectoryConstraint.html#adb74a3f2deb71355d3f26ff5edcd4ac5',1,'user_input_translation::TrajectoryConstraint']]],
   ['to_5frow_72',['to_row',['../structLinkdataRecord.html#a192b9300bf9ef3704dd29c7447e38680',1,'LinkdataRecord']]],

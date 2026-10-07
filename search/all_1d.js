@@ -109,7 +109,7 @@ var searchData=
   ['study_20format_106',['Study format',['../md_docs_2reference_2benders_2in-memory-compact-subproblems.html#autotoc_md211',1,'']]],
   ['study_20format_20changes_107',['Study format changes',['../md_docs_2overview_2format__changes.html',1,'']]],
   ['study_20or_20input_20data_20from_20tt_20input_20trajectory_20yaml_20tt_108',['Input data of local study or input data from &lt;tt&gt;input-trajectory.yaml&lt;/tt&gt; ?',['../md_docs_2reference_2trajectory-investment_2user-input.html#autotoc_md299',1,'']]],
-  ['study_20paths_20archives_20file_109',['Study paths / archives file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md274',1,'']]],
+  ['study_20paths_20and_20archives_20file_109',['Study paths and archives file',['../md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md274',1,'']]],
   ['study_20with_20micro_20iterations_110',['Launching a study with micro-iterations',['../md_docs_2reference_2benders_2micro-iterations.html#autotoc_md217',1,'']]],
   ['study_3a_20tt_20study_5fupdate_20tt_111',['4. Update of antares study: &lt;tt&gt;study_update&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion-steps_2index.html#autotoc_md102',1,'']]],
   ['study_5fupdate_20sensitivity_20presolve_20resume_20tt_112',['&lt;tt&gt;--step {full, antares, problem_generation, benders, gems, study_update, sensitivity, presolve, resume}&lt;/tt&gt;',['../md_docs_2reference_2cli.html#autotoc_md223',1,'']]],
@@ -137,5 +137,6 @@ var searchData=
   ['subproblemweight_134',['SubproblemWeight',['../classBendersBase.html#ab979fd9e6fd791c6b01d244da33ba849',1,'BendersBase']]],
   ['subproblemworker_135',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#a3cc94eeda4ce13e0003f7025e32e9a88',1,'SubproblemWorker::SubproblemWorker()']]],
   ['subproblemworkerfactory_136',['SubproblemWorkerFactory',['../classSubproblemWorkerFactory.html',1,'']]],
-  ['subproblemworkerfactorytest_137',['SubproblemWorkerFactoryTest',['../classSubproblemWorkerFactoryTest.html',1,'']]]
+  ['subproblemworkerfactorytest_137',['SubproblemWorkerFactoryTest',['../classSubproblemWorkerFactoryTest.html',1,'']]],
+  ['switching_20to_20a_20pluriannual_20vision_138',['Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258',1,'']]]
 ];

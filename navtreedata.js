@@ -341,7 +341,7 @@ var NAVTREE =
     [ "Sensitivity analysis outputs", "md_docs_2reference_2outputs_2sensitivity.html", null ],
     [ "Trajectory investment problem", "md_docs_2reference_2trajectory-investment_2index.html", [
       [ "General description", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md257", null ],
-      [ " Switching to a pluriannual vision", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258", null ],
+      [ "Switching to a pluriannual vision", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258", null ],
       [ "Link with the user input file", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md259", null ],
       [ "Link between the annual and the pluriannual problems", "md_docs_2reference_2trajectory-investment_2index.html#autotoc_md260", null ]
     ] ],
@@ -360,9 +360,9 @@ var NAVTREE =
     ] ],
     [ "Multiple problem generation", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html", [
       [ "Usage", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md273", null ],
-      [ "Study paths / archives file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md274", null ],
+      [ "Study paths and archives file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md274", null ],
       [ "Weights / additional constraints reference file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md275", null ],
-      [ "Output : Nodal Lp Info file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md276", null ]
+      [ "Output: Nodal Lp Info file", "md_docs_2reference_2trajectory-investment_2multiple-problem-generation.html#autotoc_md276", null ]
     ] ],
     [ "Launching the workflow : <tt>xpansion trajectory</tt>", "md_docs_2reference_2trajectory-investment_2orchestration.html", [
       [ "Usage", "md_docs_2reference_2trajectory-investment_2orchestration.html#autotoc_md278", null ],

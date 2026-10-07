@@ -53,6 +53,6 @@ var searchData=
   ['version_20tt_50',['version tt',['../md_docs_2reference_2cli.html#autotoc_md233',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2reference_2cli.html#autotoc_md232',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
   ['versions_51',['Versions',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md67',1,'']]],
   ['versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_52',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2overview_2CHANGELOG.html#autotoc_md153',1,'']]],
-  ['vision_53',[' Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258',1,'']]],
+  ['vision_53',['Switching to a pluriannual vision',['../md_docs_2reference_2trajectory-investment_2index.html#autotoc_md258',1,'']]],
   ['voidwriter_54',['VoidWriter',['../classOutput_1_1VoidWriter.html',1,'Output::VoidWriter'],['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter::VoidWriter()']]]
 ];
