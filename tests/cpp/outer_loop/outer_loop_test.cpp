@@ -127,7 +127,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
         logger.get(),
         ::testing::UnitTest::GetInstance()->current_test_info()->name());
         // override solver
-    auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map,false,pworld) ; 
+    auto benders_plugin = benders_plugin_factory_->CreatePlugin(coupling_map,false,pworld, logger) ;
     
     bendersoptions.SOLVER_NAME = GetParam();
     bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;

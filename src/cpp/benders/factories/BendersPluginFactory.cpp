@@ -14,7 +14,8 @@ BendersPluginFactory::BendersPluginFactory(const SimulationOptions& options):
 
 std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map,
                                                                   bool micro_iter,
-                                                                  boost::mpi::communicator* world)
+                                                                  boost::mpi::communicator* world,
+                                                                  const Logger& logger)
 {
     if (micro_iter)
     {
@@ -28,7 +29,10 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
         }
 
         std::shared_ptr<Benders_MICRO_ITERS>
-          plugin_micro_iters = std::make_shared<Benders_MICRO_ITERS>(options_, coupling_map, world);
+          plugin_micro_iters = std::make_shared<Benders_MICRO_ITERS>(options_,
+                                                                     coupling_map,
+                                                                     world,
+                                                                     logger);
         plugin_micro_iters->SetSubProblemIDs(sub_names);
         std::shared_ptr<BendersPlugin> plugin = plugin_micro_iters;
 
