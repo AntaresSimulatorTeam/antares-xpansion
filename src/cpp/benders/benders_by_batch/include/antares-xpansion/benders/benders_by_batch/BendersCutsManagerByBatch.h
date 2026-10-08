@@ -35,5 +35,4 @@ private:
     CurrentIterationData& data_;
     const VariableMap& problem_to_id_;
     BendersRelevantIterationsData& relevantIterationData_;
-    const WorkerMasterPtr& master_;
 };
