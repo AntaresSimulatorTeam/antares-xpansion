@@ -17,7 +17,7 @@ void BendersMasterManager::CreateMaster(
   double master_solution_tolerance,
   const std::map<int, double>& subproblem_cut_coefficient_tolerance)
 {
-    master_ = std::make_shared<WorkerMaster>(variable_map,
+    master_ = std::make_unique<WorkerMaster>(variable_map,
                                              solver_name,
                                              log_level,
                                              subproblems_count,
@@ -34,6 +34,10 @@ void BendersMasterManager::CreateMaster(
 
 void BendersMasterManager::FreeMaster()
 {
+    if (!master_)
+    {
+        return;
+    }
     master_->free();
     is_empty_ = true;
 }
@@ -43,9 +47,9 @@ bool BendersMasterManager::IsEmpty() const
     return is_empty_;
 }
 
-WorkerMasterPtr BendersMasterManager::GetMaster() const
+WorkerMaster* BendersMasterManager::Master() const
 {
-    return master_;
+    return master_.get();
 }
 
 void BendersMasterManager::SetVariableMap(const VariableMap& variable_map)

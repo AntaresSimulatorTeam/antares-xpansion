@@ -10,7 +10,6 @@
  * \brief Class daughter of Worker Class, build and manage a master problem
  */
 class WorkerMaster;
-typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 
 class WorkerMaster: public Worker
 {

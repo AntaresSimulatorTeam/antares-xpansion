@@ -95,7 +95,6 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterPtr _master;
     std::unique_ptr<BendersMasterManager> master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
@@ -141,7 +140,6 @@ protected:
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
-    [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     bool IsResumeMode() const;
 
     std::filesystem::path LastIterationFile() const

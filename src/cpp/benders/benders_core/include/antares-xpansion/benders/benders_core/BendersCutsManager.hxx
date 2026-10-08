@@ -1,10 +1,11 @@
 #pragma once
 
+#include <cassert>
 #include <vector>
 
+#include "BendersMasterManager.h"
 #include "BendersStructsDatas.h"
 #include "SubproblemCut.h"
-#include "WorkerMaster.h"
 #include "common.h"
 
 namespace
@@ -28,7 +29,11 @@ template<typename Derived>
 class BendersCutsManager
 {
 public:
-    BendersCutsManager() = default;
+    // The master manager is the only owner of the master problem: going through it means
+    // this class never holds a handle that a master re-creation could invalidate. It holds
+    // no master on the processes that do not own one; those take part in the gathering but
+    // never build a cut.
+    explicit BendersCutsManager(BendersMasterManager& master_manager);
 
     template<typename... Args>
     void GatherAndBuildCuts(Args&&... args)
@@ -89,9 +94,11 @@ public:
                                 const VariableMap& problem_to_id,
                                 double& ub,
                                 const Point& x_cut,
-                                SubProblemDataMap& cut_trace,
-                                const WorkerMasterPtr& master)
+                                SubProblemDataMap& cut_trace)
     {
+        assert((subproblem_names.empty() || master_manager_.Master() != nullptr)
+               && "cuts can only be built on the process owning the master problem");
+
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
             Point s;
@@ -119,9 +126,12 @@ public:
                 }
             }
 
-            master->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+            master_manager_.AddGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
         }
     }
+
+protected:
+    BendersMasterManager& master_manager_;
 
 private:
     // Rounds x_cut values that are within tolerance of variable bounds to
@@ -158,3 +168,9 @@ private:
                                       : data.cuts.min_simplexiter;
     }
 };
+
+template<typename Derived>
+BendersCutsManager<Derived>::BendersCutsManager(BendersMasterManager& master_manager):
+    master_manager_(master_manager)
+{
+}
