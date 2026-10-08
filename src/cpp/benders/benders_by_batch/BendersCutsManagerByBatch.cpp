@@ -14,7 +14,8 @@ BendersCutsManagerByBatch::BendersCutsManagerByBatch(
     rank_0_(rank_0),
     data_(data),
     problem_to_id_(problem_to_id),
-    relevantIterationData_(relevantIterationData)
+    relevantIterationData_(relevantIterationData),
+    master_(master)
 {
 }
 
@@ -39,7 +40,8 @@ void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(
                                problem_to_id_,
                                data_.cuts.ub,
                                data_.solution.x_cut,
-                               relevantIterationData_.last._cut_trace);
+                               relevantIterationData_.last._cut_trace,
+                               master_);
     }
 }
 

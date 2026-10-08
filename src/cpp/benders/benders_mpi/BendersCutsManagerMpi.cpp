@@ -14,6 +14,7 @@ BendersCutsManagerMpi::BendersCutsManagerMpi(
     data_(data),
     problem_to_id_(problem_to_id),
     relevantIterationData_(relevantIterationData),
+    master_(master),
     subproblem_per_cut_indices_(subproblem_per_cut_indices)
 {
 }
@@ -60,6 +61,7 @@ void BendersCutsManagerMpi::MasterBuildCuts(
                                problem_to_id_,
                                data_.cuts.ub,
                                data_.solution.x_cut,
-                               relevantIterationData_.last._cut_trace);
+                               relevantIterationData_.last._cut_trace,
+                               master_);
     }
 }
