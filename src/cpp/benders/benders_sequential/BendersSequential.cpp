@@ -26,13 +26,44 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 std::move(logger),
                 std::move(writer),
                 mathLoggerDriver,
-                std::make_shared<SequentialCommunicationStrategy>())
+                std::make_shared<SequentialCommunicationStrategy>()),
+    cuts_manager_(_data, _problem_to_id, relevantIterationData_, _master)
 {
 }
 
 void BendersSequential::InitializeProblems()
 {
     MatchProblemToId();
+
+    std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
+
+    // Skip cut aggregation when there are no subproblems to avoid division by zero
+    if (_data.nsubproblem > 0) [[likely]]
+    {
+        int n_cuts = SetAggregation(_data.nsubproblem);
+        subproblem_per_cut_indices.reserve(n_cuts);
+
+        SubProblemNamesInCut current_cut;
+        size_t group_size = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+        current_cut.reserve(group_size);
+
+        for (const auto& [name, id]: _problem_to_id)
+        {
+            current_cut.emplace_back(name, 0);
+            if (current_cut.size() == group_size)
+            {
+                subproblem_per_cut_indices.emplace_back(std::move(current_cut));
+                current_cut.clear();
+                current_cut.reserve(group_size);
+            }
+        }
+        if (!current_cut.empty())
+        {
+            subproblem_per_cut_indices.emplace_back(std::move(current_cut));
+        }
+    }
+    cuts_manager_.SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
+
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
     reset_master<WorkerMaster>(master_variable_map_,
@@ -86,8 +117,8 @@ void BendersSequential::BuildCut()
     }
 
     _data.subproblems_walltime = timer.elapsed();
-    _data.ub = 0;
-    BuildCutFull(subproblem_data_map);
+    check_status(subproblem_data_map);
+    cuts_manager_.GatherAndBuildCuts(subproblem_data_map);
 }
 
 /*!
@@ -123,7 +154,9 @@ void BendersSequential::Run()
         get_master_value();
         _logger->log_master_solving_duration(_data.timer_master);
 
-        ComputeXCut();
+        cuts_manager_.ComputeXCut(_data,
+                                  Options().SEPARATION_PARAM,
+                                  Options().MASTER_SOLUTION_TOLERANCE);
         _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
         _logger->display_message("\tSolving subproblems...");
