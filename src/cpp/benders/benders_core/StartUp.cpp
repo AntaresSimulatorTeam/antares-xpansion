@@ -11,7 +11,7 @@ bool StartUp::StudyAlreadyAchievedCriterion(const SimulationOptions& options,
                                             Output::OutputWriter* writer,
                                             ILogger* logger) const
 {
-    if (!IsResume(options.RESUME))
+    if (!IsResume(options.RESTART_MODE))
     {
         return false;
     }

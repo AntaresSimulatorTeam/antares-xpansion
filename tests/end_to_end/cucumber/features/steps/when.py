@@ -199,14 +199,14 @@ def set_max_iterations(context, max_iterations):
         json.dump(options_content, file, indent=4)
 
 
-@when('I set RESUME to "{resume_mode}"')
+@when('I set RESTART_MODE to "{resume_mode}"')
 def set_resume_mode(context, resume_mode):
     import shutil
     study_path = Path(context.tmp_study)
     options_path = study_path / "options.json"
     with open(options_path, "r") as file:
         options_content = json.load(file)
-    options_content["RESUME"] = resume_mode
+    options_content["RESTART_MODE"] = resume_mode
     with open(options_path, "w") as file:
         json.dump(options_content, file, indent=4)
     # Replace master.mps with master_last_iteration.mps (which contains the accumulated cuts)

@@ -23,7 +23,7 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
-        writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
+        writer_ = build_json_writer(options_.JSON_FILE, options_.RESTART_MODE);
     }
     else
     {

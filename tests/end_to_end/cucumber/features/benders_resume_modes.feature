@@ -9,7 +9,7 @@ Scenario: Benders runs for 2 iterations then we resume it from there to converge
     And the problem_status is "limit reached"
     And the expected investment cost is 3.2615786040443573
     When I set MAX_ITERATIONS to -1
-    And I set RESUME to "resume"
+    And I set RESTART_MODE to "resume"
     And I run benders with 1 proc(s)
     Then the simulation succeeds
     And the problem_status is "OPTIMAL"
@@ -22,7 +22,7 @@ Scenario: Benders runs until optimality then we relaunch it with hot start
     Then the simulation succeeds
     And the problem_status is "OPTIMAL" 
     And the expected investment cost is 1.6307893020221786
-    When I set RESUME to "hot_start"
+    When I set RESTART_MODE to "hot_start"
     And I run benders with 1 proc(s)
     Then the simulation succeeds
     And the number of iterations is 1

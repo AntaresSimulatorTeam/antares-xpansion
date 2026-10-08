@@ -90,6 +90,11 @@ void SimulationOptions::read(const std::filesystem::path& file_name)
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
 
 #undef BENDERS_OPTIONS_MACRO
+        // Legacy name of RESTART_MODE, ignored if the new key is also present
+        if (var_name == "RESUME" && !options_values.isMember("RESTART_MODE"))
+        {
+            RESTART_MODE = options_values[var_name].as<ResumeMode>();
+        }
     }
     set_weights();
 }
@@ -208,7 +213,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.TIME_LIMIT = TIME_LIMIT;
     result.SEPARATION_PARAM = SEPARATION_PARAM;
 
-    result.RESUME = RESUME;
+    result.RESTART_MODE = RESTART_MODE;
     result.MICRO_ITERATIONS = MICRO_ITERATIONS;
     result.NB_CUTS_PER_ITER = NB_CUTS_PER_ITER;
     result.TRACE = TRACE;
