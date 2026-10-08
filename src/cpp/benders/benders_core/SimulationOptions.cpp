@@ -38,6 +38,11 @@ inline CacheProblems Json::Value::as<CacheProblems>() const
 template<>
 inline ResumeMode Json::Value::as<ResumeMode>() const
 {
+    if (isBool())
+    {
+        // Legacy boolean RESUME option
+        return asBool() ? ResumeMode::RESUME : ResumeMode::COLD_START;
+    }
     return resumeModeFromString(asString());
 }
 

@@ -29,6 +29,18 @@ inline ResumeMode resumeModeFromString(const std::string& str)
                              + " (expected cold_start, resume, or hot_start)");
 }
 
+// True when the run continues an interrupted one (append logs, reload previous output state)
+inline bool IsResume(ResumeMode mode)
+{
+    return mode == ResumeMode::RESUME;
+}
+
+// True when the master is read from an existing file (resume and hot start)
+inline bool UsesExistingMaster(ResumeMode mode)
+{
+    return mode != ResumeMode::COLD_START;
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const ResumeMode& mode)
 {
     switch (mode)
