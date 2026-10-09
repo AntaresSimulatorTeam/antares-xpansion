@@ -16,26 +16,28 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
     BendersBase(options,
                 std::move(logger),
                 std::move(writer),
-                mathLoggerDriver,
+                std::move(mathLoggerDriver),
                 std::make_shared<SequentialCommunicationStrategy>()),
-    cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
-                                                                 _problem_to_id,
-                                                                 relevantIterationData_,
-                                                                 _master)),
     subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerSequential>(_data,
                                                             _options,
                                                             benders_plugin_,
-                                                            output_manager_->GetLogger(),
+                                                            output_manager_.GetLogger(),
                                                             solver_log_manager_,
-                                                            output_manager_->GetWriter(),
-                                                            shouldParallelize()))
+                                                            output_manager_.GetWriter(),
+                                                            shouldParallelize(),
+                                                            coupling_map_)),
+    cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
+                                                                 _problem_to_id,
+                                                                 relevantIterationData_,
+                                                                 master_manager_))
 {
 }
 
 void BendersSequential::InitializeProblems()
 {
-    MatchProblemToId();
+    subproblems_manager_->MatchProblemToId();
+    _problem_to_id = subproblems_manager_->GetProblemToId();
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
 
@@ -63,7 +65,6 @@ void BendersSequential::InitializeProblems()
             subproblem_per_cut_indices.emplace_back(std::move(current_cut));
         }
     }
-    cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
 
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
@@ -73,26 +74,21 @@ void BendersSequential::InitializeProblems()
                  _data.control.nsubproblem,
                  solver_log_manager_,
                  IsResumeMode(),
-                 output_manager_->GetLogger(),
+                 output_manager_.GetLogger(),
                  Options().PROBLEMS_FORMAT,
                  benders_problem_provider.get(),
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());
-    subproblems_manager_->SetCouplingMap(coupling_map_);
-    for (const auto& problem: coupling_map_)
-    {
-        subproblems_manager_->AddSubproblem(problem);
-        subproblems_manager_->AddSubproblemName(problem.first);
-    }
+
+    cuts_manager_->SetSubproblemPerCutIndices(std::move(subproblem_per_cut_indices));
+
+    subproblems_manager_->DistributeSubproblems();
     subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS);
 }
 
 void BendersSequential::free()
 {
-    if (get_master())
-    {
-        master_manager_->FreeMaster();
-    }
+    master_manager_.FreeMaster();
     subproblems_manager_->free_subproblems();
 }
 
@@ -117,13 +113,13 @@ void BendersSequential::BuildCut()
 
 void BendersSequential::Run()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     init_data();
     ChecksResumeMode();
     if (_options.TRACE)
     {
-        output_manager_->OpenCsvFile();
+        output_manager_.OpenCsvFile();
     }
 
     HandleInitialMasterRelaxation();
@@ -141,7 +137,7 @@ void BendersSequential::Run()
         }
 
         logger->log_at_initialization(_data.control.it
-                                      + output_manager_->GetNumIterationsBeforeRestart());
+                                      + output_manager_.GetNumIterationsBeforeRestart());
         logger->display_message("\tSolving master...");
         get_master_value();
         logger->log_master_solving_duration(_data.master.timer_master);
@@ -149,7 +145,7 @@ void BendersSequential::Run()
         cuts_manager_->ComputeXCut(_data,
                                    Options().SEPARATION_PARAM,
                                    Options().MASTER_SOLUTION_TOLERANCE);
-        logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
+        logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
 
         logger->display_message("\tSolving subproblems...");
         BuildCut();
@@ -158,7 +154,7 @@ void BendersSequential::Run()
         compute_ub();
         update_best_ub();
 
-        logger->log_at_iteration_end(output_manager_->bendersDataToLogData(_data));
+        logger->log_at_iteration_end(output_manager_.bendersDataToLogData(_data));
 
         UpdateTrace();
 
@@ -167,28 +163,22 @@ void BendersSequential::Run()
         _data.control.benders_time = GetBendersTime();
         _data.control.iteration_time += _data.control.benders_time;
         _data.control.stop = ShouldBendersStop();
-        output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+        output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
     }
-    output_manager_->CloseCsvFile();
-    output_manager_->EndWritingInOutputFile(_data.control.benders_time,
-                                            _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
+    output_manager_.CloseCsvFile();
+    output_manager_.EndWritingInOutputFile(_data.control.benders_time,
+                                           _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
     write_basis();
 }
 
 void BendersSequential::launch()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     logger->display_message("Building input");
     logger->display_message("Constructing workers...");
 
     InitializeProblems();
-
-    benders_plugin_->OnBendersStart(subproblems_manager_->GetSubProblemMap(),
-                                    logger,
-                                    _options,
-                                    solver_log_manager_,
-                                    subproblems_manager_->GetFactorySolver());
 
     logger->display_message("Running solver...");
     try

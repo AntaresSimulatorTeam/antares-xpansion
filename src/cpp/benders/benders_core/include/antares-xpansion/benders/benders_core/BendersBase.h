@@ -29,6 +29,12 @@ public:
                 std::shared_ptr<Output::OutputWriter> writer,
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
                 std::shared_ptr<ICommunicationStrategy> communication_strategy = nullptr);
+    // outer_loop_manager_ is built with callbacks capturing this, so the object
+    // cannot be relocated once constructed.
+    BendersBase(const BendersBase&) = delete;
+    BendersBase& operator=(const BendersBase&) = delete;
+    BendersBase(BendersBase&&) = delete;
+    BendersBase& operator=(BendersBase&&) = delete;
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
     void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin);
@@ -77,17 +83,32 @@ public:
         return communication_strategy_;
     }
 
-    [[nodiscard]] std::shared_ptr<BendersMasterManager> GetMasterManager() const
+    [[nodiscard]] BendersMasterManager& GetMasterManager()
     {
         return master_manager_;
     }
 
-    [[nodiscard]] std::shared_ptr<BendersOuterLoopManager> GetOuterLoopManager() const
+    [[nodiscard]] const BendersMasterManager& GetMasterManager() const
+    {
+        return master_manager_;
+    }
+
+    [[nodiscard]] BendersOuterLoopManager& GetOuterLoopManager()
     {
         return outer_loop_manager_;
     }
 
-    [[nodiscard]] std::shared_ptr<BendersOutputManager> GetOutputManager() const
+    [[nodiscard]] const BendersOuterLoopManager& GetOuterLoopManager() const
+    {
+        return outer_loop_manager_;
+    }
+
+    [[nodiscard]] BendersOutputManager& GetOutputManager()
+    {
+        return output_manager_;
+    }
+
+    [[nodiscard]] const BendersOutputManager& GetOutputManager() const
     {
         return output_manager_;
     }
@@ -95,8 +116,7 @@ public:
 protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
-    WorkerMasterPtr _master;
-    std::shared_ptr<BendersMasterManager> master_manager_;
+    BendersMasterManager master_manager_;
     std::shared_ptr<BendersPlugin> benders_plugin_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
@@ -106,8 +126,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-    std::shared_ptr<BendersOutputManager> output_manager_;
-    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
+    BendersOutputManager output_manager_;
+    BendersOuterLoopManager outer_loop_manager_;
 
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
@@ -141,8 +161,6 @@ protected:
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
-    [[nodiscard]] virtual WorkerMasterPtr get_master() const;
-    void MatchProblemToId();
     bool IsResumeMode() const;
 
     std::filesystem::path LastIterationFile() const
@@ -182,11 +200,6 @@ protected:
     void SetAlpha_i(const DblVector& single_subpb_costs_under_approx)
     {
         _data.master.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
-    }
-
-    int ProblemToId(const std::string& problem_name) const
-    {
-        return _problem_to_id.at(problem_name);
     }
 
     virtual void UpdateStoppingCriterion();

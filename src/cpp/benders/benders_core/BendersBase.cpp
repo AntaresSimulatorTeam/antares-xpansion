@@ -1,16 +1,10 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
-#include <chrono>
 #include <filesystem>
-#include <fstream>
 #include <memory>
-#include <mutex>
-#include <numeric>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
-#include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
-#include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
@@ -21,20 +15,19 @@ BendersBase::BendersBase(BendersBaseOptions options,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
                          std::shared_ptr<ICommunicationStrategy> communication_strategy):
     _options(std::move(options)),
-    master_manager_(std::make_shared<BendersMasterManager>()),
-    output_manager_(std::make_shared<BendersOutputManager>(std::move(logger),
-                                                           std::move(writer),
-                                                           std::move(mathLoggerDriver),
-                                                           _data,
-                                                           _options,
-                                                           _problem_to_id,
-                                                           relevantIterationData_)),
-    outer_loop_manager_(std::make_shared<BendersOuterLoopManager>(
+    output_manager_(std::move(logger),
+                    std::move(writer),
+                    std::move(mathLoggerDriver),
+                    _data,
+                    _options,
+                    _problem_to_id,
+                    relevantIterationData_),
+    outer_loop_manager_(
       _data,
       relevantIterationData_,
-      output_manager_->GetWriter(),
-      [this]() { return output_manager_->BuildSolution(_totalNbProblems); },
-      [this](const WorkerMasterData& d) { return output_manager_->iteration(d); })),
+      output_manager_.GetWriter(),
+      [this]() { return output_manager_.BuildSolution(_totalNbProblems); },
+      [this](const WorkerMasterData& d) { return output_manager_.iteration(d); }),
     communication_strategy_(std::move(communication_strategy))
 {
 }
@@ -69,7 +62,7 @@ void BendersBase::init_data()
     _data.control.iteration_time = 0;
     _data.master.timer_master = 0;
     _data.cuts.subproblems_walltime = 0;
-    outer_loop_manager_->ClearCriteriaHistory();
+    outer_loop_manager_.ClearCriteriaHistory();
 }
 
 /*!
@@ -87,7 +80,7 @@ void BendersBase::update_best_ub()
         _data.criteria.max_criterion_best_it = _data.criteria.max_criterion;
         _data.criteria.max_criterion_area_best_it = _data.criteria.max_criterion_area;
         relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
-        output_manager_->UpdateBestIterationData(output_manager_->bendersDataToLogData(_data));
+        output_manager_.UpdateBestIterationData(_data);
     }
 }
 
@@ -188,7 +181,7 @@ void BendersBase::HandleInitialMasterRelaxation()
     }
     else if (is_initial_relaxation_requested())
     {
-        output_manager_->GetLogger()->LogAtInitialRelaxation();
+        output_manager_.GetLogger()->LogAtInitialRelaxation();
         DeactivateIntegrityConstraints();
         SetDataPreRelaxation();
     }
@@ -201,7 +194,7 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
         std::ostringstream msg;
         auto log_location = LOGLOCATION;
         msg << "Master status is " + std::to_string(_data.master.master_status) << std::endl;
-        output_manager_->GetLogger()->display_message(log_location + msg.str());
+        output_manager_.GetLogger()->display_message(log_location + msg.str());
         throw InvalidSolverStatusException(msg.str(), log_location);
     }
     for (const auto& [subproblem_name, subproblemData]: subproblem_data_map)
@@ -212,7 +205,7 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
             auto log_location = LOGLOCATION;
             stream << "Subproblem " << subproblem_name << " status is " << subproblemData.lpstatus
                    << std::endl;
-            output_manager_->GetLogger()->display_message(log_location + stream.str());
+            output_manager_.GetLogger()->display_message(log_location + stream.str());
             throw InvalidSolverStatusException(stream.str(), log_location);
         }
     }
@@ -220,26 +213,26 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
 
 void BendersBase::get_master_value()
 {
-    master_manager_->SolveMaster(_data,
-                                 _options.BOUND_ALPHA,
-                                 _options.OUTPUTROOT,
-                                 _options.LAST_MASTER_MPS,
-                                 output_manager_->GetWriter());
+    master_manager_.SolveMaster(_data,
+                                _options.BOUND_ALPHA,
+                                _options.OUTPUTROOT,
+                                _options.LAST_MASTER_MPS,
+                                output_manager_.GetWriter());
 }
 
 void BendersBase::DeactivateIntegrityConstraints() const
 {
-    master_manager_->DeactivateIntegrityConstraints();
+    master_manager_.DeactivateIntegrityConstraints();
 }
 
 void BendersBase::ActivateIntegrityConstraints() const
 {
-    master_manager_->ActivateIntegrityConstraints();
+    master_manager_.ActivateIntegrityConstraints();
 }
 
 void BendersBase::ComputeInvestCost()
 {
-    master_manager_->ComputeInvestCost(_data);
+    master_manager_.ComputeInvestCost(_data);
 }
 
 void BendersBase::compute_ub()
@@ -257,14 +250,15 @@ int BendersBase::SetAggregation(int max_aggregation) const
                                     "iteration : "
                                   + std::to_string(max_aggregation) + "setting NB_CUTS_PER_ITER to "
                                   + std::to_string(max_aggregation);
-        output_manager_->GetLogger()->display_message(logging_str);
+        output_manager_.GetLogger()->display_message(logging_str);
         return max_aggregation;
     }
     else if (_options.NB_CUTS_PER_ITER <= 0)
     {
-        std::string logging_str = "NB_CUTS_PER_ITER is <= 0. By default it will be equal to : "
-                                  + std::to_string(max_aggregation);
-        output_manager_->GetLogger()->display_message(logging_str);
+        const std::string logging_str = "NB_CUTS_PER_ITER is <= 0. By default it will be equal to "
+                                        ": "
+                                        + std::to_string(max_aggregation);
+        output_manager_.GetLogger()->display_message(logging_str);
         return max_aggregation;
     }
     return _options.NB_CUTS_PER_ITER;
@@ -272,12 +266,12 @@ int BendersBase::SetAggregation(int max_aggregation) const
 
 void BendersBase::post_run_actions()
 {
-    output_manager_->PostRunActions(_data.control.stopping_criterion);
+    output_manager_.PostRunActions(_data.control.stopping_criterion);
 }
 
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {
-    benders_plugin_ = benders_plugin;
+    benders_plugin_ = std::move(benders_plugin);
 }
 
 double BendersBase::SubproblemWeight(int subproblem_count, const std::string& name) const
@@ -299,10 +293,10 @@ double BendersBase::SubproblemWeight(int subproblem_count, const std::string& na
 
 std::filesystem::path BendersBase::get_master_path() const
 {
-    return master_manager_->GetMasterPath(_options.INPUTROOT,
-                                          _options.MASTER_NAME,
-                                          _options.PROBLEMS_FORMAT,
-                                          _options.SOLVER_NAME);
+    return master_manager_.GetMasterPath(_options.INPUTROOT,
+                                         _options.MASTER_NAME,
+                                         _options.PROBLEMS_FORMAT,
+                                         _options.SOLVER_NAME);
 }
 
 void BendersBase::set_solver_log_file(const std::filesystem::path& log_file)
@@ -314,7 +308,7 @@ void BendersBase::set_input_map(const CouplingMap& coupling_map)
 {
     coupling_map_ = coupling_map;
     _totalNbProblems = static_cast<int>(coupling_map_.size());
-    output_manager_->WriteNbWeeks(_totalNbProblems);
+    output_manager_.WriteNbWeeks(_totalNbProblems);
     _data.control.nsubproblem = _totalNbProblems - 1;
     master_variable_map_ = get_master_variable_map(coupling_map_);
     coupling_map_.erase(_options.MASTER_NAME);
@@ -326,8 +320,8 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     const auto it_master(input_map.find(_options.MASTER_NAME));
     if (it_master == input_map.end())
     {
-        output_manager_->GetLogger()->display_message(LOGLOCATION + "UNABLE TO FIND "
-                                                      + _options.MASTER_NAME + "\n");
+        output_manager_.GetLogger()->display_message(LOGLOCATION + "UNABLE TO FIND "
+                                                     + _options.MASTER_NAME + "\n");
         std::exit(1);
     }
     return it_master->second;
@@ -345,33 +339,17 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                double master_solution_tolerance,
                                const std::map<int, double>& subproblem_cut_coefficient_tolerance)
 {
-    master_manager_->CreateMaster(variable_map,
-                                  solver_name,
-                                  log_level,
-                                  subproblems_count,
-                                  solver_log_manager,
-                                  mps_has_alpha,
-                                  logger,
-                                  format,
-                                  benders_problem_provider,
-                                  master_solution_tolerance,
-                                  subproblem_cut_coefficient_tolerance);
-    _master = master_manager_->GetMaster();
-}
-
-WorkerMasterPtr BendersBase::get_master() const
-{
-    return master_manager_->GetMaster();
-}
-
-void BendersBase::MatchProblemToId()
-{
-    int count = 0;
-    for (const auto& problem: coupling_map_)
-    {
-        _problem_to_id[problem.first] = count;
-        count++;
-    }
+    master_manager_.CreateMaster(variable_map,
+                                 solver_name,
+                                 log_level,
+                                 subproblems_count,
+                                 solver_log_manager,
+                                 mps_has_alpha,
+                                 std::move(logger),
+                                 format,
+                                 benders_problem_provider,
+                                 master_solution_tolerance,
+                                 subproblem_cut_coefficient_tolerance);
 }
 
 void BendersBase::ResetSimplexIterationsBounds()
@@ -411,10 +389,10 @@ void BendersBase::ChecksResumeMode()
     benders_timer = Timer();
     if (IsResumeMode())
     {
-        auto logger = output_manager_->GetLogger();
-        output_manager_->LoadResumeData(LastIterationFile(), logger);
-        UpdateMaxNumberIterationResumeMode(output_manager_->GetNumIterationsBeforeRestart());
-        benders_timer = Timer(output_manager_->GetBestIterationData().benders_elapsed_time);
+        auto logger = output_manager_.GetLogger();
+        output_manager_.LoadResumeData(LastIterationFile(), logger);
+        UpdateMaxNumberIterationResumeMode(output_manager_.GetNumIterationsBeforeRestart());
+        benders_timer = Timer(output_manager_.GetBestIterationData().benders_elapsed_time);
         _data.control.stop = ShouldBendersStop();
     }
 }
@@ -432,7 +410,7 @@ double BendersBase::GetBendersTime() const
 void BendersBase::write_basis() const
 {
     const auto filename(std::filesystem::path(_options.OUTPUTROOT) / (_options.LAST_MASTER_BASIS));
-    master_manager_->WriteBasis(filename);
+    master_manager_.WriteBasis(filename);
 }
 
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const
@@ -468,7 +446,7 @@ bool BendersBase::isExceptionRaised() const
 
 void BendersBase::UpdateOverallCosts()
 {
-    master_manager_->UpdateOverallCosts(_data, relevantIterationData_.best._invest_cost);
+    master_manager_.UpdateOverallCosts(_data, relevantIterationData_.best._invest_cost);
 }
 
 std::map<int, double> BendersBase::GetSubCutTolerance() const

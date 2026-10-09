@@ -157,13 +157,13 @@ public:
                               ProblemsFormat::MPS_FILE, &problem_provider_, 1e-4,
                               subproblem_tolerance);
         // Inject mock solver
-        manager_.GetMaster()->_solver = mock_solver_;
+        manager_.Master()->_solver = mock_solver_;
         // Set up id_to_name for WorkerMaster
         for (const auto& [name, id] : var_map)
         {
-            manager_.GetMaster()->_id_to_name[id] = name;
+            manager_.Master()->_id_to_name[id] = name;
         }
-        manager_.GetMaster()->_name_to_id = var_map;
+        manager_.Master()->_name_to_id = var_map;
     }
 };
 
@@ -174,14 +174,14 @@ public:
 TEST_F(BendersMasterManagerTest, DefaultState_IsEmpty)
 {
     ASSERT_TRUE(manager_.IsEmpty());
-    ASSERT_EQ(manager_.GetMaster(), nullptr);
+    ASSERT_EQ(manager_.Master(), nullptr);
 }
 
 TEST_F(BendersMasterManagerTest, CreateMaster_SetsNotEmpty)
 {
     CreateAndInjectMockSolver();
     ASSERT_FALSE(manager_.IsEmpty());
-    ASSERT_NE(manager_.GetMaster(), nullptr);
+    ASSERT_NE(manager_.Master(), nullptr);
 }
 
 TEST_F(BendersMasterManagerTest, FreeMaster_SetsEmpty)
@@ -405,7 +405,7 @@ TEST_F(BendersMasterManagerTest, GetNameToId_ReturnsWorkerMasterMap)
 TEST_F(BendersMasterManagerTest, GetMasterOnlyVarsIds_ReturnsWorkerMasterIds)
 {
     CreateAndInjectMockSolver();
-    manager_.GetMaster()->_id_master_only_vars = {5, 10, 15};
+    manager_.Master()->_id_master_only_vars = {5, 10, 15};
 
     const auto& ids = manager_.GetMasterOnlyVarsIds();
     ASSERT_EQ(ids.size(), 3u);
@@ -424,7 +424,7 @@ TEST_F(BendersMasterManagerTest, ComputeInvestCost_ComputesDotProduct)
     CreateAndInjectMockSolver(vm);
     mock_solver_->obj_coeffs_ = {3.0, 5.0};
     mock_solver_->ncols_ = 2;
-    manager_.GetMaster()->_id_master_only_vars = {};
+    manager_.Master()->_id_master_only_vars = {};
 
     CurrentIterationData data{};
     data.solution.x_cut = {{"a", 2.0}, {"b", 4.0}};
@@ -441,7 +441,7 @@ TEST_F(BendersMasterManagerTest, ComputeInvestCost_IncludesMasterOnlyVars)
     CreateAndInjectMockSolver(vm);
     mock_solver_->obj_coeffs_ = {3.0, 7.0};
     mock_solver_->ncols_ = 2;
-    manager_.GetMaster()->_id_master_only_vars = {1};
+    manager_.Master()->_id_master_only_vars = {1};
 
     CurrentIterationData data{};
     data.solution.x_cut = {{"a", 2.0}};
@@ -463,7 +463,7 @@ TEST_F(BendersMasterManagerTest, UpdateOverallCosts_ComputesFromVariableMap)
     CreateAndInjectMockSolver(vm);
     mock_solver_->obj_coeffs_ = {2.0, 4.0};
     mock_solver_->ncols_ = 2;
-    manager_.GetMaster()->_id_master_only_vars = {};
+    manager_.Master()->_id_master_only_vars = {};
 
     CurrentIterationData data{};
     data.solution.x_cut = {{"x", 3.0}, {"y", 5.0}};

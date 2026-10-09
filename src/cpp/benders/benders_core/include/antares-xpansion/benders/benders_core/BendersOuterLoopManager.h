@@ -7,13 +7,6 @@
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
 
-namespace Output
-{
-class OutputWriter;
-struct SolutionData;
-struct Iteration;
-} // namespace Output
-
 class BendersOuterLoopManager
 {
 public:

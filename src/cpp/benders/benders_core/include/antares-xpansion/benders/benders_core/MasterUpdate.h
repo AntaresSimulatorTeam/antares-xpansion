@@ -13,10 +13,10 @@ namespace Outerloop
 class MasterUpdateBase: public IMasterUpdate
 {
 public:
-    explicit MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
+    explicit MasterUpdateBase(BendersMasterManager& master_manager,
                               double tau,
                               double outer_loop_stopping_threshold);
-    explicit MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
+    explicit MasterUpdateBase(BendersMasterManager& master_manager,
                               double tau,
                               double outer_loop_stopping_threshold,
                               const std::string& name);
@@ -28,7 +28,7 @@ private:
     void UpdateConstraints();
     void AddMinInvestConstraint();
     int additional_constraint_index_ = -1;
-    std::shared_ptr<BendersMasterManager> master_manager_;
+    BendersMasterManager& master_manager_;
     double lambda_ = 0;
     // tau
     double dichotomy_weight_coeff_ = 0.5;

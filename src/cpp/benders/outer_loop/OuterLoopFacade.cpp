@@ -75,64 +75,64 @@ void OuterLoopFacade::UpdateOverallCosts()
 
 Logger OuterLoopFacade::GetLogger() const
 {
-    return benders_->GetOutputManager()->GetLogger();
+    return benders_->GetOutputManager().GetLogger();
 }
 
 std::shared_ptr<MathLoggerDriver> OuterLoopFacade::GetMathLoggerDriver() const
 {
-    return benders_->GetOutputManager()->GetMathLoggerDriver();
+    return benders_->GetOutputManager().GetMathLoggerDriver();
 }
 
 // Master operations
 
 std::vector<double> OuterLoopFacade::GetMasterObjectiveFunctionCoeffs() const
 {
-    return master_manager_->GetObjectiveFunctionCoeffs();
+    return master_manager_.GetObjectiveFunctionCoeffs();
 }
 
 void OuterLoopFacade::SetMasterObjectiveFunctionCoeffsToZeros()
 {
-    master_manager_->SetObjectiveFunctionCoeffsToZeros();
+    master_manager_.SetObjectiveFunctionCoeffsToZeros();
 }
 
 void OuterLoopFacade::SetMasterObjectiveFunction(const double* coeffs, int first, int last)
 {
-    master_manager_->SetObjectiveFunction(coeffs, first, last);
+    master_manager_.SetObjectiveFunction(coeffs, first, last);
 }
 
 const VariableMap& OuterLoopFacade::GetMasterVariableMap() const
 {
-    return master_manager_->GetVariableMap();
+    return master_manager_.GetVariableMap();
 }
 
 // Outer loop operations
 
 CriteriaCurrentIterationData OuterLoopFacade::GetOuterLoopData() const
 {
-    return outer_loop_manager_->GetOuterLoopData();
+    return outer_loop_manager_.GetOuterLoopData();
 }
 
 std::vector<double> OuterLoopFacade::GetOuterLoopCriterionAtBestBenders() const
 {
-    return outer_loop_manager_->GetOuterLoopCriterionAtBestBenders();
+    return outer_loop_manager_.GetOuterLoopCriterionAtBestBenders();
 }
 
 void OuterLoopFacade::UpdateOuterLoopSolution()
 {
-    outer_loop_manager_->UpdateOuterLoopSolution();
+    outer_loop_manager_.UpdateOuterLoopSolution();
 }
 
 void OuterLoopFacade::SaveCurrentOuterLoopIterationInOutputFile() const
 {
-    outer_loop_manager_->SaveCurrentOuterLoopIterationInOutputFile();
+    outer_loop_manager_.SaveCurrentOuterLoopIterationInOutputFile();
 }
 
 void OuterLoopFacade::SetBilevelBestub(double val)
 {
-    outer_loop_manager_->SetBilevelBestub(val);
+    outer_loop_manager_.SetBilevelBestub(val);
 }
 
 void OuterLoopFacade::SaveOuterLoopSolutionInOutputFile() const
 {
-    outer_loop_manager_->SaveOuterLoopSolutionInOutputFile();
+    outer_loop_manager_.SaveOuterLoopSolutionInOutputFile();
 }

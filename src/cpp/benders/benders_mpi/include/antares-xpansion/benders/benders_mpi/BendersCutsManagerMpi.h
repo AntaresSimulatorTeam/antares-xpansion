@@ -13,7 +13,7 @@ public:
                           CurrentIterationData& data,
                           const VariableMap& problem_to_id,
                           BendersRelevantIterationsData& relevantIterationData,
-                          const WorkerMasterPtr& master,
+                          BendersMasterManager& master_manager,
                           const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices);
 
     void GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
@@ -34,6 +34,5 @@ private:
     CurrentIterationData& data_;
     const VariableMap& problem_to_id_;
     BendersRelevantIterationsData& relevantIterationData_;
-    const WorkerMasterPtr& master_;
     const std::vector<SubProblemNamesInCut>& subproblem_per_cut_indices_;
 };
