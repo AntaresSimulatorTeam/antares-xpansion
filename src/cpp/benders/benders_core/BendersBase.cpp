@@ -32,15 +32,6 @@ BendersBase::BendersBase(BendersBaseOptions options,
 {
 }
 
-bool BendersBase::shouldParallelize() const
-{
-    if (communication_strategy_)
-    {
-        return communication_strategy_->ShouldParallelize();
-    }
-    return true;
-}
-
 /*!
  *  \brief Initialize set of data used in the loop
  */
