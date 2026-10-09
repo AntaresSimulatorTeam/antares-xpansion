@@ -179,12 +179,6 @@ void BendersSequential::launch()
 
     InitializeProblems();
 
-    benders_plugin_->OnBendersStart(subproblems_manager_->GetSubProblemMap(),
-                                    logger,
-                                    _options,
-                                    solver_log_manager_,
-                                    subproblems_manager_->GetFactorySolver());
-
     logger->display_message("Running solver...");
     try
     {
