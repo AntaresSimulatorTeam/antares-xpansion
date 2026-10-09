@@ -167,7 +167,7 @@ void BendersSequential::Run()
     }
     output_manager_.CloseCsvFile();
     output_manager_.EndWritingInOutputFile(_data.control.benders_time,
-                                           _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
+                                            _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
     write_basis();
 }
 

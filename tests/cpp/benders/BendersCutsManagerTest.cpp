@@ -65,6 +65,52 @@ std::unique_ptr<BendersMasterManager> MakeNOOPMasterManager(
     return master_manager;
 }
 
+// ─── Solver double recording the rows added to the master ───
+class RowCapturingSolverForCuts: public NOOPSolver
+{
+public:
+    struct CapturedRow
+    {
+        std::vector<char> rowtype;
+        std::vector<double> rhs;
+        std::vector<int> mclind;
+        std::vector<double> matval;
+    };
+
+    std::vector<CapturedRow> captured_rows;
+
+    void add_rows(int newrows,
+                  int newnz,
+                  const char* qrtype,
+                  const double* rhs,
+                  const double* /*range*/,
+                  const int* /*mstart*/,
+                  const int* mclind,
+                  const double* dmatval,
+                  const std::vector<std::string>& /*row_names*/) override
+    {
+        captured_rows.push_back({std::vector<char>(qrtype, qrtype + newrows),
+                                 std::vector<double>(rhs, rhs + newrows),
+                                 std::vector<int>(mclind, mclind + newnz),
+                                 std::vector<double>(dmatval, dmatval + newnz)});
+    }
+};
+
+// A master manager whose solver records the cuts, with x1 as the only candidate and one
+// alpha_i column per subproblem.
+std::unique_ptr<BendersMasterManager> MakeRecordingMasterManager(
+  const std::map<int, double>& subproblem_tolerance,
+  const std::vector<int>& alpha_ids,
+  std::shared_ptr<RowCapturingSolverForCuts>& capturing_solver)
+{
+    auto master_manager = MakeNOOPMasterManager({{"x1", 0}}, subproblem_tolerance);
+    capturing_solver = std::make_shared<RowCapturingSolverForCuts>();
+    master_manager->Master()->_solver = capturing_solver;
+    master_manager->Master()->_name_to_id = {{"x1", 0}};
+    master_manager->Master()->set_id_single_subpb_costs_under_approx(alpha_ids);
+    return master_manager;
+}
+
 // Minimal BendersCutsManager test double — exposes base class methods for testing.
 class BendersCutsManagerTestDouble: public BendersCutsManager<BendersCutsManagerTestDouble>
 {
@@ -395,6 +441,87 @@ TEST(BuildAllAggregatedCutsTest, MultipleSubproblemsInOneCutGroup)
     EXPECT_EQ(cut_trace.size(), 2u);
     EXPECT_DOUBLE_EQ(cut_trace.at("sp1").subproblem_cost, 40.0);
     EXPECT_DOUBLE_EQ(cut_trace.at("sp2").subproblem_cost, 60.0);
+}
+
+// One group per subproblem is the grouping obtained when NB_CUTS_PER_ITER == 0
+// (SetAggregation then returns the subproblem count, giving groups of size 1). Each
+// subproblem must get its own cut, on its own alpha_i and its own subgradient — the
+// behaviour the removed ComputeCut path provided.
+TEST(BuildAllAggregatedCutsTest, OneGroupPerSubproblem_EmitsOneCutPerSubproblem)
+{
+    std::shared_ptr<RowCapturingSolverForCuts> capturing_solver;
+    auto master_manager = MakeRecordingMasterManager({{0, 1e-3}, {1, 1e-3}},
+                                                     {10, 11},
+                                                     capturing_solver);
+    BendersCutsManagerTestDouble cuts_manager(*master_manager);
+
+    std::vector<SubProblemNamesInCut> subproblem_names = {{{"sp1", 0}}, {{"sp2", 0}}};
+
+    SubProblemDataMap map1;
+    map1["sp1"] = MakeSubProblemData(30.0, 10, {{"x1", 1.0}});
+    map1["sp2"] = MakeSubProblemData(50.0, 20, {{"x1", 3.0}});
+
+    std::vector<SubProblemDataMap> gathered = {map1};
+    VariableMap problem_to_id = {{"sp1", 0}, {"sp2", 1}};
+    double ub = 0.0;
+    Point x_cut = {{"x1", 1.0}};
+    SubProblemDataMap cut_trace;
+
+    cuts_manager
+      .BuildAllAggregatedCuts(subproblem_names, gathered, problem_to_id, ub, x_cut, cut_trace);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 2u);
+
+    // -alpha_0 + 1.0 x1 <= -30 + 1.0 * 1.0
+    const auto& cut_sp1 = capturing_solver->captured_rows[0];
+    EXPECT_EQ(cut_sp1.rowtype, std::vector<char>({'L'}));
+    EXPECT_DOUBLE_EQ(cut_sp1.rhs[0], -29.0);
+    EXPECT_EQ(cut_sp1.mclind, std::vector<int>({0, 10}));
+    EXPECT_EQ(cut_sp1.matval, std::vector<double>({1.0, -1.0}));
+
+    // -alpha_1 + 3.0 x1 <= -50 + 3.0 * 1.0
+    const auto& cut_sp2 = capturing_solver->captured_rows[1];
+    EXPECT_DOUBLE_EQ(cut_sp2.rhs[0], -47.0);
+    EXPECT_EQ(cut_sp2.mclind, std::vector<int>({0, 11}));
+    EXPECT_EQ(cut_sp2.matval, std::vector<double>({3.0, -1.0}));
+}
+
+// A single group covering every subproblem is full aggregation. The cut carries the
+// summed subgradient and rhs, and one -1 coefficient per alpha_i. Since the master
+// enforces alpha = sum(alpha_i), this is the cut the removed ComputeCutAggregate path
+// placed on alpha directly.
+TEST(BuildAllAggregatedCutsTest, SingleGroupOverAllSubproblems_EmitsOneCutOnEveryAlpha)
+{
+    std::shared_ptr<RowCapturingSolverForCuts> capturing_solver;
+    auto master_manager = MakeRecordingMasterManager({{0, 1e-3}, {1, 1e-3}},
+                                                     {10, 11},
+                                                     capturing_solver);
+    BendersCutsManagerTestDouble cuts_manager(*master_manager);
+
+    std::vector<SubProblemNamesInCut> subproblem_names = {{{"sp1", 0}, {"sp2", 0}}};
+
+    SubProblemDataMap map1;
+    map1["sp1"] = MakeSubProblemData(30.0, 10, {{"x1", 1.0}});
+    map1["sp2"] = MakeSubProblemData(50.0, 20, {{"x1", 3.0}});
+
+    std::vector<SubProblemDataMap> gathered = {map1};
+    VariableMap problem_to_id = {{"sp1", 0}, {"sp2", 1}};
+    double ub = 0.0;
+    Point x_cut = {{"x1", 1.0}};
+    SubProblemDataMap cut_trace;
+
+    cuts_manager
+      .BuildAllAggregatedCuts(subproblem_names, gathered, problem_to_id, ub, x_cut, cut_trace);
+
+    ASSERT_EQ(capturing_solver->captured_rows.size(), 1u);
+
+    // -alpha_0 - alpha_1 + 4.0 x1 <= -80 + 4.0 * 1.0
+    // i.e. the sum of the two cuts emitted by the one-group-per-subproblem case above.
+    const auto& cut = capturing_solver->captured_rows[0];
+    EXPECT_EQ(cut.rowtype, std::vector<char>({'L'}));
+    EXPECT_DOUBLE_EQ(cut.rhs[0], -76.0);
+    EXPECT_EQ(cut.mclind, std::vector<int>({0, 10, 11}));
+    EXPECT_EQ(cut.matval, std::vector<double>({4.0, -1.0, -1.0}));
 }
 
 // ═══════════════════════════════════════════════════════════
