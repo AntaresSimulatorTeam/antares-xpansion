@@ -66,6 +66,11 @@ private:
 protected:
     void InitializeMaster();
 
+    [[nodiscard]] bool shouldParallelize() const final
+    {
+        return false;
+    }
+
     void PreRunInitialization();
 
     int Rank() const

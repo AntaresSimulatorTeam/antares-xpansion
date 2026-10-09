@@ -135,6 +135,9 @@ protected:
 
         // 6. Writer
         writer_ = std::make_shared<Xpansion::Test::WriterNOOPStub>();
+
+        // 7. should_parallelize
+        should_parallelize_ = false;
     }
 
     /// Create the manager under test. Call after SetUp or after customizing options.
@@ -142,7 +145,7 @@ protected:
     {
         return BendersSubProblemsManagerSequential(
             data_, *options_, plugin_, logger_,
-            solver_log_manager_, writer_, coupling_map_);
+            solver_log_manager_, writer_, should_parallelize_, coupling_map_);
     }
 
     BendersSubProblemsManagerSequential MakeManager(const CouplingMap& coupling_map)
@@ -172,6 +175,7 @@ protected:
     Logger logger_;
     SolverLogManager solver_log_manager_;
     std::shared_ptr<Output::OutputWriter> writer_;
+    bool should_parallelize_ = false;
     CouplingMap coupling_map_;
 };
 

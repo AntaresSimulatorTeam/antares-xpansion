@@ -9,8 +9,6 @@ class BendersSubProblemsManagerByBatch
 public:
     using BendersSubProblemsManager::BendersSubProblemsManager;
 
-    static constexpr auto EXECUTION_POLICY = std::execution::seq;
-
     // Default hooks (no batch filter) — inherited from base
     using BendersSubProblemsManager::MakeCacheBeginHookImpl;
     using BendersSubProblemsManager::MakeFastBeginHookImpl;

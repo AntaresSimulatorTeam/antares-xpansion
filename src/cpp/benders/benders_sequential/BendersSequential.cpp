@@ -25,6 +25,7 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                                                             output_manager_.GetLogger(),
                                                             solver_log_manager_,
                                                             output_manager_.GetWriter(),
+                                                            shouldParallelize(),
                                                             coupling_map_)),
     cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
                                                                  _problem_to_id,
@@ -166,7 +167,7 @@ void BendersSequential::Run()
     }
     output_manager_.CloseCsvFile();
     output_manager_.EndWritingInOutputFile(_data.control.benders_time,
-                                           _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
+                                            _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
     write_basis();
 }
 

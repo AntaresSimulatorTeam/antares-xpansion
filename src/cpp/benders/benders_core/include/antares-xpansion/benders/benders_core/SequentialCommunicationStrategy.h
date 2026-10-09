@@ -27,6 +27,11 @@ public:
         // No-op for single process
     }
 
+    [[nodiscard]] bool ShouldParallelize() const override
+    {
+        return true;
+    }
+
     void BroadcastBool(bool& /*value*/) const override
     {
         // No-op for single process: already the master, nothing to broadcast
