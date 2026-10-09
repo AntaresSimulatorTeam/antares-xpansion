@@ -53,5 +53,5 @@ The following attributes are defined in the `options.json` file:
 |CUT_COEFFICIENT_TOLERANCE | `5e-3` |  Cofficient under which cuts coefficients and right-hand sides are considered to be zero | `double` > 0|
 |KEEP_FULL | `false` |  Flag to store full problems after presolve | `boolean`|
 |FULL_DIR | `full` |  Full problems directory name|`string` |
-|RESUME | `cold_start` |  Resume mode for Benders: `cold_start` starts a fresh run, `resume` continues from the last iteration, `hot_start` restarts with warm-start data | `cold_start`, `resume` or `hot_start`. Legacy booleans are still accepted (`true` = `resume`, `false` = `cold_start`)|
+|RESUME | `cold_start` |  Resume mode for Benders: `cold_start` starts a fresh run, `resume` continues from the last iteration, `hot_start` restarts with warm-start data. `resume` and `hot_start` require `master.mps` to come from a previous run (it must contain the `alpha` / `alpha_i` columns, e.g. a copy of `master_last_iteration.mps`), otherwise Benders fails with an explicit error | `cold_start`, `resume` or `hot_start`. Legacy booleans are still accepted (`true` = `resume`, `false` = `cold_start`)|
 |MICRO_ITERATIONS | `false` |  Whether to enable the micro-iterations mode, which applies constraint generation at the subproblem level to reduce problem size and speed up resolution | `boolean`|

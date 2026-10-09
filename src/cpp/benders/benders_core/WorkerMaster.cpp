@@ -1,5 +1,8 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
+#include <algorithm>
+#include <stdexcept>
+
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "iostream"
 
@@ -428,6 +431,17 @@ void WorkerMaster::_set_alpha_var()
                 std::stringstream buffer;
                 buffer << "alpha_" << i;
                 _id_single_subpb_costs_under_approx[i] = _solver->get_col_index(buffer.str());
+            }
+
+            const bool missing_alpha = _id_alpha < 0
+                                       || std::any_of(_id_single_subpb_costs_under_approx.begin(),
+                                                      _id_single_subpb_costs_under_approx.end(),
+                                                      [](int id) { return id < 0; });
+            if (missing_alpha)
+            {
+                throw std::runtime_error(
+                  "RESUME/HOT_START requires a master MPS from a previous run containing the "
+                  "alpha variables (copy master_last_iteration.mps to master.mps)");
             }
         }
         else

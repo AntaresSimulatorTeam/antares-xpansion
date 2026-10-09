@@ -10,11 +10,11 @@ TEST(ResumeModeTest, IsResumeOnlyForResume)
     EXPECT_FALSE(IsResume(ResumeMode::HOT_START));
 }
 
-TEST(ResumeModeTest, UsesExistingMasterExceptForColdStart)
+TEST(ResumeModeTest, MasterHasAlphaVariablesExceptForColdStart)
 {
-    EXPECT_FALSE(UsesExistingMaster(ResumeMode::COLD_START));
-    EXPECT_TRUE(UsesExistingMaster(ResumeMode::RESUME));
-    EXPECT_TRUE(UsesExistingMaster(ResumeMode::HOT_START));
+    EXPECT_FALSE(MasterHasAlphaVariables(ResumeMode::COLD_START));
+    EXPECT_TRUE(MasterHasAlphaVariables(ResumeMode::RESUME));
+    EXPECT_TRUE(MasterHasAlphaVariables(ResumeMode::HOT_START));
 }
 
 TEST(ResumeModeTest, FromString)

@@ -395,3 +395,30 @@ TEST_F(WorkerMasterAddRowsTest, AddSubproblemCutAppliesRoundingOnCoeffs)
 
 }
 
+
+TEST_F(WorkerMasterTest, MasterWithoutAlphaVariablesThrowsWhenAlphaExpected)
+{
+    EmptyLogManager solver_log_manager;
+    NOOPBendersProblemProvider problem_provider;
+    std::map<int, double> subproblem_cut_coefficient_tolerance{{0, 5e-3}};
+    try
+    {
+        WorkerMaster master(VariableMap{},
+                            "COIN",
+                            0,
+                            1,
+                            solver_log_manager,
+                            true,
+                            std::make_shared<xpansion::logger::Master>(),
+                            ProblemsFormat::MPS_FILE,
+                            &problem_provider,
+                            1e-4,
+                            subproblem_cut_coefficient_tolerance);
+        FAIL() << "Expected std::runtime_error";
+    }
+    catch (const std::runtime_error& e)
+    {
+        EXPECT_NE(std::string(e.what()).find("requires a master MPS from a previous run"),
+                  std::string::npos);
+    }
+}

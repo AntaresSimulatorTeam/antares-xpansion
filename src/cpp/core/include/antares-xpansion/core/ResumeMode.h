@@ -35,8 +35,9 @@ inline bool IsResume(ResumeMode mode)
     return mode == ResumeMode::RESUME;
 }
 
-// True when the master is read from an existing file (resume and hot start)
-inline bool UsesExistingMaster(ResumeMode mode)
+// True when the master MPS already contains the alpha / alpha_i columns (it comes from a previous
+// run), so they are looked up by name instead of being created (resume and hot start)
+inline bool MasterHasAlphaVariables(ResumeMode mode)
 {
     return mode != ResumeMode::COLD_START;
 }
