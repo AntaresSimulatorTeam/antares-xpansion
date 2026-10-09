@@ -18,27 +18,27 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                                                     _data,
                                                                     _problem_to_id,
                                                                     relevantIterationData_,
-                                                                    *master_manager_)),
+                                                                    master_manager_)),
     batch_subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                                          _options,
                                                          benders_plugin_,
-                                                         output_manager_->GetLogger(),
+                                                         output_manager_.GetLogger(),
                                                          solver_log_manager_,
-                                                         output_manager_->GetWriter(),
+                                                         output_manager_.GetWriter(),
                                                          shouldParallelize(),
                                                          coupling_map_))
 {
     batch_subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
-      { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
+      { outer_loop_manager_.GetCriterionComputation().SearchVariables(col_names); });
 }
 
 void BendersByBatch::free()
 {
     if (_world.rank() == rank_0)
     {
-        master_manager_->FreeMaster();
+        master_manager_.FreeMaster();
     }
     else
     {
@@ -57,7 +57,7 @@ void BendersByBatch::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(batch_subproblems_manager_->GetSubProblemMap(),
-                                    output_manager_->GetLogger(),
+                                    output_manager_.GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     batch_subproblems_manager_->GetFactorySolver());
@@ -84,7 +84,7 @@ void BendersByBatch::BroadCastVariablesIndices()
     {
         batch_subproblems_manager_->SetSubproblemsVariablesIndices();
     }
-    BroadCast(outer_loop_manager_->GetCriterionComputation().getVarIndices(), rank_0);
+    BroadCast(outer_loop_manager_.GetCriterionComputation().getVarIndices(), rank_0);
 }
 
 void BendersByBatch::InitializeProblems()
@@ -103,7 +103,7 @@ void BendersByBatch::BuildMasterProblem()
     InitializeMaster();
     for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
-        master_manager_->AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
+        master_manager_.AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
     }
 }
 
@@ -119,7 +119,7 @@ void BendersByBatch::BuildBatches()
             problem_names.emplace_back(problem_name);
         }
         auto batch_size = Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
-        batch_collection_.SetLogger(output_manager_->GetLogger());
+        batch_collection_.SetLogger(output_manager_.GetLogger());
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
         batch_collection_.BuildBatches(WorldSize());
@@ -154,7 +154,7 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox()
 
 void BendersByBatch::Run()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     if (init_data_)
     {
@@ -171,19 +171,19 @@ void BendersByBatch::Run()
     {
         compute_ub();
         update_best_ub();
-        logger->log_at_iteration_end(output_manager_->bendersDataToLogData(_data));
+        logger->log_at_iteration_end(output_manager_.bendersDataToLogData(_data));
         UpdateTrace();
-        output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
-        output_manager_->CloseCsvFile();
-        output_manager_->EndWritingInOutputFile(_data.control.benders_time,
-                                                _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
+        output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+        output_manager_.CloseCsvFile();
+        output_manager_.EndWritingInOutputFile(_data.control.benders_time,
+                                               _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
         write_basis();
     }
 }
 
 void BendersByBatch::MasterLoop()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     number_of_batch_ = batch_collection_.NumberOfBatch();
     random_batch_permutation_.resize(number_of_batch_);
@@ -228,7 +228,7 @@ void BendersByBatch::MasterLoop()
         ResetSimplexIterationsBounds();
 
         logger->log_at_initialization(_data.control.it
-                                      + output_manager_->GetNumIterationsBeforeRestart());
+                                      + output_manager_.GetNumIterationsBeforeRestart());
         if (Rank() == rank_0)
         {
             ComputeXCut();
@@ -250,11 +250,11 @@ void BendersByBatch::MasterLoop()
         _data.cuts.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter_;
         logger->cumulative_number_of_sub_problem_solved(
           _data.control.cumulative_number_of_subproblem_solved
-          + output_manager_->GetNumOfSubProblemsSolvedBeforeResume());
+          + output_manager_.GetNumOfSubProblemsSolvedBeforeResume());
         logger->LogSubproblemsSolvingCumulativeCpuTime(_data.cuts.subproblems_cumulative_cputime);
         logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
         logger->PrintIterationSeparatorEnd();
-        output_manager_->MathLoggerPrint();
+        output_manager_.MathLoggerPrint();
 
         benders_plugin_->OnBendersIterationEnd();
     }
@@ -262,7 +262,7 @@ void BendersByBatch::MasterLoop()
 
 void BendersByBatch::SeparationLoop()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     misprice_ = true;
     first_unsolved_batch_ = 0;
@@ -270,14 +270,14 @@ void BendersByBatch::SeparationLoop()
     _data.control.number_of_subproblem_solved = 0;
     while (misprice_ && batch_counter_ < number_of_batch_)
     {
-        logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
+        logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
         SolveBatches();
 
         if (Rank() == rank_0)
         {
-            outer_loop_manager_->PushCriteriaForIteration(_data.criteria.criteria);
+            outer_loop_manager_.PushCriteriaForIteration(_data.criteria.criteria);
             UpdateTrace();
-            output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+            output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
         }
         ClearCurrentIterationCutTrace();
     }
@@ -299,8 +299,8 @@ void BendersByBatch::UpdateRemainingEpsilon()
 {
     if (Rank() == rank_0)
     {
-        auto obj = master_manager_->GetObjectiveFunctionCoeffs();
-        const auto& name_to_id = master_manager_->GetNameToId();
+        auto obj = master_manager_.GetObjectiveFunctionCoeffs();
+        const auto& name_to_id = master_manager_.GetNameToId();
         remaining_epsilon_ = Gap();
         for (const auto& [candidate_name, x_cut_candidate_value]: _data.solution.x_cut)
         {
