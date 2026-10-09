@@ -337,9 +337,7 @@ class INIReader
 {
 public:
     // Empty Constructor
-    INIReader()
-    {
-    }
+    INIReader() = default;
 
     // Construct INIReader and parse given filename. See ini.h for more info
     // about the parsing.
