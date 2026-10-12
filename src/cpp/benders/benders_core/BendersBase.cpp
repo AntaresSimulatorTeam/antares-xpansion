@@ -239,7 +239,6 @@ void BendersBase::compute_ub()
 {
     ComputeInvestCost();
     _data.cuts.ub += _data.master.invest_cost;
-
 }
 
 int BendersBase::SetAggregation(int max_aggregation) const
@@ -351,7 +350,6 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                  benders_problem_provider,
                                  master_solution_tolerance,
                                  subproblem_cut_coefficient_tolerance);
-
 }
 
 void BendersBase::ResetSimplexIterationsBounds()
