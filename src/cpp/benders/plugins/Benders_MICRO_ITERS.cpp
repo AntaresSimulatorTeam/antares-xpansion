@@ -11,11 +11,17 @@
 #include <json/reader.h>
 #include <sstream>
 #include <stdexcept>
-#include <string_view>
+#include <string>
 
 #include <boost/tokenizer.hpp>
 
 #include "iostream"
+
+namespace config_keys
+{
+const std::string warm_start = "warm_start";
+const std::string plugin_lib_path = "plugin_lib_path";
+} // namespace config_keys
 
 Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                          const CouplingMap& coupling_map,
@@ -191,7 +197,7 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 
         for (const auto& key: config.getMemberNames())
         {
-            if (key != "warm_start" && key != "plugin_lib_path")
+            if (key != config_keys::warm_start && key != config_keys::plugin_lib_path)
             {
                 std::ostringstream oss;
                 oss << key << " is not a micro_iterations_config.json parameter";
@@ -208,9 +214,9 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 
 void Benders_MICRO_ITERS::handle_warm_start(const Json::Value& config)
 {
-    if (config.isMember("warm_start") && config["warm_start"].isBool())
+    if (config.isMember(config_keys::warm_start) && config[config_keys::warm_start].isBool())
     {
-        warm_start_ = config["warm_start"].asBool();
+        warm_start_ = config[config_keys::warm_start].asBool();
     }
     else
     {
@@ -222,9 +228,10 @@ void Benders_MICRO_ITERS::handle_warm_start(const Json::Value& config)
 
 void Benders_MICRO_ITERS::handle_plugin_lib_path(const Json::Value& config)
 {
-    if (config.isMember("plugin_lib_path") && config["plugin_lib_path"].isString())
+    if (config.isMember(config_keys::plugin_lib_path)
+        && config[config_keys::plugin_lib_path].isString())
     {
-        plugin_lib_path_ = std::filesystem::path(config["plugin_lib_path"].asString());
+        plugin_lib_path_ = std::filesystem::path(config[config_keys::plugin_lib_path].asString());
     }
     else
     {
