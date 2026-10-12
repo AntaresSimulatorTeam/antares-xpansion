@@ -117,6 +117,7 @@ jobs:
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
           -DCMAKE_INSTALL_PREFIX=_install
           -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
+          -DMPIEXEC_EXECUTABLE="C:/Program Files/Microsoft MPI/Bin/mpiexec.exe"
 
       - name: Build
         run: |
