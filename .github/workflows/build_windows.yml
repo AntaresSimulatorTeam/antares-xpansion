@@ -67,41 +67,6 @@ jobs:
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
-      # https://github.com/microsoft/vcpkg/blob/3fb54e6717ea6a48099b02798e82fafefb2d410e/ports/msmpi/portfile.cmake#L12
-      - name: Pre-requisites
-        shell: pwsh
-        run: |
-          # vcpkg's msmpi port requires the matching MS-MPI redistributable (10.1.12498.52).
-          # The runner image may ship an older one, so remove it before installing.
-          $uninstallKeys = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall','HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall'
-          function Get-MsMpi {
-            Get-ChildItem $uninstallKeys -ErrorAction SilentlyContinue |
-              ForEach-Object { Get-ItemProperty $_.PSPath } |
-              Where-Object { $_.DisplayName -like '*Microsoft MPI*' }
-          }
-
-          Write-Host "::group::Preinstalled MS-MPI"
-          Get-MsMpi | Format-Table DisplayName, DisplayVersion, PSChildName -AutoSize | Out-String -Width 200 | Write-Host
-          if (Test-Path 'HKLM:\SOFTWARE\Microsoft\MPI') {
-            Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\MPI' | Select-Object Version, InstallRoot | Format-List | Out-String | Write-Host
-          } else {
-            Write-Host "No HKLM:\SOFTWARE\Microsoft\MPI key"
-          }
-          Write-Host "::endgroup::"
-
-          Get-MsMpi | Where-Object { $_.DisplayName -like '*Redistributable*' -and $_.PSChildName -match '^\{' } |
-            ForEach-Object {
-              Write-Host "Uninstalling $($_.DisplayName) $($_.DisplayVersion)"
-              $p = Start-Process msiexec.exe -ArgumentList '/x', $_.PSChildName, '/qn', '/norestart' -Wait -PassThru
-              Write-Host "msiexec exit code: $($p.ExitCode)"
-            }
-          Write-Host "Remaining after uninstall:"
-          Get-MsMpi | Format-Table DisplayName, DisplayVersion -AutoSize | Out-String -Width 200 | Write-Host
-
-          curl.exe -OLs https://download.microsoft.com/download/7/2/7/72731ebb-b63c-4170-ade7-836966263a8f/msmpisetup.exe
-          Start-Process .\msmpisetup.exe -ArgumentList '-unattend' -Wait
-          Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\MPI' | Select-Object Version, InstallRoot
-
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
