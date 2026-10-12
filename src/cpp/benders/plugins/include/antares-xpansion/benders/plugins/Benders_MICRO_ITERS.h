@@ -13,6 +13,7 @@ Benders_MICRO_ITERS class.
 #include <dlfcn.h>
 #endif
 #include <filesystem>
+#include <json/value.h>
 #include <map>
 #include <memory>
 #include <vector>
@@ -159,6 +160,18 @@ private:
     void build_skeleton_constraint_set_loader(const BendersBaseOptions& options);
 
     void read_micro_iteration_config_file();
+
+    /*
+        Reads the warm_start key of micro_iterations_config.json. Falls back to
+        warm_start_ = false (with a warning) if the key is missing or not a boolean.
+    */
+    void handle_warm_start(const Json::Value& config);
+
+    /*
+        Reads the plugin_lib_path key of micro_iterations_config.json. Aborts if the
+        key is missing or not a string.
+    */
+    void handle_plugin_lib_path(const Json::Value& config);
 
     void read_variable_names_to_follow();
     void build_variables_to_follow_indices_vector();

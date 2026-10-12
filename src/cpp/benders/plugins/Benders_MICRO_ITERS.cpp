@@ -142,9 +142,9 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
-    std::filesystem::path mirco_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
+    std::filesystem::path micro_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
                                                           / "micro_iterations_config.json";
-    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.string());
+    std::ifstream micro_iterations_options_stream(micro_iterations_options_path.string());
 
     if (micro_iterations_options_stream.is_open())
     {
@@ -157,47 +157,58 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
                                    &errors))
         {
             std::ostringstream oss;
-            oss << "failed to parse : " << mirco_iterations_options_path.string() << "\n"
+            oss << "failed to parse : " << micro_iterations_options_path.string() << "\n"
                 << "Errors: " << errors;
             _logger->display_message(oss.str());
             exit(EXIT_FAILURE);
         }
 
-        if (config.isMember("warm_start") && config["warm_start"].isBool())
-        {
-            warm_start_ = config["warm_start"].asBool();
-        }
-        else
-        {
-            warm_start_ = false;
-            _logger->display_message("warm start value should be set as a boolean value in the "
-                                     "config. By default warm_start = false");
-        }
-
-        if (config.isMember("plugin_lib_path"))
-        {
-            plugin_lib_path_ = std::filesystem::path(config["plugin_lib_path"].asString());
-        }
-        else
-        {
-            _logger->display_message("plugin_lib_path is not set in micro_iterations_config.json");
-            _world->abort(EXIT_FAILURE);
-        }
+        handle_warm_start(config);
+        handle_plugin_lib_path(config);
 
         for (const auto& key: config.getMemberNames())
         {
-            if (key == "warm_start" || key == "plugin_lib_path")
+            if (key != "warm_start" && key != "plugin_lib_path")
             {
                 std::ostringstream oss;
-                oss << key << " is not micro_iterations parameter";
+                oss << key << " is not a micro_iterations_config.json parameter";
                 _logger->display_message(oss.str());
             }
         }
     }
     else
     {
-        _logger->display_message("unable to open : " + mirco_iterations_options_path.string());
+        _logger->display_message("unable to open : " + micro_iterations_options_path.string());
         exit(EXIT_FAILURE);
+    }
+}
+
+void Benders_MICRO_ITERS::handle_warm_start(const Json::Value& config)
+{
+    if (config.isMember("warm_start") && config["warm_start"].isBool())
+    {
+        warm_start_ = config["warm_start"].asBool();
+    }
+    else
+    {
+        warm_start_ = false;
+        _logger->display_message("warm start value should be set as a boolean value in the "
+                                 "config. By default warm_start = false");
+    }
+}
+
+void Benders_MICRO_ITERS::handle_plugin_lib_path(const Json::Value& config)
+{
+    if (config.isMember("plugin_lib_path") && config["plugin_lib_path"].isString())
+    {
+        plugin_lib_path_ = std::filesystem::path(config["plugin_lib_path"].asString());
+    }
+    else
+    {
+        std::ostringstream oss;
+        oss << "plugin_lib_path is missing or not a string in micro_iterations_config.json";
+        _logger->display_message(oss.str());
+        _world->abort(EXIT_FAILURE);
     }
 }
 
