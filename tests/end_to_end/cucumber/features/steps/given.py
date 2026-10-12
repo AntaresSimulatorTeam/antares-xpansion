@@ -56,7 +56,7 @@ def set_warm_start(context, value):
     config_path = context.tmp_study / "micro_iterations_config.json"
     with open(str(config_path), "r") as file:
         config = json.load(file)
-    config["warm_start"] = int(value)
+    config["warm_start"] = bool(int(value))
     with open(str(config_path), "w") as file:
         json.dump(config, file, indent=4)
 

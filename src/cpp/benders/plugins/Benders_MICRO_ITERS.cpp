@@ -178,6 +178,13 @@ void Benders_MICRO_ITERS::read_micro_iteration_config_file()
             _logger->display_message(oss.str());
             exit(EXIT_FAILURE);
         }
+        // Syntactically valid inputs such as [] or "value" pass parseFromStream(), but
+        // isMember()/string-key access on a non-object can raise Json::LogicError
+        if (!config.isObject())
+        {
+            _logger->display_message("micro_iterations_config.json must contain a JSON object");
+            _world->abort(EXIT_FAILURE);
+        }
 
         handle_warm_start(config);
         handle_plugin_lib_path(config);
