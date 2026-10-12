@@ -4,6 +4,7 @@
 #include <iostream>
 #include <json/json.h>
 
+#include "antares-xpansion/core/CacheProblems.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -23,9 +24,15 @@ Json::Value SimulationOptions::get_value_from_json(const std::filesystem::path& 
 }
 
 template<>
-inline ProblemsFormat Json::Value::as<ProblemsFormat>() const
+inline ProblemFormat Json::Value::as<ProblemFormat>() const
 {
-    return problemsFormatFromString(asString());
+    return problemFormatFromString(asString());
+}
+
+template<>
+inline CacheProblems Json::Value::as<CacheProblems>() const
+{
+    return cacheProblemsFromString(asString());
 }
 
 /*!
@@ -159,7 +166,7 @@ BaseOptions SimulationOptions::get_base_options() const
     result.MASTER_NAME = MASTER_NAME;
     result.SOLVER_NAME = SOLVER_NAME;
 
-    result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
+    result.PROBLEM_FORMAT = PROBLEM_FORMAT;
 
     return result;
 }

@@ -54,8 +54,8 @@ void BendersByBatch::BuildBatches()
     {
         switch (_options.CACHE_PROBLEMS)
         {
-        case 1:
-        case 2:
+        case CacheProblems::PER_SUB:
+        case CacheProblems::COMPACT:
         {
             for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
             {
@@ -74,7 +74,7 @@ void BendersByBatch::BuildBatches()
             batch.sub_problem_names.shrink_to_fit();
             break;
         }
-        case 0:
+        case CacheProblems::NO_CACHE:
         default:
         {
             for (int problem_pos = 0; problem_pos < batch.sub_problem_names.size(); problem_pos++)
@@ -539,13 +539,13 @@ void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
 {
     switch (Options().CACHE_PROBLEMS)
     {
-    case 2:
+    case CacheProblems::COMPACT:
         GetCompactInMemCuts(subproblem_data_map, batch_sub_problems);
         break;
-    case 1:
+    case CacheProblems::PER_SUB:
         GetSubproblemCutCache(subproblem_data_map, batch_sub_problems);
         break;
-    case 0:
+    case CacheProblems::NO_CACHE:
     default:
         GetSubproblemCutFast(subproblem_data_map, batch_sub_problems);
         break;

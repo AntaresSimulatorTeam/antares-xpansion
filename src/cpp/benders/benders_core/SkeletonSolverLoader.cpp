@@ -10,7 +10,7 @@ std::shared_ptr<SolverAbstract> SkeletonSolverLoader::Load(
   const std::string& solver_name,
   const SolverLogManager& solver_log_manager,
   int log_level,
-  ProblemsFormat format)
+  ProblemFormat format)
 {
     SolverIO solver_IO;
     solver_IO.configure(solver_name, format);
