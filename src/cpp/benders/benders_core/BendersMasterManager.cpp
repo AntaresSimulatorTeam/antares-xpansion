@@ -12,7 +12,7 @@ void BendersMasterManager::CreateMaster(
   SolverLogManager& solver_log_manager,
   bool mps_has_alpha,
   Logger logger,
-  ProblemsFormat format,
+  ProblemFormat format,
   IBendersProblemProvider* benders_problem_provider,
   double master_solution_tolerance,
   const std::map<int, double>& subproblem_cut_coefficient_tolerance)
@@ -148,10 +148,10 @@ void BendersMasterManager::ActivateIntegrityConstraints() const
 
 std::filesystem::path BendersMasterManager::GetMasterPath(const std::string& input_root,
                                                           const std::string& master_name,
-                                                          ProblemsFormat format,
+                                                          ProblemFormat format,
                                                           const std::string& solver_name) const
 {
-    if (format == ProblemsFormat::OPTIMIZED && solver_name == "XPRESS")
+    if (format == ProblemFormat::OPTIMIZED && solver_name == "XPRESS")
     {
         return std::filesystem::path(input_root) / (master_name + SAVE_SUFFIX);
     }

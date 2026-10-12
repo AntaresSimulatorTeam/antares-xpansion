@@ -18,7 +18,7 @@ public:
                                          const std::string& solver_name,
                                          const SolverLogManager& solver_log_manager,
                                          int log_level,
-                                         ProblemsFormat format);
+                                         ProblemFormat format);
 
 private:
     Logger logger_;

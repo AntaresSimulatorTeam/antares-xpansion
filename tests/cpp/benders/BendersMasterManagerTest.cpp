@@ -154,7 +154,7 @@ public:
         Logger logger = std::make_shared<xpansion::logger::Master>();
         std::map<int, double> subproblem_tolerance;
         manager_.CreateMaster(var_map, "COIN", 0, 1, solver_log_manager_, false, logger,
-                              ProblemsFormat::MPS_FILE, &problem_provider_, 1e-4,
+                              ProblemFormat::MPS_FILE, &problem_provider_, 1e-4,
                               subproblem_tolerance);
         // Inject mock solver
         manager_.Master()->_solver = mock_solver_;
@@ -220,19 +220,19 @@ TEST_F(BendersMasterManagerTest, CreateMaster_SetsVariableMap)
 
 TEST_F(BendersMasterManagerTest, GetMasterPath_MPS_Format)
 {
-    auto path = manager_.GetMasterPath("/input", "master", ProblemsFormat::MPS_FILE, "COIN");
+    auto path = manager_.GetMasterPath("/input", "master", ProblemFormat::MPS_FILE, "COIN");
     ASSERT_EQ(path, std::filesystem::path("/input/master.mps"));
 }
 
 TEST_F(BendersMasterManagerTest, GetMasterPath_Optimized_Xpress)
 {
-    auto path = manager_.GetMasterPath("/input", "master", ProblemsFormat::OPTIMIZED, "XPRESS");
+    auto path = manager_.GetMasterPath("/input", "master", ProblemFormat::OPTIMIZED, "XPRESS");
     ASSERT_EQ(path, std::filesystem::path("/input/master.svf"));
 }
 
 TEST_F(BendersMasterManagerTest, GetMasterPath_Optimized_NonXpress_FallsBackToMPS)
 {
-    auto path = manager_.GetMasterPath("/input", "master", ProblemsFormat::OPTIMIZED, "COIN");
+    auto path = manager_.GetMasterPath("/input", "master", ProblemFormat::OPTIMIZED, "COIN");
     ASSERT_EQ(path, std::filesystem::path("/input/master.mps"));
 }
 

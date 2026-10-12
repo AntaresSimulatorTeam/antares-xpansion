@@ -133,10 +133,11 @@ void BendersMpi::InitializeMaster()
                      solver_log_manager_,
                      IsResumeMode(),
                      output_manager_.GetLogger(),
-                     Options().PROBLEMS_FORMAT,
+                     Options().PROBLEM_FORMAT,
                      benders_problem_provider.get(),
                      Options().MASTER_SOLUTION_TOLERANCE,
                      GetSubCutTolerance());
+
     }
 }
 
@@ -418,7 +419,6 @@ void BendersMpi::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(subproblems_manager_->GetSubProblemMap(),
-                                    output_manager_.GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     subproblems_manager_->GetFactorySolver());

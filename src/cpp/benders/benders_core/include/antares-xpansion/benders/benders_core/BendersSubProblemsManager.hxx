@@ -417,7 +417,7 @@ public:
           options_.LOG_LEVEL,
           solver_log_manager_,
           logger_,
-          options_.PROBLEMS_FORMAT,
+          options_.PROBLEM_FORMAT,
           benders_problem_provider.get());
     }
 
@@ -439,7 +439,7 @@ public:
                                                   options_.LOG_LEVEL,
                                                   solver_log_manager_,
                                                   logger_,
-                                                  options_.PROBLEMS_FORMAT,
+                                                  options_.PROBLEM_FORMAT,
                                                   benders_problem_provider.get());
     }
 
@@ -565,7 +565,7 @@ public:
               logger_,
               options_.SOLVER_NAME,
               options_.LOG_LEVEL,
-              options_.PROBLEMS_FORMAT,
+              options_.PROBLEM_FORMAT,
               subproblems_,
               solver_log_manager_,
               world);

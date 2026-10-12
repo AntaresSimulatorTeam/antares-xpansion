@@ -57,7 +57,6 @@ void BendersByBatch::launch()
     _world.barrier();
 
     benders_plugin_->OnBendersStart(batch_subproblems_manager_->GetSubProblemMap(),
-                                    output_manager_.GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     batch_subproblems_manager_->GetFactorySolver());

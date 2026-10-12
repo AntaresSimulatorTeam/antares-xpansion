@@ -239,6 +239,7 @@ void BendersBase::compute_ub()
 {
     ComputeInvestCost();
     _data.cuts.ub += _data.master.invest_cost;
+
 }
 
 int BendersBase::SetAggregation(int max_aggregation) const
@@ -295,7 +296,7 @@ std::filesystem::path BendersBase::get_master_path() const
 {
     return master_manager_.GetMasterPath(_options.INPUTROOT,
                                          _options.MASTER_NAME,
-                                         _options.PROBLEMS_FORMAT,
+                                         _options.PROBLEM_FORMAT,
                                          _options.SOLVER_NAME);
 }
 
@@ -334,7 +335,7 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                SolverLogManager& solver_log_manager,
                                bool mps_has_alpha,
                                Logger logger,
-                               ProblemsFormat format,
+                               ProblemFormat format,
                                IBendersProblemProvider* benders_problem_provider,
                                double master_solution_tolerance,
                                const std::map<int, double>& subproblem_cut_coefficient_tolerance)
@@ -350,6 +351,7 @@ void BendersBase::reset_master(const VariableMap& variable_map,
                                  benders_problem_provider,
                                  master_solution_tolerance,
                                  subproblem_cut_coefficient_tolerance);
+
 }
 
 void BendersBase::ResetSimplexIterationsBounds()

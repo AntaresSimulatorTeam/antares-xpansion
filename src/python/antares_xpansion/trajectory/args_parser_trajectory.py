@@ -26,8 +26,8 @@ class TrajectoryLauncherOptionsKeys:
         return "memory"
 
     @staticmethod
-    def problems_format_key():
-        return "problems_format"
+    def problem_format_key():
+        return "problem_format"
 
     @staticmethod
     def solver_key():
@@ -40,7 +40,7 @@ class TrajectoryLauncherOptionsKeys:
 
 class TrajectoryLauncherOptionsDefaultValues:
     @staticmethod
-    def problems_format_default():
+    def problem_format_default():
         return "saved"
 
     @staticmethod
@@ -106,12 +106,12 @@ class TrajectoryArgsParser:
         )
         # When manipulating problem files : under which format are they written ?
         self.parser.add_argument(
-            "--problems-format",
-            dest=TrajectoryLauncherOptionsKeys.problems_format_key(),
+            "--problem-format",
+            dest=TrajectoryLauncherOptionsKeys.problem_format_key(),
             type=str,
             choices=["saved", "mps"],
             help="Format under which problem files should be read and written - 'saved' default only compatible with solver 'xpress'.",
-            default=TrajectoryLauncherOptionsDefaultValues.problems_format_default(),
+            default=TrajectoryLauncherOptionsDefaultValues.problem_format_default(),
         )
         # What type of solver should we use to perform problem merging and resolution
         # (does not apply to problem generation, where the solver used is given in 'user/expansion/settings.ini')
@@ -167,9 +167,9 @@ class TrajectoryArgsParser:
 
     def _assert_args_compatibility(self, params):
         """Checks that the given args are compatible with each other"""
-        if params.problems_format == "saved" and params.solver != "Xpress":
+        if params.problem_format == "saved" and params.solver != "Xpress":
             raise self.XpansionTrajectoryInvalidArguments(
-                "Argument '--problems-format saved' is only compatible with '--solver Xpress'"
+                "Argument '--problem-format saved' is only compatible with '--solver Xpress'"
             )
 
     def _warn_non_relevant_arg(self, step, arg):
@@ -221,7 +221,7 @@ class TrajectoryArgsParser:
             input_file=input_file,
             memory=params.memory,
             install_dir=params.installDir,
-            problems_format=params.problems_format,
+            problem_format=params.problem_format,
             solver=params.solver,
             cache_problems=params.cache_problems,
             method=params.method,

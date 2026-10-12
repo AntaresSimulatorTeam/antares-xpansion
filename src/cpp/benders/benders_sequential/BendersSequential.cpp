@@ -75,7 +75,7 @@ void BendersSequential::InitializeProblems()
                  solver_log_manager_,
                  IsResumeMode(),
                  output_manager_.GetLogger(),
-                 Options().PROBLEMS_FORMAT,
+                 Options().PROBLEM_FORMAT,
                  benders_problem_provider.get(),
                  Options().MASTER_SOLUTION_TOLERANCE,
                  GetSubCutTolerance());

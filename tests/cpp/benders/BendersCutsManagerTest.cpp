@@ -57,7 +57,7 @@ std::unique_ptr<BendersMasterManager> MakeNOOPMasterManager(
                                  solver_log_manager,
                                  false,
                                  std::make_shared<xpansion::logger::Master>(),
-                                 ProblemsFormat::MPS_FILE,
+                                 ProblemFormat::MPS_FILE,
                                  &problem_provider,
                                  1e-4,
                                  subproblem_tolerance);
