@@ -37,6 +37,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/SkeletonConstraintSetLoader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemBasisCache.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorkerFactory.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BestUbTracker.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
@@ -69,7 +70,9 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SkeletonSolverLoader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ICommunicationStrategy.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BestUbTracker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SequentialCommunicationStrategy.h
+
 )
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)
