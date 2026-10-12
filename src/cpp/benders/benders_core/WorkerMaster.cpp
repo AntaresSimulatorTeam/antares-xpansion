@@ -1,7 +1,8 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
+#include <iostream>
+
 #include "antares-xpansion/helpers/solver_utils.h"
-#include "iostream"
 
 /*!
  *  \brief Constructor of a Master Problem
