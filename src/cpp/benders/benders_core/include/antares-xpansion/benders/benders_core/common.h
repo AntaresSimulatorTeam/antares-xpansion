@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "antares-xpansion/core/ProblemFormat.h"
-#include "antares-xpansion/core/ResumeMode.h"
+#include "antares-xpansion/core/RestartMode.h"
 
 enum class MasterFormulation
 {
@@ -221,7 +221,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     double MASTER_SOLUTION_TOLERANCE = 1e-4;
     double CUT_COEFFICIENT_TOLERANCE = 5e-3;
 
-    ResumeMode RESTART_MODE = ResumeMode::COLD_START;
+    RestartMode RESTART_MODE = RestartMode::COLD_START;
     bool MICRO_ITERATIONS = false;
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;

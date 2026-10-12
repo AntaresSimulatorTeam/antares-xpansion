@@ -29,14 +29,14 @@ inline ProblemsFormat Json::Value::as<ProblemsFormat>() const
 }
 
 template<>
-inline ResumeMode Json::Value::as<ResumeMode>() const
+inline RestartMode Json::Value::as<RestartMode>() const
 {
     if (isBool())
     {
         // Legacy boolean RESUME option
-        return asBool() ? ResumeMode::RESUME : ResumeMode::COLD_START;
+        return asBool() ? RestartMode::RESUME : RestartMode::COLD_START;
     }
-    return resumeModeFromString(asString());
+    return restartModeFromString(asString());
 }
 
 /*!
@@ -93,7 +93,7 @@ void SimulationOptions::read(const std::filesystem::path& file_name)
         // Legacy name of RESTART_MODE, ignored if the new key is also present
         if (var_name == "RESUME" && !options_values.isMember("RESTART_MODE"))
         {
-            RESTART_MODE = options_values[var_name].as<ResumeMode>();
+            RESTART_MODE = options_values[var_name].as<RestartMode>();
         }
     }
     set_weights();

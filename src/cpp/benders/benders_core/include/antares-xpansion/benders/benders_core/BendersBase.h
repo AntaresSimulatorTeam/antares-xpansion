@@ -238,13 +238,13 @@ protected:
         return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
     }
 
-    void UpdateMaxNumberIterationResumeMode(int nb_iteration_done);
+    void UpdateMaxNumberIterationRestartMode(int nb_iteration_done);
     void SaveCurrentIterationInOutputFile() const;
     void SaveSolutionInOutputFile() const;
     void PrintCurrentIterationCsv();
     void OpenCsvFile();
     void CloseCsvFile();
-    void ChecksResumeMode();
+    void ChecksRestartMode();
     virtual void SaveCurrentBendersData();
     void ClearCurrentIterationCutTrace();
     virtual void EndWritingInOutputFile() const;

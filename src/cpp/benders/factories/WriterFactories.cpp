@@ -12,7 +12,7 @@ std::shared_ptr<Output::OutputWriter> build_void_writer()
 }
 
 std::shared_ptr<Output::OutputWriter> build_json_writer(const std::filesystem::path& json_file_name,
-                                                        ResumeMode restart_mode)
+                                                        RestartMode restart_mode)
 {
     std::shared_ptr<Output::OutputWriter> writer;
     if (IsResume(restart_mode))

@@ -557,7 +557,7 @@ void BendersMpi::PreRunInitialization()
 
     if (_world.rank() == rank_0)
     {
-        ChecksResumeMode();
+        ChecksRestartMode();
         if (is_trace())
         {
             OpenCsvFile();
