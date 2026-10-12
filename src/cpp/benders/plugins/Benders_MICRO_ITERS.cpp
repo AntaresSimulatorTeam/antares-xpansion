@@ -8,6 +8,7 @@
 #include <chrono>
 #include <exception>
 #include <fstream>
+#include <iostream>
 #include <json/reader.h>
 #include <sstream>
 #include <stdexcept>
@@ -15,13 +16,14 @@
 
 #include <boost/tokenizer.hpp>
 
-#include "iostream"
-
+namespace
+{
 namespace config_keys
 {
 const std::string warm_start = "warm_start";
 const std::string plugin_lib_path = "plugin_lib_path";
 } // namespace config_keys
+} // namespace
 
 Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                          const CouplingMap& coupling_map,
