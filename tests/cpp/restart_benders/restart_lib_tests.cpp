@@ -1,10 +1,14 @@
 
+#include <fstream>
+
 #include "LoggerStub.h"
 #include "WriterStub.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/core/ResumeMode.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "gtest/gtest.h"
 
@@ -193,4 +197,48 @@ TEST(Resume, ContinueIfCreterionNotMatch)
     writer->status = "NotOptimal";
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger.get()), false);
+}
+
+class ResumeModeFromStringTest: public ::testing::Test
+{
+public:
+    const std::filesystem::path _options_file = std::filesystem::temp_directory_path()
+                                                / "test_resume_mode_options.json";
+
+    void WriteOptionsFile(const std::string& resume_mode_value)
+    {
+        std::ofstream file(_options_file);
+        file << R"({"RESUME": ")" << resume_mode_value << R"("})";
+    }
+
+    void TearDown() override
+    {
+        std::filesystem::remove(_options_file);
+    }
+};
+
+TEST_F(ResumeModeFromStringTest, ColdStartIsReadFromOptionsFile)
+{
+    WriteOptionsFile("cold_start");
+    SimulationOptions options(_options_file);
+    ASSERT_EQ(options.RESUME, ResumeMode::COLD_START);
+}
+
+TEST_F(ResumeModeFromStringTest, ResumeIsReadFromOptionsFile)
+{
+    WriteOptionsFile("resume");
+    SimulationOptions options(_options_file);
+    ASSERT_EQ(options.RESUME, ResumeMode::RESUME);
+}
+
+TEST_F(ResumeModeFromStringTest, HotStartIsReadFromOptionsFile)
+{
+    WriteOptionsFile("hot_start");
+    SimulationOptions options(_options_file);
+    ASSERT_EQ(options.RESUME, ResumeMode::HOT_START);
+}
+
+TEST(ResumeModeFromString, ThrowsOnUnknownValue)
+{
+    ASSERT_THROW(resumeModeFromString("unknown_mode"), std::runtime_error);
 }
