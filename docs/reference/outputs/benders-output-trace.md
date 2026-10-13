@@ -47,7 +47,7 @@ followed by data rows. Each iteration of the Benders algorithm produces:
 
 ## Notes
 
-- The file is created at the start of the Benders run and appended to if [`RESUME` mode](../benders/options.md) is enabled
+- The file is created at the start of the Benders run and appended to if [`RESUME`](../benders/options.md) is set to `resume`
 - Empty cells in the CSV represent values that are not applicable for that row type
 - The `jump` column for master rows indicates how much the solution has changed between iterations
 - The `single_subpb_costs_under_approx` column for subproblem rows shows the contribution of each subproblem to the overall approximation

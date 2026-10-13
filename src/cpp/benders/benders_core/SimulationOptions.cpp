@@ -35,6 +35,12 @@ inline CacheProblems Json::Value::as<CacheProblems>() const
     return cacheProblemsFromString(asString());
 }
 
+template<>
+inline ResumeMode Json::Value::as<ResumeMode>() const
+{
+    return resumeModeFromString(asString());
+}
+
 /*!
  *  \brief Constructor of Benders Options
  *

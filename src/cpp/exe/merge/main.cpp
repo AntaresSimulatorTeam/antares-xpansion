@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
     std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
                                                                        options.JSON_FILE),
-                                                                     false);
+                                                                     ResumeMode::COLD_START);
     try
     {
         MergeMPS merge_mps(options.get_solver_options(), logger, writer);
