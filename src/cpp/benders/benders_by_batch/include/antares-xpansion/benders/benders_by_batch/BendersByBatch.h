@@ -3,12 +3,19 @@
 #include "BatchCollection.h"
 #include "BendersCutsManagerByBatch.h"
 #include "BendersSubProblemsManagerByBatch.hxx"
-#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_mpi/MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
-class BendersByBatch: public BendersMpi
+class BendersByBatch: public BendersBase
 {
+    std::shared_ptr<MpiCommunicationStrategy> mpi_;
     std::vector<unsigned> random_batch_permutation_;
+    BendersByBatch(const BendersBaseOptions& options,
+                   std::shared_ptr<ILogger> logger,
+                   std::shared_ptr<Output::OutputWriter> writer,
+                   std::shared_ptr<MpiCommunicationStrategy> mpi,
+                   std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
 public:
     BendersByBatch(const BendersBaseOptions& options,
@@ -30,9 +37,11 @@ public:
     void free() override;
     void launch() override;
 
+    const int rank_0 = 0;
+
 protected:
     void InitializeProblems() override;
-    void BroadCastVariablesIndices() override;
+    void BroadCastVariablesIndices();
     void BroadcastSingleSubpbCostsUnderApprox();
     void ComputeXCut();
     void UpdateStoppingCriterion() override;
@@ -40,6 +49,40 @@ protected:
     void BuildBatches();
 
 private:
+    int Rank() const
+    {
+        return mpi_->Rank();
+    }
+
+    int WorldSize() const
+    {
+        return mpi_->WorldSize();
+    }
+
+    template<typename T>
+    void BroadCast(T& value, int root) const
+    {
+        mpi_->BroadCast(value, root);
+    }
+
+    template<typename T>
+    void BroadCast(T* values, int n, int root) const
+    {
+        mpi_->BroadCast(values, n, root);
+    }
+
+    template<typename T, typename Op>
+    void Reduce(const T& in_value, T& out_value, Op op, int root) const
+    {
+        mpi_->Reduce(in_value, out_value, op, root);
+    }
+
+    template<typename T, typename Op>
+    void AllReduce(const T& in_value, T& out_value, Op op) const
+    {
+        mpi_->AllReduce(in_value, out_value, op);
+    }
+
     void BuildMasterProblem();
     void calculate_subproblem_contribution(const std::string& name,
                                            PlainData::SubProblemData& subproblem_data);

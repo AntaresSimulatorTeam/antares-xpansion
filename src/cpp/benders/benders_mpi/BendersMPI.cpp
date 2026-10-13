@@ -124,19 +124,7 @@ void BendersMpi::InitializeMaster()
 {
     if (_world.rank() == rank_0)
     {
-        std::shared_ptr<IBendersProblemProvider>
-          benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
-        reset_master(master_variable_map_,
-                     _options.SOLVER_NAME,
-                     _options.LOG_LEVEL,
-                     _data.control.nsubproblem,
-                     solver_log_manager_,
-                     IsResumeMode(),
-                     output_manager_.GetLogger(),
-                     Options().PROBLEM_FORMAT,
-                     benders_problem_provider.get(),
-                     Options().MASTER_SOLUTION_TOLERANCE,
-                     GetSubCutTolerance());
+        InitializeMasterProblem();
     }
 }
 
@@ -383,29 +371,6 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
-}
-
-void BendersMpi::PreRunInitialization()
-{
-    init_data();
-
-    if (_world.rank() == rank_0)
-    {
-        HandleInitialMasterRelaxation();
-    }
-
-    _world.barrier();
-
-    if (_world.rank() == rank_0)
-    {
-        ChecksResumeMode();
-        if (_options.TRACE)
-        {
-            output_manager_.OpenCsvFile();
-        }
-    }
-    output_manager_.MathLoggerWriteHeader();
-    init_data_ = false;
 }
 
 void BendersMpi::launch()
