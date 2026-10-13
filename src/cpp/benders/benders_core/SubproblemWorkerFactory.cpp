@@ -116,19 +116,59 @@ std::shared_ptr<SubproblemWorker> SubproblemWorkerFactory::CreateSubSolverAbstra
 
     solver_->chg_obj(indices, weighted_obj);
 
-    solver_->chg_coefs(coef_set_.RowIndices(),
-                       coef_set_.ColIndices(),
-                       coef_set_.CoefficientsFor(sub_name));
+    /*we need to check if we are changing any constraints
+    It happens that the provided csv to reset constraints coeffs from sub to sub be empty
+    If it's the case there's nothing to set on the solver to build the subproblem worker
+    */
+    if (!coef_set_.RowIndices().empty())
+    {
+        const auto& rowIndices = coef_set_.RowIndices();
+        const auto& colIndices = coef_set_.ColIndices();
+        const auto& coeffs = coef_set_.CoefficientsFor(sub_name);
+        if (rowIndices.size() == colIndices.size() && colIndices.size() == coeffs.size())
+        {
+            solver_->chg_coefs(rowIndices, colIndices, coeffs);
+        }
+        else
+        {
+            logger_->display_message(
+              "Unable to set constraint coefficients for subproblem '" + sub_name
+              + "': size mismatch between row indices, column indices, and coefficients");
+        }
+    }
 
-    const auto& obj_coeffs = obj_set_.CoefficientsFor(sub_name);
-    std::vector<double> weighted_obj_coeffs(obj_coeffs.size());
-    std::ranges::transform(obj_coeffs,
-                           weighted_obj_coeffs.begin(),
-                           [slave_weights](double coefficient)
-                           { return coefficient * slave_weights; });
-    solver_->chg_obj(obj_set_.ColIndices(), weighted_obj_coeffs);
+    const auto& objCoeffs = obj_set_.CoefficientsFor(sub_name);
+    const auto& objIndices = obj_set_.ColIndices();
+    if (!objCoeffs.empty())
+    {
+        std::vector<double> weighted_obj_coeffs(objCoeffs.size());
+        std::ranges::transform(objCoeffs,
+                               weighted_obj_coeffs.begin(),
+                               [slave_weights](double coefficient)
+                               { return coefficient * slave_weights; });
 
-    solver_->chg_rhs_values(rhs_set_.RowIndices(), rhs_set_.CoefficientsFor(sub_name));
+        solver_->chg_obj(objIndices, weighted_obj_coeffs);
+    }
+    else
+    {
+        logger_->display_message("Unable to find objective coefficients for subproblem '" + sub_name
+                                 + "'");
+    }
+
+    if (!rhs_set_.RowIndices().empty())
+    {
+        auto& rhsRowIndices = rhs_set_.RowIndices();
+        auto& rhsCoeffs = rhs_set_.CoefficientsFor(sub_name);
+        if (rhsRowIndices.size() == rhsCoeffs.size())
+        {
+            solver_->chg_rhs_values(rhsRowIndices, rhsCoeffs);
+        }
+        else
+        {
+            logger_->display_message("Unable to set rhs values for subproblem '" + sub_name
+                                     + "': size mismatch between row indices and coefficients");
+        }
+    }
 
     auto subproblem_worker = std::make_shared<SubproblemWorker>(variable_map, solver_, logger_);
 
