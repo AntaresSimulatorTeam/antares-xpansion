@@ -71,8 +71,6 @@ protected:
         return false;
     }
 
-    void PreRunInitialization();
-
     int Rank() const
     {
         return _world.rank();

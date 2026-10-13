@@ -44,8 +44,32 @@ public:
         mpi::broadcast(world_, value, 0);
     }
 
+    template<typename T>
+    void BroadCast(T& value, int root) const
+    {
+        mpi::broadcast(world_, value, root);
+    }
+
+    template<typename T>
+    void BroadCast(T* values, int n, int root) const
+    {
+        mpi::broadcast(world_, values, n, root);
+    }
+
+    template<typename T, typename Op>
+    void Reduce(const T& in_value, T& out_value, Op op, int root) const
+    {
+        mpi::reduce(world_, in_value, out_value, op, root);
+    }
+
+    template<typename T, typename Op>
+    void AllReduce(const T& in_value, T& out_value, Op op) const
+    {
+        mpi::all_reduce(world_, in_value, out_value, op);
+    }
+
     /// Access the underlying MPI communicator for operations not yet
-    /// abstracted into the strategy interface (broadcast, gather, reduce).
+    /// abstracted into the strategy interface.
     mpi::communicator& World()
     {
         return world_;
