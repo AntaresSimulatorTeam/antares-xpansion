@@ -387,9 +387,8 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
       subproblem_data_map,
       batch_subproblems_manager_->MakeFastBeginHook(batch_sub_problems),
       batch_subproblems_manager_->MakeCacheBeginHook(batch_sub_problems),
-      batch_subproblems_manager_->MakePostSolveHook(
-        [this](const std::string& name, PlainData::SubProblemData& data)
-        { calculate_subproblem_contribution(name, data); }));
+      [this](const std::string& name, PlainData::SubProblemData& data, const SubproblemWorkerPtr&)
+      { calculate_subproblem_contribution(name, data); });
     local_solved = subproblem_data_map.size();
 
     _data.cuts.subproblems_cputime = subproblems_timer_per_proc.elapsed();
