@@ -28,15 +28,13 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                                                           relevantIterationData_,
                                                           master_manager_,
                                                           subproblem_per_cut_indices_)),
-    subproblems_manager_(
-      std::make_shared<BendersSubProblemsManagerMpi>(_data,
-                                                     _options,
-                                                     benders_plugin_,
-                                                     output_manager_.GetLogger(),
-                                                     solver_log_manager_,
-                                                     output_manager_.GetWriter(),
-                                                     shouldParallelize(),
-                                                     coupling_map_))
+    subproblems_manager_(std::make_shared<BendersSubProblemsManagerMpi>(_data,
+                                                                        _options,
+                                                                        benders_plugin_,
+                                                                        output_manager_.GetLogger(),
+                                                                        solver_log_manager_,
+                                                                        output_manager_.GetWriter(),
+                                                                        coupling_map_))
 {
     subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
@@ -380,7 +378,7 @@ void BendersMpi::Run()
     {
         output_manager_.CloseCsvFile();
         output_manager_.EndWritingInOutputFile(_data.control.benders_time,
-                                                _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
+                                               _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
         write_basis();
     }
     _world.barrier();

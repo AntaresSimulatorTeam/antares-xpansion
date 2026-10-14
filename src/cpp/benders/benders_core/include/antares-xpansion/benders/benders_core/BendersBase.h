@@ -175,8 +175,6 @@ protected:
     double GetBendersTime() const;
     virtual void write_basis() const;
 
-    [[nodiscard]] virtual bool shouldParallelize() const;
-
     double AbsoluteGap() const
     {
         return _options.ABSOLUTE_GAP;
