@@ -13,12 +13,14 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersMpi(options, std::move(logger), std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(std::make_shared<BendersCutsManagerByBatch>(world,
-                                                                    rank_0,
-                                                                    _data,
-                                                                    _problem_to_id,
-                                                                    relevantIterationData_,
-                                                                    master_manager_)),
+    batch_cuts_manager_(
+      std::make_shared<BendersCutsManagerByBatch>(world,
+                                                  rank_0,
+                                                  _data,
+                                                  _problem_to_id,
+                                                  relevantIterationData_,
+                                                  master_manager_,
+                                                  batch_collection_full_for_cuts_)),
     batch_subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                                          _options,
@@ -378,10 +380,9 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     AllReduce(misprice_, global_misprice, std::logical_and<bool>());
     misprice_ = global_misprice;
 
-    auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
     batch_cuts_manager_->GatherAndBuildCuts(subproblem_data_map,
                                             subproblems_timer_per_proc,
-                                            batch_cuts_list[current_batch_id_].name_to_cut,
+                                            current_batch_id_,
                                             *batch_contribution_in_gap);
 }
 
