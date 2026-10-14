@@ -68,10 +68,10 @@ void BendersBase::OpenCsvFile()
 {
     if (!_csv_file.is_open())
     {
-        const auto opening_mode = _options.RESUME == ResumeMode::RESUME ? std::ios::app
-                                                                        : std::ios::trunc;
+        auto isResume = IsResume(_options.RESUME);
+        const auto opening_mode = isResume ? std::ios::app : std::ios::trunc;
         _csv_file.open(_csv_file_path, std::ios::out | opening_mode);
-        if (_csv_file && !(_options.RESUME == ResumeMode::RESUME))
+        if (_csv_file && !isResume)
         {
             _csv_file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                          "subpb_costs_under_approx;"
@@ -1027,7 +1027,7 @@ Output::SolutionData BendersBase::BendersSolution() const
     const auto optimal_gap(_data.best_ub - _data.lb);
     const auto relative_gap(optimal_gap / _data.best_ub);
 
-    if (_options.RESUME == ResumeMode::RESUME)
+    if (IsResume(_options.RESUME))
     {
         // solution may not be in relevantIterationData_
         Output::CandidatesVec candidates_vec;
@@ -1334,7 +1334,7 @@ double BendersBase::execution_time() const
 void BendersBase::ChecksResumeMode()
 {
     benders_timer = Timer();
-    if (_options.RESUME == ResumeMode::RESUME)
+    if (IsResume(_options.RESUME))
     {
         auto reader = LastIterationReader(LastIterationFile());
         LogData last_iter;

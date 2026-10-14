@@ -15,7 +15,7 @@ std::shared_ptr<Output::OutputWriter> build_json_writer(const std::filesystem::p
                                                         ResumeMode restart_mode)
 {
     std::shared_ptr<Output::OutputWriter> writer;
-    if (restart_mode == ResumeMode::RESUME)
+    if (IsResume(restart_mode))
     {
         auto out_json_content = get_json_file_content(json_file_name);
         writer = std::make_shared<Output::JsonWriter>(json_file_name, out_json_content);

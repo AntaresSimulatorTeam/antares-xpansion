@@ -29,6 +29,19 @@ inline ResumeMode resumeModeFromString(const std::string& str)
                              + " (expected cold_start, resume, or hot_start)");
 }
 
+// True when the run continues an interrupted one (append logs, reload previous output state)
+inline bool IsResume(ResumeMode mode)
+{
+    return mode == ResumeMode::RESUME;
+}
+
+// True when the master MPS already contains the alpha / alpha_i columns (it comes from a previous
+// run), so they are looked up by name instead of being created (resume and hot start)
+inline bool MasterHasAlphaVariables(ResumeMode mode)
+{
+    return mode != ResumeMode::COLD_START;
+}
+
 inline std::ostream& operator<<(std::ostream& stream, const ResumeMode& mode)
 {
     switch (mode)

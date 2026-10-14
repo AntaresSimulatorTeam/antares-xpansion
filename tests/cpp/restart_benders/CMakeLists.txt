@@ -1,5 +1,6 @@
 add_executable(restart_lib_tests
         restart_lib_tests.cpp
+        resume_mode_tests.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/../TestDoubles/WriterStub.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../TestDoubles/LoggerStub.h
         )
