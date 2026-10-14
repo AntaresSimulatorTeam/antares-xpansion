@@ -3,6 +3,7 @@ target_sources(benders_sequential_test
         PRIVATE
         benders_sequential_test.cpp
         BendersByBatchTest.cpp
+        BendersSubProblemsManagerByBatchTest.cpp
         WorkerMasterTest.cpp
         MergeMasterTest.cpp
         SubproblemBasisCacheTest.cpp
