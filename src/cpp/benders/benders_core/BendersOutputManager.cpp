@@ -52,18 +52,18 @@ void BendersOutputManager::OpenCsvFile()
     {
         const auto opening_mode = options_.RESUME ? std::ios::app : std::ios::trunc;
         csv_file_.open(csv_file_path_, std::ios::out | opening_mode);
-        if (csv_file_ && !options_.RESUME)
+        if (!csv_file_)
+        {
+            using namespace std::string_literals;
+            logger_->display_message("Impossible to open the .csv file: "s
+                                     + csv_file_path_.string());
+        }
+        else if (!options_.RESUME)
         {
             csv_file_ << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                          "subpb_costs_under_approx;"
                          "time;basis;"
                       << std::endl;
-        }
-        else
-        {
-            using namespace std::string_literals;
-            logger_->display_message("Impossible to open the .csv file: "s
-                                     + csv_file_path_.string());
         }
     }
 }
