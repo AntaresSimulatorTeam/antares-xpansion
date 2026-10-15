@@ -132,6 +132,8 @@ protected:
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
     virtual void Run() = 0;
+    void InitializeMasterProblem();
+    void PreRunInitialization();
     void update_best_ub();
     bool ShouldBendersStop();
     bool is_initial_relaxation_requested() const;

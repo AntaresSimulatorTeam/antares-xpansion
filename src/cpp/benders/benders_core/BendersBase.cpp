@@ -44,6 +44,46 @@ bool BendersBase::shouldParallelize() const
 /*!
  *  \brief Initialize set of data used in the loop
  */
+void BendersBase::InitializeMasterProblem()
+{
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
+    reset_master(master_variable_map_,
+                 _options.SOLVER_NAME,
+                 _options.LOG_LEVEL,
+                 _data.control.nsubproblem,
+                 solver_log_manager_,
+                 IsResumeMode(),
+                 output_manager_.GetLogger(),
+                 Options().PROBLEM_FORMAT,
+                 benders_problem_provider.get(),
+                 Options().MASTER_SOLUTION_TOLERANCE,
+                 GetSubCutTolerance());
+}
+
+void BendersBase::PreRunInitialization()
+{
+    init_data();
+
+    if (communication_strategy_->IsMaster())
+    {
+        HandleInitialMasterRelaxation();
+    }
+
+    communication_strategy_->Barrier();
+
+    if (communication_strategy_->IsMaster())
+    {
+        ChecksResumeMode();
+        if (_options.TRACE)
+        {
+            output_manager_.OpenCsvFile();
+        }
+    }
+    output_manager_.MathLoggerWriteHeader();
+    init_data_ = false;
+}
+
 void BendersBase::init_data()
 {
     _data.master.lb = relevantIterationData_.last._lb = -1e20;

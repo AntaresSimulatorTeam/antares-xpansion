@@ -283,15 +283,16 @@ public:
                                                     [this, &name, &worker]
                                                     { TryRestoreSubproblemBasis(name, worker); });
                                     post_solve_hook(name, subproblem_data, worker);
-                                    std::lock_guard guard(m);
-                                    subproblem_data_map[name] = subproblem_data;
-                                    StoreSubproblemBasis(name, worker);
 
                                     std::call_once(
                                       variable_indice_once_flag_,
                                       [this](const auto& worker_)
                                       { SetSubproblemVariablesIndices(worker_); },
                                       *worker);
+
+                                    std::lock_guard guard(m);
+                                    subproblem_data_map[name] = subproblem_data;
+                                    StoreSubproblemBasis(name, worker);
                                 }
                                 catch (...)
                                 {
