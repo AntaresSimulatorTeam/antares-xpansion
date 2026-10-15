@@ -4,55 +4,55 @@
 #include <stdexcept>
 #include <string>
 
-enum class ResumeMode
+enum class RestartMode
 {
     COLD_START = 0,
     RESUME = 1,
     HOT_START = 2
 };
 
-inline ResumeMode resumeModeFromString(const std::string& str)
+inline RestartMode restartModeFromString(const std::string& str)
 {
     if (str == "cold_start")
     {
-        return ResumeMode::COLD_START;
+        return RestartMode::COLD_START;
     }
     if (str == "resume")
     {
-        return ResumeMode::RESUME;
+        return RestartMode::RESUME;
     }
     if (str == "hot_start")
     {
-        return ResumeMode::HOT_START;
+        return RestartMode::HOT_START;
     }
-    throw std::runtime_error("Unknown ResumeMode: " + str
+    throw std::runtime_error("Unknown RestartMode: " + str
                              + " (expected cold_start, resume, or hot_start)");
 }
 
 // True when the run continues an interrupted one (append logs, reload previous output state)
-inline bool IsResume(ResumeMode mode)
+inline bool IsResume(RestartMode mode)
 {
-    return mode == ResumeMode::RESUME;
+    return mode == RestartMode::RESUME;
 }
 
 // True when the master MPS already contains the alpha / alpha_i columns (it comes from a previous
 // run), so they are looked up by name instead of being created (resume and hot start)
-inline bool MasterHasAlphaVariables(ResumeMode mode)
+inline bool MasterHasAlphaVariables(RestartMode mode)
 {
-    return mode != ResumeMode::COLD_START;
+    return mode != RestartMode::COLD_START;
 }
 
-inline std::ostream& operator<<(std::ostream& stream, const ResumeMode& mode)
+inline std::ostream& operator<<(std::ostream& stream, const RestartMode& mode)
 {
     switch (mode)
     {
-    case ResumeMode::COLD_START:
+    case RestartMode::COLD_START:
         stream << "cold_start";
         break;
-    case ResumeMode::RESUME:
+    case RestartMode::RESUME:
         stream << "resume";
         break;
-    case ResumeMode::HOT_START:
+    case RestartMode::HOT_START:
         stream << "hot_start";
         break;
     }

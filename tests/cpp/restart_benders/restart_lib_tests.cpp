@@ -8,7 +8,7 @@
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/core/ResumeMode.h"
+#include "antares-xpansion/core/RestartMode.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "gtest/gtest.h"
 
@@ -161,7 +161,7 @@ TEST(Resume, ShouldNotResumeIfCriterionOk)
     options.ABSOLUTE_GAP = 100.f;
     options.RELATIVE_GAP = 200.f;
     options.TIME_LIMIT = 500.f;
-    options.RESTART_MODE = ResumeMode::RESUME;
+    options.RESTART_MODE = RestartMode::RESUME;
 
     auto writer = std::make_shared<WriterMockStatus>();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
@@ -176,7 +176,7 @@ TEST(Resume, DontResumeIfOptionOff)
     options.ABSOLUTE_GAP = 100.f;
     options.RELATIVE_GAP = 200.f;
     options.TIME_LIMIT = 500.f;
-    options.RESTART_MODE = ResumeMode::COLD_START;
+    options.RESTART_MODE = RestartMode::COLD_START;
 
     auto writer = std::make_shared<WriterMockStatus>();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
@@ -191,7 +191,7 @@ TEST(Resume, ContinueIfCreterionNotMatch)
     options.ABSOLUTE_GAP = 100.f;
     options.RELATIVE_GAP = 200.f;
     options.TIME_LIMIT = 500.f;
-    options.RESTART_MODE = ResumeMode::RESUME;
+    options.RESTART_MODE = RestartMode::RESUME;
 
     auto writer = std::make_shared<WriterMockStatus>();
     writer->status = "NotOptimal";
@@ -199,7 +199,7 @@ TEST(Resume, ContinueIfCreterionNotMatch)
     ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger.get()), false);
 }
 
-class ResumeModeFromStringTest: public ::testing::Test
+class RestartModeFromStringTest: public ::testing::Test
 {
 public:
     const std::filesystem::path _options_file = std::filesystem::temp_directory_path()
@@ -217,28 +217,28 @@ public:
     }
 };
 
-TEST_F(ResumeModeFromStringTest, ColdStartIsReadFromOptionsFile)
+TEST_F(RestartModeFromStringTest, ColdStartIsReadFromOptionsFile)
 {
     WriteOptionsFile("cold_start");
     SimulationOptions options(_options_file);
-    ASSERT_EQ(options.RESTART_MODE, ResumeMode::COLD_START);
+    ASSERT_EQ(options.RESTART_MODE, RestartMode::COLD_START);
 }
 
-TEST_F(ResumeModeFromStringTest, ResumeIsReadFromOptionsFile)
+TEST_F(RestartModeFromStringTest, ResumeIsReadFromOptionsFile)
 {
     WriteOptionsFile("resume");
     SimulationOptions options(_options_file);
-    ASSERT_EQ(options.RESTART_MODE, ResumeMode::RESUME);
+    ASSERT_EQ(options.RESTART_MODE, RestartMode::RESUME);
 }
 
-TEST_F(ResumeModeFromStringTest, HotStartIsReadFromOptionsFile)
+TEST_F(RestartModeFromStringTest, HotStartIsReadFromOptionsFile)
 {
     WriteOptionsFile("hot_start");
     SimulationOptions options(_options_file);
-    ASSERT_EQ(options.RESTART_MODE, ResumeMode::HOT_START);
+    ASSERT_EQ(options.RESTART_MODE, RestartMode::HOT_START);
 }
 
-TEST(ResumeModeFromString, ThrowsOnUnknownValue)
+TEST(RestartModeFromString, ThrowsOnUnknownValue)
 {
-    ASSERT_THROW(resumeModeFromString("unknown_mode"), std::runtime_error);
+    ASSERT_THROW(restartModeFromString("unknown_mode"), std::runtime_error);
 }

@@ -1,33 +1,33 @@
 #include <sstream>
 
-#include "antares-xpansion/core/ResumeMode.h"
+#include "antares-xpansion/core/RestartMode.h"
 #include "gtest/gtest.h"
 
-TEST(ResumeModeTest, IsResumeOnlyForResume)
+TEST(RestartModeTest, IsResumeOnlyForResume)
 {
-    EXPECT_FALSE(IsResume(ResumeMode::COLD_START));
-    EXPECT_TRUE(IsResume(ResumeMode::RESUME));
-    EXPECT_FALSE(IsResume(ResumeMode::HOT_START));
+    EXPECT_FALSE(IsResume(RestartMode::COLD_START));
+    EXPECT_TRUE(IsResume(RestartMode::RESUME));
+    EXPECT_FALSE(IsResume(RestartMode::HOT_START));
 }
 
-TEST(ResumeModeTest, MasterHasAlphaVariablesExceptForColdStart)
+TEST(RestartModeTest, MasterHasAlphaVariablesExceptForColdStart)
 {
-    EXPECT_FALSE(MasterHasAlphaVariables(ResumeMode::COLD_START));
-    EXPECT_TRUE(MasterHasAlphaVariables(ResumeMode::RESUME));
-    EXPECT_TRUE(MasterHasAlphaVariables(ResumeMode::HOT_START));
+    EXPECT_FALSE(MasterHasAlphaVariables(RestartMode::COLD_START));
+    EXPECT_TRUE(MasterHasAlphaVariables(RestartMode::RESUME));
+    EXPECT_TRUE(MasterHasAlphaVariables(RestartMode::HOT_START));
 }
 
-TEST(ResumeModeTest, FromString)
+TEST(RestartModeTest, FromString)
 {
-    EXPECT_EQ(resumeModeFromString("cold_start"), ResumeMode::COLD_START);
-    EXPECT_EQ(resumeModeFromString("resume"), ResumeMode::RESUME);
-    EXPECT_EQ(resumeModeFromString("hot_start"), ResumeMode::HOT_START);
-    EXPECT_THROW(resumeModeFromString("unknown"), std::runtime_error);
+    EXPECT_EQ(restartModeFromString("cold_start"), RestartMode::COLD_START);
+    EXPECT_EQ(restartModeFromString("resume"), RestartMode::RESUME);
+    EXPECT_EQ(restartModeFromString("hot_start"), RestartMode::HOT_START);
+    EXPECT_THROW(restartModeFromString("unknown"), std::runtime_error);
 }
 
-TEST(ResumeModeTest, StreamOperator)
+TEST(RestartModeTest, StreamOperator)
 {
     std::ostringstream os;
-    os << ResumeMode::COLD_START << " " << ResumeMode::RESUME << " " << ResumeMode::HOT_START;
+    os << RestartMode::COLD_START << " " << RestartMode::RESUME << " " << RestartMode::HOT_START;
     EXPECT_EQ(os.str(), "cold_start resume hot_start");
 }

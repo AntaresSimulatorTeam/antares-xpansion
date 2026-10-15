@@ -98,7 +98,7 @@ void BendersSequential::BuildCut()
 void BendersSequential::Run()
 {
     init_data();
-    ChecksResumeMode();
+    ChecksRestartMode();
     if (is_trace())
     {
         OpenCsvFile();

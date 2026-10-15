@@ -1310,7 +1310,7 @@ void BendersBase::ResetSimplexIterationsBounds()
     _data.min_simplexiter = (std::numeric_limits<int>::max)();
 }
 
-void BendersBase::UpdateMaxNumberIterationResumeMode(int nb_iteration_done)
+void BendersBase::UpdateMaxNumberIterationRestartMode(int nb_iteration_done)
 {
     if (_options.MAX_ITERATIONS == -1)
     {
@@ -1331,7 +1331,7 @@ double BendersBase::execution_time() const
     return _data.benders_time;
 }
 
-void BendersBase::ChecksResumeMode()
+void BendersBase::ChecksRestartMode()
 {
     benders_timer = Timer();
     if (IsResume(_options.RESTART_MODE))
@@ -1351,7 +1351,7 @@ void BendersBase::ChecksResumeMode()
         }
         auto restart_data_printer = LastIterationPrinter(_logger, best_iteration_data, last_iter);
         restart_data_printer.Print();
-        UpdateMaxNumberIterationResumeMode(last_iter.it);
+        UpdateMaxNumberIterationRestartMode(last_iter.it);
         benders_timer = Timer(last_iter.benders_elapsed_time);
         _data.stop = ShouldBendersStop();
         iterations_before_resume = last_iter.it;
