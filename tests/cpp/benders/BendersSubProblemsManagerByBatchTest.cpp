@@ -25,7 +25,6 @@ protected:
                                                 logger_,
                                                 solver_log_manager_,
                                                 writer_,
-                                                false,
                                                 coupling_map_);
     }
 

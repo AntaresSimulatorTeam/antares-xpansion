@@ -34,7 +34,6 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
                                                                         output_manager_.GetLogger(),
                                                                         solver_log_manager_,
                                                                         output_manager_.GetWriter(),
-                                                                        shouldParallelize(),
                                                                         coupling_map_))
 {
     subproblems_manager_->SetOnVariablesIndicesSet(

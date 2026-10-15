@@ -7,6 +7,8 @@ class BendersSubProblemsManagerMpi: public BendersSubProblemsManager<BendersSubP
 {
 public:
     using BendersSubProblemsManager::BendersSubProblemsManager;
+
+    static constexpr auto EXECUTION_POLICY = std::execution::seq;
     using BendersSubProblemsManager::MakePostSolveHookImpl;
 
     SubProblemNamesInCut DistributeSubproblemsImpl(int rank, int world_size)
