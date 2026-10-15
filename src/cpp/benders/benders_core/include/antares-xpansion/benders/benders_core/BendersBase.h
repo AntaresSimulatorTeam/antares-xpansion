@@ -132,6 +132,8 @@ protected:
     void check_status(const SubProblemDataMap& subproblem_data_map) const;
 
     virtual void Run() = 0;
+    void InitializeMasterProblem();
+    void PreRunInitialization();
     void update_best_ub();
     bool ShouldBendersStop();
     bool is_initial_relaxation_requested() const;
@@ -156,7 +158,7 @@ protected:
                       SolverLogManager& solver_log_manager,
                       bool mps_has_alpha,
                       Logger logger,
-                      ProblemsFormat format,
+                      ProblemFormat format,
                       IBendersProblemProvider* benders_problem_provider,
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);

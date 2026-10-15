@@ -1,7 +1,8 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
+#include <iostream>
+
 #include "antares-xpansion/helpers/solver_utils.h"
-#include "iostream"
 
 /*!
  *  \brief Constructor of a Master Problem
@@ -22,7 +23,7 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
                            SolverLogManager& solver_log_manager,
                            const bool mps_has_alpha,
                            Logger logger,
-                           ProblemsFormat format,
+                           ProblemFormat format,
                            IBendersProblemProvider* benders_problem_provider,
                            double master_solution_tolerance,
                            const std::map<int, double>& subproblem_cut_coefficient_tolerance):

@@ -30,7 +30,7 @@ public:
                       SolverLogManager& solver_log_manager,
                       bool mps_has_alpha,
                       Logger logger,
-                      ProblemsFormat format,
+                      ProblemFormat format,
                       IBendersProblemProvider* benders_problem_provider,
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
@@ -76,7 +76,7 @@ public:
     // Paths
     [[nodiscard]] std::filesystem::path GetMasterPath(const std::string& input_root,
                                                       const std::string& master_name,
-                                                      ProblemsFormat format,
+                                                      ProblemFormat format,
                                                       const std::string& solver_name) const;
     void WriteBasis(const std::filesystem::path& filename) const;
 

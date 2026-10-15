@@ -65,7 +65,7 @@ public:
         return batch_collections_.size();
     }
 
-    std::vector<Batch> BatchCollections() const
+    const std::vector<Batch>& BatchCollections() const
     {
         return batch_collections_;
     }

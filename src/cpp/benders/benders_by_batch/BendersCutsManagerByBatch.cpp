@@ -8,21 +8,22 @@ BendersCutsManagerByBatch::BendersCutsManagerByBatch(
   CurrentIterationData& data,
   const VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  BendersMasterManager& master_manager):
+  BendersMasterManager& master_manager,
+  const BatchCollection& batch_collection_for_cuts):
     BendersCutsManager(master_manager),
     world_(world),
     rank_0_(rank_0),
     data_(data),
     problem_to_id_(problem_to_id),
-    relevantIterationData_(relevantIterationData)
+    relevantIterationData_(relevantIterationData),
+    batch_collection_for_cuts_(batch_collection_for_cuts)
 {
 }
 
-void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(
-  const SubProblemDataMap& subproblem_data_map,
-  const Timer& walltime,
-  const std::vector<SubProblemNamesInCut>& subproblems_per_cut,
-  double& batch_contribution_in_gap)
+void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
+                                                       const Timer& walltime,
+                                                       unsigned batch_id,
+                                                       double& batch_contribution_in_gap)
 {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(world_, subproblem_data_map, gathered_subproblem_map, rank_0_);
@@ -32,6 +33,8 @@ void BendersCutsManagerByBatch::GatherAndBuildCutsImpl(
 
     if (world_.rank() == rank_0_)
     {
+        const auto& subproblems_per_cut = batch_collection_for_cuts_.BatchCollections()[batch_id]
+                                            .name_to_cut;
         batch_contribution_in_gap = ComputeBatchContributionInGap(gathered_subproblem_map,
                                                                   subproblems_per_cut);
         BuildAllAggregatedCuts(subproblems_per_cut,

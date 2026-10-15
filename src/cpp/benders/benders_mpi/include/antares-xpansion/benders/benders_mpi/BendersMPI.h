@@ -66,8 +66,6 @@ private:
 protected:
     void InitializeMaster();
 
-    void PreRunInitialization();
-
     int Rank() const
     {
         return _world.rank();

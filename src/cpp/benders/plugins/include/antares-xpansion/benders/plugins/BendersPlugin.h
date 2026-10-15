@@ -24,7 +24,6 @@ public:
             - solver_log_manager : solver log manager
     */
     virtual void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                                const Logger& logger,
                                 const BendersBaseOptions& options,
                                 const SolverLogManager& solver_log_manager,
                                 std::shared_ptr<SolverAbstract> sub_problem_solver)

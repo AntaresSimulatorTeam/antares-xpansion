@@ -84,7 +84,7 @@ void CouplingMapGenerator::BuildSubProblemConstraintMap(
 {
     for (auto&& [subProblemName, variable_map]: coupling_map)
     {
-        if (options.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
+        if (options.PROBLEM_FORMAT == ProblemFormat::MPS_FILE)
         {
             size_t underscore_pos = subProblemName.find('_');
             size_t dot_pos = subProblemName.find('.');

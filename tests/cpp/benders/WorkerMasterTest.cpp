@@ -87,7 +87,7 @@ protected:
                                                      solver_log_manager,
                                                      false,
                                                      std::make_shared<xpansion::logger::Master>(),
-                                                     ProblemsFormat::MPS_FILE,
+                                                     ProblemFormat::MPS_FILE,
                                                      problem_provider.get(),
                                                      master_solution_tolerance,
                                                      subproblem_cut_coefficient_tolerance);
@@ -99,7 +99,8 @@ protected:
         return master;
     }
 };
-class CapturingSolverForAlphas : public NOOPSolverForWorkerMaster
+
+class CapturingSolverForAlphas: public NOOPSolverForWorkerMaster
 {
 public:
     struct CapturedRow
@@ -131,17 +132,18 @@ public:
     }
 };
 
-class WorkerMasterAddRowsTest : public ::testing::Test
+class WorkerMasterAddRowsTest: public ::testing::Test
 {
 protected:
     EmptyLogManager solver_log_manager;
-    std::shared_ptr<NOOPBendersProblemProvider> problem_provider =
-      std::make_shared<NOOPBendersProblemProvider>();
+    std::shared_ptr<NOOPBendersProblemProvider>
+      problem_provider = std::make_shared<NOOPBendersProblemProvider>();
 
     std::shared_ptr<WorkerMaster> make_master(int subproblems_count)
     {
         std::map<int, double> subproblem_cut_coefficient_tolerance{};
-        for (int i=0;i<subproblems_count;i++){
+        for (int i = 0; i < subproblems_count; i++)
+        {
             subproblem_cut_coefficient_tolerance[i] = 0.1;
         }
         return make_master(subproblems_count, subproblem_cut_coefficient_tolerance);
@@ -158,7 +160,7 @@ protected:
                                               solver_log_manager,
                                               false,
                                               std::make_shared<xpansion::logger::Master>(),
-                                              ProblemsFormat::MPS_FILE,
+                                              ProblemFormat::MPS_FILE,
                                               problem_provider.get(),
                                               0.1,
                                               subproblem_cut_coefficient_tolerance);
@@ -357,14 +359,15 @@ TEST_F(WorkerMasterAddRowsTest, AddGroupSubproblemCutThrowsWhenSubproblemToleran
     EXPECT_TRUE(capturing_solver->captured_rows.empty());
 }
 
-class WorkerMasterMock : public WorkerMaster {
+class WorkerMasterMock: public WorkerMaster
+{
 public:
-    using WorkerMaster::WorkerMaster; 
+    using WorkerMaster::WorkerMaster;
 
-    void call_set_master_only_var_ids() {
+    void call_set_master_only_var_ids()
+    {
         _set_master_only_var_ids();
     }
-
 };
 
 TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
@@ -403,7 +406,7 @@ TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
     std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    master->get(x_out, overall_cost, single_costs,non_subpb_vars);
+    master->get(x_out, overall_cost, single_costs, non_subpb_vars);
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0);    // Should remain unchanged
     EXPECT_DOUBLE_EQ(x_out["var2"], 0.0);    // Should be restored to LB
@@ -441,23 +444,26 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     EmptyLogManager solver_log_manager;
     auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
 
-    auto master = std::make_shared<WorkerMasterMock>(
-        VariableMap{},
-        "COIN",
-        0,
-        2, // subproblems_count
-        solver_log_manager,
-        false,
-        std::make_shared<xpansion::logger::Master>(),
-        ProblemsFormat::MPS_FILE,
-        problem_provider.get(),
-        0.1,
-        std::map<int,double>{}
-    );
+    auto master = std::make_shared<WorkerMasterMock>(VariableMap{},
+                                                     "COIN",
+                                                     0,
+                                                     2, // subproblems_count
+                                                     solver_log_manager,
+                                                     false,
+                                                     std::make_shared<xpansion::logger::Master>(),
+                                                     ProblemFormat::MPS_FILE,
+                                                     problem_provider.get(),
+                                                     0.1,
+                                                     std::map<int, double>{});
 
-    struct FakeSolver : public NOOPSolverForWorkerMaster {
-        int get_ncols() const override { return 6; }
+    struct FakeSolver: public NOOPSolverForWorkerMaster
+    {
+        int get_ncols() const override
+        {
+            return 6;
+        }
     };
+
     master->_solver = std::make_shared<FakeSolver>();
 
     master->_name_to_id = {{"var0", 0}, {"var1", 1}, {"var2", 2}};
@@ -468,7 +474,7 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     std::vector<int> expected_empty{};
     EXPECT_EQ(master->_id_master_only_vars, expected_empty);
 
-    master->_name_to_id = {{"var0", 0}, {"var1", 1}}; 
+    master->_name_to_id = {{"var0", 0}, {"var1", 1}};
     master->_id_master_only_vars.clear();
 
     master->call_set_master_only_var_ids();

@@ -252,15 +252,16 @@ public:
                                               [this, &name, &worker]
                                               { TryRestoreSubproblemBasis(name, worker); });
                               post_solve_hook(name, subproblem_data, worker);
-                              std::lock_guard guard(m);
-                              subproblem_data_map[name] = subproblem_data;
-                              StoreSubproblemBasis(name, worker);
 
                               std::call_once(
                                 variable_indice_once_flag_,
                                 [this](const auto& worker_)
                                 { SetSubproblemVariablesIndices(worker_); },
                                 *worker);
+
+                              std::lock_guard guard(m);
+                              subproblem_data_map[name] = subproblem_data;
+                              StoreSubproblemBasis(name, worker);
                           }
                           catch (...)
                           {
@@ -384,7 +385,7 @@ public:
           options_.LOG_LEVEL,
           solver_log_manager_,
           logger_,
-          options_.PROBLEMS_FORMAT,
+          options_.PROBLEM_FORMAT,
           benders_problem_provider.get());
     }
 
@@ -406,7 +407,7 @@ public:
                                                   options_.LOG_LEVEL,
                                                   solver_log_manager_,
                                                   logger_,
-                                                  options_.PROBLEMS_FORMAT,
+                                                  options_.PROBLEM_FORMAT,
                                                   benders_problem_provider.get());
     }
 
@@ -532,7 +533,7 @@ public:
               logger_,
               options_.SOLVER_NAME,
               options_.LOG_LEVEL,
-              options_.PROBLEMS_FORMAT,
+              options_.PROBLEM_FORMAT,
               subproblems_,
               solver_log_manager_,
               world);

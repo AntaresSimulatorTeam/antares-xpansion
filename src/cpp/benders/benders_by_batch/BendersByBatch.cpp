@@ -12,13 +12,29 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                std::shared_ptr<Output::OutputWriter> writer,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersMpi(options, std::move(logger), std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(std::make_shared<BendersCutsManagerByBatch>(world,
-                                                                    rank_0,
-                                                                    _data,
-                                                                    _problem_to_id,
-                                                                    relevantIterationData_,
-                                                                    master_manager_)),
+    BendersByBatch(options,
+                   std::move(logger),
+                   std::move(writer),
+                   std::make_shared<MpiCommunicationStrategy>(world),
+                   std::move(mathLoggerDriver))
+{
+}
+
+BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
+                               std::shared_ptr<ILogger> logger,
+                               std::shared_ptr<Output::OutputWriter> writer,
+                               std::shared_ptr<MpiCommunicationStrategy> mpi,
+                               std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver), mpi),
+    mpi_(std::move(mpi)),
+    batch_cuts_manager_(
+      std::make_shared<BendersCutsManagerByBatch>(mpi_->World(),
+                                                  rank_0,
+                                                  _data,
+                                                  _problem_to_id,
+                                                  relevantIterationData_,
+                                                  master_manager_,
+                                                  batch_collection_full_for_cuts_)),
     batch_subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                                          _options,
@@ -35,7 +51,7 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
 
 void BendersByBatch::free()
 {
-    if (_world.rank() == rank_0)
+    if (Rank() == rank_0)
     {
         master_manager_.FreeMaster();
     }
@@ -43,7 +59,7 @@ void BendersByBatch::free()
     {
         batch_subproblems_manager_->free_subproblems();
     }
-    _world.barrier();
+    mpi_->Barrier();
 }
 
 void BendersByBatch::launch()
@@ -53,17 +69,16 @@ void BendersByBatch::launch()
         InitializeProblems();
     }
 
-    _world.barrier();
+    mpi_->Barrier();
 
     benders_plugin_->OnBendersStart(batch_subproblems_manager_->GetSubProblemMap(),
-                                    output_manager_.GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     batch_subproblems_manager_->GetFactorySolver());
 
     Run();
 
-    _world.barrier();
+    mpi_->Barrier();
 
     benders_plugin_->OnBendersEnd();
 
@@ -74,12 +89,12 @@ void BendersByBatch::launch()
         free();
     }
 
-    _world.barrier();
+    mpi_->Barrier();
 }
 
 void BendersByBatch::BroadCastVariablesIndices()
 {
-    if (_world.rank() == rank_0)
+    if (Rank() == rank_0)
     {
         batch_subproblems_manager_->SetSubproblemsVariablesIndices();
     }
@@ -93,13 +108,17 @@ void BendersByBatch::InitializeProblems()
     BuildBatches();
     BuildMasterProblem();
     BroadCastVariablesIndices();
-    batch_subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
+    batch_subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS,
+                                                             &mpi_->World());
     init_problems_ = false;
 }
 
 void BendersByBatch::BuildMasterProblem()
 {
-    InitializeMaster();
+    if (Rank() == rank_0)
+    {
+        InitializeMasterProblem();
+    }
     for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
         master_manager_.AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
@@ -378,10 +397,9 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     AllReduce(misprice_, global_misprice, std::logical_and<bool>());
     misprice_ = global_misprice;
 
-    auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
     batch_cuts_manager_->GatherAndBuildCuts(subproblem_data_map,
                                             subproblems_timer_per_proc,
-                                            batch_cuts_list[current_batch_id_].name_to_cut,
+                                            current_batch_id_,
                                             *batch_contribution_in_gap);
 }
 

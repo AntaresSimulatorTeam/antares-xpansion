@@ -2,6 +2,7 @@
 
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_core/BendersSubProblemsManager.hxx"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 class BendersSubProblemsManagerByBatch
     : public BendersSubProblemsManager<BendersSubProblemsManagerByBatch>
@@ -85,13 +86,12 @@ public:
     {
         return [this, &batch_sub_problems]()
         {
-            const auto& sub_pblm_map = GetSubProblemMap();
             std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
             nameAndWorkers.reserve(batch_sub_problems.size());
             for (const auto& name: batch_sub_problems)
             {
-                auto it = sub_pblm_map.find(name);
-                nameAndWorkers.emplace_back(it->first, it->second);
+                nameAndWorkers.emplace_back(name,
+                                            find_or_throw(subproblem_map_, name, "subproblem map"));
             }
             return nameAndWorkers;
         };
@@ -105,10 +105,27 @@ public:
             nameAndVariableMap.reserve(batch_sub_problems.size());
             for (const auto& name: batch_sub_problems)
             {
-                auto it = coupling_map_.find(name);
-                nameAndVariableMap.emplace_back(it->first, it->second);
+                nameAndVariableMap.emplace_back(name,
+                                                find_or_throw(coupling_map_, name, "coupling map"));
             }
             return nameAndVariableMap;
         };
+    }
+
+private:
+    template<typename Map>
+    static const typename Map::mapped_type& find_or_throw(const Map& map,
+                                                          const std::string& name,
+                                                          const std::string& map_description)
+    {
+        const auto it = map.find(name);
+        if (it == map.end())
+        {
+            throw LogUtils::XpansionError<std::runtime_error>(
+              "Subproblem " + name + " of the current batch is not in the " + map_description
+                + " of this process",
+              LOGLOCATION);
+        }
+        return it->second;
     }
 };
