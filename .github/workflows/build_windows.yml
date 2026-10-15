@@ -88,6 +88,9 @@ jobs:
           pushd vcpkg
           ./bootstrap-vcpkg.bat -disableMetrics
 
+      - name: Install MS-MPI redistributable
+        uses: ./.github/actions/install-msmpi
+
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
         uses: actions/cache/restore@v6
