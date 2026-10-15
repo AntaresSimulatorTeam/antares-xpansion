@@ -68,7 +68,7 @@ void BendersBase::OpenCsvFile()
 {
     if (!_csv_file.is_open())
     {
-        auto isResume = IsResume(_options.RESUME);
+        auto isResume = IsResume(_options.RESTART_MODE);
         const auto opening_mode = isResume ? std::ios::app : std::ios::trunc;
         _csv_file.open(_csv_file_path, std::ios::out | opening_mode);
         if (_csv_file && !isResume)
@@ -1027,7 +1027,7 @@ Output::SolutionData BendersBase::BendersSolution() const
     const auto optimal_gap(_data.best_ub - _data.lb);
     const auto relative_gap(optimal_gap / _data.best_ub);
 
-    if (IsResume(_options.RESUME))
+    if (IsResume(_options.RESTART_MODE))
     {
         // solution may not be in relevantIterationData_
         Output::CandidatesVec candidates_vec;
@@ -1334,7 +1334,7 @@ double BendersBase::execution_time() const
 void BendersBase::ChecksResumeMode()
 {
     benders_timer = Timer();
-    if (IsResume(_options.RESUME))
+    if (IsResume(_options.RESTART_MODE))
     {
         auto reader = LastIterationReader(LastIterationFile());
         LogData last_iter;
