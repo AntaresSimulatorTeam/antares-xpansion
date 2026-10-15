@@ -1,7 +1,8 @@
 name: Install MS-MPI redistributable
 description: >
   Installs the MS-MPI runtime in the version expected by the vcpkg msmpi port
-  (the port only installs the SDK and checks for the runtime). Requires the
+  (the port only installs the SDK and checks for the runtime). The expected
+  version and the download URL are both read from the vcpkg port. Requires the
   vcpkg submodule to be checked out.
 
 runs:
@@ -12,16 +13,23 @@ runs:
       run: |
         $expected = (Get-Content vcpkg/ports/msmpi/vcpkg.json | ConvertFrom-Json).version
         $mpiexec = "C:\Program Files\Microsoft MPI\Bin\mpiexec.exe"
-        $installed = ""
-        if (Test-Path $mpiexec) {
-          if ((& $mpiexec 2>&1 | Out-String) -match '\[Version ([0-9.]+)\]') { $installed = $Matches[1] }
+
+        function Get-InstalledMsmpiVersion {
+          if (-not (Test-Path $mpiexec)) { return "" }
+          if ((& $mpiexec 2>&1 | Out-String) -match '\[Version ([0-9.]+)\]') { return $Matches[1] }
+          return ""
         }
+
+        $installed = Get-InstalledMsmpiVersion
         Write-Host "Expected MS-MPI: $expected, installed: '$installed'"
         if ($installed -ne $expected) {
-          Invoke-WebRequest "https://download.microsoft.com/download/7/2/7/72731ebb-b63c-4170-ade7-836966263a8f/msmpisetup.exe" -OutFile msmpisetup.exe
+          $portfile = Get-Content vcpkg/ports/msmpi/portfile.cmake -Raw
+          if ($portfile -notmatch '"(https://[^"]+/msmpisetup\.exe)"') { throw "msmpisetup.exe URL not found in vcpkg msmpi portfile" }
+          Invoke-WebRequest $Matches[1] -OutFile msmpisetup.exe
           $p = Start-Process .\msmpisetup.exe -ArgumentList "-unattend" -Wait -PassThru
           if ($p.ExitCode -ne 0) { throw "msmpisetup.exe failed with exit code $($p.ExitCode)" }
           Remove-Item msmpisetup.exe
+          $installed = Get-InstalledMsmpiVersion
+          if ($installed -ne $expected) { throw "Installed MS-MPI version '$installed' does not match vcpkg expected '$expected'" }
         }
-        if (-not (Test-Path $mpiexec)) { throw "mpiexec.exe not found at $mpiexec" }
         & $mpiexec 2>&1 | Select-Object -First 1
