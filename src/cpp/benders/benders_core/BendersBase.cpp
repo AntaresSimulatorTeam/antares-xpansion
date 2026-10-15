@@ -376,7 +376,7 @@ void BendersBase::get_master_value()
     Timer timer_master;
 
     _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);
-    _data.master_only_vars_out.resize(_master->_id_master_only_vars.size());
+    _data.master_only_vars_out.resize(_master->get_master_only_var_ids().size());
     if (_options.BOUND_ALPHA)
     {
         _master->fix_alpha(_data.best_ub);
@@ -456,7 +456,7 @@ void BendersBase::ComputeInvestCost()
     }
     for (int i(0); i < _data.master_only_vars_cut.size(); ++i)
     {
-        int col_id = _master->_id_master_only_vars[i];
+        int col_id = _master->get_master_only_var_ids()[i];
         _data.invest_cost += obj[col_id] * _data.master_only_vars_cut[i];
     }
 }
@@ -1439,7 +1439,7 @@ void BendersBase::UpdateOverallCosts()
     }
     for (int i(0); i < _data.master_only_vars_cut.size(); ++i)
     {
-        int col_id = _master->_id_master_only_vars[i];
+        int col_id = _master->get_master_only_var_ids()[i];
         _data.invest_cost += obj[col_id] * _data.master_only_vars_cut[i];
     }
 

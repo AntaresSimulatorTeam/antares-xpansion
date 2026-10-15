@@ -94,7 +94,6 @@ protected:
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
         master->set_id_alpha(3);
         master->set_id_single_subpb_costs_under_approx({4});
-        master->_id_master_only_vars = {};
         return master;
     }
 };
@@ -343,20 +342,18 @@ TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
     master->_solver = std::make_shared<FakeSolver>();
 
     master->_name_to_id = {{"var0", 0}, {"var1", 1}, {"var2", 2}};
-    master->_id_master_only_vars.clear();
 
     master->call_set_master_only_var_ids();
 
     std::vector<int> expected_empty{};
-    EXPECT_EQ(master->_id_master_only_vars, expected_empty);
+    EXPECT_EQ(master->get_master_only_var_ids(), expected_empty);
 
     master->_name_to_id = {{"var0", 0}, {"var1", 1}}; 
-    master->_id_master_only_vars.clear();
 
     master->call_set_master_only_var_ids();
 
     std::vector<int> expected{2};
-    EXPECT_EQ(master->_id_master_only_vars, expected);
+    EXPECT_EQ(master->get_master_only_var_ids(), expected);
 }
 
 TEST_F(WorkerMasterAddRowsTest, AddSubproblemCutAppliesRoundingOnCoeffs)

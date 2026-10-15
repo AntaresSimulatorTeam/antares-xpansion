@@ -27,7 +27,6 @@ public:
                  double master_solution_tolerance,
                  const std::map<int, double>& subproblem_cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
-    std::vector<int> _id_master_only_vars;
     void add_row(std::vector<char>& row_type,
                  std::vector<double>& row_rhs,
                  std::vector<int>& mstart,
@@ -60,12 +59,18 @@ public:
     void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cut,
                                     std::map<std::string, int>& problem_to_id);
 
+    [[nodiscard]] const std::vector<int>& get_master_only_var_ids() const
+    {
+        return _id_master_only_vars;
+    }
+
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {
         return _id_int_vars;
     }
 
 private:
+    std::vector<int> _id_master_only_vars;
     std::vector<int> _id_int_vars;
     std::vector<int> _id_single_subpb_costs_under_approx;
     int _id_alpha = 0;
