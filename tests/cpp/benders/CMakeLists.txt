@@ -1,6 +1,7 @@
 add_executable(benders_sequential_test)
 target_sources(benders_sequential_test
         PRIVATE
+        main.cpp
         benders_sequential_test.cpp
         BendersBaseTest.cpp
         BendersByBatchTest.cpp
@@ -12,6 +13,7 @@ target_sources(benders_sequential_test
 add_executable(benders_mem_compact_micro_iters_test)
 target_sources(benders_mem_compact_micro_iters_test
         PRIVATE
+        main.cpp
         SkeletonConstraintSetLoaderTest.cpp
         SubproblemConstraintsManagerTest.cpp
         SolverRowExtractorTest.cpp
@@ -27,7 +29,7 @@ target_link_libraries(benders_mem_compact_micro_iters_test
         antaresXpansion::output_core
         antaresXpansion::logger_lib
         tests_utils
-        GTest::Main)
+        GTest::GTest)
 
 target_include_directories(benders_mem_compact_micro_iters_test
         PRIVATE
@@ -47,7 +49,7 @@ target_link_libraries(benders_sequential_test
         antaresXpansion::logger_lib
         merge_master_mps_core
         tests_utils
-        GTest::Main)
+        GTest::GTest)
 
 target_include_directories(benders_sequential_test
         PRIVATE
