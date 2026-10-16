@@ -5,7 +5,7 @@
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
-#include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
+#include "antares-xpansion/benders/outer_loop/IOuterLoopFacade.h"
 
 namespace Outerloop
 {
@@ -22,7 +22,7 @@ public:
       const std::vector<Benders::Criterion::CriterionSingleInputData>& outer_loop_data,
       std::shared_ptr<IMasterUpdate> master_updater,
       std::shared_ptr<ICutsManager> cuts_manager,
-      std::shared_ptr<OuterLoopFacade> facade,
+      std::shared_ptr<IOuterLoopFacade> facade,
       std::shared_ptr<ICommunicationStrategy> communication_strategy);
 
     void Run() override;
@@ -41,7 +41,7 @@ public:
 private:
     std::shared_ptr<IMasterUpdate> master_updater_;
     std::shared_ptr<ICutsManager> cuts_manager_;
-    std::shared_ptr<OuterLoopFacade> facade_;
+    std::shared_ptr<IOuterLoopFacade> facade_;
     BendersLoggerBase loggers_;
     std::shared_ptr<ICommunicationStrategy> communication_strategy_;
     bool is_bilevel_check_all_ = false;
