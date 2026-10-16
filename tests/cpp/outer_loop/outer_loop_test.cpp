@@ -12,6 +12,7 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
 
