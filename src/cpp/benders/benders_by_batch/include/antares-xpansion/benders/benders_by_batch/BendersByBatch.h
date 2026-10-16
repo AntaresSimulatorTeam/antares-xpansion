@@ -43,6 +43,7 @@ protected:
     void InitializeProblems() override;
     void BroadCastVariablesIndices();
     void BroadcastSingleSubpbCostsUnderApprox();
+    void PromotePreviousXCutToXIn();
     void ComputeXCut();
     void UpdateStoppingCriterion() override;
     bool ShouldRelaxationStop() const override;
