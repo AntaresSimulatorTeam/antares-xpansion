@@ -40,7 +40,8 @@ void BendersSequential::InitializeProblems()
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
 
-    if (_data.control.nsubproblem > 0) [[likely]]
+    const bool has_subproblems = _data.control.nsubproblem > 0; // aggregation divides by it
+    if (has_subproblems) [[likely]]
     {
         int n_cuts = SetAggregation(_data.control.nsubproblem);
         subproblem_per_cut_indices.reserve(n_cuts);

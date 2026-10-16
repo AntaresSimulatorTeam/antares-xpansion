@@ -82,7 +82,8 @@ void BendersOutputManager::PrintCurrentIterationCsv()
     {
         auto ite = data_.control.it - 1;
         Point x_cut;
-        if (ite == 0)
+        const bool is_first_iteration = (ite == 0);
+        if (is_first_iteration)
         {
             int best_it_index = data_.control.best_it - 1;
             if (best_it_index >= 0)
@@ -277,7 +278,8 @@ Output::SolutionData BendersOutputManager::BendersSolution(int totalNbProblems) 
     const auto optimal_gap(data_.control.best_ub - data_.master.lb);
     const auto relative_gap(optimal_gap / data_.control.best_ub);
 
-    if (options_.RESUME)
+    const bool solution_only_in_resume_data = options_.RESUME;
+    if (solution_only_in_resume_data)
     {
         Output::CandidatesVec candidates_vec;
         std::transform(best_iteration_data_.x_cut.cbegin(),
