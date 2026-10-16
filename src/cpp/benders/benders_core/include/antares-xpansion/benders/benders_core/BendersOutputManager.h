@@ -22,7 +22,7 @@ public:
                          const CurrentIterationData& data,
                          const BendersBaseOptions& options,
                          const VariableMap& problem_to_id,
-                         BendersRelevantIterationsData& relevant_iteration_data);
+                         const BendersRelevantIterationsData& relevant_iteration_data);
 
     [[nodiscard]] Logger GetLogger() const;
     [[nodiscard]] std::shared_ptr<Output::OutputWriter> GetWriter() const;
@@ -67,7 +67,7 @@ private:
     void PrintCurrentIterationCsv();
     void print_master_and_cut(std::ostream& file,
                               int ite,
-                              WorkerMasterData& trace,
+                              const WorkerMasterData& trace,
                               const Point& xopt);
     void print_master_csv(std::ostream& stream,
                           const WorkerMasterData& trace,
@@ -84,7 +84,7 @@ private:
     const CurrentIterationData& data_;
     const BendersBaseOptions& options_;
     const VariableMap& problem_to_id_;
-    BendersRelevantIterationsData& relevant_iteration_data_;
+    const BendersRelevantIterationsData& relevant_iteration_data_;
 
     LogData best_iteration_data_;
     int iterations_before_resume_ = 0;

@@ -17,7 +17,7 @@ BendersOutputManager::BendersOutputManager(Logger logger,
                                            const CurrentIterationData& data,
                                            const BendersBaseOptions& options,
                                            const VariableMap& problem_to_id,
-                                           BendersRelevantIterationsData& relevant_iteration_data):
+                                           const BendersRelevantIterationsData& relevant_iteration_data):
     logger_(std::move(logger)),
     writer_(std::move(writer)),
     mathLoggerDriver_(std::move(mathLoggerDriver)),
@@ -123,13 +123,13 @@ static void print_cut_csv(std::ostream& stream,
 
 void BendersOutputManager::print_master_and_cut(std::ostream& file,
                                                 int ite,
-                                                WorkerMasterData& trace,
+                                                const WorkerMasterData& trace,
                                                 const Point& x_cut)
 {
     file << ite << ";";
     print_master_csv(file, trace, x_cut);
 
-    for (auto& [subproblem_name, subproblem_data]: trace._cut_trace)
+    for (const auto& [subproblem_name, subproblem_data]: trace._cut_trace)
     {
         auto problem_id = problem_to_id_.at(subproblem_name);
         file << ite << ";";
@@ -164,7 +164,7 @@ void BendersOutputManager::SaveCurrentIterationInOutputFile() const
 {
     if (!options_.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP)
     {
-        auto& LastWorkerMasterData = relevant_iteration_data_.last;
+        const auto& LastWorkerMasterData = relevant_iteration_data_.last;
         if (LastWorkerMasterData._valid)
         {
             writer_->write_iteration(iteration(LastWorkerMasterData),
