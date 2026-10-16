@@ -12,12 +12,12 @@ void BendersMasterManager::CreateMaster(
   SolverLogManager& solver_log_manager,
   bool mps_has_alpha,
   Logger logger,
-  ProblemsFormat format,
+  ProblemFormat format,
   IBendersProblemProvider* benders_problem_provider,
   double master_solution_tolerance,
   const std::map<int, double>& subproblem_cut_coefficient_tolerance)
 {
-    master_ = std::make_shared<WorkerMaster>(variable_map,
+    master_ = std::make_unique<WorkerMaster>(variable_map,
                                              solver_name,
                                              log_level,
                                              subproblems_count,
@@ -34,6 +34,10 @@ void BendersMasterManager::CreateMaster(
 
 void BendersMasterManager::FreeMaster()
 {
+    if (!master_)
+    {
+        return;
+    }
     master_->free();
     is_empty_ = true;
 }
@@ -43,9 +47,9 @@ bool BendersMasterManager::IsEmpty() const
     return is_empty_;
 }
 
-WorkerMasterPtr BendersMasterManager::GetMaster() const
+WorkerMaster* BendersMasterManager::Master() const
 {
-    return master_;
+    return master_.get();
 }
 
 void BendersMasterManager::SetVariableMap(const VariableMap& variable_map)
@@ -91,7 +95,7 @@ int BendersMasterManager::GetNcols() const
 
 int BendersMasterManager::GetNElems() const
 {
-    return master_->_solver->get_nelems();
+    return master_->solver()->get_nelems();
 }
 
 void BendersMasterManager::GetRowsCoeffs(std::vector<int>& mstart,
@@ -108,21 +112,21 @@ void BendersMasterManager::GetRowsCoeffs(std::vector<int>& mstart,
 
 void BendersMasterManager::GetRowType(std::vector<char>& qrtype, int first, int last) const
 {
-    master_->_solver->get_row_type(qrtype.data(), first, last);
+    master_->solver()->get_row_type(qrtype.data(), first, last);
 }
 
 std::vector<double> BendersMasterManager::GetObjectiveFunctionCoeffs() const
 {
-    int ncols = master_->_solver->get_ncols();
+    int ncols = master_->solver()->get_ncols();
     std::vector<double> obj(ncols);
-    master_->_solver->get_obj(obj.data(), 0, ncols - 1);
+    master_->solver()->get_obj(obj.data(), 0, ncols - 1);
     return obj;
 }
 
 void BendersMasterManager::SetObjectiveFunction(const double* coeffs, int first, int last) const
 {
     assert(last >= first);
-    master_->_solver->set_obj(coeffs, first, last);
+    master_->solver()->set_obj(coeffs, first, last);
 }
 
 void BendersMasterManager::SetObjectiveFunctionCoeffsToZeros() const
@@ -144,10 +148,10 @@ void BendersMasterManager::ActivateIntegrityConstraints() const
 
 std::filesystem::path BendersMasterManager::GetMasterPath(const std::string& input_root,
                                                           const std::string& master_name,
-                                                          ProblemsFormat format,
+                                                          ProblemFormat format,
                                                           const std::string& solver_name) const
 {
-    if (format == ProblemsFormat::OPTIMIZED && solver_name == "XPRESS")
+    if (format == ProblemFormat::OPTIMIZED && solver_name == "XPRESS")
     {
         return std::filesystem::path(input_root) / (master_name + SAVE_SUFFIX);
     }
@@ -171,7 +175,7 @@ void BendersMasterManager::SolveMaster(CurrentIterationData& data,
     Timer timer_master;
 
     data.master.single_subpb_costs_under_approx.resize(data.control.nsubproblem);
-    data.solution.master_only_vars_out.resize(master_->_id_master_only_vars.size());
+    data.solution.master_only_vars_out.resize(master_->GetMasterOnlyVarsIds().size());
     if (bound_alpha)
     {
         master_->fix_alpha(data.control.best_ub);
@@ -184,10 +188,10 @@ void BendersMasterManager::SolveMaster(CurrentIterationData& data,
                  data.solution.master_only_vars_out);
     master_->get_value(data.master.lb);
 
-    for (const auto& [id, name]: master_->_id_to_name)
+    for (const auto& [id, name]: master_->GetIdToName())
     {
-        master_->_solver->get_ub(&data.solution.max_invest[name], id, id);
-        master_->_solver->get_lb(&data.solution.min_invest[name], id, id);
+        master_->solver()->get_ub(&data.solution.max_invest[name], id, id);
+        master_->solver()->get_lb(&data.solution.min_invest[name], id, id);
     }
 
     data.master.timer_master = timer_master.elapsed();
@@ -201,12 +205,12 @@ void BendersMasterManager::ComputeInvestCost(CurrentIterationData& data) const
 
     for (const auto& [col_name, value]: data.solution.x_cut)
     {
-        int col_id = master_->_name_to_id[col_name];
-        data.master.invest_cost += obj[col_id] * data.solution.x_cut[col_name];
+        int col_id = master_->GetNameToId().at(col_name);
+        data.master.invest_cost += obj[col_id] * value;
     }
     for (int i(0); i < data.solution.master_only_vars_cut.size(); ++i)
     {
-        int col_id = master_->_id_master_only_vars[i];
+        int col_id = master_->GetMasterOnlyVarsIds()[i];
         data.master.invest_cost += obj[col_id] * data.solution.master_only_vars_cut[i];
     }
 }
@@ -222,7 +226,7 @@ void BendersMasterManager::UpdateOverallCosts(CurrentIterationData& data,
     }
     for (int i(0); i < data.solution.master_only_vars_cut.size(); ++i)
     {
-        int col_id = master_->_id_master_only_vars[i];
+        int col_id = master_->GetMasterOnlyVarsIds()[i];
         data.master.invest_cost += obj[col_id] * data.solution.master_only_vars_cut[i];
     }
 
@@ -246,10 +250,10 @@ void BendersMasterManager::AddGroupSubproblemCut(std::vector<int> subproblem_ids
 
 const VariableMap& BendersMasterManager::GetNameToId() const
 {
-    return master_->_name_to_id;
+    return master_->GetNameToId();
 }
 
 const std::vector<int>& BendersMasterManager::GetMasterOnlyVarsIds() const
 {
-    return master_->_id_master_only_vars;
+    return master_->GetMasterOnlyVarsIds();
 }

@@ -1,34 +1,22 @@
 #pragma once
 
+#include <cassert>
 #include <vector>
 
+#include "BendersMasterManager.h"
 #include "BendersStructsDatas.h"
 #include "SubproblemCut.h"
-#include "WorkerMaster.h"
 #include "common.h"
-
-namespace
-{
-
-inline void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
-{
-    for (const auto& [cand_name, cand_value]: x_cut)
-    {
-        const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
-        if (cand_name_and_subgradient != var_name_subgradient.end())
-        {
-            s[cand_name] += cand_name_and_subgradient->second;
-        }
-    }
-}
-
-} // namespace
 
 template<typename Derived>
 class BendersCutsManager
 {
 public:
-    BendersCutsManager() = default;
+    // The master manager is the only owner of the master problem: going through it means
+    // this class never holds a handle that a master re-creation could invalidate. It holds
+    // no master on the processes that do not own one; those take part in the gathering but
+    // never build a cut.
+    explicit BendersCutsManager(BendersMasterManager& master_manager);
 
     template<typename... Args>
     void GatherAndBuildCuts(Args&&... args)
@@ -89,9 +77,11 @@ public:
                                 const VariableMap& problem_to_id,
                                 double& ub,
                                 const Point& x_cut,
-                                SubProblemDataMap& cut_trace,
-                                const WorkerMasterPtr& master)
+                                SubProblemDataMap& cut_trace)
     {
+        assert((subproblem_names.empty() || master_manager_.Master() != nullptr)
+               && "cuts can only be built on the process owning the master problem");
+
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
             Point s;
@@ -100,7 +90,11 @@ public:
 
             for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
             {
-                subproblem_ids_per_cut.push_back(problem_to_id.at(sub_problem_name));
+                auto problem_to_id_pair = problem_to_id.find(sub_problem_name);
+                if (problem_to_id_pair != problem_to_id.end())
+                {
+                    subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
+                }
 
                 auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
                   sub_problem_name);
@@ -115,11 +109,28 @@ public:
                 }
             }
 
-            master->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+            master_manager_.AddGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
         }
     }
 
+protected:
+    BendersMasterManager& master_manager_;
+
 private:
+    // Accumulates the subgradient of one subproblem into the cut coefficients s,
+    // for every candidate present in the separation point x_cut.
+    static void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
+    {
+        for (const auto& [cand_name, cand_value]: x_cut)
+        {
+            const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
+            if (cand_name_and_subgradient != var_name_subgradient.end())
+            {
+                s[cand_name] += cand_name_and_subgradient->second;
+            }
+        }
+    }
+
     // Rounds x_cut values that are within tolerance of variable bounds to
     // avoid numerical drift from repeated separation parameter application.
     void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
@@ -154,3 +165,9 @@ private:
                                       : data.cuts.min_simplexiter;
     }
 };
+
+template<typename Derived>
+BendersCutsManager<Derived>::BendersCutsManager(BendersMasterManager& master_manager):
+    master_manager_(master_manager)
+{
+}

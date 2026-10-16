@@ -5,21 +5,21 @@
 
 using namespace Outerloop;
 
-MasterUpdateBase::MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
+MasterUpdateBase::MasterUpdateBase(BendersMasterManager& master_manager,
                                    double tau,
                                    double outer_loop_stopping_threshold):
-    MasterUpdateBase(std::move(master_manager),
+    MasterUpdateBase(master_manager,
                      tau,
                      outer_loop_stopping_threshold,
                      "Min_Investment_Constraint")
 {
 }
 
-MasterUpdateBase::MasterUpdateBase(std::shared_ptr<BendersMasterManager> master_manager,
+MasterUpdateBase::MasterUpdateBase(BendersMasterManager& master_manager,
                                    double tau,
                                    double outer_loop_stopping_threshold,
                                    const std::string& name):
-    master_manager_(std::move(master_manager)),
+    master_manager_(master_manager),
     outer_loop_stopping_threshold_(outer_loop_stopping_threshold),
     min_invest_constraint_name_(name)
 {
@@ -47,9 +47,9 @@ bool MasterUpdateBase::Update(double lambda_min, double lambda_max)
 
 void MasterUpdateBase::UpdateConstraints()
 {
-    if (!master_manager_->IsEmpty() && additional_constraint_index_ > -1)
+    if (!master_manager_.IsEmpty() && additional_constraint_index_ > -1)
     {
-        master_manager_->ChangeRhs(additional_constraint_index_, lambda_);
+        master_manager_.ChangeRhs(additional_constraint_index_, lambda_);
     }
     else
     {
@@ -63,8 +63,8 @@ void MasterUpdateBase::UpdateConstraints()
  */
 void MasterUpdateBase::AddMinInvestConstraint()
 {
-    auto master_variables = master_manager_->GetVariableMap();
-    const auto obj_coeff = master_manager_->GetObjectiveFunctionCoeffs();
+    auto master_variables = master_manager_.GetVariableMap();
+    const auto obj_coeff = master_manager_.GetObjectiveFunctionCoeffs();
     auto newnz = master_variables.size();
     int newrows = 1;
     std::vector<char> rtype(newrows, 'G');
@@ -86,13 +86,13 @@ void MasterUpdateBase::AddMinInvestConstraint()
     {
         std::vector<std::string> row_names(newrows, min_invest_constraint_name_);
 
-        master_manager_->AddRows(rtype, rhs, {}, matstart, mclind, matval, row_names);
+        master_manager_.AddRows(rtype, rhs, {}, matstart, mclind, matval, row_names);
     }
     else
     {
-        master_manager_->AddRows(rtype, rhs, {}, matstart, mclind, matval);
+        master_manager_.AddRows(rtype, rhs, {}, matstart, mclind, matval);
     }
-    additional_constraint_index_ = master_manager_->GetNrows() - 1;
+    additional_constraint_index_ = master_manager_.GetNrows() - 1;
 }
 
 double MasterUpdateBase::Rhs() const

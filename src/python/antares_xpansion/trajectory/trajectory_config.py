@@ -14,7 +14,7 @@ class TrajectoryInputParameters:
     memory: bool
     install_dir: Path
     # Solver and problems format
-    problems_format: str
+    problem_format: str
     solver: str
     cache_problems: str
     # Relevant for resolution only
@@ -113,7 +113,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         self.memory = self.input_parameters.memory
         self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
         # Problems format and solver
-        self.problems_format = self.input_parameters.problems_format
+        self.problem_format = self.input_parameters.problem_format
         self.solver = self.input_parameters.solver
         self.cache_problems = self.input_parameters.cache_problems
         # Resolution args

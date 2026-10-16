@@ -8,18 +8,29 @@
 #include <chrono>
 #include <exception>
 #include <fstream>
+#include <iostream>
+#include <json/reader.h>
 #include <sstream>
 #include <stdexcept>
-#include <string_view>
+#include <string>
 
 #include <boost/tokenizer.hpp>
 
-#include "iostream"
+namespace
+{
+namespace config_keys
+{
+const std::string warm_start = "warm_start";
+const std::string plugin_lib_path = "plugin_lib_path";
+} // namespace config_keys
+} // namespace
 
 Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                          const CouplingMap& coupling_map,
-                                         mpi::communicator* world):
-    options_(options)
+                                         mpi::communicator* world,
+                                         const Logger& logger):
+    options_(options),
+    _logger(logger)
 {
     coupling_map_ = coupling_map;
 
@@ -34,9 +45,8 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
-    std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
-    auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path;
+    auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path_;
 #ifdef _WIN32
     handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
 #else
@@ -156,45 +166,81 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
-    std::filesystem::path mirco_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
-                                                          / "micro_iterations_config.txt";
-    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.string());
+    std::filesystem::path micro_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
+                                                          / "micro_iterations_config.json";
+    std::ifstream micro_iterations_options_stream(micro_iterations_options_path.string());
 
     if (micro_iterations_options_stream.is_open())
     {
-        std::string line;
-        while (std::getline(micro_iterations_options_stream, line))
+        Json::Value config;
+        Json::CharReaderBuilder reader_builder;
+        std::string errors;
+        if (!Json::parseFromStream(reader_builder,
+                                   micro_iterations_options_stream,
+                                   &config,
+                                   &errors))
         {
-            std::istringstream iss(line);
-            std::string key, value;
-
-            if (std::getline(iss, key, '=') && std::getline(iss, value))
-            {
-                if (key == "warm_start")
-                {
-                    if (value == "0")
-                    {
-                        warm_start_ = false;
-                    }
-                }
-                else
-                {
-                    micro_iterations_config_[key] = value;
-                }
-            }
+            std::ostringstream oss;
+            oss << "failed to parse : " << micro_iterations_options_path.string() << "\n"
+                << "Errors: " << errors;
+            _logger->display_message(oss.str());
+            exit(EXIT_FAILURE);
         }
-        for (auto [key, value]: micro_iterations_config_)
+        // Syntactically valid inputs such as [] or "value" pass parseFromStream(), but
+        // isMember()/string-key access on a non-object can raise Json::LogicError
+        if (!config.isObject())
         {
-            if (key == "plugin_lib_path")
+            _logger->display_message("micro_iterations_config.json must contain a JSON object");
+            _world->abort(EXIT_FAILURE);
+        }
+
+        handle_warm_start(config);
+        handle_plugin_lib_path(config);
+
+        for (const auto& key: config.getMemberNames())
+        {
+            if (key != config_keys::warm_start && key != config_keys::plugin_lib_path)
             {
-                std::string cpp_output_lib_path = micro_iterations_config_["plugin_lib_path"];
+                std::ostringstream oss;
+                oss << key << " is not a micro_iterations_config.json parameter";
+                _logger->display_message(oss.str());
             }
         }
     }
     else
     {
-        std::cerr << "unable to open : " << mirco_iterations_options_path.string() << std::endl;
+        _logger->display_message("unable to open : " + micro_iterations_options_path.string());
         exit(EXIT_FAILURE);
+    }
+}
+
+void Benders_MICRO_ITERS::handle_warm_start(const Json::Value& config)
+{
+    if (config.isMember(config_keys::warm_start) && config[config_keys::warm_start].isBool())
+    {
+        warm_start_ = config[config_keys::warm_start].asBool();
+    }
+    else
+    {
+        warm_start_ = false;
+        _logger->display_message("warm start value should be set as a boolean value in the "
+                                 "config. By default warm_start = false");
+    }
+}
+
+void Benders_MICRO_ITERS::handle_plugin_lib_path(const Json::Value& config)
+{
+    if (config.isMember(config_keys::plugin_lib_path)
+        && config[config_keys::plugin_lib_path].isString())
+    {
+        plugin_lib_path_ = std::filesystem::path(config[config_keys::plugin_lib_path].asString());
+    }
+    else
+    {
+        std::ostringstream oss;
+        oss << "plugin_lib_path is missing or not a string in micro_iterations_config.json";
+        _logger->display_message(oss.str());
+        _world->abort(EXIT_FAILURE);
     }
 }
 
@@ -225,7 +271,6 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 }
 
 void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                                         const Logger& logger,
                                          const BendersBaseOptions& options,
                                          const SolverLogManager& solver_log_manager,
                                          std::shared_ptr<SolverAbstract> sub_problem_solver)
@@ -241,7 +286,6 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
         // coefficients differ)
         InitialSubProblemSolverSize_ = subproblem_map.begin()->second->get_problem_row_num();
     }
-    _logger = logger;
     solver_log_manager_ = &solver_log_manager;
 
     switch (options.CACHE_PROBLEMS)
@@ -523,7 +567,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                               *solver_log_manager_,
                               _logger,
                               options_.LOG_LEVEL,
-                              options_.PROBLEMS_FORMAT,
+                              options_.PROBLEM_FORMAT,
                               sub_worker);
 
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
@@ -578,7 +622,7 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
           solver_log_manager,
           _logger,
           options.LOG_LEVEL,
-          options.PROBLEMS_FORMAT,
+          options.PROBLEM_FORMAT,
           sub_worker);
     }
 }
@@ -602,7 +646,7 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBase
                                                                            _logger,
                                                                            options.SOLVER_NAME,
                                                                            options.LOG_LEVEL,
-                                                                           options.PROBLEMS_FORMAT,
+                                                                           options.PROBLEM_FORMAT,
                                                                            std::move(
                                                                              constraints_names),
                                                                            _world);

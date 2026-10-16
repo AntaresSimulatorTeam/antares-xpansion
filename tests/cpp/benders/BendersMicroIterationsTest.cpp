@@ -12,7 +12,6 @@ class BendersPluginStub : public BendersPlugin
 {
 public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                        const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
                         std::shared_ptr<SolverAbstract> sub_problem_solver) override
@@ -105,7 +104,8 @@ public:
     {
         // OnBendersStart
         SubproblemsMapPtr empty_subproblem_map;
-        benders_plugin_->OnBendersStart(empty_subproblem_map, output_manager_->GetLogger(), _options, solver_log_manager_, nullptr);
+        benders_plugin_->OnBendersStart(empty_subproblem_map, _options, solver_log_manager_, nullptr);
+
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();

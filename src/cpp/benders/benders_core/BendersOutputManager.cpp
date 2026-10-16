@@ -11,14 +11,13 @@
 #include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-BendersOutputManager::BendersOutputManager(
-  Logger logger,
-  std::shared_ptr<Output::OutputWriter> writer,
-  std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
-  const CurrentIterationData& data,
-  const BendersBaseOptions& options,
-  const VariableMap& problem_to_id,
-  const BendersRelevantIterationsData& relevant_iteration_data):
+BendersOutputManager::BendersOutputManager(Logger logger,
+                                           std::shared_ptr<Output::OutputWriter> writer,
+                                           std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                                           const CurrentIterationData& data,
+                                           const BendersBaseOptions& options,
+                                           const VariableMap& problem_to_id,
+                                           BendersRelevantIterationsData& relevant_iteration_data):
     logger_(std::move(logger)),
     writer_(std::move(writer)),
     mathLoggerDriver_(std::move(mathLoggerDriver)),
@@ -53,18 +52,18 @@ void BendersOutputManager::OpenCsvFile()
     {
         const auto opening_mode = options_.RESUME ? std::ios::app : std::ios::trunc;
         csv_file_.open(csv_file_path_, std::ios::out | opening_mode);
-        if (csv_file_ && !options_.RESUME)
+        if (!csv_file_)
+        {
+            using namespace std::string_literals;
+            logger_->display_message("Impossible to open the .csv file: "s
+                                     + csv_file_path_.string());
+        }
+        else if (!options_.RESUME)
         {
             csv_file_ << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                          "subpb_costs_under_approx;"
                          "time;basis;"
                       << std::endl;
-        }
-        else
-        {
-            using namespace std::string_literals;
-            logger_->display_message("Impossible to open the .csv file: "s
-                                     + csv_file_path_.string());
         }
     }
 }
@@ -97,7 +96,7 @@ void BendersOutputManager::PrintCurrentIterationCsv()
         }
         print_master_and_cut(csv_file_,
                              ite + 1 + iterations_before_resume_,
-                             const_cast<WorkerMasterData&>(relevant_iteration_data_.last),
+                             relevant_iteration_data_.last,
                              x_cut);
     }
 }
@@ -177,7 +176,7 @@ void BendersOutputManager::SaveCurrentIterationInOutputFile() const
 
 void BendersOutputManager::SaveSolutionInOutputFile() const
 {
-    writer_->write_solution(BuildSolution(0));
+    writer_->write_solution(BuildSolution(problem_to_id_.size()));
     writer_->dump();
 }
 
@@ -417,9 +416,9 @@ int BendersOutputManager::GetNumOfSubProblemsSolvedBeforeResume() const
     return cumulative_number_of_subproblem_resolved_before_resume_;
 }
 
-void BendersOutputManager::UpdateBestIterationData(const LogData& data)
+void BendersOutputManager::UpdateBestIterationData(const CurrentIterationData& data)
 {
-    best_iteration_data_ = data;
+    best_iteration_data_ = bendersDataToLogData(data);
 }
 
 const LogData& BendersOutputManager::GetBestIterationData() const

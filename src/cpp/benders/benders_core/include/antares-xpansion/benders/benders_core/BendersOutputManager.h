@@ -22,7 +22,7 @@ public:
                          const CurrentIterationData& data,
                          const BendersBaseOptions& options,
                          const VariableMap& problem_to_id,
-                         const BendersRelevantIterationsData& relevant_iteration_data);
+                         BendersRelevantIterationsData& relevant_iteration_data);
 
     [[nodiscard]] Logger GetLogger() const;
     [[nodiscard]] std::shared_ptr<Output::OutputWriter> GetWriter() const;
@@ -53,7 +53,7 @@ public:
     void LoadResumeData(const std::filesystem::path& last_iteration_file, Logger& logger);
     [[nodiscard]] int GetNumIterationsBeforeRestart() const;
     [[nodiscard]] int GetNumOfSubProblemsSolvedBeforeResume() const;
-    void UpdateBestIterationData(const LogData& data);
+    void UpdateBestIterationData(const CurrentIterationData& data);
     [[nodiscard]] const LogData& GetBestIterationData() const;
     void SetIterationsBeforeResume(int value);
     void SetCumulativeSubproblemsSolvedBeforeResume(int value);
@@ -84,7 +84,7 @@ private:
     const CurrentIterationData& data_;
     const BendersBaseOptions& options_;
     const VariableMap& problem_to_id_;
-    const BendersRelevantIterationsData& relevant_iteration_data_;
+    BendersRelevantIterationsData& relevant_iteration_data_;
 
     LogData best_iteration_data_;
     int iterations_before_resume_ = 0;

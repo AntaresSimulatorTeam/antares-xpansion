@@ -31,7 +31,8 @@ public:
     */
     std::shared_ptr<BendersPlugin> CreatePlugin(const CouplingMap& coupling_map,
                                                 bool micro_iter,
-                                                boost::mpi::communicator* world);
+                                                boost::mpi::communicator* world,
+                                                const Logger& logger);
 
 private:
     const SimulationOptions& options_;

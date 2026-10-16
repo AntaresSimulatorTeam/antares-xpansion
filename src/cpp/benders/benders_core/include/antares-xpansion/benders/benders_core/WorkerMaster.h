@@ -10,7 +10,6 @@
  * \brief Class daughter of Worker Class, build and manage a master problem
  */
 class WorkerMaster;
-typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 
 class WorkerMaster: public Worker
 {
@@ -22,7 +21,7 @@ public:
                  SolverLogManager& solver_log_manager,
                  bool mps_has_alpha,
                  Logger logger,
-                 ProblemsFormat format,
+                 ProblemFormat format,
                  IBendersProblemProvider* benders_problem_provider,
                  double master_solution_tolerance,
                  const std::map<int, double>& subproblem_cut_coefficient_tolerance);
@@ -51,6 +50,21 @@ public:
     virtual void ActivateIntegrityConstraints() const;
     void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cut,
                                     std::map<std::string, int>& problem_to_id);
+
+    [[nodiscard]] const std::vector<int>& GetMasterOnlyVarsIds() const
+    {
+        return _id_master_only_vars;
+    }
+
+    [[nodiscard]] const VariableMap& GetNameToId() const
+    {
+        return _name_to_id;
+    }
+
+    [[nodiscard]] const Int2Str& GetIdToName() const
+    {
+        return _id_to_name;
+    }
 
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {

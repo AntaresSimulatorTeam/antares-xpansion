@@ -5,8 +5,8 @@
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
-#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
@@ -52,9 +52,9 @@ public:
         relevantIterationData_.best = relevantIterationData_.last;
     }
 
-    [[nodiscard]] WorkerMasterPtr get_master() const override
+    [[nodiscard]] WorkerMaster* Master() const
     {
-        return BendersSequential::get_master();
+        return master_manager_.Master();
     }
 
     void get_master_value() override
@@ -253,14 +253,13 @@ protected:
         return options;
     }
 
-    BendersSequentialDouble init_benders_sequential(
-      MasterFormulation master_formulation,
-      int max_iter,
-      double relaxed_gap,
-      double sep_param,
-      const std::string& solver = "COIN",
-      const std::string& master_name = "mip_toy_prob",
-      ProblemsFormat format = ProblemsFormat::MPS_FILE)
+    BendersSequentialDouble init_benders_sequential(MasterFormulation master_formulation,
+                                                    int max_iter,
+                                                    double relaxed_gap,
+                                                    double sep_param,
+                                                    const std::string& solver = "COIN",
+                                                    const std::string& master_name = "mip_toy_prob",
+                                                    ProblemFormat format = ProblemFormat::MPS_FILE)
     {
         BendersBaseOptions options = init_benders_options(master_formulation,
                                                           max_iter,
@@ -268,7 +267,7 @@ protected:
                                                           sep_param,
                                                           solver,
                                                           master_name);
-        options.PROBLEMS_FORMAT = format;
+        options.PROBLEM_FORMAT = format;
         return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
     }
 
@@ -276,9 +275,9 @@ protected:
     {
         char col_type;
         std::vector<char> nb_units_col_types;
-        for (auto col_id: benders.get_master()->get_id_int_vars())
+        for (auto col_id: benders.Master()->get_id_int_vars())
         {
-            benders.get_master()->solver()->get_col_type(&col_type, col_id, col_id);
+            benders.Master()->solver()->get_col_type(&col_type, col_id, col_id);
             nb_units_col_types.push_back(col_type);
         }
         return nb_units_col_types;
@@ -601,7 +600,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperly)
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly
-    EXPECT_TRUE(benders.get_master());
+    EXPECT_TRUE(benders.Master());
 }
 
 // Problems
@@ -630,7 +629,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly)
 
 class BendersSequentialTestSolverAndFormat
     : public BendersSequentialTest,
-      public ::testing::WithParamInterface<std::tuple<std::string, ProblemsFormat>>
+      public ::testing::WithParamInterface<std::tuple<std::string, ProblemFormat>>
 {
 };
 
@@ -651,11 +650,11 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore)
                                                               1e-6,
                                                               GetParam(),
                                                               "mip_toy_prob",
-                                                              ProblemsFormat::OPTIMIZED);
+                                                              ProblemFormat::OPTIMIZED);
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly
-    EXPECT_TRUE(benders.get_master());
+    EXPECT_TRUE(benders.Master());
 }
 
 void updateStructureFile(const std::string& structure_file_path, const std::string& solver)

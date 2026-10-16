@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <numeric>
+#include <utility>
 
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
@@ -11,38 +12,54 @@ BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
                                std::shared_ptr<Output::OutputWriter> writer,
                                mpi::communicator& world,
                                std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
-    BendersMpi(options, logger, std::move(writer), world, std::move(mathLoggerDriver)),
-    batch_cuts_manager_(std::make_shared<BendersCutsManagerByBatch>(world,
-                                                                    rank_0,
-                                                                    _data,
-                                                                    _problem_to_id,
-                                                                    relevantIterationData_,
-                                                                    _master)),
+    BendersByBatch(options,
+                   std::move(logger),
+                   std::move(writer),
+                   std::make_shared<MpiCommunicationStrategy>(world),
+                   std::move(mathLoggerDriver))
+{
+}
+
+BendersByBatch::BendersByBatch(const BendersBaseOptions& options,
+                               std::shared_ptr<ILogger> logger,
+                               std::shared_ptr<Output::OutputWriter> writer,
+                               std::shared_ptr<MpiCommunicationStrategy> mpi,
+                               std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver), mpi),
+    mpi_(std::move(mpi)),
+    batch_cuts_manager_(
+      std::make_shared<BendersCutsManagerByBatch>(mpi_->World(),
+                                                  rank_0,
+                                                  _data,
+                                                  _problem_to_id,
+                                                  relevantIterationData_,
+                                                  master_manager_,
+                                                  batch_collection_full_for_cuts_)),
     batch_subproblems_manager_(
       std::make_shared<BendersSubProblemsManagerByBatch>(_data,
                                                          _options,
                                                          benders_plugin_,
-                                                         output_manager_->GetLogger(),
+                                                         output_manager_.GetLogger(),
                                                          solver_log_manager_,
-                                                         output_manager_->GetWriter(),
-                                                         shouldParallelize()))
+                                                         output_manager_.GetWriter(),
+                                                         coupling_map_))
 {
     batch_subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
-      { outer_loop_manager_->GetCriterionComputation().SearchVariables(col_names); });
+      { outer_loop_manager_.GetCriterionComputation().SearchVariables(col_names); });
 }
 
 void BendersByBatch::free()
 {
-    if (_world.rank() == rank_0)
+    if (Rank() == rank_0)
     {
-        master_manager_->FreeMaster();
+        master_manager_.FreeMaster();
     }
     else
     {
         batch_subproblems_manager_->free_subproblems();
     }
-    _world.barrier();
+    mpi_->Barrier();
 }
 
 void BendersByBatch::launch()
@@ -52,17 +69,16 @@ void BendersByBatch::launch()
         InitializeProblems();
     }
 
-    _world.barrier();
+    mpi_->Barrier();
 
     benders_plugin_->OnBendersStart(batch_subproblems_manager_->GetSubProblemMap(),
-                                    output_manager_->GetLogger(),
                                     _options,
                                     solver_log_manager_,
                                     batch_subproblems_manager_->GetFactorySolver());
 
     Run();
 
-    _world.barrier();
+    mpi_->Barrier();
 
     benders_plugin_->OnBendersEnd();
 
@@ -73,34 +89,39 @@ void BendersByBatch::launch()
         free();
     }
 
-    _world.barrier();
+    mpi_->Barrier();
 }
 
 void BendersByBatch::BroadCastVariablesIndices()
 {
-    if (_world.rank() == rank_0)
+    if (Rank() == rank_0)
     {
         batch_subproblems_manager_->SetSubproblemsVariablesIndices();
     }
-    BroadCast(outer_loop_manager_->GetCriterionComputation().getVarIndices(), rank_0);
+    BroadCast(outer_loop_manager_.GetCriterionComputation().getVarIndices(), rank_0);
 }
 
 void BendersByBatch::InitializeProblems()
 {
-    MatchProblemToId();
+    batch_subproblems_manager_->MatchProblemToId();
+    _problem_to_id = batch_subproblems_manager_->GetProblemToId();
     BuildBatches();
     BuildMasterProblem();
     BroadCastVariablesIndices();
-    batch_subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS, &_world);
+    batch_subproblems_manager_->BuildSubproblemWorkerFactory(_options.CACHE_PROBLEMS,
+                                                             &mpi_->World());
     init_problems_ = false;
 }
 
 void BendersByBatch::BuildMasterProblem()
 {
-    InitializeMaster();
+    if (Rank() == rank_0)
+    {
+        InitializeMasterProblem();
+    }
     for (auto& batch: batch_collection_full_for_cuts_.BatchCollections())
     {
-        master_manager_->AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
+        master_manager_.AddAlphasFixingConstraints(batch.name_to_cut, _problem_to_id);
     }
 }
 
@@ -116,7 +137,7 @@ void BendersByBatch::BuildBatches()
             problem_names.emplace_back(problem_name);
         }
         auto batch_size = Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
-        batch_collection_.SetLogger(output_manager_->GetLogger());
+        batch_collection_.SetLogger(output_manager_.GetLogger());
         batch_collection_.SetBatchSize(batch_size);
         batch_collection_.SetSubProblemNames(problem_names);
         batch_collection_.BuildBatches(WorldSize());
@@ -125,59 +146,7 @@ void BendersByBatch::BuildBatches()
     }
     BroadCast(batch_collection_, rank_0);
 
-    auto problem_count = 0;
-
-    for (auto& batch: batch_collection_.BatchCollections())
-    {
-        switch (_options.CACHE_PROBLEMS)
-        {
-        case CacheProblems::PER_SUB:
-        case CacheProblems::COMPACT:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
-                    batch_subproblems_manager_->AddSubproblemName(*it);
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        case CacheProblems::NO_CACHE:
-        default:
-        {
-            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
-            {
-                auto process_to_feed = problem_count % WorldSize();
-                if (process_to_feed != Rank())
-                {
-                    it = batch.sub_problem_names.erase(it);
-                }
-                else
-                {
-                    batch_subproblems_manager_->AddSubproblem({*it, coupling_map_[*it]});
-                    batch_subproblems_manager_->AddSubproblemName(*it);
-                    ++it;
-                }
-                ++problem_count;
-            }
-            batch.sub_problem_names.shrink_to_fit();
-            break;
-        }
-        }
-    }
-    batch_subproblems_manager_->SetCouplingMap(coupling_map_);
-
-    BroadCastVariablesIndices();
-    init_problems_ = false;
+    batch_subproblems_manager_->DistributeSubproblems(batch_collection_, Rank(), WorldSize());
 }
 
 void BendersByBatch::get_subs_per_cut_per_batch()
@@ -203,7 +172,7 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox()
 
 void BendersByBatch::Run()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     if (init_data_)
     {
@@ -220,19 +189,19 @@ void BendersByBatch::Run()
     {
         compute_ub();
         update_best_ub();
-        logger->log_at_iteration_end(output_manager_->bendersDataToLogData(_data));
+        logger->log_at_iteration_end(output_manager_.bendersDataToLogData(_data));
         UpdateTrace();
-        output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
-        output_manager_->CloseCsvFile();
-        output_manager_->EndWritingInOutputFile(_data.control.benders_time,
-                                                _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
+        output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+        output_manager_.CloseCsvFile();
+        output_manager_.EndWritingInOutputFile(_data.control.benders_time,
+                                               _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP);
         write_basis();
     }
 }
 
 void BendersByBatch::MasterLoop()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     number_of_batch_ = batch_collection_.NumberOfBatch();
     random_batch_permutation_.resize(number_of_batch_);
@@ -257,7 +226,6 @@ void BendersByBatch::MasterLoop()
 
         _data.cuts.ub = 0;
         _data.cuts.subproblem_cost = 0;
-        remaining_epsilon_ = Gap();
 
         benders_plugin_->OnBendersMasterResolutionStart();
         if (Rank() == rank_0)
@@ -274,6 +242,19 @@ void BendersByBatch::MasterLoop()
         BroadcastXOut();
         BroadcastSingleSubpbCostsUnderApprox();
         BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(), rank_0);
+        _data.control.it++;
+        ResetSimplexIterationsBounds();
+
+        logger->log_at_initialization(_data.control.it
+                                      + output_manager_.GetNumIterationsBeforeRestart());
+        if (Rank() == rank_0)
+        {
+            ComputeXCut();
+        }
+        batch_cuts_manager_->BroadcastXCut();
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
+        UpdateRemainingEpsilon();
+
         SeparationLoop();
         if (Rank() == rank_0)
         {
@@ -287,11 +268,11 @@ void BendersByBatch::MasterLoop()
         _data.cuts.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter_;
         logger->cumulative_number_of_sub_problem_solved(
           _data.control.cumulative_number_of_subproblem_solved
-          + output_manager_->GetNumOfSubProblemsSolvedBeforeResume());
+          + output_manager_.GetNumOfSubProblemsSolvedBeforeResume());
         logger->LogSubproblemsSolvingCumulativeCpuTime(_data.cuts.subproblems_cumulative_cputime);
         logger->LogSubproblemsSolvingWalltime(_data.cuts.subproblems_walltime);
         logger->PrintIterationSeparatorEnd();
-        output_manager_->MathLoggerPrint();
+        output_manager_.MathLoggerPrint();
 
         benders_plugin_->OnBendersIterationEnd();
     }
@@ -299,35 +280,22 @@ void BendersByBatch::MasterLoop()
 
 void BendersByBatch::SeparationLoop()
 {
-    auto logger = output_manager_->GetLogger();
+    auto logger = output_manager_.GetLogger();
 
     misprice_ = true;
     first_unsolved_batch_ = 0;
     batch_counter_ = 0;
+    _data.control.number_of_subproblem_solved = 0;
     while (misprice_ && batch_counter_ < number_of_batch_)
     {
-        _data.control.it++;
-        ResetSimplexIterationsBounds();
-
-        logger->log_at_initialization(_data.control.it
-                                      + output_manager_->GetNumIterationsBeforeRestart());
-        if (Rank() == rank_0)
-        {
-            ComputeXCut();
-        }
-        batch_cuts_manager_->BroadcastXCut();
-
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
-        logger->log_iteration_candidates(output_manager_->bendersDataToLogData(_data));
-        UpdateRemainingEpsilon();
-        _data.control.number_of_subproblem_solved = 0;
+        logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
         SolveBatches();
 
         if (Rank() == rank_0)
         {
-            outer_loop_manager_->PushCriteriaForIteration(_data.criteria.criteria);
+            outer_loop_manager_.PushCriteriaForIteration(_data.criteria.criteria);
             UpdateTrace();
-            output_manager_->SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+            output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
         }
         ClearCurrentIterationCutTrace();
     }
@@ -349,8 +317,8 @@ void BendersByBatch::UpdateRemainingEpsilon()
 {
     if (Rank() == rank_0)
     {
-        auto obj = master_manager_->GetObjectiveFunctionCoeffs();
-        const auto& name_to_id = master_manager_->GetNameToId();
+        auto obj = master_manager_.GetObjectiveFunctionCoeffs();
+        const auto& name_to_id = master_manager_.GetNameToId();
         remaining_epsilon_ = Gap();
         for (const auto& [candidate_name, x_cut_candidate_value]: _data.solution.x_cut)
         {
@@ -374,12 +342,8 @@ void BendersByBatch::SolveBatches()
         const auto& batch = batch_collection_.GetBatchFromId(current_batch_id_);
         const auto& batch_sub_problems = batch.sub_problem_names;
         double batch_contribution_in_gap = 0;
-        std::vector<double> external_loop_criterion_current_batch = {};
         int problem_solved = 0;
-        BuildCut(batch_sub_problems,
-                 &batch_contribution_in_gap,
-                 external_loop_criterion_current_batch,
-                 problem_solved);
+        BuildCut(batch_sub_problems, &batch_contribution_in_gap, problem_solved);
         problem_solved_by_rank += problem_solved;
         Reduce(_data.cuts.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
@@ -414,7 +378,6 @@ void BendersByBatch::SolveBatches()
 
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
                               double* batch_contribution_in_gap,
-                              std::vector<double>& external_loop_criterion_current_batch,
                               int& local_solved)
 {
     SubProblemDataMap subproblem_data_map;
@@ -434,17 +397,16 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     AllReduce(misprice_, global_misprice, std::logical_and<bool>());
     misprice_ = global_misprice;
 
-    auto& batch_cuts_list = batch_collection_full_for_cuts_.BatchCollections();
     batch_cuts_manager_->GatherAndBuildCuts(subproblem_data_map,
                                             subproblems_timer_per_proc,
-                                            batch_cuts_list[current_batch_id_].name_to_cut,
+                                            current_batch_id_,
                                             *batch_contribution_in_gap);
 }
 
 void BendersByBatch::calculate_subproblem_contribution(const std::string& name,
                                                        PlainData::SubProblemData& subproblem_data)
 {
-    auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
+    auto subpb_cost_under_approx = GetAlpha_i()[batch_subproblems_manager_->ProblemToId(name)];
     subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost - subpb_cost_under_approx;
     double cut_value_at_x_cut = subproblem_data.subproblem_cost;
     for (const auto& [candidate_name, x_cut_candidate_value]: _data.solution.x_cut)

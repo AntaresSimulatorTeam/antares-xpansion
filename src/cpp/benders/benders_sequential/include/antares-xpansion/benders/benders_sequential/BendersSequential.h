@@ -32,7 +32,6 @@ protected:
     virtual void free();
     virtual void Run();
 
-protected:
     std::shared_ptr<BendersSubProblemsManagerSequential> subproblems_manager_;
 
 private:
