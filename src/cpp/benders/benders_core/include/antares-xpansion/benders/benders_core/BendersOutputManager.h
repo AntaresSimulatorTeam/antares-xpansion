@@ -50,7 +50,7 @@ public:
     [[nodiscard]] LogData BuildFinalLogData() const;
 
     // Resume support
-    void LoadResumeData(const std::filesystem::path& last_iteration_file, Logger& logger);
+    void LoadResumeData(const std::filesystem::path& last_iteration_file);
     [[nodiscard]] int GetNumIterationsBeforeRestart() const;
     [[nodiscard]] int GetNumOfSubProblemsSolvedBeforeResume() const;
     void UpdateBestIterationData(const CurrentIterationData& data);
