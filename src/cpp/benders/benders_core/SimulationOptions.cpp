@@ -237,6 +237,8 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.MASTER_SOLUTION_TOLERANCE = MASTER_SOLUTION_TOLERANCE;
     result.CUT_COEFFICIENT_TOLERANCE = CUT_COEFFICIENT_TOLERANCE;
 
+    result.SAVE_PRUNED_SUBS = SAVE_PRUNED_SUBS;
+
     result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
 
     return result;

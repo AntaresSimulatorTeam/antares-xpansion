@@ -88,7 +88,7 @@ public:
                         std::shared_ptr<SolverAbstract> sub_problem_solver) override;
 
     void OnBendersIterationStart() override;
-    void OnBendersIterationEnd() override;
+    void OnBendersIterationEnd(bool is_final_iteration) override;
 
     /*
         Implementation of benders end call back

@@ -255,7 +255,7 @@ void BendersByBatch::MasterLoop()
         logger->PrintIterationSeparatorEnd();
         output_manager_.MathLoggerPrint();
 
-        benders_plugin_->OnBendersIterationEnd();
+        benders_plugin_->OnBendersIterationEnd(_data.control.stop);
     }
 }
 

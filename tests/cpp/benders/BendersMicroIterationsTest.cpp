@@ -26,7 +26,7 @@ public:
     {
     }
 
-    void OnBendersIterationEnd() override
+    void OnBendersIterationEnd(bool /*is_final_iteration*/) override
     {
     }
 
@@ -132,7 +132,7 @@ public:
         int iter = 1;
         benders_plugin_->OnBendersMasterResolutionEnd(master_out, iter);
 
-        benders_plugin_->OnBendersIterationEnd();
+        benders_plugin_->OnBendersIterationEnd(true);
 
         // OnBendersEnd
         benders_plugin_->OnBendersEnd();

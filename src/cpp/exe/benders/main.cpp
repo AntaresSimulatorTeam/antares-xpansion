@@ -8,6 +8,7 @@ int main(int argc, char** argv)
 {
     try
     {
+        std::cout<<"start benders exe "<<std::endl ; 
         mpi::environment env(argc, argv);
         mpi::communicator world;
         // First check usage (options are given)
@@ -19,6 +20,7 @@ int main(int argc, char** argv)
             }
             else
             {
+                std::cout<<"aboarting ...."<<std::endl ; 
                 return MPI_Abort(world, 1);
             }
         }

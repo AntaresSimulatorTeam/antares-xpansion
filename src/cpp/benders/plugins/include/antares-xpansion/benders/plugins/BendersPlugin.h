@@ -38,7 +38,7 @@ public:
 
     virtual void OnBendersIterationStart() = 0;
 
-    virtual void OnBendersIterationEnd() = 0;
+    virtual void OnBendersIterationEnd(bool is_final_iteration) = 0;
 
     virtual void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,
                                              std::string sub_name)

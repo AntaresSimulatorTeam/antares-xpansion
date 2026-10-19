@@ -27,6 +27,8 @@ SubproblemConstraintsManagerPtr SubproblemConstraintsManager::FromConstraintsFil
                               solver_log_manager,
                               log_level,
                               format);
+    std::cout << "[MicroIter] Constraint file: " << constraint_file_path.filename()
+              << " | nrows: " << solver->get_nrows() << std::endl;
     return std::make_shared<SubproblemConstraintsManager>(std::move(solver), subproblem_worker);
 }
 

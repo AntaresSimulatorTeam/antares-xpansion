@@ -2,6 +2,7 @@
 
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
+#include <filesystem>
 #include <fstream>
 #include <utility>
 
@@ -342,6 +343,7 @@ void BendersMpi::Run()
 
     while (!_data.control.stop)
     {
+        std::cout<<"new benders iteration "<<std::endl ; 
         benders_plugin_->OnBendersIterationStart();
 
         ++_data.control.it;
@@ -373,8 +375,15 @@ void BendersMpi::Run()
             output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
         }
 
-        benders_plugin_->OnBendersIterationEnd();
+        benders_plugin_->OnBendersIterationEnd(_data.control.stop);
     }
+    
+    if (_options.SAVE_PRUNED_SUBS)
+    {
+        subproblems_manager_->WriteFinalSubproblemMps(
+            std::filesystem::path(_options.OUTPUTROOT) / "final_sub_micro_it");
+    }
+
     if (_world.rank() == rank_0)
     {
         output_manager_.CloseCsvFile();

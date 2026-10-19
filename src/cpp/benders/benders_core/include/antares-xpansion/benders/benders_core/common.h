@@ -238,6 +238,8 @@ struct BendersBaseOptions: public SolverBaseOptions
 
     size_t BATCH_SIZE;
 
+    bool SAVE_PRUNED_SUBS = false;
+
     ExternalLoopOptions EXTERNAL_LOOP_OPTIONS;
 };
 

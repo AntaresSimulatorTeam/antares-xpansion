@@ -2,6 +2,7 @@
 
 #include <execution>
 #include <filesystem>
+#include <fstream>
 #include <functional>
 #include <mutex>
 
@@ -448,6 +449,27 @@ public:
         for (auto& ptr: subproblem_map_)
         {
             ptr.second->free();
+        }
+    }
+
+    void WriteFinalSubproblemMps(const std::filesystem::path& output_dir) const
+    {
+        std::filesystem::create_directories(output_dir);
+        for (const auto& [name, worker]: subproblem_map_)
+        {
+            std::cout<<"subproblem name "<<name<<std::endl ; 
+            logger_->display_message("[WriteFinalSubproblemMps] Pruning unsaturated constraints for subproblem: " + name);
+            auto saturated_names = worker->RemoveUnsaturatedConstraints();
+            auto out_path = output_dir / name;
+            std::filesystem::create_directories(out_path.parent_path());
+            logger_->display_message("[WriteFinalSubproblemMps] Done pruning for subproblem: " + name + " — writing to " + out_path.string());
+            worker->_solver->save_prob(out_path);
+
+            std::ofstream sat_file(out_path.string() + "_saturated_rows.txt");
+            for (const auto& row_name : saturated_names)
+            {
+                sat_file << row_name << "\n";
+            }
         }
     }
 

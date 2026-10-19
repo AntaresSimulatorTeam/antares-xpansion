@@ -222,6 +222,7 @@ BendersApp::BendersApp(const std::filesystem::path& options_file,
     solver_(solver),
     options_(options_file)
 {
+    std::cout<<"benders app constructor "<<std::endl ; 
 }
 
 std::filesystem::path BendersApp::LogReportsName() const
@@ -233,6 +234,7 @@ int BendersApp::Run()
 {
     if (solver_ == SOLVER::BENDERS)
     {
+        std::cout<<"running benders  "<<std::endl ; 
         return RunBenders();
     }
     return RunExternalLoop();

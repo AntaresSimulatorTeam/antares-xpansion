@@ -100,3 +100,6 @@ BENDERS_OPTIONS_MACRO(KEEP_FULL, bool, false, asBool())
 
 // Full problems directory name
 BENDERS_OPTIONS_MACRO(FULL_DIR, std::string, "full", asString())
+
+// Save pruned subproblems (saturated constraints only) at end of solve
+BENDERS_OPTIONS_MACRO(SAVE_PRUNED_SUBS, bool, false, asBool())
