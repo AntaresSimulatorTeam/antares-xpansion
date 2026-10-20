@@ -343,7 +343,7 @@ void BendersMpi::Run()
 
     while (!_data.control.stop)
     {
-        std::cout<<"new benders iteration "<<std::endl ; 
+        std::cout << "new benders iteration " << std::endl;
         benders_plugin_->OnBendersIterationStart();
 
         ++_data.control.it;
@@ -377,11 +377,11 @@ void BendersMpi::Run()
 
         benders_plugin_->OnBendersIterationEnd(_data.control.stop);
     }
-    
+
     if (_options.SAVE_PRUNED_SUBS)
     {
-        subproblems_manager_->WriteFinalSubproblemMps(
-            std::filesystem::path(_options.OUTPUTROOT) / "final_sub_micro_it");
+        subproblems_manager_->WriteFinalSubproblemMps(std::filesystem::path(_options.OUTPUTROOT)
+                                                      / "final_sub_micro_it");
     }
 
     if (_world.rank() == rank_0)

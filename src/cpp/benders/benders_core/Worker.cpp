@@ -68,6 +68,7 @@ void Worker::init(const std::string& solver_name,
     // preferences
     _solver->set_threads(1);
     _solver->set_output_log_level(log_level);
+    _initial_nrows = _solver->get_nrows();
 
     for (const auto& kvp: _name_to_id)
     {
@@ -96,6 +97,7 @@ void Worker::solve(int& lp_status,
 
     if (lp_status != SOLVER_STATUS::OPTIMAL)
     {
+        std::cout << "problem is unfeasible *******" << std::endl;
         std::filesystem::path error_file_path;
         auto problem_status = _solver->SOLVER_STRING_STATUS[lp_status];
         error_file_path = std::filesystem::path(outputroot)
@@ -139,6 +141,7 @@ void Worker::init_for_compact_in_mem(std::shared_ptr<SolverAbstract> solver,
                                      VariableMap& variable_map)
 {
     _solver = solver;
+    _initial_nrows = _solver->get_nrows();
     set_id_to_name(variable_map);
 }
 
@@ -217,62 +220,48 @@ void Worker::writeProb(const std::filesystem::path& out) const
 std::vector<std::string> Worker::RemoveUnsaturatedConstraints() const
 {
     const int nrows = _solver->get_nrows();
-    const int ncols = _solver->get_ncols();
-    const int nelems = _solver->get_nelems();
 
-    std::vector<double> primals(ncols);
-    _solver->get_lp_sol(primals.data(), nullptr, nullptr);
+    std::vector<double> duals(nrows);
+    _solver->get_lp_sol(nullptr, duals.data(), nullptr);
 
-    std::vector<int> mstart(nrows + 1);
-    std::vector<int> mclind(nelems);
-    std::vector<double> dmatval(nelems);
-    int nels = 0;
-    _solver->get_rows(mstart.data(), mclind.data(), dmatval.data(), nelems, &nels, 0, nrows - 1);
-    mstart[nrows] = nels;
-
-    std::vector<double> rhs(nrows);
-    _solver->get_rhs(rhs.data(), 0, nrows - 1);
-
-    std::vector<char> row_type(nrows);
-    _solver->get_row_type(row_type.data(), 0, nrows - 1);
-
-    constexpr double SATURATION_EPSILON = 1e-6;
-    std::vector<int> unsaturated_indices;
+    constexpr double DUAL_EPSILON = 1e-6;
+    std::vector<int> unsaturated_added_indices;
     std::vector<std::string> saturated_row_names;
-    std::cout<<"number of constraints "<<nrows<<std::endl ; 
-    int n_saturated_constraints(0) ; 
+    std::cout << "number of constraints " << nrows << std::endl;
+    std::cout << "number of default constraints (kept) " << _initial_nrows << std::endl;
+    int n_saturated_constraints(0);
 
-    for (int i = 0; i < nrows; ++i)
+    // Default constraints (indices 0.._initial_nrows-1) are always kept
+    for (int i = 0; i < _initial_nrows; ++i)
     {
-        double lhs = 0.0;
-        for (int k = mstart[i]; k < mstart[i + 1]; ++k)
+        if (std::abs(duals[i]) >= DUAL_EPSILON)
         {
-            lhs += dmatval[k] * primals[mclind[k]];
-        }
-        double slack = 0.0;
-        if (row_type[i] == 'G')
-        {
-            slack = lhs - rhs[i];
-        }
-        else
-        {
-            slack = rhs[i] - lhs;
-        }
-        if (slack > SATURATION_EPSILON)
-        {
-            unsaturated_indices.push_back(i);
-        }
-        else
-        {
-            n_saturated_constraints++ ; 
+            n_saturated_constraints++;
             auto names = _solver->get_row_names(i, i);
             saturated_row_names.push_back(names[0]);
         }
     }
-    std::cout<<"number of saturated constraints "<<n_saturated_constraints<<std::endl ; 
 
-    std::sort(unsaturated_indices.rbegin(), unsaturated_indices.rend());
-    for (int idx : unsaturated_indices)
+    // Added constraints (indices >= _initial_nrows) are pruned if unsaturated
+    for (int i = _initial_nrows; i < nrows; ++i)
+    {
+        if (std::abs(duals[i]) < DUAL_EPSILON)
+        {
+            unsaturated_added_indices.push_back(i);
+        }
+        else
+        {
+            n_saturated_constraints++;
+            auto names = _solver->get_row_names(i, i);
+            saturated_row_names.push_back(names[0]);
+        }
+    }
+    std::cout << "number of saturated constraints " << n_saturated_constraints << std::endl;
+    std::cout << "number of unsaturated added constraints removed "
+              << unsaturated_added_indices.size() << std::endl;
+
+    std::sort(unsaturated_added_indices.rbegin(), unsaturated_added_indices.rend());
+    for (int idx: unsaturated_added_indices)
     {
         _solver->del_rows(idx, idx);
     }
