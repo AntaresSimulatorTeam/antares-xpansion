@@ -12,6 +12,7 @@
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -182,14 +183,17 @@ int BendersApp::RunExternalLoop()
         const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
           criterion_input_holder_);
         std::shared_ptr<Outerloop::IMasterUpdate> master_updater = std::make_shared<
-          Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
+          Outerloop::MasterUpdateBase>(benders_->GetMasterManager(),
+                                       tau,
+                                       outer_loop_inputs.StoppingThreshold());
         std::shared_ptr<Outerloop::ICutsManager>
           cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
+        auto facade = std::make_shared<OuterLoopFacade>(benders_);
         Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
                                              master_updater,
                                              cuts_manager,
-                                             benders_,
+                                             facade,
                                              benders_->GetCommunicationStrategy());
         StartMessage();
         ext_loop.Run();

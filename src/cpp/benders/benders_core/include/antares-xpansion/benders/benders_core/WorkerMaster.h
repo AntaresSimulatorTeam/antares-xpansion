@@ -10,7 +10,6 @@
  * \brief Class daughter of Worker Class, build and manage a master problem
  */
 class WorkerMaster;
-typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 
 class WorkerMaster: public Worker
 {
@@ -41,14 +40,6 @@ public:
     void get_dual_values(std::vector<double>& dual) const;
     [[nodiscard]] int get_number_constraint() const;
 
-    void add_cut(const Point& s, const Point& x0, const double& rhs) const;
-    void add_cut_by_iter(int i, const Point& s, const double& sx0, const double& rhs) const;
-    void add_dynamic_cut(const Point& s, const double& sx0, const double& rhs) const;
-    void addSubproblemCut(int i,
-                          const Point& subgradient,
-                          const Point& x_cut,
-                          const double& rhs) const;
-
     void addGroupSubproblemCut(std::vector<int> subproblem_ids,
                                const Point& subgradient,
                                const Point& x_cut,
@@ -59,6 +50,21 @@ public:
     virtual void ActivateIntegrityConstraints() const;
     void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cut,
                                     std::map<std::string, int>& problem_to_id);
+
+    [[nodiscard]] const std::vector<int>& GetMasterOnlyVarsIds() const
+    {
+        return _id_master_only_vars;
+    }
+
+    [[nodiscard]] const VariableMap& GetNameToId() const
+    {
+        return _name_to_id;
+    }
+
+    [[nodiscard]] const Int2Str& GetIdToName() const
+    {
+        return _id_to_name;
+    }
 
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {
@@ -73,18 +79,10 @@ private:
     bool _mps_has_alpha = false;
     double _master_solution_tolerance;
     std::map<int, double> _subproblem_tolerance;
-    void define_matval_mclind(const Point& s,
-                              std::vector<double>& matval,
-                              std::vector<int>& mclind) const;
-
     void DefineRhsWithMasterVariable(const Point& s,
                                      const Point& x0,
                                      const double& rhs,
                                      std::vector<double>& rowrhs) const;
-
-    void define_rhs_from_sx0(const double& sx0,
-                             const double& rhs,
-                             std::vector<double>& rowrhs) const;
 
     void define_matval_mclind_for_index(std::vector<int> subproblem_ids,
                                         const Point& s,

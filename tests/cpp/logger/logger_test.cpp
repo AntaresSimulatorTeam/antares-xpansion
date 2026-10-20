@@ -1022,46 +1022,46 @@ TEST(MathLoggerBendersByBatchTest, DataInFileLong)
     std::streamsize width = 25;
 
     CurrentIterationData data;
-    data.it = 35;
-    data.lb = 256999;
-    // data.ub = 222256999;
-    // data.best_ub = 222256999;
-    data.min_simplexiter = 3;
-    data.max_simplexiter = 30;
-    data.number_of_subproblem_solved = 657;
-    data.cumulative_number_of_subproblem_solved = 1387;
-    data.iteration_time = 1000;
-    data.timer_master = 10;
-    data.subproblems_walltime = 16;
-    data.subproblems_cumulative_cputime = 160;
-    auto time_not_solving = data.iteration_time - data.timer_master - data.subproblems_walltime;
+    data.control.it = 35;
+    data.master.lb = 256999;
+    // data.cuts.ub = 222256999;
+    // data.control.best_ub = 222256999;
+    data.cuts.min_simplexiter = 3;
+    data.cuts.max_simplexiter = 30;
+    data.control.number_of_subproblem_solved = 657;
+    data.control.cumulative_number_of_subproblem_solved = 1387;
+    data.control.iteration_time = 1000;
+    data.master.timer_master = 10;
+    data.cuts.subproblems_walltime = 16;
+    data.cuts.subproblems_cumulative_cputime = 160;
+    auto time_not_solving = data.control.iteration_time - data.master.timer_master - data.cuts.subproblems_walltime;
 
     std::ostringstream expected_msg;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.it;
+    expected_msg << std::left << std::setw(width) << data.control.it;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.lb;
+                 << data.master.lb;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.min_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.max_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.number_of_subproblem_solved;
-    expected_msg << DELIMITER;
-
-    expected_msg << std::left << std::setw(width) << data.cumulative_number_of_subproblem_solved;
-    expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.iteration_time;
-    expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.timer_master;
-    expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2)
-                 << data.subproblems_walltime;
+    expected_msg << std::left << std::setw(width) << data.control.number_of_subproblem_solved;
     expected_msg << DELIMITER;
 
+    expected_msg << std::left << std::setw(width) << data.control.cumulative_number_of_subproblem_solved;
+    expected_msg << DELIMITER;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.control.iteration_time;
+    expected_msg << DELIMITER;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.master.timer_master;
+    expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::setprecision(2)
-                 << data.subproblems_cumulative_cputime;
+                 << data.cuts.subproblems_walltime;
+    expected_msg << DELIMITER;
+
+    expected_msg << std::left << std::setw(width) << std::setprecision(2)
+                 << data.cuts.subproblems_cumulative_cputime;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::setprecision(2) << time_not_solving;
     expected_msg << DELIMITER;
@@ -1078,39 +1078,39 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort)
     std::streamsize width = 25;
 
     CurrentIterationData data;
-    data.it = 35;
-    data.lb = 256999;
-    // data.ub = 222256999;
-    // data.best_ub = 222256999;
-    data.min_simplexiter = 3;
-    data.max_simplexiter = 30;
-    data.number_of_subproblem_solved = 657;
-    data.cumulative_number_of_subproblem_solved = 1387;
-    data.iteration_time = 1000;
-    data.timer_master = 10;
-    data.subproblems_walltime = 16;
-    data.subproblems_cumulative_cputime = 160;
+    data.control.it = 35;
+    data.master.lb = 256999;
+    // data.cuts.ub = 222256999;
+    // data.control.best_ub = 222256999;
+    data.cuts.min_simplexiter = 3;
+    data.cuts.max_simplexiter = 30;
+    data.control.number_of_subproblem_solved = 657;
+    data.control.cumulative_number_of_subproblem_solved = 1387;
+    data.control.iteration_time = 1000;
+    data.master.timer_master = 10;
+    data.cuts.subproblems_walltime = 16;
+    data.cuts.subproblems_cumulative_cputime = 160;
 
     std::ostringstream expected_msg;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.it;
+    expected_msg << std::left << std::setw(width) << data.control.it;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.lb;
+                 << data.master.lb;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.min_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.max_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.number_of_subproblem_solved;
+    expected_msg << std::left << std::setw(width) << data.control.number_of_subproblem_solved;
     expected_msg << DELIMITER;
 
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.iteration_time;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.control.iteration_time;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.timer_master;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.master.timer_master;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::setprecision(2)
-                 << data.subproblems_walltime;
+                 << data.cuts.subproblems_walltime;
     expected_msg << DELIMITER;
 
     expected_msg << std::endl;
@@ -1129,58 +1129,58 @@ TEST(MathLoggerBendersBaseTest, DataInFileLong)
     std::streamsize width = 25;
 
     CurrentIterationData data;
-    data.it = 35;
-    data.lb = 256999;
-    data.ub = 222256999;
-    data.best_ub = 22552256999;
-    data.min_simplexiter = 3;
-    data.max_simplexiter = 30;
-    data.number_of_subproblem_solved = 657;
-    data.cumulative_number_of_subproblem_solved = 1387;
-    data.iteration_time = 1000;
-    data.timer_master = 10;
-    data.subproblems_walltime = 16;
-    data.subproblems_cumulative_cputime = 160;
-    auto time_not_solving = data.iteration_time - data.timer_master - data.subproblems_walltime;
+    data.control.it = 35;
+    data.master.lb = 256999;
+    data.cuts.ub = 222256999;
+    data.control.best_ub = 22552256999;
+    data.cuts.min_simplexiter = 3;
+    data.cuts.max_simplexiter = 30;
+    data.control.number_of_subproblem_solved = 657;
+    data.control.cumulative_number_of_subproblem_solved = 1387;
+    data.control.iteration_time = 1000;
+    data.master.timer_master = 10;
+    data.cuts.subproblems_walltime = 16;
+    data.cuts.subproblems_cumulative_cputime = 160;
+    auto time_not_solving = data.control.iteration_time - data.master.timer_master - data.cuts.subproblems_walltime;
 
     std::ostringstream expected_msg;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.it;
+    expected_msg << std::left << std::setw(width) << data.control.it;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.lb;
+                 << data.master.lb;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.ub;
+                 << data.cuts.ub;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.best_ub;
+                 << data.control.best_ub;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(2)
-                 << data.best_ub - data.lb;
+                 << data.control.best_ub - data.master.lb;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(2)
-                 << (data.best_ub - data.lb) / data.best_ub;
+                 << (data.control.best_ub - data.master.lb) / data.control.best_ub;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.min_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.max_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.number_of_subproblem_solved;
-    expected_msg << DELIMITER;
-
-    expected_msg << std::left << std::setw(width) << data.cumulative_number_of_subproblem_solved;
-    expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.iteration_time;
-    expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.timer_master;
-    expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2)
-                 << data.subproblems_walltime;
+    expected_msg << std::left << std::setw(width) << data.control.number_of_subproblem_solved;
     expected_msg << DELIMITER;
 
+    expected_msg << std::left << std::setw(width) << data.control.cumulative_number_of_subproblem_solved;
+    expected_msg << DELIMITER;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.control.iteration_time;
+    expected_msg << DELIMITER;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.master.timer_master;
+    expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::setprecision(2)
-                 << data.subproblems_cumulative_cputime;
+                 << data.cuts.subproblems_walltime;
+    expected_msg << DELIMITER;
+
+    expected_msg << std::left << std::setw(width) << std::setprecision(2)
+                 << data.cuts.subproblems_cumulative_cputime;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::setprecision(2) << time_not_solving;
     expected_msg << DELIMITER;
@@ -1197,50 +1197,50 @@ TEST(MathLoggerBendersBaseTest, DataInStdOutShort)
     std::streamsize width = 25;
 
     CurrentIterationData data;
-    data.it = 35;
-    data.lb = 256999;
-    data.ub = 2222569996;
-    data.best_ub = 22225556999;
-    data.min_simplexiter = 3;
-    data.max_simplexiter = 30;
-    data.number_of_subproblem_solved = 657;
-    data.cumulative_number_of_subproblem_solved = 1387;
-    data.iteration_time = 1000;
-    data.timer_master = 10;
-    data.subproblems_walltime = 16;
-    data.subproblems_cumulative_cputime = 160;
+    data.control.it = 35;
+    data.master.lb = 256999;
+    data.cuts.ub = 2222569996;
+    data.control.best_ub = 22225556999;
+    data.cuts.min_simplexiter = 3;
+    data.cuts.max_simplexiter = 30;
+    data.control.number_of_subproblem_solved = 657;
+    data.control.cumulative_number_of_subproblem_solved = 1387;
+    data.control.iteration_time = 1000;
+    data.master.timer_master = 10;
+    data.cuts.subproblems_walltime = 16;
+    data.cuts.subproblems_cumulative_cputime = 160;
 
     std::ostringstream expected_msg;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.it;
+    expected_msg << std::left << std::setw(width) << data.control.it;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.lb;
+                 << data.master.lb;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.ub;
+                 << data.cuts.ub;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(10)
-                 << data.best_ub;
+                 << data.control.best_ub;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(2)
-                 << data.best_ub - data.lb;
+                 << data.control.best_ub - data.master.lb;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::scientific << std::setprecision(2)
-                 << (data.best_ub - data.lb) / data.best_ub;
+                 << (data.control.best_ub - data.master.lb) / data.control.best_ub;
     expected_msg << DELIMITER;
 
-    expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.min_simplexiter;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+    expected_msg << std::left << std::setw(width) << data.cuts.max_simplexiter;
     expected_msg << DELIMITER;
 
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.iteration_time;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.control.iteration_time;
     expected_msg << DELIMITER;
-    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.timer_master;
+    expected_msg << std::left << std::setw(width) << std::setprecision(2) << data.master.timer_master;
     expected_msg << DELIMITER;
     expected_msg << std::left << std::setw(width) << std::setprecision(2)
-                 << data.subproblems_walltime;
+                 << data.cuts.subproblems_walltime;
     expected_msg << DELIMITER;
 
     expected_msg << std::endl;

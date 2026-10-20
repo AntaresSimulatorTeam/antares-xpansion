@@ -1,6 +1,7 @@
 # Antares optimization problem retrieval
 
-In this step, `antares-solver` runs the Antares study with a specific configuration set by Antares Xpansion and writes the weekly optimization problems as `.mps` files. More precisely, `antares-solver` performs two successive optimizations, see [Antares-Simulator solver appendix](https://antares-simulator.readthedocs.io/en/latest/reference/solver/appendix/#details-on-the-unit-commitment-mode-parameter):
+In this step, `antares-solver` runs the Antares study with a specific configuration set by Antares Xpansion and writes the weekly optimization problems as `.mps` files. More precisely, `antares-solver` performs two successive optimizations, see [Antares-Simulator user guide](https://antares-simulator.readthedocs.io/en/latest/reference/solver/appendix/):
+
 
 1. A linear relaxation of the Antares MILP problem is solved where the on/off variables of thermal clusters are continuous.
 2. A heuristic search for integer values of these variables, satisfying the dynamic constraint of the system with the smallest possible cost is then carried out. Finally, a second linear optimization with the integer variables set to the previously found values is performed. 
