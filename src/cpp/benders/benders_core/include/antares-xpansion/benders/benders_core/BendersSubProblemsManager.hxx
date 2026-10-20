@@ -180,6 +180,27 @@ public:
     }
 
     // ---------------------------------------------------------------
+    // Execution policy selection
+    // ---------------------------------------------------------------
+
+    // Subproblems are solved with Derived::EXECUTION_POLICY, except when micro-iterations are
+    // enabled: the plugin hooks then mutate state shared between subproblems (constraint maps,
+    // the shared skeleton solver) and call into a dynamically loaded library, none of which is
+    // guaranteed to be thread-safe. See BendersPlugin.
+    template<typename It, typename F>
+    void ForEachSubproblem(It first, It last, F&& f)
+    {
+        if (options_.MICRO_ITERATIONS)
+        {
+            std::for_each(std::execution::seq, first, last, std::forward<F>(f));
+        }
+        else
+        {
+            std::for_each(Derived::EXECUTION_POLICY, first, last, std::forward<F>(f));
+        }
+    }
+
+    // ---------------------------------------------------------------
     // Cache=0: fast path — persistent workers
     // ---------------------------------------------------------------
 
@@ -191,31 +212,30 @@ public:
 
         std::mutex m;
         std::exception_ptr first_exception;
-        std::for_each(Derived::EXECUTION_POLICY,
-                      nameAndWorkers.begin(),
-                      nameAndWorkers.end(),
-                      [this, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
-                        const std::pair<std::string, SubproblemWorkerPtr>& kvp)
-                      {
-                          try
+        ForEachSubproblem(nameAndWorkers.begin(),
+                          nameAndWorkers.end(),
+                          [this, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
+                            const std::pair<std::string, SubproblemWorkerPtr>& kvp)
                           {
-                              PlainData::SubProblemData subproblem_data;
-                              const auto& [name, worker] = kvp;
-                              SolveSubproblem(subproblem_data, name, worker, nullptr);
-                              post_solve_hook(name, subproblem_data, worker);
-
-                              std::lock_guard guard(m);
-                              subproblem_data_map[name] = subproblem_data;
-                          }
-                          catch (...)
-                          {
-                              std::lock_guard guard(m);
-                              if (!first_exception)
+                              try
                               {
-                                  first_exception = std::current_exception();
+                                  PlainData::SubProblemData subproblem_data;
+                                  const auto& [name, worker] = kvp;
+                                  SolveSubproblem(subproblem_data, name, worker, nullptr);
+                                  post_solve_hook(name, subproblem_data, worker);
+
+                                  std::lock_guard guard(m);
+                                  subproblem_data_map[name] = subproblem_data;
                               }
-                          }
-                      });
+                              catch (...)
+                              {
+                                  std::lock_guard guard(m);
+                                  if (!first_exception)
+                                  {
+                                      first_exception = std::current_exception();
+                                  }
+                              }
+                          });
         if (first_exception)
         {
             std::rethrow_exception(first_exception);
@@ -235,44 +255,43 @@ public:
         std::mutex m;
         std::exception_ptr first_exception;
 
-        std::for_each(Derived::EXECUTION_POLICY,
-                      nameAndVariableMap.begin(),
-                      nameAndVariableMap.end(),
-                      [this, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
-                        const std::pair<std::string, VariableMap>& kvp)
-                      {
-                          try
+        ForEachSubproblem(nameAndVariableMap.begin(),
+                          nameAndVariableMap.end(),
+                          [this, &m, &subproblem_data_map, &first_exception, &post_solve_hook](
+                            const std::pair<std::string, VariableMap>& kvp)
                           {
-                              const auto& [name, variables] = kvp;
-                              auto worker = makeSubproblemWorker(kvp);
-                              PlainData::SubProblemData subproblem_data;
-                              SolveSubproblem(subproblem_data,
-                                              name,
-                                              worker,
-                                              [this, &name, &worker]
-                                              { TryRestoreSubproblemBasis(name, worker); });
-                              post_solve_hook(name, subproblem_data, worker);
-
-                              std::call_once(
-                                variable_indice_once_flag_,
-                                [this](const auto& worker_)
-                                { SetSubproblemVariablesIndices(worker_); },
-                                *worker);
-
-                              StoreSubproblemBasis(name, worker);
-
-                              std::lock_guard guard(m);
-                              subproblem_data_map[name] = subproblem_data;
-                          }
-                          catch (...)
-                          {
-                              std::lock_guard guard(m);
-                              if (!first_exception)
+                              try
                               {
-                                  first_exception = std::current_exception();
+                                  const auto& [name, variables] = kvp;
+                                  auto worker = makeSubproblemWorker(kvp);
+                                  PlainData::SubProblemData subproblem_data;
+                                  SolveSubproblem(subproblem_data,
+                                                  name,
+                                                  worker,
+                                                  [this, &name, &worker]
+                                                  { TryRestoreSubproblemBasis(name, worker); });
+                                  post_solve_hook(name, subproblem_data, worker);
+
+                                  std::call_once(
+                                    variable_indice_once_flag_,
+                                    [this](const auto& worker_)
+                                    { SetSubproblemVariablesIndices(worker_); },
+                                    *worker);
+
+                                  StoreSubproblemBasis(name, worker);
+
+                                  std::lock_guard guard(m);
+                                  subproblem_data_map[name] = subproblem_data;
                               }
-                          }
-                      });
+                              catch (...)
+                              {
+                                  std::lock_guard guard(m);
+                                  if (!first_exception)
+                                  {
+                                      first_exception = std::current_exception();
+                                  }
+                              }
+                          });
         if (first_exception)
         {
             std::rethrow_exception(first_exception);
