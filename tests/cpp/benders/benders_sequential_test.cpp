@@ -6,10 +6,73 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
+
+// Records the order in which BendersSequential calls the plugin hooks that are not tied to a
+// subproblem, so it can be checked against the other Benders implementations (MPI, by batch).
+class PluginHooksRecorder final: public BendersPlugin
+{
+public:
+    std::vector<std::string> calls;
+
+    void OnBendersStart(const SubproblemsMapPtr&,
+                        const BendersBaseOptions&,
+                        const SolverLogManager&,
+                        std::shared_ptr<SolverAbstract>) override
+    {
+        calls.emplace_back("BendersStart");
+    }
+
+    void OnBendersEnd() override
+    {
+        calls.emplace_back("BendersEnd");
+    }
+
+    void OnBendersIterationStart() override
+    {
+        calls.emplace_back("IterationStart");
+    }
+
+    void OnBendersIterationEnd() override
+    {
+        calls.emplace_back("IterationEnd");
+    }
+
+    void OnBendersMasterResolutionStart() override
+    {
+        calls.emplace_back("MasterResolutionStart");
+    }
+
+    void OnBendersMasterResolutionEnd(std::map<std::string, double>&, int& num_iter) override
+    {
+        calls.emplace_back("MasterResolutionEnd(" + std::to_string(num_iter) + ")");
+    }
+
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>&, std::string) override
+    {
+    }
+
+    void OnBendersSubResolutionEnd() override
+    {
+    }
+
+    void OnBendersMicroIterationStart() override
+    {
+    }
+
+    void OnBendersMicroIterationEnd(std::string, bool&, std::string, int, int) override
+    {
+    }
+
+    bool ShouldRestoreSubproblemBasis() const override
+    {
+        return true;
+    }
+};
 
 class BendersSequentialDouble: public BendersSequential
 {
@@ -354,6 +417,29 @@ TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached)
     EXPECT_EQ(benders._setDataPreRelaxationCall, true);
     EXPECT_EQ(benders._reactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPostRelaxationCall, true);
+}
+
+TEST_F(BendersSequentialTest, PluginHooksAreCalledInTheSameOrderAsOtherBendersImplementations)
+{
+    copyMasterMps();
+    BendersSequentialDouble benders = init_benders_sequential(MasterFormulation::INTEGER,
+                                                              1,
+                                                              1e-2,
+                                                              0.7);
+    auto recorder = std::make_shared<PluginHooksRecorder>();
+    benders.SetPlugin(recorder);
+
+    benders.set_data(false, 0);
+    benders.set_bounds(1000, 1001);
+    benders.launch();
+
+    const std::vector<std::string> expected{"BendersStart",
+                                            "IterationStart",
+                                            "MasterResolutionStart",
+                                            "MasterResolutionEnd(1)",
+                                            "IterationEnd",
+                                            "BendersEnd"};
+    EXPECT_EQ(recorder->calls, expected);
 }
 
 TEST_F(BendersSequentialTest,
