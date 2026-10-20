@@ -301,12 +301,18 @@ void BendersByBatch::SeparationLoop()
     }
 }
 
+void BendersByBatch::PromotePreviousXCutToXIn()
+{
+    _data.solution.x_in = _data.solution.x_cut;
+    _data.solution.master_only_vars_in = _data.solution.master_only_vars_cut;
+}
+
 void BendersByBatch::ComputeXCut()
 {
-    if (_data.control.it != 1)
+    const bool first_iteration_handled_by_base_compute_x_cut = (_data.control.it == 1);
+    if (!first_iteration_handled_by_base_compute_x_cut)
     {
-        _data.solution.x_in = _data.solution.x_cut;
-        _data.solution.master_only_vars_in = _data.solution.master_only_vars_cut;
+        PromotePreviousXCutToXIn();
     }
     batch_cuts_manager_->ComputeXCut(_data,
                                      Options().SEPARATION_PARAM,
@@ -333,7 +339,7 @@ void BendersByBatch::SolveBatches()
 {
     batch_counter_ = 0;
     cumulative_subproblems_timer_per_iter_ = 0;
-    int problem_solved_by_rank = 0;
+    int subproblems_solved_by_this_rank = 0;
     while (batch_counter_ < number_of_batch_)
     {
         first_unsolved_batch_ = first_unsolved_batch_ % number_of_batch_;
@@ -344,7 +350,7 @@ void BendersByBatch::SolveBatches()
         double batch_contribution_in_gap = 0;
         int problem_solved = 0;
         BuildCut(batch_sub_problems, &batch_contribution_in_gap, problem_solved);
-        problem_solved_by_rank += problem_solved;
+        subproblems_solved_by_this_rank += problem_solved;
         Reduce(_data.cuts.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
@@ -368,7 +374,7 @@ void BendersByBatch::SolveBatches()
     }
 
     int global_total_solved = 0;
-    Reduce(problem_solved_by_rank, global_total_solved, std::plus<int>(), rank_0);
+    Reduce(subproblems_solved_by_this_rank, global_total_solved, std::plus<int>(), rank_0);
     if (Rank() == rank_0)
     {
         _data.control.number_of_subproblem_solved = global_total_solved;

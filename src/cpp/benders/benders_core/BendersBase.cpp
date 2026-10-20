@@ -142,6 +142,7 @@ void BendersBase::UpdateStoppingCriterion()
     {
         _data.control.stopping_criterion = StoppingCriterion::absolute_gap;
     }
+    // keep parentheses around (std::max) to prevent build failure on windows
     else if (((_data.control.best_ub - _data.master.lb)
               / (std::max)(std::abs(_data.control.best_ub), std::abs(_data.master.lb)))
              <= _options.RELATIVE_GAP)
@@ -212,6 +213,9 @@ void BendersBase::HandleInitialMasterRelaxation()
     }
     else if (is_initial_relaxation_requested())
     {
+        // Case of integer master with separation parameter < 1, needs to register that we are in
+        // initial relaxation state to be able to fallback to integer master at the end of the
+        // algorithm
         output_manager_.GetLogger()->LogAtInitialRelaxation();
         DeactivateIntegrityConstraints();
         SetDataPreRelaxation();
@@ -386,6 +390,8 @@ void BendersBase::reset_master(const VariableMap& variable_map,
 void BendersBase::ResetSimplexIterationsBounds()
 {
     _data.cuts.max_simplexiter = 0;
+    // Tbb 2020 includes Windows min max defines that's why we don't write
+    // std::numeric_limits<int>::max();
     _data.cuts.min_simplexiter = (std::numeric_limits<int>::max)();
 }
 
@@ -474,6 +480,10 @@ bool BendersBase::isExceptionRaised() const
     return exception_raised_;
 }
 
+/*
+ * after the 1st loop of the outer loop, we must  re-build the objective
+ * function and costs
+ */
 void BendersBase::UpdateOverallCosts()
 {
     master_manager_.UpdateOverallCosts(_data, relevantIterationData_.best._invest_cost);
