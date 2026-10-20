@@ -3,9 +3,9 @@
 #include "antares-xpansion/benders/benders_core/CutsManagement.h"
 #include "antares-xpansion/benders/benders_core/ICommunicationStrategy.h"
 #include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
+#include "antares-xpansion/benders/outer_loop/IOuterLoopFacade.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
-#include "antares-xpansion/benders/outer_loop/IOuterLoopFacade.h"
 
 namespace Outerloop
 {
