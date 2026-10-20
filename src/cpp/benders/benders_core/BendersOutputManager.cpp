@@ -383,8 +383,7 @@ LogData BendersOutputManager::FinalLogData() const
 
 // Resume support
 
-void BendersOutputManager::LoadResumeData(const std::filesystem::path& last_iteration_file,
-                                          Logger& logger)
+void BendersOutputManager::LoadResumeData(const std::filesystem::path& last_iteration_file)
 {
     auto reader = LastIterationReader(last_iteration_file);
     LogData last_iter;
@@ -399,7 +398,7 @@ void BendersOutputManager::LoadResumeData(const std::filesystem::path& last_iter
         best_iteration_data_ = bendersDataToLogData(data_);
         last_iter = best_iteration_data_;
     }
-    auto restart_data_printer = LastIterationPrinter(logger, best_iteration_data_, last_iter);
+    auto restart_data_printer = LastIterationPrinter(logger_, best_iteration_data_, last_iter);
     restart_data_printer.Print();
     iterations_before_resume_ = last_iter.it;
     cumulative_number_of_subproblem_resolved_before_resume_

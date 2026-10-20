@@ -420,8 +420,7 @@ void BendersBase::ChecksResumeMode()
     benders_timer = Timer();
     if (IsResumeMode())
     {
-        auto logger = output_manager_.GetLogger();
-        output_manager_.LoadResumeData(LastIterationFile(), logger);
+        output_manager_.LoadResumeData(LastIterationFile());
         UpdateMaxNumberIterationResumeMode(output_manager_.GetNumIterationsBeforeRestart());
         benders_timer = Timer(output_manager_.GetBestIterationData().benders_elapsed_time);
         _data.control.stop = ShouldBendersStop();
