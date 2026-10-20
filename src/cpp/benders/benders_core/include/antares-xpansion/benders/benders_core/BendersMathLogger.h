@@ -251,11 +251,11 @@ template<class T>
 void MathLoggerExternalLoopSpecific<T>::Print(const CurrentIterationData& data)
 {
     LogsDestination().InsertDelimiter();
-    LogsDestination() << data.criteria_current_iteration_data.benders_num_run;
+    LogsDestination() << data.criteria.benders_num_run;
     LogsDestination().InsertDelimiter();
-    LogsDestination() << data.it;
+    LogsDestination() << data.control.it;
     LogsDestination().InsertDelimiter();
-    for (const auto& t: data.criteria_current_iteration_data.*ptr_)
+    for (const auto& t: data.criteria.*ptr_)
     {
         LogsDestination() << std::scientific << std::setprecision(10) << t;
         LogsDestination().InsertDelimiter();

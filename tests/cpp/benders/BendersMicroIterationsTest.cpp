@@ -26,7 +26,7 @@ public:
     {
     }
 
-    void OnBendersIterationEnd() override
+    void OnBendersIterationEnd(bool /*is_final_iteration*/) override
     {
     }
 
@@ -103,7 +103,9 @@ public:
     void Run() override
     {
         // OnBendersStart
-        benders_plugin_->OnBendersStart(subproblem_map, _options, solver_log_manager_, nullptr);
+        SubproblemsMapPtr empty_subproblem_map;
+        benders_plugin_->OnBendersStart(empty_subproblem_map, _options, solver_log_manager_, nullptr);
+
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();
@@ -130,7 +132,7 @@ public:
         int iter = 1;
         benders_plugin_->OnBendersMasterResolutionEnd(master_out, iter);
 
-        benders_plugin_->OnBendersIterationEnd();
+        benders_plugin_->OnBendersIterationEnd(true);
 
         // OnBendersEnd
         benders_plugin_->OnBendersEnd();
@@ -145,19 +147,7 @@ public:
         BendersBase::init_data();
     }
 
-    void UpdateTrace() override
-    {
-    }
-
-    void post_run_actions() const override
-    {
-    }
-
-    void EndWritingInOutputFile() const override
-    {
-    }
-
-    void SaveCurrentBendersData() override
+    void post_run_actions() override
     {
     }
 

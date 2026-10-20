@@ -16,7 +16,7 @@ public:
     void OnBendersEnd() override;
 
     void OnBendersIterationStart() override;
-    void OnBendersIterationEnd() override;
+    void OnBendersIterationEnd(bool is_final_iteration) override;
 
     void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
                                       int& num_iter) override;

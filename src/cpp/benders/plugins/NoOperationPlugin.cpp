@@ -19,7 +19,7 @@ void NoOperationPlugin::OnBendersIterationStart()
 {
 }
 
-void NoOperationPlugin::OnBendersIterationEnd()
+void NoOperationPlugin::OnBendersIterationEnd(bool /*is_final_iteration*/)
 {
 }
 

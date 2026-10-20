@@ -1,0 +1,173 @@
+#pragma once
+
+#include <cassert>
+#include <vector>
+
+#include "BendersMasterManager.h"
+#include "BendersStructsDatas.h"
+#include "SubproblemCut.h"
+#include "common.h"
+
+template<typename Derived>
+class BendersCutsManager
+{
+public:
+    // The master manager is the only owner of the master problem: going through it means
+    // this class never holds a handle that a master re-creation could invalidate. It holds
+    // no master on the processes that do not own one; those take part in the gathering but
+    // never build a cut.
+    explicit BendersCutsManager(BendersMasterManager& master_manager);
+
+    template<typename... Args>
+    void GatherAndBuildCuts(Args&&... args)
+    {
+        static_cast<Derived*>(this)->GatherAndBuildCutsImpl(std::forward<Args>(args)...);
+    }
+
+    // Aggregates subproblem costs and tracks min/max simplex iterations
+    // across all gathered subproblem data. Called during cut building to
+    // populate iteration-level statistics before constructing the cuts.
+    void SetSubproblemDataCostAndSimplexIter(
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+      CurrentIterationData& data)
+    {
+        for (const auto& subproblem_data_map: gathered_subproblem_map)
+        {
+            for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
+            {
+                data.cuts.subproblem_cost += subproblem_data.subproblem_cost;
+                BoundSimplexIterations(subproblem_data.simplex_iter, data);
+            }
+        }
+    }
+
+    // Computes the separation point x_cut from x_out and x_in using the
+    // separation parameter, then rounds values near variable bounds.
+    void ComputeXCut(CurrentIterationData& data,
+                     double separation_param,
+                     double master_solution_tolerance)
+    {
+        if (data.control.it == 1)
+        {
+            data.solution.x_in = data.solution.x_out;
+            data.solution.x_cut = data.solution.x_out;
+            data.solution.master_only_vars_in = data.solution.master_only_vars_out;
+            data.solution.master_only_vars_cut = data.solution.master_only_vars_out;
+        }
+        else
+        {
+            for (const auto& [name, value]: data.solution.x_out)
+            {
+                data.solution.x_cut[name] = separation_param * data.solution.x_out[name]
+                                            + (1 - separation_param) * data.solution.x_in[name];
+            }
+            for (int i(0); i < data.solution.master_only_vars_out.size(); ++i)
+            {
+                data.solution.master_only_vars_cut[i] = separation_param
+                                                          * data.solution.master_only_vars_out[i]
+                                                        + (1 - separation_param)
+                                                            * data.solution.master_only_vars_in[i];
+            }
+        }
+        RoundXCut(data, master_solution_tolerance);
+    }
+
+    void BuildAllAggregatedCuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
+                                const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+                                const VariableMap& problem_to_id,
+                                double& ub,
+                                const Point& x_cut,
+                                SubProblemDataMap& cut_trace)
+    {
+        assert((subproblem_names.empty() || master_manager_.Master() != nullptr)
+               && "cuts can only be built on the process owning the master problem");
+
+        for (const auto& subproblem_names_in_cut: subproblem_names)
+        {
+            Point s;
+            double rhs{0};
+            std::vector<int> subproblem_ids_per_cut;
+
+            for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
+            {
+                auto problem_to_id_pair = problem_to_id.find(sub_problem_name);
+                if (problem_to_id_pair != problem_to_id.end())
+                {
+                    subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
+                }
+
+                auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
+                  sub_problem_name);
+
+                if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end())
+                {
+                    auto& subproblem_data = subproblem_data_pair->second;
+                    ub += subproblem_data.subproblem_cost;
+                    rhs += subproblem_data.subproblem_cost;
+                    compute_cut_val(subproblem_data.var_name_and_subgradient, x_cut, s);
+                    cut_trace[sub_problem_name] = subproblem_data;
+                }
+            }
+
+            master_manager_.AddGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+        }
+    }
+
+protected:
+    BendersMasterManager& master_manager_;
+
+private:
+    // Accumulates the subgradient of one subproblem into the cut coefficients s,
+    // for every candidate present in the separation point x_cut.
+    static void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
+    {
+        for (const auto& [cand_name, cand_value]: x_cut)
+        {
+            const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
+            if (cand_name_and_subgradient != var_name_subgradient.end())
+            {
+                s[cand_name] += cand_name_and_subgradient->second;
+            }
+        }
+    }
+
+    // Rounds x_cut values that are within tolerance of variable bounds to
+    // avoid numerical drift from repeated separation parameter application.
+    void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
+    {
+        for (auto& kvp: data.solution.x_cut)
+        {
+            double value = kvp.second;
+            double lb = data.solution.min_invest.at(kvp.first);
+            double ub = data.solution.max_invest.at(kvp.first);
+
+            if (std::abs(value - lb) < master_solution_tolerance)
+            {
+                kvp.second = lb;
+            }
+            else if (std::abs(value - ub) < master_solution_tolerance)
+            {
+                kvp.second = ub;
+            }
+        }
+    }
+
+    // Updates min/max simplex iteration bounds for the current iteration.
+    // Used by SetSubproblemDataCostAndSimplexIter to track solver effort
+    // across subproblems during cut gathering.
+    void BoundSimplexIterations(int subproblem_iterations, CurrentIterationData& data)
+    {
+        data.cuts.max_simplexiter = (data.cuts.max_simplexiter < subproblem_iterations)
+                                      ? subproblem_iterations
+                                      : data.cuts.max_simplexiter;
+        data.cuts.min_simplexiter = (data.cuts.min_simplexiter > subproblem_iterations)
+                                      ? subproblem_iterations
+                                      : data.cuts.min_simplexiter;
+    }
+};
+
+template<typename Derived>
+BendersCutsManager<Derived>::BendersCutsManager(BendersMasterManager& master_manager):
+    master_manager_(master_manager)
+{
+}

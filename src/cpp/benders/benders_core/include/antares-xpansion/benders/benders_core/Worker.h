@@ -68,13 +68,17 @@ public:
 
     int Getncols() const;
 
+    std::vector<std::string> RemoveUnsaturatedConstraints() const;
+
 public:
     std::shared_ptr<SolverAbstract> _solver = nullptr; /*!< Problem stocked in the instance Worker*/
     bool _is_master = false;
+    int _initial_nrows = 0; /*!< Number of rows after loading the original problem (before any added
+                               constraints) */
 
     Logger logger_;
+    void writeProb(const std::filesystem::path& out) const;
 
 private:
     SolverIO solver_io_;
-    void writeProb(const std::filesystem::path& out) const;
 };

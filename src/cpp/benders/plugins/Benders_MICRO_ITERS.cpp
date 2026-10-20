@@ -341,9 +341,16 @@ void Benders_MICRO_ITERS::OnBendersIterationStart()
     OnBendersIterationStart_();
 }
 
-void Benders_MICRO_ITERS::OnBendersIterationEnd()
+void Benders_MICRO_ITERS::OnBendersIterationEnd(bool is_final_iteration)
 {
     OnBendersIterationEnd_();
+    if (is_final_iteration)
+    {
+        // On the final iteration, keep added rows so that downstream
+        // saturation analysis (WriteFinalSubproblemMps / RemoveUnsaturatedConstraints)
+        // sees the full model with all cuts.
+        return;
+    }
     if (options_.CACHE_PROBLEMS != CacheProblems::COMPACT)
     {
         if (!warm_start_)
@@ -616,6 +623,9 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
         std::string constraints_file_name = subproblem_constraint_map_[sub];
         auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
                                      / constraints_file_name;
+        std::cout << "[MicroIter] Sub: " << sub
+                  << " | sub nrows: " << sub_worker->get_problem_row_num()
+                  << " | constraint file: " << constraints_file_name << std::endl;
         constraints_map_[constraints_file_name] = SubproblemConstraintsManager::FromConstraintsFile(
           constraints_file_path,
           options.SOLVER_NAME,

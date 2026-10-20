@@ -1,6 +1,8 @@
 #ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
+#include "BendersCutsManagerByBatch.h"
+#include "BendersSubProblemsManagerByBatch.hxx"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
@@ -9,12 +11,15 @@ class BendersByBatch: public BendersMpi
     std::vector<unsigned> random_batch_permutation_;
 
 public:
-    using BendersMpi::BendersMpi;
+    BendersByBatch(const BendersBaseOptions& options,
+                   std::shared_ptr<ILogger> logger,
+                   std::shared_ptr<Output::OutputWriter> writer,
+                   mpi::communicator& world,
+                   std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     ~BendersByBatch() override = default;
     void Run() override;
     void BuildCut(const std::vector<std::string>& batch_sub_problems,
                   double* batch_contribution_in_gap,
-                  std::vector<double>& external_loop_criterion_current_batch,
                   int& local_solved);
 
     std::string BendersName() const override
@@ -22,30 +27,22 @@ public:
         return "Benders By Batch mpi";
     }
 
+    void free() override;
+    void launch() override;
+
 protected:
     void InitializeProblems() override;
+    void BroadCastVariablesIndices() override;
     void BroadcastSingleSubpbCostsUnderApprox();
-    void ComputeXCut() override;
+    void ComputeXCut();
     void UpdateStoppingCriterion() override;
     bool ShouldRelaxationStop() const override;
     void BuildBatches();
 
 private:
-    void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
-                          const std::vector<std::string>& batch_sub_problems);
     void BuildMasterProblem();
-    double ComputeBatchContributionInGap(
-      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
-    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map,
-                               const std::vector<std::string>& batch_sub_problems);
-    void GetCompactInMemCuts(SubProblemDataMap& subproblem_data_map,
-                             const std::vector<std::string>& batch_sub_problems);
-    Timer calculate_subproblem_contribution(const std::string& name,
-                                            PlainData::SubProblemData& subproblem_data);
-    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map,
-                              const std::vector<std::string>& batch_sub_problems);
-
+    void calculate_subproblem_contribution(const std::string& name,
+                                           PlainData::SubProblemData& subproblem_data);
     void get_subs_per_cut_per_batch();
 
     BatchCollection batch_collection_;
@@ -63,6 +60,8 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
+    std::shared_ptr<BendersCutsManagerByBatch> batch_cuts_manager_;
+    std::shared_ptr<BendersSubProblemsManagerByBatch> batch_subproblems_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
