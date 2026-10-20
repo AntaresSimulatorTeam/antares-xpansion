@@ -11,13 +11,14 @@
 #include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-BendersOutputManager::BendersOutputManager(Logger logger,
-                                           std::shared_ptr<Output::OutputWriter> writer,
-                                           std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
-                                           const CurrentIterationData& data,
-                                           const BendersBaseOptions& options,
-                                           const VariableMap& problem_to_id,
-                                           const BendersRelevantIterationsData& relevant_iteration_data):
+BendersOutputManager::BendersOutputManager(
+  Logger logger,
+  std::shared_ptr<Output::OutputWriter> writer,
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+  const CurrentIterationData& data,
+  const BendersBaseOptions& options,
+  const VariableMap& problem_to_id,
+  const BendersRelevantIterationsData& relevant_iteration_data):
     logger_(std::move(logger)),
     writer_(std::move(writer)),
     mathLoggerDriver_(std::move(mathLoggerDriver)),
