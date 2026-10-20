@@ -1,6 +1,7 @@
 #include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 
-OuterLoopFacade::OuterLoopFacade(pBendersBase benders): benders_(std::move(benders))
+OuterLoopFacade::OuterLoopFacade(pBendersBase benders):
+    benders_(std::move(benders))
 {
 }
 
