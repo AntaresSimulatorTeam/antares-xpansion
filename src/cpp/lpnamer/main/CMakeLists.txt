@@ -32,6 +32,7 @@ target_link_libraries(problem_generation_main
         antaresXpansion::xpansion_interfaces
         Antares::single_problem_api
         Antares::solver_api
+        Antares::antares-solver-variable
         Antares::file-tree-study-loader
         PUBLIC
         ${PROJECT_NAME}::lp_namer_helper
