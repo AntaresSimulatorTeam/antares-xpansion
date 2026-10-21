@@ -48,6 +48,11 @@ IF (COIN_OR)
     )
 ENDIF (COIN_OR)
 
+# MathOpt (OR-Tools)
+list(APPEND Solver_sources
+        ${CMAKE_CURRENT_LIST_DIR}/SolverMathOpt.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/private/SolverMathOpt.h
+)
 
 # ---------------------------------------------------------------------------
 # Solver library creation and conditionnal link to internal solvers libraries
@@ -71,6 +76,7 @@ target_link_libraries(solvers
         PUBLIC
         ${PROJECT_NAME}::xpansion_interfaces
         ${CMAKE_DL_LIBS}
+        ortools::ortools
 )
 
 #CLP-CBC
