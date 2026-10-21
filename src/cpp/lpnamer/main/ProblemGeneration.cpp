@@ -141,7 +141,7 @@ void ProblemGeneration::generate_antares_problems(Antares::Solver::SingleProblem
     {
         // By convention, year indices start at 1 for indexing
         // Input week index already starts at 1 in `problem_id`, so no need to change it
-        Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
+        Antares::Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
         lps_.addWeeklyData(fixed, spg.getWeeklyData(problem_id));
     }
 
@@ -422,7 +422,9 @@ void ProblemGeneration::RunProblemGeneration(
 
         // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies
-        std::vector<std::pair<Solver::WeeklyProblemId, Solver::WeeklyDataFromAntares&>> weekly_data;
+        std::vector<
+          std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
+          weekly_data;
         std::ranges::for_each(lps_.weeklyProblems,
                               [&weekly_data](auto& pair)
                               { weekly_data.emplace_back(pair.first, pair.second); });
