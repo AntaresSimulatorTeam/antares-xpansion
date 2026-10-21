@@ -82,13 +82,13 @@ std::string solverXpansionToSimulator(const SolverConfig& in)
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& simulation_dir)
 {
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
+    Antares::Optimization::OptimizationOptions optOptions;
 
     auto solver_name = solverXpansionToSimulator(solver_config_);
     optOptions.firstOptimOptions.solverName = solver_name;
     optOptions.firstOptimOptions.solverUsesBasis = true;
     optOptions.firstOptimOptions.solverExportsBasis = true;
-    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
+    optOptions.exportBehavior = Antares::Optimization::ExportBehavior::Always;
 
     optOptions.secondOptimOptions.solverName = solver_name;
     optOptions.secondOptimOptions.solverUsesBasis = true;
