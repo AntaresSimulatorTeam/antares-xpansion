@@ -8,6 +8,7 @@
 
 #include <antares/api/singleProblemGetter.h>
 #include <antares/api/solver.h>
+#include <antares/solver/variable/registerThematicTrimmingVariables.h>
 #include "antares/file-tree-study-loader/FileTreeStudyLoader.h"
 
 #include "Version.h"
@@ -163,6 +164,10 @@ void ProblemGeneration::loadProblemsFromAntares(
   const std::filesystem::path& simulation_dir,
   ProblemGenerationLog::ProblemGenerationLogger* logger)
 {
+    // Since Simulator 10.2.0, every executable loading a study must register the thematic
+    // trimming variables beforehand, otherwise loading the study throws `map::at`
+    Antares::Solver::Variable::RegisterThematicTrimmingVariables();
+
     Antares::Solver::SingleProblemGetter spg(study_dir);
     if (spg.areWeeksIndependent())
     {
