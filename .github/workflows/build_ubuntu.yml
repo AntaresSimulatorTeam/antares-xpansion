@@ -105,6 +105,9 @@ jobs:
           git fetch --unshallow
           ./bootstrap-vcpkg.sh -disableMetrics
 
+      - name: Configure vcpkg asset cache
+        uses: ./.github/workflows/vcpkg-asset-cache
+
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
         uses: actions/cache/restore@v6

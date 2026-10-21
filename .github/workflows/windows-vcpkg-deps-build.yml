@@ -71,6 +71,9 @@ jobs:
       - name: Install MS-MPI redistributable
         uses: ./.github/actions/install-msmpi
 
+      - name: Configure vcpkg asset cache
+        uses: ./.github/workflows/vcpkg-asset-cache
+
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
         uses: actions/cache/restore@v6
