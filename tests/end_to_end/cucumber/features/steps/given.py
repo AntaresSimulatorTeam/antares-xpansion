@@ -46,21 +46,18 @@ def set_batch_size(context, batch_size):
 def set_cache_problems_level(context, level):
     with open(str(context.tmp_study / "options.json"), "r") as file:
         options_content = json.load(file)
-    options_content["CACHE_PROBLEMS"] = int(level)
+    options_content["CACHE_PROBLEMS"] = level
     with open(str(context.tmp_study / "options.json"), "w") as file:
         json.dump(options_content, file, indent=4)
 
 
 @given("the warm start is {value}")
 def set_warm_start(context, value):
-    config_path = context.tmp_study / "micro_iterations_config.txt"
-    match = False
-    with fileinput.FileInput(str(config_path), inplace=True) as file:
-        for line in file:
-            match = match or re.search(r"warm_start\s*=.*", line)
-            print(re.sub(r"warm_start\s*=.*", f"warm_start={value}", line), end="")
-    if not match:
-        with open(config_path, "a") as file:
-            file.write(f"\nwarm_start={value}")
+    config_path = context.tmp_study / "micro_iterations_config.json"
+    with open(str(config_path), "r") as file:
+        config = json.load(file)
+    config["warm_start"] = bool(int(value))
+    with open(str(config_path), "w") as file:
+        json.dump(config, file, indent=4)
 
 

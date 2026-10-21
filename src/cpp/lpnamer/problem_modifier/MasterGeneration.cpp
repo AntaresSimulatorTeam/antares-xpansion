@@ -17,7 +17,7 @@ MasterGeneration::MasterGeneration(
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
   SolverLogManager& solver_log_manager,
   FileWriter& file_writer,
-  ProblemsFormat format):
+  ProblemFormat format):
     output_path_(std::move(ouput_path)),
     logger_(std::move(logger)),
     logManager_(solver_log_manager),

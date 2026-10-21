@@ -22,6 +22,7 @@
 #include <tuple>
 #include <vector>
 
+#include "antares-xpansion/core/CacheProblems.h"
 #include "antares-xpansion/core/ProblemFormat.h"
 #include "antares-xpansion/core/RestartMode.h"
 
@@ -166,7 +167,7 @@ struct BaseOptions
     std::string MASTER_NAME;
     std::string SOLVER_NAME;
 
-    ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
+    ProblemFormat PROBLEM_FORMAT = ProblemFormat::MPS_FILE;
 };
 
 struct PresolveOptions: public BaseOptions
@@ -226,7 +227,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
-    int CACHE_PROBLEMS = 0;
+    CacheProblems CACHE_PROBLEMS = CacheProblems::NO_CACHE;
 
     MasterFormulation MASTER_FORMULATION;
 

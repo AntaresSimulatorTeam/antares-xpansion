@@ -14,7 +14,7 @@ the ```MultipleProblemGeneration``` executable and will be duplicated for each i
 **Note** : the C++ executable has to be launched at the ```--dataDir```. (The python driver takes care of this, this
 should not be a concern to most users).
 
-## Study paths / archives file
+## Study paths and archives file
 
 The study paths file (or archive paths file when called with ```--archive <archive_paths_file>```) tells the executable
 where to find the relevant input for each node :
@@ -64,7 +64,7 @@ In this example, for node ```2030```, the result will be the same as calling :
 And for node ```2040```, the result will be the same as calling :   
 ```<single_problem_gen_executable> --study ./node_2040_study```
 
-## Output : Nodal Lp Info file
+## Output: Nodal Lp Info file
 
 We give an example of a corresponding ```nodal_lp_info.json```.
 This file is written to the path given in the ```--nodal-file``` argument when calling the executable.
@@ -99,7 +99,7 @@ This gives the following information :
 
 - ```lp_folder``` is the path to the folder containing the output of the problem generation.
 - ```master_file```is the name of the file containing this node's master problem (no file extension, file extension is
-  implicitely deduced from ```PROBLEMS_FORMAT``` input option later.)
+  implicitely deduced from ```PROBLEM_FORMAT``` input option later.)
 - ```structure_file``` is the corresponding structure file (mostly useful if the name is not the default
   ```structure.txt```).
 - ```weights_file``` points to the weights file outputted by the problem generation if it exists (optional).

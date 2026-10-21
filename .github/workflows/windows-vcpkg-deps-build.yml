@@ -53,12 +53,6 @@ jobs:
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
-      - name: Pre-requisites
-        shell: cmd
-        run: |
-          curl -OLs https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
-          msmpisetup.exe -unattend
-
       - name: Read antares-xpansion version
         id: antares-xpansion-version
         uses: ./.github/actions/read-json-value
@@ -74,6 +68,9 @@ jobs:
           git fetch --unshallow
           ./bootstrap-vcpkg.bat -disableMetrics
 
+      - name: Install MS-MPI redistributable
+        uses: ./.github/actions/install-msmpi
+
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
         uses: actions/cache/restore@v6
@@ -86,7 +83,7 @@ jobs:
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install
+          cmake -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DMPIEXEC_EXECUTABLE="C:/Program Files/Microsoft MPI/Bin/mpiexec.exe"
 
       - name: Cache vcpkg binary dir
         if: always()

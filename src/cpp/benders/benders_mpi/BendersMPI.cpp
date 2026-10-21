@@ -37,7 +37,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     SubProblemNamesInCut subs_per_proc;
-    if (_options.CACHE_PROBLEMS > 0)
+    if (_options.CACHE_PROBLEMS != CacheProblems::NO_CACHE)
     {
         int current_problem_id = 0;
         for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
@@ -158,7 +158,7 @@ void BendersMpi::InitializeMaster()
                                    solver_log_manager_,
                                    MasterHasAlphaVariables(_options.RESTART_MODE),
                                    _logger,
-                                   Options().PROBLEMS_FORMAT,
+                                   Options().PROBLEM_FORMAT,
                                    benders_problem_provider.get(),
                                    Options().MASTER_SOLUTION_TOLERANCE,
                                    GetSubCutTolerance());
@@ -469,7 +469,7 @@ std::shared_ptr<SolverAbstract> BendersMpi::build_sub_problem_skeleton()
                                                                            _logger,
                                                                            _options.SOLVER_NAME,
                                                                            _options.LOG_LEVEL,
-                                                                           _options.PROBLEMS_FORMAT,
+                                                                           _options.PROBLEM_FORMAT,
                                                                            GetSubProblemNames(),
                                                                            solver_log_manager_,
                                                                            &_world);
@@ -577,13 +577,12 @@ void BendersMpi::launch()
     _world.barrier();
 
     std::shared_ptr<SolverAbstract> subProblemFactorSolver;
-    if (_options.CACHE_PROBLEMS == 2)
+    if (_options.CACHE_PROBLEMS == CacheProblems::COMPACT)
     {
         subProblemFactorSolver = build_sub_problem_skeleton();
     }
 
     benders_plugin_->OnBendersStart(subproblem_map,
-                                    _logger,
                                     _options,
                                     solver_log_manager_,
                                     subProblemFactorSolver);
