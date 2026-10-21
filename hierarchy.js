@@ -533,6 +533,7 @@ var hierarchy =
         [ "ProblemModifierTestWithProfile", "classProblemModifierTestWithProfile.html", null ]
       ] ],
       [ "RandomBatchShufflerTest", "classRandomBatchShufflerTest.html", null ],
+      [ "RestartModeFromStringTest", "classRestartModeFromStringTest.html", null ],
       [ "SensitivityFileLoggerTest", "classSensitivityFileLoggerTest.html", null ],
       [ "SensitivityInputReaderTest", "classSensitivityInputReaderTest.html", null ],
       [ "SensitivityMasterLoggerTest", "classSensitivityMasterLoggerTest.html", null ],

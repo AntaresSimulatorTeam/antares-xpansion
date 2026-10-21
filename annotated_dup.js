@@ -574,6 +574,7 @@ var annotated_dup =
     [ "RawPbData", "structRawPbData.html", null ],
     [ "RecordingSolver", "classRecordingSolver.html", "classRecordingSolver" ],
     [ "RenameUtils", "classRenameUtils.html", null ],
+    [ "RestartModeFromStringTest", "classRestartModeFromStringTest.html", null ],
     [ "ScenarioToChronicleReader", "classScenarioToChronicleReader.html", null ],
     [ "SensitivityFileLogger", "classSensitivityFileLogger.html", null ],
     [ "SensitivityFileLoggerTest", "classSensitivityFileLoggerTest.html", null ],

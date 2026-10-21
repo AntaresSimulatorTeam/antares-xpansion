@@ -121,6 +121,7 @@ var NAVTREEINDEX0 =
 "RandomDirGenerator_8h_source.html":[46,0,1,0,4,3],
 "RecordingSolver_8h_source.html":[46,0,1,0,0,0],
 "RenameUtils_8h_source.html":[46,0,0,0,4,4,0,0,0,0,19],
+"RestartMode_8h_source.html":[46,0,0,0,1,0,0,0,3],
 "SensitivityFileLogger_8h_source.html":[46,0,0,0,8,0,0,0,2],
 "SensitivityILogger_8h_source.html":[46,0,0,0,8,0,0,0,3],
 "SensitivityInputReader_8h_source.html":[46,0,0,0,8,0,0,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classBendersBase.html#af938b540f0daa0592257f5fb9fcfc80f":[45,0,57,12],
 "classBendersBase.html#afa9edac4513a89c829bdd69271bf3b50":[45,0,57,7],
 "classBendersBase.html#affc499db6586868162f6bd7efa8898ea":[45,0,57,1],
-"classBendersBaseDouble.html":[45,0,58],
-"classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f":[45,0,58,2]
+"classBendersBaseDouble.html":[45,0,58]
 };
