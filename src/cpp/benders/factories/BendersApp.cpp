@@ -23,9 +23,10 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
+
         benders_loggers_.AddLogger(logger_);
         benders_loggers_.AddLogger(math_log_driver_);
-        writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
+        writer_ = build_json_writer(options_.JSON_FILE, options_.RESTART_MODE);
     }
     else
     {
@@ -105,6 +106,13 @@ void BendersApp::InitializeBendersEnvironment(bool outer_loop)
         {
             throw std::runtime_error(
               "Could not initialize benders. Please see above messages for actual error.");
+        }
+        if (logger_)
+        {
+            logger_->display_message(
+              "Benders optimization was NOT executed: the previous run status is already "
+              "OPTIMAL in resume mode. If input data has changed since the last run, "
+              "delete the output JSON file or use a non-resume mode to force re-optimization.");
         }
         return;
     }

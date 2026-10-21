@@ -156,7 +156,7 @@ void BendersMpi::InitializeMaster()
                                    get_log_level(),
                                    _data.nsubproblem,
                                    solver_log_manager_,
-                                   IsResumeMode(),
+                                   MasterHasAlphaVariables(_options.RESTART_MODE),
                                    _logger,
                                    Options().PROBLEM_FORMAT,
                                    benders_problem_provider.get(),
@@ -557,7 +557,7 @@ void BendersMpi::PreRunInitialization()
 
     if (_world.rank() == rank_0)
     {
-        ChecksResumeMode();
+        ChecksRestartMode();
         if (is_trace())
         {
             OpenCsvFile();

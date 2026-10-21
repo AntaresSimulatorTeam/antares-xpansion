@@ -243,7 +243,7 @@ protected:
 
         options.MASTER_FORMULATION = master_formulation;
 
-        options.RESUME = false;
+        options.RESTART_MODE = RestartMode::COLD_START;
         options.NB_CUTS_PER_ITER = false;
         options.TRACE = false;
         options.BOUND_ALPHA = true;
