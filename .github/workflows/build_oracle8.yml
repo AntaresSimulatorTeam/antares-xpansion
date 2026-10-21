@@ -65,8 +65,8 @@ jobs:
           #openssl for pip
           dnf install -y bzip2-devel openssl-devel
           dnf install -y unzip gcc-toolset-11-toolchain python3-devel zlib-devel
-          #perl modules needed by vcpkg to build openssl (arrow dependency)
-          dnf install -y perl-IPC-Cmd perl-core
+          #build tools needed by vcpkg to build openssl and thrift (arrow dependencies), same as Simulator
+          dnf install -y perl-IPC-Cmd perl-Text-Template perl-Data-Dumper perl-Time-Piece flex bison
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-11/enable
           echo $PATH >> $GITHUB_PATH
