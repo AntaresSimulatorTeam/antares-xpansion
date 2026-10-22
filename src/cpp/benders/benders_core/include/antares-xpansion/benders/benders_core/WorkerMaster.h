@@ -51,6 +51,21 @@ public:
     void addAlphasFixingConstraints(std::vector<SubProblemNamesInCut>& names_in_cut,
                                     std::map<std::string, int>& problem_to_id);
 
+    [[nodiscard]] const std::vector<int>& GetMasterOnlyVarsIds() const
+    {
+        return _id_master_only_vars;
+    }
+
+    [[nodiscard]] const VariableMap& GetNameToId() const
+    {
+        return _name_to_id;
+    }
+
+    [[nodiscard]] const Int2Str& GetIdToName() const
+    {
+        return _id_to_name;
+    }
+
     [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {
         return _id_int_vars;

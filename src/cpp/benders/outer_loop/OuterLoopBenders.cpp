@@ -7,7 +7,7 @@ OuterLoopBenders::OuterLoopBenders(
   const std::vector<Benders::Criterion::CriterionSingleInputData>& outer_loop_data,
   std::shared_ptr<IMasterUpdate> master_updater,
   std::shared_ptr<ICutsManager> cuts_manager,
-  std::shared_ptr<OuterLoopFacade> facade,
+  std::shared_ptr<IOuterLoopFacade> facade,
   std::shared_ptr<ICommunicationStrategy> communication_strategy):
     master_updater_(std::move(master_updater)),
     cuts_manager_(std::move(cuts_manager)),

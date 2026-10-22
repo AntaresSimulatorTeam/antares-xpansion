@@ -19,60 +19,23 @@ public:
 
     void DistributeSubproblemsImpl(BatchCollection& batch_collection, int rank, int world_size)
     {
-        auto problem_count = 0;
-        for (auto& batch: batch_collection.BatchCollections())
-        {
-            switch (options_.CACHE_PROBLEMS)
-            {
-            case CacheProblems::PER_SUB:
-            case CacheProblems::COMPACT:
-            {
-                for (auto it = batch.sub_problem_names.begin();
-                     it != batch.sub_problem_names.end();)
-                {
-                    auto process_to_feed = problem_count % world_size;
-                    if (process_to_feed != rank)
-                    {
-                        it = batch.sub_problem_names.erase(it);
-                    }
-                    else
-                    {
-                        AddSubproblemName(*it);
-                        ++it;
-                    }
-                    ++problem_count;
-                }
-                batch.sub_problem_names.shrink_to_fit();
-                break;
-            }
-            case CacheProblems::NO_CACHE:
-            default:
-            {
-                for (auto it = batch.sub_problem_names.begin();
-                     it != batch.sub_problem_names.end();)
-                {
-                    auto process_to_feed = problem_count % world_size;
-                    if (process_to_feed != rank)
-                    {
-                        it = batch.sub_problem_names.erase(it);
-                    }
-                    else
-                    {
-                        AddSubproblem({*it, coupling_map_[*it]});
-                        AddSubproblemName(*it);
-                        ++it;
-                    }
-                    ++problem_count;
-                }
-                batch.sub_problem_names.shrink_to_fit();
-                break;
-            }
-            }
-        }
+        // Without cache, the solver of each subproblem owned by this process is created once
+        // and kept; with a cache, workers are rebuilt at each iteration so only the name is kept.
+        const bool keep_workers = options_.CACHE_PROBLEMS == CacheProblems::NO_CACHE;
+        KeepOnlySubproblemsOfRank(batch_collection,
+                                  rank,
+                                  world_size,
+                                  [this, keep_workers](const std::string& name)
+                                  {
+                                      if (keep_workers)
+                                      {
+                                          AddSubproblem({name, coupling_map_[name]});
+                                      }
+                                      AddSubproblemName(name);
+                                  });
     }
 
-    // Batch post-solve: wraps an external callback with the 3-arg signature
-    // i'm guessing too complicated ?? it's just a move of cb that call itself
+    // Batch post-solve: adapts a callback taking (name, data) to the 3-arg PostSolveHook signature
     auto MakePostSolveHookImpl(
       std::function<void(const std::string&, PlainData::SubProblemData&)> callback)
     {
@@ -113,6 +76,35 @@ public:
     }
 
 private:
+    // Subproblems are dealt round-robin over the processes, following the batch order. Removes
+    // from each batch the subproblems that do not belong to this rank, and calls on_owned on
+    // the ones that do.
+    template<typename OnOwned>
+    static void KeepOnlySubproblemsOfRank(BatchCollection& batch_collection,
+                                          int rank,
+                                          int world_size,
+                                          OnOwned&& on_owned)
+    {
+        auto problem_count = 0;
+        for (auto& batch: batch_collection.BatchCollections())
+        {
+            for (auto it = batch.sub_problem_names.begin(); it != batch.sub_problem_names.end();)
+            {
+                if (problem_count % world_size != rank)
+                {
+                    it = batch.sub_problem_names.erase(it);
+                }
+                else
+                {
+                    on_owned(*it);
+                    ++it;
+                }
+                ++problem_count;
+            }
+            batch.sub_problem_names.shrink_to_fit();
+        }
+    }
+
     template<typename Map>
     static const typename Map::mapped_type& find_or_throw(const Map& map,
                                                           const std::string& name,

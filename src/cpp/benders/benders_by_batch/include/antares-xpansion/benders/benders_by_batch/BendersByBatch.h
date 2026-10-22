@@ -43,6 +43,7 @@ protected:
     void InitializeProblems() override;
     void BroadCastVariablesIndices();
     void BroadcastSingleSubpbCostsUnderApprox();
+    void PromotePreviousXCutToXIn();
     void ComputeXCut();
     void UpdateStoppingCriterion() override;
     bool ShouldRelaxationStop() const override;
@@ -103,8 +104,8 @@ private:
     bool misprice_;
     int first_unsolved_batch_;
     int batch_counter_;
-    std::shared_ptr<BendersCutsManagerByBatch> batch_cuts_manager_;
-    std::shared_ptr<BendersSubProblemsManagerByBatch> batch_subproblems_manager_;
+    std::unique_ptr<BendersCutsManagerByBatch> batch_cuts_manager_;
+    std::unique_ptr<BendersSubProblemsManagerByBatch> batch_subproblems_manager_;
 };
 
 #endif // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

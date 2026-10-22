@@ -11,13 +11,14 @@
 #include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-BendersOutputManager::BendersOutputManager(Logger logger,
-                                           std::shared_ptr<Output::OutputWriter> writer,
-                                           std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
-                                           const CurrentIterationData& data,
-                                           const BendersBaseOptions& options,
-                                           const VariableMap& problem_to_id,
-                                           BendersRelevantIterationsData& relevant_iteration_data):
+BendersOutputManager::BendersOutputManager(
+  Logger logger,
+  std::shared_ptr<Output::OutputWriter> writer,
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+  const CurrentIterationData& data,
+  const BendersBaseOptions& options,
+  const VariableMap& problem_to_id,
+  const BendersRelevantIterationsData& relevant_iteration_data):
     logger_(std::move(logger)),
     writer_(std::move(writer)),
     mathLoggerDriver_(std::move(mathLoggerDriver)),
@@ -52,18 +53,18 @@ void BendersOutputManager::OpenCsvFile()
     {
         const auto opening_mode = options_.RESUME ? std::ios::app : std::ios::trunc;
         csv_file_.open(csv_file_path_, std::ios::out | opening_mode);
-        if (csv_file_ && !options_.RESUME)
+        if (!csv_file_)
+        {
+            using namespace std::string_literals;
+            logger_->display_message("Impossible to open the .csv file: "s
+                                     + csv_file_path_.string());
+        }
+        else if (!options_.RESUME)
         {
             csv_file_ << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                          "subpb_costs_under_approx;"
                          "time;basis;"
                       << std::endl;
-        }
-        else
-        {
-            using namespace std::string_literals;
-            logger_->display_message("Impossible to open the .csv file: "s
-                                     + csv_file_path_.string());
         }
     }
 }
@@ -82,7 +83,8 @@ void BendersOutputManager::PrintCurrentIterationCsv()
     {
         auto ite = data_.control.it - 1;
         Point x_cut;
-        if (ite == 0)
+        const bool is_first_iteration = (ite == 0);
+        if (is_first_iteration)
         {
             int best_it_index = data_.control.best_it - 1;
             if (best_it_index >= 0)
@@ -123,13 +125,13 @@ static void print_cut_csv(std::ostream& stream,
 
 void BendersOutputManager::print_master_and_cut(std::ostream& file,
                                                 int ite,
-                                                WorkerMasterData& trace,
+                                                const WorkerMasterData& trace,
                                                 const Point& x_cut)
 {
     file << ite << ";";
     print_master_csv(file, trace, x_cut);
 
-    for (auto& [subproblem_name, subproblem_data]: trace._cut_trace)
+    for (const auto& [subproblem_name, subproblem_data]: trace._cut_trace)
     {
         auto problem_id = problem_to_id_.at(subproblem_name);
         file << ite << ";";
@@ -164,7 +166,7 @@ void BendersOutputManager::SaveCurrentIterationInOutputFile() const
 {
     if (!options_.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP)
     {
-        auto& LastWorkerMasterData = relevant_iteration_data_.last;
+        const auto& LastWorkerMasterData = relevant_iteration_data_.last;
         if (LastWorkerMasterData._valid)
         {
             writer_->write_iteration(iteration(LastWorkerMasterData),
@@ -277,7 +279,8 @@ Output::SolutionData BendersOutputManager::BendersSolution(int totalNbProblems) 
     const auto optimal_gap(data_.control.best_ub - data_.master.lb);
     const auto relative_gap(optimal_gap / data_.control.best_ub);
 
-    if (options_.RESUME)
+    const bool solution_only_in_resume_data = options_.RESUME;
+    if (solution_only_in_resume_data)
     {
         Output::CandidatesVec candidates_vec;
         std::transform(best_iteration_data_.x_cut.cbegin(),
@@ -383,8 +386,7 @@ LogData BendersOutputManager::FinalLogData() const
 
 // Resume support
 
-void BendersOutputManager::LoadResumeData(const std::filesystem::path& last_iteration_file,
-                                          Logger& logger)
+void BendersOutputManager::LoadResumeData(const std::filesystem::path& last_iteration_file)
 {
     auto reader = LastIterationReader(last_iteration_file);
     LogData last_iter;
@@ -399,7 +401,7 @@ void BendersOutputManager::LoadResumeData(const std::filesystem::path& last_iter
         best_iteration_data_ = bendersDataToLogData(data_);
         last_iter = best_iteration_data_;
     }
-    auto restart_data_printer = LastIterationPrinter(logger, best_iteration_data_, last_iter);
+    auto restart_data_printer = LastIterationPrinter(logger_, best_iteration_data_, last_iter);
     restart_data_printer.Print();
     iterations_before_resume_ = last_iter.it;
     cumulative_number_of_subproblem_resolved_before_resume_
