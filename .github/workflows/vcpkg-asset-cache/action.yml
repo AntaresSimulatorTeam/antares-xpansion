@@ -34,4 +34,4 @@ runs:
       # builds and so a seeding run can discover it.
       echo "X_VCPKG_ASSET_SOURCES=clear;x-azurl,${base_url%/}/baseline-$baseline/,,read" >> "$GITHUB_ENV"
     env:
-      BASE_URL: ${{ inputs.base-url || vars.VCPKG_ASSET_BASE_URL }}
+      BASE_URL: ${{ inputs.base-url }}
