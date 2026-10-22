@@ -259,9 +259,10 @@ public:
                                 { SetSubproblemVariablesIndices(worker_); },
                                 *worker);
 
+                              StoreSubproblemBasis(name, worker);
+
                               std::lock_guard guard(m);
                               subproblem_data_map[name] = subproblem_data;
-                              StoreSubproblemBasis(name, worker);
                           }
                           catch (...)
                           {
