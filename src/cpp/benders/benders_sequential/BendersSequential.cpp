@@ -126,6 +126,8 @@ void BendersSequential::Run()
 
     while (!_data.control.stop)
     {
+        benders_plugin_->OnBendersIterationStart();
+
         Timer timer_master;
         ++_data.control.it;
 
@@ -138,6 +140,7 @@ void BendersSequential::Run()
 
         logger->log_at_initialization(_data.control.it
                                       + output_manager_.GetNumIterationsBeforeRestart());
+        benders_plugin_->OnBendersMasterResolutionStart();
         logger->display_message("\tSolving master...");
         get_master_value();
         logger->log_master_solving_duration(_data.master.timer_master);
@@ -145,6 +148,7 @@ void BendersSequential::Run()
         cuts_manager_->ComputeXCut(_data,
                                    Options().SEPARATION_PARAM,
                                    Options().MASTER_SOLUTION_TOLERANCE);
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
 
         logger->display_message("\tSolving subproblems...");
@@ -164,6 +168,8 @@ void BendersSequential::Run()
         _data.control.iteration_time += _data.control.benders_time;
         _data.control.stop = ShouldBendersStop();
         output_manager_.SaveCurrentBendersData(LastIterationFile(), _options.TRACE);
+
+        benders_plugin_->OnBendersIterationEnd();
     }
     output_manager_.CloseCsvFile();
     output_manager_.EndWritingInOutputFile(_data.control.benders_time,
@@ -180,6 +186,11 @@ void BendersSequential::launch()
 
     InitializeProblems();
 
+    benders_plugin_->OnBendersStart(subproblems_manager_->GetSubProblemMap(),
+                                    _options,
+                                    solver_log_manager_,
+                                    subproblems_manager_->GetFactorySolver());
+
     logger->display_message("Running solver...");
     try
     {
@@ -191,6 +202,8 @@ void BendersSequential::launch()
         std::string error = "Exception raised : " + std::string(ex.what());
         logger->display_message(error);
     }
+
+    benders_plugin_->OnBendersEnd();
 
     post_run_actions();
     free();
