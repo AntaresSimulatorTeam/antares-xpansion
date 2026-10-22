@@ -12,6 +12,7 @@
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 

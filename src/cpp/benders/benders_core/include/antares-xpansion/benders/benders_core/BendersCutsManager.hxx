@@ -1,11 +1,14 @@
 #pragma once
 
 #include <cassert>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "BendersMasterManager.h"
 #include "BendersStructsDatas.h"
 #include "SubproblemCut.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "common.h"
 
 template<typename Derived>
@@ -90,23 +93,42 @@ public:
 
             for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
             {
-                auto problem_to_id_pair = problem_to_id.find(sub_problem_name);
-                if (problem_to_id_pair != problem_to_id.end())
+                // A subproblem of the cut with no id or no gathered data would silently yield
+                // a cut that does not bound the subproblem (missing rhs / subgradient), and so
+                // an invalid lower approximation: fail instead.
+                const auto problem_to_id_pair = problem_to_id.find(sub_problem_name);
+                if (problem_to_id_pair == problem_to_id.end())
                 {
-                    subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
+                    throw LogUtils::XpansionError<std::runtime_error>(
+                      "Cannot build cut: subproblem " + sub_problem_name + " has no id",
+                      LOGLOCATION);
+                }
+                if (position_in_gathered < 0
+                    || static_cast<size_t>(position_in_gathered) >= gathered_subproblem_map.size())
+                {
+                    throw LogUtils::XpansionError<std::runtime_error>(
+                      "Cannot build cut: subproblem " + sub_problem_name
+                        + " refers to gathered position " + std::to_string(position_in_gathered)
+                        + " but only " + std::to_string(gathered_subproblem_map.size())
+                        + " were gathered",
+                      LOGLOCATION);
+                }
+                const auto& gathered_for_position = gathered_subproblem_map[position_in_gathered];
+                const auto subproblem_data_pair = gathered_for_position.find(sub_problem_name);
+                if (subproblem_data_pair == gathered_for_position.end())
+                {
+                    throw LogUtils::XpansionError<std::runtime_error>(
+                      "Cannot build cut: no data gathered for subproblem " + sub_problem_name
+                        + " at position " + std::to_string(position_in_gathered),
+                      LOGLOCATION);
                 }
 
-                auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
-                  sub_problem_name);
-
-                if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end())
-                {
-                    auto& subproblem_data = subproblem_data_pair->second;
-                    ub += subproblem_data.subproblem_cost;
-                    rhs += subproblem_data.subproblem_cost;
-                    compute_cut_val(subproblem_data.var_name_and_subgradient, x_cut, s);
-                    cut_trace[sub_problem_name] = subproblem_data;
-                }
+                subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
+                const auto& subproblem_data = subproblem_data_pair->second;
+                ub += subproblem_data.subproblem_cost;
+                rhs += subproblem_data.subproblem_cost;
+                compute_cut_val(subproblem_data.var_name_and_subgradient, x_cut, s);
+                cut_trace[sub_problem_name] = subproblem_data;
             }
 
             master_manager_.AddGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);

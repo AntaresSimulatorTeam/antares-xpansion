@@ -19,14 +19,14 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
                 std::move(mathLoggerDriver),
                 std::make_shared<SequentialCommunicationStrategy>()),
     subproblems_manager_(
-      std::make_shared<BendersSubProblemsManagerSequential>(_data,
+      std::make_unique<BendersSubProblemsManagerSequential>(_data,
                                                             _options,
                                                             benders_plugin_,
                                                             output_manager_.GetLogger(),
                                                             solver_log_manager_,
                                                             output_manager_.GetWriter(),
                                                             coupling_map_)),
-    cuts_manager_(std::make_shared<BendersCutsManagerSequential>(_data,
+    cuts_manager_(std::make_unique<BendersCutsManagerSequential>(_data,
                                                                  _problem_to_id,
                                                                  relevantIterationData_,
                                                                  master_manager_))
@@ -40,7 +40,8 @@ void BendersSequential::InitializeProblems()
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices;
 
-    if (_data.control.nsubproblem > 0) [[likely]]
+    const bool has_subproblems = _data.control.nsubproblem > 0; // aggregation divides by it
+    if (has_subproblems) [[likely]]
     {
         int n_cuts = SetAggregation(_data.control.nsubproblem);
         subproblem_per_cut_indices.reserve(n_cuts);
