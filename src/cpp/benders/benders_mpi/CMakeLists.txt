@@ -13,7 +13,7 @@ message("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 find_package(MPI REQUIRED)
 
-if (UNIX)
+if (UNIX AND MPI_CXX_COMPILER)
     set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif ()
 
