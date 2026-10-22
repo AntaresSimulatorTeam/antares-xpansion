@@ -60,18 +60,11 @@ private:
     void check_if_some_proc_had_a_failure(int success);
 
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
-    std::shared_ptr<BendersCutsManagerMpi> cuts_manager_;
-    std::shared_ptr<BendersSubProblemsManagerMpi> subproblems_manager_;
+    std::unique_ptr<BendersCutsManagerMpi> cuts_manager_;
+    std::unique_ptr<BendersSubProblemsManagerMpi> subproblems_manager_;
 
 protected:
     void InitializeMaster();
-
-    [[nodiscard]] bool shouldParallelize() const final
-    {
-        return false;
-    }
-
-    void PreRunInitialization();
 
     int Rank() const
     {

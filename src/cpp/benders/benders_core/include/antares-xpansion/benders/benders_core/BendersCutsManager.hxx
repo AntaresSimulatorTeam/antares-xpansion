@@ -1,34 +1,25 @@
 #pragma once
 
+#include <cassert>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
+#include "BendersMasterManager.h"
 #include "BendersStructsDatas.h"
 #include "SubproblemCut.h"
-#include "WorkerMaster.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "common.h"
-
-namespace
-{
-
-inline void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
-{
-    for (const auto& [cand_name, cand_value]: x_cut)
-    {
-        const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
-        if (cand_name_and_subgradient != var_name_subgradient.end())
-        {
-            s[cand_name] += cand_name_and_subgradient->second;
-        }
-    }
-}
-
-} // namespace
 
 template<typename Derived>
 class BendersCutsManager
 {
 public:
-    BendersCutsManager() = default;
+    // The master manager is the only owner of the master problem: going through it means
+    // this class never holds a handle that a master re-creation could invalidate. It holds
+    // no master on the processes that do not own one; those take part in the gathering but
+    // never build a cut.
+    explicit BendersCutsManager(BendersMasterManager& master_manager);
 
     template<typename... Args>
     void GatherAndBuildCuts(Args&&... args)
@@ -89,9 +80,11 @@ public:
                                 const VariableMap& problem_to_id,
                                 double& ub,
                                 const Point& x_cut,
-                                SubProblemDataMap& cut_trace,
-                                const WorkerMasterPtr& master)
+                                SubProblemDataMap& cut_trace)
     {
+        assert((subproblem_names.empty() || master_manager_.Master() != nullptr)
+               && "cuts can only be built on the process owning the master problem");
+
         for (const auto& subproblem_names_in_cut: subproblem_names)
         {
             Point s;
@@ -100,26 +93,66 @@ public:
 
             for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
             {
-                subproblem_ids_per_cut.push_back(problem_to_id.at(sub_problem_name));
-
-                auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
-                  sub_problem_name);
-
-                if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end())
+                // A subproblem of the cut with no id or no gathered data would silently yield
+                // a cut that does not bound the subproblem (missing rhs / subgradient), and so
+                // an invalid lower approximation: fail instead.
+                const auto problem_to_id_pair = problem_to_id.find(sub_problem_name);
+                if (problem_to_id_pair == problem_to_id.end())
                 {
-                    auto& subproblem_data = subproblem_data_pair->second;
-                    ub += subproblem_data.subproblem_cost;
-                    rhs += subproblem_data.subproblem_cost;
-                    compute_cut_val(subproblem_data.var_name_and_subgradient, x_cut, s);
-                    cut_trace[sub_problem_name] = subproblem_data;
+                    throw LogUtils::XpansionError<std::runtime_error>(
+                      "Cannot build cut: subproblem " + sub_problem_name + " has no id",
+                      LOGLOCATION);
                 }
+                if (position_in_gathered < 0
+                    || static_cast<size_t>(position_in_gathered) >= gathered_subproblem_map.size())
+                {
+                    throw LogUtils::XpansionError<std::runtime_error>(
+                      "Cannot build cut: subproblem " + sub_problem_name
+                        + " refers to gathered position " + std::to_string(position_in_gathered)
+                        + " but only " + std::to_string(gathered_subproblem_map.size())
+                        + " were gathered",
+                      LOGLOCATION);
+                }
+                const auto& gathered_for_position = gathered_subproblem_map[position_in_gathered];
+                const auto subproblem_data_pair = gathered_for_position.find(sub_problem_name);
+                if (subproblem_data_pair == gathered_for_position.end())
+                {
+                    throw LogUtils::XpansionError<std::runtime_error>(
+                      "Cannot build cut: no data gathered for subproblem " + sub_problem_name
+                        + " at position " + std::to_string(position_in_gathered),
+                      LOGLOCATION);
+                }
+
+                subproblem_ids_per_cut.push_back(problem_to_id_pair->second);
+                const auto& subproblem_data = subproblem_data_pair->second;
+                ub += subproblem_data.subproblem_cost;
+                rhs += subproblem_data.subproblem_cost;
+                compute_cut_val(subproblem_data.var_name_and_subgradient, x_cut, s);
+                cut_trace[sub_problem_name] = subproblem_data;
             }
 
-            master->addGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
+            master_manager_.AddGroupSubproblemCut(subproblem_ids_per_cut, s, x_cut, rhs);
         }
     }
 
+protected:
+    BendersMasterManager& master_manager_;
+
 private:
+    // Accumulates the subgradient of one subproblem into the cut coefficients s,
+    // for every candidate present in the separation point x_cut.
+    static void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
+    {
+        for (const auto& [cand_name, cand_value]: x_cut)
+        {
+            const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
+            if (cand_name_and_subgradient != var_name_subgradient.end())
+            {
+                s[cand_name] += cand_name_and_subgradient->second;
+            }
+        }
+    }
+
     // Rounds x_cut values that are within tolerance of variable bounds to
     // avoid numerical drift from repeated separation parameter application.
     void RoundXCut(CurrentIterationData& data, double master_solution_tolerance)
@@ -154,3 +187,9 @@ private:
                                       : data.cuts.min_simplexiter;
     }
 };
+
+template<typename Derived>
+BendersCutsManager<Derived>::BendersCutsManager(BendersMasterManager& master_manager):
+    master_manager_(master_manager)
+{
+}

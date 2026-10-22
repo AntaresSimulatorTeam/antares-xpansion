@@ -4,11 +4,11 @@ BendersCutsManagerSequential::BendersCutsManagerSequential(
   CurrentIterationData& data,
   VariableMap& problem_to_id,
   BendersRelevantIterationsData& relevantIterationData,
-  const WorkerMasterPtr& master):
+  BendersMasterManager& master_manager):
+    BendersCutsManager<BendersCutsManagerSequential>(master_manager),
     data_(data),
     problem_to_id_(problem_to_id),
-    relevantIterationData_(relevantIterationData),
-    master_(master)
+    relevantIterationData_(relevantIterationData)
 {
 }
 
@@ -22,8 +22,7 @@ void BendersCutsManagerSequential::GatherAndBuildCutsImpl(
                            problem_to_id_,
                            data_.cuts.ub,
                            data_.solution.x_cut,
-                           relevantIterationData_.last._cut_trace,
-                           master_);
+                           relevantIterationData_.last._cut_trace);
 }
 
 void BendersCutsManagerSequential::SetSubproblemPerCutIndices(
