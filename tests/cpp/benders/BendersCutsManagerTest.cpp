@@ -384,6 +384,66 @@ TEST(BuildAllAggregatedCutsTest, SingleCutGroup_AccumulatesUbAndTrace)
     EXPECT_DOUBLE_EQ(cut_trace.at("sp1").subproblem_cost, 75.0);
 }
 
+TEST(BuildAllAggregatedCutsTest, SubproblemWithoutId_Throws)
+{
+    auto master_manager = MakeNOOPMasterManager({{"x1", 0}}, {{0, 1e-3}});
+    BendersCutsManagerTestDouble cuts_manager(*master_manager);
+
+    std::vector<SubProblemNamesInCut> subproblem_names = {{{"sp1", 0}}};
+    std::vector<SubProblemDataMap> gathered = {{{"sp1", MakeSubProblemData(75.0, 10)}}};
+    VariableMap problem_to_id; // sp1 unknown
+    double ub = 0.0;
+    SubProblemDataMap cut_trace;
+
+    EXPECT_THROW(cuts_manager.BuildAllAggregatedCuts(subproblem_names,
+                                                     gathered,
+                                                     problem_to_id,
+                                                     ub,
+                                                     {{"x1", 5.0}},
+                                                     cut_trace),
+                 std::runtime_error);
+}
+
+TEST(BuildAllAggregatedCutsTest, SubproblemMissingFromGatheredData_Throws)
+{
+    auto master_manager = MakeNOOPMasterManager({{"x1", 0}}, {{0, 1e-3}, {1, 1e-3}});
+    BendersCutsManagerTestDouble cuts_manager(*master_manager);
+
+    std::vector<SubProblemNamesInCut> subproblem_names = {{{"sp1", 0}, {"sp2", 0}}};
+    std::vector<SubProblemDataMap> gathered = {{{"sp1", MakeSubProblemData(75.0, 10)}}};
+    VariableMap problem_to_id = {{"sp1", 0}, {"sp2", 1}};
+    double ub = 0.0;
+    SubProblemDataMap cut_trace;
+
+    EXPECT_THROW(cuts_manager.BuildAllAggregatedCuts(subproblem_names,
+                                                     gathered,
+                                                     problem_to_id,
+                                                     ub,
+                                                     {{"x1", 5.0}},
+                                                     cut_trace),
+                 std::runtime_error);
+}
+
+TEST(BuildAllAggregatedCutsTest, GatheredPositionOutOfRange_Throws)
+{
+    auto master_manager = MakeNOOPMasterManager({{"x1", 0}}, {{0, 1e-3}});
+    BendersCutsManagerTestDouble cuts_manager(*master_manager);
+
+    std::vector<SubProblemNamesInCut> subproblem_names = {{{"sp1", 3}}};
+    std::vector<SubProblemDataMap> gathered = {{{"sp1", MakeSubProblemData(75.0, 10)}}};
+    VariableMap problem_to_id = {{"sp1", 0}};
+    double ub = 0.0;
+    SubProblemDataMap cut_trace;
+
+    EXPECT_THROW(cuts_manager.BuildAllAggregatedCuts(subproblem_names,
+                                                     gathered,
+                                                     problem_to_id,
+                                                     ub,
+                                                     {{"x1", 5.0}},
+                                                     cut_trace),
+                 std::runtime_error);
+}
+
 TEST(BuildAllAggregatedCutsTest, MultipleCutGroups_AccumulatesUb)
 {
     VariableMap var_map = {{"x1", 0}};
