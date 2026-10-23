@@ -4,6 +4,7 @@
 #include "BendersSubProblemsManagerMpi.hxx"
 #include "MpiCommunicationStrategy.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/benders_core/IterationDataHttpSender.h"
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"
@@ -62,6 +63,7 @@ private:
     std::vector<SubProblemNamesInCut> subproblem_per_cut_indices_;
     std::unique_ptr<BendersCutsManagerMpi> cuts_manager_;
     std::unique_ptr<BendersSubProblemsManagerMpi> subproblems_manager_;
+    std::unique_ptr<IterationDataHttpSender> iteration_data_sender_;
 
 protected:
     void InitializeMaster();

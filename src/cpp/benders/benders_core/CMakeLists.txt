@@ -42,6 +42,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemBasisCache.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorkerFactory.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemConstraintsManager.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/IterationDataHttpSender.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMasterManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersOutputManager.h
@@ -79,6 +80,7 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemConstraintsManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ICommunicationStrategy.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SequentialCommunicationStrategy.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/IterationDataHttpSender.h
 )
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)

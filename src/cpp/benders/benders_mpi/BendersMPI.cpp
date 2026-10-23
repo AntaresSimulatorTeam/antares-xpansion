@@ -39,6 +39,7 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
     subproblems_manager_->SetOnVariablesIndicesSet(
       [this](const std::vector<std::string>& col_names)
       { outer_loop_manager_.GetCriterionComputation().SearchVariables(col_names); });
+    iteration_data_sender_ = std::make_unique<IterationDataHttpSender>("127.0.0.1", 3123);
 }
 
 void BendersMpi::InitializeProblems()
@@ -350,6 +351,13 @@ void BendersMpi::Run()
             step_4_update_best_solution(_world.rank());
         }
         _data.control.stop |= exception_raised_;
+
+        if (Rank() == rank_0 && !exception_raised_)
+        {
+            std::cout<<"sending data to server "<<std::endl ; 
+            iteration_data_sender_->Send(_data.control.it, _data.master.lb, _data.cuts.ub,
+                                         _data.control.best_ub);
+        }
 
         broadcast(_world, _data.control.is_in_initial_relaxation, rank_0);
         broadcast(_world, _data.control.stop, rank_0);
