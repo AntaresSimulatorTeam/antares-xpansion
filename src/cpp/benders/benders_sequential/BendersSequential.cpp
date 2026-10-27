@@ -40,7 +40,7 @@ void BendersSequential::InitializeProblems()
                                get_log_level(),
                                _data.nsubproblem,
                                solver_log_manager_,
-                               IsResumeMode(),
+                               MasterHasAlphaVariables(_options.RESTART_MODE),
                                _logger,
                                Options().PROBLEM_FORMAT,
                                benders_problem_provider.get(),
@@ -98,7 +98,7 @@ void BendersSequential::BuildCut()
 void BendersSequential::Run()
 {
     init_data();
-    ChecksResumeMode();
+    ChecksRestartMode();
     if (is_trace())
     {
         OpenCsvFile();
