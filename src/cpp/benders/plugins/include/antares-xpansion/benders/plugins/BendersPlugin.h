@@ -63,10 +63,12 @@ public:
       @inputs :
             - master_out : solution of the master problem
             - num_iter : master iteration number
+            - master_solve_time : wall time (s) of the master resolution
 
     */
     virtual void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                              int& num_iter)
+                                              int& num_iter,
+                                              double master_solve_time)
       = 0;
 
     /*

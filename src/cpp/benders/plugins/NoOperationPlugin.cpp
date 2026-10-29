@@ -24,7 +24,8 @@ void NoOperationPlugin::OnBendersIterationEnd()
 }
 
 void NoOperationPlugin::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                                     int& num_iter)
+                                                     int& num_iter,
+                                                     double master_solve_time)
 {
 }
 

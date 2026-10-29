@@ -376,9 +376,11 @@ void Benders_MICRO_ITERS::OnBendersIterationEnd()
 }
 
 void Benders_MICRO_ITERS::OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                                       int& num_iter)
+                                                       int& num_iter,
+                                                       double master_solve_time)
 {
-    OnBendersMasterResolutionEnd_(master_out, num_iter, _world, options_.INPUTROOT);
+    last_master_solve_time_ = master_solve_time;
+    OnBendersMasterResolutionEnd_(master_out,last_master_solve_time_, num_iter, _world, options_.INPUTROOT);
 }
 
 void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()

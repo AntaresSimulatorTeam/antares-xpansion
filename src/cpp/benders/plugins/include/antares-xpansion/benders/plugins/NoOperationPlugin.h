@@ -19,7 +19,8 @@ public:
     void OnBendersIterationEnd() override;
 
     void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                      int& num_iter) override;
+                                      int& num_iter,
+                                      double master_solve_time) override;
     void OnBendersMasterResolutionStart() override;
 
     void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>& sub_worker,

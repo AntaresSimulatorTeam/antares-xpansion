@@ -47,7 +47,9 @@ public:
         calls.emplace_back("MasterResolutionStart");
     }
 
-    void OnBendersMasterResolutionEnd(std::map<std::string, double>&, int& num_iter) override
+    void OnBendersMasterResolutionEnd(std::map<std::string, double>&,
+                                      int& num_iter,
+                                      double) override
     {
         calls.emplace_back("MasterResolutionEnd(" + std::to_string(num_iter) + ")");
     }

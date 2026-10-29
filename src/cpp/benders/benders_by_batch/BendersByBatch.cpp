@@ -252,7 +252,9 @@ void BendersByBatch::MasterLoop()
             ComputeXCut();
         }
         batch_cuts_manager_->BroadcastXCut();
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut,
+                                                     _data.control.it,
+                                                     _data.master.timer_master);
         UpdateRemainingEpsilon();
 
         SeparationLoop();

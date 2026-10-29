@@ -46,6 +46,15 @@ void BendersMpi::InitializeProblems()
 {
     subproblems_manager_->MatchProblemToId();
     _problem_to_id = subproblems_manager_->GetProblemToId();
+    if (_world.rank() == rank_0)
+    {
+        std::vector<std::string> subproblem_names(_problem_to_id.size());
+        for (const auto& [name, id]: _problem_to_id)
+        {
+            subproblem_names.at(id) = name;
+        }
+        iteration_data_sender_->SendSubproblemNames(subproblem_names);
+    }
     auto subs_per_proc = subproblems_manager_->DistributeSubproblems(_world.rank(), _world.size());
 
     std::vector<SubProblemNamesInCut> gathered_subs_per_proc;
@@ -339,7 +348,9 @@ void BendersMpi::Run()
 
         step_1_solve_master();
 
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut,
+                                                     _data.control.it,
+                                                     _data.master.timer_master);
 
         if (!exception_raised_)
         {

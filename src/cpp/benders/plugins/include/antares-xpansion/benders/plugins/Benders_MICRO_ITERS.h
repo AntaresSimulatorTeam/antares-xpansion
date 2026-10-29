@@ -39,6 +39,7 @@ using on_Benders_iteration_start = void (*)();
 using on_Benders_iteration_end = void (*)();
 using on_Benders_master_resolution_start = void (*)();
 using on_Benders_master_resolution_end = void (*)(std::map<std::string, double>&,
+                                                  double,
                                                   int&,
                                                   mpi::communicator*,
                                                   std::filesystem::path input_root);
@@ -99,7 +100,8 @@ public:
         Implementation of master resolution end call back
     */
     void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                      int& num_iter) override;
+                                      int& num_iter,
+                                      double master_solve_time) override;
 
     /*
         Implementation of master resolution start call back
@@ -228,6 +230,7 @@ private:
     on_Benders_sub_resolution_end OnBendersSubResolutionEnd_;
     std::map<std::string, std::vector<int>> variables_to_follow_indices_per_sub_;
     const SimulationOptions& options_;
+    double last_master_solve_time_ = 0.0;
 
     std::vector<std::string> sub_names_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;

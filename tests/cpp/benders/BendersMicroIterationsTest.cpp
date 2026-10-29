@@ -44,7 +44,8 @@ public:
     }
 
     void OnBendersMasterResolutionEnd(std::map<std::string, double>& master_out,
-                                      int& num_iter) override
+                                      int& num_iter,
+                                      double master_solve_time) override
     {
     }
 
@@ -130,7 +131,7 @@ public:
 
         std::map<std::string, double> master_out = {{"x1", 1.0}};
         int iter = 1;
-        benders_plugin_->OnBendersMasterResolutionEnd(master_out, iter);
+        benders_plugin_->OnBendersMasterResolutionEnd(master_out, iter, 0.5);
 
         benders_plugin_->OnBendersIterationEnd();
 
