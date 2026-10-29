@@ -148,28 +148,6 @@ jobs:
           cmake --build _build --config Release -j$(nproc)
 
 
-      - name: Tests with Cucumber
-        uses: ./.github/workflows/cucumber-tests
-        with:
-          #          feature: "features/outer_loop_tests.feature"
-          mpi_path: ${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
-
-      - name: Running unit tests
-        timeout-minutes: 120
-        shell: bash
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
-          cd _build
-          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium|short"
-
-      - name: Cache vcpkg binary dir
-        if: always()
-        id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v6
-        with:
-          path: ${{ env.VCPKG_CACHE_DIR }}
-          key: vcpkg-cache-oracle8-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
-
       #######################
       - name: Install
         run: |
@@ -205,6 +183,28 @@ jobs:
         run: |
           echo "singlefile_name=${{steps.create-single-file.outputs.archive-name}}" >> "$GITHUB_OUTPUT"
           echo "zip_name=${{env.TGZ_NAME}}" >> "$GITHUB_OUTPUT"
+
+      - name: Tests with Cucumber
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          #          feature: "features/outer_loop_tests.feature"
+          mpi_path: ${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
+
+      - name: Running unit tests
+        timeout-minutes: 120
+        shell: bash
+        run: |
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
+          cd _build
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium|short"
+
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.VCPKG_CACHE_DIR }}
+          key: vcpkg-cache-oracle8-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
   upload_asset_to_release:
     if: github.event_name == 'release' && github.event.action == 'created'

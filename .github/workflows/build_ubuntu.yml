@@ -133,25 +133,6 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
-      - name: Tests with Cucumber
-        uses: ./.github/workflows/cucumber-tests
-        with:
-          mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
-
-      - name: Test
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer|short"
-
-      - name: Cache vcpkg binary dir
-        if: always()
-        id: save-cache-vcpkg-binary
-        uses: actions/cache/save@v6
-        with:
-          path: ${{ github.workspace }}/vcpkg_cache
-          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
-
       #######################
       - name: Install
         run: |
@@ -190,6 +171,25 @@ jobs:
         run: |
           echo "TGZ_NAME=${{env.TGZ_NAME}}" >> $GITHUB_OUTPUT
           echo "SINGLE_FILE_NAME=${{ steps.create-single-file.outputs.archive-name }}" >> $GITHUB_OUTPUT
+
+      - name: Tests with Cucumber
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
+
+      - name: Test
+        run: |
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
+          cd _build
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer|short"
+
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
   test_assets:
     runs-on: ubuntu-latest
