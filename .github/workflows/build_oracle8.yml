@@ -52,7 +52,7 @@ jobs:
     needs: [ versions ]
     env:
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_oraclelinux-8_static_sirius.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.3/ortools_cxx_oraclelinux-8_static_sirius.zip"
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -65,6 +65,8 @@ jobs:
           #openssl for pip
           dnf install -y bzip2-devel openssl-devel
           dnf install -y unzip gcc-toolset-11-toolchain python3-devel zlib-devel
+          #build tools needed by vcpkg to build openssl and thrift (arrow dependencies), same as Simulator
+          dnf install -y perl-IPC-Cmd perl-Text-Template perl-Data-Dumper perl-Time-Piece flex bison
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-11/enable
           echo $PATH >> $GITHUB_PATH
