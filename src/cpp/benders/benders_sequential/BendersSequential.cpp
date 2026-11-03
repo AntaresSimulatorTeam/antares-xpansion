@@ -145,10 +145,10 @@ void BendersSequential::Run()
         get_master_value();
         logger->log_master_solving_duration(_data.master.timer_master);
 
+        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_out, _data.control.it);
         cuts_manager_->ComputeXCut(_data,
                                    Options().SEPARATION_PARAM,
                                    Options().MASTER_SOLUTION_TOLERANCE);
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
 
         logger->display_message("\tSolving subproblems...");

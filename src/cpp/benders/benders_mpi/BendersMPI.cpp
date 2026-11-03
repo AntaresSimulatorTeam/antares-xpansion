@@ -149,9 +149,39 @@ void BendersMpi::step_1_solve_master()
         write_exception_message(ex);
     }
     check_if_some_proc_had_a_failure(success);
+    if (exception_raised_)
+    {
+        return;
+    }
+
+    benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_out, _data.control.it);
+
+    success = 1;
+    try
+    {
+        compute_x_cut_and_log_candidates();
+    }
+    catch (const std::exception& ex)
+    {
+        success = 0;
+        write_exception_message(ex);
+    }
+    check_if_some_proc_had_a_failure(success);
     if (!exception_raised_)
     {
         cuts_manager_->BroadcastXCut();
+    }
+}
+
+void BendersMpi::compute_x_cut_and_log_candidates()
+{
+    if (_world.rank() == rank_0)
+    {
+        cuts_manager_->ComputeXCut(_data,
+                                   Options().SEPARATION_PARAM,
+                                   Options().MASTER_SOLUTION_TOLERANCE);
+        output_manager_.GetLogger()->log_iteration_candidates(
+          output_manager_.bendersDataToLogData(_data));
     }
 }
 
@@ -179,11 +209,6 @@ void BendersMpi::solve_master_and_create_trace()
     get_master_value();
 
     logger->log_master_solving_duration(_data.master.timer_master);
-
-    cuts_manager_->ComputeXCut(_data,
-                               Options().SEPARATION_PARAM,
-                               Options().MASTER_SOLUTION_TOLERANCE);
-    logger->log_iteration_candidates(output_manager_.bendersDataToLogData(_data));
 }
 
 void BendersMpi::step_2_solve_subproblems_and_build_cuts()
@@ -337,8 +362,6 @@ void BendersMpi::Run()
         benders_plugin_->OnBendersMasterResolutionStart();
 
         step_1_solve_master();
-
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
 
         if (!exception_raised_)
         {
