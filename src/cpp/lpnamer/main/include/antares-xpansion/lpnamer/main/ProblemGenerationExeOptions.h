@@ -17,7 +17,7 @@ class ProblemGenerationExeOptions: public OptionsParser, public ProblemGeneratio
     std::vector<int> active_years_;
     bool unnamed_problems_ = false;
     std::filesystem::path study_path_;
-    ProblemsFormat format_;
+    ProblemFormat format_;
 
 public:
     ProblemGenerationExeOptions();
@@ -59,7 +59,7 @@ public:
         return unnamed_problems_;
     }
 
-    [[nodiscard]] ProblemsFormat Format() const
+    [[nodiscard]] ProblemFormat Format() const
     {
         return format_;
     }

@@ -19,7 +19,7 @@ public:
                                 Logger& logger,
                                 std::string solver_name,
                                 int log_level,
-                                ProblemsFormat format,
+                                ProblemFormat format,
                                 std::vector<std::string>&& constraints_names,
                                 boost::mpi::communicator* world = nullptr);
 

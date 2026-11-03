@@ -318,19 +318,19 @@ TEST_F(BendersOutputManagerTest, BuildSolution_ResumeMode_UsesBestIterationData)
     auto mgr = MakeManager();
     mgr->SetIterationsBeforeResume(10);
 
-    // Set up best iteration data
-    LogData best;
-    best.lb = 90.0;
-    best.best_ub = 140.0;
-    best.invest_cost = 40.0;
-    best.subproblem_cost = 70.0;
-    best.master_time = 2.0;
-    best.subproblem_time = 5.0;
-    best.ub = 180.0;
-    best.x_cut = {{"cand1", 15.0}};
-    best.min_invest = {{"cand1", 0.0}};
-    best.max_invest = {{"cand1", 100.0}};
-    mgr->UpdateBestIterationData(best);
+    // Set up best iteration data via CurrentIterationData
+    CurrentIterationData best_data{};
+    best_data.master.lb = 90.0;
+    best_data.control.best_ub = 140.0;
+    best_data.master.invest_cost = 40.0;
+    best_data.cuts.subproblem_cost = 70.0;
+    best_data.master.timer_master = 2.0;
+    best_data.cuts.subproblems_walltime = 5.0;
+    best_data.cuts.ub = 180.0;
+    best_data.solution.x_cut = {{"cand1", 15.0}};
+    best_data.solution.min_invest = {{"cand1", 0.0}};
+    best_data.solution.max_invest = {{"cand1", 100.0}};
+    mgr->UpdateBestIterationData(best_data);
 
     data_.control.best_it = 2;
     data_.control.best_ub = 140.0;
@@ -462,9 +462,9 @@ TEST_F(BendersOutputManagerTest, BuildFinalLogData_UsesOptionsAndBestIteration)
 {
     auto mgr = MakeManager();
 
-    LogData best;
-    best.subproblem_cost = 80.0;
-    best.invest_cost = 40.0;
+    CurrentIterationData best{};
+    best.cuts.subproblem_cost = 80.0;
+    best.master.invest_cost = 40.0;
     mgr->UpdateBestIterationData(best);
 
     data_.control.it = 15;
@@ -532,11 +532,11 @@ TEST_F(BendersOutputManagerTest, BestIterationData_UpdateAndGet)
 {
     auto mgr = MakeManager();
 
-    LogData best;
-    best.lb = 100.0;
-    best.best_ub = 150.0;
-    best.it = 5;
-    best.invest_cost = 40.0;
+    CurrentIterationData best{};
+    best.master.lb = 100.0;
+    best.control.best_ub = 150.0;
+    best.control.it = 5;
+    best.master.invest_cost = 40.0;
     mgr->UpdateBestIterationData(best);
 
     const auto& retrieved = mgr->GetBestIterationData();
@@ -550,12 +550,12 @@ TEST_F(BendersOutputManagerTest, BestIterationData_OverwritesPrevious)
 {
     auto mgr = MakeManager();
 
-    LogData first;
-    first.lb = 50.0;
+    CurrentIterationData first{};
+    first.master.lb = 50.0;
     mgr->UpdateBestIterationData(first);
 
-    LogData second;
-    second.lb = 90.0;
+    CurrentIterationData second{};
+    second.master.lb = 90.0;
     mgr->UpdateBestIterationData(second);
 
     ASSERT_EQ(mgr->GetBestIterationData().lb, 90.0);

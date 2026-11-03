@@ -208,6 +208,24 @@ TEST_F(BendersOuterLoopManagerTest, GetCriterionAtBestBenders_LastIteration)
     ASSERT_EQ(result[0], 3.0);
 }
 
+TEST_F(BendersOuterLoopManagerTest, GetCriterionAtBestBenders_BestItZero_ReturnsEmpty)
+{
+    auto mgr = MakeManager();
+    mgr->PushCriteriaForIteration({1.0});
+    data_.control.best_it = 0;
+
+    ASSERT_TRUE(mgr->GetOuterLoopCriterionAtBestBenders().empty());
+}
+
+TEST_F(BendersOuterLoopManagerTest, GetCriterionAtBestBenders_BestItBeyondHistory_ReturnsEmpty)
+{
+    auto mgr = MakeManager();
+    mgr->PushCriteriaForIteration({1.0});
+    data_.control.best_it = 2;
+
+    ASSERT_TRUE(mgr->GetOuterLoopCriterionAtBestBenders().empty());
+}
+
 // ═══════════════════════════════════════════════════════════
 //  UpdateOuterLoopSolution / GetOuterLoopSolution
 // ═══════════════════════════════════════════════════════════

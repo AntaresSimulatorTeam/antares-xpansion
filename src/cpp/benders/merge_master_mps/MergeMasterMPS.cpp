@@ -280,7 +280,7 @@ void MergeMasterTrajectoryMPS::build_problem()
                              TRAJECTORY_LOGGER_CONTEXT);
 
     // Check that the problem format is compatible with the solver
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED
+    if (options_.PROBLEM_FORMAT == ProblemFormat::OPTIMIZED
         && StringManip::StringUtils::ToLowercase(options_.SOLVER_NAME) != "xpress")
     {
         std::cerr << LOGLOCATION << "Invalid solver used with the optimized file format"
@@ -302,11 +302,11 @@ void MergeMasterTrajectoryMPS::build_problem()
 
         // The master file should not contain the extension, add what it should be based on the mode
         std::string master_file;
-        if (options_.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED)
+        if (options_.PROBLEM_FORMAT == ProblemFormat::OPTIMIZED)
         {
             master_file = nodal_lp.master + SAVE_SUFFIX;
         }
-        else if (options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
+        else if (options_.PROBLEM_FORMAT == ProblemFormat::MPS_FILE)
         {
             master_file = nodal_lp.master + MPS_SUFFIX;
         }

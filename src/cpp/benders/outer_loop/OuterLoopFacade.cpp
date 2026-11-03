@@ -1,9 +1,7 @@
 #include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 
 OuterLoopFacade::OuterLoopFacade(pBendersBase benders):
-    benders_(std::move(benders)),
-    master_manager_(benders_->GetMasterManager()),
-    outer_loop_manager_(benders_->GetOuterLoopManager())
+    benders_(std::move(benders))
 {
 }
 
@@ -75,64 +73,64 @@ void OuterLoopFacade::UpdateOverallCosts()
 
 Logger OuterLoopFacade::GetLogger() const
 {
-    return benders_->GetOutputManager()->GetLogger();
+    return benders_->GetOutputManager().GetLogger();
 }
 
 std::shared_ptr<MathLoggerDriver> OuterLoopFacade::GetMathLoggerDriver() const
 {
-    return benders_->GetOutputManager()->GetMathLoggerDriver();
+    return benders_->GetOutputManager().GetMathLoggerDriver();
 }
 
 // Master operations
 
 std::vector<double> OuterLoopFacade::GetMasterObjectiveFunctionCoeffs() const
 {
-    return master_manager_->GetObjectiveFunctionCoeffs();
+    return benders_->GetMasterManager().GetObjectiveFunctionCoeffs();
 }
 
 void OuterLoopFacade::SetMasterObjectiveFunctionCoeffsToZeros()
 {
-    master_manager_->SetObjectiveFunctionCoeffsToZeros();
+    benders_->GetMasterManager().SetObjectiveFunctionCoeffsToZeros();
 }
 
 void OuterLoopFacade::SetMasterObjectiveFunction(const double* coeffs, int first, int last)
 {
-    master_manager_->SetObjectiveFunction(coeffs, first, last);
+    benders_->GetMasterManager().SetObjectiveFunction(coeffs, first, last);
 }
 
 const VariableMap& OuterLoopFacade::GetMasterVariableMap() const
 {
-    return master_manager_->GetVariableMap();
+    return benders_->GetMasterManager().GetVariableMap();
 }
 
 // Outer loop operations
 
 CriteriaCurrentIterationData OuterLoopFacade::GetOuterLoopData() const
 {
-    return outer_loop_manager_->GetOuterLoopData();
+    return benders_->GetOuterLoopManager().GetOuterLoopData();
 }
 
 std::vector<double> OuterLoopFacade::GetOuterLoopCriterionAtBestBenders() const
 {
-    return outer_loop_manager_->GetOuterLoopCriterionAtBestBenders();
+    return benders_->GetOuterLoopManager().GetOuterLoopCriterionAtBestBenders();
 }
 
 void OuterLoopFacade::UpdateOuterLoopSolution()
 {
-    outer_loop_manager_->UpdateOuterLoopSolution();
+    benders_->GetOuterLoopManager().UpdateOuterLoopSolution();
 }
 
 void OuterLoopFacade::SaveCurrentOuterLoopIterationInOutputFile() const
 {
-    outer_loop_manager_->SaveCurrentOuterLoopIterationInOutputFile();
+    benders_->GetOuterLoopManager().SaveCurrentOuterLoopIterationInOutputFile();
 }
 
 void OuterLoopFacade::SetBilevelBestub(double val)
 {
-    outer_loop_manager_->SetBilevelBestub(val);
+    benders_->GetOuterLoopManager().SetBilevelBestub(val);
 }
 
 void OuterLoopFacade::SaveOuterLoopSolutionInOutputFile() const
 {
-    outer_loop_manager_->SaveOuterLoopSolutionInOutputFile();
+    benders_->GetOuterLoopManager().SaveOuterLoopSolutionInOutputFile();
 }

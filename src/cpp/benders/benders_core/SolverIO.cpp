@@ -7,10 +7,10 @@ void SolverIO::write(SolverAbstract* solver, const std::filesystem::path& path) 
 {
     switch (format_)
     {
-    case ProblemsFormat::MPS_FILE:
+    case ProblemFormat::MPS_FILE:
         solver->write_prob_mps(path);
         break;
-    case ProblemsFormat::OPTIMIZED:
+    case ProblemFormat::OPTIMIZED:
         solver->save_prob(path);
         break;
     default:
@@ -24,10 +24,10 @@ void SolverIO::read(SolverAbstract* solver, const std::filesystem::path& path) c
 {
     switch (format_)
     {
-    case ProblemsFormat::MPS_FILE:
+    case ProblemFormat::MPS_FILE:
         solver->read_prob_mps(path);
         break;
-    case ProblemsFormat::OPTIMIZED:
+    case ProblemFormat::OPTIMIZED:
         solver->restore_prob(path);
         break;
     default:
@@ -37,7 +37,7 @@ void SolverIO::read(SolverAbstract* solver, const std::filesystem::path& path) c
     }
 }
 
-void SolverIO::configure(const std::string& solver_name, ProblemsFormat format)
+void SolverIO::configure(const std::string& solver_name, ProblemFormat format)
 {
     solver_config_ = solver_name;
     format_ = format;

@@ -31,7 +31,7 @@ class JsonWriterTest : public ::testing::Test {
  public:
   void SetUp() override { _fileName = std::tmpnam(nullptr); }
 
-  void TearDown() override { std::remove(_fileName.string().c_str()); }
+  void TearDown() override { std::filesystem::remove_all(_fileName); }
 
   std::filesystem::path _fileName;
   std::shared_ptr<ClockMock> my_clock = std::make_shared<ClockMock>();
@@ -44,6 +44,32 @@ TEST_F(JsonWriterTest, GenerateAValideFile) {
   std::ifstream fileStream(_fileName);
   fileStream.close();
   ASSERT_TRUE(fileStream.good());
+}
+
+TEST_F(JsonWriterTest, CreatesMissingParentDirectories) {
+  const auto output_file = _fileName / "nested" / "results.json";
+
+  JsonWriter writer(my_clock, output_file);
+  ASSERT_NO_THROW(writer.initialize());
+
+  EXPECT_TRUE(std::filesystem::is_regular_file(output_file));
+}
+
+TEST_F(JsonWriterTest, ReportsWhenParentDirectoryCannotBeCreated) {
+  const auto parent_file = _fileName / "not_a_directory";
+  std::filesystem::create_directories(_fileName);
+  std::ofstream(parent_file).close();
+
+  JsonWriter writer(my_clock, parent_file / "results.json");
+  try {
+    writer.initialize();
+    FAIL() << "Expected initialization to fail";
+  } catch (const std::runtime_error &error) {
+    const std::string message = error.what();
+    EXPECT_NE(message.find("Could not create parent directory"),
+              std::string::npos);
+    EXPECT_NE(message.find("results.json"), std::string::npos);
+  }
 }
 
 Json::Value get_value_from_json(const std::filesystem::path &file_name) {

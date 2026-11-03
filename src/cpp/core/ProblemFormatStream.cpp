@@ -1,15 +1,15 @@
 #include "antares-xpansion/core/ProblemFormatStream.h"
 
-auto fmt::formatter<ProblemsFormat>::format(ProblemsFormat problems_format,
-                                            format_context& ctx) const -> format_context::iterator
+auto fmt::formatter<ProblemFormat>::format(ProblemFormat problem_format,
+                                           format_context& ctx) const -> format_context::iterator
 {
     string_view result = "Unknown";
-    switch (problems_format)
+    switch (problem_format)
     {
-    case ProblemsFormat::MPS_FILE:
+    case ProblemFormat::MPS_FILE:
         result = "MPS";
         break;
-    case ProblemsFormat::OPTIMIZED:
+    case ProblemFormat::OPTIMIZED:
         result = "OPTIMIZED";
         break;
     default:

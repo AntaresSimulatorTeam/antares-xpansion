@@ -30,7 +30,7 @@ be :
     "INPUTROOT": "<path/to/input/root>",
     "JSON_FILE": "<path/to/json/ouput/file>",
     "SOLVER_NAME": "XPRESS",
-    "PROBLEMS_FORMAT": "MPS",
+    "PROBLEM_FORMAT": "MPS",
     "MASTER_NAME" : "name",
     "STRUCTURE_FILE" : "<relative/path/to/structure/file>"
 }

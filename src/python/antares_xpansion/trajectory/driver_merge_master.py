@@ -22,7 +22,7 @@ class MergeMasterData:
     input_root: Path
     output_root: Path
     solver: str
-    problems_format: str
+    problem_format: str
     merged_master_name: str
     merged_structure_file: str
 
@@ -49,7 +49,7 @@ class MergeMasterDriver:
         self.input_root = data.input_root
         self.output_root = data.output_root
         self.solver = data.solver
-        self.problems_format = data.problems_format
+        self.problem_format = data.problem_format
         self.merged_master_name = data.merged_master_name
         self.merged_structure_file = data.merged_structure_file
 
@@ -76,7 +76,7 @@ class MergeMasterDriver:
             OptimisationKeys.solver_name_key(): XpansionStudyReader.convert_study_solver_to_option_solver(
                 self.solver
             ),
-            OptimisationKeys.problems_format_key(): self.problems_format.upper(),
+            OptimisationKeys.problem_format_key(): self.problem_format.upper(),
             OptimisationKeys.master_name_key(): self.merged_master_name,
             OptimisationKeys.structure_file_key(): self.merged_structure_file,
         }

@@ -12,6 +12,7 @@
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -23,6 +24,8 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
+        benders_loggers_.AddLogger(logger_);
+        benders_loggers_.AddLogger(math_log_driver_);
         writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
     }
     else
@@ -30,13 +33,13 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         logger_ = build_void_logger();
         writer_ = build_void_writer();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
+        benders_loggers_.AddLogger(logger_);
+        benders_loggers_.AddLogger(math_log_driver_);
     }
-    benders_loggers_.AddLogger(logger_);
-    benders_loggers_.AddLogger(math_log_driver_);
     writer_->write_log_level(options_.LOG_LEVEL);
     writer_->write_master_name(options_.MASTER_NAME);
     writer_->write_solver_name(options_.SOLVER_NAME);
-    writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEMS_FORMAT));
+    writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEM_FORMAT));
 }
 
 bool BendersApp::isCriterionListEmpty() const

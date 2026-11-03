@@ -71,14 +71,14 @@ std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const
     }
 
     auto problem_format = _benders_data[Output::OPTIONS_C][Output::PROBLEM_FORMAT_C].asString();
-    auto format = problem_format.empty() ? ProblemsFormat::MPS_FILE
-                                         : problemsFormatFromString(problem_format);
+    auto format = problem_format.empty() ? ProblemFormat::MPS_FILE
+                                         : problemFormatFromString(problem_format);
     switch (format)
     {
-    case ProblemsFormat::MPS_FILE:
+    case ProblemFormat::MPS_FILE:
         last_master->read_prob_mps(_last_master_path);
         break;
-    case ProblemsFormat::OPTIMIZED:
+    case ProblemFormat::OPTIMIZED:
         last_master->restore_prob(_last_master_path);
         break;
     default:

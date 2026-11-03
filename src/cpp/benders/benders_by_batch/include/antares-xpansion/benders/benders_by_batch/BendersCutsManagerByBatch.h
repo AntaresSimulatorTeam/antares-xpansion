@@ -1,5 +1,6 @@
 #pragma once
 
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_core/BendersCutsManager.hxx"
 #include "antares-xpansion/benders/benders_core/BendersStructsDatas.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
@@ -13,11 +14,12 @@ public:
                               CurrentIterationData& data,
                               const VariableMap& problem_to_id,
                               BendersRelevantIterationsData& relevantIterationData,
-                              const WorkerMasterPtr& master);
+                              BendersMasterManager& master_manager,
+                              const BatchCollection& batch_collection_for_cuts);
 
     void GatherAndBuildCutsImpl(const SubProblemDataMap& subproblem_data_map,
                                 const Timer& walltime,
-                                const std::vector<SubProblemNamesInCut>& subproblems_per_cut,
+                                unsigned batch_id,
                                 double& batch_contribution_in_gap);
 
     void BroadcastXCut()
@@ -35,5 +37,6 @@ private:
     CurrentIterationData& data_;
     const VariableMap& problem_to_id_;
     BendersRelevantIterationsData& relevantIterationData_;
-    const WorkerMasterPtr& master_;
+    // Only filled on rank_0_, the only rank that builds cuts
+    const BatchCollection& batch_collection_for_cuts_;
 };

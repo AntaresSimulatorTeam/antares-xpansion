@@ -30,13 +30,13 @@ public:
                       SolverLogManager& solver_log_manager,
                       bool mps_has_alpha,
                       Logger logger,
-                      ProblemsFormat format,
+                      ProblemFormat format,
                       IBendersProblemProvider* benders_problem_provider,
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
     void FreeMaster();
     [[nodiscard]] bool IsEmpty() const;
-    [[nodiscard]] WorkerMasterPtr GetMaster() const;
+    [[nodiscard]] WorkerMaster* Master() const;
 
     // Variable management
     void SetVariableMap(const VariableMap& variable_map);
@@ -76,7 +76,7 @@ public:
     // Paths
     [[nodiscard]] std::filesystem::path GetMasterPath(const std::string& input_root,
                                                       const std::string& master_name,
-                                                      ProblemsFormat format,
+                                                      ProblemFormat format,
                                                       const std::string& solver_name) const;
     void WriteBasis(const std::filesystem::path& filename) const;
 
@@ -102,7 +102,7 @@ public:
     [[nodiscard]] const std::vector<int>& GetMasterOnlyVarsIds() const;
 
 private:
-    WorkerMasterPtr master_;
+    std::unique_ptr<WorkerMaster> master_;
     VariableMap variable_map_;
     bool is_empty_ = true;
 };

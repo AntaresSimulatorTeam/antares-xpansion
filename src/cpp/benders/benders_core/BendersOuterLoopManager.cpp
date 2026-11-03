@@ -23,9 +23,13 @@ CriteriaCurrentIterationData BendersOuterLoopManager::GetOuterLoopData() const
 
 std::vector<double> BendersOuterLoopManager::GetOuterLoopCriterionAtBestBenders() const
 {
-    return ((criteria_vector_for_each_iteration_.empty())
-              ? std::vector<double>()
-              : criteria_vector_for_each_iteration_[data_.control.best_it - 1]);
+    // best_it is 1-indexed; 0 means no best iteration has been recorded yet
+    const auto best_index = static_cast<std::size_t>(data_.control.best_it) - 1;
+    if (data_.control.best_it < 1 || best_index >= criteria_vector_for_each_iteration_.size())
+    {
+        return {};
+    }
+    return criteria_vector_for_each_iteration_[best_index];
 }
 
 void BendersOuterLoopManager::UpdateOuterLoopSolution()

@@ -1,48 +1,47 @@
 #pragma once
 
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include "antares-xpansion/benders/outer_loop/IOuterLoopFacade.h"
 
-class OuterLoopFacade
+class OuterLoopFacade final: public IOuterLoopFacade
 {
 public:
     explicit OuterLoopFacade(pBendersBase benders);
 
     // Lifecycle
-    void Launch();
-    void Free();
-    void InitializeProblems();
-    void DoFreeProblems(bool val);
-    void InitData(double lambda, double lambda_min, double lambda_max);
+    void Launch() override;
+    void Free() override;
+    void InitializeProblems() override;
+    void DoFreeProblems(bool val) override;
+    void InitData(double lambda, double lambda_min, double lambda_max) override;
 
     // State
-    [[nodiscard]] bool IsExceptionRaised() const;
-    void IncrementRunNumber();
-    [[nodiscard]] int GetRunNumber() const;
-    [[nodiscard]] CurrentIterationData GetCurrentIterationData() const;
-    [[nodiscard]] WorkerMasterData BestIterationWorkerMaster() const;
-    [[nodiscard]] BendersBaseOptions GetOptions() const;
-    void UpdateOverallCosts();
+    [[nodiscard]] bool IsExceptionRaised() const override;
+    void IncrementRunNumber() override;
+    [[nodiscard]] int GetRunNumber() const override;
+    [[nodiscard]] CurrentIterationData GetCurrentIterationData() const override;
+    [[nodiscard]] WorkerMasterData BestIterationWorkerMaster() const override;
+    [[nodiscard]] BendersBaseOptions GetOptions() const override;
+    void UpdateOverallCosts() override;
 
     // Logging
-    [[nodiscard]] Logger GetLogger() const;
-    [[nodiscard]] std::shared_ptr<MathLoggerDriver> GetMathLoggerDriver() const;
+    [[nodiscard]] Logger GetLogger() const override;
+    [[nodiscard]] std::shared_ptr<MathLoggerDriver> GetMathLoggerDriver() const override;
 
     // Master operations
-    [[nodiscard]] std::vector<double> GetMasterObjectiveFunctionCoeffs() const;
-    void SetMasterObjectiveFunctionCoeffsToZeros();
-    void SetMasterObjectiveFunction(const double* coeffs, int first, int last);
-    [[nodiscard]] const VariableMap& GetMasterVariableMap() const;
+    [[nodiscard]] std::vector<double> GetMasterObjectiveFunctionCoeffs() const override;
+    void SetMasterObjectiveFunctionCoeffsToZeros() override;
+    void SetMasterObjectiveFunction(const double* coeffs, int first, int last) override;
+    [[nodiscard]] const VariableMap& GetMasterVariableMap() const override;
 
     // Outer loop operations
-    [[nodiscard]] CriteriaCurrentIterationData GetOuterLoopData() const;
-    [[nodiscard]] std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
-    void UpdateOuterLoopSolution();
-    void SaveCurrentOuterLoopIterationInOutputFile() const;
-    void SetBilevelBestub(double val);
-    void SaveOuterLoopSolutionInOutputFile() const;
+    [[nodiscard]] CriteriaCurrentIterationData GetOuterLoopData() const override;
+    [[nodiscard]] std::vector<double> GetOuterLoopCriterionAtBestBenders() const override;
+    void UpdateOuterLoopSolution() override;
+    void SaveCurrentOuterLoopIterationInOutputFile() const override;
+    void SetBilevelBestub(double val) override;
+    void SaveOuterLoopSolutionInOutputFile() const override;
 
 private:
     pBendersBase benders_;
-    std::shared_ptr<BendersMasterManager> master_manager_;
-    std::shared_ptr<BendersOuterLoopManager> outer_loop_manager_;
 };

@@ -11,6 +11,7 @@ void SubproblemBasisCache::Store(const std::string& name, SolverAbstract& solver
 
     solver.get_basis(rstatus.data(), cstatus.data());
 
+    std::unique_lock lock(mutex_);
     basis_per_name_[name] = std::make_pair(std::move(rstatus), std::move(cstatus));
 }
 
@@ -18,6 +19,7 @@ bool SubproblemBasisCache::TryRestore(const std::string& name,
                                       SolverAbstract& solver,
                                       const Logger& logger)
 {
+    std::shared_lock lock(mutex_);
     auto it = basis_per_name_.find(name);
     if (it == basis_per_name_.end())
     {

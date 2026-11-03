@@ -21,12 +21,12 @@ public:
     explicit ConfigurationManager(ProblemGenerationOptions& options);
     auto Directories() const -> ConfigDirectories;
     auto Mode() const -> SimulationInputMode;
-    auto Format() const -> ProblemsFormat;
+    auto Format() const -> ProblemFormat;
     std::filesystem::path generateOutputName(const std::filesystem::path& study) const;
     const ProblemGenerationOptions& options_;
 
 private:
     mutable std::optional<SimulationInputMode> input_mode_;
-    ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
+    ProblemFormat format_{ProblemFormat::OPTIMIZED};
     mutable std::optional<ConfigDirectories> directories_;
 };

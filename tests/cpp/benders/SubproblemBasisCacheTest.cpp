@@ -1,4 +1,7 @@
 #include <memory>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -41,4 +44,45 @@ TEST(SubproblemBasisCacheTest, TryRestoreOnUnknownNameReturnsFalseAndDoesNotCall
 
     EXPECT_FALSE(cache.TryRestore("never_stored", solver, MakeLogger()));
     EXPECT_EQ(solver.set_basis_calls, 0);
+}
+
+// Meant to be run under ThreadSanitizer: concurrent Store (which inserts, hence may rehash) and
+// TryRestore used to race when BendersSequential solves subproblems with std::execution::par.
+TEST(SubproblemBasisCacheTest, ConcurrentStoreAndTryRestoreOnDifferentNames)
+{
+    constexpr int n_threads = 8;
+    constexpr int n_names_per_thread = 200;
+    SubproblemBasisCache cache;
+    std::vector<std::thread> threads;
+    std::vector<int> restored(n_threads, 0);
+
+    for (int t = 0; t < n_threads; ++t)
+    {
+        threads.emplace_back(
+          [&cache, &restored, t]
+          {
+              RecordingSolver solver;
+              solver.nrows = 2;
+              solver.ncols = 2;
+              solver.basis_rstatus_out = {1, 2};
+              solver.basis_cstatus_out = {3, 4};
+              for (int i = 0; i < n_names_per_thread; ++i)
+              {
+                  const auto own_name = "sub_" + std::to_string(t) + "_" + std::to_string(i);
+                  const auto other_name = "sub_" + std::to_string((t + 1) % n_threads) + "_"
+                                          + std::to_string(i);
+                  cache.TryRestore(other_name, solver, MakeLogger());
+                  cache.Store(own_name, solver);
+                  restored[t] += cache.TryRestore(own_name, solver, MakeLogger());
+              }
+          });
+    }
+    for (auto& thread: threads)
+    {
+        thread.join();
+    }
+    for (int count: restored)
+    {
+        EXPECT_EQ(count, n_names_per_thread);
+    }
 }

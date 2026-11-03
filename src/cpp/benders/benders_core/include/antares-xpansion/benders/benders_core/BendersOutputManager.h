@@ -50,10 +50,10 @@ public:
     [[nodiscard]] LogData BuildFinalLogData() const;
 
     // Resume support
-    void LoadResumeData(const std::filesystem::path& last_iteration_file, Logger& logger);
+    void LoadResumeData(const std::filesystem::path& last_iteration_file);
     [[nodiscard]] int GetNumIterationsBeforeRestart() const;
     [[nodiscard]] int GetNumOfSubProblemsSolvedBeforeResume() const;
-    void UpdateBestIterationData(const LogData& data);
+    void UpdateBestIterationData(const CurrentIterationData& data);
     [[nodiscard]] const LogData& GetBestIterationData() const;
     void SetIterationsBeforeResume(int value);
     void SetCumulativeSubproblemsSolvedBeforeResume(int value);
@@ -67,7 +67,7 @@ private:
     void PrintCurrentIterationCsv();
     void print_master_and_cut(std::ostream& file,
                               int ite,
-                              WorkerMasterData& trace,
+                              const WorkerMasterData& trace,
                               const Point& xopt);
     void print_master_csv(std::ostream& stream,
                           const WorkerMasterData& trace,

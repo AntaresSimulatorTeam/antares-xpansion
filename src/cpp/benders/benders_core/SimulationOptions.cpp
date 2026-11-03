@@ -24,9 +24,9 @@ Json::Value SimulationOptions::get_value_from_json(const std::filesystem::path& 
 }
 
 template<>
-inline ProblemsFormat Json::Value::as<ProblemsFormat>() const
+inline ProblemFormat Json::Value::as<ProblemFormat>() const
 {
-    return problemsFormatFromString(asString());
+    return problemFormatFromString(asString());
 }
 
 template<>
@@ -166,7 +166,7 @@ BaseOptions SimulationOptions::get_base_options() const
     result.MASTER_NAME = MASTER_NAME;
     result.SOLVER_NAME = SOLVER_NAME;
 
-    result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
+    result.PROBLEM_FORMAT = PROBLEM_FORMAT;
 
     return result;
 }
