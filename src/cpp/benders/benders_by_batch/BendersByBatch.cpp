@@ -239,7 +239,6 @@ void BendersByBatch::MasterLoop()
             random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
                                           .GetCyclicBatchOrder(current_batch_id_);
         }
-        benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_out, _data.control.it);
 
         BroadcastXOut();
         BroadcastSingleSubpbCostsUnderApprox();
@@ -286,6 +285,7 @@ void BendersByBatch::SeparationLoop()
         if (Rank() == rank_0)
         {
             ComputeXCut();
+            benders_plugin_->OnBendersMasterResolutionEnd(_data.solution.x_cut, _data.control.it);
         }
         batch_cuts_manager_->BroadcastXCut();
         UpdateRemainingEpsilon();
