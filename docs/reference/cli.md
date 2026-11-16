@@ -64,7 +64,7 @@ Set the optimization method used by Antares Xpansion.
 | `mergeMPS`           | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition. |
 | `adequacy_criterion` | Launch Antares Xpansion with reliability constraints, see adequacy criterion.                                                 |
 
-### `--problem-format {MPS, OPTIMIZED}`
+### `--problem-format {mps, OPTIMIZED}`
 
 Default value: `OPTIMIZED`.
 
@@ -74,8 +74,8 @@ Select the storage format of the generated mathematical problems (master + subpr
   I/O time.
   The underlying format depends on the solver used.
     - _XPRESS_ : `svf` format: compressed binary format.
-    - _COIN_ : unsupported. Falls back to `MPS`.
-- `MPS` : write the problems in MPS format, which is a standard format for mathematical programming problems.
+    - _COIN_ : unsupported. Falls back to `mps`.
+- `mps` : write the problems in MPS format, which is a standard format for mathematical programming problems.
 
 #### `-n, --np`
 
@@ -94,7 +94,7 @@ Sets the number of threads to use for Antares-Simulator in the initial `antares`
 
 Default value: `False`.
 
-If set to `True`, keeps `mps` files that encodes the problems solved by the optimizer. This option must be set to `True`
+If set, keeps `mps` files that encodes the problems solved by the optimizer. This option must be set
 if the user intends to launch the optimization several times on the same study (`--step benders`) without doing the
 other steps of Antares Xpansion.
 
@@ -102,7 +102,7 @@ other steps of Antares Xpansion.
 
 Default value: `False`.
 
-If set to `True`, runs the `presolve` step before calling the `benders` step
+If set, runs the `presolve` step before calling the `benders` step
 
 ### `-v, --version`
 
@@ -112,7 +112,45 @@ Show the Antares Xpansion version.
 
 Show the Antares-Simulator version (used in the `antares` step).
 
-### `--cache_problems`
+### `--cache_problems {NO_CACHE, PER_SUB, COMPACT}`
 
-Enable "cache mode" for benders. Problems are not preloaded but loaded on demand. This is useful when hitting memory
-limitation during benders at the cost of some processing time.
+Default value: `NO_CACHE`.
+
+Select how the Benders subproblems are held during the `benders` step. This is useful when hitting memory or disk
+limitations, at the cost of some processing time:
+
+- `NO_CACHE`: all subproblems are loaded in memory (classic mode).
+- `PER_SUB`: each subproblem is loaded from disk just before being solved, which reduces RAM usage.
+- `COMPACT`: a single shared skeleton problem plus lightweight per-subproblem CSV files are used, which also reduces
+  the disk footprint. See [in-memory compact subproblems](benders/in-memory-compact-subproblems.md).
+
+### `--memory`
+
+Default value: `False`.
+
+Work in memory and avoid writing files when possible. Mainly useful for the `problem_generation` step, and required
+when generating problems for [trajectory investment](trajectory-investment/orchestration.md).
+
+### `--trajectory`
+
+Default value: `False`.
+
+Switch to trajectory mode. All the remaining arguments are then parsed by the trajectory argument parser; use
+`--trajectory --help` to list the trajectory-specific options. See
+[trajectory investment orchestration](trajectory-investment/orchestration.md).
+
+### `--oversubscribe`
+
+Default value: `False`.
+
+Enable the MPI `--oversubscribe` option, which allows launching more MPI processes than available cores (Linux only).
+
+### `--allow-run-as-root`
+
+Default value: `False`.
+
+Enable the MPI `--allow-run-as-root` option, needed to run as the root user, e.g. in a container (Linux only).
+
+### `--revision`
+
+Show the abbreviated commit hash the launcher was built from, and exit.

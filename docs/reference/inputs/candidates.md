@@ -34,6 +34,10 @@ already installed on the investment candidate's link
   name of a file that links the already installed capacity 
   and the available capacity for the indirect way
 
+  A profile file may be left empty: it is then interpreted as a null profile
+  (zero available capacity over the 8760 hours). If a profile is not specified at all,
+  a unit profile (full capacity available at every hour) is used.
+
 The format is a standard `.ini` file and should follow this template:
 
 ```ini
