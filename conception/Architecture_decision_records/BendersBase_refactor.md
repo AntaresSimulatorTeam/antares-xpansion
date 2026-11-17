@@ -2,7 +2,7 @@
 ## Where we are today
 
 The kernel currently has three implementations. `BendersSequential` inherits from `BendersBase`, `BendersMPI` inherits from `BendersBase`, and `BendersByBatch` inherits from `BendersMPI`.
-<img width="1700" height="1160" alt="benders_kernel_class_hierarchy" src="./benders_kernel_class_hierarchy.png" />
+<img width="1700" height="1160" alt="benders_kernel_class_hierarchy" src="./images/benders_kernel_class_hierarchy.png" />
 
 
 `BendersBase` is the parent class and the centre of gravity. It owns the master problem and the subproblem map, the cut computation and aggregation, the bound and gap bookkeeping, the stopping criteria, option handling, timers, and everything I/O-shaped: console logs, the iteration trace, JSON output, and writing the final solution. Its subclasses call into it; it does not call much back.
@@ -15,7 +15,7 @@ The kernel currently has three implementations. `BendersSequential` inherits fro
 
 ## Why this needs to change
 
-None of the above is the result of a bad decision. It is the result of many locally reasonable ones. Each new capability was added by extending whatever class was closest to hand, and the structure we have is the accumulation of those extensions rather than a design anyone would choose today. That has three concrete costs.
+None of the above is the result of a bad decision. It is the result of many locally reasonable ones. Each new capability was added by extending whatever class was closest to hand, and the structure we have is the accumulation of those extensions rather than a design anyone would choose today. 
 
 **`BendersBase` is a god class.** Cut algebra, solver lifecycle, convergence policy, logging, serialisation, and instrumentation all live in one type. They change for entirely different reasons and at entirely different rates, but they share a header, a translation unit, and a mutable state. Touching cut computation means recompiling and re-reasoning about everything else.
 
@@ -23,7 +23,7 @@ None of the above is the result of a bad decision. It is the result of many loca
 
 ### `BendersBase` becomes an orchestrator
 
-<img width="2040" height="1290" alt="benders_architecture" src="./benders_architecture.png" />
+<img width="2040" height="1290" alt="benders_architecture" src="./images/benders_architecture.png" />
 Everything that is not the loop moves out into collaborators with a single responsibility each.
 
 - **`BendersCutsManager`** manages the creation and assembly of Benders cuts from subproblem dual solutions, including computation of separation points (xcut), aggregation of costs, and broadcasting cut data across ranks.
@@ -31,6 +31,8 @@ Everything that is not the loop moves out into collaborators with a single respo
 - **`BendersMasterManager`** manages the master LP problem lifecycle including variable/constraint management, objective function updates, and feeding cuts to the solver.
 - **`BendersOutputManager`** orchestrates logging, CSV trace output, iteration data conversion, and result serialization throughout the algorithm and at completion.
 - **`BendersOuterLoopManager`** manages the outer loop execution including criterion computation, solution tracking, and coordination between Benders iterations and outer loop objectives.
+
+Some of these collaborators come in several implementations, one per Benders algorithm: `BendersCutsManager` and `BendersSubProblemsManager` each have a `Sequential`, an `Mpi` and a `ByBatch` variant, matching `BendersSequential`, `BendersMPI` and `BendersByBatch`. The others are shared by all algorithms. Each algorithm plugs its own variants into `BendersBase`, so what differs between algorithms lives in these collaborators rather than in the inheritance chain.
 
 `BendersBase` keeps only the loop: ask the subclass for its iteration, feed the results through the collaborators, check whether to continue. It coordinates; it no longer computes.
 
