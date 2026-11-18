@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: BendersSubProblemsManagerByBatch Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classBendersSubProblemsManagerByBatch.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="classBendersSubProblemsManagerByBatch-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">BendersSubProblemsManagerByBatch Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for BendersSubProblemsManagerByBatch:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classBendersSubProblemsManagerByBatch.png" usemap="#BendersSubProblemsManagerByBatch_map" alt=""/>
+  <map id="BendersSubProblemsManagerByBatch_map" name="BendersSubProblemsManagerByBatch_map">
+<area href="classBendersSubProblemsManager.html" alt="BendersSubProblemsManager&lt; BendersSubProblemsManagerByBatch &gt;" shape="rect" coords="0,0,427,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8cd50c6a57ae3a2b8e4a10def0e962a2" id="r_a8cd50c6a57ae3a2b8e4a10def0e962a2"><td class="memItemLeft" align="right" valign="top"><a id="a8cd50c6a57ae3a2b8e4a10def0e962a2" name="a8cd50c6a57ae3a2b8e4a10def0e962a2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DistributeSubproblemsImpl</b> (<a class="el" href="classBatchCollection.html">BatchCollection</a> &amp;batch_collection, int rank, int world_size)</td></tr>
+<tr class="separator:a8cd50c6a57ae3a2b8e4a10def0e962a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b1cfcc0e031e24dca8dfe03b8d9783e" id="r_a4b1cfcc0e031e24dca8dfe03b8d9783e"><td class="memItemLeft" align="right" valign="top"><a id="a4b1cfcc0e031e24dca8dfe03b8d9783e" name="a4b1cfcc0e031e24dca8dfe03b8d9783e"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>MakePostSolveHookImpl</b> (std::function&lt; void(const std::string &amp;, <a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;)&gt; callback)</td></tr>
+<tr class="separator:a4b1cfcc0e031e24dca8dfe03b8d9783e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10b5da6cb7d9609230c53d852c56b887" id="r_a10b5da6cb7d9609230c53d852c56b887"><td class="memItemLeft" align="right" valign="top"><a id="a10b5da6cb7d9609230c53d852c56b887" name="a10b5da6cb7d9609230c53d852c56b887"></a>
+FastBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeFastBeginHookImpl</b> (const std::vector&lt; std::string &gt; &amp;batch_sub_problems)</td></tr>
+<tr class="separator:a10b5da6cb7d9609230c53d852c56b887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884eaf9e0a7e78af3209533c316ff6bb" id="r_a884eaf9e0a7e78af3209533c316ff6bb"><td class="memItemLeft" align="right" valign="top"><a id="a884eaf9e0a7e78af3209533c316ff6bb" name="a884eaf9e0a7e78af3209533c316ff6bb"></a>
+CacheBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeCacheBeginHookImpl</b> (const std::vector&lt; std::string &gt; &amp;batch_sub_problems)</td></tr>
+<tr class="separator:a884eaf9e0a7e78af3209533c316ff6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a224689d41b5eb886fd00cab472aa49bd" id="r_a224689d41b5eb886fd00cab472aa49bd"><td class="memItemLeft" align="right" valign="top"><a id="a224689d41b5eb886fd00cab472aa49bd" name="a224689d41b5eb886fd00cab472aa49bd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersSubProblemsManager</b> (<a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const std::shared_ptr&lt; <a class="el" href="classBendersPlugin.html">BendersPlugin</a> &gt; &amp;plugin, Logger logger, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, CouplingMap &amp;coupling_map)</td></tr>
+<tr class="separator:a224689d41b5eb886fd00cab472aa49bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b3f462ac7b5134f831616e4c1a74a7" id="r_a19b3f462ac7b5134f831616e4c1a74a7"><td class="memItemLeft" align="right" valign="top"><a id="a19b3f462ac7b5134f831616e4c1a74a7" name="a19b3f462ac7b5134f831616e4c1a74a7"></a>
+CacheBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeCacheBeginHookImpl</b> ()</td></tr>
+<tr class="separator:a19b3f462ac7b5134f831616e4c1a74a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a592af3fc68caa4811691adf15f3094f6" id="r_a592af3fc68caa4811691adf15f3094f6"><td class="memItemLeft" align="right" valign="top"><a id="a592af3fc68caa4811691adf15f3094f6" name="a592af3fc68caa4811691adf15f3094f6"></a>
+FastBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeFastBeginHookImpl</b> ()</td></tr>
+<tr class="separator:a592af3fc68caa4811691adf15f3094f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a937182f8e55dd0aa856887f8f840f958" id="r_a937182f8e55dd0aa856887f8f840f958"><td class="memItemLeft" align="right" valign="top"><a id="a937182f8e55dd0aa856887f8f840f958" name="a937182f8e55dd0aa856887f8f840f958"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>MakePostSolveHookImpl</b> ()</td></tr>
+<tr class="separator:a937182f8e55dd0aa856887f8f840f958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classBendersSubProblemsManager"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classBendersSubProblemsManager')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBendersSubProblemsManager.html">BendersSubProblemsManager&lt; BendersSubProblemsManagerByBatch &gt;</a></td></tr>
+<tr class="memitem:a224689d41b5eb886fd00cab472aa49bd inherit pub_methods_classBendersSubProblemsManager" id="r_a224689d41b5eb886fd00cab472aa49bd"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersSubProblemsManager</b> (<a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const std::shared_ptr&lt; <a class="el" href="classBendersPlugin.html">BendersPlugin</a> &gt; &amp;plugin, Logger logger, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, CouplingMap &amp;coupling_map)</td></tr>
+<tr class="separator:a224689d41b5eb886fd00cab472aa49bd inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7136099b43168c12e8a4758f366c378 inherit pub_methods_classBendersSubProblemsManager" id="r_ad7136099b43168c12e8a4758f366c378"><td class="memItemLeft" align="right" valign="top">
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>DistributeSubproblems</b> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:ad7136099b43168c12e8a4758f366c378 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2057673bcd07549fca76fe19b15201d0 inherit pub_methods_classBendersSubProblemsManager" id="r_a2057673bcd07549fca76fe19b15201d0"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DistributeSubproblemsImpl</b> ()</td></tr>
+<tr class="separator:a2057673bcd07549fca76fe19b15201d0 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09c0daa7f79fb57898533f2da673b88a inherit pub_methods_classBendersSubProblemsManager" id="r_a09c0daa7f79fb57898533f2da673b88a"><td class="memItemLeft" align="right" valign="top">
+FastBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeFastBeginHook</b> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a09c0daa7f79fb57898533f2da673b88a inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af05a9c4ee362e96bc888143fe55bea93 inherit pub_methods_classBendersSubProblemsManager" id="r_af05a9c4ee362e96bc888143fe55bea93"><td class="memItemLeft" align="right" valign="top">
+CacheBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeCacheBeginHook</b> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:af05a9c4ee362e96bc888143fe55bea93 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30cc048cf247c0ca59d53e2141780918 inherit pub_methods_classBendersSubProblemsManager" id="r_a30cc048cf247c0ca59d53e2141780918"><td class="memItemLeft" align="right" valign="top">
+PostSolveHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakePostSolveHook</b> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a30cc048cf247c0ca59d53e2141780918 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a592af3fc68caa4811691adf15f3094f6 inherit pub_methods_classBendersSubProblemsManager" id="r_a592af3fc68caa4811691adf15f3094f6"><td class="memItemLeft" align="right" valign="top">
+FastBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeFastBeginHookImpl</b> ()</td></tr>
+<tr class="separator:a592af3fc68caa4811691adf15f3094f6 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b3f462ac7b5134f831616e4c1a74a7 inherit pub_methods_classBendersSubProblemsManager" id="r_a19b3f462ac7b5134f831616e4c1a74a7"><td class="memItemLeft" align="right" valign="top">
+CacheBeginHook&#160;</td><td class="memItemRight" valign="bottom"><b>MakeCacheBeginHookImpl</b> ()</td></tr>
+<tr class="separator:a19b3f462ac7b5134f831616e4c1a74a7 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a937182f8e55dd0aa856887f8f840f958 inherit pub_methods_classBendersSubProblemsManager" id="r_a937182f8e55dd0aa856887f8f840f958"><td class="memItemLeft" align="right" valign="top">
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>MakePostSolveHookImpl</b> ()</td></tr>
+<tr class="separator:a937182f8e55dd0aa856887f8f840f958 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab99bec7aec14e352dc2c048d0ab87b03 inherit pub_methods_classBendersSubProblemsManager" id="r_ab99bec7aec14e352dc2c048d0ab87b03"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemCut</b> (SubProblemDataMap &amp;subproblem_data_map, const FastBeginHook &amp;fast_begin_hook, const CacheBeginHook &amp;cache_begin_hook, const PostSolveHook &amp;post_solve_hook)</td></tr>
+<tr class="separator:ab99bec7aec14e352dc2c048d0ab87b03 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f19e5fe0ac64f900f3693b64caa3e16 inherit pub_methods_classBendersSubProblemsManager" id="r_a1f19e5fe0ac64f900f3693b64caa3e16"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ForEachSubproblem</b> (It first, It last, F &amp;&amp;f)</td></tr>
+<tr class="separator:a1f19e5fe0ac64f900f3693b64caa3e16 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5806ffe10254a28c5fac3ce4a16b6c98 inherit pub_methods_classBendersSubProblemsManager" id="r_a5806ffe10254a28c5fac3ce4a16b6c98"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemCutFast</b> (SubProblemDataMap &amp;subproblem_data_map, const FastBeginHook &amp;begin_hook, const PostSolveHook &amp;post_solve_hook)</td></tr>
+<tr class="separator:a5806ffe10254a28c5fac3ce4a16b6c98 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aa93f59c8c15a22636ca4f27f06238f inherit pub_methods_classBendersSubProblemsManager" id="r_a3aa93f59c8c15a22636ca4f27f06238f"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemCutCache</b> (SubProblemDataMap &amp;subproblem_data_map, const CacheBeginHook &amp;begin_hook, const PostSolveHook &amp;post_solve_hook)</td></tr>
+<tr class="separator:a3aa93f59c8c15a22636ca4f27f06238f inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10fa9ea88584507b842fc00671809edd inherit pub_methods_classBendersSubProblemsManager" id="r_a10fa9ea88584507b842fc00671809edd"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompactInMemCuts</b> (SubProblemDataMap &amp;subproblem_data_map, const CacheBeginHook &amp;begin_hook, const PostSolveHook &amp;post_solve_hook)</td></tr>
+<tr class="separator:a10fa9ea88584507b842fc00671809edd inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb3ab4744d278c9a50ae80b97e787786 inherit pub_methods_classBendersSubProblemsManager" id="r_adb3ab4744d278c9a50ae80b97e787786"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SolveSubproblem</b> (<a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;subproblem_data, const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker, const std::function&lt; void()&gt; &amp;post_reset_hook)</td></tr>
+<tr class="separator:adb3ab4744d278c9a50ae80b97e787786 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac989fc8c6400f03777c65da066d8e4c9 inherit pub_methods_classBendersSubProblemsManager" id="r_ac989fc8c6400f03777c65da066d8e4c9"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubproblem</b> (const std::pair&lt; std::string, VariableMap &gt; &amp;kvp)</td></tr>
+<tr class="separator:ac989fc8c6400f03777c65da066d8e4c9 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd366b0bfe988e0aec209b707acde1a5 inherit pub_methods_classBendersSubProblemsManager" id="r_acd366b0bfe988e0aec209b707acde1a5"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubproblemName</b> (const std::string &amp;name)</td></tr>
+<tr class="separator:acd366b0bfe988e0aec209b707acde1a5 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a0a45171ee808046cb45ee1172adfc1 inherit pub_methods_classBendersSubProblemsManager" id="r_a5a0a45171ee808046cb45ee1172adfc1"><td class="memItemLeft" align="right" valign="top">
+std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>makeSubproblemWorker</b> (const std::pair&lt; std::string, VariableMap &gt; &amp;kvp) const</td></tr>
+<tr class="separator:a5a0a45171ee808046cb45ee1172adfc1 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae11e4842bf48ac8f3ee690819b3db7c9 inherit pub_methods_classBendersSubProblemsManager" id="r_ae11e4842bf48ac8f3ee690819b3db7c9"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>free_subproblems</b> ()</td></tr>
+<tr class="separator:ae11e4842bf48ac8f3ee690819b3db7c9 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6e32440d19d9a831f6d08899eda4212 inherit pub_methods_classBendersSubProblemsManager" id="r_ac6e32440d19d9a831f6d08899eda4212"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MatchProblemToId</b> ()</td></tr>
+<tr class="separator:ac6e32440d19d9a831f6d08899eda4212 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafb4d52688484ab901afac6f4426f5de inherit pub_methods_classBendersSubProblemsManager" id="r_aafb4d52688484ab901afac6f4426f5de"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StoreSubproblemBasis</b> (const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
+<tr class="separator:aafb4d52688484ab901afac6f4426f5de inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898d6908093f578031f3120af5c6d3d1 inherit pub_methods_classBendersSubProblemsManager" id="r_a898d6908093f578031f3120af5c6d3d1"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TryRestoreSubproblemBasis</b> (const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
+<tr class="separator:a898d6908093f578031f3120af5c6d3d1 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97cdfc17d8028fe6398093a0f2c2784b inherit pub_methods_classBendersSubProblemsManager" id="r_a97cdfc17d8028fe6398093a0f2c2784b"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubproblemVariablesIndices</b> (const <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &amp;subproblem)</td></tr>
+<tr class="separator:a97cdfc17d8028fe6398093a0f2c2784b inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5d8e149611ff61c2309ffbb7ab36fe6 inherit pub_methods_classBendersSubProblemsManager" id="r_ad5d8e149611ff61c2309ffbb7ab36fe6"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSubproblemsVariablesIndices</b> ()</td></tr>
+<tr class="separator:ad5d8e149611ff61c2309ffbb7ab36fe6 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a110d3a780324af68b7a3073d8651a5df inherit pub_methods_classBendersSubProblemsManager" id="r_a110d3a780324af68b7a3073d8651a5df"><td class="memItemLeft" align="right" valign="top">
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemPath</b> (const std::string &amp;subproblem_name) const</td></tr>
+<tr class="separator:a110d3a780324af68b7a3073d8651a5df inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4c1432a33f3eb2da46823f80868c20f inherit pub_methods_classBendersSubProblemsManager" id="r_ac4c1432a33f3eb2da46823f80868c20f"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>SubproblemWeight</b> (int subproblem_count, const std::string &amp;name) const</td></tr>
+<tr class="separator:ac4c1432a33f3eb2da46823f80868c20f inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c076a27d1db4cbac189d7cf235af337 inherit pub_methods_classBendersSubProblemsManager" id="r_a5c076a27d1db4cbac189d7cf235af337"><td class="memItemLeft" align="right" valign="top">
+SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubProblemMap</b> () const</td></tr>
+<tr class="separator:a5c076a27d1db4cbac189d7cf235af337 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a911c58b06f22c4b24684d549a53e22f6 inherit pub_methods_classBendersSubProblemsManager" id="r_a911c58b06f22c4b24684d549a53e22f6"><td class="memItemLeft" align="right" valign="top">
+StrVector&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubProblemNames</b> () const</td></tr>
+<tr class="separator:a911c58b06f22c4b24684d549a53e22f6 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a152f7cda388b83917c1cbce1714117dc inherit pub_methods_classBendersSubProblemsManager" id="r_a152f7cda388b83917c1cbce1714117dc"><td class="memItemLeft" align="right" valign="top">
+const VariableMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetProblemToId</b> () const</td></tr>
+<tr class="separator:a152f7cda388b83917c1cbce1714117dc inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d95e02288d984706116900d1a84d734 inherit pub_methods_classBendersSubProblemsManager" id="r_a4d95e02288d984706116900d1a84d734"><td class="memItemLeft" align="right" valign="top">
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ProblemToId</b> (const std::string &amp;problem_name) const</td></tr>
+<tr class="separator:a4d95e02288d984706116900d1a84d734 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af725405f3fc9436ae3209311199b87b2 inherit pub_methods_classBendersSubProblemsManager" id="r_af725405f3fc9436ae3209311199b87b2"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetOnVariablesIndicesSet</b> (std::function&lt; void(const std::vector&lt; std::string &gt; &amp;)&gt; callback)</td></tr>
+<tr class="separator:af725405f3fc9436ae3209311199b87b2 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38c83ecb2a6cbca20c399ba1209a4b5a inherit pub_methods_classBendersSubProblemsManager" id="r_a38c83ecb2a6cbca20c399ba1209a4b5a"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildSubproblemWorkerFactory</b> (CacheProblems cache_problems, boost::mpi::communicator *world=nullptr)</td></tr>
+<tr class="separator:a38c83ecb2a6cbca20c399ba1209a4b5a inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac202a79e55bf31662f5f7863ffc29300 inherit pub_methods_classBendersSubProblemsManager" id="r_ac202a79e55bf31662f5f7863ffc29300"><td class="memItemLeft" align="right" valign="top">
+std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFactorySolver</b> () const</td></tr>
+<tr class="separator:ac202a79e55bf31662f5f7863ffc29300 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72077b0d8554780c6e36f13eda6ad32 inherit pub_methods_classBendersSubProblemsManager" id="r_ab72077b0d8554780c6e36f13eda6ad32"><td class="memItemLeft" align="right" valign="top">
+const CouplingMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCouplingMap</b> () const</td></tr>
+<tr class="separator:ab72077b0d8554780c6e36f13eda6ad32 inherit pub_methods_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:acf3b23e3c90b5e5fddd40340c0c17d4f" id="r_acf3b23e3c90b5e5fddd40340c0c17d4f"><td class="memItemLeft" align="right" valign="top"><a id="acf3b23e3c90b5e5fddd40340c0c17d4f" name="acf3b23e3c90b5e5fddd40340c0c17d4f"></a>
+static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>EXECUTION_POLICY</b> = std::execution::seq</td></tr>
+<tr class="separator:acf3b23e3c90b5e5fddd40340c0c17d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classBendersSubProblemsManager"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classBendersSubProblemsManager')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classBendersSubProblemsManager.html">BendersSubProblemsManager&lt; BendersSubProblemsManagerByBatch &gt;</a></td></tr>
+<tr class="memitem:aec1fb7afaf846623f1e354407181373a inherit pro_attribs_classBendersSubProblemsManager" id="r_aec1fb7afaf846623f1e354407181373a"><td class="memItemLeft" align="right" valign="top">
+SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subproblem_map_</b></td></tr>
+<tr class="separator:aec1fb7afaf846623f1e354407181373a inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ce5a3267626de9a9fce737844b3582 inherit pro_attribs_classBendersSubProblemsManager" id="r_a04ce5a3267626de9a9fce737844b3582"><td class="memItemLeft" align="right" valign="top">
+CouplingMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>coupling_map_</b></td></tr>
+<tr class="separator:a04ce5a3267626de9a9fce737844b3582 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a518f3f629abc9ceccc30ef7a3b1a5ca9 inherit pro_attribs_classBendersSubProblemsManager" id="r_a518f3f629abc9ceccc30ef7a3b1a5ca9"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSubproblemBasisCache.html">SubproblemBasisCache</a>&#160;</td><td class="memItemRight" valign="bottom"><b>subproblem_basis_cache_</b></td></tr>
+<tr class="separator:a518f3f629abc9ceccc30ef7a3b1a5ca9 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2afd2d9962a6bd396f7860f5ae9c35f inherit pro_attribs_classBendersSubProblemsManager" id="r_aa2afd2d9962a6bd396f7860f5ae9c35f"><td class="memItemLeft" align="right" valign="top">
+std::shared_ptr&lt; <a class="el" href="classSubproblemWorkerFactory.html">SubproblemWorkerFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subproblem_worker_factory_</b></td></tr>
+<tr class="separator:aa2afd2d9962a6bd396f7860f5ae9c35f inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27b80ce3b46e5636251a86aa22498a69 inherit pro_attribs_classBendersSubProblemsManager" id="r_a27b80ce3b46e5636251a86aa22498a69"><td class="memItemLeft" align="right" valign="top">
+StrVector&#160;</td><td class="memItemRight" valign="bottom"><b>subproblems_</b></td></tr>
+<tr class="separator:a27b80ce3b46e5636251a86aa22498a69 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae718f191d0c4b73232b80292da609862 inherit pro_attribs_classBendersSubProblemsManager" id="r_ae718f191d0c4b73232b80292da609862"><td class="memItemLeft" align="right" valign="top">
+VariableMap&#160;</td><td class="memItemRight" valign="bottom"><b>problem_to_id_</b></td></tr>
+<tr class="separator:ae718f191d0c4b73232b80292da609862 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a859de6febca3bc93e2fc3332fe68fdd4 inherit pro_attribs_classBendersSubProblemsManager" id="r_a859de6febca3bc93e2fc3332fe68fdd4"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>data_</b></td></tr>
+<tr class="separator:a859de6febca3bc93e2fc3332fe68fdd4 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e57d285dcf65837caa4df5262f8683 inherit pro_attribs_classBendersSubProblemsManager" id="r_a37e57d285dcf65837caa4df5262f8683"><td class="memItemLeft" align="right" valign="top">
+const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>options_</b></td></tr>
+<tr class="separator:a37e57d285dcf65837caa4df5262f8683 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a994f61c21d01a0764c7146c92e1e201d inherit pro_attribs_classBendersSubProblemsManager" id="r_a994f61c21d01a0764c7146c92e1e201d"><td class="memItemLeft" align="right" valign="top">
+const std::shared_ptr&lt; <a class="el" href="classBendersPlugin.html">BendersPlugin</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>plugin_</b></td></tr>
+<tr class="separator:a994f61c21d01a0764c7146c92e1e201d inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d27c0d306d4575a60e2614d67147912 inherit pro_attribs_classBendersSubProblemsManager" id="r_a1d27c0d306d4575a60e2614d67147912"><td class="memItemLeft" align="right" valign="top">
+Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></tr>
+<tr class="separator:a1d27c0d306d4575a60e2614d67147912 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4add60a0449cb7456433c5511372b56 inherit pro_attribs_classBendersSubProblemsManager" id="r_ae4add60a0449cb7456433c5511372b56"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
+<tr class="separator:ae4add60a0449cb7456433c5511372b56 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11fe2f6ffafb3f7b1e2ed61ad9a6ff12 inherit pro_attribs_classBendersSubProblemsManager" id="r_a11fe2f6ffafb3f7b1e2ed61ad9a6ff12"><td class="memItemLeft" align="right" valign="top">
+std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>writer_</b></td></tr>
+<tr class="separator:a11fe2f6ffafb3f7b1e2ed61ad9a6ff12 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab96b8d5b930c129ce1aec7b6c33597f0 inherit pro_attribs_classBendersSubProblemsManager" id="r_ab96b8d5b930c129ce1aec7b6c33597f0"><td class="memItemLeft" align="right" valign="top">
+std::function&lt; void(const std::vector&lt; std::string &gt; &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>on_variables_indices_set_</b></td></tr>
+<tr class="separator:ab96b8d5b930c129ce1aec7b6c33597f0 inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9adc867eaef4f109b59f81f91e65dcf inherit pro_attribs_classBendersSubProblemsManager" id="r_aa9adc867eaef4f109b59f81f91e65dcf"><td class="memItemLeft" align="right" valign="top">
+std::once_flag&#160;</td><td class="memItemRight" valign="bottom"><b>variable_indice_once_flag_</b></td></tr>
+<tr class="separator:aa9adc867eaef4f109b59f81f91e65dcf inherit pro_attribs_classBendersSubProblemsManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/cpp/benders/benders_by_batch/include/antares-xpansion/benders/benders_by_batch/<a class="el" href="BendersSubProblemsManagerByBatch_8hxx_source.html">BendersSubProblemsManagerByBatch.hxx</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classBendersSubProblemsManagerByBatch.html">BendersSubProblemsManagerByBatch</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

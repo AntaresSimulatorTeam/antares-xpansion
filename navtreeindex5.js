@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html":[45,0,0,11,6],
+"classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html":[43,0,0,5,7],
+"classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html":[45,0,0,11,7],
+"classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html":[43,0,0,5,8],
+"classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html":[45,0,0,11,8],
 "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[43,0,0,5,9],
 "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html":[45,0,0,11,9],
 "classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html":[43,0,0,5,10],
@@ -138,7 +143,7 @@ var NAVTREEINDEX5 =
 "classargs__parser__trajectory_1_1TrajectoryArgsParser_1_1XpansionTrajectoryInvalidArguments.html":[45,0,1,0,0],
 "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsDefaultValues.html":[45,0,1,1],
 "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html":[45,0,1,2],
-"classclass.html":[45,0,84],
+"classclass.html":[45,0,95],
 "classdriver__input__translation_1_1InputTranslationDriver.html":[45,0,3,0],
 "classdriver__input__translation_1_1InputTranslationDriver.html#a31f3e404a8968adc01790753dceb0f12":[45,0,3,0,1],
 "classdriver__input__translation_1_1InputTranslationDriver.html#aa6a8becca2bbdac89c7ab33c0e0818be":[45,0,3,0,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "classxpansion_1_1logger_1_1CandidateLog.html":[45,0,23,0,0],
 "classxpansion_1_1logger_1_1IterationResultLog.html":[45,0,23,0,1],
 "classxpansion_1_1logger_1_1Master.html":[45,0,23,0,2],
-"classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397":[45,0,23,0,2,0],
-"classxpansion_1_1logger_1_1User.html":[45,0,23,0,3],
-"classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a":[45,0,23,0,3,0],
-"classxpansion_1_1logger_1_1UserFile.html":[45,0,23,0,4],
-"classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486":[45,0,23,0,4,0],
-"common_8h_source.html":[46,0,0,0,0,1,0,0,0,0,5]
+"classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397":[45,0,23,0,2,0]
 };

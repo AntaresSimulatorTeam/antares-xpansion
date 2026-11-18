@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: BendersOutputManager Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classBendersOutputManager.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classBendersOutputManager-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">BendersOutputManager Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae6af13c51fef5b1819962bd054e2eec3" id="r_ae6af13c51fef5b1819962bd054e2eec3"><td class="memItemLeft" align="right" valign="top"><a id="ae6af13c51fef5b1819962bd054e2eec3" name="ae6af13c51fef5b1819962bd054e2eec3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersOutputManager</b> (Logger logger, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver, const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data, const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, const VariableMap &amp;problem_to_id, const <a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a> &amp;relevant_iteration_data)</td></tr>
+<tr class="separator:ae6af13c51fef5b1819962bd054e2eec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0275f4b2c764398f032c9f6e96284dca" id="r_a0275f4b2c764398f032c9f6e96284dca"><td class="memItemLeft" align="right" valign="top"><a id="a0275f4b2c764398f032c9f6e96284dca" name="a0275f4b2c764398f032c9f6e96284dca"></a>
+Logger&#160;</td><td class="memItemRight" valign="bottom"><b>GetLogger</b> () const</td></tr>
+<tr class="separator:a0275f4b2c764398f032c9f6e96284dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad34ffdadd73c68c60a62a558ce5bc092" id="r_ad34ffdadd73c68c60a62a558ce5bc092"><td class="memItemLeft" align="right" valign="top"><a id="ad34ffdadd73c68c60a62a558ce5bc092" name="ad34ffdadd73c68c60a62a558ce5bc092"></a>
+std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetWriter</b> () const</td></tr>
+<tr class="separator:ad34ffdadd73c68c60a62a558ce5bc092"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a3055c59e82dffa4676194c1d0cfc31" id="r_a7a3055c59e82dffa4676194c1d0cfc31"><td class="memItemLeft" align="right" valign="top"><a id="a7a3055c59e82dffa4676194c1d0cfc31" name="a7a3055c59e82dffa4676194c1d0cfc31"></a>
+std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetMathLoggerDriver</b> () const</td></tr>
+<tr class="separator:a7a3055c59e82dffa4676194c1d0cfc31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98df225c9a71801afa4ba75506aa4309" id="r_a98df225c9a71801afa4ba75506aa4309"><td class="memItemLeft" align="right" valign="top"><a id="a98df225c9a71801afa4ba75506aa4309" name="a98df225c9a71801afa4ba75506aa4309"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenCsvFile</b> ()</td></tr>
+<tr class="separator:a98df225c9a71801afa4ba75506aa4309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc9676f81eb53272f4f9dfb7e11bf1d0" id="r_abc9676f81eb53272f4f9dfb7e11bf1d0"><td class="memItemLeft" align="right" valign="top"><a id="abc9676f81eb53272f4f9dfb7e11bf1d0" name="abc9676f81eb53272f4f9dfb7e11bf1d0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CloseCsvFile</b> ()</td></tr>
+<tr class="separator:abc9676f81eb53272f4f9dfb7e11bf1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e5d726bf00ddc97fec173b9f19c76e0" id="r_a5e5d726bf00ddc97fec173b9f19c76e0"><td class="memItemLeft" align="right" valign="top"><a id="a5e5d726bf00ddc97fec173b9f19c76e0" name="a5e5d726bf00ddc97fec173b9f19c76e0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveCurrentBendersData</b> (const std::filesystem::path &amp;last_iteration_file, bool trace)</td></tr>
+<tr class="separator:a5e5d726bf00ddc97fec173b9f19c76e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b8bb428bfa090ca0fefe5a4b69482ec" id="r_a6b8bb428bfa090ca0fefe5a4b69482ec"><td class="memItemLeft" align="right" valign="top"><a id="a6b8bb428bfa090ca0fefe5a4b69482ec" name="a6b8bb428bfa090ca0fefe5a4b69482ec"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>EndWritingInOutputFile</b> (double benders_time, bool do_outer_loop)</td></tr>
+<tr class="separator:a6b8bb428bfa090ca0fefe5a4b69482ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22413c23f2dbec64f212db00ba140636" id="r_a22413c23f2dbec64f212db00ba140636"><td class="memItemLeft" align="right" valign="top"><a id="a22413c23f2dbec64f212db00ba140636" name="a22413c23f2dbec64f212db00ba140636"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PostRunActions</b> (StoppingCriterion stopping_criterion)</td></tr>
+<tr class="separator:a22413c23f2dbec64f212db00ba140636"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6852e6c7aa1d81162e15a88e09b58c1f" id="r_a6852e6c7aa1d81162e15a88e09b58c1f"><td class="memItemLeft" align="right" valign="top"><a id="a6852e6c7aa1d81162e15a88e09b58c1f" name="a6852e6c7aa1d81162e15a88e09b58c1f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MathLoggerPrint</b> ()</td></tr>
+<tr class="separator:a6852e6c7aa1d81162e15a88e09b58c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee296c244e957e4e12ff11ab59d915dd" id="r_aee296c244e957e4e12ff11ab59d915dd"><td class="memItemLeft" align="right" valign="top"><a id="aee296c244e957e4e12ff11ab59d915dd" name="aee296c244e957e4e12ff11ab59d915dd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MathLoggerWriteHeader</b> ()</td></tr>
+<tr class="separator:aee296c244e957e4e12ff11ab59d915dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a9958efc952cff5aff41ed5e6fffdd7" id="r_a1a9958efc952cff5aff41ed5e6fffdd7"><td class="memItemLeft" align="right" valign="top"><a id="a1a9958efc952cff5aff41ed5e6fffdd7" name="a1a9958efc952cff5aff41ed5e6fffdd7"></a>
+<a class="el" href="structLogData.html">LogData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bendersDataToLogData</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) const</td></tr>
+<tr class="separator:a1a9958efc952cff5aff41ed5e6fffdd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a713febe9e7440c7eb1b98ee625d3b24e" id="r_a713febe9e7440c7eb1b98ee625d3b24e"><td class="memItemLeft" align="right" valign="top"><a id="a713febe9e7440c7eb1b98ee625d3b24e" name="a713febe9e7440c7eb1b98ee625d3b24e"></a>
+<a class="el" href="structOutput_1_1Iteration.html">Output::Iteration</a>&#160;</td><td class="memItemRight" valign="bottom"><b>iteration</b> (const <a class="el" href="classWorkerMasterData.html">WorkerMasterData</a> &amp;masterDataPtr_l) const</td></tr>
+<tr class="separator:a713febe9e7440c7eb1b98ee625d3b24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac16d0d8dc976a0855359b4dd692598de" id="r_ac16d0d8dc976a0855359b4dd692598de"><td class="memItemLeft" align="right" valign="top"><a id="ac16d0d8dc976a0855359b4dd692598de" name="ac16d0d8dc976a0855359b4dd692598de"></a>
+<a class="el" href="structOutput_1_1SolutionData.html">Output::SolutionData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BuildSolution</b> (int totalNbProblems) const</td></tr>
+<tr class="separator:ac16d0d8dc976a0855359b4dd692598de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af330d50c81d376695384cd33840a86ee" id="r_af330d50c81d376695384cd33840a86ee"><td class="memItemLeft" align="right" valign="top"><a id="af330d50c81d376695384cd33840a86ee" name="af330d50c81d376695384cd33840a86ee"></a>
+<a class="el" href="structLogData.html">LogData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BuildFinalLogData</b> () const</td></tr>
+<tr class="separator:af330d50c81d376695384cd33840a86ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea46a9126f499b8ccc418d87b258e098" id="r_aea46a9126f499b8ccc418d87b258e098"><td class="memItemLeft" align="right" valign="top"><a id="aea46a9126f499b8ccc418d87b258e098" name="aea46a9126f499b8ccc418d87b258e098"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadResumeData</b> (const std::filesystem::path &amp;last_iteration_file)</td></tr>
+<tr class="separator:aea46a9126f499b8ccc418d87b258e098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4dd12908baef5080e5f7088e5a4a14e" id="r_af4dd12908baef5080e5f7088e5a4a14e"><td class="memItemLeft" align="right" valign="top"><a id="af4dd12908baef5080e5f7088e5a4a14e" name="af4dd12908baef5080e5f7088e5a4a14e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumIterationsBeforeRestart</b> () const</td></tr>
+<tr class="separator:af4dd12908baef5080e5f7088e5a4a14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad87d9a971f54a8fbe437d0d1f9563b33" id="r_ad87d9a971f54a8fbe437d0d1f9563b33"><td class="memItemLeft" align="right" valign="top"><a id="ad87d9a971f54a8fbe437d0d1f9563b33" name="ad87d9a971f54a8fbe437d0d1f9563b33"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumOfSubProblemsSolvedBeforeResume</b> () const</td></tr>
+<tr class="separator:ad87d9a971f54a8fbe437d0d1f9563b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a63bb955b8f07c6aee4582f4028fad2" id="r_a6a63bb955b8f07c6aee4582f4028fad2"><td class="memItemLeft" align="right" valign="top"><a id="a6a63bb955b8f07c6aee4582f4028fad2" name="a6a63bb955b8f07c6aee4582f4028fad2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateBestIterationData</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data)</td></tr>
+<tr class="separator:a6a63bb955b8f07c6aee4582f4028fad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b6909c2da375f4cacb5aca82a14f814" id="r_a9b6909c2da375f4cacb5aca82a14f814"><td class="memItemLeft" align="right" valign="top"><a id="a9b6909c2da375f4cacb5aca82a14f814" name="a9b6909c2da375f4cacb5aca82a14f814"></a>
+const <a class="el" href="structLogData.html">LogData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetBestIterationData</b> () const</td></tr>
+<tr class="separator:a9b6909c2da375f4cacb5aca82a14f814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab557af6f4e84459235c0c4a5f73dfb64" id="r_ab557af6f4e84459235c0c4a5f73dfb64"><td class="memItemLeft" align="right" valign="top"><a id="ab557af6f4e84459235c0c4a5f73dfb64" name="ab557af6f4e84459235c0c4a5f73dfb64"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetIterationsBeforeResume</b> (int value)</td></tr>
+<tr class="separator:ab557af6f4e84459235c0c4a5f73dfb64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac07de3b0596d8037ce250a670904bcf9" id="r_ac07de3b0596d8037ce250a670904bcf9"><td class="memItemLeft" align="right" valign="top"><a id="ac07de3b0596d8037ce250a670904bcf9" name="ac07de3b0596d8037ce250a670904bcf9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCumulativeSubproblemsSolvedBeforeResume</b> (int value)</td></tr>
+<tr class="separator:ac07de3b0596d8037ce250a670904bcf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f68e9400ceb7f8c8cd44cdf902eecf4" id="r_a8f68e9400ceb7f8c8cd44cdf902eecf4"><td class="memItemLeft" align="right" valign="top"><a id="a8f68e9400ceb7f8c8cd44cdf902eecf4" name="a8f68e9400ceb7f8c8cd44cdf902eecf4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteNbWeeks</b> (int total_nb_problems)</td></tr>
+<tr class="separator:a8f68e9400ceb7f8c8cd44cdf902eecf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/cpp/benders/benders_core/include/antares-xpansion/benders/benders_core/<a class="el" href="BendersOutputManager_8h_source.html">BendersOutputManager.h</a></li>
+<li>src/cpp/benders/benders_core/<b>BendersOutputManager.cpp</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classBendersOutputManager.html">BendersOutputManager</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

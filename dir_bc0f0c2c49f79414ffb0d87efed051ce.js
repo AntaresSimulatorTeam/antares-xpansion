@@ -1,10 +1,15 @@
 var dir_bc0f0c2c49f79414ffb0d87efed051ce =
 [
     [ "BendersBase.h", "BendersBase_8h_source.html", null ],
+    [ "BendersCutsManager.hxx", "BendersCutsManager_8hxx_source.html", null ],
+    [ "BendersMasterManager.h", "BendersMasterManager_8h_source.html", null ],
     [ "BendersMathLogger.h", "BendersMathLogger_8h_source.html", null ],
     [ "BendersMethod.h", "BendersMethod_8h_source.html", null ],
+    [ "BendersOuterLoopManager.h", "BendersOuterLoopManager_8h_source.html", null ],
+    [ "BendersOutputManager.h", "BendersOutputManager_8h_source.html", null ],
     [ "BendersProblemFromFile.h", "BendersProblemFromFile_8h_source.html", null ],
     [ "BendersStructsDatas.h", "BendersStructsDatas_8h_source.html", null ],
+    [ "BendersSubProblemsManager.hxx", "BendersSubProblemsManager_8hxx_source.html", null ],
     [ "common.h", "common_8h_source.html", null ],
     [ "CouplingMapGenerator.h", "CouplingMapGenerator_8h_source.html", null ],
     [ "CriterionComputation.h", "CriterionComputation_8h_source.html", null ],

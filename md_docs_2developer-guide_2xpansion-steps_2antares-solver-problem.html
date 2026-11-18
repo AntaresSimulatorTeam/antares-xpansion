@@ -141,7 +141,7 @@ $(function(){initNavTree('md_docs_2developer-guide_2xpansion-steps_2antares-solv
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md91"></a></p>
-<p>In this step, <code>antares-solver</code> runs the Antares study with a specific configuration set by Antares Xpansion and writes the weekly optimization problems as <code>.mps</code> files. More precisely, <code>antares-solver</code> performs two successive optimizations, see <a href="https://antares-simulator.readthedocs.io/en/latest/reference/solver/appendix/#details-on-the-unit-commitment-mode-parameter">Antares-Simulator solver appendix</a>:</p>
+<p>In this step, <code>antares-solver</code> runs the Antares study with a specific configuration set by Antares Xpansion and writes the weekly optimization problems as <code>.mps</code> files. More precisely, <code>antares-solver</code> performs two successive optimizations, see <a href="https://antares-simulator.readthedocs.io/en/latest/reference/solver/appendix/">Antares-Simulator user guide</a>:</p>
 <ol type="1">
 <li>A linear relaxation of the Antares MILP problem is solved where the on/off variables of thermal clusters are continuous.</li>
 <li>A heuristic search for integer values of these variables, satisfying the dynamic constraint of the system with the smallest possible cost is then carried out. Finally, a second linear optimization with the integer variables set to the previously found values is performed.</li>

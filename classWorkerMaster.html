@@ -177,18 +177,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>get_col_index</b> (std
 int&#160;</td><td class="memItemRight" valign="bottom"><b>get_number_constraint</b> () const</td></tr>
 <tr class="memdesc:aba45491d5e583afcf336e9516d373827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return number of constraint in a problem. <br /></td></tr>
 <tr class="separator:aba45491d5e583afcf336e9516d373827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c531a222024ba4631e4e0c5f5e24dcb" id="r_a4c531a222024ba4631e4e0c5f5e24dcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c531a222024ba4631e4e0c5f5e24dcb">add_cut</a> (const Point &amp;s, const Point &amp;x0, const double &amp;rhs) const</td></tr>
-<tr class="memdesc:a4c531a222024ba4631e4e0c5f5e24dcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
-<tr class="separator:a4c531a222024ba4631e4e0c5f5e24dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a285f6b1d30ae96ee72eb52e1cb7b5910" id="r_a285f6b1d30ae96ee72eb52e1cb7b5910"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a285f6b1d30ae96ee72eb52e1cb7b5910">add_cut_by_iter</a> (int i, const Point &amp;s, const double &amp;sx0, const double &amp;rhs) const</td></tr>
-<tr class="memdesc:a285f6b1d30ae96ee72eb52e1cb7b5910"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
-<tr class="separator:a285f6b1d30ae96ee72eb52e1cb7b5910"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e0985f5db67b527c238d9c78456347c" id="r_a4e0985f5db67b527c238d9c78456347c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e0985f5db67b527c238d9c78456347c">add_dynamic_cut</a> (const Point &amp;s, const double &amp;sx0, const double &amp;rhs) const</td></tr>
-<tr class="memdesc:a4e0985f5db67b527c238d9c78456347c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
-<tr class="separator:a4e0985f5db67b527c238d9c78456347c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7c04951f75b564dbf6a92a98a23a919" id="r_ad7c04951f75b564dbf6a92a98a23a919"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7c04951f75b564dbf6a92a98a23a919">addSubproblemCut</a> (int i, const Point &amp;subgradient, const Point &amp;x_cut, const double &amp;rhs) const</td></tr>
-<tr class="memdesc:ad7c04951f75b564dbf6a92a98a23a919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one benders cut to a problem.  <br /></td></tr>
-<tr class="separator:ad7c04951f75b564dbf6a92a98a23a919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8ba73f3af1fdcd14a61d66beca727a2" id="r_aa8ba73f3af1fdcd14a61d66beca727a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8ba73f3af1fdcd14a61d66beca727a2">addGroupSubproblemCut</a> (std::vector&lt; int &gt; subproblem_ids, const Point &amp;subgradient, const Point &amp;x_cut, const double &amp;rhs) const</td></tr>
 <tr class="memdesc:aa8ba73f3af1fdcd14a61d66beca727a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
 <tr class="separator:aa8ba73f3af1fdcd14a61d66beca727a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,6 +192,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ActivateInteg
 <tr class="memitem:a5d55a1c50781ccdf617370d774622fb9" id="r_a5d55a1c50781ccdf617370d774622fb9"><td class="memItemLeft" align="right" valign="top"><a id="a5d55a1c50781ccdf617370d774622fb9" name="a5d55a1c50781ccdf617370d774622fb9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addAlphasFixingConstraints</b> (std::vector&lt; SubProblemNamesInCut &gt; &amp;names_in_cut, std::map&lt; std::string, int &gt; &amp;problem_to_id)</td></tr>
 <tr class="separator:a5d55a1c50781ccdf617370d774622fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ad75cebd0048060b6e6bdfd0dc0c65f" id="r_a6ad75cebd0048060b6e6bdfd0dc0c65f"><td class="memItemLeft" align="right" valign="top"><a id="a6ad75cebd0048060b6e6bdfd0dc0c65f" name="a6ad75cebd0048060b6e6bdfd0dc0c65f"></a>
+const std::vector&lt; int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetMasterOnlyVarsIds</b> () const</td></tr>
+<tr class="separator:a6ad75cebd0048060b6e6bdfd0dc0c65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a8ab429a91b073ccd261fd4ce0448ab" id="r_a5a8ab429a91b073ccd261fd4ce0448ab"><td class="memItemLeft" align="right" valign="top"><a id="a5a8ab429a91b073ccd261fd4ce0448ab" name="a5a8ab429a91b073ccd261fd4ce0448ab"></a>
+const VariableMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetNameToId</b> () const</td></tr>
+<tr class="separator:a5a8ab429a91b073ccd261fd4ce0448ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e9b558c6f6ab54d1fd33f765a7581b0" id="r_a6e9b558c6f6ab54d1fd33f765a7581b0"><td class="memItemLeft" align="right" valign="top"><a id="a6e9b558c6f6ab54d1fd33f765a7581b0" name="a6e9b558c6f6ab54d1fd33f765a7581b0"></a>
+const Int2Str &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetIdToName</b> () const</td></tr>
+<tr class="separator:a6e9b558c6f6ab54d1fd33f765a7581b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69de3544fec7ff32d6366656d00dd565" id="r_a69de3544fec7ff32d6366656d00dd565"><td class="memItemLeft" align="right" valign="top"><a id="a69de3544fec7ff32d6366656d00dd565" name="a69de3544fec7ff32d6366656d00dd565"></a>
 virtual std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_id_int_vars</b> () const</td></tr>
 <tr class="separator:a69de3544fec7ff32d6366656d00dd565"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -379,120 +376,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setToZeroIfWithinTole
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4c531a222024ba4631e4e0c5f5e24dcb" name="a4c531a222024ba4631e4e0c5f5e24dcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c531a222024ba4631e4e0c5f5e24dcb">&#9670;&#160;</a></span>add_cut()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WorkerMaster::add_cut </td>
-          <td>(</td>
-          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>x_cut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Add benders cut to a problem. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">s</td><td>: subgradient of optimal slave variables </td></tr>
-    <tr><td class="paramname">x_cut</td><td>: master separation point </td></tr>
-    <tr><td class="paramname">rhs</td><td>: optimal slave value </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a285f6b1d30ae96ee72eb52e1cb7b5910" name="a285f6b1d30ae96ee72eb52e1cb7b5910"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a285f6b1d30ae96ee72eb52e1cb7b5910">&#9670;&#160;</a></span>add_cut_by_iter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WorkerMaster::add_cut_by_iter </td>
-          <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>sx0</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Add benders cut to a problem. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td>: identifier of a subproblem </td></tr>
-    <tr><td class="paramname">s</td><td>: optimal slave variables </td></tr>
-    <tr><td class="paramname">sx0</td><td>: subgradient times x0 </td></tr>
-    <tr><td class="paramname">rhs</td><td>: optimal slave value </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a4e0985f5db67b527c238d9c78456347c" name="a4e0985f5db67b527c238d9c78456347c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e0985f5db67b527c238d9c78456347c">&#9670;&#160;</a></span>add_dynamic_cut()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WorkerMaster::add_dynamic_cut </td>
-          <td>(</td>
-          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>sx0</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Add benders cut to a problem. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">s</td><td>: optimal slave variables </td></tr>
-    <tr><td class="paramname">sx0</td><td>: subgradient times x0 </td></tr>
-    <tr><td class="paramname">rhs</td><td>: optimal slave value </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="aa8ba73f3af1fdcd14a61d66beca727a2" name="aa8ba73f3af1fdcd14a61d66beca727a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa8ba73f3af1fdcd14a61d66beca727a2">&#9670;&#160;</a></span>addGroupSubproblemCut()</h2>
 
@@ -528,48 +411,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setToZeroIfWithinTole
     <tr><td class="paramname">group_alpha_i</td><td>: list of identifier of alphas </td></tr>
     <tr><td class="paramname">s</td><td>: optimal slave variables </td></tr>
     <tr><td class="paramname">x_cut</td><td>: subgradient </td></tr>
-    <tr><td class="paramname">rhs</td><td>: optimal slave value </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad7c04951f75b564dbf6a92a98a23a919" name="ad7c04951f75b564dbf6a92a98a23a919"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7c04951f75b564dbf6a92a98a23a919">&#9670;&#160;</a></span>addSubproblemCut()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WorkerMaster::addSubproblemCut </td>
-          <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>subgradient</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>x_cut</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Add one benders cut to a problem. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td>: identifier of a subproblem </td></tr>
-    <tr><td class="paramname">s</td><td>: optimal slave variables </td></tr>
-    <tr><td class="paramname">x_cut</td><td>: optimal Master variables </td></tr>
     <tr><td class="paramname">rhs</td><td>: optimal slave value </td></tr>
   </table>
   </dd>

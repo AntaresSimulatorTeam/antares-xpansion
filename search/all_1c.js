@@ -34,10 +34,8 @@ var searchData=
   ['resumestudydata_31',['ResumeStudyData',['../classantares__xpansion_1_1resume__study_1_1ResumeStudyData.html',1,'antares_xpansion::resume_study']]],
   ['retrieval_32',['Antares optimization problem retrieval',['../md_docs_2developer-guide_2xpansion-steps_2antares-solver-problem.html',1,'']]],
   ['retrieval_3a_20tt_20antares_20tt_33',['1. Antares-Simulator optimization problems retrieval: &lt;tt&gt;antares&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion-steps_2index.html#autotoc_md99',1,'']]],
-  ['roundxcut_34',['roundXCut',['../classBendersBase.html#afa9edac4513a89c829bdd69271bf3b50',1,'BendersBase']]],
-  ['rules_35',['Style Rules',['../md_docs_2agents_2cpp-conventions.html#autotoc_md14',1,'']]],
-  ['run_36',['Run',['../classBendersMpi.html#a497d3f6ee2594fe0e5563635aacf45de',1,'BendersMpi::Run()'],['../classBendersSequential.html#a40aa11a91d67d2fb70a47350fa3230dc',1,'BendersSequential::Run()']]],
-  ['running_37',['Running',['../md_docs_2agents_2testing.html#autotoc_md45',1,'']]],
-  ['running_20tests_38',['Running Tests',['../md_docs_2agents_2testing.html#autotoc_md38',1,'Running Tests'],['../md_docs_2developer-guide_2install-from-source_2tests.html#autotoc_md75',1,'Running Tests']]],
-  ['runtime_20dependency_39',['Runtime dependency',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md64',1,'']]]
+  ['rules_34',['Style Rules',['../md_docs_2agents_2cpp-conventions.html#autotoc_md14',1,'']]],
+  ['running_35',['Running',['../md_docs_2agents_2testing.html#autotoc_md45',1,'']]],
+  ['running_20tests_36',['Running Tests',['../md_docs_2agents_2testing.html#autotoc_md38',1,'Running Tests'],['../md_docs_2developer-guide_2install-from-source_2tests.html#autotoc_md75',1,'Running Tests']]],
+  ['runtime_20dependency_37',['Runtime dependency',['../md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md64',1,'']]]
 ];

@@ -1,6 +1,11 @@
 var NAVTREEINDEX6 =
 {
-"common__mpi_8h_source.html":[46,0,0,0,0,2,0,0,0,0,1],
+"classxpansion_1_1logger_1_1User.html":[45,0,23,0,3],
+"classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a":[45,0,23,0,3,0],
+"classxpansion_1_1logger_1_1UserFile.html":[45,0,23,0,4],
+"classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486":[45,0,23,0,4,0],
+"common_8h_source.html":[46,0,0,0,0,1,0,0,0,0,10],
+"common__mpi_8h_source.html":[46,0,0,0,0,2,0,0,0,0,3],
 "conceptOStreamable.html":[44,0],
 "conceptOStreamableIntegral.html":[44,1],
 "concepts.html":[44],
@@ -244,10 +249,5 @@ var NAVTREEINDEX6 =
 "md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md54":[6,0],
 "md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md55":[6,1],
 "md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md56":[6,2],
-"md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md57":[6,3],
-"md_docs_2developer-guide_2install-from-source_2index.html":[7],
-"md_docs_2developer-guide_2install-from-source_2index.html#autotoc_md59":[7,0],
-"md_docs_2developer-guide_2install-from-source_2install-dependencies.html":[8],
-"md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md61":[8,0],
-"md_docs_2developer-guide_2install-from-source_2install-dependencies.html#autotoc_md62":[8,0,0]
+"md_docs_2developer-guide_2install-from-source_2development-requirements.html#autotoc_md57":[6,3]
 };

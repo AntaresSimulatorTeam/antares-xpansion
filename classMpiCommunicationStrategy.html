@@ -172,10 +172,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aef2bc9a02ac440e7187b33f788de6741" id="r_aef2bc9a02ac440e7187b33f788de6741"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef2bc9a02ac440e7187b33f788de6741">Barrier</a> () const override</td></tr>
 <tr class="memdesc:aef2bc9a02ac440e7187b33f788de6741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronization barrier across all processes (no-op for sequential)  <br /></td></tr>
 <tr class="separator:aef2bc9a02ac440e7187b33f788de6741"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a239e4dc833e1437d71e7c3bd95c989ff" id="r_a239e4dc833e1437d71e7c3bd95c989ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a239e4dc833e1437d71e7c3bd95c989ff">ShouldParallelize</a> () const override</td></tr>
-<tr class="separator:a239e4dc833e1437d71e7c3bd95c989ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35789d3e5a05343c4a2603dfb49b9e5a" id="r_a35789d3e5a05343c4a2603dfb49b9e5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35789d3e5a05343c4a2603dfb49b9e5a">BroadcastBool</a> (bool &amp;value) const override</td></tr>
 <tr class="separator:a35789d3e5a05343c4a2603dfb49b9e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52302ac1a60f3fa5a2c1bb1e5fd67fbe" id="r_a52302ac1a60f3fa5a2c1bb1e5fd67fbe"><td class="memTemplParams" colspan="2"><a id="a52302ac1a60f3fa5a2c1bb1e5fd67fbe" name="a52302ac1a60f3fa5a2c1bb1e5fd67fbe"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a52302ac1a60f3fa5a2c1bb1e5fd67fbe"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>BroadCast</b> (T &amp;value, int root) const</td></tr>
+<tr class="separator:a52302ac1a60f3fa5a2c1bb1e5fd67fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b679c2c57190cb49f9664f081f739b3" id="r_a4b679c2c57190cb49f9664f081f739b3"><td class="memTemplParams" colspan="2"><a id="a4b679c2c57190cb49f9664f081f739b3" name="a4b679c2c57190cb49f9664f081f739b3"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a4b679c2c57190cb49f9664f081f739b3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>BroadCast</b> (T *values, int n, int root) const</td></tr>
+<tr class="separator:a4b679c2c57190cb49f9664f081f739b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad4301edf2a7a61a1f20dd09c2960cbc" id="r_aad4301edf2a7a61a1f20dd09c2960cbc"><td class="memTemplParams" colspan="2"><a id="aad4301edf2a7a61a1f20dd09c2960cbc" name="aad4301edf2a7a61a1f20dd09c2960cbc"></a>
+template&lt;typename T , typename Op &gt; </td></tr>
+<tr class="memitem:aad4301edf2a7a61a1f20dd09c2960cbc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Reduce</b> (const T &amp;in_value, T &amp;out_value, Op op, int root) const</td></tr>
+<tr class="separator:aad4301edf2a7a61a1f20dd09c2960cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89fec0676f0179441bfc2930c1db1c2d" id="r_a89fec0676f0179441bfc2930c1db1c2d"><td class="memTemplParams" colspan="2"><a id="a89fec0676f0179441bfc2930c1db1c2d" name="a89fec0676f0179441bfc2930c1db1c2d"></a>
+template&lt;typename T , typename Op &gt; </td></tr>
+<tr class="memitem:a89fec0676f0179441bfc2930c1db1c2d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>AllReduce</b> (const T &amp;in_value, T &amp;out_value, Op op) const</td></tr>
+<tr class="separator:a89fec0676f0179441bfc2930c1db1c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6141f19a5dd0830a81b12d61b2b86f3a" id="r_a6141f19a5dd0830a81b12d61b2b86f3a"><td class="memItemLeft" align="right" valign="top">mpi::communicator &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6141f19a5dd0830a81b12d61b2b86f3a">World</a> ()</td></tr>
 <tr class="separator:a6141f19a5dd0830a81b12d61b2b86f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47de42611b56482056d66a87a53e7a13" id="r_a47de42611b56482056d66a87a53e7a13"><td class="memItemLeft" align="right" valign="top"><a id="a47de42611b56482056d66a87a53e7a13" name="a47de42611b56482056d66a87a53e7a13"></a>
@@ -277,34 +291,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMaster</b> () const
 
 </div>
 </div>
-<a id="a239e4dc833e1437d71e7c3bd95c989ff" name="a239e4dc833e1437d71e7c3bd95c989ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a239e4dc833e1437d71e7c3bd95c989ff">&#9670;&#160;</a></span>ShouldParallelize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool MpiCommunicationStrategy::ShouldParallelize </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Whether subproblems should be parallelized locally using TBB. Returns true for sequential (local parallelism), false for MPI (distribution handles parallelism across ranks). </p>
-
-<p>Implements <a class="el" href="classICommunicationStrategy.html#ae1cf17611312f4b910fcd26f914494d9">ICommunicationStrategy</a>.</p>
-
-</div>
-</div>
 <a id="a6141f19a5dd0830a81b12d61b2b86f3a" name="a6141f19a5dd0830a81b12d61b2b86f3a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6141f19a5dd0830a81b12d61b2b86f3a">&#9670;&#160;</a></span>World()</h2>
 
@@ -327,7 +313,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMaster</b> () const
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Access the underlying MPI communicator for operations not yet abstracted into the strategy interface (broadcast, gather, reduce). </p>
+<p>Access the underlying MPI communicator for operations not yet abstracted into the strategy interface. </p>
 
 </div>
 </div>
