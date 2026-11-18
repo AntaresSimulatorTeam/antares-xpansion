@@ -51,7 +51,7 @@ void BendersOutputManager::OpenCsvFile()
 {
     if (!csv_file_.is_open())
     {
-        const auto opening_mode = options_.RESUME ? std::ios::app : std::ios::trunc;
+        const auto opening_mode = IsResume(options_.RESTART_MODE) ? std::ios::app : std::ios::trunc;
         csv_file_.open(csv_file_path_, std::ios::out | opening_mode);
         if (!csv_file_)
         {
@@ -59,7 +59,7 @@ void BendersOutputManager::OpenCsvFile()
             logger_->display_message("Impossible to open the .csv file: "s
                                      + csv_file_path_.string());
         }
-        else if (!options_.RESUME)
+        else if (!IsResume(options_.RESTART_MODE))
         {
             csv_file_ << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                          "subpb_costs_under_approx;"
@@ -279,7 +279,7 @@ Output::SolutionData BendersOutputManager::BendersSolution(int totalNbProblems) 
     const auto optimal_gap(data_.control.best_ub - data_.master.lb);
     const auto relative_gap(optimal_gap / data_.control.best_ub);
 
-    const bool solution_only_in_resume_data = options_.RESUME;
+    const bool solution_only_in_resume_data = IsResume(options_.RESTART_MODE);
     if (solution_only_in_resume_data)
     {
         Output::CandidatesVec candidates_vec;

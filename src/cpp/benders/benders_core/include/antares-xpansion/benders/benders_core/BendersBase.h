@@ -163,15 +163,13 @@ protected:
                       double master_solution_tolerance,
                       const std::map<int, double>& subproblem_cut_coefficient_tolerance);
 
-    bool IsResumeMode() const;
-
     std::filesystem::path LastIterationFile() const
     {
         return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
     }
 
-    void UpdateMaxNumberIterationResumeMode(int nb_iteration_done);
-    void ChecksResumeMode();
+    void UpdateMaxNumberIterationRestartMode(int nb_iteration_done);
+    void ChecksRestartMode();
     void ClearCurrentIterationCutTrace();
 
     double GetBendersTime() const;

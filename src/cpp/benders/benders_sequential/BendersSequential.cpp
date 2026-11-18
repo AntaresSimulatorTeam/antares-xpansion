@@ -73,7 +73,7 @@ void BendersSequential::InitializeProblems()
                  _options.LOG_LEVEL,
                  _data.control.nsubproblem,
                  solver_log_manager_,
-                 IsResumeMode(),
+                 MasterHasAlphaVariables(_options.RESTART_MODE),
                  output_manager_.GetLogger(),
                  Options().PROBLEM_FORMAT,
                  benders_problem_provider.get(),
@@ -116,7 +116,7 @@ void BendersSequential::Run()
     auto logger = output_manager_.GetLogger();
 
     init_data();
-    ChecksResumeMode();
+    ChecksRestartMode();
     if (_options.TRACE)
     {
         output_manager_.OpenCsvFile();

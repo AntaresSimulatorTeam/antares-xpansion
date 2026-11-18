@@ -92,8 +92,8 @@ class OptimisationKeys:
         return "LOG_LEVEL"
 
     @staticmethod
-    def resume_key():
-        return "RESUME"
+    def restart_mode_key():
+        return "RESTART_MODE"
 
     @staticmethod
     def separation_key():

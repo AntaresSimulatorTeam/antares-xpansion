@@ -295,7 +295,7 @@ TEST_F(BendersOutputManagerTest, Iteration_IncludesResumeOffset)
 
 TEST_F(BendersOutputManagerTest, BuildSolution_NonResume_UsesBestWorkerMasterData)
 {
-    options_.RESUME = false;
+    options_.RESTART_MODE = RestartMode::COLD_START;
     auto mgr = MakeManager();
 
     SetupValidWorkerMasterData(relevant_data_.best);
@@ -314,7 +314,7 @@ TEST_F(BendersOutputManagerTest, BuildSolution_NonResume_UsesBestWorkerMasterDat
 
 TEST_F(BendersOutputManagerTest, BuildSolution_ResumeMode_UsesBestIterationData)
 {
-    options_.RESUME = true;
+    options_.RESTART_MODE = RestartMode::RESUME;
     auto mgr = MakeManager();
     mgr->SetIterationsBeforeResume(10);
 
@@ -567,7 +567,7 @@ TEST_F(BendersOutputManagerTest, BestIterationData_OverwritesPrevious)
 
 TEST_F(BendersOutputManagerTest, OpenAndCloseCsvFile_NoResume_WritesHeader)
 {
-    options_.RESUME = false;
+    options_.RESTART_MODE = RestartMode::COLD_START;
     auto mgr = MakeManager();
 
     mgr->OpenCsvFile();
@@ -587,7 +587,7 @@ TEST_F(BendersOutputManagerTest, OpenAndCloseCsvFile_NoResume_WritesHeader)
 
 TEST_F(BendersOutputManagerTest, OpenCsvFile_CalledTwice_DoesNotReopen)
 {
-    options_.RESUME = false;
+    options_.RESTART_MODE = RestartMode::COLD_START;
     auto mgr = MakeManager();
 
     mgr->OpenCsvFile();

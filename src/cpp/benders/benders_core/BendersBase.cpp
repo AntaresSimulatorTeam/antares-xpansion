@@ -44,7 +44,7 @@ void BendersBase::InitializeMasterProblem()
                  _options.LOG_LEVEL,
                  _data.control.nsubproblem,
                  solver_log_manager_,
-                 IsResumeMode(),
+                 MasterHasAlphaVariables(_options.RESTART_MODE),
                  output_manager_.GetLogger(),
                  Options().PROBLEM_FORMAT,
                  benders_problem_provider.get(),
@@ -65,7 +65,7 @@ void BendersBase::PreRunInitialization()
 
     if (communication_strategy_->IsMaster())
     {
-        ChecksResumeMode();
+        ChecksRestartMode();
         if (_options.TRACE)
         {
             output_manager_.OpenCsvFile();
@@ -395,12 +395,7 @@ void BendersBase::ResetSimplexIterationsBounds()
     _data.cuts.min_simplexiter = (std::numeric_limits<int>::max)();
 }
 
-bool BendersBase::IsResumeMode() const
-{
-    return _options.RESUME;
-}
-
-void BendersBase::UpdateMaxNumberIterationResumeMode(int nb_iteration_done)
+void BendersBase::UpdateMaxNumberIterationRestartMode(int nb_iteration_done)
 {
     if (_options.MAX_ITERATIONS == -1)
     {
@@ -421,13 +416,13 @@ double BendersBase::execution_time() const
     return _data.control.benders_time;
 }
 
-void BendersBase::ChecksResumeMode()
+void BendersBase::ChecksRestartMode()
 {
     benders_timer = Timer();
-    if (IsResumeMode())
+    if (IsResume(_options.RESTART_MODE))
     {
         output_manager_.LoadResumeData(LastIterationFile());
-        UpdateMaxNumberIterationResumeMode(output_manager_.GetNumIterationsBeforeRestart());
+        UpdateMaxNumberIterationRestartMode(output_manager_.GetNumIterationsBeforeRestart());
         benders_timer = Timer(output_manager_.GetBestIterationData().benders_elapsed_time);
         _data.control.stop = ShouldBendersStop();
     }
