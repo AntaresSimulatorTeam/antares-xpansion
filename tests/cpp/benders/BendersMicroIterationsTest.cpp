@@ -103,8 +103,9 @@ public:
     void Run() override
     {
         // OnBendersStart
+        SubproblemsMapPtr empty_subproblem_map;
+        benders_plugin_->OnBendersStart(empty_subproblem_map, _options, solver_log_manager_, nullptr);
 
-        benders_plugin_->OnBendersStart(subproblem_map, _options, solver_log_manager_, nullptr);
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();
@@ -149,19 +150,7 @@ public:
         BendersBase::init_data();
     }
 
-    void UpdateTrace() override
-    {
-    }
-
-    void post_run_actions() const override
-    {
-    }
-
-    void EndWritingInOutputFile() const override
-    {
-    }
-
-    void SaveCurrentBendersData() override
+    void post_run_actions() override
     {
     }
 

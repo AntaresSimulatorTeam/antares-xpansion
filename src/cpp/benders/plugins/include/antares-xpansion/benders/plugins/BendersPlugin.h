@@ -9,6 +9,13 @@
 
 /*
   This interface will be implemented each time we need to add call backs.
+
+  Thread-safety: the sub-resolution and micro-iteration hooks (OnBendersSubResolutionStart/End,
+  OnBendersMicroIterationStart/End) may be called concurrently from several threads for
+  different subproblems, because subproblems can be solved with a parallel execution policy.
+  An implementation must either be thread-safe in those hooks, or be used with
+  BendersBaseOptions::MICRO_ITERATIONS set, in which case subproblems are solved sequentially.
+  All other hooks are called from a single thread.
 */
 class BendersPlugin
 {
