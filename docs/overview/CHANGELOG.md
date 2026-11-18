@@ -25,6 +25,7 @@ v1.10.0 (11/2026)
 
 * Replace `int CACHE_PROBLEMS` with `CacheProblems` enum class (#1286)
 * Remove unused `launch_trajectory.py` and `problems_format` leftovers
+* Only use the MPI C++ compiler wrapper when `MPI_CXX_COMPILER` is defined
 
 ### Documentation
 
@@ -32,6 +33,7 @@ v1.10.0 (11/2026)
 * Memory optimization and micro-iterations topics (#1264)
 * Clarify trajectory investment documentation (#1280)
 * Update testing guide for agents (#1276)
+* Update command-line reference (`--cache_problems`, `--memory`, `--trajectory`, `--revision`, MPI options) and candidates documentation (empty and default profiles)
 
 ### CI
 
