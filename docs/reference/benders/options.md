@@ -47,11 +47,11 @@ The following attributes are defined in the `options.json` file:
 |OUTPUTROOT | `.` |  Path to the folder where output files should be printed  | `boolean` |
 |OUTER_LOOP_OPTION_FILE | `adequacy_criterion.yml` |  Outer Loop Options file  |`string`|
 |AREA_FILE | `area.txt` |  Area file used to get areas on which external criteria (LOLD, UnsuppliedEnergy) are computed |`string` |
-|CACHE_PROBLEMS | `0` |  Subproblem caching mode: `0` = all problems loaded in memory (classic mode), `1` = subproblems stored in disk cache rather than loaded in memory (reduces RAM usage at the expense of a slight CPU time performance reduction), `2` = disk-optimized mode using a shared skeleton problem with per-subproblem CSV data  | `0`, `1` or `2` |
-|PROBLEMS_FORMAT | `MPS_FILE` |  Format of the problems |`MPS_FILE` or `OPTIMIZED` |
+|CACHE_PROBLEMS | `NO_CACHE` |  Subproblem caching mode: `NO_CACHE` = all problems loaded in memory (classic mode), `PER_SUB` = subproblems stored in disk cache rather than loaded in memory (reduces RAM usage at the expense of a slight CPU time performance reduction), `COMPACT` = disk-optimized mode using a shared skeleton problem with per-subproblem CSV data  | `NO_CACHE`, `PER_SUB` or `COMPACT` |
+|PROBLEM_FORMAT | `MPS_FILE` |  Format of the problems |`MPS_FILE` or `OPTIMIZED` |
 |MASTER_SOLUTION_TOLERANCE | `1e-4` |  Tolerance for rounding the solution variables of the master problem (to avoid subproblems infeasibilities) | `double` > 0|
 |CUT_COEFFICIENT_TOLERANCE | `5e-3` |  Cofficient under which cuts coefficients and right-hand sides are considered to be zero | `double` > 0|
 |KEEP_FULL | `false` |  Flag to store full problems after presolve | `boolean`|
 |FULL_DIR | `full` |  Full problems directory name|`string` |
-|RESUME | `false` |  Resume last Benders | `boolean`|
+|RESTART_MODE | `cold_start` |  Restart mode for Benders: `cold_start` starts a fresh run, `resume` continues from the last iteration, `hot_start` restarts with warm-start data. `resume` and `hot_start` require `master.mps` to come from a previous run (it must contain the `alpha` / `alpha_i` columns, e.g. a copy of `master_last_iteration.mps`), otherwise Benders fails with an explicit error | `cold_start`, `resume` or `hot_start`. The legacy `RESUME` key is deprecated but still accepted, as are legacy booleans (`true` = `resume`, `false` = `cold_start`)|
 |MICRO_ITERATIONS | `false` |  Whether to enable the micro-iterations mode, which applies constraint generation at the subproblem level to reduce problem size and speed up resolution | `boolean`|

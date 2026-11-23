@@ -22,7 +22,9 @@
 #include <tuple>
 #include <vector>
 
+#include "antares-xpansion/core/CacheProblems.h"
 #include "antares-xpansion/core/ProblemFormat.h"
+#include "antares-xpansion/core/RestartMode.h"
 
 enum class MasterFormulation
 {
@@ -165,7 +167,7 @@ struct BaseOptions
     std::string MASTER_NAME;
     std::string SOLVER_NAME;
 
-    ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
+    ProblemFormat PROBLEM_FORMAT = ProblemFormat::MPS_FILE;
 };
 
 struct PresolveOptions: public BaseOptions
@@ -220,12 +222,12 @@ struct BendersBaseOptions: public SolverBaseOptions
     double MASTER_SOLUTION_TOLERANCE = 1e-4;
     double CUT_COEFFICIENT_TOLERANCE = 5e-3;
 
-    bool RESUME = false;
+    RestartMode RESTART_MODE = RestartMode::COLD_START;
     bool MICRO_ITERATIONS = false;
     int NB_CUTS_PER_ITER = 0;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
-    int CACHE_PROBLEMS = 0;
+    CacheProblems CACHE_PROBLEMS = CacheProblems::NO_CACHE;
 
     MasterFormulation MASTER_FORMULATION;
 

@@ -46,7 +46,7 @@ void Worker::get_value(double& lb) const
 void Worker::init(const std::string& solver_name,
                   int log_level,
                   const SolverLogManager& solver_log_manager,
-                  ProblemsFormat format,
+                  ProblemFormat format,
                   IBendersProblemProvider* benders_problem_provider)
 {
     solver_io_.configure(solver_name, format);

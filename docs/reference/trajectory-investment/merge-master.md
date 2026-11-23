@@ -30,7 +30,7 @@ be :
     "INPUTROOT": "<path/to/input/root>",
     "JSON_FILE": "<path/to/json/ouput/file>",
     "SOLVER_NAME": "XPRESS",
-    "PROBLEMS_FORMAT": "MPS",
+    "PROBLEM_FORMAT": "MPS",
     "MASTER_NAME" : "name",
     "STRUCTURE_FILE" : "<relative/path/to/structure/file>"
 }
@@ -349,9 +349,9 @@ following manner:
 
 - ```coeffs``` is a dict of investment variable reference to their coefficient in the present constraint. Each reference
   is built as : ```<node_name>::<candidate_name>::<variable_type>```, where variable type is either :
-    - ```x``` when referencing the $x_{n,i}$ variable.
-    - ```dx_plus``` when referencing the $dx_{n,i}^+$ variable.
-    - ```dx_minus``` when referencing the $dx_{n,i}^⁻$ variable.
+    - ```x``` when referencing the $x_{i,n}$ variable.
+    - ```dx_plus``` when referencing the $dx_{i,n}^+$ variable.
+    - ```dx_minus``` when referencing the $dx_{i,n}^-$ variable.
 - ```rhs``` contains the right-hand side of the constraint expression.
 - ```operator``` defines the type of constraint we want to set and expects one of three values :
     - ```<``` for constraints of type : $expression \leq rhs$

@@ -6,9 +6,73 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/benders/plugins/BendersPlugin.h"
+#include "antares-xpansion/benders/plugins/NoOperationPlugin.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
+
+// Records the order in which BendersSequential calls the plugin hooks that are not tied to a
+// subproblem, so it can be checked against the other Benders implementations (MPI, by batch).
+class PluginHooksRecorder final: public BendersPlugin
+{
+public:
+    std::vector<std::string> calls;
+
+    void OnBendersStart(const SubproblemsMapPtr&,
+                        const BendersBaseOptions&,
+                        const SolverLogManager&,
+                        std::shared_ptr<SolverAbstract>) override
+    {
+        calls.emplace_back("BendersStart");
+    }
+
+    void OnBendersEnd() override
+    {
+        calls.emplace_back("BendersEnd");
+    }
+
+    void OnBendersIterationStart() override
+    {
+        calls.emplace_back("IterationStart");
+    }
+
+    void OnBendersIterationEnd() override
+    {
+        calls.emplace_back("IterationEnd");
+    }
+
+    void OnBendersMasterResolutionStart() override
+    {
+        calls.emplace_back("MasterResolutionStart");
+    }
+
+    void OnBendersMasterResolutionEnd(std::map<std::string, double>&, int& num_iter) override
+    {
+        calls.emplace_back("MasterResolutionEnd(" + std::to_string(num_iter) + ")");
+    }
+
+    void OnBendersSubResolutionStart(const std::shared_ptr<SubproblemWorker>&, std::string) override
+    {
+    }
+
+    void OnBendersSubResolutionEnd() override
+    {
+    }
+
+    void OnBendersMicroIterationStart() override
+    {
+    }
+
+    void OnBendersMicroIterationEnd(std::string, bool&, std::string, int, int) override
+    {
+    }
+
+    bool ShouldRestoreSubproblemBasis() const override
+    {
+        return true;
+    }
+};
 
 class BendersSequentialDouble: public BendersSequential
 {
@@ -31,21 +95,29 @@ public:
                                      std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
         BendersSequential(options, logger, writer, mathLoggerDriver)
     {
+        SetPlugin(std::make_shared<NoOperationPlugin>());
     }
 
     void init_data() override
     {
         BendersBase::init_data();
-        _data.stop = parametrized_stop;
-        _data.nsubproblem = parametrized_nsubproblem;
-        _data.lb = parametrized_lb;
-        _data.best_ub = parametrized_best_ub;
-        _data.it = parametrized_it;
+        _data.control.stop = parametrized_stop;
+        _data.control.nsubproblem = parametrized_nsubproblem;
+        _data.master.lb = parametrized_lb;
+        _data.control.best_ub = parametrized_best_ub;
+        _data.control.it = parametrized_it;
+        relevantIterationData_.last._x_in = std::make_shared<Point>();
+        relevantIterationData_.last._x_out = std::make_shared<Point>();
+        relevantIterationData_.last._x_cut = std::make_shared<Point>();
+        relevantIterationData_.last._min_invest = std::make_shared<Point>();
+        relevantIterationData_.last._max_invest = std::make_shared<Point>();
+        relevantIterationData_.last._valid = true;
+        relevantIterationData_.best = relevantIterationData_.last;
     }
 
-    [[nodiscard]] WorkerMasterPtr get_master() const override
+    [[nodiscard]] WorkerMaster* Master() const
     {
-        return BendersSequential::get_master();
+        return master_manager_.Master();
     }
 
     void get_master_value() override
@@ -58,7 +130,7 @@ public:
 
     void compute_ub() override
     {
-        _data.ub = parametrized_ub;
+        _data.cuts.ub = parametrized_ub;
     }
 
     CurrentIterationData get_data() const
@@ -70,19 +142,7 @@ public:
     {
     }
 
-    void EndWritingInOutputFile() const override
-    {
-    }
-
-    void UpdateTrace() override
-    {
-    }
-
-    void post_run_actions() const override
-    {
-    }
-
-    void SaveCurrentBendersData() override
+    void post_run_actions() override
     {
     }
 
@@ -92,7 +152,7 @@ public:
 
     SubproblemsMapPtr problems() const
     {
-        return GetSubProblemMap();
+        return subproblems_manager_->GetSubProblemMap();
     }
 
     void DeactivateIntegrityConstraints() const override
@@ -129,7 +189,7 @@ public:
     {
         parametrized_stop = stop;
         parametrized_nsubproblem = nsubproblem;
-        _data.nsubproblem = nsubproblem;
+        _data.control.nsubproblem = nsubproblem;
     }
 
     void set_bounds(double lb, double best_ub)
@@ -140,14 +200,14 @@ public:
 
     void set_bestx(Point x_out, Point x_in)
     {
-        _data.x_out = x_out;
-        _data.x_in = x_in;
+        _data.solution.x_out = x_out;
+        _data.solution.x_in = x_in;
     }
 
     void set_invest_bounds(Point min_invest, Point max_invest)
     {
-        _data.min_invest = min_invest;
-        _data.max_invest = max_invest;
+        _data.solution.min_invest = min_invest;
+        _data.solution.max_invest = max_invest;
     }
 
     void set_ub(double ub)
@@ -175,6 +235,7 @@ protected:
     void SetUp() override
     {
         logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
+        mathLoggerDriver = std::make_shared<MathLoggerDriver>();
         writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                       std::tmpnam(nullptr));
         original_dir = std::filesystem::current_path();
@@ -243,7 +304,7 @@ protected:
 
         options.MASTER_FORMULATION = master_formulation;
 
-        options.RESUME = false;
+        options.RESTART_MODE = RestartMode::COLD_START;
         options.NB_CUTS_PER_ITER = false;
         options.TRACE = false;
         options.BOUND_ALPHA = true;
@@ -255,14 +316,13 @@ protected:
         return options;
     }
 
-    BendersSequentialDouble init_benders_sequential(
-      MasterFormulation master_formulation,
-      int max_iter,
-      double relaxed_gap,
-      double sep_param,
-      const std::string& solver = "COIN",
-      const std::string& master_name = "mip_toy_prob",
-      ProblemsFormat format = ProblemsFormat::MPS_FILE)
+    BendersSequentialDouble init_benders_sequential(MasterFormulation master_formulation,
+                                                    int max_iter,
+                                                    double relaxed_gap,
+                                                    double sep_param,
+                                                    const std::string& solver = "COIN",
+                                                    const std::string& master_name = "mip_toy_prob",
+                                                    ProblemFormat format = ProblemFormat::MPS_FILE)
     {
         BendersBaseOptions options = init_benders_options(master_formulation,
                                                           max_iter,
@@ -270,7 +330,7 @@ protected:
                                                           sep_param,
                                                           solver,
                                                           master_name);
-        options.PROBLEMS_FORMAT = format;
+        options.PROBLEM_FORMAT = format;
         return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
     }
 
@@ -278,9 +338,9 @@ protected:
     {
         char col_type;
         std::vector<char> nb_units_col_types;
-        for (auto col_id: benders.get_master()->get_id_int_vars())
+        for (auto col_id: benders.Master()->get_id_int_vars())
         {
-            benders.get_master()->solver()->get_col_type(&col_type, col_id, col_id);
+            benders.Master()->solver()->get_col_type(&col_type, col_id, col_id);
             nb_units_col_types.push_back(col_type);
         }
         return nb_units_col_types;
@@ -359,6 +419,29 @@ TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached)
     EXPECT_EQ(benders._setDataPostRelaxationCall, true);
 }
 
+TEST_F(BendersSequentialTest, PluginHooksAreCalledInTheSameOrderAsOtherBendersImplementations)
+{
+    copyMasterMps();
+    BendersSequentialDouble benders = init_benders_sequential(MasterFormulation::INTEGER,
+                                                              1,
+                                                              1e-2,
+                                                              0.7);
+    auto recorder = std::make_shared<PluginHooksRecorder>();
+    benders.SetPlugin(recorder);
+
+    benders.set_data(false, 0);
+    benders.set_bounds(1000, 1001);
+    benders.launch();
+
+    const std::vector<std::string> expected{"BendersStart",
+                                            "IterationStart",
+                                            "MasterResolutionStart",
+                                            "MasterResolutionEnd(1)",
+                                            "IterationEnd",
+                                            "BendersEnd"};
+    EXPECT_EQ(recorder->calls, expected);
+}
+
 TEST_F(BendersSequentialTest,
        MaxIterReachedBeforeRelaxedGapShouldEndRunWithAnIntegerMasterIteration)
 {
@@ -385,7 +468,7 @@ TEST_F(BendersSequentialTest,
     EXPECT_EQ(benders._reactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPostRelaxationCall, true);
 
-    EXPECT_EQ(benders.get_data().it, expec_benders_run_it);
+    EXPECT_EQ(benders.get_data().control.it, expec_benders_run_it);
 }
 
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation)
@@ -409,8 +492,8 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation)
     EXPECT_EQ(benders._reactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPostRelaxationCall, true);
 
-    EXPECT_EQ(benders.get_data().best_ub, 1e+20);
-    EXPECT_EQ(benders.get_data().best_it, 0);
+    EXPECT_EQ(benders.get_data().control.best_ub, 1e+20);
+    EXPECT_EQ(benders.get_data().control.best_it, 0);
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement)
@@ -456,11 +539,11 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement)
     EXPECT_EQ(benders._reactivateIntConstraintCall, false);
     EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 
-    EXPECT_EQ(benders.get_data().x_out, x_out);
-    EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
-    EXPECT_EQ(benders.get_data().x_in, x_in);
-    EXPECT_EQ(benders.get_data().best_ub, init_ub);
-    EXPECT_EQ(benders.get_data().best_it, 0);
+    EXPECT_EQ(benders.get_data().solution.x_out, x_out);
+    EXPECT_EQ(benders.get_data().solution.x_cut, expec_x_cut);
+    EXPECT_EQ(benders.get_data().solution.x_in, x_in);
+    EXPECT_EQ(benders.get_data().control.best_ub, init_ub);
+    EXPECT_EQ(benders.get_data().control.best_it, 0);
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement)
@@ -507,11 +590,11 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement)
     EXPECT_EQ(benders._reactivateIntConstraintCall, false);
     EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 
-    EXPECT_EQ(benders.get_data().x_out, x_out);
-    EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
-    EXPECT_EQ(benders.get_data().x_in, expec_x_cut);
-    EXPECT_EQ(benders.get_data().best_ub, current_ub);
-    EXPECT_EQ(benders.get_data().best_it, current_it + 1);
+    EXPECT_EQ(benders.get_data().solution.x_out, x_out);
+    EXPECT_EQ(benders.get_data().solution.x_cut, expec_x_cut);
+    EXPECT_EQ(benders.get_data().solution.x_in, expec_x_cut);
+    EXPECT_EQ(benders.get_data().control.best_ub, current_ub);
+    EXPECT_EQ(benders.get_data().control.best_it, current_it + 1);
 }
 
 TEST_F(BendersSequentialTest, IntegersAndBinariesAreRelaxedAfterDeactivation)
@@ -603,7 +686,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperly)
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly
-    EXPECT_TRUE(benders.get_master());
+    EXPECT_TRUE(benders.Master());
 }
 
 // Problems
@@ -632,7 +715,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly)
 
 class BendersSequentialTestSolverAndFormat
     : public BendersSequentialTest,
-      public ::testing::WithParamInterface<std::tuple<std::string, ProblemsFormat>>
+      public ::testing::WithParamInterface<std::tuple<std::string, ProblemFormat>>
 {
 };
 
@@ -653,11 +736,11 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore)
                                                               1e-6,
                                                               GetParam(),
                                                               "mip_toy_prob",
-                                                              ProblemsFormat::OPTIMIZED);
+                                                              ProblemFormat::OPTIMIZED);
     benders.InitializeProblems();
 
     // Assert that the master problem has been created properly
-    EXPECT_TRUE(benders.get_master());
+    EXPECT_TRUE(benders.Master());
 }
 
 void updateStructureFile(const std::string& structure_file_path, const std::string& solver)

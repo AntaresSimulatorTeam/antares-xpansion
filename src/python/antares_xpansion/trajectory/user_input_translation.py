@@ -290,7 +290,7 @@ class NodeData(BaseModel):
 
     def compute_operational_discounting(self, global_data: GlobalData):
         factor = 0.0
-        for year in range(self.investment_date, self.investment_date + self.duration):
+        for year in range(self.investment_date + 1, self.investment_date + self.duration + 1):
             factor += (1 + global_data.discount_rate) ** (
                     global_data.first_investment_date - year
             )

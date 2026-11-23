@@ -192,31 +192,31 @@ TEST_F(ProblemGenerationExeOptionsTest,
 TEST_F(ProblemGenerationExeOptionsTest, FormatDefaultValue)
 {
     parseOptions("--output", "something");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::OPTIMIZED);
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemFormat::OPTIMIZED);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatMPSValue)
 {
     parseOptions("--output", "something", "--problem-format", "MPS");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::MPS_FILE);
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemFormat::MPS_FILE);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatmpsValue)
 {
     parseOptions("--output", "something", "--problem-format", "mps");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::MPS_FILE);
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemFormat::MPS_FILE);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatsavedValue)
 {
     parseOptions("--output", "something", "--problem-format", "OPTIMIZED");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::OPTIMIZED);
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemFormat::OPTIMIZED);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatSavedValue)
 {
     parseOptions("--output", "something", "--problem-format", "OPTIMIZED");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::OPTIMIZED);
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemFormat::OPTIMIZED);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatWrongValue)

@@ -30,7 +30,7 @@ jobs:
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_ubuntu-22.04_static_sirius.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.3/ortools_cxx_ubuntu-22.04_static_sirius.zip"
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
@@ -104,6 +104,11 @@ jobs:
           pushd vcpkg
           git fetch --unshallow
           ./bootstrap-vcpkg.sh -disableMetrics
+
+      - name: Configure vcpkg asset cache
+        uses: ./.github/workflows/vcpkg-asset-cache
+        with:
+          base-url: ${{ vars.VCPKG_ASSET_BASE_URL }}
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary

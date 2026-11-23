@@ -7,14 +7,14 @@
 
 #include "antares-xpansion/core/ProblemFormat.h"
 
-inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
+inline std::ostream& operator<<(std::ostream& stream, const ProblemFormat& rhs)
 {
     switch (rhs)
     {
-    case ProblemsFormat::MPS_FILE:
+    case ProblemFormat::MPS_FILE:
         stream << "MPS";
         break;
-    case ProblemsFormat::OPTIMIZED:
+    case ProblemFormat::OPTIMIZED:
         stream << "OPTIMIZED";
         break;
     default:
@@ -23,7 +23,7 @@ inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
     return stream;
 }
 
-inline std::istream& operator>>(std::istream& stream, ProblemsFormat& rhs)
+inline std::istream& operator>>(std::istream& stream, ProblemFormat& rhs)
 {
     std::string str;
     stream >> str;
@@ -31,7 +31,7 @@ inline std::istream& operator>>(std::istream& stream, ProblemsFormat& rhs)
     {
         try
         {
-            rhs = problemsFormatFromString(str);
+            rhs = problemFormatFromString(str);
         }
         catch (const std::runtime_error&)
         {
@@ -43,10 +43,10 @@ inline std::istream& operator>>(std::istream& stream, ProblemsFormat& rhs)
 }
 
 template<>
-struct fmt::formatter<ProblemsFormat>: formatter<string_view>
+struct fmt::formatter<ProblemFormat>: formatter<string_view>
 {
     // parse is inherited from formatter<string_view>.
 
-    auto format(ProblemsFormat problems_format,
+    auto format(ProblemFormat problem_format,
                 format_context& ctx) const -> format_context::iterator;
 };
