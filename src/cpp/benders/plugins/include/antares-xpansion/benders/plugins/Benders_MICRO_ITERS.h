@@ -13,6 +13,7 @@ Benders_MICRO_ITERS class.
 #include <dlfcn.h>
 #endif
 #include <filesystem>
+#include <json/value.h>
 #include <map>
 #include <memory>
 #include <vector>
@@ -70,7 +71,8 @@ public:
     */
     Benders_MICRO_ITERS(const SimulationOptions& options,
                         const CouplingMap& coupling_map,
-                        mpi::communicator* world);
+                        mpi::communicator* world,
+                        const Logger& logger);
 
     /*
         Default destrucor
@@ -81,7 +83,6 @@ public:
         Implementation of benders start call back
     */
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                        const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
                         std::shared_ptr<SolverAbstract> sub_problem_solver) override;
@@ -160,6 +161,18 @@ private:
 
     void read_micro_iteration_config_file();
 
+    /*
+        Reads the warm_start key of micro_iterations_config.json. Falls back to
+        warm_start_ = false (with a warning) if the key is missing or not a boolean.
+    */
+    void handle_warm_start(const Json::Value& config);
+
+    /*
+        Reads the plugin_lib_path key of micro_iterations_config.json. Aborts if the
+        key is missing or not a string.
+    */
+    void handle_plugin_lib_path(const Json::Value& config);
+
     void read_variable_names_to_follow();
     void build_variables_to_follow_indices_vector();
 
@@ -218,7 +231,6 @@ private:
 
     std::vector<std::string> sub_names_;
     std::map<std::string, std::vector<std::string>> added_constraints_per_sub_;
-    std::map<std::string, std::string> micro_iterations_config_;
     std::vector<std::string> variables_to_follow_;
     CouplingMap coupling_map_;
     CouplingMap constraints_coupling_map_;
@@ -227,6 +239,7 @@ private:
     const SolverLogManager* solver_log_manager_ = nullptr;
     Logger _logger;
     bool warm_start_;
+    std::filesystem::path plugin_lib_path_;
     std::shared_ptr<SkeletonConstraintSetLoader> constraint_set_loader_;
     SubproblemConstraintsManagerPtr subproblem_constraints_manager_;
     std::shared_ptr<SolverAbstract> sub_problem_solver_;

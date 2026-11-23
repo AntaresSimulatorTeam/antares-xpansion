@@ -60,8 +60,8 @@ class OptimisationKeys:
         return "MASTER_NAME"
 
     @staticmethod
-    def problems_format_key():
-        return "PROBLEMS_FORMAT"
+    def problem_format_key():
+        return "PROBLEM_FORMAT"
 
     @staticmethod
     def last_mps_master_name_key():
@@ -92,8 +92,8 @@ class OptimisationKeys:
         return "LOG_LEVEL"
 
     @staticmethod
-    def resume_key():
-        return "RESUME"
+    def restart_mode_key():
+        return "RESTART_MODE"
 
     @staticmethod
     def separation_key():

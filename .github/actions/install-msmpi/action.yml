@@ -1,0 +1,35 @@
+name: Install MS-MPI redistributable
+description: >
+  Installs the MS-MPI runtime in the version expected by the vcpkg msmpi port
+  (the port only installs the SDK and checks for the runtime). The expected
+  version and the download URL are both read from the vcpkg port. Requires the
+  vcpkg submodule to be checked out.
+
+runs:
+  using: composite
+  steps:
+    - name: Install MS-MPI redistributable matching vcpkg port version
+      shell: pwsh
+      run: |
+        $expected = (Get-Content vcpkg/ports/msmpi/vcpkg.json | ConvertFrom-Json).version
+        $mpiexec = "C:\Program Files\Microsoft MPI\Bin\mpiexec.exe"
+
+        function Get-InstalledMsmpiVersion {
+          if (-not (Test-Path $mpiexec)) { return "" }
+          if ((& $mpiexec 2>&1 | Out-String) -match '\[Version ([0-9.]+)\]') { return $Matches[1] }
+          return ""
+        }
+
+        $installed = Get-InstalledMsmpiVersion
+        Write-Host "Expected MS-MPI: $expected, installed: '$installed'"
+        if ($installed -ne $expected) {
+          $portfile = Get-Content vcpkg/ports/msmpi/portfile.cmake -Raw
+          if ($portfile -notmatch '"(https://[^"]+/msmpisetup\.exe)"') { throw "msmpisetup.exe URL not found in vcpkg msmpi portfile" }
+          Invoke-WebRequest $Matches[1] -OutFile msmpisetup.exe
+          $p = Start-Process .\msmpisetup.exe -ArgumentList "-unattend" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "msmpisetup.exe failed with exit code $($p.ExitCode)" }
+          Remove-Item msmpisetup.exe
+          $installed = Get-InstalledMsmpiVersion
+          if ($installed -ne $expected) { throw "Installed MS-MPI version '$installed' does not match vcpkg expected '$expected'" }
+        }
+        & $mpiexec 2>&1 | Select-Object -First 1

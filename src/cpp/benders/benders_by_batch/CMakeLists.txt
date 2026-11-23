@@ -12,17 +12,20 @@ message("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
 message("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 
-if (UNIX)
+if (UNIX AND MPI_CXX_COMPILER)
     set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif ()
 add_library(benders_by_batch_core)
 target_sources(benders_by_batch_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BatchCollection.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersByBatch.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BendersCutsManagerByBatch.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/RandomBatchShuffler.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BatchCollection.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersByBatch.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersCutsManagerByBatch.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_by_batch/BendersSubProblemsManagerByBatch.hxx
 )
 
 target_include_directories(benders_by_batch_core

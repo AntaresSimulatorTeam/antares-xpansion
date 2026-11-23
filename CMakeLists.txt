@@ -375,6 +375,9 @@ endif ()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" DESTINATION examples)
 if (WIN32)
+    if (NOT MPIEXEC_EXECUTABLE)
+        message(FATAL_ERROR "MPIEXEC_EXECUTABLE not found: pass -DMPIEXEC_EXECUTABLE=<path to mpiexec.exe>")
+    endif ()
     cmake_path(GET MPIEXEC_EXECUTABLE PARENT_PATH MPI_BIN_DIR)
 
     #Copy associated .so and .dll to build directory

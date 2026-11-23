@@ -92,14 +92,20 @@ class InputParser:
                                  help="Runs presolve step before Benders methods (Xpress only)")
         self.parser.add_argument("--cache_problems",
                                  dest=LauncherOptionsKeys.cache_problems_key(),
-                                 default=False,
-                                 action='store_true',
-                                 help="Cache problems on disque during benders")
+                                 default="NO_CACHE",
+                                 choices=["NO_CACHE", "PER_SUB", "COMPACT"],
+                                 help="Cache problems mode during benders (NO_CACHE, PER_SUB, COMPACT)")
         self.parser.add_argument("--problem-format",
                                  dest=LauncherOptionsKeys.problem_format_key(),
                                  choices=["mps", "OPTIMIZED"],
                                  help='Problem format to use ("mps" or "OPTIMIZED")',
                                  default=LauncherOptionsDefaultValues.DEFAULT_PROBLEM_FORMAT())
+        self.parser.add_argument("--trajectory",
+                                 action='store_true',
+                                 default=False,
+                                 help='Switch to trajectory mode. When set, all subsequent '
+                                      'arguments are parsed by the trajectory argument parser '
+                                      '(use --trajectory --help for trajectory-specific options)')
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)

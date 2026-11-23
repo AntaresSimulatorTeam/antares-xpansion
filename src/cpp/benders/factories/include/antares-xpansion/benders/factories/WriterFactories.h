@@ -6,10 +6,11 @@
 #include <string>
 
 #include "antares-xpansion/benders/output/OutputWriter.h"
+#include "antares-xpansion/core/RestartMode.h"
 
 std::shared_ptr<Output::OutputWriter> build_void_writer();
 
 std::shared_ptr<Output::OutputWriter> build_json_writer(const std::filesystem::path& json_file_name,
-                                                        bool restart);
+                                                        RestartMode restart_mode);
 
 #endif // ANTARESXPANSION_WRITERFACTORIES_H

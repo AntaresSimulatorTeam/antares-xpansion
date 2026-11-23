@@ -6,22 +6,22 @@
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
-enum class ProblemsFormat
+enum class ProblemFormat
 {
     MPS_FILE,
     OPTIMIZED
 };
 
-inline ProblemsFormat problemsFormatFromString(const std::string& str)
+inline ProblemFormat problemFormatFromString(const std::string& str)
 {
     auto lower_str = StringManip::StringUtils::ToLowercase(str);
     if (lower_str == "mps")
     {
-        return ProblemsFormat::MPS_FILE;
+        return ProblemFormat::MPS_FILE;
     }
     if (lower_str == "optimized")
     {
-        return ProblemsFormat::OPTIMIZED;
+        return ProblemFormat::OPTIMIZED;
     }
-    throw std::runtime_error("Unknown ProblemsFormat: " + str);
+    throw std::runtime_error("Unknown ProblemFormat: " + str);
 }

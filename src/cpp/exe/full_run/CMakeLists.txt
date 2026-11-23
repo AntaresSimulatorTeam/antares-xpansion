@@ -16,7 +16,7 @@ add_executable(full_run
 
 find_package(MPI REQUIRED)
 
-if (UNIX)
+if (UNIX AND MPI_CXX_COMPILER)
     set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif ()
 

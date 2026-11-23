@@ -4,15 +4,14 @@
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "gtest/gtest.h"
 
-class BendersPluginStub : public BendersPlugin
+class BendersPluginStub: public BendersPlugin
 {
 public:
     void OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                        const Logger& logger,
                         const BendersBaseOptions& options,
                         const SolverLogManager& solver_log_manager,
                         std::shared_ptr<SolverAbstract> sub_problem_solver) override
@@ -67,7 +66,7 @@ public:
     }
 };
 
-class BendersMicroIterationsDouble : public BendersBase
+class BendersMicroIterationsDouble: public BendersBase
 {
 public:
     explicit BendersMicroIterationsDouble(const BendersBaseOptions& options,
@@ -104,7 +103,9 @@ public:
     void Run() override
     {
         // OnBendersStart
-        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_, nullptr);
+        SubproblemsMapPtr empty_subproblem_map;
+        benders_plugin_->OnBendersStart(empty_subproblem_map, _options, solver_log_manager_, nullptr);
+
 
         // Simulate one iteration
         benders_plugin_->OnBendersIterationStart();
@@ -119,8 +120,11 @@ public:
         std::string solve_time = "0.0";
         int num_master_iter = 1;
         int num_micro_iter = 1;
-        benders_plugin_->OnBendersMicroIterationEnd(sub_name, added_rows, solve_time,
-                                                     num_master_iter, num_micro_iter);
+        benders_plugin_->OnBendersMicroIterationEnd(sub_name,
+                                                    added_rows,
+                                                    solve_time,
+                                                    num_master_iter,
+                                                    num_micro_iter);
 
         benders_plugin_->OnBendersSubResolutionEnd();
 
@@ -146,19 +150,7 @@ public:
         BendersBase::init_data();
     }
 
-    void UpdateTrace() override
-    {
-    }
-
-    void post_run_actions() const override
-    {
-    }
-
-    void EndWritingInOutputFile() const override
-    {
-    }
-
-    void SaveCurrentBendersData() override
+    void post_run_actions() override
     {
     }
 
@@ -167,7 +159,7 @@ public:
     }
 };
 
-class BendersMicroIterationsTest : public ::testing::Test
+class BendersMicroIterationsTest: public ::testing::Test
 {
 public:
     Logger logger;
@@ -197,7 +189,7 @@ protected:
         BendersBaseOptions options(solver_options);
         options.SEPARATION_PARAM = 0.5;
         options.MASTER_FORMULATION = MasterFormulation::RELAXED;
-        options.RESUME = false;
+        options.RESTART_MODE = RestartMode::COLD_START;
         options.NB_CUTS_PER_ITER = false;
         options.TRACE = false;
         options.BOUND_ALPHA = true;
@@ -209,9 +201,6 @@ protected:
 
 TEST_F(BendersMicroIterationsTest, RunCallsAllPluginMethods)
 {
-    BendersMicroIterationsDouble benders(init_benders_options(),
-                                         logger,
-                                         writer,
-                                         mathLoggerDriver);
+    BendersMicroIterationsDouble benders(init_benders_options(), logger, writer, mathLoggerDriver);
     EXPECT_NO_THROW(benders.Run());
 }

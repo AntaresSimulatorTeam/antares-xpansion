@@ -20,7 +20,6 @@ public:
 
     std::vector<LinkProfile> ReadLinkProfile(const std::filesystem::path& direct_filename,
                                              const std::filesystem::path& indirect_file_name);
-    std::vector<LinkProfile> ReadLinkProfile(const std::filesystem::path& direct_filename);
     std::map<std::string, std::vector<LinkProfile>> getLinkProfileMap(
       const std::filesystem::path& capacity_folder,
       const std::vector<CandidateData>& candidateList);

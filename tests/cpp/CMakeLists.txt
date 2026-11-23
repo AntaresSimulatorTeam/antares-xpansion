@@ -10,7 +10,7 @@ find_package(GTest REQUIRED)
 message("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 find_package(MPI REQUIRED)
 
-if (UNIX)
+if (UNIX AND MPI_CXX_COMPILER)
     set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif ()
 # ===========================================================================
