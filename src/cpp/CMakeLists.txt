@@ -29,5 +29,8 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/sensitivity")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/full_run")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/study-updater")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/merge_weights_trajectory")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/grid_search")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/evaluator")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/bellman_values")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/exe")

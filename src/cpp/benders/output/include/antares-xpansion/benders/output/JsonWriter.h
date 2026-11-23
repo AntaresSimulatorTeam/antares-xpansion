@@ -69,6 +69,9 @@ public:
     void end_writing(const IterationsData& iterations_data) override;
 
     void write_iteration(const Iteration& iteration_data, const size_t iteration_num) override;
+    void write_grid_point(const GridPointData& grid_point_data);
+    void write_grid_points(const GridPointsData& grid_points_data);
+    void write_VariationDeNiveauxDeStock(const VariationDeNiveauxDeStockData& valeurs_usage);
     void write_solver_name(const std::string& solver_name) override;
     void write_master_name(const std::string& master_name) override;
     void write_log_level(const int log_level) override;

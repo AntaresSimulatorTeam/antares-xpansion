@@ -2,6 +2,7 @@ DEFAULT_INSTALL_DIR             : ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
 ANTARES                         : @ANTARES_SOLVER_APP@
 MERGE_MPS                       : $<TARGET_FILE_NAME:merge_mps>
 BENDERS                         : @BENDERS@
+GRID_SEARCH                     : @GRID_SEARCH@
 LP_NAMER                        : $<TARGET_FILE_NAME:lp_namer>
 STUDY_UPDATER                   : $<TARGET_FILE_NAME:xpansion-study-updater>
 FULL_RUN                        : $<TARGET_FILE_NAME:full_run>

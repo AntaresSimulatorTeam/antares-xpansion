@@ -1,0 +1,1030 @@
+{
+	"antares" : 
+	{
+		"version" : "9.2.0"
+	},
+	"antares_xpansion" : 
+	{
+		"version" : "1.4.0"
+	},
+	"begin" : "28-03-2025 15:38:06",
+	"end" : "28-03-2025 15:38:27",
+	"iterations" : 
+	{
+		"1" : 
+		{
+			"best_ub" : 33410080135.169388,
+			"candidates" : 
+			[
+				{
+					"invest" : 0.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 156,
+			"investment_cost" : 0.0,
+			"lb" : -10000000000.0,
+			"master_duration" : 0.001293074,
+			"operational_cost" : 33410080135.169388,
+			"optimality_gap" : 43410080135.169388,
+			"overall_cost" : 33410080135.169388,
+			"relative_gap" : 1.2993108654496588,
+			"subproblem_duration" : 5.6256600929999996,
+			"ub" : 33410080135.169388
+		},
+		"10" : 
+		{
+			"best_ub" : 15554208152.357544,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.06059039911997,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1798.8011183910103,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 997.72319621151473,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.4140625,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1560,
+			"investment_cost" : 221099708.22252575,
+			"lb" : 15535396106.149019,
+			"master_duration" : 0.011823897,
+			"operational_cost" : 15333108444.135017,
+			"optimality_gap" : 18812046.208524704,
+			"overall_cost" : 15554208152.357544,
+			"relative_gap" : 0.0012094505888217376,
+			"subproblem_duration" : 0.33250774999999999,
+			"ub" : 15554208152.357544
+		},
+		"11" : 
+		{
+			"best_ub" : 15544853966.164801,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.03040036957782,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.4005591955301,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 998.86159810575737,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.70703125,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1716,
+			"investment_cost" : 221199860.42146546,
+			"lb" : 15535402865.020147,
+			"master_duration" : 0.013049052,
+			"operational_cost" : 15323654105.743336,
+			"optimality_gap" : 9451101.1446533203,
+			"overall_cost" : 15544853966.164801,
+			"relative_gap" : 0.00060798905960935702,
+			"subproblem_duration" : 0.301466438,
+			"ub" : 15544853966.164801
+		},
+		"12" : 
+		{
+			"best_ub" : 15540183504.599854,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.01530535480674,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.7002795978233,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 999.43079905287868,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.853515625,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1872,
+			"investment_cost" : 221249936.52093729,
+			"lb" : 15535511200.847569,
+			"master_duration" : 0.013665339,
+			"operational_cost" : 15318933568.078917,
+			"optimality_gap" : 4672303.7522850037,
+			"overall_cost" : 15540183504.599854,
+			"relative_gap" : 0.00030065949677505506,
+			"subproblem_duration" : 0.30357062299999998,
+			"ub" : 15540183504.599854
+		},
+		"13" : 
+		{
+			"best_ub" : 15537848776.760305,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.00775784742109,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.8501397989698,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 999.71539952643934,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.9267578125,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2028,
+			"investment_cost" : 221274974.5706732,
+			"lb" : 15535514048.920769,
+			"master_duration" : 0.014484957999999999,
+			"operational_cost" : 15316573802.189632,
+			"optimality_gap" : 2334727.8395366669,
+			"overall_cost" : 15537848776.760305,
+			"relative_gap" : 0.00015026068750448128,
+			"subproblem_duration" : 0.30447971899999998,
+			"ub" : 15537848776.760305
+		},
+		"14" : 
+		{
+			"best_ub" : 15536681412.840521,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.00398409372826,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.9250698995434,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 999.85769976321967,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.96337890625,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2184,
+			"investment_cost" : 221287493.59554118,
+			"lb" : 15535514048.920774,
+			"master_duration" : 0.015402523,
+			"operational_cost" : 15315393919.24498,
+			"optimality_gap" : 1167363.9197463989,
+			"overall_cost" : 15536681412.840521,
+			"relative_gap" : 7.5135988743491491e-05,
+			"subproblem_duration" : 0.29630066300000002,
+			"ub" : 15536681412.840521
+		},
+		"15" : 
+		{
+			"best_ub" : 15536097730.88064,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.00209721688179,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.9625349498301,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 999.92884988160995,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.981689453125,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2340,
+			"investment_cost" : 221293753.10797516,
+			"lb" : 15535514048.920776,
+			"master_duration" : 0.016437288000000001,
+			"operational_cost" : 15314803977.772665,
+			"optimality_gap" : 583681.95986366272,
+			"overall_cost" : 15536097730.88064,
+			"relative_gap" : 3.7569405778356776e-05,
+			"subproblem_duration" : 0.29121261599999998,
+			"ub" : 15536097730.88064
+		},
+		"16" : 
+		{
+			"best_ub" : 15535805889.900705,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.00115377845862,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.9812674749733,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 999.96442494080497,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.9908447265625,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2496,
+			"investment_cost" : 221296882.86419213,
+			"lb" : 15535514048.920776,
+			"master_duration" : 0.017302894999999999,
+			"operational_cost" : 15314509007.036512,
+			"optimality_gap" : 291840.97992897034,
+			"overall_cost" : 15535805889.900705,
+			"relative_gap" : 1.8785055760685461e-05,
+			"subproblem_duration" : 0.29665894599999998,
+			"ub" : 15535805889.900705
+		},
+		"17" : 
+		{
+			"best_ub" : 15535659969.410715,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.00068205924708,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1799.9906337375783,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 999.9822124704026,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 299.99542236328125,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2652,
+			"investment_cost" : 221298447.74230263,
+			"lb" : 15535514048.920776,
+			"master_duration" : 0.018223896,
+			"operational_cost" : 15314361521.668413,
+			"optimality_gap" : 145920.48993873596,
+			"overall_cost" : 15535659969.410715,
+			"relative_gap" : 9.3926160990939145e-06,
+			"subproblem_duration" : 0.292229089,
+			"ub" : 15535659969.410715
+		},
+		"18" : 
+		{
+			"best_ub" : 22744276189.081944,
+			"candidates" : 
+			[
+				{
+					"invest" : 1000.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1600.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 1000.0000000000001,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 200.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2808,
+			"investment_cost" : 236600000.0,
+			"lb" : 22440953822.775448,
+			"master_duration" : 0.15650813599999999,
+			"operational_cost" : 22507676189.081944,
+			"optimality_gap" : 303322366.30649567,
+			"overall_cost" : 22744276189.081944,
+			"relative_gap" : 0.013336206603580602,
+			"subproblem_duration" : 1.0176348710000001,
+			"ub" : 22744276189.081944
+		},
+		"19" : 
+		{
+			"best_ub" : 22744276189.081944,
+			"candidates" : 
+			[
+				{
+					"invest" : 1000.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1299.9999999999998,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 1000.0000000000001,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 200.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 2964,
+			"investment_cost" : 218600000.0,
+			"lb" : 22738786927.153149,
+			"master_duration" : 0.13772657499999999,
+			"operational_cost" : 22528083152.622063,
+			"optimality_gap" : 5489261.9287948608,
+			"overall_cost" : 22746683152.622063,
+			"relative_gap" : 0.00024134696057858727,
+			"subproblem_duration" : 0.30838609299999997,
+			"ub" : 22746683152.622063
+		},
+		"2" : 
+		{
+			"best_ub" : 21735484500.452473,
+			"candidates" : 
+			[
+				{
+					"invest" : 500.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1000.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 417.13823014773561,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 150.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 312,
+			"investment_cost" : 114609457.95018455,
+			"lb" : -9770781084.0996304,
+			"master_duration" : 0.0047242940000000004,
+			"operational_cost" : 21620875042.502289,
+			"optimality_gap" : 31506265584.552101,
+			"overall_cost" : 21735484500.452473,
+			"relative_gap" : 1.4495313221058508,
+			"subproblem_duration" : 2.1915009790000002,
+			"ub" : 21735484500.452473
+		},
+		"20" : 
+		{
+			"best_ub" : 22741274015.060184,
+			"candidates" : 
+			[
+				{
+					"invest" : 1000.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1400.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 1000.0000000000001,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 200.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 3120,
+			"investment_cost" : 224600000.0,
+			"lb" : 22739840717.693676,
+			"master_duration" : 0.165483034,
+			"operational_cost" : 22516674015.060184,
+			"optimality_gap" : 1433297.3665084839,
+			"overall_cost" : 22741274015.060184,
+			"relative_gap" : 6.3026256381207879e-05,
+			"subproblem_duration" : 0.28733568700000001,
+			"ub" : 22741274015.060184
+		},
+		"21" : 
+		{
+			"best_ub" : 22741274015.060184,
+			"candidates" : 
+			[
+				{
+					"invest" : 1000.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1400.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 1000.0000000000001,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 200.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 3276,
+			"investment_cost" : 224600000.0,
+			"lb" : 22741274015.060165,
+			"master_duration" : 0.177576822,
+			"operational_cost" : 22516674015.060184,
+			"optimality_gap" : 1.9073486328125e-05,
+			"overall_cost" : 22741274015.060184,
+			"relative_gap" : 8.3871670142551253e-16,
+			"subproblem_duration" : 0.28226600200000002,
+			"ub" : 22741274015.060184
+		},
+		"3" : 
+		{
+			"best_ub" : 18227353915.374329,
+			"candidates" : 
+			[
+				{
+					"invest" : 750.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1500.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 708.56911507386781,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 225.0,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 468,
+			"investment_cost" : 176504728.97509229,
+			"lb" : 13675419094.965672,
+			"master_duration" : 0.0048503210000000003,
+			"operational_cost" : 18050849186.399235,
+			"optimality_gap" : 4551934820.4086571,
+			"overall_cost" : 18227353915.374329,
+			"relative_gap" : 0.24973097255598967,
+			"subproblem_duration" : 0.60150709300000005,
+			"ub" : 18227353915.374329
+		},
+		"4" : 
+		{
+			"best_ub" : 16809986771.401814,
+			"candidates" : 
+			[
+				{
+					"invest" : 875.0,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1750.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 854.28455753693402,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 262.5,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 624,
+			"investment_cost" : 207452364.48754615,
+			"lb" : 15235528040.366781,
+			"master_duration" : 0.005623533,
+			"operational_cost" : 16602534406.914267,
+			"optimality_gap" : 1574458731.0350323,
+			"overall_cost" : 16809986771.401814,
+			"relative_gap" : 0.09366210410787465,
+			"subproblem_duration" : 0.63873261000000003,
+			"ub" : 16809986771.401814
+		},
+		"5" : 
+		{
+			"best_ub" : 16153637538.120476,
+			"candidates" : 
+			[
+				{
+					"invest" : 937.5,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1875.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 927.14227876846712,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 281.25,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 780,
+			"investment_cost" : 222926182.24377307,
+			"lb" : 15460255395.473818,
+			"master_duration" : 0.0070110770000000001,
+			"operational_cost" : 15930711355.876703,
+			"optimality_gap" : 693382142.64665794,
+			"overall_cost" : 16153637538.120476,
+			"relative_gap" : 0.042924210785983442,
+			"subproblem_duration" : 0.49278565699999999,
+			"ub" : 16153637538.120476
+		},
+		"6" : 
+		{
+			"best_ub" : 15840863288.105879,
+			"candidates" : 
+			[
+				{
+					"invest" : 968.75,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1837.4325620746858,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 963.57113938423367,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 290.625,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 936,
+			"investment_cost" : 224659044.84636772,
+			"lb" : 15516573165.625568,
+			"master_duration" : 0.0081854360000000008,
+			"operational_cost" : 15616204243.259512,
+			"optimality_gap" : 324290122.48031044,
+			"overall_cost" : 15840863288.105879,
+			"relative_gap" : 0.020471745547087947,
+			"subproblem_duration" : 0.46212663799999998,
+			"ub" : 15840863288.105879
+		},
+		"7" : 
+		{
+			"best_ub" : 15686349192.825659,
+			"candidates" : 
+			[
+				{
+					"invest" : 946.63038286267772,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1790.4089471281318,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 981.78556969211695,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 295.3125,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1092,
+			"investment_cost" : 221566405.36039183,
+			"lb" : 15531289361.454134,
+			"master_duration" : 0.0094363209999999993,
+			"operational_cost" : 15464782787.465267,
+			"optimality_gap" : 155059831.37152481,
+			"overall_cost" : 15686349192.825659,
+			"relative_gap" : 0.0098850171869464248,
+			"subproblem_duration" : 0.46977321300000002,
+			"ub" : 15686349192.825659
+		},
+		"8" : 
+		{
+			"best_ub" : 15610672482.026932,
+			"candidates" : 
+			[
+				{
+					"invest" : 933.51984024998535,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1795.2044735640243,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 990.89278484605848,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 297.65625,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1248,
+			"investment_cost" : 221595481.60931224,
+			"lb" : 15533110006.321085,
+			"master_duration" : 0.010425122,
+			"operational_cost" : 15389077000.41762,
+			"optimality_gap" : 77562475.705846786,
+			"overall_cost" : 15610672482.026932,
+			"relative_gap" : 0.0049685544165472021,
+			"subproblem_duration" : 0.39792623399999999,
+			"ub" : 15610672482.026932
+		},
+		"9" : 
+		{
+			"best_ub" : 15573014950.750175,
+			"candidates" : 
+			[
+				{
+					"invest" : 915.1209704582044,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "battery"
+				},
+				{
+					"invest" : 1797.6022367819705,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "peak"
+				},
+				{
+					"invest" : 995.44639242302924,
+					"max" : 1000.0,
+					"min" : 0.0,
+					"name" : "pv"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 2000.0,
+					"min" : 0.0,
+					"name" : "semibase"
+				},
+				{
+					"invest" : 298.828125,
+					"max" : 3200.0,
+					"min" : 0.0,
+					"name" : "transmission_line"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1404,
+			"investment_cost" : 220899403.82464629,
+			"lb" : 15535326005.227512,
+			"master_duration" : 0.011006821,
+			"operational_cost" : 15352115546.925529,
+			"optimality_gap" : 37688945.522663116,
+			"overall_cost" : 15573014950.750175,
+			"relative_gap" : 0.0024201444384311455,
+			"subproblem_duration" : 0.38949317500000002,
+			"ub" : 15573014950.750175
+		}
+	},
+	"nbWeeks" : 157,
+	"options" : 
+	{
+		"LOG_LEVEL" : 0,
+		"MASTER_NAME" : "master",
+		"PROBLEM_FORMAT" : "SAVED",
+		"SOLVER_NAME" : "COIN"
+	},
+	"run_duration" : 16.533287940000001,
+	"solution" : 
+	{
+		"investment_cost" : 224600000.0,
+		"iteration" : 20,
+		"operational_cost" : 22516674015.060184,
+		"optimality_gap" : 1.9073486328125e-05,
+		"overall_cost" : 22741274015.060184,
+		"problem_status" : "OPTIMAL",
+		"relative_gap" : 8.3871670142551253e-16,
+		"stopping_criterion" : "absolute gap",
+		"values" : 
+		{
+			"battery" : 1000.0,
+			"peak" : 1400.0,
+			"pv" : 1000.0000000000001,
+			"semibase" : 200.0,
+			"transmission_line" : 0.0
+		}
+	}
+}

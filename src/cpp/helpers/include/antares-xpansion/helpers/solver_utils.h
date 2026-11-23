@@ -270,6 +270,14 @@ void solver_chgbounds(std::shared_ptr<SolverAbstract> solver_p,
                       const std::vector<double>& bnd_p);
 
 /**
+ * @brief Change the right hand side of a row
+ * @param solver_p : solver containing the model to modify.
+ * @param id_row : index of the row to modify
+ * @param val : new value of the right hand side
+ */
+void solver_chg_rhs(std::shared_ptr<SolverAbstract> solver_p, int id_row, double val);
+
+/**
  * @brief Returns the current basis
  *
  * @param outSolver_p  : solver containing the model with renamed variables.

@@ -37,6 +37,8 @@ public:
 
 public:
     void fix_to(const Point& x0) const;
+    void fix_rhs_to(const std::string& name, const double& value) const;
+    double get_rhs_value_from_name(const std::string& constraint_name) const;
 
     void get_subgradient(Point& subgradient) const;
 };

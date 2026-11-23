@@ -8,6 +8,7 @@
 #include <span>
 #include <utility>
 
+#include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /**
@@ -20,7 +21,11 @@ public:
 
     [[nodiscard]] Problem* clone() const override
     {
-        return new Problem(*this);
+        Problem* problem = new Problem(
+          std::shared_ptr<SolverAbstract>(this->solver_abstract_->clone()));
+        problem->mc_year = this->mc_year;
+        problem->week = this->week;
+        return problem;
     }
 
     explicit Problem(std::shared_ptr<SolverAbstract> solver_abstract):
@@ -271,6 +276,12 @@ public:
     void chg_rhs(int id_row, double val) override
     {
         solver_abstract_->chg_rhs(id_row, val);
+    }
+
+    void fix_rhs_to(const std::string& name, const double& value) const
+    {
+        int index = solver_abstract_->get_row_index(name);
+        solver_chg_rhs(solver_abstract_, index, value);
     }
 
     void chg_coef(int id_row, int id_col, double val) override

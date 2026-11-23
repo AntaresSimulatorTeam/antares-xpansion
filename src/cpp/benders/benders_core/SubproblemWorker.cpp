@@ -72,6 +72,28 @@ void SubproblemWorker::fix_to(const Point& x0) const
 }
 
 /*!
+ *  \brief Fix the rhs of a constraint to a constant in a problem
+ *
+ *  Method to set the rhs of a constraint in a problem by fixing their bounds
+ *
+ *  \param name : name of the constraint
+ *  \param value : value to fix
+ */
+void SubproblemWorker::fix_rhs_to(const std::string& name, const double& value) const
+{
+    int index = _solver->get_row_index(name);
+    solver_chg_rhs(_solver, index, value);
+}
+
+double SubproblemWorker::get_rhs_value_from_name(const std::string& constraint_name) const
+{
+    double res;
+    int index = _solver->get_row_index(constraint_name);
+    _solver->get_rhs(&res, index, index);
+    return res;
+}
+
+/*!
  *  \brief Get LP solution value of a problem
  *
  *  \param s : Empty point which receives the solution

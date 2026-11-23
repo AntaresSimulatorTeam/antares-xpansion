@@ -52,6 +52,7 @@ coverage-reports
 
 # vscode
 .vscode
+.cache
 
 # Local env
 .venv
