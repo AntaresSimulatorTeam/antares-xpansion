@@ -8,18 +8,29 @@
 #include <chrono>
 #include <exception>
 #include <fstream>
+#include <iostream>
+#include <json/reader.h>
 #include <sstream>
 #include <stdexcept>
-#include <string_view>
+#include <string>
 
 #include <boost/tokenizer.hpp>
 
-#include "iostream"
+namespace
+{
+namespace config_keys
+{
+const std::string warm_start = "warm_start";
+const std::string plugin_lib_path = "plugin_lib_path";
+} // namespace config_keys
+} // namespace
 
 Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
                                          const CouplingMap& coupling_map,
-                                         mpi::communicator* world):
-    options_(options)
+                                         mpi::communicator* world,
+                                         const Logger& logger):
+    options_(options),
+    _logger(logger)
 {
     coupling_map_ = coupling_map;
 
@@ -34,9 +45,8 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 
     read_micro_iteration_config_file();
     read_variable_names_to_follow();
-    std::filesystem::path plugin_lib_path = micro_iterations_config_["plugin_lib_path"];
 
-    auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path;
+    auto cpp_lib_absolute_path = std::filesystem::path(options_.INPUTROOT) / plugin_lib_path_;
 #ifdef _WIN32
     handle_ = LoadLibraryW(cpp_lib_absolute_path.wstring().c_str());
 #else
@@ -133,6 +143,22 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
     {
         std::cerr << "failed to open the plugin given on path " << cpp_lib_absolute_path
                   << std::endl;
+#ifdef _WIN32
+        DWORD err = GetLastError();
+        LPSTR msg = nullptr;
+        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM
+                         | FORMAT_MESSAGE_IGNORE_INSERTS,
+                       nullptr,
+                       err,
+                       0,
+                       reinterpret_cast<LPSTR>(&msg),
+                       0,
+                       nullptr);
+        std::cerr << "LoadLibraryW error (" << err << "): " << (msg ? msg : "unknown") << std::endl;
+        LocalFree(msg);
+#else
+        std::cerr << "dlerror: " << dlerror() << std::endl;
+#endif
         _world->abort(EXIT_FAILURE);
     }
 }
@@ -140,45 +166,81 @@ Benders_MICRO_ITERS::Benders_MICRO_ITERS(const SimulationOptions& options,
 void Benders_MICRO_ITERS::read_micro_iteration_config_file()
 {
     // Reading the micro iterations configuration file
-    std::filesystem::path mirco_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
-                                                          / "micro_iterations_config.txt";
-    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.string());
+    std::filesystem::path micro_iterations_options_path = std::filesystem::path(options_.INPUTROOT)
+                                                          / "micro_iterations_config.json";
+    std::ifstream micro_iterations_options_stream(micro_iterations_options_path.string());
 
     if (micro_iterations_options_stream.is_open())
     {
-        std::string line;
-        while (std::getline(micro_iterations_options_stream, line))
+        Json::Value config;
+        Json::CharReaderBuilder reader_builder;
+        std::string errors;
+        if (!Json::parseFromStream(reader_builder,
+                                   micro_iterations_options_stream,
+                                   &config,
+                                   &errors))
         {
-            std::istringstream iss(line);
-            std::string key, value;
-
-            if (std::getline(iss, key, '=') && std::getline(iss, value))
-            {
-                if (key == "warm_start")
-                {
-                    if (value == "0")
-                    {
-                        warm_start_ = false;
-                    }
-                }
-                else
-                {
-                    micro_iterations_config_[key] = value;
-                }
-            }
+            std::ostringstream oss;
+            oss << "failed to parse : " << micro_iterations_options_path.string() << "\n"
+                << "Errors: " << errors;
+            _logger->display_message(oss.str());
+            exit(EXIT_FAILURE);
         }
-        for (auto [key, value]: micro_iterations_config_)
+        // Syntactically valid inputs such as [] or "value" pass parseFromStream(), but
+        // isMember()/string-key access on a non-object can raise Json::LogicError
+        if (!config.isObject())
         {
-            if (key == "plugin_lib_path")
+            _logger->display_message("micro_iterations_config.json must contain a JSON object");
+            _world->abort(EXIT_FAILURE);
+        }
+
+        handle_warm_start(config);
+        handle_plugin_lib_path(config);
+
+        for (const auto& key: config.getMemberNames())
+        {
+            if (key != config_keys::warm_start && key != config_keys::plugin_lib_path)
             {
-                std::string cpp_output_lib_path = micro_iterations_config_["plugin_lib_path"];
+                std::ostringstream oss;
+                oss << key << " is not a micro_iterations_config.json parameter";
+                _logger->display_message(oss.str());
             }
         }
     }
     else
     {
-        std::cerr << "unable to open : " << mirco_iterations_options_path.string() << std::endl;
+        _logger->display_message("unable to open : " + micro_iterations_options_path.string());
         exit(EXIT_FAILURE);
+    }
+}
+
+void Benders_MICRO_ITERS::handle_warm_start(const Json::Value& config)
+{
+    if (config.isMember(config_keys::warm_start) && config[config_keys::warm_start].isBool())
+    {
+        warm_start_ = config[config_keys::warm_start].asBool();
+    }
+    else
+    {
+        warm_start_ = false;
+        _logger->display_message("warm start value should be set as a boolean value in the "
+                                 "config. By default warm_start = false");
+    }
+}
+
+void Benders_MICRO_ITERS::handle_plugin_lib_path(const Json::Value& config)
+{
+    if (config.isMember(config_keys::plugin_lib_path)
+        && config[config_keys::plugin_lib_path].isString())
+    {
+        plugin_lib_path_ = std::filesystem::path(config[config_keys::plugin_lib_path].asString());
+    }
+    else
+    {
+        std::ostringstream oss;
+        oss << "plugin_lib_path is missing or not a string in micro_iterations_config.json";
+        _logger->display_message(oss.str());
+        _world->abort(EXIT_FAILURE);
     }
 }
 
@@ -209,7 +271,6 @@ void Benders_MICRO_ITERS::read_variable_names_to_follow()
 }
 
 void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
-                                         const Logger& logger,
                                          const BendersBaseOptions& options,
                                          const SolverLogManager& solver_log_manager,
                                          std::shared_ptr<SolverAbstract> sub_problem_solver)
@@ -225,17 +286,16 @@ void Benders_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map
         // coefficients differ)
         InitialSubProblemSolverSize_ = subproblem_map.begin()->second->get_problem_row_num();
     }
-    _logger = logger;
     solver_log_manager_ = &solver_log_manager;
 
     switch (options.CACHE_PROBLEMS)
     {
-    // as in case 1 we have nothing to build initially , we load the constraint file in
+    // as in case PER_SUB we have nothing to build initially, we load the constraint file in
     // BendersSubResolutionstart
-    case 0:
+    case CacheProblems::NO_CACHE:
         build_subproblem_constraints_manager_map(subproblem_map, options, solver_log_manager);
         break;
-    case 2:
+    case CacheProblems::COMPACT:
         build_skeleton_constraint_set_loader(options);
         break;
     default:
@@ -284,15 +344,15 @@ void Benders_MICRO_ITERS::OnBendersIterationStart()
 void Benders_MICRO_ITERS::OnBendersIterationEnd()
 {
     OnBendersIterationEnd_();
-    if (options_.CACHE_PROBLEMS < 2)
+    if (options_.CACHE_PROBLEMS != CacheProblems::COMPACT)
     {
         if (!warm_start_)
         {
-            if (options_.CACHE_PROBLEMS == 0)
+            if (options_.CACHE_PROBLEMS == CacheProblems::NO_CACHE)
             {
-                // Only CACHE_PROBLEMS==0 keeps the same manager alive across iterations, so
+                // Only NO_CACHE keeps the same manager alive across iterations, so
                 // it is the only mode where added rows must be physically removed here.
-                // CACHE_PROBLEMS==1 rebuilds a fresh manager from disk on the next
+                // PER_SUB rebuilds a fresh manager from disk on the next
                 // OnBendersSubResolutionStart, making this step moot for that mode.
                 for (auto& [sub_name, constraint_mgr_name]: subproblem_constraint_map_)
                 {
@@ -347,7 +407,7 @@ void Benders_MICRO_ITERS::build_variables_to_follow_indices_vector()
 
 SubproblemConstraintsManagerPtr Benders_MICRO_ITERS::GetActiveManager(const std::string& sub_name)
 {
-    if (options_.CACHE_PROBLEMS < 2)
+    if (options_.CACHE_PROBLEMS != CacheProblems::COMPACT)
     {
         std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
         return constraints_map_[constraints_manager_name];
@@ -358,9 +418,9 @@ SubproblemConstraintsManagerPtr Benders_MICRO_ITERS::GetActiveManager(const std:
 void Benders_MICRO_ITERS::TrackAddedConstraint(const std::string& sub_name,
                                                const std::string& constraint)
 {
-    // CACHE_PROBLEMS==0 keeps the same manager alive for the whole run, so its added rows
+    // NO_CACHE keeps the same manager alive for the whole run, so its added rows
     // already persist on their own; nothing needs tracking for replay there.
-    if (options_.CACHE_PROBLEMS == 0 || !warm_start_)
+    if (options_.CACHE_PROBLEMS == CacheProblems::NO_CACHE || !warm_start_)
     {
         return;
     }
@@ -373,7 +433,7 @@ void Benders_MICRO_ITERS::ReplayPersistedConstraints(const std::string& sub_name
     {
         return;
     }
-    if (options_.CACHE_PROBLEMS == 1)
+    if (options_.CACHE_PROBLEMS == CacheProblems::PER_SUB)
     {
         std::string constraints_manager_name = subproblem_constraint_map_[sub_name];
         for (auto& constraint_name: added_constraints_per_sub_[sub_name])
@@ -381,7 +441,7 @@ void Benders_MICRO_ITERS::ReplayPersistedConstraints(const std::string& sub_name
             constraints_map_[constraints_manager_name]->AddRows(constraint_name);
         }
     }
-    else if (options_.CACHE_PROBLEMS >= 2)
+    else if (options_.CACHE_PROBLEMS == CacheProblems::COMPACT)
     {
         auto ContraintsSolver = constraint_set_loader_->GetSolver();
         for (auto& constraint_name: added_constraints_per_sub_[sub_name])
@@ -460,7 +520,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
   const std::shared_ptr<SubproblemWorker>& sub_worker,
   std::string sub_name)
 {
-    if (options_.CACHE_PROBLEMS == 2)
+    if (options_.CACHE_PROBLEMS == CacheProblems::COMPACT)
     {
         auto constraints_file_name = subproblem_constraint_map_[sub_name];
         auto skeleton_solver = constraint_set_loader_->LoadConstraintSet(constraints_file_name);
@@ -489,7 +549,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
         // and rows temporarily stripped by sharing this skeleton solver come back.
         ReplayPersistedConstraints(sub_name);
     }
-    else if (options_.CACHE_PROBLEMS == 1)
+    else if (options_.CACHE_PROBLEMS == CacheProblems::PER_SUB)
     {
         // In this case we are supposed to have One mps loaded on RAM
         constraints_map_.clear();
@@ -507,7 +567,7 @@ void Benders_MICRO_ITERS::OnBendersSubResolutionStart(
                               *solver_log_manager_,
                               _logger,
                               options_.LOG_LEVEL,
-                              options_.PROBLEMS_FORMAT,
+                              options_.PROBLEM_FORMAT,
                               sub_worker);
 
         if (variables_to_follow_indices_per_sub_[sub_name].size() == 0)
@@ -562,7 +622,7 @@ void Benders_MICRO_ITERS::build_subproblem_constraints_manager_map(
           solver_log_manager,
           _logger,
           options.LOG_LEVEL,
-          options.PROBLEMS_FORMAT,
+          options.PROBLEM_FORMAT,
           sub_worker);
     }
 }
@@ -586,7 +646,7 @@ void Benders_MICRO_ITERS::build_skeleton_constraint_set_loader(const BendersBase
                                                                            _logger,
                                                                            options.SOLVER_NAME,
                                                                            options.LOG_LEVEL,
-                                                                           options.PROBLEMS_FORMAT,
+                                                                           options.PROBLEM_FORMAT,
                                                                            std::move(
                                                                              constraints_names),
                                                                            _world);

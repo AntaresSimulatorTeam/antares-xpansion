@@ -9,9 +9,11 @@ target_sources(plugins PRIVATE
 )
 
 target_link_libraries(plugins
-            PUBLIC 
-            antaresXpansion::benders_core
-            antaresXpansion::logger_lib
+            PUBLIC
+                antaresXpansion::benders_core
+                antaresXpansion::logger_lib
+            PRIVATE 
+                ${JSONCPP_LIB}
 )
 
 target_include_directories(plugins

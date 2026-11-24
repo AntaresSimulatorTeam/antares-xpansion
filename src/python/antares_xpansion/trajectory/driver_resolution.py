@@ -2,7 +2,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Literal
 
 import yaml
 from antares_xpansion.benders_driver import BendersDriver, SolversExe
@@ -34,8 +34,8 @@ class TrajectoryResolutionData:
     master_name: str
     structure_file: str
     solver: str
-    problems_format: str
-    cache_problems: bool
+    problem_format: str
+    cache_problems: Literal["NO_CACHE", "PER_SUB", "COMPACT"]
     method: str
     n_mpi: int
     oversubscribe: bool
@@ -135,8 +135,8 @@ class TrajectoryResolutionDriver:
         options_values[OptimisationKeys.solver_name_key()] = (
             XpansionStudyReader.convert_study_solver_to_option_solver(self.data.solver)
         )
-        options_values[OptimisationKeys.problems_format_key()] = (
-            self.data.problems_format.upper()
+        options_values[OptimisationKeys.problem_format_key()] = (
+            self.data.problem_format.upper()
         )
 
         options_values[OptimisationKeys.json_file_key()] = (

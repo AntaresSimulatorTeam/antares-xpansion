@@ -7,10 +7,10 @@
 class SolverIO
 {
     SolverConfig solver_config_{"Coin"};
-    ProblemsFormat format_;
+    ProblemFormat format_;
 
 public:
-    void configure(const std::string& solver_name, ProblemsFormat format);
+    void configure(const std::string& solver_name, ProblemFormat format);
     void write(SolverAbstract* solver, const std::filesystem::path& path) const;
     void read(SolverAbstract* solver, const std::filesystem::path& path) const;
 };

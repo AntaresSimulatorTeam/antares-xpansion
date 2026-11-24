@@ -1,8 +1,23 @@
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 
+#include <algorithm>
+#include <cctype>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+
+namespace
+{
+bool isFileEmptyOrSpaceOnly(const std::filesystem::path& filename)
+{
+    std::ifstream infile(filename);
+    return std::all_of(std::istreambuf_iterator<char>(infile),
+                       std::istreambuf_iterator<char>(),
+                       [](unsigned char character) { return std::isspace(character); });
+}
+} // namespace
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
   const std::filesystem::path& direct_filename,
@@ -13,9 +28,29 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
       << "indirect_file_name: " << indirect_file_name << "\n";
     EnsureFileIsGood(direct_filename);
     EnsureFileIsGood(indirect_file_name);
+    const bool empty_direct_profile = isFileEmptyOrSpaceOnly(direct_filename);
+    const bool empty_indirect_profile = isFileEmptyOrSpaceOnly(indirect_file_name);
     std::vector<LinkProfile> result;
     ReadLinkProfile(direct_filename, result, true);
     ReadLinkProfile(indirect_file_name, result, false);
+
+    if (result.empty())
+    {
+        result.emplace_back(logger_);
+    }
+    for (auto& profile: result)
+    {
+        if (empty_direct_profile)
+        {
+            std::fill(profile.direct_link_profile.begin(), profile.direct_link_profile.end(), 0);
+        }
+        if (empty_indirect_profile)
+        {
+            std::fill(profile.indirect_link_profile.begin(),
+                      profile.indirect_link_profile.end(),
+                      0);
+        }
+    }
     return result;
 }
 
@@ -29,15 +64,6 @@ void LinkProfileReader::EnsureFileIsGood(const std::filesystem::path& direct_fil
                                                 direct_filename,
                                                 std::error_code());
     }
-}
-
-std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
-  const std::filesystem::path& direct_filename)
-{
-    std::vector<LinkProfile> result;
-    ReadLinkProfile(direct_filename, result, true);
-    ReadLinkProfile(direct_filename, result, false);
-    return result;
 }
 
 bool is_number(const std::string& str, double& result)
@@ -59,6 +85,10 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path& filename,
         auto errMsg = std::string("unable to open file ");
         (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << errMsg << filename;
         throw std::filesystem::filesystem_error(LOGLOCATION + errMsg, filename, std::error_code());
+    }
+    if (isFileEmptyOrSpaceOnly(filename))
+    {
+        return;
     }
     std::string str_value;
     double value;

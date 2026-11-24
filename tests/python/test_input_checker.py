@@ -25,8 +25,7 @@ class TestCheckProfileFile:
     def test_empty_profile(self, tmp_path):
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)
 
-        with pytest.raises(ProfileFileWrongNumberOfLines):
-            _check_profile_file(profile_file)
+        assert _check_profile_file(profile_file) is False
 
     def test_invalid_profile(self, tmp_path):
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)

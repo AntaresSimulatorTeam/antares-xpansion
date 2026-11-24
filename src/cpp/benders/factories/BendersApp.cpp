@@ -12,6 +12,7 @@
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBenders.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopFacade.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -23,20 +24,23 @@ void BendersApp::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_op
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
-        writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
+
+        benders_loggers_.AddLogger(logger_);
+        benders_loggers_.AddLogger(math_log_driver_);
+        writer_ = build_json_writer(options_.JSON_FILE, options_.RESTART_MODE);
     }
     else
     {
         logger_ = build_void_logger();
         writer_ = build_void_writer();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
+        benders_loggers_.AddLogger(logger_);
+        benders_loggers_.AddLogger(math_log_driver_);
     }
-    benders_loggers_.AddLogger(logger_);
-    benders_loggers_.AddLogger(math_log_driver_);
     writer_->write_log_level(options_.LOG_LEVEL);
     writer_->write_master_name(options_.MASTER_NAME);
     writer_->write_solver_name(options_.SOLVER_NAME);
-    writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEMS_FORMAT));
+    writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEM_FORMAT));
 }
 
 bool BendersApp::isCriterionListEmpty() const
@@ -103,6 +107,13 @@ void BendersApp::InitializeBendersEnvironment(bool outer_loop)
         {
             throw std::runtime_error(
               "Could not initialize benders. Please see above messages for actual error.");
+        }
+        if (logger_)
+        {
+            logger_->display_message(
+              "Benders optimization was NOT executed: the previous run status is already "
+              "OPTIMAL in resume mode. If input data has changed since the last run, "
+              "delete the output JSON file or use a non-resume mode to force re-optimization.");
         }
         return;
     }
@@ -180,14 +191,17 @@ int BendersApp::RunExternalLoop()
         const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
           criterion_input_holder_);
         std::shared_ptr<Outerloop::IMasterUpdate> master_updater = std::make_shared<
-          Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
+          Outerloop::MasterUpdateBase>(benders_->GetMasterManager(),
+                                       tau,
+                                       outer_loop_inputs.StoppingThreshold());
         std::shared_ptr<Outerloop::ICutsManager>
           cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
+        auto facade = std::make_shared<OuterLoopFacade>(benders_);
         Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
                                              master_updater,
                                              cuts_manager,
-                                             benders_,
+                                             facade,
                                              benders_->GetCommunicationStrategy());
         StartMessage();
         ext_loop.Run();

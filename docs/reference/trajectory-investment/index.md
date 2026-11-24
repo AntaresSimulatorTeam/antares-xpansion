@@ -13,7 +13,7 @@ over a set of investment variables specified by the user, where, denoting by $i$
 - $C_i$ is the fixed cost annuity of candidate $i$, given by its ```annual-cost-per-mw``` entry in the study's [```candidates.ini```](../inputs/candidates.md) file
 - $\text{ANTARES}(x)$ is the operating cost of the system for a given investment level.
 
-## Switching to a pluriannual vision
+## Switching to a pluriannual vision
 
 We want to switch to a pluriannual vision and optimise the investments over several possible trajectories described on a diverging tree of scenarios
 

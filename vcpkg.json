@@ -6,6 +6,7 @@
   "$comment 3": "antlr4 by transitivity for Simulator",
   "$comment 4": "set coin version to avoid change in results for now",
   "$comment 5": "boost iostreams by transitivity for Simulator",
+  "$comment 6": "arrow (parquet) by transitivity for Simulator >= 10.2.0",
   "dependencies": [
     "jsoncpp",
     "gtest",
@@ -44,6 +45,10 @@
     },
     "tbb",
     "fmt",
+    {
+      "name": "arrow",
+      "features": ["parquet"]
+    },
     "catch2"
   ],
   "overrides": [

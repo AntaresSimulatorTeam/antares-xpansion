@@ -21,7 +21,7 @@ public:
     [[nodiscard]] virtual std::filesystem::path WeightsFile() const = 0;
     [[nodiscard]] virtual std::vector<int> ActiveYears() const = 0;
     [[nodiscard]] virtual bool UnnamedProblems() const = 0;
-    [[nodiscard]] virtual ProblemsFormat Format() const = 0;
+    [[nodiscard]] virtual ProblemFormat Format() const = 0;
     [[nodiscard]] virtual std::filesystem::path deduceXpansionDirIfEmpty(
       std::filesystem::path xpansion_output_dir,
       const std::filesystem::path& archive_path) const

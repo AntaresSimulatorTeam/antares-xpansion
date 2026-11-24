@@ -1,5 +1,6 @@
 #pragma once
 
+#include <shared_mutex>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -15,5 +16,6 @@ public:
     bool TryRestore(const std::string& name, SolverAbstract& solver, const Logger& logger);
 
 private:
+    mutable std::shared_mutex mutex_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basis_per_name_;
 };

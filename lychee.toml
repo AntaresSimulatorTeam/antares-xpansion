@@ -1,0 +1,23 @@
+# Lychee link checker configuration.
+# https://lychee.cli.rs/#/configuration/file
+
+no_progress = true
+
+timeout = 60
+max_retries = 5
+retry_wait_time = 30
+
+# Check anchor fragments in relative markdown links (e.g. parameters.md#some-anchor).
+include_fragments = "anchor-only"
+
+exclude = [
+    # stackoverflow.com returns 403 to non-browser requests (anti-bot protection).
+    '^https://stackoverflow\.com/',
+    # cppreference.com blocks/redirects non-browser requests, causing false 403s.
+    '^https://en\.cppreference\.com/',
+    # intel.com refuses connections from CI IP ranges.
+    '^https://www\.intel\.com/',
+    # Literal placeholder used in conception/DependencyManagment/Dependency_Upgrade_Log_–_Template.md,
+    # which lychee resolves to a (nonexistent) local file named URL.
+    '^file://.*/URL$',
+]

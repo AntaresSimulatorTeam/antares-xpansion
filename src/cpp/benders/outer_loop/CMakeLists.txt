@@ -14,7 +14,7 @@ message("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 find_package(MPI REQUIRED)
 
-if (UNIX)
+if (UNIX AND MPI_CXX_COMPILER)
     set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif ()
 
@@ -23,10 +23,13 @@ target_sources(outer_loop_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBenders.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopFacade.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/IMasterUpdate.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/IOuterLoopFacade.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoop.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBenders.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopFacade.h
 
 )
 

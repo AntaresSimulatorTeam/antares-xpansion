@@ -12,7 +12,7 @@ using Structure = std::map<ProblemName, std::map<CandidateName, ColId>>;
 
 std::filesystem::path FileNameForStructureFile(const std::string& problemName,
                                                std::string solverName,
-                                               ProblemsFormat format)
+                                               ProblemFormat format)
 {
     if (problemName == "master")
     {
@@ -20,7 +20,7 @@ std::filesystem::path FileNameForStructureFile(const std::string& problemName,
     }
     // Force mps file extension for MPS format
     auto fileName = SolverConfig(std::move(solverName)).FileName(problemName);
-    if (format == ProblemsFormat::MPS_FILE)
+    if (format == ProblemFormat::MPS_FILE)
     {
         return fileName.replace_extension(".mps");
     }
@@ -29,7 +29,7 @@ std::filesystem::path FileNameForStructureFile(const std::string& problemName,
 
 StructureGeneration::StructureGeneration(std::filesystem::path output_path,
                                          std::string solver_name,
-                                         ProblemsFormat format):
+                                         ProblemFormat format):
     solver_name_(std::move(solver_name)),
     format_(format),
     output_path_(std::move(output_path))

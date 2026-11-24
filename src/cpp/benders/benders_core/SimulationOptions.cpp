@@ -4,6 +4,7 @@
 #include <iostream>
 #include <json/json.h>
 
+#include "antares-xpansion/core/CacheProblems.h"
 #include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -23,9 +24,26 @@ Json::Value SimulationOptions::get_value_from_json(const std::filesystem::path& 
 }
 
 template<>
-inline ProblemsFormat Json::Value::as<ProblemsFormat>() const
+inline ProblemFormat Json::Value::as<ProblemFormat>() const
 {
-    return problemsFormatFromString(asString());
+    return problemFormatFromString(asString());
+}
+
+template<>
+inline CacheProblems Json::Value::as<CacheProblems>() const
+{
+    return cacheProblemsFromString(asString());
+}
+
+template<>
+inline RestartMode Json::Value::as<RestartMode>() const
+{
+    if (isBool())
+    {
+        // Legacy boolean RESUME option
+        return asBool() ? RestartMode::RESUME : RestartMode::COLD_START;
+    }
+    return restartModeFromString(asString());
 }
 
 /*!
@@ -79,6 +97,11 @@ void SimulationOptions::read(const std::filesystem::path& file_name)
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
 
 #undef BENDERS_OPTIONS_MACRO
+        // Legacy name of RESTART_MODE, ignored if the new key is also present
+        if (var_name == "RESUME" && !options_values.isMember("RESTART_MODE"))
+        {
+            RESTART_MODE = options_values[var_name].as<RestartMode>();
+        }
     }
     set_weights();
 }
@@ -159,7 +182,7 @@ BaseOptions SimulationOptions::get_base_options() const
     result.MASTER_NAME = MASTER_NAME;
     result.SOLVER_NAME = SOLVER_NAME;
 
-    result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
+    result.PROBLEM_FORMAT = PROBLEM_FORMAT;
 
     return result;
 }
@@ -197,7 +220,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.TIME_LIMIT = TIME_LIMIT;
     result.SEPARATION_PARAM = SEPARATION_PARAM;
 
-    result.RESUME = RESUME;
+    result.RESTART_MODE = RESTART_MODE;
     result.MICRO_ITERATIONS = MICRO_ITERATIONS;
     result.NB_CUTS_PER_ITER = NB_CUTS_PER_ITER;
     result.TRACE = TRACE;

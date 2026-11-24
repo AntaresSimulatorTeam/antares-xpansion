@@ -24,7 +24,7 @@ public:
     void init(const std::string& solver_name,
               int log_level,
               const SolverLogManager& solver_log_manager,
-              ProblemsFormat format,
+              ProblemFormat format,
               IBendersProblemProvider* benders_problem_provider);
     virtual ~Worker() = default;
 
