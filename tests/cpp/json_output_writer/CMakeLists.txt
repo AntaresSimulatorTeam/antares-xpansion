@@ -1,10 +1,10 @@
-add_executable(output_writer output_writer_test.cpp)
+add_executable(output_writer main.cpp output_writer_test.cpp)
 
 target_link_libraries(output_writer
         PRIVATE
         antaresXpansion::benders_core
         antaresXpansion::output_core
-        GTest::Main)
+        GTest::GTest)
 #GTest::gmock
 #target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 

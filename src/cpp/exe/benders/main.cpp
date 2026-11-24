@@ -8,6 +8,7 @@ int main(int argc, char** argv)
 {
     try
     {
+        std::cout<<"try here "<<std::endl ; 
         mpi::environment env(argc, argv);
         mpi::communicator world;
         // First check usage (options are given)

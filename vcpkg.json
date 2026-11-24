@@ -53,6 +53,10 @@
   ],
   "overrides": [
     {
+      "name": "abseil",
+      "version": "20250512.1"
+    },
+    {
       "name": "tbb",
       "version-string": "2022.2.0"
     },
