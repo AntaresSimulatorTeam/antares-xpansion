@@ -1045,30 +1045,29 @@ void SolverMathOpt::chg_col_name(int id_col, const std::string& name)
 
 int SolverMathOpt::solve_lp()
 {
-    math_opt::SolveArguments args;
-    args.parameters.threads = _threads;
+    args_.parameters.threads = _threads;
     if (_iteration_limit.has_value())
     {
-        args.parameters.iteration_limit = *_iteration_limit;
+        args_.parameters.iteration_limit = *_iteration_limit;
     }
     if (_log_level > 0 && _log_stream.is_open())
     {
-        args.message_callback = math_opt::PrinterMessageCallback(_log_stream);
+        args_.message_callback = math_opt::PrinterMessageCallback(_log_stream);
     }
     else
     {
-        args.parameters.enable_output = (_log_level > 0);
+        args_.parameters.enable_output = (_log_level > 0);
     }
 
     // Pass warm-start basis if one was set via set_basis() or read_basis().
     // Consumed on use so subsequent solves start fresh unless re-set.
     if (_initial_basis.has_value())
     {
-        args.model_parameters.initial_basis = _initial_basis;
+        args_.model_parameters.initial_basis = _initial_basis;
         _initial_basis.reset();
     }
 
-    auto result = math_opt::Solve(*_model, math_opt::SolverType::kGlop, args);
+    auto result = math_opt::Solve(*_model, math_opt::SolverType::kGlop, args_);
     if (!result.ok())
     {
         std::stringstream buffer;
@@ -1105,22 +1104,21 @@ int SolverMathOpt::solve_lp()
 
 int SolverMathOpt::solve_mip()
 {
-    math_opt::SolveArguments args;
-    args.parameters.threads = _threads;
+    args_.parameters.threads = _threads;
     if (_iteration_limit.has_value())
     {
-        args.parameters.iteration_limit = *_iteration_limit;
+        args_.parameters.iteration_limit = *_iteration_limit;
     }
     if (_log_level > 0 && _log_stream.is_open())
     {
-        args.message_callback = math_opt::PrinterMessageCallback(_log_stream);
+        args_.message_callback = math_opt::PrinterMessageCallback(_log_stream);
     }
     else
     {
-        args.parameters.enable_output = (_log_level > 0);
+        args_.parameters.enable_output = (_log_level > 0);
     }
 
-    auto result = math_opt::Solve(*_model, math_opt::SolverType::kGscip, args);
+    auto result = math_opt::Solve(*_model, math_opt::SolverType::kGscip, args_);
     if (!result.ok())
     {
         std::stringstream buffer;

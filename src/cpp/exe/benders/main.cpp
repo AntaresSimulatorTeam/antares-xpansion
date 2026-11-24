@@ -8,6 +8,7 @@ int main(int argc, char** argv)
 {
     try
     {
+        std::cout<<"try here "<<std::endl ; 
         mpi::environment env(argc, argv);
         mpi::communicator world;
         // First check usage (options are given)
@@ -16,6 +17,7 @@ int main(int argc, char** argv)
             usage(argc);
         }
         auto benders_factory = BendersApp(argv[1], world, SOLVER::BENDERS);
+        std::cout<<"created BendersApp correctly "<<std::endl; 
         return benders_factory.Run();
     }
     catch (std::exception& e)

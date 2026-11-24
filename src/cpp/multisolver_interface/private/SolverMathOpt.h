@@ -143,6 +143,7 @@ private:
     const std::string name_ = "MATHOPT";
     std::unique_ptr<math_opt::Model> _model;
     std::vector<math_opt::Variable> _variables;
+    math_opt::SolveArguments args_;
     std::vector<math_opt::LinearConstraint> _constraints;
     std::vector<char> _row_types;
     std::optional<math_opt::SolveResult> _last_result;
