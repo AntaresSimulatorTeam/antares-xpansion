@@ -22,6 +22,23 @@ std::atomic<int>& number_of_problems_counter()
 }
 
 constexpr double kInf = std::numeric_limits<double>::infinity();
+
+// Xpress/CLP treat |v| >= 1e20 as infinite, and Benders relies on that (e.g. alpha's ub).
+// SCIP's finite range is the open interval (-1e20, 1e20), so map the sentinel to a true inf.
+constexpr double kSolverInfinity = 1e20;
+
+double ToMathOptBound(double value)
+{
+    if (value >= kSolverInfinity)
+    {
+        return kInf;
+    }
+    if (value <= -kSolverInfinity)
+    {
+        return -kInf;
+    }
+    return value;
+}
 } // namespace
 
 /*************************************************************************************************
@@ -213,11 +230,17 @@ void SolverMathOpt::save_prob(const std::filesystem::path& filename)
 
 void SolverMathOpt::write_basis(const std::filesystem::path& filename)
 {
+    // MIP solves return no basis in MathOpt. The basis file is only an optional warm start
+    // (sensitivity analysis), so warn and skip instead of aborting the run.
     if (!_last_result.has_value() || _last_result->solutions.empty()
         || !_last_result->solutions[0].basis.has_value())
     {
-        throw GenericSolverException(
-          "write_basis: no basis available (solve not called or no basis)");
+        for (auto* stream: get_stream())
+        {
+            *stream << "Warning: write_basis: no basis available (solve not called or MIP solve), "
+                    << filename.string() << " not written" << std::endl;
+        }
+        return;
     }
 
     const auto& basis = *_last_result->solutions[0].basis;
@@ -746,19 +769,19 @@ void SolverMathOpt::add_rows(int newrows,
         {
         case 'L':
             lb = -kInf;
-            ub = rhs[i];
+            ub = ToMathOptBound(rhs[i]);
             break;
         case 'G':
-            lb = rhs[i];
+            lb = ToMathOptBound(rhs[i]);
             ub = kInf;
             break;
         case 'E':
-            lb = rhs[i];
-            ub = rhs[i];
+            lb = ToMathOptBound(rhs[i]);
+            ub = ToMathOptBound(rhs[i]);
             break;
         case 'R':
-            ub = rhs[i];
-            lb = rhs[i] - (range ? range[i] : 0.0);
+            ub = ToMathOptBound(rhs[i]);
+            lb = ToMathOptBound(rhs[i] - (range ? range[i] : 0.0));
             break;
         default:
         {
@@ -800,7 +823,9 @@ void SolverMathOpt::add_cols(int newcol,
     for (int i = 0; i < newcol; ++i)
     {
         std::string name = (i < static_cast<int>(col_names.size())) ? col_names[i] : "";
-        auto var = _model->AddContinuousVariable(bdl[i], bdu[i], name);
+        auto var = _model->AddContinuousVariable(ToMathOptBound(bdl[i]),
+                                                 ToMathOptBound(bdu[i]),
+                                                 name);
         _model->set_objective_coefficient(var, objx[i]);
 
         // Set column coefficients in existing constraints
@@ -860,17 +885,18 @@ void SolverMathOpt::chg_bounds(const std::vector<int>& mindex,
     for (size_t i = 0; i < mindex.size(); ++i)
     {
         auto& var = _variables[mindex[i]];
+        const double value = ToMathOptBound(bnd[i]);
         switch (qbtype[i])
         {
         case 'L':
-            _model->set_lower_bound(var, bnd[i]);
+            _model->set_lower_bound(var, value);
             break;
         case 'U':
-            _model->set_upper_bound(var, bnd[i]);
+            _model->set_upper_bound(var, value);
             break;
         case 'B':
-            _model->set_lower_bound(var, bnd[i]);
-            _model->set_upper_bound(var, bnd[i]);
+            _model->set_lower_bound(var, value);
+            _model->set_upper_bound(var, value);
             break;
         default:
             throw InvalidBoundTypeException(qbtype[i], LOGLOCATION);
@@ -905,6 +931,7 @@ void SolverMathOpt::chg_col_type(const std::vector<int>& mindex, const std::vect
 
 void SolverMathOpt::chg_rhs(int id_row, double val)
 {
+    val = ToMathOptBound(val);
     char type = _row_types[id_row];
     auto& ct = _constraints[id_row];
 

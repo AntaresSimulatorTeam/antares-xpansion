@@ -24,7 +24,6 @@ int main(int argc, char** argv)
             }
         }
         auto benders_factory = BendersApp(argv[1], world, SOLVER::BENDERS);
-        std::cout<<"created BendersApp correctly "<<std::endl; 
         return benders_factory.Run();
     }
     catch (std::exception& e)
