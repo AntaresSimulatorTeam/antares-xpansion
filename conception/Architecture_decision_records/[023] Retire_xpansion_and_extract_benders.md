@@ -38,6 +38,26 @@ We retire Xpansion as a standalone product and favour a platform workflow:
 
 ### Target architecture
 
+```mermaid
+flowchart LR
+    subgraph today["Today: Xpansion pipeline (two repositories, tightly coupled)"]
+        direction TB
+        T1["Simulation<br/>Antares Simulator embedded as a library"]
+        T2["LPNamer / problem generation<br/>produces the investment problem"]
+        T3["Benders<br/>solves the investment problem"]
+        T1 --> T2 --> T3
+    end
+    subgraph target["Target: platform workflow"]
+        direction TB
+        S["Antares Simulator<br/>simulation<br/>GEMS investment problem generation<br/>calls Benders when benders-decomposition is set"]
+        B["Benders<br/>own repository, own releases"]
+        S -- "investment problems" --> B
+    end
+    today ==> target
+```
+
+Remaining Xpansion roles (launcher, study update, sensitivity and so on) go to tooling, see the inventory below.
+
 | | Today | Target |
 | --- | --- | --- |
 | Simulation | Antares Simulator, embedded as a library in Xpansion | Antares Simulator |
@@ -49,6 +69,44 @@ We retire Xpansion as a standalone product and favour a platform workflow:
 
 Phases 1 to 3 only change packaging and repository layout. Phase 4 is the first one that changes how users solve
 investment problems. The legacy Xpansion workflow stays supported throughout.
+
+```mermaid
+flowchart LR
+    P1["Phase 1<br/>Standalone module<br/>local vcpkg port<br/>still in Xpansion repo"]
+    P2["Phase 2<br/>Registry port<br/>port in antares-vcpkg-registry<br/>Xpansion uses it"]
+    P3["Phase 3<br/>Own repository<br/>keep git history<br/>keep docs and ADRs"]
+    P4["Phase 4<br/>Simulator calls Benders<br/>optional dependency<br/>loaded dynamically"]
+    P1 --> P2 --> P3 --> P4
+    L["Legacy Xpansion workflow stays supported throughout"]
+    P1 -.- L
+    P4 -.- L
+```
+
+Where the code lives at each phase:
+
+```mermaid
+flowchart TB
+    subgraph ph1["Phase 1: Xpansion repository"]
+        direction LR
+        X1["Xpansion"] --> BM1["Benders module<br/>local vcpkg port"]
+    end
+    subgraph ph2["Phase 2: Xpansion repository"]
+        direction LR
+        X2["Xpansion"] --> BM2["Benders module"]
+        REG["antares-vcpkg-registry<br/>Benders port"] -. "installs" .-> X2
+    end
+    subgraph ph3["Phase 3: two repositories"]
+        direction LR
+        X3["Xpansion"] --> BR["Benders repository"]
+        REG3["antares-vcpkg-registry<br/>Benders port"] -. "points to" .-> BR
+    end
+    subgraph ph4["Phase 4: Simulator integration"]
+        direction LR
+        SIM["Antares Simulator"] -. "dlopen, optional" .-> BR4["Benders repository"]
+        X4["Xpansion (legacy)"] --> BR4
+    end
+    ph1 --> ph2 --> ph3 --> ph4
+```
 
 1. **Standalone module.** Make Benders a standalone module inside the Xpansion repository and create a local vcpkg port
    for it.
@@ -69,6 +127,24 @@ open to suggestions:
 - **Interface:** a C-compatible, versioned API, so Simulator and Benders release independently without C++ ABI breakage.
 - **Missing library:** a clear error naming the library and the expected version.
 - **Build:** a CMake option builds Simulator without any Benders support.
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant S as Antares Simulator
+    participant B as Benders shared library
+    U->>S: run study (benders-decomposition set)
+    S->>S: generate GEMS investment problems
+    S->>B: load library, check API version
+    alt library missing or incompatible
+        B-->>S: not found / version mismatch
+        S-->>U: error naming library and expected version
+    else loaded
+        S->>B: solve(problems)
+        B-->>S: investment decisions and outputs
+        S-->>U: results
+    end
+```
+
 - **Alternative considered:** calling a separate executable through files. It is simpler, but it brings back the disk
   I/O that the library integration removed.
 
