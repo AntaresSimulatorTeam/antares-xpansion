@@ -38,6 +38,13 @@ We retire Xpansion as a standalone product and favour a platform workflow:
 
 ### Target architecture
 
+C4 container diagrams (sources: `conception/C4/ContainerDiagramXpansionToday.puml` and
+`conception/C4/ContainerDiagramPlatformTarget.puml`):
+
+![Container diagram for Xpansion today](../C4/ContainerDiagramXpansionToday.svg)
+
+![Container diagram for the target platform workflow](../C4/ContainerDiagramPlatformTarget.svg)
+
 ```mermaid
 flowchart LR
     subgraph today["Today: Xpansion pipeline (two repositories, tightly coupled)"]

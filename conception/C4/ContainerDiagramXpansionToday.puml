@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+title Container Diagram for Xpansion today
+
+Person(user, "Study engineer", "Runs investment studies")
+
+System_Boundary(xpansion, "Xpansion", "Performs investment simulations for Antares studies") {
+    Container(launcher, "Launcher", "Python", "Orchestrates the steps, reads user inputs, locks the study, updates it with results")
+    Container(lpnamer, "LPNamer / problem generation", "C++", "Builds the investment problem from the simulator problems and the candidates")
+    Container(benders, "Benders", "C++, MPI", "Solves the investment problem by decomposition")
+    Container(tools, "Other steps", "C++ / Python", "Presolve, sensitivity analysis, study update, trajectory investment")
+}
+
+Container_Ext(simulator, "Antares Simulator", "C++ library, since 1.8.0", "Builds the study and exposes its optimization problems")
+
+Rel(user, launcher, "Runs", "Command line")
+Rel(launcher, simulator, "Runs the simulation", "Library API")
+Rel(launcher, lpnamer, "Generates the investment problem", "Command line")
+Rel(lpnamer, simulator, "Reads problems", "Library API")
+Rel(launcher, benders, "Solves", "Command line / MPI")
+Rel(launcher, tools, "Runs optional steps", "Command line")
+Rel(benders, lpnamer, "Reads problems", "Files")
+
+Lay_D(launcher, lpnamer)
+@enduml

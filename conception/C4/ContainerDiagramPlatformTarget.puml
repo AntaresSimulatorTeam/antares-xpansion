@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+title Container Diagram for the target platform workflow
+
+Person(user, "Study engineer", "Runs investment studies")
+Person(benders_user, "Benders user team", "Uses Benders standalone")
+
+System_Boundary(platform, "Antares platform", "Investment studies as a platform workflow") {
+    Container(simulator, "Antares Simulator", "C++", "Simulation and GEMS investment problem generation. Calls Benders when benders-decomposition is set")
+    Container(benders, "Benders", "C++, shared library, own repository", "Solves investment problems by decomposition. Own releases")
+    Container(tooling, "Tooling", "Python", "Study update, sensitivity analysis and other remaining Xpansion roles (to be confirmed)")
+}
+
+Container_Ext(registry, "antares-vcpkg-registry", "vcpkg registry", "Distributes the Benders port")
+Container_Ext(legacy, "Xpansion (legacy)", "C++ / Python", "Legacy workflow, supported during the transition")
+
+Rel(user, simulator, "Runs studies", "Command line / API")
+Rel(benders_user, benders, "Uses standalone")
+Rel(simulator, benders, "Sends investment problems", "Optional, dynamically loaded, versioned C API")
+Rel(tooling, simulator, "Runs studies and reads results")
+Rel(tooling, benders, "Runs analyses on")
+Rel(registry, benders, "Packages")
+Rel(registry, simulator, "Provides Benders to")
+Rel(legacy, benders, "Consumes as a dependency")
+Rel(legacy, simulator, "Uses as a library")
+@enduml
